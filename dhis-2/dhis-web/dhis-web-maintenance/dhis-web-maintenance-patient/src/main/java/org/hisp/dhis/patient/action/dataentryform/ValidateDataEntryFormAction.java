@@ -49,7 +49,7 @@ public class ValidateDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }  
+    }
 
     // -------------------------------------------------------------------------
     // I18n
@@ -79,7 +79,7 @@ public class ValidateDataEntryFormAction
     {
         this.dataEntryFormId = dataEntryFormId;
     }
-    
+
     private String message;
 
     public String getMessage()
@@ -94,33 +94,16 @@ public class ValidateDataEntryFormAction
     public String execute()
         throws Exception
     {
-        if ( name == null )
+
+        DataEntryForm match = dataEntryFormService.getDataEntryFormByName( name );
+
+        if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId) )
         {
-            message = i18n.getString( "specify_name" );
+            message = i18n.getString( "duplicate_names" );
 
-            return INPUT;
+            return ERROR;
         }
-        else
-        {
-            name = name.trim();
 
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-
-            DataEntryForm match = dataEntryFormService.getDataEntryFormByName( name );
-
-            if ( match != null && (dataEntryFormId == null || match.getId() != dataEntryFormId) )
-            {
-                message = i18n.getString( "duplicate_names" );
-
-                return INPUT;
-            }
-        }
-        
         return SUCCESS;
-    }    
+    }
 }

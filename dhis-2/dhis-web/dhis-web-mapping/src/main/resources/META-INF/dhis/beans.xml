@@ -254,11 +254,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.mapping.action.GetMapViewAction" class="org.hisp.dhis.mapping.action.GetMapViewAction"
 		scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetAllMapViewsAction"
 		class="org.hisp.dhis.mapping.action.GetAllMapViewsAction" scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction"
@@ -363,14 +365,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
 		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.ExportExcelAction" class="org.hisp.dhis.mapping.action.ExportExcelAction"
 		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />

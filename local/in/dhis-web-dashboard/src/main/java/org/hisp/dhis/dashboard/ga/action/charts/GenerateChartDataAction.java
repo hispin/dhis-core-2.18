@@ -915,7 +915,7 @@ public class GenerateChartDataAction
                             if( aggDataCB == null )
                             {
                                 DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc );
-                                if ( dv1 != null )
+                                if ( dv1 != null && dv1.getValue() != null )
                                     serviceValues[countForServiceList][countForPeriodList] = Double.parseDouble( dv1
                                         .getValue() );
                                 else
@@ -942,7 +942,7 @@ public class GenerateChartDataAction
 
                                     double tempd = -1.0;
                                     DataValue dv1 = dataValueService.getDataValue( ou, dElement, p, decoc );
-                                    if ( dv1 != null )
+                                    if ( dv1 != null && dv1.getValue() != null )
                                         tempd = Double.parseDouble( dv1.getValue() );
                                     if ( tempd == -1.0 )
                                         tempd = 0.0;
@@ -1000,7 +1000,7 @@ public class GenerateChartDataAction
                                 if ( aggDataCB == null )
                                 {
                                     DataValue dv1 = dataValueService.getDataValue( selectedOrgUnit, dElement, p, decoc1 );
-                                    if ( dv1 != null )
+                                    if ( dv1 != null && dv1.getValue() != null )
                                         aggDataValue = Double.parseDouble( dv1.getValue() );
                                     else
                                         aggDataValue = 0.0;
@@ -1024,7 +1024,7 @@ public class GenerateChartDataAction
                                     if ( aggDataCB == null )
                                     {
                                         DataValue dv1 = dataValueService.getDataValue( ou, dElement, p, decoc1 );
-                                        if ( dv1 != null )
+                                        if ( dv1 != null && dv1.getValue() != null )
                                             tempd = Double.parseDouble( dv1.getValue() );
                                     }
                                     else
@@ -1440,7 +1440,7 @@ public class GenerateChartDataAction
                                 for ( Period p1 : pList )
                                 {
                                     DataValue dv1 = dataValueService.getDataValue( childOrgUnit, dElement, p1, decoc );
-                                    if ( dv1 != null )
+                                    if ( dv1 != null && dv1.getValue() != null )
                                         tempAggValue += Double.parseDouble( dv1.getValue() );
                                 }
                                 serviceValues[countForServiceList][countForChildOrgUnitList] = tempAggValue;
@@ -1470,7 +1470,7 @@ public class GenerateChartDataAction
                                     for ( Period p1 : pList )
                                     {
                                         DataValue dv1 = dataValueService.getDataValue( ou, dElement, p1, decoc );
-                                        if ( dv1 != null )
+                                        if ( dv1 != null && dv1.getValue() != null )
                                             tempAggValue += Double.parseDouble( dv1.getValue() );
                                     }
                                     tempd = tempAggValue;
@@ -1515,7 +1515,7 @@ public class GenerateChartDataAction
                                     {
                                         DataValue dv1 = dataValueService.getDataValue( childOrgUnit, dElement, p1,
                                             decoc1 );
-                                        if ( dv1 != null )
+                                        if ( dv1 != null && dv1.getValue() != null )
                                             tempAggValue += Double.parseDouble( dv1.getValue() );
                                     }
                                     aggDataValue = tempAggValue;
@@ -1545,7 +1545,7 @@ public class GenerateChartDataAction
                                         for ( Period p1 : pList )
                                         {
                                             DataValue dv1 = dataValueService.getDataValue( ou, dElement, p1, decoc1 );
-                                            if ( dv1 != null )
+                                            if ( dv1 != null && dv1.getValue() != null )
                                                 tempAggValue += Double.parseDouble( dv1.getValue() );
                                         }
                                         tempd = tempAggValue;

@@ -30,7 +30,6 @@ package org.hisp.dhis.patient.action.programstage;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -54,7 +53,7 @@ public class ShowSortProgramStageFormAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }  
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -91,20 +90,6 @@ public class ShowSortProgramStageFormAction
         return programStages;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -112,14 +97,7 @@ public class ShowSortProgramStageFormAction
     public String execute()
     {
 
-        if ( id == null )
-        {
-            message = i18n.getString( "please_select_program" );
-
-            return INPUT;
-        }
-
-        program = programService.getProgram( id.intValue() );
+        program = programService.getProgram( id );
 
         programStages = program.getProgramStages();
 

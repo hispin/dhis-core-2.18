@@ -30,14 +30,14 @@
       <many-to-many column="sourceid" 
         class="org.hisp.dhis.source.Source"/>
     </set>
-	  
+      
     <set name="lineListLockedPeriods" table="linelistlockedPeriods">
       <key column="llgroupid"/>
       <many-to-many column="periodid" 
         class="org.hisp.dhis.period.Period"/>
     </set>
-	
-	<property name="sortOrder"/>
-	
+    
+    <property name="sortOrder"/>
+    
   </class>
 </hibernate-mapping>

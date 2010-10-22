@@ -30,6 +30,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
@@ -70,15 +71,15 @@ public class SVGDocument
     public StringBuffer getSVGForImage()
     {
         String indicatorName = this.indicator != null ? this.indicator.getName() : this.dataElement.getName();
-        
+
         String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"30\" y=\"15\" font-size=\"14\" font-weight=\"bold\"><tspan>"
-            + this.title + "</tspan></text></g>";
+            + StringEscapeUtils.escapeXml( this.title ) + "</tspan></text></g>";
 
         String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"30\" font-size=\"12\"><tspan>"
-            + indicatorName + "</tspan></text></g>";
+            + StringEscapeUtils.escapeXml( indicatorName ) + "</tspan></text></g>";
 
         String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"45\" font-size=\"12\"><tspan>"
-            + this.period + "</tspan></text></g>";
+            + StringEscapeUtils.escapeXml( this.period ) + "</tspan></text></g>";
 
         String svg_ = doctype + this.svg;
 
@@ -131,13 +132,10 @@ public class SVGDocument
         for ( int i = 0; i < jsonLegends.size(); i++ )
         {
             legend = jsonLegends.getJSONObject( i );
-
-            String label = legend.getString( "label" );
-
-            String color = legend.getString( "color" );
-
-            System.out.println( "1 l " + label + " c " + color );
-            System.out.println( legend );
+            
+            String label = StringEscapeUtils.escapeXml( legend.getString( "label" ) );
+            
+            String color = StringEscapeUtils.escapeXml( legend.getString( "color" ) );
             
             result += "<rect x='" + x + "' y='" + (y + 1) + "' height='1' width='1' fill='" + color
                 + "' stroke='#000000' stroke-width='0.001'/>";
@@ -168,13 +166,10 @@ public class SVGDocument
         for ( int i = 0; i < jsonLegends.size(); i++ )
         {
             legend = jsonLegends.getJSONObject( i );
-
-            String label = legend.getString( "label" );
-
-            String color = legend.getString( "color" );
-
-            System.out.println( "1 l " + label + " c " + color );
-            System.out.println( legend );
+            
+            String label = StringEscapeUtils.escapeXml( legend.getString( "label" ) );
+            
+            String color = StringEscapeUtils.escapeXml( legend.getString( "color" ) );
             
             result += "<rect x='" + x + "' y='" + (y + 15) + "' height='15' width='30' fill='" + color
                 + "' stroke='#000000' stroke-width='1'/>";

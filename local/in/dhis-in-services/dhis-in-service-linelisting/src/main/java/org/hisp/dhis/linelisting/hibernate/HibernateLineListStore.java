@@ -1,11 +1,13 @@
 package org.hisp.dhis.linelisting.hibernate;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.linelisting.LineListDataElementMap;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListOption;
@@ -282,5 +284,43 @@ public class HibernateLineListStore
 
         session.update( lineListOption );
     }
+    
+    // -------------------------------------------------------------------------
+    // LinelistElemnet - Dataelement Mapping
+    // -------------------------------------------------------------------------
+
+    public void addLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.save( lineListDataElementMap );
+    }
+    
+    public void updateLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.update( lineListDataElementMap );
+    }
+    
+    public void deleteLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( lineListDataElementMap );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public List<LineListDataElementMap> getLinelistDataelementMappings( LineListElement linelistElement, LineListOption linelistOption )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( LineListDataElementMap.class );
+        criteria.add( Restrictions.eq( "linelistElement", linelistElement ) );
+        criteria.add( Restrictions.eq( "linelistOption", linelistOption ) );
+
+        return criteria.list();
+    }
+    
     
 }

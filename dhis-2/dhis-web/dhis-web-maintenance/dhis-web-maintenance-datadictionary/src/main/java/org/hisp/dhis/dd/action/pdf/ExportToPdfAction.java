@@ -28,6 +28,8 @@ package org.hisp.dhis.dd.action.pdf;
  */
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -48,15 +50,15 @@ public class ExportToPdfAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( ExportToPdfAction.class );
-    
+
     private static final String EXPORT_FORMAT_PDF = "PDF";
-    
+
     private static final String TYPE_DATAELEMENT = "dataelement";
     private static final String TYPE_INDICATOR = "indicator";
-    
+
     private static final String FILENAME_DATAELEMENT = "DataElements.zip";
     private static final String FILENAME_INDICATOR = "Indicators.zip";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -81,7 +83,7 @@ public class ExportToPdfAction
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -92,7 +94,7 @@ public class ExportToPdfAction
     {
         return inputStream;
     }
-    
+
     private String fileName;
 
     public String getFileName()
@@ -110,14 +112,21 @@ public class ExportToPdfAction
     {
         this.dataDictionaryMode = dataDictionaryMode;
     }
-    
+
     private String type;
 
     public void setType( String type )
     {
         this.type = type;
     }
-    
+
+    private List<Integer> activeIds = new ArrayList<Integer>();
+
+    public void setActiveIds( List<Integer> activeIds )
+    {
+        this.activeIds = activeIds;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -128,34 +137,50 @@ public class ExportToPdfAction
         if ( type != null )
         {
             ExportParams params = new ExportParams();
-    
+
             if ( type.equals( TYPE_DATAELEMENT ) )
             {
-                params.setDataElements( null );
+                if ( (activeIds != null) && !activeIds.isEmpty() )
+                {
+                    params.setDataElements( activeIds );
+                }
+                else
+                {
+                    params.setDataElements( null );
+                }
                 
                 fileName = FILENAME_DATAELEMENT;
-                
+
                 log.info( "Exporting to PDF for object type: " + TYPE_DATAELEMENT );
-            }  
+            }
             else if ( type.equals( TYPE_INDICATOR ) )
             {
-                params.setIndicators( null );
-                
+                if ( (activeIds != null) && !activeIds.isEmpty() )
+                {
+                    params.setIndicators( activeIds );
+                }
+                else
+                {
+                    params.setIndicators( null );
+                }
+
                 fileName = FILENAME_INDICATOR;
-                
+
                 log.info( "Exporting to PDF for object type: " + TYPE_INDICATOR );
             }
-            
-            params.setExtendedMode( dataDictionaryMode != null && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
-            params.setIncludeDataValues( false );        
+
+            params.setExtendedMode( dataDictionaryMode != null
+                && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
+            params.setIncludeDataValues( false );
             params.setI18n( i18n );
             params.setFormat( format );
-            
+
             ExportService exportService = serviceProvider.provide( EXPORT_FORMAT_PDF );
-            
+
             inputStream = exportService.exportData( params );
         }
-            
+
         return SUCCESS;
     }
+
 }

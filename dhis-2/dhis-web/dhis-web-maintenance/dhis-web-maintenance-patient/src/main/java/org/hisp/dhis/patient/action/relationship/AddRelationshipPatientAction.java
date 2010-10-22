@@ -32,8 +32,8 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
-
-public class AddRelationshipPatientAction implements Action
+public class AddRelationshipPatientAction
+    implements Action
 {
     public static final String PREFIX_ATTRIBUTE = "attr";
 
@@ -60,9 +60,9 @@ public class AddRelationshipPatientAction implements Action
     private PatientAttributeValueService patientAttributeValueService;
 
     private PatientAttributeOptionService patientAttributeOptionService;
-    
+
     private RelationshipService relationshipService;
-    
+
     private RelationshipTypeService relationshipTypeService;
 
     // -------------------------------------------------------------------------
@@ -87,16 +87,15 @@ public class AddRelationshipPatientAction implements Action
     private String gender;
 
     private String bloodGroup;
-    
 
     // -------------------------------------------------------------------------
     // Input - others
     // -------------------------------------------------------------------------
 
     private boolean underAge;
-    
+
     private Integer relationshipId;
-    
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
@@ -131,6 +130,7 @@ public class AddRelationshipPatientAction implements Action
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
+        patient.setOrganisationUnit( organisationUnit );
 
         if ( birthDate != null )
         {
@@ -176,7 +176,6 @@ public class AddRelationshipPatientAction implements Action
 
         systemGenerateIdentifier = new PatientIdentifier();
         systemGenerateIdentifier.setIdentifier( identifier );
-        systemGenerateIdentifier.setOrganisationUnit( organisationUnit );
         systemGenerateIdentifier.setPatient( patient );
 
         patient.getIdentifiers().add( systemGenerateIdentifier );
@@ -188,11 +187,11 @@ public class AddRelationshipPatientAction implements Action
         // -----------------------------------------------------------------------------
         // Save Patient Identifiers
         // -----------------------------------------------------------------------------
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         String value = null;
-        
+
         Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
         PatientIdentifier pIdentifier = null;
@@ -208,31 +207,30 @@ public class AddRelationshipPatientAction implements Action
                     pIdentifier = new PatientIdentifier();
                     pIdentifier.setIdentifierType( identifierType );
                     pIdentifier.setPatient( patient );
-                    pIdentifier.setOrganisationUnit( organisationUnit );
                     pIdentifier.setIdentifier( value.trim() );
                     patient.getIdentifiers().add( pIdentifier );
                 }
             }
         }
-      
+
         patientService.savePatient( patient );
 
-        if( relationshipId != null && relationshipTypeId != null )
+        if ( relationshipId != null && relationshipTypeId != null )
         {
             Patient relationship = patientService.getPatient( relationshipId );
-            if( relationship != null )
+            if ( relationship != null )
             {
-                if( underAge )
+                if ( underAge )
                     patient.setRepresentative( relationship );
-                
+
                 Relationship rel = new Relationship();
                 rel.setPatientA( relationship );
-                rel.setPatientB(  patient );
-                
-                if( relationshipTypeId != null )
+                rel.setPatientB( patient );
+
+                if ( relationshipTypeId != null )
                 {
                     RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                    if( relType != null )
+                    if ( relType != null )
                     {
                         rel.setRelationshipType( relType );
                         relationshipService.saveRelationship( rel );
@@ -240,7 +238,7 @@ public class AddRelationshipPatientAction implements Action
                 }
             }
         }
-        
+
         // -----------------------------------------------------------------------------
         // Save Patient Attributes
         // -----------------------------------------------------------------------------
@@ -286,7 +284,6 @@ public class AddRelationshipPatientAction implements Action
                 }
             }
         }
-
 
         return SUCCESS;
     }

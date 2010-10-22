@@ -53,17 +53,17 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-		var mapLegendType = ACTIVEPANEL == organisationUnitAssignment ?
-            map_legend_type_automatic : ACTIVEPANEL == thematicMap ?
+		var mapLegendType = ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment ?
+            GLOBALS.config.map_legend_type_automatic : ACTIVEPANEL == GLOBALS.config.thematicMap ?
                 Ext.getCmp('maplegendtype_cb').getValue() : Ext.getCmp('maplegendtype_cb2').getValue();
 		
-		if (mapLegendType == map_legend_type_automatic) {
+		if (mapLegendType == GLOBALS.config.map_legend_type_automatic) {
 			this.colorInterpolation = choropleth.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
             for (var i = 0; i < choropleth.imageLegend.length && i < this.colorInterpolation.length; i++) {
                 choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
             }
 		}
-		else if (mapLegendType == map_legend_type_predefined) {
+		else if (mapLegendType == GLOBALS.config.map_legend_type_predefined) {
 			this.colorInterpolation = choropleth.colorInterpolation;
             for (var i = 0; i < choropleth.imageLegend.length && i < choropleth.colorInterpolation.length; i++) {
                 choropleth.imageLegend[i].color = choropleth.colorInterpolation[i].toHexString();
@@ -73,14 +73,14 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 	
     setClassification: function() {
         var values = [];
-        // var features = this.layer.features;
+        var features = this.layer.features;
         
-        for (var i = 0; i < FEATURE[thematicMap].length; i++) {
-            values.push(FEATURE[thematicMap][i].attributes[this.indicator]);
+        for (var i = 0; i < features.length; i++) {
+            values.push(features[i].attributes[this.indicator]);
         }
 
         var distOptions = {
-            'labelGenerator' : this.options.labelGenerator
+            'labelGenerator': this.options.labelGenerator
         };
         var dist = new mapfish.GeoStat.Distribution(values, distOptions);
         this.classification = dist.classify(
@@ -94,18 +94,21 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
     applyClassification: function(options) {
         this.updateOptions(options);
         var boundsArray = this.classification.getBoundsArray();
-        var rules = new Array(boundsArray.length-1);
+        var rules = [];
+
         for (var i = 0; i < boundsArray.length-1; i++) {
-            var rule = new OpenLayers.Rule({
-                symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
-                filter: new OpenLayers.Filter.Comparison({
-                    type: OpenLayers.Filter.Comparison.BETWEEN,
-                    property: this.indicator,
-                    lowerBoundary: boundsArray[i],
-                    upperBoundary: boundsArray[i + 1]
-                })
-            });
-            rules[i] = rule;
+            if (this.colorInterpolation.length > i) {
+                var rule = new OpenLayers.Rule({
+                    symbolizer: {fillColor: this.colorInterpolation[i].toHexString()},
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.BETWEEN,
+                        property: this.indicator,
+                        lowerBoundary: boundsArray[i],
+                        upperBoundary: boundsArray[i + 1]
+                    })
+                });
+                rules.push(rule);
+            }
         }
         this.extendStyle(rules);
         mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
@@ -119,21 +122,23 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         // TODO use css classes instead
         this.legendDiv.update("");
         for (var i = 0; i < this.classification.bins.length; i++) {
-            var element = document.createElement("div");
-            element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-            element.style.width = "30px";
-            element.style.height = "15px";
-            element.style.cssFloat = "left";
-            element.style.marginRight = "10px";
-            this.legendDiv.appendChild(element);
+            if (this.colorInterpolation.length > i) {
+                var element = document.createElement("div");
+                element.style.backgroundColor = this.colorInterpolation[i].toHexString();
+                element.style.width = "30px";
+                element.style.height = "15px";
+                element.style.cssFloat = "left";
+                element.style.marginRight = "10px";
+                this.legendDiv.appendChild(element);
 
-            element = document.createElement("div");
-            element.innerHTML = this.classification.bins[i].label;
-            this.legendDiv.appendChild(element);
+                element = document.createElement("div");
+                element.innerHTML = this.classification.bins[i].label;
+                this.legendDiv.appendChild(element);
 
-            element = document.createElement("div");
-            element.style.clear = "left";
-            this.legendDiv.appendChild(element);
+                element = document.createElement("div");
+                element.style.clear = "left";
+                this.legendDiv.appendChild(element);
+            }
         }
     },
 

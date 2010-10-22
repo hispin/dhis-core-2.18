@@ -504,7 +504,7 @@ public class ActivePlanReportsResultAction
         // selectedOrgUnit );
 
         Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-        patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( selectedOrgUnit ) );
+        patientListByOrgUnit.addAll( patientService.getPatients( selectedOrgUnit ) );
 
         // Getting Programs
         rowCount = 0;

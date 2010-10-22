@@ -14,7 +14,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="periodStore"
       ref="org.hisp.dhis.period.PeriodStore"/>
   </bean>
-
+	
+ <!-- 12/10/2010 start--> 
+  <bean id="org.hisp.dhis.linelisting.linelistdataelementmapping.LineListDataElementMappingStore"
+    class="org.hisp.dhis.linelisting.linelistdataelementmapping.hibernate.HibernateLineListDataElementMappingStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+ <!-- 12/10/2010 end-->     
+	
+	
+	
   <bean id="org.hisp.dhis.linelisting.LineListValidationRuleStore"
     class="org.hisp.dhis.linelisting.hibernate.HibernateLineListValidationRuleStore">
     <property name="sessionFactory" ref="sessionFactory"/>
@@ -25,8 +34,29 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="sessionFactory" ref="sessionFactory"/>
     <property name="jdbcTemplate" ref="jdbcTemplate"/>  
   </bean>
-  
+	
+ <!-- 15/10/2010 start--> 
+  <bean id="org.hisp.dhis.linelisting.EmployeeStore"
+    class="org.hisp.dhis.linelisting.hibernate.HiberateEmployeeStore">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+ <!-- 15/10/2010 end--> 	
+		
   <!-- Service definitions -->
+	
+ <!-- 12/10/2010 start--> 
+  <bean id="org.hisp.dhis.linelisting.linelistdataelementmapping.LineListDataElementMappingService"
+    class="org.hisp.dhis.linelisting.linelistdataelementmapping.DefaultLineListDataElementMappingService">
+    <property name="lineListDataElementMappingStore" ref="org.hisp.dhis.linelisting.linelistdataelementmapping.LineListDataElementMappingStore"/>
+  </bean>
+ <!-- 12/10/2010 end-->  
+
+ <!-- 15/10/2010 start--> 
+  <bean id="org.hisp.dhis.linelisting.EmployeeService"
+    class="org.hisp.dhis.linelisting.DefaultEmployeeService">
+    <property name="employeeStore" ref="org.hisp.dhis.linelisting.EmployeeStore"/>
+  </bean>
+ <!-- 15/10/2010 end-->  		   	
 
   <bean id="org.hisp.dhis.linelisting.LineListService"
     class="org.hisp.dhis.linelisting.DefaultLineListService">

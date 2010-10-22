@@ -813,6 +813,12 @@ span.valid {
 	margin-right:5px;
 	margin-bottom: 2px;
 }
+#cluetip-inner{
+	font-size:10pt;
+}
+#cluetip-inner label{
+	padding-bottom:5px;
+}
 	
 	
 

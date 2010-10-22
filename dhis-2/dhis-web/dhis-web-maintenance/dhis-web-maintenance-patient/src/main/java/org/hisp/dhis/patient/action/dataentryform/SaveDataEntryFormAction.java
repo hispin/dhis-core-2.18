@@ -41,6 +41,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bharath Kumar
+ * @modify Tran Thanh Tri 13 Oct 2010
  * @version $Id$
  */
 public class SaveDataEntryFormAction
@@ -77,11 +78,11 @@ public class SaveDataEntryFormAction
         this.associationIdField = associationIdField;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String designTextarea;
@@ -91,18 +92,16 @@ public class SaveDataEntryFormAction
         this.designTextarea = designTextarea;
     }
 
-    private Integer dataEntryFormId;
+    private Integer programStageId;
 
-    public void setDataEntryFormId( Integer dataEntryFormId )
+    public Integer getProgramStageId()
     {
-        this.dataEntryFormId = dataEntryFormId;
+        return programStageId;
     }
 
-    private String saveMethod;
-
-    public void setSaveMethod( String saveMethod )
+    public void setProgramStageId( Integer programStageId )
     {
-        this.saveMethod = saveMethod;
+        this.programStageId = programStageId;
     }
 
     // -------------------------------------------------------------------------
@@ -113,25 +112,18 @@ public class SaveDataEntryFormAction
         throws Exception
     {
         ProgramStage association = programStageService.getProgramStage( associationIdField );
+        
         DataEntryForm dataEntryForm = association.getDataEntryForm();
-        ;
+
         if ( dataEntryForm == null )
         {
-            if ( "choose".equalsIgnoreCase( saveMethod ) && dataEntryFormId != null && dataEntryFormId > 0 )
-            {
-                dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-            }
-            else
-            {
-                dataEntryForm = new DataEntryForm( nameField, prepareDataEntryFormCode( designTextarea ) );
-            }
-            
-            association.setDataEntryForm(dataEntryForm);
+            dataEntryForm = new DataEntryForm( name, prepareDataEntryFormCode( designTextarea ) );
+            association.setDataEntryForm( dataEntryForm );
             programStageService.updateProgramStage( association );
         }
         else
         {
-            dataEntryForm.setName( nameField );
+            dataEntryForm.setName( name );
             dataEntryForm.setHtmlCode( prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
         }

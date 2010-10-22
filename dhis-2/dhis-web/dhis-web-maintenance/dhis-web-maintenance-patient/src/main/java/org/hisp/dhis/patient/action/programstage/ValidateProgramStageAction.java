@@ -1,3 +1,5 @@
+package org.hisp.dhis.patient.action.programstage;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -25,8 +27,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.programstage;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -35,6 +35,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 
@@ -64,20 +65,13 @@ public class ValidateProgramStageAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
-
-    private String description;
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
+   
     private String message;
 
     public String getMessage()
@@ -100,51 +94,13 @@ public class ValidateProgramStageAction
         throws Exception
     {
 
-        if ( nameField == null )
+        ProgramStage match = programStageService.getProgramStageByName( name );
+
+        if ( match != null && (id == null || match.getId() != id) )
         {
-            message = i18n.getString( "please_specify_a_name" );
+            message = i18n.getString( "duplicate_names" );
 
-            return INPUT;
-        }
-
-        else
-        {
-            nameField = nameField.trim();
-
-            if ( nameField.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_name" );
-
-                return INPUT;
-            }
-
-            ProgramStage match = programStageService.getProgramStageByName( nameField );
-            
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "duplicate_names" );
-
-                return INPUT;
-            }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "please_specify_a_description" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_a_description" );
-
-                return INPUT;
-            }
+            return ERROR;
         }
 
         // ---------------------------------------------------------------------

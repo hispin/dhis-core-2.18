@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -46,29 +45,29 @@ import org.hisp.dhis.patient.PatientIdentifierType;
 public class HibernatePatientIdentifierStore
     extends HibernateGenericStore<PatientIdentifier>
     implements PatientIdentifierStore
-{
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getByIdentifier( String identifier )
+{   
+    public PatientIdentifier get( Patient patient )
     {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).list();
+        return (PatientIdentifier) getCriteria( Restrictions.eq( "patient", patient ),
+            Restrictions.eq( "preferred", true ) ).uniqueResult();
     }
-
+    
     public PatientIdentifier get( String identifier, OrganisationUnit organisationUnit )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifier", identifier ),
             Restrictions.eq( "organisationUnit", organisationUnit ) ).uniqueResult();
     }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getByOrganisationUnit( OrganisationUnit organisationUnit )
+    
+    public PatientIdentifier get( PatientIdentifierType type, String identifier )
     {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
+        return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType", type ),
+            Restrictions.eq( "identifier", identifier ) ).uniqueResult();
     }
-
-    public PatientIdentifier get( Patient patient )
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientIdentifier> getByIdentifier( String identifier )
     {
-        return (PatientIdentifier) getCriteria( Restrictions.eq( "patient", patient ),
-            Restrictions.eq( "preferred", true ) ).uniqueResult();
+        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -82,70 +81,36 @@ public class HibernatePatientIdentifierStore
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifier", identifier ),
             Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
-    {
-        return (Collection<PatientIdentifier>) getCriteria( Restrictions.eq( "patient", patient ) ).list();
-    }
-
+    
     public PatientIdentifier getPatientIdentifier( PatientIdentifierType identifierType, Patient patient )
     {
         return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType.id", identifierType.getId() ),
             Restrictions.eq( "patient", patient ) ).uniqueResult();
     }
-
-    public PatientIdentifier get( PatientIdentifierType type, String identifier )
-    {
-        return (PatientIdentifier) getCriteria( Restrictions.eq( "identifierType", type ),
-            Restrictions.eq( "identifier", identifier ) ).uniqueResult();
-    }
-
+    
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit, int min, int max )
+    public Collection<PatientIdentifier> getPatientIdentifiers( Patient patient )
     {
-
-        String hql = "select distinct p from Patient p join p.identifiers i where i.organisationUnit = :organisationUnit order by p.id";
-        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults( max ).list();
-
-        /*
-    	return (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
-            .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).setFirstResult( min ).setMaxResults( max ).list();*/
+        return (Collection<PatientIdentifier>) getCriteria( Restrictions.eq( "patient", patient ) ).list();
     }
     
-
     public Patient getPatient( PatientIdentifierType idenType, String value )
     {
         return (Patient) getCriteria( Restrictions.and( Restrictions.eq( "identifierType", idenType ),
             Restrictions.eq( "identifier", value ) ) )
             .setProjection( Projections.property( "patient" ) ).uniqueResult();
     }
-
-    public int countListPatientByOrganisationUnit( OrganisationUnit orgUnit )
-    {
-        Query query = getQuery("select count(distinct pdi.patient.id) from PatientIdentifier pdi where pdi.organisationUnit.id=:orgUnitId ");
-        query.setParameter("orgUnitId", orgUnit.getId());
-        Number rs = (Number) query.uniqueResult();
-        return rs != null ? rs.intValue() : 0;
-    }
-
+    
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> listPatientByOrganisationUnit( OrganisationUnit organisationUnit )
+    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
     {
-        return  (Collection<Patient>) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) )
-        .setProjection( Projections.distinct( Projections.property( "patient" ) ) ).list();
+        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
     public int countGetPatientsByIdentifier( String identifier )
     {
     	 Number rs =   (Number)getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.rowCount() ).uniqueResult();
          return rs != null ? rs.intValue() : 0;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max )
-    {
-        return getCriteria( Restrictions.ilike( "identifier", "%" + identifier + "%" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
 }

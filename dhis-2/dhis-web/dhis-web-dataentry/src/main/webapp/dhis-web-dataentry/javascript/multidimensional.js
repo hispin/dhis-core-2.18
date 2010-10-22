@@ -21,20 +21,16 @@ function changeOrder()
 // Comments
 // -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// Comments
-// -----------------------------------------------------------------------------
-
 function commentSelected( dataElementId, optionComboId )
-{  
-    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
-    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
-
+{
+    var commentSelector = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var commentField = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
     var value = commentSelector.options[commentSelector.selectedIndex].value;
     
     if ( value == 'custom' )
     {
         commentSelector.style.display = 'none';
+        commentField.style.css = 'text';
         commentField.style.display = 'inline';
         
         commentField.select();
@@ -44,14 +40,14 @@ function commentSelected( dataElementId, optionComboId )
     {
         commentField.value = value;
         
-        saveComment( dataElementId, value );
+        saveComment( dataElementId, optionComboId, value );
     }
 }
 
 function commentLeft( dataElementId, optionComboId )
 {
-    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
-    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var commentField = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
+    var commentSelector = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
 
     saveComment( dataElementId, optionComboId, commentField.value );
 
@@ -60,6 +56,7 @@ function commentLeft( dataElementId, optionComboId )
     if ( value == '' )
     {
         commentField.style.display = 'none';
+		commentSelector.style.css = 'combobox';
         commentSelector.style.display = 'inline';
 
         commentSelector.selectedIndex = 0;
@@ -72,8 +69,8 @@ function commentLeft( dataElementId, optionComboId )
 
 function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
 {
-    var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
-    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   
+    var field = byId( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
+    var type = byId( 'value[' + dataElementId + '].type' ).innerHTML;   
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = '#ffffcc';
@@ -89,9 +86,8 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
         		window.alert( i18n_saving_zero_values_unnecessary  );
         		field.select();
    	            field.focus(); 
-   	                   		
-				return;    
-				    		
+
+				return;
         	}
             
             if ( !isInt( field.value ))
@@ -108,8 +104,8 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
             
             else
             {
-                var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
-                var maxString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
+                var minString = byId( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
+                var maxString = byId( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
 
                 if ( minString.length != 0 && maxString.length != 0 )
                 {
@@ -167,8 +163,8 @@ function saveBoolean( dataElementId, optionComboId, selectedOption  )
 
 function saveComment( dataElementId, optionComboId, commentValue )
 {
-    var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-    var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var field = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+    var select = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = '#ffffcc';
@@ -246,12 +242,12 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
     
     function markValue( color )
     {
-        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerText;
+        var type = byId( 'value[' + dataElementId + '].type' ).innerText;
         var element;
         
         if ( type == 'bool' )
         {
-            element = document.getElementById( 'value[' + dataElementId + '].boolean' );
+            element = byId( 'value[' + dataElementId + '].boolean' );
         }
         else if( selectedOption )
         {
@@ -259,9 +255,8 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         }
         else
         {            
-            element = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');            
+            element = byId( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');            
         }
-        
 
         element.style.backgroundColor = color;
     }
@@ -311,8 +306,8 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_,  val
     
     function markComment( color )
     {
-        var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-        var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
+        var field = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+        var select = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
 
         field.style.backgroundColor = color;
         select.style.backgroundColor = color;
@@ -350,11 +345,11 @@ function calculateCDE( dataElementId )
     
     for ( dataElementId in factorMap )
     {
-    	dataElementValue = document.getElementById( 'value[' + dataElementId + '].value' ).value;
+    	dataElementValue = byId( 'value[' + dataElementId + '].value' ).value;
     	value += ( dataElementValue * factorMap[dataElementId] );
     }
     
-    document.getElementById( 'value[' + cdeId + '].value' ).value = value;
+    byId( 'value[' + cdeId + '].value' ).value = value;
 }
 
 /**
@@ -373,7 +368,6 @@ function getCalculatedDataElement( dataElementId )
   	    {
   	    	return cdeId;
   	    }
-
     }
 
     return null;
@@ -399,7 +393,7 @@ function dataValuesReceived( node )
 	{
 		dataElementId = value.getAttribute('dataElementId');
 		value = value.firstChild.nodeValue;		
-		document.getElementById( 'value[' + dataElementId + '].value' ).value = value;
+		byId( 'value[' + dataElementId + '].value' ).value = value;
 	}
 	
 	unLockScreen();
@@ -438,7 +432,6 @@ function SetGeneratedMinMaxValues()
             setInnerHTML('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
             setInnerHTML('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
         }
-        
     }
     
     function handleHttpError( errorCode )
@@ -446,7 +439,6 @@ function SetGeneratedMinMaxValues()
         window.alert( i18n_saving_minmax_failed_error_code + '\n\n' + errorCode );
     }   
    
-    
     function getElementValue( parentElement, childElementName )
     {
         var textNode = parentElement.getElementsByTagName( childElementName )[0].firstChild;

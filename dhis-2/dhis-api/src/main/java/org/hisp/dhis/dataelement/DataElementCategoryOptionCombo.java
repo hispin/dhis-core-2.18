@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
@@ -43,21 +45,23 @@ import org.hisp.dhis.dimension.DimensionOptionElement;
  * @version $Id$
  */
 public class DataElementCategoryOptionCombo
-    extends IdentifiableObject implements DimensionOptionElement
+    extends IdentifiableObject
+    implements DimensionOptionElement
 {
     public static final String DEFAULT_NAME = "default";
+
     public static final String DEFAULT_TOSTRING = "(default)";
-    
+
     /**
      * The category combo.
      */
     private DataElementCategoryCombo categoryCombo;
-    
+
     /**
      * The category options.
      */
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -74,7 +78,7 @@ public class DataElementCategoryOptionCombo
     {
         return categoryOptions;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -83,13 +87,13 @@ public class DataElementCategoryOptionCombo
     public int hashCode()
     {
         final int prime = 31;
-        
+
         int result = 1;
-        
-        result = prime * result + ( ( categoryCombo == null ) ? 0 : categoryCombo.hashCode() );
-        
-        result = prime * result + ( ( categoryOptions == null ) ? 0 : categoryOptions.hashCode() );
-        
+
+        result = prime * result + ((categoryCombo == null) ? 0 : categoryCombo.hashCode());
+
+        result = prime * result + ((categoryOptions == null) ? 0 : categoryOptions.hashCode());
+
         return result;
     }
 
@@ -100,19 +104,19 @@ public class DataElementCategoryOptionCombo
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final DataElementCategoryOptionCombo other = (DataElementCategoryOptionCombo) object;
-        
+
         if ( categoryCombo == null )
         {
             if ( other.categoryCombo != null )
@@ -124,7 +128,7 @@ public class DataElementCategoryOptionCombo
         {
             return false;
         }
-        
+
         if ( categoryOptions == null )
         {
             if ( other.categoryOptions != null )
@@ -136,27 +140,27 @@ public class DataElementCategoryOptionCombo
         {
             return false;
         }
-        
+
         return true;
     }
-    
+
     @Override
     public String toString()
     {
         StringBuffer buffer = new StringBuffer( "[" + categoryCombo + ", [" );
-        
+
         Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             buffer.append( iterator.next().toString() );
-            
+
             if ( iterator.hasNext() )
             {
                 buffer.append( ", " );
             }
         }
-        
+
         return buffer.append( "]]" ).toString();
     }
 
@@ -165,10 +169,10 @@ public class DataElementCategoryOptionCombo
     // -------------------------------------------------------------------------
 
     /**
-     * Tests whether two objects compare on a name basis. The default equals method
-     * becomes unusable in conjunction with persistence frameworks that put proxys
-     * on associated objects and collections, since it tests the class type which
-     * will differ between the proxy and the raw type.
+     * Tests whether two objects compare on a name basis. The default equals
+     * method becomes unusable in conjunction with persistence frameworks that
+     * put proxys on associated objects and collections, since it tests the
+     * class type which will differ between the proxy and the raw type.
      * 
      * @param object the object to test for equality.
      * @return true if objects are equal, false otherwise.
@@ -179,40 +183,41 @@ public class DataElementCategoryOptionCombo
         {
             return true;
         }
-        
+
         if ( object == null || object.getCategoryCombo() == null || object.getCategoryOptions() == null )
         {
             return false;
         }
-        
+
         if ( !categoryCombo.getName().equals( object.getCategoryCombo().getName() ) )
         {
             return false;
         }
-        
+
         if ( categoryOptions.size() != object.getCategoryOptions().size() )
         {
             return false;
         }
-        
+
         final Set<String> names1 = new HashSet<String>();
         final Set<String> names2 = new HashSet<String>();
-        
+
         for ( DataElementCategoryOption option : categoryOptions )
         {
             names1.add( option.getName() );
         }
-        
+
         for ( DataElementCategoryOption option : object.getCategoryOptions() )
         {
             names2.add( option.getName() );
         }
-        
-        return  names1.equals( names2 );
+
+        return names1.equals( names2 );
     }
-    
+
     /**
-     * Tests if this object equals to an object in the given Collection on a name basis.
+     * Tests if this object equals to an object in the given Collection on a
+     * name basis.
      * 
      * @param categoryOptionCombos the Collection.
      * @return true if the Collection contains this object, false otherwise.
@@ -226,7 +231,7 @@ public class DataElementCategoryOptionCombo
                 return combo;
             }
         }
-        
+
         return null;
     }
 
@@ -234,7 +239,7 @@ public class DataElementCategoryOptionCombo
     {
         return categoryCombo != null && categoryCombo.getName().equals( DEFAULT_NAME );
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -242,76 +247,88 @@ public class DataElementCategoryOptionCombo
     public String getName()
     {
         StringBuffer name = new StringBuffer();
-        
+
         if ( categoryOptions != null && categoryOptions.size() > 0 )
         {
             Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
-            
+
             name.append( "(" ).append( iterator.next().getName() );
-                                    
+
             while ( iterator.hasNext() )
             {
                 name.append( ", " ).append( iterator.next().getName() );
             }
-            
+
             name.append( ")" );
         }
-        
+
         return name.toString();
     }
-    
+
     public void setName( String name )
     {
         throw new UnsupportedOperationException( "Cannot set name on DataElementCategoryOptionCombo: " + name );
     }
-    
+
     public String getShortName()
     {
         return getName();
     }
-    
+
     public void setShortName( String shortName )
     {
         throw new UnsupportedOperationException( "Cannot set shortName on DataElementCategoryOptionCombo: " + shortName );
     }
-    
+
     public String getCode()
     {
         return getName();
     }
-    
+
     public void setCode( String code )
     {
         throw new UnsupportedOperationException( "Cannot set code on DataElementCategoryOptionCombo: " + code );
     }
-    
+
     public String getAlternativeName()
     {
         return getName();
     }
-    
+
     public void setAlternativeName( String alternativeName )
     {
-        throw new UnsupportedOperationException( "Cannot set alternativename on DataElementCategoryOptionCombo: " + alternativeName );
+        throw new UnsupportedOperationException( "Cannot set alternativename on DataElementCategoryOptionCombo: "
+            + alternativeName );
     }
-    
+
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
     }
-    
-    public void setCategoryCombo ( DataElementCategoryCombo categoryCombo )
+
+    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         this.categoryCombo = categoryCombo;
     }
-    
+
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
     }
-    
+
     public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
     {
         this.categoryOptions = categoryOptions;
+    }
+
+    public String toJSON()
+    {
+        StringBuffer result = new StringBuffer();
+        result.append( "{" );
+        result.append( "\"id\":" + this.getId() + "\"" );
+        result.append( ",\"name\":" + StringEscapeUtils.escapeJavaScript( this.getName() ) + "\"" );
+        result.append( ",\"isDefault\":" + this.isDefault() + "\"" );
+        result.append( "}" );
+        return result.toString();
     }
 }

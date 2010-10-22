@@ -34,42 +34,43 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Viet Nguyen
- *
+ * 
  * @version $Id$
  */
-public class ShowDataEntryFormAction implements Action
+public class ShowDataEntryFormAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
     }
-    
+
     private DataEntryManager dataEntryManager;
-    
+
     public void setDataEntryManager( DataEntryManager dataEntryManager )
     {
         this.dataEntryManager = dataEntryManager;
     }
+
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
-    
+
     private Integer dataEntryFormId;
-    
+
     public void setDataEntryFormId( Integer dataEntryFormId )
     {
         this.dataEntryFormId = dataEntryFormId;
     }
-    
+
     private String dataEntryFormCode;
-    
+
     public String getDataEntryFormCode()
     {
         return dataEntryFormCode;
@@ -83,16 +84,16 @@ public class ShowDataEntryFormAction implements Action
         throws Exception
     {
 
-        if( dataEntryFormId != null )
+        if ( dataEntryFormId != null )
         {
             DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-            
-            if( dataEntryForm != null )
+
+            if ( dataEntryForm != null )
             {
-                dataEntryFormCode =  dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() ) ;
+                dataEntryFormCode = dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
             }
         }
-        
+
         return SUCCESS;
     }
 }

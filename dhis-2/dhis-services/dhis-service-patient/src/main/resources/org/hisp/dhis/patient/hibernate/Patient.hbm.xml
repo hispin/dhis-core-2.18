@@ -51,6 +51,9 @@
 		
 		<many-to-one name="representative" class="org.hisp.dhis.patient.Patient"
 			column="representativeid" foreign-key="fk_representativeid" />
+		
+		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+			column="organisationunitid"/>
 
 	</class>
 </hibernate-mapping>

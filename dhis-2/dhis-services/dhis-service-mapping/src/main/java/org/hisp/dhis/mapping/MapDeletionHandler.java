@@ -28,7 +28,6 @@ package org.hisp.dhis.mapping;
  */
 
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -57,18 +56,6 @@ public class MapDeletionHandler
     protected String getClassName()
     {
         return Map.class.getSimpleName();
-    }
-    
-    @Override
-    public void deleteSource( Source source )
-    {
-        for ( Map map : mappingService.getAllMaps() )
-        {
-            if ( map.getOrganisationUnit().equals( source ) )
-            {
-                mappingService.deleteMap( map );
-            }
-        }
     }
     
     @Override

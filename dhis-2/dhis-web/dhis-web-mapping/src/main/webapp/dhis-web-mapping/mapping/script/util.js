@@ -1,5 +1,3 @@
-var GLOBALS = {};
-
 GLOBALS.util = {
     
     /* Detect mapview parameter in URL */
@@ -170,15 +168,15 @@ GLOBALS.util = {
             json += '{';
             json += '"organisation": "' + mapValues[i].orgUnitId + '",';
             json += '"value": "' + mapValues[i].value + '" ';
-            json += i < mapValues.length - 1 ? '},' : '}'
+            json += i < mapValues.length - 1 ? '},' : '}';
         }
         json += ']';
         json += '}';
-        return json
+        return json;
     },
 
     getLegendsJSON: function() {
-        var widget = ACTIVEPANEL == thematicMap ? choropleth : proportionalSymbol;
+        var widget = ACTIVEPANEL == GLOBALS.config.thematicMap ? choropleth : proportionalSymbol;
         var json = '{';
         json += '"legends":';
         json += '[';

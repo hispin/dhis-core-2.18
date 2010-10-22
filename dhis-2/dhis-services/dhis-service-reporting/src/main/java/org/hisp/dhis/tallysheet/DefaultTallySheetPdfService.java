@@ -27,6 +27,8 @@ package org.hisp.dhis.tallysheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -34,10 +36,6 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.system.util.PDFUtils;
-import org.hisp.dhis.tallysheet.TallySheet;
-import org.hisp.dhis.tallysheet.TallySheetPdfService;
-import org.hisp.dhis.tallysheet.TallySheetTuple;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -58,6 +56,12 @@ import com.lowagie.text.pdf.PdfWriter;
 public class DefaultTallySheetPdfService
     implements TallySheetPdfService
 {
+    private static BaseFont bf;
+
+    private static Font headerFont;
+
+    private static Font tableFont;
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -84,6 +88,7 @@ public class DefaultTallySheetPdfService
             writeMetadata( document, tallySheet.getTallySheetName(), i18n );
 
             document.open();
+            initFont();
             writeHeader( document, tallySheet.getTallySheetName(), facilityName, i18n );
             writeLines( document, tallySheet.getTallySheetTuples(), a3Format, tallySheet.getRowWidth() );
             document.close();
@@ -115,18 +120,15 @@ public class DefaultTallySheetPdfService
     private void writeHeader( Document document, String header, String facilityName, I18n i18n )
         throws DocumentException
     {
-        BaseFont bf = PDFUtils.getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font font = new Font( bf, 12, Font.HELVETICA );
-
-        document.add( new Paragraph( header, font ) );
+        document.add( new Paragraph( header, headerFont ) );
 
         if ( i18n != null )
         {
-            document.add( new Paragraph( i18n.getString( "facility" ) + ": " + facilityName, font ) );
-            document.add( new Paragraph( i18n.getString( "month" ) + ": ", font ) );
-            document.add( new Paragraph( i18n.getString( "year" ) + ": ", font ) );
+            document.add( new Paragraph( i18n.getString( "facility" ) + ": " + facilityName, headerFont ) );
+            document.add( new Paragraph( i18n.getString( "month" ) + ": ", headerFont ) );
+            document.add( new Paragraph( i18n.getString( "year" ) + ": ", headerFont ) );
 
-            Paragraph totalParagraph = new Paragraph( i18n.getString( "total" ) + ": ", font );
+            Paragraph totalParagraph = new Paragraph( i18n.getString( "total" ) + ": ", headerFont );
             totalParagraph.setAlignment( "right" );
             totalParagraph.setIndentationRight( 10 );
             totalParagraph.setSpacingAfter( 2 );
@@ -137,12 +139,9 @@ public class DefaultTallySheetPdfService
     private void writeLines( Document document, List<TallySheetTuple> tallySheetTuples, boolean a3Format, int rowWidth )
         throws DocumentException
     {
-        BaseFont bf = PDFUtils.getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font tableFont = new Font( bf, 8, Font.HELVETICA );
-        
         double a4Multiplier = (PageSize.A3.getWidth() / PageSize.A4.getWidth()) * 1.1;
         float[] widths = { 0.2f, 0.55f, 0.05f };
-        
+
         if ( !a3Format )
         {
             widths[0] = (float) (widths[0] * a4Multiplier);
@@ -154,7 +153,7 @@ public class DefaultTallySheetPdfService
         table.setWidthPercentage( 100 );
 
         DataElement dataElement;
-        
+
         for ( TallySheetTuple tallySheetTuple : tallySheetTuples )
         {
             dataElement = tallySheetTuple.getDataElement();
@@ -226,5 +225,13 @@ public class DefaultTallySheetPdfService
         boxCell.setBorderWidth( 0 );
         boxCell.setBorderWidthTop( (float) 0.5 );
         return boxCell;
+    }
+
+    private void initFont()
+    {
+        bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        headerFont = new Font( bf, 12, Font.NORMAL );
+        tableFont = new Font( bf, 8, Font.NORMAL );
     }
 }

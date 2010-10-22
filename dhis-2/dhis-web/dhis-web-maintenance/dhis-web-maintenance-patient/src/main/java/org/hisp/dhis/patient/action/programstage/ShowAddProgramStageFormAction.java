@@ -1,3 +1,5 @@
+package org.hisp.dhis.patient.action.programstage;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -25,14 +27,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.programstage;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -40,6 +39,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 public class ShowAddProgramStageFormAction
@@ -99,20 +99,6 @@ public class ShowAddProgramStageFormAction
         return dataElements;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -120,16 +106,10 @@ public class ShowAddProgramStageFormAction
     public String execute()
     {
 
-        if ( id == null )
-        {
-            message = i18n.getString( "please_select_program" );
-
-            return INPUT;
-        }
-
         program = programService.getProgram( id.intValue() );
 
-        dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+        dataElements = new ArrayList<DataElement>( dataElementService
+            .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
 
         return SUCCESS;
     }

@@ -1,3 +1,5 @@
+package org.hisp.dhis.patient.action.programstage;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -25,16 +27,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.programstage;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.Collection;
-
-import net.sf.json.JSONArray;
-
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -46,6 +43,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 public class AddProgramStageAction
@@ -77,13 +75,12 @@ public class AddProgramStageAction
     }
 
     private ProgramStageDataElementService programStageDataElementService;
-    
-    public void setProgramStageDataElementService(
-        ProgramStageDataElementService programStageDataElementService )
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -100,11 +97,11 @@ public class AddProgramStageAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -114,18 +111,25 @@ public class AddProgramStageAction
         this.description = description;
     }
 
-    private Integer minDaysFromStart;
+    private int minDaysFromStart;
 
-    public void setMinDaysFromStart( Integer minDaysFromStart )
+    public void setMinDaysFromStart( int minDaysFromStart )
     {
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private String selectedList ;
+    private List<Integer> selectedList = new ArrayList<Integer>();
 
-    public void setSelectedList( String selectedList )
+    public void setSelectedList( List<Integer> selectedList )
     {
         this.selectedList = selectedList;
+    }
+
+    private List<Boolean> compulsories = new ArrayList<Boolean>();
+
+    public void setCompulsories( List<Boolean> compulsories )
+    {
+        this.compulsories = compulsories;
     }
 
     // -------------------------------------------------------------------------
@@ -138,40 +142,24 @@ public class AddProgramStageAction
 
         ProgramStage programStage = new ProgramStage();
 
-        Program program = programService.getProgram( id );        
+        Program program = programService.getProgram( id );
 
         programStage.setProgram( program );
-        programStage.setName( nameField );
+        programStage.setName( name );
         programStage.setDescription( description );
-        if( minDaysFromStart != null )
-            programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
-        
-//        programStage.setDataEntryForm(new DataEntryForm());
-        
+        programStage.setMinDaysFromStart( minDaysFromStart );
+
         programStageService.saveProgramStage( programStage );
-        if ( minDaysFromStart == null )
+
+        for ( int i = 0; i < this.selectedList.size(); i++ )
         {
-            minDaysFromStart = 0; 
-        }
-       
-        
-        if( StringUtils.isNotBlank( selectedList ) )
-        {
-            DataElement dataElement = null;
-            ProgramStageDataElement programStageDataElement = null;
-            Collection<JSONMappingObject> listObjectMapping = JSONArray.toCollection( JSONArray.fromObject( selectedList ), JSONMappingObject.class );
-            for( JSONMappingObject obj : listObjectMapping )
-            {
-                dataElement = dataElementService.getDataElement( obj.getId() );
-                if( dataElement != null )
-                {
-                    programStageDataElement = new ProgramStageDataElement( programStage, dataElement, obj.isCheck() );
-                    programStageDataElementService.addProgramStageDataElement( programStageDataElement );
-                }
-            }
+            DataElement dataElement = dataElementService.getDataElement( selectedList.get( i ) );
+            ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
+                this.compulsories.get( i ) );
+            programStageDataElementService.addProgramStageDataElement( programStageDataElement );
         }
 
         return SUCCESS;
     }
-    
+
 }

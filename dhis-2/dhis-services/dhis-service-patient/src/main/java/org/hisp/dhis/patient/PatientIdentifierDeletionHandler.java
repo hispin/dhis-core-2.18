@@ -27,8 +27,6 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -57,16 +55,6 @@ public class PatientIdentifierDeletionHandler
     public String getClassName()
     {
         return PatientIdentifier.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteSource( Source source )
-    {
-        for ( PatientIdentifier patientIdentifier : patientIdentifierService
-            .getPatientIdentifiersByOrgUnit( (OrganisationUnit) source ) )
-        {
-            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
-        }
     }
     
     @Override

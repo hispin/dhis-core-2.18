@@ -12,9 +12,8 @@ function showSectionDetails( sectionId )
 
 function sectionReceived( sectionElement )
 {
-  setInnerHTML( 'idField', getElementValue( sectionElement, 'id' ) );
   setInnerHTML( 'nameField', getElementValue( sectionElement, 'name' ) );
-  setInnerHTML( 'titleField', getElementValue( sectionElement, 'title' ) );
+  //setInnerHTML( 'titleField', getElementValue( sectionElement, 'title' ) );
   setInnerHTML( 'dataSetField', getElementValue( sectionElement, 'dataSet' ) );
   setInnerHTML( 'categoryComboField', getElementValue( sectionElement, 'categoryCombo' ) );
   setInnerHTML( 'dataElementCountField', getElementValue( sectionElement, 'dataElementCount' ) );  

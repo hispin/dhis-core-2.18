@@ -27,13 +27,11 @@
 
 package org.hisp.dhis.patient.action.programstage;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import net.sf.json.JSONArray;
-
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.ProgramStage;
@@ -45,6 +43,7 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew Gizaw
+ * @modified Tran Thanh Tri
  * @version $Id$
  */
 public class UpdateProgramStageAction
@@ -69,13 +68,12 @@ public class UpdateProgramStageAction
     }
 
     private ProgramStageDataElementService programStageDataElementService;
-    
-    public void setProgramStageDataElementService(
-        ProgramStageDataElementService programStageDataElementService )
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
     }
-       
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -87,11 +85,11 @@ public class UpdateProgramStageAction
         this.id = id;
     }
 
-    private String nameField;
+    private String name;
 
-    public void setNameField( String nameField )
+    public void setName( String name )
     {
-        this.nameField = nameField;
+        this.name = name;
     }
 
     private String description;
@@ -101,18 +99,25 @@ public class UpdateProgramStageAction
         this.description = description;
     }
 
-    private Integer minDaysFromStart;
+    private int minDaysFromStart;
 
-    public void setMinDaysFromStart( Integer minDaysFromStart )
+    public void setMinDaysFromStart( int minDaysFromStart )
     {
         this.minDaysFromStart = minDaysFromStart;
     }
 
-    private String selectedList ;
+    private List<Integer> selectedList = new ArrayList<Integer>();
 
-    public void setSelectedList( String selectedList )
+    public void setSelectedList( List<Integer> selectedList )
     {
         this.selectedList = selectedList;
+    }
+
+    private List<Boolean> compulsories = new ArrayList<Boolean>();
+
+    public void setCompulsories( List<Boolean> compulsories )
+    {
+        this.compulsories = compulsories;
     }
 
     // -------------------------------------------------------------------------
@@ -124,52 +129,46 @@ public class UpdateProgramStageAction
     {
         ProgramStage programStage = programStageService.getProgramStage( id );
 
-        programStage.setName( nameField );
+        programStage.setName( name );
+
         programStage.setDescription( description );
 
-        if ( minDaysFromStart == null )
-        {
-            minDaysFromStart = 0;
-        }
-        
-        programStage.setMinDaysFromStart( minDaysFromStart.intValue() );
-        
+        programStage.setMinDaysFromStart( minDaysFromStart );
+
         programStageService.updateProgramStage( programStage );
-        
-        Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>(programStage.getProgramStageDataElements()); 
-        
-        if( StringUtils.isNotBlank( selectedList ) )
+
+        Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>( programStage
+            .getProgramStageDataElements() );
+
+        for ( int i = 0; i < this.selectedList.size(); i++ )
         {
-            DataElement dataElement = null;
-            ProgramStageDataElement programStageDataElement = null;
-            Collection<JSONMappingObject> listObjectMapping = JSONArray.toCollection( JSONArray.fromObject( selectedList ), JSONMappingObject.class );
-            for( JSONMappingObject obj : listObjectMapping )
+            DataElement dataElement = dataElementService.getDataElement( selectedList.get( i ) );
+
+            ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
+                dataElement );
+
+            if ( programStageDataElement == null )
             {
-                
-                dataElement = dataElementService.getDataElement( obj.getId() );
-                if( dataElement != null )
-                {
-                    programStageDataElement = programStageDataElementService.get( programStage, dataElement );
-                    if( programStageDataElement == null )
-                    {
-                        programStageDataElement = new ProgramStageDataElement( programStage, dataElement, obj.isCheck() );
-                        programStageDataElementService.addProgramStageDataElement( programStageDataElement );
-                    }else
-                    {
-                        programStageDataElement.setCompulsory( obj.isCheck() );
-                        programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
-                        programStageDataElements.remove( programStageDataElement );
-                    }
-                    
-                }
+                programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
+                    .get( i ) );
+                programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
-            for( ProgramStageDataElement psdeDelete : programStageDataElements )
+            else
             {
-                programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
+                programStageDataElement.setCompulsory( this.compulsories.get( i ) );
+
+                programStageDataElementService.updateProgramStageDataElement( programStageDataElement );
+
+                programStageDataElements.remove( programStageDataElement );
             }
+
         }
-        
+
+        for ( ProgramStageDataElement psdeDelete : programStageDataElements )
+        {
+            programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
+        }
+
         return SUCCESS;
     }
-    
 }

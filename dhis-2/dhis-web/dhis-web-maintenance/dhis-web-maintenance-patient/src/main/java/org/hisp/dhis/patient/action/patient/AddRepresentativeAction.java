@@ -114,6 +114,7 @@ public class AddRepresentativeAction implements Action
         patient.setLastName( lastName.trim() );
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
+        patient.setOrganisationUnit(organisationUnit);
 
         if ( birthDate != null )
         {
@@ -161,7 +162,6 @@ public class AddRepresentativeAction implements Action
 
         systemGenerateIdentifier = new PatientIdentifier();
         systemGenerateIdentifier.setIdentifier( identifier );
-        systemGenerateIdentifier.setOrganisationUnit( organisationUnit );
         systemGenerateIdentifier.setPatient( patient );
 
         patientIdentifierService.savePatientIdentifier( systemGenerateIdentifier );
@@ -191,7 +191,6 @@ public class AddRepresentativeAction implements Action
                     pIdentifier = new PatientIdentifier();
                     pIdentifier.setIdentifierType( identifierType );
                     pIdentifier.setPatient( patient );
-                    pIdentifier.setOrganisationUnit( organisationUnit );
                     pIdentifier.setIdentifier( value.trim() );
                     patientIdentifierService.savePatientIdentifier( pIdentifier );
                     patient.getIdentifiers().add( pIdentifier );

@@ -27,47 +27,23 @@ package org.hisp.dhis.dataadmin.action.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PDFUtils.addTableToDocument;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader5Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader6Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader7Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText5Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText6Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText7Cell;
-import static org.hisp.dhis.system.util.PDFUtils.openDocument;
-
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.databrowser.DataBrowserPdfService;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.util.SessionUtils;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author briane, eivinhb
- * @version $Id$
+ * @version $Id ExportPDFAction.java Oct 21, 2010 ddhieu$
  */
 public class ExportPDFAction
     implements Action
@@ -81,6 +57,17 @@ public class ExportPDFAction
     private static final String KEY_DATABROWSERPERIODTYPE = "dataBrowserPeriodType";
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private DataBrowserPdfService dataBrowserPdfService;
+
+    public void setDataBrowserPdfService( DataBrowserPdfService dataBrowserPdfService )
+    {
+        this.dataBrowserPdfService = dataBrowserPdfService;
+    }
 
     // -------------------------------------------------------------------------
     // I18n
@@ -166,14 +153,6 @@ public class ExportPDFAction
     public String execute()
         throws Exception
     {
-        // Manage save to file
-        HttpServletResponse response = ServletActionContext.getResponse();
-        response.reset();
-        response.setContentType( "text/plain" );
-        response.setHeader( "Content-Disposition", "attachment;filename=" + fileName + ".pdf" );
-        response.setHeader( "Pragma", "anytextexeptno-cache,true" );
-        response.setHeader( "Cache-Control", "max-arg=0" );
-
         // Get session variables set by SearchAction
         String dataBrowserTitleName = (String) SessionUtils.getSessionVar( KEY_DATABROWSERTITLENAME );
         String dataBrowserFromDate = (String) SessionUtils.getSessionVar( KEY_DATABROWSERFROMDATE );
@@ -181,202 +160,17 @@ public class ExportPDFAction
         String dataBrowserPeriodType = (String) SessionUtils.getSessionVar( KEY_DATABROWSERPERIODTYPE );
         DataBrowserTable dataBrowserTable = (DataBrowserTable) SessionUtils.getSessionVar( KEY_DATABROWSERTABLE );
 
-        // Set row colors matching the displayed Web search result
-        Color headColor = new Color( 0xC0D9D9 ); // Blueish
-        Color parColor = new Color( 0xDDDDDD ); // Greyish
-        Color oddColor = new Color( 0xFCFCFC ); // Whiteish
-
         // Export to PDF
-        try
-        {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            // Set initial inputStream for Velocity
-            inputStream = new ByteArrayInputStream( baos.toByteArray() );
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            // There is a problem with IText regarding setting of landscape. The
-            // problem is that the first page is always Portrait
-            // as newPage() does not create a new page when the page is empty.
-            // This can be fixed by creating a document as follows:
-            // Document document = new Document(PageSize.A4.rotate());
-            // The openDocument in PDFUtils has been extended to support passing
-            // of the PageSize parameter;
+        dataBrowserPdfService.writeDataBrowserResult( dataBrowserTitleName, dataBrowserFromDate, dataBrowserToDate,
+            dataBrowserPeriodType, pageLayout, fileName, fontSize, dataBrowserTable, baos, i18n );
 
-            Document document;
-            BaseFont bf = PDFUtils.getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-            Font titleFont = new Font( bf, 16, Font.HELVETICA );
-            Font periodFont = new Font( bf, 8, Font.HELVETICA );
-            Font header5Font = new Font( bf, 8, Font.BOLD );
-            Font header6Font = new Font( bf, 6, Font.BOLD );
-            Font header7Font = new Font( bf, 4, Font.BOLD );
-            Font text5Font = new Font( bf, 8, Font.NORMAL );
-            Font text6Font = new Font( bf, 6, Font.NORMAL );
-            Font text7Font = new Font( bf, 4, Font.NORMAL );
-
-            // Set document page size (layout)
-            if ( pageLayout.equals( "Landscape" ) )
-            {
-                document = openDocument( baos, PageSize.A4.rotate() );
-            }
-            else if ( pageLayout.equals( "Portrait" ) )
-            {
-                document = openDocument( baos, PageSize.A4 );
-            }
-            else
-            // Default is landscape
-            {
-                document = openDocument( baos, PageSize.A4.rotate() );
-            }
-
-            // Heading information
-            Paragraph titleParagraph = new Paragraph( i18n.getString( "export_results_for" ) + " "
-                + dataBrowserTitleName, titleFont );
-
-            String fromDate = dataBrowserFromDate;
-            if ( dataBrowserFromDate.length() == 0 )
-            {
-                fromDate = i18n.getString( "earliest" );
-            }
-
-            String toDate = dataBrowserToDate;
-            if ( dataBrowserToDate.length() == 0 )
-            {
-                toDate = i18n.getString( "latest" );
-            }
-
-            Paragraph periodParagraph = new Paragraph( i18n.getString( "from_date" ) + ": " + fromDate + " "
-                + i18n.getString( "to_date" ) + ": " + toDate + ", " + i18n.getString( "period_type" ) + ": "
-                + dataBrowserPeriodType, periodFont );
-
-            // DataBrowser table
-            PdfPTable table = new PdfPTable( dataBrowserTable.getColumns().size() );
-            table.setWidthPercentage( 100f );
-            table.setKeepTogether( false );
-
-            // Header row
-            for ( MetaValue col : dataBrowserTable.getColumns() )
-            {
-                // Convert to new date format
-                String colName = i18n.getString( DateUtils.convertDate( col.getName() ) );
-
-                PdfPCell cell;
-
-                // Set font size for header cell
-                if ( fontSize == 4 )
-                {
-                    cell = new PdfPCell( getHeader7Cell( colName, 1, header7Font ) );
-                }
-                else if ( fontSize == 6 )
-                {
-                    cell = new PdfPCell( getHeader6Cell( colName, 1, header6Font ) );
-                }
-                else
-                // Default is 8
-                {
-                    cell = new PdfPCell( getHeader5Cell( colName, 1, header5Font ) );
-                }
-                cell.setMinimumHeight( fontSize );
-
-                cell.setBorder( Rectangle.BOX );
-                cell.setBackgroundColor( headColor );
-                table.addCell( cell );
-            }
-
-            // Data rows
-            int i = 0;
-            Iterator<MetaValue> rowIt = dataBrowserTable.getRows().iterator();
-
-            for ( List<Integer> col : dataBrowserTable.getCounts() )
-            {
-                i = i + 1;
-                MetaValue rowMeta = rowIt.next();
-
-                Color color;
-                if ( i % 2 == 1 )
-                {
-                    color = oddColor;
-                }
-                else
-                {
-                    color = parColor;
-                }
-
-                PdfPCell cell;
-
-                // Set font size for text cell
-                if ( fontSize == 4 )
-                {
-                    cell = new PdfPCell( getText7Cell( rowMeta.getName(), text7Font ) );
-                }
-                else if ( fontSize == 6 )
-                {
-                    cell = new PdfPCell( getText6Cell( rowMeta.getName(), text6Font ) );
-                }
-                else
-                // Default is 8
-                {
-                    cell = new PdfPCell( getText5Cell( rowMeta.getName(), text5Font ) );
-                }
-
-                cell.setMinimumHeight( fontSize );
-                cell.setBorder( Rectangle.BOX );
-                cell.setBackgroundColor( color );
-                table.addCell( cell );
-
-                for ( int rowItem : col )
-                {
-                    Phrase phrase = new Phrase( new Integer( rowItem ).toString(), FontFactory.getFont(
-                        FontFactory.HELVETICA, fontSize, Font.NORMAL, Color.BLACK ) );
-
-                    // Color zero values as bold red
-                    if ( rowItem == 0 )
-                    {
-                        phrase.getFont().setStyle( Font.BOLD );
-                        phrase.getFont().setColor( Color.RED );
-                    }
-
-                    cell.setPhrase( phrase );
-                    cell.setBorder( Rectangle.BOX );
-                    cell.setBackgroundColor( color );
-                    table.addCell( cell );
-                }
-
-                // Set first row as header row. This will be repeated for each
-                // new page.
-                table.setHeaderRows( 1 );
-            }
-
-            // Add heading information
-            document.add( titleParagraph );
-            document.add( periodParagraph );
-            document.add( new Paragraph( " " ) ); // Paragraph break
-
-            // Adjust column widths so that first column is a bit wider than the
-            // rest.
-            int numColumns = dataBrowserTable.getColumns().size();
-            float[] widths = new float[numColumns];
-            widths[0] = 2;
-
-            for ( i = 1; i < numColumns; i++ )
-            {
-                widths[i] = 1;
-            }
-            table.setWidths( widths );
-
-            // Add DataBrowser table
-            addTableToDocument( document, table );
-
-            PDFUtils.closeDocument( document );
-
-            // Set final inputStream for Velocity
-            inputStream = new ByteArrayInputStream( baos.toByteArray() );
-        }
-        catch ( Exception ex )
-        {
-            // Close the inputStream after it has been managed by the browser
-            inputStream.close();
-        }
+        // Set final inputStream for Velocity
+        inputStream = new ByteArrayInputStream( baos.toByteArray() );
 
         return SUCCESS;
     }
+
 }

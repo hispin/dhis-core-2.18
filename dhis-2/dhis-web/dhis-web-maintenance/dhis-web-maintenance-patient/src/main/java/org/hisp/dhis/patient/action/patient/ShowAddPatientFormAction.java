@@ -119,7 +119,7 @@ public class ShowAddPatientFormAction
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
         
         attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
-
+		
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         for(PatientIdentifierType identifierType :identifierTypes)
@@ -130,9 +130,7 @@ public class ShowAddPatientFormAction
                     showMsg = true;
             }
         }
-        //System.out.println( "ou = "+organisationUnit.getCode() + organisationUnit.getName());
-
-        Calendar cal = Calendar.getInstance();
+        
         SimpleDateFormat dataFormat = new SimpleDateFormat("y");
         year = dataFormat.format(new Date());
         return SUCCESS;

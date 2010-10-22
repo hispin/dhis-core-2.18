@@ -33,6 +33,8 @@ import java.util.List;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,6 +58,13 @@ public class GetAllMapViewsAction
         this.mappingService = mappingService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -76,6 +85,17 @@ public class GetAllMapViewsAction
         object = new ArrayList<MapView>( mappingService.getMapViewsByMapSourceType() );
         
         Collections.sort( object, new MapViewNameComparator() );
+        
+        for ( MapView mapView : object )
+        {
+            if ( mapView != null && mapView.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
+            {
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(
+                    Integer.parseInt( mapView.getMapSource() ) );
+                
+                mapView.setParentOrganisationUnitName( organisationUnit.getName() );
+            }
+        }
         
         return SUCCESS;
     }

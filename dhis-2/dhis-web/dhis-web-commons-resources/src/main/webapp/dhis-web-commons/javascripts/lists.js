@@ -447,3 +447,19 @@ function getArrayValueOfListById( id )
 	
 	return result;
 }
+
+/**
+ * Return the list of Id from the active rows in table name 'listTable'
+ */
+function getArrayIdOfActiveRows()
+{
+	var params = "";
+	var rows = jQuery( "table.listTable tbody tr" );
+
+	for ( var i = 0; i < rows.length; i++ )
+	{
+		params += "&activeIds=" + rows[i].id.split("tr")[1];
+	}
+
+	return params;
+}

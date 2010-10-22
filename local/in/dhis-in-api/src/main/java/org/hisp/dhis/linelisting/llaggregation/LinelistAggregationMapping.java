@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
+@SuppressWarnings("serial")
 public class LinelistAggregationMapping
     implements Serializable
 {

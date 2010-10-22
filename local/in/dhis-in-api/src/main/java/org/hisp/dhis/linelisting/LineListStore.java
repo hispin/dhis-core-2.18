@@ -35,7 +35,7 @@ import org.hisp.dhis.source.Source;
 public interface LineListStore
 {
     String ID = LineListStore.class.getName();
-	
+
     // -------------------------------------------------------------------------
     // LineList Group
     // -------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public interface LineListStore
      * @return The LineListGroup with the given id or null if it does not exist.
      */
     LineListGroup getLineListGroup( int id );
-    
+
     /**
      * Returns a LineListGroups with the given name.
      * 
@@ -85,16 +85,16 @@ public interface LineListStore
      * @return The LineListGroup with the given short name.
      */
     LineListGroup getLineListGroupByShortName( String shortName );
-    
+
     /**
      * Returns all Line List Groups associated with the specified source.
      */
-    Collection<LineListGroup> getLineListGroupsBySource(Source source);
-    
+    Collection<LineListGroup> getLineListGroupsBySource( Source source );
+
     /**
      * Returns all Line List Groups associated with the specified Element
      */
-    Collection<LineListGroup> getLineListGroupsByElement(LineListElement lineListElement);
+    Collection<LineListGroup> getLineListGroupsByElement( LineListElement lineListElement );
 
     /**
      * Get all LineListGroups.
@@ -102,11 +102,11 @@ public interface LineListStore
      * @return A collection containing all LineListGroups.
      */
     Collection<LineListGroup> getAllLineListGroups();
-       
+
     // -------------------------------------------------------------------------
     // LineList Element
     // -------------------------------------------------------------------------
-    
+
     /**
      * Adds a LineList Element.
      * 
@@ -133,10 +133,11 @@ public interface LineListStore
      * Get a lineListElement
      * 
      * @param id The unique identifier for the lineListElement to get.
-     * @return The lineListElement with the given id or null if it does not exist.
+     * @return The lineListElement with the given id or null if it does not
+     *         exist.
      */
     LineListElement getLineListElement( int id );
-    
+
     /**
      * Returns a LineListElements with the given name.
      * 
@@ -144,7 +145,7 @@ public interface LineListStore
      * @return A LineListElement with the given name.
      */
     LineListElement getLineListElementByName( String name );
-    
+
     /**
      * Returns a LineListElements with the given name.
      * 
@@ -152,31 +153,28 @@ public interface LineListStore
      * @return A LineListElement with the given name.
      */
     LineListElement getLineListElementByShortName( String shortName );
-    
-    
+
     /**
      * Returns all Line List Elements associated with the specified Option
      */
-    Collection<LineListElement> getLineListElementsByOption (LineListOption lineListOption);
+    Collection<LineListElement> getLineListElementsByOption( LineListOption lineListOption );
 
-    
     /**
      * Returns all Line List Elements associated with the specified sortorder
      */
-    Collection<LineListElement> getLineListElementsBySortOrder (LineListGroup lineListGroup);
-    
+    Collection<LineListElement> getLineListElementsBySortOrder( LineListGroup lineListGroup );
+
     /**
      * Get all LineListElements.
      * 
      * @return A collection containing all LineListElement.
      */
     Collection<LineListElement> getAllLineListElements();
-    
-    
+
     // -------------------------------------------------------------------------
     // LineList Option
     // -------------------------------------------------------------------------
-    
+
     /**
      * Adds a LineList Option.
      * 
@@ -203,32 +201,46 @@ public interface LineListStore
      * Get a lineListOption
      * 
      * @param id The unique identifier for the lineListOption to get.
-     * @return The lineListOption with the given id or null if it does not exist.
+     * @return The lineListOption with the given id or null if it does not
+     *         exist.
      */
     LineListOption getLineListOption( int id );
-
 
     /**
      * Get a lineListOption by using the name
      * 
      * @param name The name for the lineListOption to get.
-     * @return The lineListOption with the given name or null if it does not exist.
+     * @return The lineListOption with the given name or null if it does not
+     *         exist.
      */
-    LineListOption getLineListOptionByName (String name);
-    
+    LineListOption getLineListOptionByName( String name );
+
     /**
      * Get a lineListOption by using the short name
      * 
      * @param short Name The short name for the lineListOption to get.
-     * @return The lineListOption with the given short name or null if it does not exist.
+     * @return The lineListOption with the given short name or null if it does
+     *         not exist.
      */
-    LineListOption getLineListOptionByShortName(String shortName);
-    
+    LineListOption getLineListOptionByShortName( String shortName );
+
     /**
      * Get all LineListOptions.
      * 
      * @return A collection containing all LineListOption.
      */
     Collection<LineListOption> getAllLineListOptions();
-        
+    
+    // -------------------------------------------------------------------------
+    // LinelistElemnet - Dataelement Mapping
+    // -------------------------------------------------------------------------
+
+    void addLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+    
+    void updateLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+    
+    void deleteLinelistDataelementMapping( LineListDataElementMap lineListDataElementMap );
+
+    List<LineListDataElementMap> getLinelistDataelementMappings( LineListElement linelistElement, LineListOption linelistOption );
+
 }

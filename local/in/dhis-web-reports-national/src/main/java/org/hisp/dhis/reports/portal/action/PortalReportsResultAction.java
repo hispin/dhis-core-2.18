@@ -545,7 +545,7 @@ public class PortalReportsResultAction implements Action
                     for ( OrganisationUnit ou : orgUnitList )
                     {
                         Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-                        patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( ou ) );
+                        patientListByOrgUnit.addAll( patientService.getPatients( ou ) );
                         Iterator<Patient> patientIterator = patientListByOrgUnit.iterator();
 
                         // <editor-fold defaultstate="collapsed" desc="while patientIterator">

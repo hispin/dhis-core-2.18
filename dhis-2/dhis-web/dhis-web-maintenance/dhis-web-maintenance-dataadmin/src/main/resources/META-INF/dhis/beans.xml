@@ -139,10 +139,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFActionAction"
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
 		class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction"
-		scope="prototype" />
+		scope="prototype">
+		<property name="dataBrowserPdfService" 
+			ref="org.hisp.dhis.databrowser.DataBrowserPdfService"/>
+	</bean>
 
 	<!-- Organisation unit merge -->
 

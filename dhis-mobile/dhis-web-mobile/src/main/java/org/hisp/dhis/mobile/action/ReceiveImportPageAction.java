@@ -29,9 +29,11 @@ package org.hisp.dhis.mobile.action;
 
 import com.opensymphony.xwork2.Action;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.hisp.dhis.mobile.SmsService;
+import org.hisp.dhis.mobile.XMLFilter;
 import org.hisp.dhis.mobile.api.MobileImportService;
 
 public class ReceiveImportPageAction implements Action
@@ -89,7 +91,6 @@ public class ReceiveImportPageAction implements Action
 
     public void setImportAction( String importAction )
     {
-
         startImportingMessages();
     }
 
@@ -98,6 +99,8 @@ public class ReceiveImportPageAction implements Action
     public List<File> getPending()
     {
         File pendingFolder = new File( System.getenv( "DHIS2_HOME" ) + File.separator + "mi" + File.separator + "pending" );
+//        FilenameFilter filter = new XMLFilter();
+
         pending = (List<File>) FileUtils.listFiles( pendingFolder, new String[]
             {
                 "xml"
@@ -131,7 +134,8 @@ public class ReceiveImportPageAction implements Action
 
     public void startImportingMessages()
     {
-        mobileImportService.importAllFiles();
+        //mobileImportService.importAllFiles();
+        mobileImportService.importPendingFiles();
     }
 
     @Override

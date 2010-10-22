@@ -439,7 +439,7 @@ public class BenificiaryInfoReportsResultAction
                 List<Patient> patientListByOu = new ArrayList<Patient>();
                 // <editor-fold defaultstate="collapsed"
                 // desc="getting patientlist for ou and taking pi">
-                patientListByOu.addAll( patientService.getPatientsByOrgUnit( ou ) );// getting
+                patientListByOu.addAll( patientService.getPatients( ou ) );// getting
                                                                                     // all
                                                                                     // the
                                                                                     // patients

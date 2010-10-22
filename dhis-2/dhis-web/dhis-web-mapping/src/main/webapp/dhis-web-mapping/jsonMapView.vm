@@ -14,6 +14,7 @@
     "endDate": "$!encoder.jsEncode( ${object.endDate} )",
     "mapSourceType": "$!encoder.jsEncode( ${object.mapSourceType} )",
     "mapSource": "$!encoder.jsEncode( ${object.mapSource} )",
+    "parentOrganisationUnitName": "$!encoder.jsEncode( ${object.parentOrganisationUnitName} )",
     "mapLegendType": "$!encoder.jsEncode( ${object.mapLegendType} )",
     "method": "$!{object.method}",
     "classes": "$!{object.classes}",

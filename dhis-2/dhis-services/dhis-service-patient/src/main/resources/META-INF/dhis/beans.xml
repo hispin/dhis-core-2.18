@@ -244,6 +244,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.program.ProgramInstanceDeleteHandler">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
+	
+	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" 
+		class="org.hisp.dhis.patient.PatientDeletionHandler">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
 
 	<!-- DeletionManager -->
   
@@ -258,5 +263,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			</list>
 		  </list>
 		</property>
+	</bean>
+	
+	<!-- Table Alteror -->
+	<bean id="org.hisp.dhis.patient.TableAlteror" class="org.hisp.dhis.patient.TableAlteror" init-method="execute">
+		<property name="statementManager" ref="statementManager" />
 	</bean>
 </beans>

@@ -51,4 +51,7 @@ public interface MobileImportService
     
     public String importXMLFile( String importFile );
     
+    public void importPendingFiles();
+    
+    public void readAllMessages();
 }

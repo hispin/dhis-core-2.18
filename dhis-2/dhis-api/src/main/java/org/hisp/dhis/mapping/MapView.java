@@ -67,7 +67,9 @@ public class MapView
     private String mapSourceType;
 
     private String mapSource;
-
+    
+    private transient String parentOrganisationUnitName;
+    
     private String mapLegendType;
 
     private int method;
@@ -307,6 +309,16 @@ public class MapView
     public void setMapSource( String mapSource )
     {
         this.mapSource = mapSource;
+    }
+
+    public String getParentOrganisationUnitName()
+    {
+        return parentOrganisationUnitName;
+    }
+
+    public void setParentOrganisationUnitName( String parentOrganisationUnitName )
+    {
+        this.parentOrganisationUnitName = parentOrganisationUnitName;
     }
 
     public String getMapLegendType()

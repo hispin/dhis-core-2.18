@@ -32,6 +32,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.junit.Test;
@@ -61,6 +63,8 @@ public class PatientDataValueStoreTest
     private PatientDataValue valueC;    
     private PatientDataValue valueD;  
     
+    private OrganisationUnit organisationUnit;
+    
     @Override
     public void setUpTest()
     {
@@ -72,14 +76,19 @@ public class PatientDataValueStoreTest
         
         patientService = (PatientService) getBean( PatientService.ID );
         
+        organisationUnitService = (OrganisationUnitService) getBean ( OrganisationUnitService.ID );
+        
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
         
-        patientA = createPatient( 'A' );
-        patientB = createPatient( 'B' );
+        organisationUnit = createOrganisationUnit( 'A' );
+        organisationUnitService.addOrganisationUnit( organisationUnit );
+        
+        patientA = createPatient( 'A', organisationUnit );
+        patientB = createPatient( 'B', organisationUnit );
         
         patientService.savePatient( patientA );
         patientService.savePatient( patientB );

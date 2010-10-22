@@ -1,35 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <!-- Service definitions -->
+	<!-- Service definitions -->
     <bean id="org.hisp.dhis.mobile.SmsService"
-          class="org.hisp.dhis.mobile.SmsService">
+		class="org.hisp.dhis.mobile.SmsService">
         <property name="xmlCreatorService" ref="org.hisp.dhis.mobile.api.XmlCreatorService" />
         <property name="mobileImportService" ref="org.hisp.dhis.mobile.api.MobileImportService" />
+		<property name="sendSMSService" ref="org.hisp.dhis.mobile.api.SendSMSService"/>
     </bean>
 
     <bean id="org.hisp.dhis.mobile.api.MobileImportService"
-          class="org.hisp.dhis.mobile.api.DefaultMobileImportService"
-          scope="prototype">
-        <property name="locationManager" ref="org.hisp.dhis.external.location.LocationManager"/>
+		class="org.hisp.dhis.mobile.api.DefaultMobileImportService"
+        scope="prototype">
+        <property name="locationManager" ref="locationManager"/>
         <property name="userStore" ref="org.hisp.dhis.user.UserStore"/>
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
         <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+		<property name="smsService" ref="org.hisp.dhis.mobile.SmsService"/>
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		<property name="sendSMSService" ref="org.hisp.dhis.mobile.api.SendSMSService"/>
 		<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
     <bean id="org.hisp.dhis.mobile.api.XmlCreatorService"
-          class="org.hisp.dhis.mobile.api.XmlCreatorService"
-          scope="prototype">
-        <property name="dataEntryFormService" ref="org.hisp.dhis.dataset.DataEntryFormService"/>
+		class="org.hisp.dhis.mobile.api.XmlCreatorService"
+        scope="prototype">
+        <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
     </bean>
+
+    <bean id="org.hisp.dhis.mobile.api.SendSMSStore"
+        class="org.hisp.dhis.mobile.impl.HibernateSendSMSStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="org.hisp.dhis.mobile.api.SendSMSService"
+        class="org.hisp.dhis.mobile.impl.DefaultSendSMSService">
+        <property name="sendSMSStore" ref="org.hisp.dhis.mobile.api.SendSMSStore"/>
+    </bean>
+
+    <!-- UserGroup Store and Service -->
+    <bean id="org.hisp.dhis.user.UserGroupStore"
+        class="org.hisp.dhis.user.impl.HiberntateUserGroupStore">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="org.hisp.dhis.user.UserGroupService"
+        class="org.hisp.dhis.user.impl.DefaultUserGroupService">
+        <property name="userGroupStore" ref="org.hisp.dhis.user.UserGroupStore"/>
+    </bean>
+
+
+	<!-- Send ACK Job -->
+	
+	<bean id="org.hisp.dhis.mobile.SendSMSJob"
+		class="org.hisp.dhis.mobile.SendSMSJob">
+		<property name="smsService" ref="org.hisp.dhis.mobile.SmsService"/>
+		<property name="mobileImportService" ref="org.hisp.dhis.mobile.api.MobileImportService" />
+	</bean>
+	
+	
+	<bean id="sendSMSJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="org.hisp.dhis.mobile.SendSMSJob"/>
+		<!--<property name="targetMethod" value="executeCompleteProcess"/>-->
+		<!--<property name="targetMethod" value="executeProcessPendingMessage"/>-->
+		<!--<property name="targetMethod" value="executeImportProcess"/>-->
+		<!--<property name="targetMethod" value="executeSendSMSProcess"/>-->
+		<property name="targetMethod" value="executeImportAndSendSMSProcess"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="simpleTriggerForSendSMS" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="sendSMSJobDetail"/>
+		<property name="startDelay" value="10000"/>
+		<property name="repeatInterval" value="10000"/>
+	</bean>
+
+	<!-- SMSImport Job 
+	<bean id="org.hisp.dhis.mobile.SMSImportJob"
+		class="org.hisp.dhis.mobile.SMSImportJob">
+	</bean>
+  
+	<bean name="schedulerJob"
+		class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.hisp.dhis.mobile.SMSImportJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="smsService" value-ref="org.hisp.dhis.mobile.SmsService"/>
+				<entry key="mobileImportService" value-ref="org.hisp.dhis.mobile.api.MobileImportService"/>
+			</map>
+		</property>
+   </bean>
+ 
+   <bean id="cronTriggerForSMSImport"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="schedulerJob" />
+		<property name="cronExpression" value="0 0 22 * * ?" />
+   </bean>
+ -->
+
+<!-- Scheduler for all Jobs -->
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!--
+		<property name="jobDetails">
+			<list><ref bean="schedulerJob" /></list>
+		</property>
+		-->
+		<property name="triggers">
+			<list>
+				<!--<ref bean="cronTriggerForSMSImport" />-->
+				<ref bean="simpleTriggerForSendSMS" />
+			</list>
+		</property>
+   </bean>
 
 </beans>

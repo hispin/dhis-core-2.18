@@ -162,7 +162,7 @@ public class ResourceManager {
             if (module.isModified(locale)) {
                 String completeResourcePath = module.getResourcePath().getAbsolutePath() + File.separator +
                         module.getBasename() + "_" + locale + ".properties";
-
+                
                 FileUtils.saveResource(translationMap.get(locale), completeResourcePath);
 
                 log.outInfo("Saved resource: " + completeResourcePath);

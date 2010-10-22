@@ -68,7 +68,7 @@ public class TableAlteror extends AbstractStartupRoutine {
 		// Drop outdated tables
 		// ---------------------------------------------------------------------
 
-		executeSql("DROP TABLE categoryoptioncomboname");
+	        executeSql("DROP TABLE categoryoptioncomboname");
 		executeSql("DROP TABLE orgunitgroupsetstructure");
 		executeSql("DROP TABLE orgunitstructure");
 		executeSql("DROP TABLE orgunithierarchystructure");
@@ -90,6 +90,13 @@ public class TableAlteror extends AbstractStartupRoutine {
 		// remove relative period type
 		executeSql("DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')");
 		executeSql("DELETE FROM periodtype WHERE name='Relative'");
+		
+		// mapping
+		executeSql("ALTER TABLE map DROP CONSTRAINT fk_map_organisationunitid");
+		executeSql("ALTER TABLE map DROP COLUMN organisationunitid");
+		executeSql("ALTER TABLE map DROP COLUMN longitude");
+		executeSql("ALTER TABLE map DROP COLUMN latitude");
+		executeSql("ALTER TABLE map DROP COLUMN zoom");
 
 		// ---------------------------------------------------------------------
 		// Update tables for dimensional model

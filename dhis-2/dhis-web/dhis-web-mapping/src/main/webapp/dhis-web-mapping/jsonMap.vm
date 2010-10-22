@@ -3,11 +3,7 @@
     "id": "$!{object.id}",
     "name": "$!encoder.jsEncode( ${object.name} )",
     "mapLayerPath": "$!encoder.jsEncode( ${object.mapLayerPath} )",
-    "organisationUnit": "$!encoder.jsEncode( ${object.organisationUnit.name} )",
     "organisationUnitLevel": "$!{object.organisationUnitLevel.level}",
-    "nameColumn": "$!encoder.jsEncode( ${object.nameColumn} )",
-    "longitude": "$!encoder.jsEncode( ${object.longitude} )",
-    "latitude": "$!encoder.jsEncode( ${object.latitude} )",
-    "zoom": "$!{object.zoom}"
+    "nameColumn": "$!encoder.jsEncode( ${object.nameColumn} )"
   }]
 }

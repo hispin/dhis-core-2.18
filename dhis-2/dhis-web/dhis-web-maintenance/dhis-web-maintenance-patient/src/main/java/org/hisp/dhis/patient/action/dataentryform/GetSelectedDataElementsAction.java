@@ -83,9 +83,9 @@ public class GetSelectedDataElementsAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private int associationId;
+    private Integer associationId;
 
-    public void setAssociationId( int associationId )
+    public void setAssociationId( Integer associationId )
     {
         this.associationId = associationId;
     }

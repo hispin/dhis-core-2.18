@@ -270,23 +270,19 @@ public class DefaultMappingService
         return mappingStore.addMap( map );
     }
 
-    public int addMap( String name, String mapLayerPath, String type, String sourceType, int organisationUnitId,
-        int organisationUnitLevelId, String nameColumn, String longitude, String latitude, int zoom )
+    public int addMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
         OrganisationUnitLevel organisationUnitLevel = organisationUnitService
             .getOrganisationUnitLevel( organisationUnitLevelId );
 
-        Map map = new Map( name, mapLayerPath, type, sourceType, organisationUnit, organisationUnitLevel, nameColumn,
-            longitude, latitude, zoom, null );
+        String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+
+        Map map = new Map( name, mapLayerPath, sourceType, organisationUnitLevel, nameColumn, null );
 
         return addMap( map );
     }
 
-    public void addOrUpdateMap( String name, String mapLayerPath, String type, String sourceType,
-        int organisationUnitId, int organisationUnitLevelId, String nameColumn, String longitude, String latitude,
-        int zoom )
+    public void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn )
     {
         Map map = getMapByMapLayerPath( mapLayerPath );
 
@@ -294,21 +290,18 @@ public class DefaultMappingService
         {
             map.setName( name );
             map.setNameColumn( nameColumn );
-            map.setLongitude( longitude );
-            map.setLatitude( latitude );
-            map.setZoom( zoom );
 
             updateMap( map );
         }
         else
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
             OrganisationUnitLevel organisationUnitLevel = organisationUnitService
                 .getOrganisationUnitLevel( organisationUnitLevelId );
 
-            map = new Map( name, mapLayerPath, type, sourceType, organisationUnit, organisationUnitLevel, nameColumn,
-                longitude, latitude, zoom, null );
+            String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE,
+                MAP_SOURCE_TYPE_GEOJSON );
+
+            map = new Map( name, mapLayerPath, sourceType, organisationUnitLevel, nameColumn, null );
 
             addMap( map );
         }
@@ -660,7 +653,7 @@ public class DefaultMappingService
         MapLegendSet mapLegendSet = getMapLegendSetByName( name );
 
         Set<Indicator> indicators = new HashSet<Indicator>();
-        
+
         Set<DataElement> dataElements = new HashSet<DataElement>();
 
         if ( mapLegendSet != null )
@@ -678,7 +671,8 @@ public class DefaultMappingService
         }
         else
         {
-            mapLegendSet = new MapLegendSet( name, type, method, classes, colorLow, colorHigh, mapLegends, indicators, dataElements );
+            mapLegendSet = new MapLegendSet( name, type, method, classes, colorLow, colorHigh, mapLegends, indicators,
+                dataElements );
 
             this.mappingStore.addMapLegendSet( mapLegendSet );
         }
@@ -917,7 +911,7 @@ public class DefaultMappingService
 
     public Collection<MapView> getMapViewsByMapSourceType()
     {
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
 
         return mappingStore.getMapViewsByMapSourceType( type );
     }
@@ -928,7 +922,7 @@ public class DefaultMappingService
 
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
 
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
 
         if ( mapViews != null )
         {

@@ -15,23 +15,12 @@
 	
 		<property name="mapLayerPath" column="maplayerpath" unique="true"/>
 		
-		<property name="type" column="type"/>
-		
 		<property name="sourceType" column="sourcetype"/>
 			
-		<many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
-			column="organisationunitid" not-null="true" foreign-key="fk_map_organisationunitid"/>
-		  
 		<many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel" 
 			column="organisationunitlevelid" not-null="true" foreign-key="fk_map_organisationunitlevelid"/>
 			
 		<property name="nameColumn" column="namecolumn"/>
-			
-		<property name="longitude" column="longitude"/>
-			
-		<property name="latitude" column="latitude"/>
-			
-		<property name="zoom" column="zoom"/>
 	
 	</class>
 	

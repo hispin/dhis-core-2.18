@@ -58,8 +58,6 @@ import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -67,7 +65,6 @@ import org.hisp.dhis.util.StreamActionSupport;
  * @version $Id$
  */
 
-@SuppressWarnings( "serial" )
 public class ExportExcelAction
     extends StreamActionSupport
 {
@@ -102,13 +99,6 @@ public class ExportExcelAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private IndicatorService indicatorService;

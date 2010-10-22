@@ -111,7 +111,7 @@
 				confirmStatus = 'required';
 				if ( selectedListLen != 0 )
 				{
-					setHeaderDelayMessage( i18n_datasets_different_orgunitlist );
+					setHeaderTimeDelayMessage( i18n_datasets_different_orgunitlist, 4500 );
 				}
 			}
 			else

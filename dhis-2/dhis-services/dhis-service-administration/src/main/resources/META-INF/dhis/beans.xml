@@ -95,6 +95,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataBrowserStore"
       ref="org.hisp.dhis.databrowser.DataBrowserStore" />
   </bean>
+  
+  <bean id="org.hisp.dhis.databrowser.DataBrowserPdfService"
+    class="org.hisp.dhis.databrowser.DefaultDataBrowserPdfService"/>
        
   <!-- Data merge -->
   
@@ -191,6 +194,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="sqlViewExpandStore"
 	  ref="org.hisp.dhis.sqlview.SqlViewExpandStore" />
   </bean>
+  
+  <!--bean id="internal-process-SqlView"
+    class="org.hisp.dhis.sqlview.SqlViewInternalProcess"
+    scope="prototype">
+    <property name="statementManager" ref="statementManager"/>
+    <property name="sqlViewService"
+      ref="org.hisp.dhis.sqlview.SqlViewService"/>
+  </bean-->
   
   <!-- AOP definitions -->
   

@@ -42,12 +42,12 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.paging.PagingUtil;
 import org.hisp.dhis.patient.paging.RequestUtil;
 import org.hisp.dhis.patient.state.SelectedStateManager;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -251,30 +251,23 @@ public class SearchPatientAction
 
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
-            //System.out.println(" listAll ");
+            
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()) + "?listAll=true", pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
             
             total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-           // System.out.println("total = "+total);
+            
             pagingUtil.setTotal( total );
 
-            int numberOfPages = pagingUtil.getNumberOfPages();//2
             int pageSize = pagingUtil.getPageSize();//4
             int startPos = pagingUtil.getStartPos();//0,4
             int endPos = ( startPos + pageSize > total ) ? total : ( startPos + pageSize );//4,7
 
-            //System.out.println("listAll startPos "+  startPos+" endPos "+ endPos );
-            patients = patientService.getPatientsByOrgUnitAttr( organisationUnit , startPos,endPos, patientAttribute );
+            patients = patientService.getPatients( organisationUnit , startPos,endPos, patientAttribute );
 
             if( patients != null && patients.size() > 0 ) 
             {
-                //System.out.println("patients size = "+patients.size());
-                /*f(sortPatientAttributeId!=null && patientAttribute!=null)
-                {
-                    patients = patientService.sortPatientsByAttribute(patients, patientAttribute);
-                }*/
                 for( Patient patient : patients )
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
@@ -326,7 +319,7 @@ public class SearchPatientAction
                 {
                     mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
                     if(sortPatientAttributeId!=null && patientAttribute!=null)
-                    {
+                    { 
                         PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient, patientAttribute );
                         String value = (attributeValue == null )?"" : attributeValue.getValue();
                     
@@ -384,7 +377,7 @@ public class SearchPatientAction
 
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
-            //System.out.println("  second listAll ");
+            
             pagingUtil = new PagingUtil( RequestUtil.getCurrentLink(ServletActionContext.getRequest()), pageSize == null ? defaultPageSize : pageSize );
             
             pagingUtil.setCurrentPage( currentPage == null ? 0 : currentPage );
@@ -393,7 +386,7 @@ public class SearchPatientAction
             
             pagingUtil.setTotal( total );
             
-            patients = patientService.getPatientsByOrgUnit( organisationUnit , pagingUtil.getStartPos(), pagingUtil.getPageSize() );
+            patients = patientService.getPatients( organisationUnit , pagingUtil.getStartPos(), pagingUtil.getPageSize() );
             
             if( patients != null && patients.size() > 0 ) 
             {

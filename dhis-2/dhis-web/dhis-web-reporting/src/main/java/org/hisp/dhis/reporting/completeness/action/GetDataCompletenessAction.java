@@ -37,6 +37,8 @@ import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.comparator.DataSetCompletenessResultComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.util.SessionUtils;
 
@@ -50,13 +52,14 @@ public class GetDataCompletenessAction
     implements Action
 {
     private static final String KEY_DATA_COMPLETENESS = "dataSetCompletenessResults";
+
     private static final String KEY_DATA_COMPLETENESS_DATASET = "dataSetCompletenessDataSet";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ServiceProvider<DataSetCompletenessService> serviceProvider;    
+    private ServiceProvider<DataSetCompletenessService> serviceProvider;
 
     public void setServiceProvider( ServiceProvider<DataSetCompletenessService> serviceProvider )
     {
@@ -69,12 +72,19 @@ public class GetDataCompletenessAction
     {
         this.dataSetService = dataSetService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
@@ -87,21 +97,14 @@ public class GetDataCompletenessAction
     {
         this.periodId = periodId;
     }
-    
+
     private Integer dataSetId;
 
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
-    
-    private Integer organisationUnitId;
 
-    public void setOrganisationUnitId( Integer organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-    
     private String criteria;
 
     public void setCriteria( String criteria )
@@ -129,24 +132,25 @@ public class GetDataCompletenessAction
     {
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS );
         SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS_DATASET );
-        
+
         Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
-        
-        if ( periodId != null && organisationUnitId != null && criteria != null )
+        OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
+
+        if ( periodId != null && selectedUnit != null && criteria != null )
         {
             DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
-            
+
             if ( dataSetId != null )
             {
                 // -------------------------------------------------------------
                 // Display completeness by DataSets
                 // -------------------------------------------------------------
 
-                results = new ArrayList<DataSetCompletenessResult>( completenessService.
-                    getDataSetCompleteness( _periodId, organisationUnitId, dataSetId ) );
-                
+                results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                    _periodId, selectedUnit.getId(), dataSetId ) );
+
                 DataSet dataSet = dataSetService.getDataSet( dataSetId );
-                
+
                 SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS_DATASET, dataSet );
             }
             else
@@ -155,15 +159,15 @@ public class GetDataCompletenessAction
                 // Display completeness by child OrganisationUnits for a DataSet
                 // -------------------------------------------------------------
 
-                results = new ArrayList<DataSetCompletenessResult>( completenessService.
-                    getDataSetCompleteness( _periodId, organisationUnitId ) );
+                results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                    _periodId, selectedUnit.getId() ) );
             }
-            
+
             Collections.sort( results, new DataSetCompletenessResultComparator() );
-            
+
             SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, results );
         }
-        
+
         return SUCCESS;
     }
 }

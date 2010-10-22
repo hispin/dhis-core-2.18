@@ -29,12 +29,14 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bharath Kumar
+ * @modify Tran Thanh Tri 13 Oct 2010
  * @version $Id$
  */
 public class DelDataEntryFormAction
@@ -51,26 +53,22 @@ public class DelDataEntryFormAction
         this.dataEntryFormService = dataEntryFormService;
     }
 
-    // -------------------------------------------------------------------------
-    // I18n
-    // -------------------------------------------------------------------------
+    private ProgramStageService programStageService;
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
+    public void setProgramStageService( ProgramStageService programStageService )
     {
-        this.i18n = i18n;
+        this.programStageService = programStageService;
     }
 
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    private int dataEntryFormId;
+    private Integer associationId;
 
-    public void setDataEntryFormId( int dataEntryFormId )
+    public void setAssociationId( int associationId )
     {
-        this.dataEntryFormId = dataEntryFormId;
+        this.associationId = associationId;
     }
 
     private String message;
@@ -80,6 +78,18 @@ public class DelDataEntryFormAction
         return message;
     }
 
+    private Integer programStageId;
+
+    public Integer getProgramStageId()
+    {
+        return programStageId;
+    }
+
+    public void setProgramStageId( Integer programStageId )
+    {
+        this.programStageId = programStageId;
+    }
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -87,14 +97,13 @@ public class DelDataEntryFormAction
     public String execute()
         throws Exception
     {
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-        
-        if ( dataEntryForm == null )
-        {
-            message = i18n.getString( "unable_delete" );
-            
-            return INPUT;
-        }
+        ProgramStage programStage = programStageService.getProgramStage( this.associationId );
+
+        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+
+        programStage.setDataEntryForm( null );
+
+        programStageService.updateProgramStage( programStage );
 
         dataEntryFormService.deleteDataEntryForm( dataEntryForm );
 

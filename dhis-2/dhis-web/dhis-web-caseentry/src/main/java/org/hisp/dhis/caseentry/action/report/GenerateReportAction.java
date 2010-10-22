@@ -191,7 +191,7 @@ public class GenerateReportAction
         // Getting the list of Patients that are related to selected OrganisationUnit
         
         Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-        patientListByOrgUnit.addAll( patientService.getPatientsByOrgUnit( organisationUnit ) );
+        patientListByOrgUnit.addAll( patientService.getPatients( organisationUnit ) );
         
         // ---------------------------------------------------------------------
         // Program instances for the selected program

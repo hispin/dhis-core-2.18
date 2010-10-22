@@ -27,8 +27,12 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -39,6 +43,8 @@ import com.opensymphony.xwork2.Action;
 public class GetMapViewAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( GetMapViewAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -48,6 +54,13 @@ public class GetMapViewAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -71,7 +84,7 @@ public class GetMapViewAction
     {
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -80,7 +93,19 @@ public class GetMapViewAction
         throws Exception
     {
         object = mappingService.getMapView( id );
+
+        log.info( "Getting map view: " + object );
         
+        if ( object != null && object.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(
+                Integer.parseInt( object.getMapSource() ) );
+            
+            log.info( "Getting map view for organisation unit: " + object + " for map source: " + object.getMapSource() );
+            
+            object.setParentOrganisationUnitName( organisationUnit.getName() );
+        }
+
         return SUCCESS;
     }
 }

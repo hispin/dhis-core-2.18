@@ -1,35 +1,37 @@
+<script type="text/javascript">
+
+	jQuery(document).ready( function(){
+		// Override the listener after tree loaded succesfully
+		selectionTreeSelection.setListenerFunction( displayCompleteness );
+	});
+	
+</script>
 
 <h3>$i18n.getString( "data_completeness_report" )</h3>
 
 <table>
-    <col width="330">
-    <col width="5">
-    <col width="330">    
+    <col width="330"/>
+    <col width="5"/>
+    <col width="330"/>    
     <tr>
-	   <td>
-		    <div id="selectionTree" style="width:325px; height:220px"></div>
-		            
-		    <script type="text/javascript">
-		        selectionTreeSelection.setMultipleSelectionAllowed( false );
-				selectionTree.clearSelectedOrganisationUnits();
-		        selectionTree.buildSelectionTree();
-		    </script>
+	    <td>
+			#organisationUnitSelectionTree( true, false, false )
         </td>
         <td></td>
         <td valign="bottom">
         	<input type="button" value="$i18n.getString( 'configuration' )" style="width:150px"
-        	   onclick="window.location.href='displayConfigureDataCompletenessForm.action'"/><br>
+        	   onclick="window.location.href='displayConfigureDataCompletenessForm.action'"/><br/>
         	<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessPDF.action'"/><input 
                 type="button" value="$i18n.getString( 'generate_workbook' )" style="width:150px"
-                onclick="window.location.href='getDataCompletenessWorkbook.action'"/><br><br>
+                onclick="window.location.href='getDataCompletenessWorkbook.action'"/><br/><br/>
                 	
             <input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked" onclick="displayCompleteness()"/>
-            <label for="registrationRadio">$i18n.getString( 'based_on_registration' )</label><br>
+            <label for="registrationRadio">$i18n.getString( 'based_on_registration' )</label><br/>
             <input type="radio" name="criteria" id="compulsoryRadio" value="compulsory" onclick="displayCompleteness()"/>
-            <label for="compulsoryRadio">$i18n.getString( 'based_on_compulsory' )</label><br>
+            <label for="compulsoryRadio">$i18n.getString( 'based_on_compulsory' )</label><br/>
             <input type="radio" name="criteria" id="ratioRadio" value="ratio" onclick="displayCompleteness()"/>
-            <label for="ratioRadio">$i18n.getString( 'based_on_ratio' )</label><br><br>
+            <label for="ratioRadio">$i18n.getString( 'based_on_ratio' )</label><br/><br/>
             
             <!-- DataSet -->
             
@@ -38,18 +40,18 @@
 			#foreach( $dataSet in $dataSets )
 				<option value="$dataSet.id">$dataSet.name</option>
 			#end
-			</select><br><br>
+			</select><br/><br/>
             
             <!-- PeriodType -->
             
-            <input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )"/>
-			<input type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )"/>
-			<select id="periodType" name="periodType" style="min-width:222px" onchange="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '0' )">
+            <input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getPeriods( 'periodType', 'periodId', 'periodId', '-1' )"/>
+			<input type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getPeriods( 'periodType', 'periodId', 'periodId', '1' )"/>
+			<select id="periodType" name="periodType" style="min-width:222px" onchange="getPeriods( 'periodType', 'periodId', 'periodId', '0' )">
 				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$type.name</option>
 				#end
-			</select><br><br>
+			</select><br/><br/>
 			
 			<!-- Period -->
 			

@@ -566,8 +566,12 @@ public class ReportTable
                         String prettyColumnName = getPrettyColumnName( indicator, categoryOptionCombo, period, unit );
                         String columnIdentifier = getColumnIdentifier( indicator, categoryOptionCombo, period, unit );
                         
-                        crossTabColumns.add( columnName );
-                        prettyCrossTabColumns.put( columnName, prettyColumnName );
+                        if ( columnName != null && !columnName.isEmpty() )
+                        {
+                            crossTabColumns.add( columnName );
+                            prettyCrossTabColumns.put( columnName, prettyColumnName );    
+                        }
+                        
                         crossTabIdentifiers.add( columnIdentifier );
                     }
                 }
