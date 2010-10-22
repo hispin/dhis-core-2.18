@@ -9,36 +9,22 @@
     
     var FCKConfig;
     var FCK;
-	
-	window.onload = function()
-    {
-		var oFCKeditor = new FCKeditor( 'designTextarea' );
-		oFCKeditor.BasePath = "javascript/FCK/";
-        oFCKeditor.ReplaceTextarea();
-    }
-	
-//-----------------------------------------------------------------------
-//init jQuery validation for saveDataEntryForm
-//-----------------------------------------------------------------------
+
 	var autoSave = '$!autoSave';
 	
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#saveDataEntryForm").validate({
-				 	 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										autoSave = false;
-										validateDataEntryForm();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
 
+	jQuery(document).ready(	function(){
+			validation( 'saveDataEntryForm', function(){
+				autoSave = false;
+				validateDataEntryForm();
+			} );	
+
+			var oFCKeditor = new FCKeditor( 'designTextarea' );
+			oFCKeditor.BasePath = "javascript/FCK/";
+	        oFCKeditor.ReplaceTextarea();	
+	});
 </script>
+
 
 <h3>$i18n.getString( "dataentryform_management" )</h3>
 
@@ -54,7 +40,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em" maxlength="100" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></td>
+        <td><input type="text" id="nameField" name="nameField" value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em" maxlength="100" class="{validate:{required:true,rangelength:[4,150]}}"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>

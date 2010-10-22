@@ -67,14 +67,9 @@ public class JdbcDataMergeStore
         final int sourceDataElementId = sourceDataElemenet.getId();
         final int sourceCategoryOptionComboId = sourceCategoryOptionCombo.getId();
 
-        // -------------------------------------------------------------------------
-        // DataMergeStore implementation
-        // -------------------------------------------------------------------------
-
-        final String sql =      
-            
-            // Move from source to destination where destination does not exist
-            
+        // Move from source to destination where destination does not exist
+        
+        String sql =             
             "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " +
             "WHERE dataelementid=" + sourceDataElementId + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " +
             "AND NOT EXISTS ( " +
@@ -82,28 +77,37 @@ public class JdbcDataMergeStore
                 "WHERE d2.dataelementid=" + destDataElementId + " " +
                 "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
                 "AND d1.periodid=d2.periodid " +
-                "AND d1.sourceid=d2.sourceid ); " +
-    
-            // Update destination with source where source is last updated
-                
+                "AND d1.sourceid=d2.sourceid );";
+
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+        
+        // Update destination with source where source is last update
+        
+        sql =
             "UPDATE datavalue SET value=d2.value,storedby=d2.storedby,lastupdated=d2.lastupdated,comment=d2.comment,followup=d2.followup " +
             "FROM datavalue AS d2 " +
             "WHERE datavalue.periodid=d2.periodid " +
             "AND datavalue.sourceid=d2.sourceid " +
             "AND datavalue.lastupdated<d2.lastupdated " +
             "AND datavalue.dataelementid=" + destDataElementId + " AND datavalue.categoryoptioncomboid=" + destCategoryOptionComboId + " " +
-            "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";" +
-    
-            // Delete remaining source data value audits
-            
-            "DELETE FROM datavalueaudit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";" +
-        
-            // Delete remaining source data values
-            
-            "DELETE FROM datavalue WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+            "AND d2.dataelementid=" + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
 
-        log.info( sql );
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // Delete remaining source data value audits
         
+        sql = "DELETE FROM datavalue_audit WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // Delete remaining source data values
+        
+        sql = "DELETE FROM datavalue WHERE dataelementid=" + sourceDataElementId + " AND categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+
+        log.info( sql );        
         jdbcTemplate.execute( sql );
     }
     
@@ -111,11 +115,10 @@ public class JdbcDataMergeStore
     {
         final int destId = dest.getId();
         final int sourceId = source.getId();
+
+        // Move from source to destination where destination does not exist
         
-        final String sql = 
-            
-            // Move from source to destination where destination does not exist
-            
+        String sql =             
             "UPDATE datavalue AS d1 SET sourceid=" + destId + " " +
             "WHERE sourceid=" + sourceId + " " +
             "AND NOT EXISTS ( " +
@@ -123,10 +126,14 @@ public class JdbcDataMergeStore
                 "WHERE d2.sourceid=" + destId + " " +
                 "AND d1.dataelementid=d2.dataelementid " +
                 "AND d1.periodid=d2.periodid " +
-                "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );" +
+                "AND d1.categoryoptioncomboid=d2.categoryoptioncomboid );";
 
-            // Summarize destination and source where matching
-                
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // Summarize destination and source where matching
+        
+        sql =
             "UPDATE datavalue AS d1 SET value=( " +
                 "SELECT SUM( CAST( value AS " + statementBuilder.getDoubleColumnType() + " ) ) " +
                 "FROM datavalue as d2 " +
@@ -137,24 +144,32 @@ public class JdbcDataMergeStore
             "FROM dataelement AS de " +
             "WHERE d1.sourceid=" + destId + " " +
             "AND d1.dataelementid=de.dataelementid " +
-            "AND de.valuetype='int';" +
-            
-            //TODO also deal with bool and string
-            
-            // Delete remaining source data value audits
-                
-            "DELETE FROM datavalueaudit WHERE sourceid=" + sourceId + ";" +
+            "AND de.valuetype='int';";
 
-            // Delete remaining source data values
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // TODO also deal with bool and string
             
-            "DELETE FROM datavalue WHERE sourceid=" + sourceId + ";" +
+        // Delete remaining source data value audits
         
-            // Delete complete data set registrations
+        sql = "DELETE FROM datavalue_audit WHERE sourceid=" + sourceId + ";";
+
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // Delete remaining source data values
+            
+        sql = "DELETE FROM datavalue WHERE sourceid=" + sourceId + ";";
+
+        log.info( sql );        
+        jdbcTemplate.execute( sql );
+
+        // Delete complete data set registrations
         
-            "DELETE FROM completedatasetregistration WHERE sourceid=" + sourceId + ";";
+        sql = "DELETE FROM completedatasetregistration WHERE sourceid=" + sourceId + ";";
         
-        log.info( sql );
-        
+        log.info( sql );        
         jdbcTemplate.execute( sql );
     }
 }

@@ -52,13 +52,9 @@ function getReportExcelsByGroupReceived( xmlObject ) {
 	}
 	
 	byId("selectedOrganisationUnit").innerHTML = selectedOrganisationUnit; 
-	
-	
-	
-	
 }
 
-function lastPeriod() {
+function getPreviousPeriod() {
 
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -66,7 +62,7 @@ function lastPeriod() {
 	request.send( 'previousPeriodsDB.action' ); 
 }
 
-function nextPeriod() {
+function getNextPeriod() {
 
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -92,7 +88,7 @@ function generateReportExcel() {
 	
 	var report = getFieldValue('report');
 	if(report.length == 0){
-		setMessage(i18n_specify_report);
+		showErrorMessage( i18n_specify_report );
 		return;
 	}
 	

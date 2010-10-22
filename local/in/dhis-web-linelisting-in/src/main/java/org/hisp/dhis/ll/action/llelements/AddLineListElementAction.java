@@ -75,8 +75,6 @@ public class AddLineListElementAction
         this.dataType = dataType;
     }
 
-    
-
     private String description;
 
     public void setDescription( String description )
@@ -114,9 +112,9 @@ public class AddLineListElementAction
         shortName = shortName.replaceAll( " ", "_" );
 
         LineListElement lineListElement = new LineListElement( name, shortName, dataType, presentationType );
-        System.out.println("name, shortName, datatype, presentationtype " + name + " " + shortName+" "+dataType+ " "+presentationType);
+        System.out.println("name, shortName, description,datatype, presentationtype " + name + " " + shortName+" " + description + " " +dataType+ " "+presentationType);
 
-        if ( description != null && description.trim().equals( "" ) )
+        if ( description != null && ! description.trim().equals( "" ) )
             lineListElement.setDescription( description );
 
         for ( String id : selectedList )
@@ -127,7 +125,7 @@ public class AddLineListElementAction
         }
 
         lineListService.addLineListElement( lineListElement );
-
+       
         return SUCCESS;
     }
 

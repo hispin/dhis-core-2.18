@@ -1,27 +1,10 @@
 <script>
-
-//-----------------------------------------------------------------------
-//init jQuery validation for updateOrganisationUnitForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateOrganisationUnitForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateUpdateOrganisationUnit();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-				datePickerInRange( 'openingDate', 'closedDate' );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+		validation( 'updateOrganisationUnitForm', validateUpdateOrganisationUnit );		
+		datePickerInRange( 'openingDate', 'closedDate' );	
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "edit_org_unit" )</h3>
 
 <form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post" onsubmit="return validateUpdateOrganisationUnit()">

@@ -32,12 +32,12 @@
 					<td style="text-align:center"#alternate( $mark )>
 						<a href="showUpdateLineListGroupForm.action?id=$lineListGroup.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 					</td>
-					<td style="text-align:center"#alternate( $mark )>
+	<!--			<td style="text-align:center"#alternate( $mark )>
 						<a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=LineListGroup&amp;objectId=$lineListGroup.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
 					</td>
                     <td style="text-align:center"#alternate( $mark )>
                     	<a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( "design_data_entry_form" )"><img src="../images/edit_layout.png" alt="$i18n.getString( "design_data_entry_form" )"></a>
-                    </td>
+                    </td>-->
 					<td style="text-align:center"#alternate( $mark )>
 						<a href="javascript:removeLineListGroup( $lineListGroup.id, '$encoder.jsEncode( $lineListGroup.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 					</td>

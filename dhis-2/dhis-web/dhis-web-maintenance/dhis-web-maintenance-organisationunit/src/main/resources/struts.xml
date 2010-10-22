@@ -56,11 +56,7 @@
 			<param name="javascripts">
 					javascript/shortName.js,
 					javascript/organisationUnit.js,
-					../dhis-web-commons/ouwt/ouwt.js,					
-					../dhis-web-commons/util/validate/jquery.validate.js,
-					../dhis-web-commons/util/jquery.metadata.js,
-					../dhis-web-commons/util/validate/additional-methods.js,
-					../dhis-web-commons/validationMessages.action
+					../dhis-web-commons/ouwt/ouwt.js				
 			</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_ADD</param>
 		</action>
@@ -93,11 +89,7 @@
 			<param name="javascripts">
 					javascript/shortName.js,
 					javascript/organisationUnit.js,
-					../dhis-web-commons/ouwt/ouwt.js,					
-					../dhis-web-commons/util/validate/jquery.validate.js,
-					../dhis-web-commons/util/jquery.metadata.js,
-					../dhis-web-commons/util/validate/additional-methods.js,
-					../dhis-web-commons/validationMessages.action
+					../dhis-web-commons/ouwt/ouwt.js
 			</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
 		</action>
@@ -154,9 +146,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroup.select.SetupAssociationsTreeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-     		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUP_ADD</param>
 		</action>		
 
@@ -177,9 +167,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupMembersAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupForm.vm</param>
-			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>			
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/organisationUnitGroup.js</param>			
 		</action>
 
 		<action name="updateOrganisationUnitGroup"
@@ -273,9 +261,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareAddGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/addOrganisationUnitGroupSetForm.vm</param>
-			<param name="javascripts">javascript/organisationUnitGroupSet.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">javascript/organisationUnitGroupSet.js</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUPSET_ADD</param>
 		</action>
 
@@ -283,9 +269,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitgroupset.PrepareUpdateGroupSetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/updateOrganisationUnitGroupSetForm.vm</param>
-			<param name="javascripts">javascript/organisationUnitGroupSet.js
-			,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">javascript/organisationUnitGroupSet.js</param>
 			<param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
 		</action>
 
@@ -356,10 +340,7 @@
 			class="org.hisp.dhis.oum.action.organisationunitlevel.GetOrganisationUnitLevelsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/saveOrganisationUnitLevelForm.vm</param>
-			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
-			<param name="javascripts">../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      		,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action
-      		</param>
+			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>			
 		</action>
 
 		<action name="saveOrganisationUnitLevels"

@@ -28,6 +28,7 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  */
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
@@ -92,6 +94,8 @@ public class ExcelTemplateListAction
 
     private Map<String, Boolean> mapTemplateFiles = new HashMap<String, Boolean>();
 
+    private List<String> reportTypes = new ArrayList<String>();
+
     // -------------------------------------------
     // Getter && Setter
     // -------------------------------------------
@@ -124,6 +128,16 @@ public class ExcelTemplateListAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
+    }
+
+    public List<String> getReportTypes()
+    {
+        this.reportTypes.add( ReportExcel.TYPE.NORMAL );
+        this.reportTypes.add( ReportExcel.TYPE.CATEGORY );
+        this.reportTypes.add( ReportExcel.TYPE.PERIOD_COLUMN_LISTING );
+        this.reportTypes.add( ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING );
+        
+        return reportTypes;
     }
 
     // -------------------------------------------
@@ -163,7 +177,7 @@ public class ExcelTemplateListAction
         {
             newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
         }
-        
+
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the list of files
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

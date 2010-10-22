@@ -186,11 +186,11 @@
 
 </div>
 <div id="completeDataEntryFormContainer">
-<form id="completeDataEntryForm" name="completeDataEntry" method="post" action="completeDataEntry.action"> 
-    <input type="hidden" name="id" value="$id"/>
-    <input type="hidden" name="programId" value="$programId"/>
-    <input type="hidden" name="programStageId" value="$programStageId"/>
-    <input type="hidden" name="programStageInstanceId" value="$programStageInstanceId"/>
+<form id="completeDataEntryForm" name="completeDataEntry" method="post" action="completeProgramStageDataEntry.action"> 
+    <input type="hidden" name="id" value="$patient.id"/>
+    <input type="hidden" name="programId" value="$program.id"/>
+    <input type="hidden" name="programStageId" value="$programStage.id"/>
+    <input type="hidden" name="programStageInstanceId" value="$programStageInstance.id"/>
 </form>
 </div>
 </div>

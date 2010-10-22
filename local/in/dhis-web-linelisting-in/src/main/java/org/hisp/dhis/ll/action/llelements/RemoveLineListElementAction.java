@@ -87,7 +87,8 @@ public class RemoveLineListElementAction
         {
             Boolean doNotDelete = false;
             Collection<LineListGroup> allLineListGroups = lineListService.getAllLineListGroups();
-            Iterator groupIterator = allLineListGroups.iterator();
+            Iterator<LineListGroup> groupIterator = allLineListGroups.iterator();
+            //Iterator groupIterator = allLineListGroups.iterator();
             while ( groupIterator.hasNext() )
             {
                 LineListGroup group = (LineListGroup) groupIterator.next();

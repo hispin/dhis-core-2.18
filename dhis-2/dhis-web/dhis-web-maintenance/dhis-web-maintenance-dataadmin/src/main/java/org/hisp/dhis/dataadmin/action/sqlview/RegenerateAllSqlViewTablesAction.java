@@ -43,8 +43,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * tables and all of sql-view tables
  * 
  * @author Dang Duy Hieu
- * @version $Id$
- * @since 2010-07-06
+ * @version $Id RegenerateAllSqlViewTablesAction.java July 06, 2010$
  */
 public class RegenerateAllSqlViewTablesAction
     extends ActionSupport
@@ -87,6 +86,8 @@ public class RegenerateAllSqlViewTablesAction
 
     public String execute()
     {
+        message = "";
+        
         final StatementHolder holder = statementManager.getHolder();
 
         for ( SqlView sqlView : sqlViewService.getAllSqlViews() )

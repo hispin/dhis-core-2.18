@@ -266,7 +266,7 @@ public class GenerateDrillDownResultAction
         wCellformat1.setAlignment( Alignment.CENTRE );
         wCellformat1.setVerticalAlignment( VerticalAlignment.CENTRE );
         wCellformat1.setWrap( true );
-        wCellformat1.setBackground( Colour.GRAY_25 );
+        wCellformat1.setBackground( Colour.GREY_40_PERCENT );
 
         // <editor-fold defaultstate="collapsed" desc="adding column names">
         int count1 = 0;
@@ -277,10 +277,19 @@ public class GenerateDrillDownResultAction
             count1++;
         }
         sheet0.addCell( new Label( 7 + count1, 1, "Execution Date", wCellformat1 ) );
+
+        for( int i=levelsList.size()-1;i>=0;i-- )
+        {
+            int level = levelsList.get(i);
+            count1++;
+            sheet0.addCell( new Label(7+count1 , 1, organisationUnitService.getOrganisationUnitLevelByLevel(level).getName(), wCellformat1 ) );
+        }
+
         // </editor-fold>
 
         
         int rowNo = rowList.get( 0 );
+        int srno = 0;
         // <editor-fold defaultstate="collapsed" desc="For loop of orgUnitDataList">
         for ( OrganisationUnit ou : orgUnitDataList ) {
             List<PatientDataValue> pdvList = ouPatientDataValueMap.get( ou );
@@ -371,7 +380,7 @@ public class GenerateDrillDownResultAction
                         // <editor-fold defaultstate="collapsed" desc="stype = srno">
                         if ( sType.equalsIgnoreCase( "srno" ) )
                         {
-                            int tempNum = 1 + rowCount;
+                            int tempNum = 1 + srno;
                             tempStr = String.valueOf( tempNum );
                         }
                         // </editor-fold>
@@ -421,6 +430,7 @@ public class GenerateDrillDownResultAction
                 }
                 // </editor-fold>
                 rowNo++;
+                srno++;
             }
             // </editor-fold>
         }

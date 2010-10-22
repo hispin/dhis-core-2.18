@@ -1,4 +1,5 @@
 package org.hisp.dhis.reportexcel.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -53,7 +54,7 @@ public class AddReportExcelAction
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
-    
+
     private String name;
 
     private String excel;
@@ -155,26 +156,17 @@ public class AddReportExcelAction
         report.setExcelTemplateFile( excel );
         report.setGroup( group );
 
-        if ( periodCol == null || periodRow == null )
+        if ( periodCol != null && periodRow != null )
         {
-            report.setPeriodColumn( -1 );
-            report.setPeriodRow( -1 );
+            report.setPeriodColumn( this.periodCol );
+            report.setPeriodRow( this.periodRow );
         }
-        else
+
+        if ( organisationCol != null && organisationRow != null )
         {
-            report.setPeriodColumn( periodCol );
-            report.setPeriodRow( periodRow );
-        }
-        if ( organisationCol == null || organisationRow == null )
-        {
-            report.setOrganisationColumn( -1 );
-            report.setOrganisationRow( -1 );
-        }
-        else
-        {
-            report.setOrganisationColumn( organisationCol );
-            report.setOrganisationRow( organisationRow );
-        }
+            report.setOrganisationColumn( this.organisationCol );
+            report.setOrganisationRow( this.organisationRow );
+        }       
 
         reportService.addReportExcel( report );
 

@@ -88,7 +88,7 @@ public class DefaultCaseAggregationMappingService
     {
         this.caseAggregationMappingStore = caseAggregationMappingStore;
     }
-
+    
     // -------------------------------------------------------------------------
     // CaseAggregationMapping
     // -------------------------------------------------------------------------
@@ -350,7 +350,7 @@ public class DefaultCaseAggregationMappingService
         
         String queryFrom = "Select " +  function + " from ";
         
-        String queryWhere = " where ";
+        String queryWhere = "  ";
 
         Map<String, String> map =   new HashMap<String, String>();
         map.put( MAP_CONSTANT_QUERYWHERE , queryWhere );
@@ -364,11 +364,12 @@ public class DefaultCaseAggregationMappingService
             map = buildQueryForExpression( c, map, i );
             if( c.getNext() != null )
             {
-                map.put( MAP_CONSTANT_QUERYWHERE , map.get( MAP_CONSTANT_QUERYWHERE ) + " " + c.getNext() + " " ) ;
+                String condition = map.get( MAP_CONSTANT_QUERYWHERE )  + c.getNext();
+                map.put( MAP_CONSTANT_QUERYWHERE , condition ) ;
             }
         }
         queryFrom =  map.get( MAP_CONSTANT_QUERYFROM );
-        queryWhere = map.get( MAP_CONSTANT_QUERYWHERE );
+        queryWhere = " where "+ map.get( MAP_CONSTANT_QUERYWHERE );
         
         
         if( queryFrom.charAt(  queryFrom.length() - 1 ) == ',' )
@@ -379,10 +380,11 @@ public class DefaultCaseAggregationMappingService
         
         queryWhere = queryWhere.replace( "$ENDDATE$",   "" + period.getEndDate()  );
         queryWhere = queryWhere.replace( "$STARTDATE$", "" + period.getStartDate() );
-        queryWhere = queryWhere.replace( "$ORGUNITID$", "" + organisationUnit.getId() );
-        
-        System.out.println("queryyyyyyyyyyyy:\n "+queryFrom + queryWhere );
+        queryWhere = queryWhere.replace( "$ORGUNITID$", "" + organisationUnit.getId() );      
+ 
+        System.out.println("queryyyyyyyyyyyy 123:\n "+queryFrom + queryWhere );
         System.out.println("=================================================");
+
         return queryFrom + queryWhere;
     }
     
@@ -404,7 +406,7 @@ public class DefaultCaseAggregationMappingService
         String casePropertyName = null;
         
         String tmpFromQuery = "";
-        String tmpWhereQuery = " where ";
+        String tmpWhereQuery = "";
                 
         String curAliasDataValue = null;
         String curAliasProgramStageInstance = null;
@@ -427,6 +429,9 @@ public class DefaultCaseAggregationMappingService
             singleExpression = true;
             tmpFromQuery = map.get( MAP_CONSTANT_QUERYFROM );
             tmpWhereQuery = map.get( MAP_CONSTANT_QUERYWHERE );
+//            if( CaseAggregationCondition.CONDITION.equals( condition.getType())){
+                tmpWhereQuery += " ( ";
+//            }
         }
         String arg = null;
         for ( int i=0; i < listArg.size(); i++ )
@@ -516,7 +521,7 @@ public class DefaultCaseAggregationMappingService
                     tmpWhereQuery += "$ALIAS_PATIENTATTRIBUTEVALUE$.patientAttribute.id = " + caseAttributeId + " and "
                                   + " $ALIAS_PATIENTATTRIBUTEVALUE$.patient.id = " + " $ALIAS_PROGRAMINSTANCE$.patient.id  and "
                                   + " $ALIAS_PROGRAMINSTANCE$.id = $ALIAS_PROGRAMSTAGEINSTANCE$.programInstance.id  " ; 
-                    
+
                     if( condition.getRightExpression() != null && condition.getOperator() != null )
                     {
                         // build query for the right expression of current condition.
@@ -546,6 +551,7 @@ public class DefaultCaseAggregationMappingService
                         }
                         
                     }
+                  
                     if ( !singleExpression )
                     {
                         tmpWhereQuery += ")";
@@ -557,13 +563,13 @@ public class DefaultCaseAggregationMappingService
                     casePropertyName = arrExp[1];
                     tmpWhereQuery   += " $ALIAS_PATIENT$.id = $ALIAS_PROGRAMINSTANCE$.patient.id and "
                                     + " $ALIAS_PROGRAMINSTANCE$.id = $ALIAS_PROGRAMSTAGEINSTANCE$.programInstance.id  "  ;
-                    
+          
                     if( condition.getRightExpression() != null && condition.getOperator() != null )
                     {
                         // build query for the right expression of current condition.
                         
                         List<String> listRightArg = parseExpression( condition.getRightExpression());
-                        
+                  
                         if( listRightArg.size() != 1 )
                         {
                             // current not supported ... [DE.1.2.3] > [DE.1.2.3] + 100 ???
@@ -592,8 +598,7 @@ public class DefaultCaseAggregationMappingService
                         tmpWhereQuery += ")";
                     }
                 }
-            }
-            
+            }         
          
             //-----------------------------------------------------------------------------------------
             // Replace alias
@@ -719,6 +724,9 @@ public class DefaultCaseAggregationMappingService
             if( curAliasProgramInstance != null         ) tmpWhereQuery = tmpWhereQuery.replace( "$ALIAS_PROGRAMINSTANCE$", curAliasProgramInstance );
             if( curAliasPatientAttributeValue != null   ) tmpWhereQuery = tmpWhereQuery.replace( "$ALIAS_PATIENTATTRIBUTEVALUE$", curAliasPatientAttributeValue );
             
+//            if( CaseAggregationCondition.CONDITION.equals( condition.getType())){
+                tmpWhereQuery += " ) ";
+//            }
         }
         
         map.put( MAP_CONSTANT_QUERYWHERE , tmpWhereQuery );
@@ -735,9 +743,14 @@ public class DefaultCaseAggregationMappingService
     
     public static void main( String[] args )
     {
-        String string = "SUM@ COND{ ([DE:8.57.1]) < ([VL:2500]) } AND COND{ ([CP:gender]) = ([VL:'M']) }   ";
+
+        //String string = "SUM@ COND{ ([DE:8.57.1]) < ([VL:2500]) } AND COND{ ([CP:gender]) = ([VL:'M']) }   ";
         
-        //String input = "COUNT@ COND{([DE:1.3923.1]) > ([VL:100])}";
+        //String string = "COUNT@ COND{ ( [DE:1.13.1] ) < ( [VL:2500] ) } AND COND{ ( [DE:1.16.1] ) = ( [VL:2500] ) } ";
+        // String string = "COUNT@ COND{ ( [CP:GENDER] ) < ( [VL:23] ) } ";
+        //String string = "COUNT@ COND{ ( [CP:GENDER] ) = ( [VL:'F'] ) } AND COND{ ( [DE:1.13.1] ) < ( [VL:2500] ) }";
+        String string = "COUNT@ SCOND{ ( [DE:8.75.1] ) } AND COND{ ( [CP:gender] ) = ( [VL:'F'] ) }";
+        
         DefaultCaseAggregationMappingService test = new DefaultCaseAggregationMappingService();
         CaseAggregationQuery query = test.scan( string );
         System.out.println( test.buildQuery(  null, null, query ) );

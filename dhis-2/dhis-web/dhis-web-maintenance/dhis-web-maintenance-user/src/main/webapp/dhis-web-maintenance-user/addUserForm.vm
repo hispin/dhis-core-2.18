@@ -1,33 +1,12 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addUserForm
-//
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addUserForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,beforeValidateHandler : function()
-											{
-												selectAllById('selectedList');
-											}
-					,submitHandler: function(form)
-									{
-										validateAddUser();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#username").focus();
-				
-				selectionTree.clearSelectedOrganisationUnits();
-				selectionTree.buildSelectionTree();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+		validation( 'addUserForm', validateAddUser, function(){ selectAllById('selectedList') } );	
+		selectionTree.clearSelectedOrganisationUnits();
+		selectionTree.buildSelectionTree();		
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
+
 <h3>$i18n.getString( "create_new_user" )</h3>
 <form id="addUserForm" action="addUser.action" method="post" >
 

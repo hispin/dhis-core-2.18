@@ -1,48 +1,26 @@
 ﻿<script>
-//-----------------------------------------------------------------------
-//init jQuery validation for configurationForm
-//-----------------------------------------------------------------------
 	jQuery(document).ready(
-			function()
-			{
-				jQuery("#configurationForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-									    var templateDirectory = getFieldValue( 'templateDirectory' );
-										if(templateDirectory.length == 0){
-											setMessage( i18n_specify_template_directory );
-											return false;
-										}
-										
-										form.submit();
-									}
-				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-			}
-
+		function()
+		{
+			validation( 'configurationForm', function(form){ form.submit() })
+		}
 	);
-
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$i18n.getString('configuration') #openHelp( "excelReportingConfiguration" )</h3>
 <form id="configurationForm" action="setConfiguration.action" method="post">
 <table>
 	<tr>
-		<td>$i18n.getString('excel_file_directory')</td>
-		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$templateDirectory"/></td>
+		<td>$i18n.getString('excel_file_directory')</td>		
 	</tr>
 	<tr>
-		<td></td>
-		<td><input type="submit" value="$i18n.getString('ok')" style="width:10em"/>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:100px">
+		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$templateDirectory" class="{validate:{required:true}}"/></td>
+	</tr>
+	<tr>		
+		<td><input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location='administration.action'" style="width:150px">
 		</td>
 	</tr>
 </table>
 </form>
-<span id='message'></span>
-<script>
-	var i18n_specify_template_directory = '$encoder.jsEscape( $i18n.getString("specify_template_directory"), "'" )';
-</script>
+

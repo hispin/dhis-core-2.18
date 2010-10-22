@@ -29,7 +29,6 @@ package org.hisp.dhis.ll.action.llelements;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.linelisting.LineListElement;
-import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;

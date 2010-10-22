@@ -271,6 +271,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.dataset.DefaultSectionService">
     <property name="sectionStore"
       ref="org.hisp.dhis.dataset.SectionStore"/>
+    <property name="i18nService"
+      ref="org.hisp.dhis.i18n.I18nService"/>
   </bean>
   
    <bean id="org.hisp.dhis.dataentryform.DataEntryFormService"
@@ -438,6 +440,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.dataset.PivotDataSetAssociationTableService" 
+    class="org.hisp.dhis.dataset.DefaultPivotDataSetAssociationTableService">
+	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+	<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+  </bean>
+  
   <!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
@@ -466,6 +475,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<ref bean="I18nReportExcelItem" />
 		<ref bean="I18nExcelItemGroup" />
 		<ref bean="I18nExcelItem" />
+		<ref bean="I18nSection" />
 	  </list>
 	</property>
   </bean>
@@ -1084,6 +1094,42 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</map>
 	</property>
   </bean>
+  
+  <bean id="I18nSection" class="org.hisp.dhis.i18n.I18nObject">
+   <property name="className" value="Section" />
+	<property name="propertyNames">
+	  <list>
+	    <value>name</value>
+		<value>title</value>
+	  </list>
+	</property>
+	
+	<property name="rulePropertyNames">
+		<map>
+		  <entry key="name">
+		    <map>
+			  <entry key="unique" value="true" />
+			  <entry key="required" value="true" />
+			  <entry key="minlength" value="2" />
+			  <entry key="maxlength" value="160" />
+			  <entry key="regex" value="''" />
+			  <entry key="message" value="" />
+		    </map>
+		  </entry>
+		  <entry key="title">
+		    <map>
+			  <entry key="unique" value="true" />
+			  <entry key="required" value="true" />
+			  <entry key="minlength" value="2" />
+			  <entry key="maxlength" value="160" />
+			  <entry key="regex" value="''" />
+			  <entry key="message" value="" />
+		    </map>
+		  </entry>
+		</map>
+	</property>
+  </bean>
+
   
   <!-- Startup routine definitions -->
 	

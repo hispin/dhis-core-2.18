@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.0.5-SNAPSHOT</version>
+    <version>2.0.6-SNAPSHOT</version>
   </parent>
   
   <artifactId>dhis-web-reports-national</artifactId>
@@ -72,7 +72,12 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
       <version>${version}</version>	  
-    </dependency>	   
+    </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-reports</artifactId>
+      <version>${version}</version>
+    </dependency>	
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-external</artifactId>
@@ -104,12 +109,11 @@
     <dependency>
       <groupId>jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-	  <version>${version}</version>
     </dependency>
     <dependency>
       <groupId>poi</groupId>
       <artifactId>poi</artifactId>
-	  <version>2.5.1</version>
+      <version>2.5.1</version>
     </dependency>
     <dependency>
       <groupId>jfree</groupId>
@@ -118,7 +122,7 @@
     <dependency>
       <groupId>eclipse</groupId>
       <artifactId>jdtcore</artifactId>
-	  <version>3.1.0</version>
+      <version>3.1.0</version>
     </dependency>
 	<dependency>
         <groupId>com.lowagie</groupId>

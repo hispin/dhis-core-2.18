@@ -1,24 +1,10 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addIndicatorTypeForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addIndicatorTypeForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-											validateAddIndicatorType();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
+
+	jQuery(document).ready(	function(){
+			validation( 'addIndicatorTypeForm', validateAddIndicatorType );				
+	});
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <h3>$i18n.getString( "create_new_indicator_type" )</h3>
 
 <form id="addIndicatorTypeForm" action="addIndicatorType.action" method="post" >

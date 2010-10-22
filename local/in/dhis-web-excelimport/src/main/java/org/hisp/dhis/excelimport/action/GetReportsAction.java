@@ -7,6 +7,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.excelimport.api.Report;
 import org.hisp.dhis.excelimport.util.ReportService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -40,6 +42,13 @@ public class GetReportsAction
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
+    }
+
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -91,6 +100,8 @@ public class GetReportsAction
     private String orgUnitLevel;
 
     private String raFolderName;
+    
+    OrganisationUnit orgUnit;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -105,7 +116,7 @@ public class GetReportsAction
         {
             try
             {
-                OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouId ) );
+                orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouId ) );
 
                 int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
 
@@ -160,7 +171,7 @@ public class GetReportsAction
         String reportId = "";
         String reportName = "";
         String reportType = "";
-        String reportLevel = "";
+        String dataSetId = "";
         String reportModel = "";
         String reportFileName = "";
         // String checkerFileName = "";
@@ -207,18 +218,17 @@ public class GetReportsAction
                     NodeList textreportFileNameList = reportFileNameElement.getChildNodes();
                     reportFileName = ((Node) textreportFileNameList.item( 0 )).getNodeValue().trim();
 
-                    // NodeList reportCheckerList =
-                    // reportElement.getElementsByTagName( "checkerFileName" );
-                    // Element reportCheckerElement = (Element)
-                    // reportCheckerList.item( 0 );
-                    // NodeList textreportCheckerList =
-                    // reportCheckerElement.getChildNodes();
-                    // checkerFileName = ((Node) textreportCheckerList.item( 0
-                    // )).getNodeValue().trim();
 
-                    if ( reportType.equals( periodType ) )
+                    NodeList reportDatasetList = reportElement.getElementsByTagName( "dataset" );
+                    Element reportDatasetElement = (Element) reportDatasetList.item( 0 );
+                    NodeList textreportDatasetList = reportDatasetElement.getChildNodes();
+                    dataSetId = ((Node) textreportDatasetList.item( 0 )).getNodeValue().trim();
+
+                    DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
+                    
+                    if ( reportType.equals( periodType ) && dataSet.getSources().contains( orgUnit ) )
                     {
-                        Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName );
+                        Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName, dataSetId );
                         reportList.add( count, reportObj );
                         count++;
                         System.out.println( reportName + " : " + reportId );
@@ -242,9 +252,5 @@ public class GetReportsAction
         }
 
     }// getReportList end
-
-    /**
-     * @param autogenrep the autogenrep to set
-     */
 
 }

@@ -32,12 +32,6 @@ import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
-import org.hisp.dhis.linelisting.LineListElement;
-
 public class ValidateLineListGroupAddAction
     implements Action
 {
@@ -58,14 +52,14 @@ public class ValidateLineListGroupAddAction
     {
         this.i18n = i18n;
     }
-
+/*
     private DataBaseManagerInterface dataBaseManagerInterface;
 
     public void setDataBaseManagerInterface( DataBaseManagerInterface dataBaseManagerInterface )
     {
         this.dataBaseManagerInterface = dataBaseManagerInterface;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -89,12 +83,20 @@ public class ValidateLineListGroupAddAction
     {
         this.shortName = shortName;
     }
-
-    private String selectedList;
-
-    public void setSelectedList( String selectedList )
+/*
+    private List<String> selectedList;
+    
+    public void setSelectedList( List<String> selectedList )
     {
         this.selectedList = selectedList;
+    }
+ */   
+    private Integer selectedListNumber;
+    
+    
+    public void setSelectedListNumber( Integer selectedListNumber )
+    {
+        this.selectedListNumber = selectedListNumber;
     }
 
     // -------------------------------------------------------------------------
@@ -115,6 +117,11 @@ public class ValidateLineListGroupAddAction
         // ---------------------------------------------------------------------
         // Validating LineList fields
         // ----------------------------------------------------------------------
+        
+        //System.out.println( "Size of selectedList is: " + selectedList.size() );
+        System.out.println( "selectedList Number  is: " + selectedListNumber );
+      
+ 
         if ( name == null )
         {
             message = i18n.getString( "specify_name" );
@@ -177,7 +184,27 @@ public class ValidateLineListGroupAddAction
                 return INPUT;
             }
         }
-
+        
+      if ( selectedListNumber == 0 )
+            
+        {
+            //System.out.println( "selectedList is null" + selectedList );
+            message = i18n.getString( "specify_group_members" );
+            
+            return INPUT;
+            
+         }         
+ /*       
+       if ( selectedList == null || selectedList.size() == 0 )
+            
+        {
+            //System.out.println( "selectedList is null" + selectedList );
+            message = i18n.getString( "specify_group_members" );
+            
+            return INPUT;
+            
+         } 
+  */       
 		/*
         LineListGroup lineListGroup = lineListService.getLineListGroup( id );
         List<LineListElement> oldElements = new ArrayList<LineListElement>( lineListGroup.getLineListElements() );

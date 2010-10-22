@@ -35,13 +35,7 @@
       <many-to-many column="sourceid" 
         class="org.hisp.dhis.source.Source"/>
     </set>
-	  
-    <set name="lockedPeriods" table="datasetlockedperiods">
-      <key column="datasetid"/>
-      <many-to-many column="periodid" 
-        class="org.hisp.dhis.period.Period"/>
-    </set>
-	  
+	  	  
 	<set name="sections" order-by="sortorder" inverse="true" cascade="all">
       <key column="datasetid"/>      
       <one-to-many class="org.hisp.dhis.dataset.Section"/>

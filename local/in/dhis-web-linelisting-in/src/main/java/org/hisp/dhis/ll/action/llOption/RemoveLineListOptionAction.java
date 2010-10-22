@@ -27,16 +27,16 @@ package org.hisp.dhis.ll.action.llOption;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.linelisting.LineListElement;
+import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.Collection;
-import java.util.Iterator;
-import javax.swing.JOptionPane;
-import org.hisp.dhis.linelisting.LineListElement;
-import org.hisp.dhis.linelisting.LineListOption;
 
 public class RemoveLineListOptionAction
     implements Action
@@ -93,7 +93,8 @@ public class RemoveLineListOptionAction
             System.out.println( "____________option = " + option );
 
             Collection<LineListElement> allLineListElements = lineListService.getAllLineListElements();
-            Iterator groupIterator = allLineListElements.iterator();
+            Iterator<LineListElement> groupIterator = allLineListElements.iterator();
+           // Iterator groupIterator = allLineListElements.iterator();
             while ( groupIterator.hasNext() )
             {
                 LineListElement element = (LineListElement) groupIterator.next();

@@ -1,24 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addDataElementCategoryForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addDataElementCategoryForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddDataElementCategory();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
-
+	jQuery(document).ready(	function(){
+			validation( 'addDataElementCategoryForm', validateAddDataElementCategory );				
+	});
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "create_new_data_element_category" )</h3>
 
 <form id="addDataElementCategoryForm" name="addDataElementCategoryForm" action="addDataElementCategory.action" method="post">
@@ -34,7 +19,7 @@
     </tr>      
     <tr>
       <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="conceptName" name="conceptName" style="width:25em" maxlength="10" class="{validate:{minlength:2,maxlength:10}}"></td>
+      <td><input type="text" id="conceptName" name="conceptName" style="width:25em" maxlength="10" class="{validate:{required:true,minlength:2,maxlength:10}}"></td>
       <td></td>
     </tr>   
     <tr>

@@ -15,12 +15,12 @@
 	<!-- Data source -->
 	
     <tr>
-        <th>$i18n.getString( "data_source" )</th>
+        <th>$i18n.getString( "method" )</th>
     </tr>
     <tr>
     	<td>
 			<select id="doDataMart" name="doDataMart" style="width:325px">
-				<option value="true">$i18n.getString( "aggregate_data" )</a>
+				<option value="true">$i18n.getString( "get_updated_data" )</a>
 				<option value="false">$i18n.getString( "use_existing_data" )</a>
 			</select>
 		</td>

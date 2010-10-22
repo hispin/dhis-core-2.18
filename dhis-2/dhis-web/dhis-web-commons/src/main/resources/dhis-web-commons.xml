@@ -103,7 +103,7 @@
 
 		<default-interceptor-ref name="exceptionStack" />
 
-		<global-results>
+		<global-results>					
 			<result name="exceptionDefault" type="velocity">/exception.vm</result>
 			<result name="accessDenied" type="velocity">/accessDenied.vm</result>
 			<result name="jsonAccessDenied" type="velocity">/dhis-web-commons/ajax/jsonAccessDenied.vm</result>
@@ -277,11 +277,6 @@
 		<action name="i18nJavaScriptSupport" class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="velocity">/dhis-web-commons/i18n/i18n.vm</result>			
 		</action>
-		
-		<action name="validationMessages" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity">/dhis-web-commons/util/validate/message.vm</result>			
-		</action>
-
 
 	</package>
 
@@ -339,7 +334,7 @@
 			class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlOrganisationUnits.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
+			<param name="onExceptionReturn">plainTextError</param>			
 		</action>
 
 		<action name="getOrganisationUnitChildren"
@@ -526,11 +521,7 @@
 			class="org.hisp.dhis.useraccount.action.GetCurrentUserAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-commons/useraccount/updateUserAccountForm.vm</param>
-			<param name="javascripts">/dhis-web-commons/useraccount/userAccount.js,
-				../dhis-web-commons/util/validate/jquery.validate.js,
-				../dhis-web-commons/util/jquery.metadata.js,
-				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/validationMessages.action</param>
+			<param name="javascripts">/dhis-web-commons/useraccount/userAccount.js</param>
 		</action>
 
 		<action name="updateUserAccount"

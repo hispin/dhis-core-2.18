@@ -1,15 +1,9 @@
-
-var aKey	= null;
-var aMerged = null;
-
-function previewAdvandReport() {
-
-	aKey	= null;
-	aMerged = null;
+function previewAdvandReport() 
+{	
 	
 	var params = "reportId=" + byId('report').value + "&periodId=" + byId('period').value + "&organisationGroupId=" + byId("availableOrgunitGroups").value;
 	
-	$("#processing").showAtCenter(true);
+	lockScreen();
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
@@ -22,16 +16,13 @@ function previewReport() {
 	
 	var report = getFieldValue('report');
 	if(report.length == 0){
-		setMessage(i18n_specify_report);
+		showErrorMessage(i18n_specify_report);
 		return;
 	}
 	
-	aKey	= null;
-	aMerged = null;
+	lockScreen();
 	
 	var url = "previewReportExcel.action?reportId=" + getListValue('report') + "&periodId=" + getListValue('period');
-
-	$("#processing").showAtCenter(true);
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'reportXML' );
@@ -40,58 +31,10 @@ function previewReport() {
 	
 }
 
-function previewReportReceived( reportXML ) {
-	
-	createTabs( reportXML );	
-	setMergedNumberForEachCell( reportXML );
-	exportFromXMLtoHTML( reportXML );
-	
-	deleteDivEffect();
-	$("#processing").hide();
-	
-}
-
-function createTabs( reportXML )
+function previewReportReceived( parentElement ) 
 {
-	var _tabs = document.getElementById( 'tabs' );
-	
-	if ( _tabs != null )
-	{	
-		byId( "previewDiv" ).removeChild( _tabs );
-	}
-
-	_tabs 	 = document.createElement( "div" );
-	_tabs.id = "tabs";
-	_tabs.style.display = "none";
-	
-	byId( "previewDiv" ).appendChild( _tabs );
-	
-	var _createDivs  = "";
-	var _createTabs  = "<ul>";
-	var _sheets		 = reportXML.getElementsByTagName( "sheet" );
-		
-	for( var i = 0 ; i < _sheets.length ; i++ )
-	{
-		var _id = getRootElementAttribute( _sheets[i], "id" );
-		
-		_createTabs += "<li><a href='#fragment-" + _id + "'>" + getElementValue( _sheets[i], "name" ) + "</a></li>";
-		_createDivs += "<div id='fragment-" + _id + "'></div>";
-	}
-	
-	_createTabs += "</ul>";	
-	
-	byId("tabs").innerHTML = _createTabs + _createDivs;	
-	
-	// Apply tab
-	$("#tabs").tabs({ collapsible : true });
-}
-
-
-function setMergedNumberForEachCell( parentElement ) {
-		
-	aKey 		= new Array();
-	aMerged 	= new Array();
-	
+	var aKey 		= new Array();
+	var aMerged 	= new Array();	
 	var cells 	= parentElement.getElementsByTagName( 'cell' );
 	
 	for (var i  = 0 ; i < cells.length ; i ++)
@@ -99,21 +42,6 @@ function setMergedNumberForEachCell( parentElement ) {
 		aKey[i]	= cells[i].getAttribute( 'iKey' );
 		aMerged[i]	= cells[i].firstChild.nodeValue;
 	}
-}
-
-function getMergedNumberForEachCell( sKey ) {
-
-	for (var i = 0 ; i < aKey.length ; i ++)
-	{
-		if ( sKey == aKey[i] )
-		{
-			return Number(aMerged[i]);
-		}
-	}
-return 1;
-}
-
-function exportFromXMLtoHTML( parentElement ) {
 
 	var _index		= 0;
 	var _orderSheet	= 0;
@@ -122,11 +50,19 @@ function exportFromXMLtoHTML( parentElement ) {
 	var _rows 		= "";
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
+	var tabsHTML 	= '<div id="tabs">';
+	var titleHTML 	= '<ul>';
+	var contentsHTML= '';
 	
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
+		// Create tab name
+		titleHTML += '<li><a href="#tabs-' + s + '">' + getElementValue( _sheets[s], "name" ) + '</a></li>';
+	
 		_rows 		= _sheets[s].getElementsByTagName( 'row' );
 		_orderSheet	= getRootElementAttribute( _sheets[s], "id" );
+		
+		contentsHTML += '<div id="tabs-' + s + '">';
 
 		_sHTML = "<table class='formatTablePreview'>";
 		
@@ -155,7 +91,7 @@ function exportFromXMLtoHTML( parentElement ) {
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
-					_colspan 		= getMergedNumberForEachCell( _sPattern );
+					_colspan 		= getMergedNumberForEachCell( _sPattern, aKey, aMerged );
 					
 					// Jumping for <For Loop> AND <Empty Cells>
 					j 		= Number(j) + Number(_colspan);
@@ -177,27 +113,42 @@ function exportFromXMLtoHTML( parentElement ) {
 			}
 			_sHTML += "</tr>";
 		}
-		_sHTML += "</table><br/>";
+		_sHTML += "</table><br/>";		
 		
-		if ( byId( "fragment-" + _orderSheet ) != null )
-		{
-			byId( "fragment-" + _orderSheet ).innerHTML = _sHTML;
-		}
+		contentsHTML += _sHTML;
+		contentsHTML += '</div>';
 	}
+	titleHTML += '</ul>';
 	
-	showById("tabs");
-	showById("printExcelReportButton");
+	tabsHTML += titleHTML;
+	tabsHTML += contentsHTML;	
+	tabsHTML += '</div>';
 	
-	window.status = "DATAWARE HOUSE";
-	window.stop();
+	jQuery( '#previewDiv' ).html( tabsHTML );
+	
+	jQuery('#tabs').tabs({ collapsible : true });
+	
+	enable( 'printExcelReportButton' );
+
+	unLockScreen();	
+	
 }
 
-function printExcelReportPreview()
+function getMergedNumberForEachCell( sKey, aKey, aMerged ) {
+
+	for (var i = 0 ; i < aKey.length ; i ++)
+	{
+		if ( sKey == aKey[i] )
+		{
+			return Number(aMerged[i]);
+		}
+	}
+return 1;
+}
+
+function printReport()
 {
-	var o = $("div#previewDiv");
-	o.jqprint();
+	var tab = jQuery('#tabs').tabs().data('selected.tabs');	
 	
-	// or
-	//$("#tabs").jqprint();
-	//$('#divOpera').jqprint({ operaSupport: true });
+	jQuery( "#tabs-" + tab ).jqprint();
 }

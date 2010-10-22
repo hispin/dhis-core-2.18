@@ -21,4 +21,8 @@ public interface SqlViewExpandStore
     void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName );
 
     Collection<String> getAllResourceProperties( String resourceTableName );
+    
+    String testSqlGrammar( String sql );
+    
+    String setUpJoinQuery( Collection<String> tables );
 }

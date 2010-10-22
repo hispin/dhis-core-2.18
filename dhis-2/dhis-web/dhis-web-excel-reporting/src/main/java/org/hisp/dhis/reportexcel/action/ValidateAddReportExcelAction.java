@@ -43,87 +43,31 @@ public class ValidateAddReportExcelAction
 
     private ReportExcelService reportService;
 
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
     private String name;
 
-    private String excel;
-
-    private String groupName;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }
-
-    public void setGroupName( String groupName )
-    {
-        this.groupName = groupName;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
 
-    public void setExcel( String excel )
-    {
-        this.excel = excel;
-    }
-
-    public String getReportType( String reportType )
-    {
-        return reportType;
-    }
-
     public String execute()
         throws Exception
     {
-
-        if ( name == null )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-        if ( name.trim().length() == 0 )
-        {
-            message = i18n.getString( "name_is_null" );
-            return ERROR;
-        }
-
         ReportExcel reportExcel = reportService.getReportExcel( name );
 
         if ( reportExcel != null )
         {
             message = i18n.getString( "name_ready_exist" );
-            return ERROR;
-        }             
 
-        if ( excel == null )
-        {
-            message = i18n.getString( "excel_is_null" );
-            return ERROR;
-        }
-        if ( excel.trim().length() == 0 )
-        {
-            message = i18n.getString( "excel_is_null" );
-            return ERROR;
-        }
-        
-        if ( groupName == null )
-        {
-            message = i18n.getString( "please_enter_group_name" );
-            return ERROR;
-        }
-        if ( groupName.trim().length() == 0 )
-        {
-            message = i18n.getString( "please_enter_group_name" );
             return ERROR;
         }
 

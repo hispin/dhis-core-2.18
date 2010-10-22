@@ -36,6 +36,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datalock.DataSetLock;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -125,9 +127,9 @@ public class ExcelImportResultAction
 
     private DataElementCategoryService dataElementCategoryService;
 
-    public DataElementCategoryService getDataElementCategoryService()
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        return dataElementCategoryService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     private CurrentUserService currentUserService;
@@ -135,6 +137,13 @@ public class ExcelImportResultAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private DataSetLockService dataSetLockService;
+    
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
     }
 
     private SessionFactory sessionFactory;
@@ -212,13 +221,6 @@ public class ExcelImportResultAction
     {
         return mathTool;
     }
-
-    // private OrganisationUnit selectedOrgUnit;
-
-    // public OrganisationUnit getSelectedOrgUnit()
-    // {
-    // return selectedOrgUnit;
-    // }
 
     private List<OrganisationUnit> orgUnitList;
 
@@ -493,17 +495,26 @@ public class ExcelImportResultAction
     {
         return columnEnd;
     }
+    
+    private Integer dataSetId;
+    
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    OrganisationUnit orgUnit;
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-
-        // -------------------------------------------------------------------------
-        // Action implementation
-        // -------------------------------------------------------------------------
+        // Initialization
 
         statementManager.initialise();
-        // Initialization
         raFolderName = reportService.getRAFolderName();
 
         InputStream inputStream = null;
@@ -538,10 +549,6 @@ public class ExcelImportResultAction
 
         inputStream = new BufferedInputStream( new FileInputStream( file ) );
 
-        // path = newpath + File.separator + raFolderName + File.separator +
-        // excelImportFolderName
-        // + File.separator + fileName;
-
         String excelTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + excelImportFolderName + File.separator + "template" + File.separator + reportFileNameTB;
 
@@ -551,12 +558,6 @@ public class ExcelImportResultAction
             + excelImportFolderName + File.separator + "pending" + File.separator + fileName;
 
         file.renameTo( new File( excelFilePath ) );
-
-        // if ( file.renameTo( new File( excelFilePath ) ) )
-        // {
-        // System.out.println( "FILE PATH : \t" + file.getAbsolutePath() + "\t
-        // name " + file.getName() );
-        // }
 
         moveFile( file, new File( excelFilePath ) );
 
@@ -588,16 +589,27 @@ public class ExcelImportResultAction
         if ( reportModelTB.equalsIgnoreCase( "STATIC" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>();
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+            orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList.add( orgUnit );
 
         }
 
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        
         selectedPeriod = periodService.getPeriod( availablePeriods );
 
         sDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
 
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
+
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, orgUnit );
+        
+        if( dataSetLock != null )
+        {
+            message = "Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for the selected Excel Template is locked.";
+            
+            return SUCCESS;
+        }
 
         // Getting DataValues
         dataValueList = new ArrayList<String>();
@@ -608,17 +620,15 @@ public class ExcelImportResultAction
         if ( deCodesList.isEmpty() )
             deCodesList = getDECodes( deCodesImportXMLFileName );
 
-        Iterator it = orgUnitList.iterator();
+        Iterator<OrganisationUnit> it = orgUnitList.iterator();
 
         OrganisationUnit currentOrgUnit = new OrganisationUnit();
 
         while ( it.hasNext() )
-
         {
-
             currentOrgUnit = (OrganisationUnit) it.next();
 
-            Iterator it1 = deCodesList.iterator();
+            Iterator<String> it1 = deCodesList.iterator();
             int count1 = 0;
             while ( it1.hasNext() )
             {
@@ -689,43 +699,32 @@ public class ExcelImportResultAction
                     {
                         dataValueService.addDataValue( dataValue );
                     }
-
                     catch ( Exception ex )
                     {
                         throw new RuntimeException( "Cannot add datavalue", ex );
-
                     }
-
                 }
                 else if ( oldValue != null && (!riRadio.equalsIgnoreCase( "reject" )) )
                 {
-
                     try
                     {
-
                         oldValue.setValue( value );
                         oldValue.setTimestamp( new Date() );
                         oldValue.setStoredBy( storedBy );
 
                         dataValueService.updateDataValue( oldValue );
                     }
-
                     catch ( Exception ex )
                     {
                         throw new RuntimeException( "Cannot add datavalue", ex );
-
                     }
-
                 }
-
                 else
                 {
                     count1++;
 
                     continue;
                 }
-
-                // }
 
                 count1++;
             }// inner while loop end
@@ -743,7 +742,6 @@ public class ExcelImportResultAction
 
     public List<Calendar> getStartingEndingPeriods( String deType, Calendar tempStartDate, Calendar tempEndDate )
     {
-
         List<Calendar> calendarList = new ArrayList<Calendar>();
 
         Period previousPeriod = new Period();

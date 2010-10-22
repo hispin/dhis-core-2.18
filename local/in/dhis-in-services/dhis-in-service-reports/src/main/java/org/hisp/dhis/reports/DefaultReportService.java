@@ -4,30 +4,26 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodStore;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.system.util.MathUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,8 +35,7 @@ import org.xml.sax.SAXParseException;
 public class DefaultReportService
     implements ReportService
 {
-    private static final String NULL_REPLACEMENT = "0";
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -51,49 +46,34 @@ public class DefaultReportService
     {
         this.reportStore = reportStore;
     }
-    
+
     private ConfigurationService configurationService;
-    
+
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
     }
 
-    private PeriodStore periodStore;
+    private JdbcTemplate jdbcTemplate;
 
-    public void setPeriodStore( PeriodStore periodStore )
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
-        this.periodStore = periodStore;
-    }
-    
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    private DataValueService dataValueService;
+    private PeriodService periodService;
 
-    public void setDataValueService( DataValueService dataValueService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.dataValueService = dataValueService;
+        this.periodService = periodService;
     }
 
-    private DataElementCategoryService dataElementCategoryService;
+    private DataSetService dataSetService;
 
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataElementCategoryService = dataElementCategoryService;
+        this.dataSetService = dataSetService;
     }
-
-    private DataMartStore dataMartStore;
-    
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
-    }
-
 
     // -------------------------------------------------------------------------
     // Report_in
@@ -160,21 +140,87 @@ public class DefaultReportService
     }
 
     @Transactional
-    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source, String reportType )
+    public Collection<Report_in> getReportsByPeriodSourceAndReportType( PeriodType periodType, Source source,
+        String reportType )
     {
         return reportStore.getReportsByPeriodSourceAndReportType( periodType, source, reportType );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Support Methods Defination
+    // -------------------------------------------------------------------------
+
+    public String getRAFolderName()
+    {
+        String raFolderName = "ra_national";
+
+        try
+        {
+            raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "Exception : " + e.getMessage() );
+            return null;
+        }
+
+        return raFolderName;
+    }
+
+    public List<Integer> getLinelistingRecordNos( OrganisationUnit organisationUnit, Period period, String lltype )
+    {
+        List<Integer> recordNosList = new ArrayList<Integer>();
+
+        String query = "";
+
+        int dataElementid = 1020;
+
+        if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" )
+            || lltype.equalsIgnoreCase( "lllivebirth-l5DECodes.xml" )
+            || lltype.equalsIgnoreCase( "lllivebirth-l6DECodes.xml" ) )
+            dataElementid = 1020;
+        else if ( lltype.equalsIgnoreCase( "lldeath-l4DECodes.xml" )
+            || lltype.equalsIgnoreCase( "lldeath-l5DECodes.xml" ) || lltype.equalsIgnoreCase( "lldeath-l6DECodes.xml" ) )
+            dataElementid = 1027;
+        else if ( lltype.equalsIgnoreCase( "llmaternaldeath-l4DECodes.xml" )
+            || lltype.equalsIgnoreCase( "llmaternaldeath-l5DECodes.xml" )
+            || lltype.equalsIgnoreCase( "llmaternaldeath-l6DECodes.xml" ) )
+            dataElementid = 1032;
+
+        try
+        {
+            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                + period.getId() + " AND sourceid = " + organisationUnit.getId();
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            while ( rs1.next() )
+            {
+                recordNosList.add( rs1.getInt( 1 ) );
+            }
+
+            Collections.sort( recordNosList );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+        }
+
+        return recordNosList;
+    }
+
     public List<Report_inDesign> getReportDesign( Report_in report )
     {
         List<Report_inDesign> deCodes = new ArrayList<Report_inDesign>();
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
-        
-        String path = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + report.getXmlTemplateName();
-        
-        if( path == null )
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
+            .getValue();
+
+        String path = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
+            + report.getXmlTemplateName();
+
+        if ( path == null )
         {
-            System.out.println("DHIS2_HOME is not set");
+            System.out.println( "DHIS2_HOME is not set" );
         }
 
         try
@@ -195,18 +241,19 @@ public class DefaultReportService
             {
                 Element deCodeElement = (Element) listOfDECodes.item( s );
                 NodeList textDECodeList = deCodeElement.getChildNodes();
-                
+
                 String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
                 String stype = deCodeElement.getAttribute( "stype" );
                 String ptype = deCodeElement.getAttribute( "type" );
                 int sheetno = new Integer( deCodeElement.getAttribute( "sheetno" ) );
-                int rowno =  new Integer( deCodeElement.getAttribute( "rowno" ) );
+                int rowno = new Integer( deCodeElement.getAttribute( "rowno" ) );
                 int colno = new Integer( deCodeElement.getAttribute( "colno" ) );
                 int rowMerge = new Integer( deCodeElement.getAttribute( "rowmerge" ) );
                 int colMerge = new Integer( deCodeElement.getAttribute( "colmerge" ) );
-                
-                Report_inDesign reportDesign = new Report_inDesign( stype, ptype, sheetno, rowno, colno, rowMerge, colMerge, expression );
-                
+
+                Report_inDesign reportDesign = new Report_inDesign( stype, ptype, sheetno, rowno, colno, rowMerge,
+                    colMerge, expression );
+
                 deCodes.add( reportDesign );
 
             }// end of for loop with s var
@@ -227,13 +274,12 @@ public class DefaultReportService
         }
         return deCodes;
     }// getDECodes end
-    
-    
+
     /*
      * Returns Previous Month's Period object For ex:- selected period is
      * Aug-2007 it returns the period object corresponding July-2007
      */
-    public Period getPreviousPeriod(Date startDate, Date endDate)
+    public Period getPreviousPeriod( Date startDate, Date endDate )
     {
         Period period = new Period();
         Calendar tempDate = Calendar.getInstance();
@@ -252,11 +298,11 @@ public class DefaultReportService
 
         return period;
     }
-    
+
     /*
-     * Returns the Period Object of the given date
-     * For ex:- if the month is 3, year is 2006 and periodType Object of type Monthly then
-     * it returns the corresponding Period Object
+     * Returns the Period Object of the given date For ex:- if the month is 3,
+     * year is 2006 and periodType Object of type Monthly then it returns the
+     * corresponding Period Object
      */
     public Period getPeriodByMonth( int month, int year, PeriodType periodType )
     {
@@ -281,15 +327,14 @@ public class DefaultReportService
         else if ( periodType.getName().equals( "Yearly" ) )
         {
             cal.set( year, Calendar.DECEMBER, 31 );
-        }        
+        }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        System.out.println( lastDay.toString() );        
+        System.out.println( lastDay.toString() );
         Period newPeriod = new Period();
-        newPeriod = periodStore.getPeriod( firstDay, lastDay, periodType );      
+        newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
     }
 
-    
     public List<Calendar> getStartingEndingPeriods( String deType, Date startDate, Date endDate )
     {
         List<Calendar> calendarList = new ArrayList<Calendar>();
@@ -359,149 +404,87 @@ public class DefaultReportService
 
         return calendarList;
     }
-
-    
-    public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit, String aggCB )
+  
+    public List<Period> getMonthlyPeriods( Date start, Date end )
     {
-        try
+        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( start, end ) );
+        PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
+
+        List<Period> monthlyPeriodList = new ArrayList<Period>();
+        Iterator<Period> it = periodList.iterator();
+        while ( it.hasNext() )
         {
-            int deFlag1 = 0;
-            int deFlag2 = 0;
-            
-            List<Period> periodList = new ArrayList<Period>(periodStore.getIntersectingPeriods( startDate, endDate ));
-            
-            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
-
-            Matcher matcher = pattern.matcher( formula );
-            StringBuffer buffer = new StringBuffer();
-
-            String resultValue = "";
-
-            while ( matcher.find() )
+            Period period = (Period) it.next();
+            if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
-                String replaceString = matcher.group();
-
-                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
-
-                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
-
-                int dataElementId = Integer.parseInt( replaceString );
-                int optionComboId = Integer.parseInt( optionComboIdStr );
-
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( dataElement == null || optionCombo == null )
-                {
-                    replaceString = "";
-                    matcher.appendReplacement( buffer, replaceString );
-                    continue;
-                }
-                
-                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                {
-                    //double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
-                    
-                    double aggregatedValue = 0.0;
-                    for(Period p : periodList)
-                    {
-                        double tempAggVal = dataMartStore.getAggregatedValue( dataElement, optionCombo, p, organisationUnit );                                    
-
-                        if( tempAggVal != -1 )
-                        {
-                            aggregatedValue += tempAggVal;
-                        }
-                    }    
-                    
-                    replaceString = String.valueOf( aggregatedValue );
-
-                    deFlag2 = 1;                                                                                                                               
-                }
-                else
-                {
-                    deFlag1 = 1;
-                                           
-                    for( Period p : periodList )
-                    {
-                        DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, p, optionCombo );
-
-                        if ( dataValue != null )
-                        {                            
-                            replaceString += dataValue.getValue();
-                        }                        
-                    }
-
-                    if ( replaceString == null )
-                        replaceString = "";
-                }
-                matcher.appendReplacement( buffer, replaceString );
-
-                resultValue = replaceString;
+                monthlyPeriodList.add( period );
             }
-
-            matcher.appendTail( buffer );
-
-            if ( deFlag1 == 0 )
-            {
-
-                double d = 0.0;
-                try
-                {
-                    d = MathUtils.calculateExpression( buffer.toString() );
-                }
-                catch ( Exception e )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                }
-                if ( d == -1 )
-                {
-                    d = 0.0;
-                    resultValue = "";
-                }
-                else
-                {
-
-                    // This is to display financial data as it is like 2.1476838
-                    resultValue = "" + d;
-
-                    // These lines are to display financial data that do not
-                    // have decimals
-                    d = d * 10;
-
-                    if ( d % 10 == 0 )
-                    {
-                        resultValue = "" + (int) d / 10;
-                    }
-
-                    d = d / 10;
-
-                    // These line are to display non financial data that do not
-                    // require decimals
-                    //if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
-                    //    resultValue = "" + (int) d;
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
-                }
-
-            }
-            else
-            {
-                resultValue = buffer.toString();
-            }
-
-            if ( resultValue.equalsIgnoreCase( "" ) )
-                resultValue = " ";
-
-            return resultValue;
         }
-        catch ( NumberFormatException ex )
-        {
-            throw new RuntimeException( "Illegal DataElement id", ex );
-        }
+        return monthlyPeriodList;
     }
+
+    /*
+     * Returns the PeriodType Object based on the Period Type Name For ex:- if
+     * we pass name as Monthly then it returns the PeriodType Object for Monthly
+     * PeriodType If there is no such PeriodType returns null
+     */
+    public PeriodType getPeriodTypeObject( String periodTypeName )
+    {
+        Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
+        PeriodType periodType = null;
+        Iterator<PeriodType> iter = periodTypes.iterator();
+        while ( iter.hasNext() )
+        {
+            PeriodType tempPeriodType = (PeriodType) iter.next();
+            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
+            {
+                periodType = tempPeriodType;
+                break;
+            }
+        }
+        if ( periodType == null )
+        {
+            System.out.println( "No Such PeriodType" );
+            return null;
+        }
+        return periodType;
+    }
+
+    /*
+     * Returns the child tree of the selected Orgunit
+     */
+    public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU )
+    {
+        List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
+        Iterator<OrganisationUnit> it = selecteOU.getChildren().iterator();
+        while ( it.hasNext() )
+        {
+            OrganisationUnit orgU = (OrganisationUnit) it.next();
+            ouList.add( orgU );
+        }
+        return ouList;
+    }
+
+    /*
+     * Returns the PeriodType Object for selected DataElement, If no PeriodType
+     * is found then by default returns Monthly Period type
+     */
+    public PeriodType getDataElementPeriodType( DataElement de )
+    {
+        List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Iterator<DataSet> it = dataSetList.iterator();
+        while ( it.hasNext() )
+        {
+            DataSet ds = (DataSet) it.next();
+            List<DataElement> dataElementList = new ArrayList<DataElement>( ds.getDataElements() );
+            if ( dataElementList.contains( de ) )
+            {
+                return ds.getPeriodType();
+            }
+        }
+
+        return null;
+
+    } // getDataElementPeriodType end
+
 }

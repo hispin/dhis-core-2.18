@@ -29,6 +29,7 @@ package org.hisp.dhis.ll.action.llgroup;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
@@ -80,29 +81,47 @@ public class RemoveLineListGroupAction
     {
         return message;
     }
-
+    
+    private int noOfRows;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     public String execute()
         throws Exception
     {
-        try
-        {
-            dataBaseManagerInterface.dropTable( lineListService.getLineListGroup( id ).getShortName() );
-
-            lineListService.deleteLineListGroup( lineListService.getLineListGroup( id ) );
-        }
-        catch ( DeleteNotAllowedException ex )
-        {
-            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+       
+        noOfRows = dataBaseManagerInterface.rowCount( lineListService.getLineListGroup( id ).getShortName() );
+     
+       System.out.println("No of Rows in Table: " +lineListService.getLineListGroup( id ).getShortName() + "  is: " + noOfRows );
+       
+       if ( noOfRows != 0 )
+           
+       {
+           //System.out.println( "selectedList is null" + selectedList );
+          // message = i18n.getString( "specify_group_members" );
+           System.out.println("No of Rows in Table: " +lineListService.getLineListGroup( id ).getShortName() + "  is: " + noOfRows );
+          // return INPUT;
+           
+        }         
+       
+       else
+       {
+            try
             {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
-
-                return ERROR;
+                dataBaseManagerInterface.dropTable( lineListService.getLineListGroup( id ).getShortName() );
+    
+                lineListService.deleteLineListGroup( lineListService.getLineListGroup( id ) );
             }
-        }
-        
+            catch ( DeleteNotAllowedException ex )
+            {
+                if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+                {
+                    message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+    
+                    return ERROR;
+                }
+            }
+       }
         return SUCCESS;
     }
 }

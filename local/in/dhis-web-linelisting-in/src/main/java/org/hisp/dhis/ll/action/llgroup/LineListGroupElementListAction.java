@@ -27,18 +27,15 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
-import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
+
+import com.opensymphony.xwork2.Action;
 
 public class LineListGroupElementListAction
     implements Action
@@ -63,13 +60,14 @@ public class LineListGroupElementListAction
         this.displayPropertyHandler = displayPropertyHandler;
     }
 
+/*
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-
+*/
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
@@ -91,14 +89,14 @@ public class LineListGroupElementListAction
     {
         return periodTypes;
     }
-
+/*
     private String periodTypeSelect;
 
     public void setPeriodTypeSelect( String periodTypeSelect )
     {
         this.periodTypeSelect = periodTypeSelect;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------

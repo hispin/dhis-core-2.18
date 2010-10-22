@@ -29,14 +29,13 @@ package org.hisp.dhis.ll.action.llOption;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.linelisting.comparator.LineListOptionNameComparator;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.linelisting.comparator.LineListOptionNameComparator;
 
 public class GetLineListOptionListAction
     implements Action
@@ -55,14 +54,14 @@ public class GetLineListOptionListAction
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
-
+/*
     private Comparator<LineListOption> lineListOptionNameComparator;
 
     public void setLineListOptionComparator( Comparator<LineListOption> lineListOptionNameComparator )
     {
         this.lineListOptionNameComparator = lineListOptionNameComparator;
     }
-
+*/
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -82,7 +81,7 @@ public class GetLineListOptionListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+   // @SuppressWarnings( "unchecked" )
     public String execute()
     {
         lineListOptions = new ArrayList<LineListOption>( lineListService.getAllLineListOptions() );

@@ -31,14 +31,15 @@
 		#set( $mark = 0 )
 	#else
 		#set( $mark = 1 )
-	#end
-	#set( $optionComboId = 1 )   
+	#end	
+	
+	#set( $optionComboId = $defaultOptionComboId )
 	#set( $dataValue = false )	
-	#set( $dataValue = $dataValueMap.get( "$dataElement.id:$optionComboId" ) )
+	#set( $dataValue = $dataValueMap.get( "$dataElement.id:$defaultOptionComboId" ) )
 	#set( $calculatedValue = false )
 	#set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )
 	#set( $minMax = false )
-	#set( $minMax = $minMaxMap.get( "$dataElement.id:$optionComboId" ) )
+	#set( $minMax = $minMaxMap.get( "$dataElement.id:$defaultOptionComboId" ) )
 	#set( $calculated = false )
 	#set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
 	<tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
@@ -68,7 +69,7 @@
 		##min value
 		<td>
 		#if( $dataElement.type == "int" )
-			<div id="value[$dataElement.id:$optionComboId].min" style="text-align:center">$!minMax.min</div>
+			<div id="value[$dataElement.id:$defaultOptionComboId].min" style="text-align:center">$!minMax.min</div>
 		#end
 		</td>
 		
@@ -76,12 +77,12 @@
 		<td>
 		      
 		    #set( $greyedField = "false" )		         
-            #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionComboId" ) )  	
+            #set( $greyedField = $greyedFields.get( "$dataElement.id:$defaultOptionComboId" ) )  	
 		   
-		    #set( $dataEntryId = "value[$dataElement.id].value:value[$optionComboId].value" )
+		    #set( $dataEntryId = "value[$dataElement.id].value:value[$defaultOptionComboId].value" )
 		    ##Data Entry
 			#if( $dataElement.type == "bool" )
-			 <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean( $dataElement.id, $optionComboId, this )" #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $greyedField == "true" ) disabled="disabled"#end>
+			 <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean( $dataElement.id, $defaultOptionComboId, this )" #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $greyedField == "true" ) disabled="disabled"#end>
 				<option value="">[$i18n.getString( "no_value" )]</option>
 				<option value="true" #if( $datavalue && $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( $datavalue && $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
@@ -107,8 +108,8 @@
                         #end
                     #end  
                         #if($coun>0)   
-                            <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean( $dataElement.id, $optionComboId, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField == "true" ) disabled="disabled"#end>
-                            <option value="" </option>                
+                            <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean( $dataElement.id, $defaultOptionComboId, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField == "true" ) disabled="disabled"#end>
+                            <option value="">[$i18n.getString( "please_select" )] </option>                
                                 #foreach($customValue in $customValues)
                                     #if($dataElement.id == $customValue.dataElement.id && $dataValue.optionCombo.id == $customValue.optionCombo.id)
                                 <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>   
@@ -117,7 +118,7 @@
                             </select>
                         #else
                         #set( $zeroValueSaveMode = true )
-                               <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionComboId, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionComboId, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField == "true" ) disabled="disabled"#end>                                
+                               <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $defaultOptionComboId, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $defaultOptionComboId, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField == "true" ) disabled="disabled"#end>                                
                         #end    
                 #end           
 
@@ -131,7 +132,7 @@
 			     <input name="entryfield" id="$dataEntryId" class="calculated" type="text" value="#if($dataValue) $!encoder.htmlEncode( $dataValue.value ) #elseif( $calculatedValue )$!encoder.htmlEncode( $calculatedValue ) #end" disabled="disabled" onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" #if( $greyedField == "true" ) disabled="disabled"#end>
 			    #else 
                     #if ( $dataElement.type != "string")
-			         <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $optionComboId, '$encoder.jsEncode( $dataElement.name )' )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $greyedField == "true" ) disabled="disabled"#end>
+			         <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveValue( $dataElement.id, $defaultOptionComboId, '$encoder.jsEncode( $dataElement.name )' )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $greyedField == "true" ) disabled="disabled"#end>
                     #end
                 #end
 		  #end
@@ -140,7 +141,7 @@
 		##max value
 		<td>
 		#if( $dataElement.type == "int" )
-			<div id="value[$dataElement.id:$optionComboId].max" style="text-align:center">$!minMax.max</div>
+			<div id="value[$dataElement.id:$defaultOptionComboId].max" style="text-align:center">$!minMax.max</div>
 		#end
 		</td>
 		

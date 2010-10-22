@@ -20,15 +20,6 @@
 		</property>
 	</bean>
 		
-    <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
-        <sec:filter-chain-map path-type="ant">
-        <sec:filter-chain pattern="/dhis-web-commons/security/**" filters="none"/>
-        <sec:filter-chain pattern="/dhis-web-commons/util/**" filters="none"/>
-        <sec:filter-chain pattern="/dhis-web-commons/css/**" filters="none"/>
-        <sec:filter-chain pattern="/**" filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,basicAuthenticationFilter,requiredLoginFilter"/>
-        </sec:filter-chain-map>
-    </bean>
-		
 	<bean id="org.hisp.dhis.webportal.module.ConfigurableModuleComparator"
 		class="org.hisp.dhis.webportal.module.ConfigurableModuleComparator">
 		<property name="order">
@@ -273,6 +264,15 @@
 		
     <!-- Security : Filter -->
 	
+    <bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+        <sec:filter-chain-map path-type="ant">
+        <sec:filter-chain pattern="/dhis-web-commons/security/**" filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/util/**" filters="none"/>
+        <sec:filter-chain pattern="/dhis-web-commons/css/**" filters="none"/>
+        <sec:filter-chain pattern="/**" filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,basicAuthenticationFilter,requiredLoginFilter"/>
+        </sec:filter-chain-map>
+    </bean>
+		
 	<bean id="httpSessionContextIntegrationFilter"
 		class="org.springframework.security.web.context.HttpSessionContextIntegrationFilter" />
 
@@ -284,14 +284,14 @@
 		<property name="filterProcessesUrl" value="/dhis-web-commons-security/login.action" />
 	</bean>
 
-        <bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler" >
-          <property name="defaultTargetUrl" value="/dhis-web-commons-security/loggedIn.action" />
-          <property name="alwaysUseDefaultTargetUrl" value="true" />
-        </bean>
+    <bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler" >
+        <property name="defaultTargetUrl" value="/dhis-web-commons-security/loggedIn.action" />
+        <property name="alwaysUseDefaultTargetUrl" value="true" />
+    </bean>
         
-        <bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
-          <property name="defaultFailureUrl" value="/dhis-web-commons/security/loginfailed.jsp" />
-        </bean>
+    <bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
+        <property name="defaultFailureUrl" value="/dhis-web-commons/security/loginfailed.jsp" />
+    </bean>
 
 	<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
 		<constructor-arg value="/" />

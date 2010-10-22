@@ -84,7 +84,7 @@
 
     <td>
         <center><input type="submit" value="Save"> </center>
-        <input type="text" id="reportedDate" name="reportedDate">
+        <input type="hidden" id="reportedDate" name="reportedDate">
     </td>
     <td>
         <input type="hidden" name="recordsFromDb" id="recordsFromDb" value="$maxRecord">

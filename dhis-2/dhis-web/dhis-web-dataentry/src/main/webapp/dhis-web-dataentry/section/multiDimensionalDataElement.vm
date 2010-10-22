@@ -89,7 +89,7 @@
                             #end  
                             #if($coun>0)   
                                 <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField == "true" ) disabled="disabled"#end>
-                                    <option value="" </option>                
+                                    <option value="">[$i18n.getString( "please_select" )] </option>                
                                     #foreach($customValue in $customValues)
                                         #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)
                                             <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>   

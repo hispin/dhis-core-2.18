@@ -297,13 +297,13 @@ function addNewRow()
 	    oCell.innerHTML = "<input type='text' id='le"+ tableRowCount +"' name='le"+ tableRowCount +"' data='{pos:\"left\"}' onfocus='updateFocus(this)'>";
 	
 	    oCell = newRow.insertCell(1);
-	    oCell.innerHTML = "<select id='operator"+ tableRowCount +"' name='operator"+ tableRowCount +"'><option value='NA'>Select</option><option value='less_than'>&lt;</option><option value='greater_than'>&gt;</option><option value='less_than_equal'>&le;</option><option value='greater_than_equal'>&ge;</option><option value='equal'>=</option><option value='not_equal'>!=</option><option value='in'>IN</option><option value='diff'>DIFF</option></select>";
+	    oCell.innerHTML = "<select id='operator"+ tableRowCount +"' name='operator"+ tableRowCount +"'><option value='NA'>Select</option><option value='\<'>&lt;</option><option value='\>'>&gt;</option><option value='\<='>&le;</option><option value='\>='>&ge;</option><option value='\='>=</option><option value='!='>!=</option><option value='in'>IN</option><option value='diff'>DIFF</option></select>";
 	        
 	    oCell = newRow.insertCell(2);
 	    oCell.innerHTML = "<input type='text' id='re"+ tableRowCount +"' name='re"+ tableRowCount +"' data='{pos:\"right\"}' onfocus='updateFocus(this)'>";
 	    
 	    oCell = newRow.insertCell(3);    	
-		oCell.innerHTML = "<select id='andor"+ tableRowCount +"' name='andor"+ tableRowCount +"' onchange='addNewRow()'><option value='NA'>Select</option><option value='and'>AND</option><option value='or'>OR</option></select>";
+		oCell.innerHTML = "<select id='andor"+ tableRowCount +"' name='andor"+ tableRowCount +"' onchange='addNewRow()'><option value='NA'>Select</option><option value='AND'>AND</option><option value='OR'>OR</option></select>";
 	
 	    oCell = newRow.insertCell(4);
 		oCell.innerHTML = "<a href='#Delete table row' onclick='removeRecord(this,"+tableRowCount+")' title='remove' )><img src='../images/delete.png' alt='remove'></a>";

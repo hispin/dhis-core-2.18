@@ -29,14 +29,13 @@ package org.hisp.dhis.ll.action.llgroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
 
 public class GetLineListGroupListAction
     implements Action
@@ -55,14 +54,14 @@ public class GetLineListGroupListAction
     // -------------------------------------------------------------------------
     // Comparator
     // -------------------------------------------------------------------------
-
+/*
     private Comparator<LineListGroup> lineListGroupNameComparator;
 
     public void setLineListGroupComparator( Comparator<LineListGroup> lineListGroupNameComparator )
     {
         this.lineListGroupNameComparator = lineListGroupNameComparator;
     }
-
+*/
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
@@ -82,7 +81,7 @@ public class GetLineListGroupListAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
+ //   @SuppressWarnings( "unchecked" )
     public String execute()
     {
         lineListGroups = new ArrayList<LineListGroup>( lineListService.getAllLineListGroups() );

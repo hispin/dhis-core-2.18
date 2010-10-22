@@ -42,8 +42,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * Updates a existing sqlview to the database.
  * 
  * @author Dang Duy Hieu
- * @version $Id$
- * @since 2010-07-06
+ * @version $Id ExecuteSqlViewQueryAction.java July 06, 2010$
  */
 public class ExecuteSqlViewQueryAction
     extends ActionSupport

@@ -206,7 +206,31 @@ public class MySQLDataBaseManager
 
         return doNotDelete;
     }
-
+    
+// function for row count
+    public int rowCount( String tableName )
+    {
+        int noOfRows = 0;
+        try
+        {
+           //String rowCount = null;
+            //Connection connection = jdbcTemplate.getDataSource().getConnection();
+            String query = "SELECT COUNT(*) FROM " + tableName;
+           // String query = "select * from " + tableName + " ;";
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+           
+            if( rs.next() )
+            {
+                noOfRows = rs.getInt( 1 );
+            }
+        } 
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        return noOfRows;
+    }
+    
     public boolean updateTable( String tableName, List<LineListElement> removeList, List<LineListElement> addList )
     {
 

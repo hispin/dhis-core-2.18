@@ -5,5 +5,5 @@
 	<row>$excelItem.row</row>	
 	<column>$excelItem.column</column>
 	<expression>$encoder.xmlEncode( $excelItem.expression )</expression>
-	<sheetNo>$encoder.xmlEncode( $excelItem.sheetNo )</sheetNo>
+	<sheetNo>$excelItem.sheetNo</sheetNo>
 </excelitem>

@@ -7,28 +7,17 @@
   	{validate:{required:true}}
   #end
 #end
+
 <script>
-jQuery(document).ready(function(){
-	  //-----------------------------------------------------------------------
-	  //init jQuery validation for updatePatientForm
-	  //-----------------------------------------------------------------------
-		jQuery("#updatePatientForm").validate({
-			 meta:"validate"
-			,errorElement:"td"
-			,submitHandler: function(form)
-							{
-								validateUpdatePatient();
-							}
-		});
-		jQuery.validator.setMessages( validationMessage );
-		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});
-		jQuery("#firstName").focus();
-		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});
-		
+	jQuery(document).ready(	function(){
+		validation( 'updatePatientForm', validateUpdatePatient );		
 		datePickerValid( 'birthDate' );
-});
+		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});		
+		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});	
+	});		
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
+
 <h3>$i18n.getString( "update_patient" )</h3>
 
 <form id="updatePatientForm" action="updatePatient.action" method="post">

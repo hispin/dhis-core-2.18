@@ -156,7 +156,7 @@ public class SqlView
     @Override
     public String toString()
     {
-        return "[ Name: " + name + ", sqlQuery: " + sqlQuery + " ]";
+        return "[ Name: " + name + ",\n\n sqlQuery: " + sqlQuery + " ]";
     }
 
 }

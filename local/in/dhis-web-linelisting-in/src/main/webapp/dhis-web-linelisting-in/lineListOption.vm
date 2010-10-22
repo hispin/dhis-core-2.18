@@ -1,6 +1,5 @@
 
-    <font face"Arial" color="blue"><H1>Line List Option Page</H1></font>
-
+<font face"Arial" color="blue"><H1>$i18n.getString( "line_list_option" )</H1></font>
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
@@ -26,7 +25,7 @@
 				<tr>
 					<td#alternate( $mark )>$encoder.htmlEncode( $lineListOption.name )</td>
 					<td style="text-align:center"#alternate( $mark )><a href="showUpdateLineListOptionForm.action?id=$lineListOption.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-					<td style="text-align:center"#alternate( $mark )><a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=LineListOption&amp;objectId=$lineListOption.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>
+					<!--<td style="text-align:center"#alternate( $mark )><a href="$i18n.getString( "translation_translate" )" title="$i18n.getString( "translation_translate" )" onclick="this.href='javascript:location.href= \'../dhis-web-commons/i18n.action?className=LineListOption&amp;objectId=$lineListOption.id&amp;returnUrl=\' + location.href'"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a></td>-->
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:removeLineListOption( $lineListOption.id, '$encoder.jsEncode( $lineListOption.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
 					<td style="text-align:center"#alternate( $mark )><a href="javascript:showLineListOptionDetails( $lineListOption.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
 				</tr>

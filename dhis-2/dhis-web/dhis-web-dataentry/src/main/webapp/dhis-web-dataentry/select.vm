@@ -8,7 +8,7 @@
 </div>
 
 <form id="selectForm" name="selectForm" method="post" action="select.action">
-
+<input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
 <div id="actions" style="width:200px text-align:right">
 	
     <input type="button" value="$i18n.getString( "change_order" )" onclick="changeOrder()" style="width:150px" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry", "getDataElementOrder" ) || !$useDefaultForm) disabled="disabled" #end><br>

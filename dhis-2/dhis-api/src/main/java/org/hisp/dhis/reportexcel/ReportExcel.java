@@ -47,13 +47,13 @@ public abstract class ReportExcel
 
     private String name;
 
-    private int periodRow;
+    private Integer periodRow;
 
-    private int periodColumn;
+    private Integer periodColumn;
 
-    private int organisationRow;
+    private Integer organisationRow;
 
-    private int organisationColumn;
+    private Integer organisationColumn;
 
     private Set<ReportExcelItem> reportExcelItems;
 
@@ -219,42 +219,42 @@ public abstract class ReportExcel
         this.name = name;
     }
 
-    public int getPeriodRow()
+    public Integer getPeriodRow()
     {
         return periodRow;
     }
 
-    public void setPeriodRow( int periodRow )
+    public void setPeriodRow( Integer periodRow )
     {
         this.periodRow = periodRow;
     }
 
-    public int getPeriodColumn()
+    public Integer getPeriodColumn()
     {
         return periodColumn;
     }
 
-    public void setPeriodColumn( int periodColumn )
+    public void setPeriodColumn( Integer periodColumn )
     {
         this.periodColumn = periodColumn;
     }
 
-    public int getOrganisationRow()
+    public Integer getOrganisationRow()
     {
         return organisationRow;
     }
 
-    public void setOrganisationRow( int organisationRow )
+    public void setOrganisationRow( Integer organisationRow )
     {
         this.organisationRow = organisationRow;
     }
 
-    public int getOrganisationColumn()
+    public Integer getOrganisationColumn()
     {
         return organisationColumn;
     }
 
-    public void setOrganisationColumn( int organisationColumn )
+    public void setOrganisationColumn( Integer organisationColumn )
     {
         this.organisationColumn = organisationColumn;
     }

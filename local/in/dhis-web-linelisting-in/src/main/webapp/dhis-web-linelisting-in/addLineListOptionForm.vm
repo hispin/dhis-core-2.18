@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "create_new_line_list_option" )</h3>
+<h3>$i18n.getString( "add_line_list_option" )</h3>
 
 <form id="addLineListOptionForm" action="addLineListOption.action" method="post" onsubmit="return validateAddLineListOption()">
 

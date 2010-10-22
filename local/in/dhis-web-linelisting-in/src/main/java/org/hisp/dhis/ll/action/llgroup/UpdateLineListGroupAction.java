@@ -27,22 +27,21 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.linelisting.LineListGroup;
-import org.hisp.dhis.linelisting.LineListService;
-
-import com.opensymphony.xwork2.ActionSupport;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import javax.swing.JOptionPane;
+
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListElement;
+import org.hisp.dhis.linelisting.LineListGroup;
+import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
+import com.opensymphony.xwork2.Action;
+
 public class UpdateLineListGroupAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -135,13 +134,20 @@ public class UpdateLineListGroupAction
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
-
+        
+        System.out.println("Group Id for Updation is :" + id );
+        System.out.println("name of Group is  :" + name );
         if ( description != null && description.trim().length() == 0 )
         {
             description = null;
         }
 
         shortName = shortName.replaceAll( " ", "_" );
+        System.out.println("Short name of Group :" + shortName );
+        System.out.println("Period Type of Group :" + periodTypeSelect );
+        
+        System.out.println("Description of Group :" + description );
+        
 
         // ---------------------------------------------------------------------
         // Update data element
@@ -171,15 +177,19 @@ public class UpdateLineListGroupAction
                     }
                     updatedDataElementList.add( element );
                 }
+                System.out.println("message : " + newElements.isEmpty() );
             }
+            //System.out.println("selectedList is not null" + selectedList );
         }
-
+        System.out.println("Size of old Elements" + oldElements.size() );
+        
         for ( int i = 0; i < oldElements.size(); i++ )
         {
             if ( !( updatedDataElementList.contains( oldElements.get( i ) ) ) )
             {
 
                 boolean doNotDelete = dataBaseManagerInterface.checkDataFromTable( lineListGroup.getShortName(), oldElements.get( i ) );
+                System.out.println("boolean : " + doNotDelete );
                 if ( !doNotDelete )
                 {
                     System.out.println( "element that should be removed is: " + oldElements.get( i ) + " " + lineListGroup.getShortName() );

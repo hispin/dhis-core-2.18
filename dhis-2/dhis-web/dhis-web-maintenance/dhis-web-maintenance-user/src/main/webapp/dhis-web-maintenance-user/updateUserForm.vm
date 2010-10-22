@@ -1,33 +1,11 @@
-
 <script>
-
-//-----------------------------------------------------------------------
-//init jQuery validation for addUserForm
-//
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#updateUserForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,beforeValidateHandler : function()
-											{
-												selectAllById('selectedList');
-											}
-					,submitHandler: function(form)
-									{
-										validateUpdateUser();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#rawPassword").focus();
-			}
-	);
-
+	jQuery(document).ready(	function(){
+		validation( 'updateUserForm', validateUpdateUser, function(){ selectAllById('selectedList') } );				
+	});		
 </script>
+
 <h3>$i18n.getString( "edit_user" )</h3>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <form id="updateUserForm" action="updateUser.action" method="post" >
 	
   <div>

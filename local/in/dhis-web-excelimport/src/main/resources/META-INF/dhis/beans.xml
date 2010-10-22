@@ -26,8 +26,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.excelimport.action.ExcelImportResultAction"
 		scope="prototype">		
 	    <property name="statementManager" ref="statementManager"/>
-	    <property name="dataElementCategoryOptionComboService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
+	    <property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	    </property>
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -47,6 +47,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportService">
 			<ref bean="org.hisp.dhis.excelimport.util.ReportService"/>
 		</property>
+		<property name="dataSetLockService">
+            <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
+        </property>
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
 		</property>
@@ -104,6 +107,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
+		<property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
 	</bean>
 	
 	<!-- Report Service -->

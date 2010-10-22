@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "define_dataset_associations" )</h3>
+<h3>$i18n.getString( "define_linelistgroup_associations" )</h3>
 
 <h4>$encoder.htmlEncode( $lineListGroup.name )</h4>
 

@@ -24,25 +24,14 @@
                 ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
-	        <!--<interceptor-ref name="fileUploadStack"/>-->
 		</action>
 		
-	<!--
-		<action name="excelResultForm"
-			class="org.hisp.dhis.excelimport.action.ExcelImportResultAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<result name="notvalid"  type="redirect">reject.action</result>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/reports.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-	        <interceptor-ref name="fileUploadStack"/>
-		</action>
-	-->	
-
-		<action name="excelResultForm" class="org.hisp.dhis.excelimport.action.ExcelImportResultAction">
-		    <result name="success" type="chain">excelImportForm</result>
-	        <interceptor-ref name="fileUploadStack"/>
-		</action>
+        <action name="excelResultForm" class="org.hisp.dhis.excelimport.action.ExcelImportResultAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-excelimport/responseStatus.vm</param>
+            <param name="menu">/dhis-web-excelimport/menu.vm</param>
+            <interceptor-ref name="fileUploadStack"/>
+        </action>
 
 		<action name="rejectImport"
 			class="org.hisp.dhis.excelimport.action.RejectAction">
@@ -56,13 +45,11 @@
 	        <interceptor-ref name="fileUploadStack"/>
 		</action>
 		
-		
-				<!-- AJAX Requests -->
+		<!-- AJAX Requests -->
 		<action name="getDataElements"
 			class="org.hisp.dhis.excelimport.action.GetDataElementsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responseDataElement.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -70,7 +57,6 @@
 			class="org.hisp.dhis.excelimport.action.GetPeriodsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responsePeriod.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -80,7 +66,6 @@
 				/dhis-web-excelimport/responseImportReport.vm</result>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/reports.js,../dhis-web-commons/lists/lists.js,javascript/hashtable.js</param>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -88,7 +73,6 @@
 			class="org.hisp.dhis.excelimport.action.GetOrgUnitsAction">
 			<result name="success" type="velocity">
 				/dhis-web-excelimport/responseOrgUnit.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		

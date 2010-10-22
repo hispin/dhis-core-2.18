@@ -5,22 +5,17 @@
 
 	jQuery(document).ready(function() {
 	
-		jQuery("#addSqlViewForm").validate({
-			 meta:"validate"
-			,errorElement:"td"
-			,submitHandler: function(form)
-							{
-								validateAddUpdateSqlView( 'add' );
-							}
+		validation( 'addSqlViewForm', function() {
+			validateAddUpdateSqlView( 'add' );
 		});
-		jQuery.validator.setMessages( validationMessage );
-		jQuery("#name").focus();
 		
+		hideById("mainDesignQueryDiv");
 		initHtml(i18n_resourcetables, i18n_sorttypes);
 		initField("resource-table-combo1", "sort-property-combo1");
 		applyAutocompleteSupporting(jQuery.merge(criteria_clone, keywords), "sqlquery", $("#sqlquery").width() );
-		applyAutocompleteSupporting(criteria_operators, "criteria_and_property1", $("#criteria_and_property1").width()+50 );
-		applyAutocompleteSupporting(criteria_operators, "criteria_or_property1", $("#criteria_or_property1").width()+50 );
+		applyAutocompleteSupporting(criteria_operators, "criteria_and_property1", 225 );
+		applyAutocompleteSupporting(criteria_operators, "criteria_or_property1", 225 );
+		
 	});
 
 </script>
@@ -55,8 +50,8 @@
 	</table>
 
 </form>
-
 <br/><br/>
+
 <div id="mainDesignQueryDiv">
 	<table id="mainTable">
 		<tr id="mainRow">
@@ -108,7 +103,7 @@
 			</td>
 		</tr>
 	</table><br/>
-	<input type="button" id="designQueryButton" value="$i18n.getString( 'generate_query' )" style="width:10em" onclick="setUpQuery()"/>
+	<input type="button" id="designQueryButton" value="$i18n.getString( 'generate_query' )" style="width:10em" onclick="getJoinTable()"/>
 	<input type="button" value="$encoder.htmlEncode($i18n.getString( 'add_new_field' ))" onclick="generateQueryColumn('mainRow')"/>
 	<input type="button" value="$encoder.htmlEncode($i18n.getString( 'reset' ))" onclick="removeAllQueryColumn()"/>
 	<br/>

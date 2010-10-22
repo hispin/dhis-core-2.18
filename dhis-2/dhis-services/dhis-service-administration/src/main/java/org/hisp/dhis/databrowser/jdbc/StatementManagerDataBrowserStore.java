@@ -675,22 +675,22 @@ public class StatementManagerDataBrowserStore
              * The current organization unit
              */
             sb.append( "SELECT DISTINCT o.organisationunitid AS parentid, o.name AS OrganisationUnit, COUNT(value) as countdv_descendants, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
-            sb.append( "FROM OrganisationUnit o " );
-            sb.append( "JOIN DataValue dv ON ( dv.sourceid = o.organisationunitid ) " );
-            sb.append( "JOIN Period p ON ( p.periodid = dv.periodid ) " );
+            sb.append( "FROM organisationunit o " );
+            sb.append( "JOIN datavalue dv ON ( dv.sourceid = o.organisationunitid ) " );
+            sb.append( "JOIN period p ON ( p.periodid = dv.periodid ) " );
             sb.append( "WHERE o.parentid = '" + orgUnitSelected + "' " );
             sb.append( "AND dv.periodid = '" + periodid + "' " );
-            sb.append( "GROUP BY o.organisationunitid, OrganisationUnit, p.periodid, p.startDate " );
+            sb.append( "GROUP BY o.organisationunitid, OrganisationUnit, p.periodid, p.startdate " );
             sb.append( "UNION " );
 
             /**
              * All descendant levels of selected organization unit
              */
             sb.append( "SELECT DISTINCT ou" + orgIndex + ".organisationunitid AS parentid, ou" + orgIndex + ".name AS OrganisationUnit, COUNT(value) as countdv_descendants, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
-            sb.append( "FROM DataValue dv " );
-            sb.append( "JOIN OrganisationUnit ou ON ( ou.organisationunitid = dv.sourceid ) " );
+            sb.append( "FROM datavalue dv " );
+            sb.append( "JOIN organisationunit ou ON ( ou.organisationunitid = dv.sourceid ) " );
             this.setUpQueryForJOINTable( sb, diffLevel );
-            sb.append( "JOIN Period p ON ( p.periodid = dv.periodid ) " );
+            sb.append( "JOIN period p ON ( p.periodid = dv.periodid ) " );
             sb.append( "WHERE dv.periodid = '" + periodid + "' " );
             sb.append( "AND dv.sourceid IN " );
             sb.append( "( " );
@@ -707,12 +707,12 @@ public class StatementManagerDataBrowserStore
     {
         int j = curLevel;
 
-        String oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " FROM OrgunitStructure os WHERE os.idlevel" + (j)
+        String oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " FROM _orgunitstructure os WHERE os.idlevel" + (j)
             + " = '" + orgUnitSelected + "'";
 
         for ( j++; j < (maxLevel); j++ )
         {
-            oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " as descendant FROM OrgunitStructure os WHERE idlevel"
+            oldSQL = "SELECT DISTINCT idlevel" + (j + 1) + " as descendant FROM _orgunitstructure os WHERE idlevel"
                 + (j) + " IN ( " + oldSQL + " ) ";
         }
 
@@ -723,8 +723,7 @@ public class StatementManagerDataBrowserStore
     {
         sb.delete( 0, sb.capacity() );
 
-        sb
-            .append( "SELECT parentid, organisationunit, sum(countdv_descendants) AS counts_of_aggregated_values, periodid, columnheader " );
+        sb.append( "SELECT parentid, organisationunit, sum(countdv_descendants) AS counts_of_aggregated_values, periodid, columnheader " );
         sb.append( "FROM view_count_descentdants " );
         sb.append( "GROUP BY parentid, organisationunit, periodid, columnheader " );
         sb.append( "ORDER BY periodid; " );

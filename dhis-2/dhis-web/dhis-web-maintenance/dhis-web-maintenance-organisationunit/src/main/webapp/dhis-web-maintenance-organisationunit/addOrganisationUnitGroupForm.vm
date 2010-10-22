@@ -1,25 +1,9 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addOrganisationUnitGroupForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addOrganisationUnitGroupForm").validate({
-					  meta:"validate"
-					,errorElement:"span"
-					,errorClass:"error"
-					,submitHandler: function(form)
-									{
-										validateAddOrganisationUnitGroup();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-				jQuery("#name").focus();
-			}
-	);
+	jQuery(document).ready(	function(){
+			validation( 'addOrganisationUnitGroupForm', validateAddOrganisationUnitGroup );				
+	});	
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 
 <h3>$i18n.getString( "crease_new_org_unit_group" )</h3>
 

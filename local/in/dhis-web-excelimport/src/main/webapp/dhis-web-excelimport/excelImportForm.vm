@@ -1,192 +1,150 @@
-<html>
-    <head>
-        <title>Excel Import Form</title>
-        <script>
-            //Global Variables
-            var selriRadioButton = "overWrite";
-            var reportModels = new HashTable();
-            var reportFileNames = new HashTable();
-			var checkerFileNames = new HashTable();
-            // OrganisationUnit ids and its Names
-            ##var orgUnits = new HashTable();
-            ##foreach($orgUnit in $organisationUnits)
-                ##    var orgUnitId = ""+$orgUnit.getId();
-                ##    orgUnits.put(orgUnitId,"$orgUnit.getShortName()");
-                ##end
-                // OrganisationUnit ids and its Level
-                ##var orgUnitLevels = new HashTable();
-                ##foreach($orgUnit in $organisationUnits)
-                    ##    var orgUnitId = ""+$orgUnit.getId();
-                    ##    orgUnitLevels.put(orgUnitId,"$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit )");
-                    ##end
-                    
-                    function formValidations()
-                    {			            
-                    var reportListIndex = document.reportForm.reportList.selectedIndex;
-                    var periodIndex = document.reportForm.availablePeriods.selectedIndex;
-                    var periodIDIndex = document.reportForm.periodTypeId.selectedIndex;
-                    //alert("periodIDIndex = "+periodIDIndex+ " periodIndex = " +periodIndex + " period value = " +document.reportForm.availablePeriods.options[periodIndex].text);
-                    var orgunitIdValue = document.reportForm.ouIDTB.value;
-                        if(reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
-                        else if(document.reportForm.availablePeriods.options[periodIndex].text == null || document.reportForm.availablePeriods.options[periodIndex].text== "") {alert("Please Select Period"); return false;}
-                        else if(document.reportForm.periodTypeId.options[periodIDIndex].value == "NA") {alert("Please Select Period Type"); return false;}
-                        else if(orgunitIdValue == null || orgunitIdValue=="" || orgunitIdValue==" ") {alert("Please Select OrganisationUnit"); return false;}
 
-                        document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
-                        document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
-                        document.reportForm.checkerFileNameTB.value = checkerFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+<script>
 
-                        /*
-                        var k=0;
-                        if(selriRadioButton == "dataElementsRadio")
-                        {
-                        document.ChartGenerationForm.overWrite.selected = true;
-                        }
-                        else
-                        {
-                        document.ChartGenerationForm.reject.selected = true;
-                        }
-                        */
-                      return true;
-                     }
+    //Global Variables
+    var selriRadioButton = "overWrite";
+    var reportModels = new HashTable();
+    var reportFileNames = new HashTable();
+    var checkerFileNames = new HashTable();
+    var reportDatasets = new HashTable();
 
-//-----------------------------------------------------------------------
-//init jQuery validation for reportForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#reportForm").validate({
-				 	 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-					{
-						submitImportForm();
-					}
-				});
-				jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-				jQuery("#name").focus();
-			}
-	);
-	
+    function formValidations()
+    {                       
+        var reportListIndex = document.reportForm.reportList.selectedIndex;
+        var periodIndex = document.reportForm.availablePeriods.selectedIndex;
+        var periodIDIndex = document.reportForm.periodTypeId.selectedIndex;
+        var orgunitIdValue = document.reportForm.ouIDTB.value;
+
+        if(reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
+        else if(document.reportForm.availablePeriods.options[periodIndex].text == null || document.reportForm.availablePeriods.options[periodIndex].text== "") {alert("Please Select Period"); return false;}
+        else if(document.reportForm.periodTypeId.options[periodIDIndex].value == "NA") {alert("Please Select Period Type"); return false;}
+        else if(orgunitIdValue == null || orgunitIdValue=="" || orgunitIdValue==" ") {alert("Please Select OrganisationUnit"); return false;}
+
+        document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
+        document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+        document.reportForm.checkerFileNameTB.value = checkerFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+        document.reportForm.dataSetId.value = reportDatasets.get(document.reportForm.reportList.options[reportListIndex].value);
+
+        return true;
+    }
+
+    //-----------------------------------------------------------------------
+    //init jQuery validation for reportForm
+    //-----------------------------------------------------------------------
+    jQuery(document).ready(
+            function()
+            {
+                jQuery("#reportForm").validate({
+                     meta:"validate"
+                    ,errorElement:"td"
+                    ,submitHandler: function(form)
+                    {
+                        submitImportForm();
+                    }
+                });
+                jQuery("#name").focus();
+            }
+    );
+    
 </script>
-</head>
-<body>
-    <h1>Excel Import Form</h1>
-    <hr />
-    <br />
-    <form id="reportForm" name="reportForm" method="post" enctype="multipart/form-data" action="excelResultForm.action">
+
+<h1>Excel Import Form</h1>
+<hr /><br />
+    
+<form id="reportForm" name="reportForm" method="post" enctype="multipart/form-data" action="excelResultForm.action">
     <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
-    ##<form id="reportForm" name="reportForm" method="post" enctype="multipart/form-data" action="excelResultForm.action" onsubmit="submitForm(); return validateExcelImport()">
-        <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
-            <tr>
-                <td class="NormalB">
-                    PeriodType : <br />
-                    <select id="periodTypeId" name="periodTypeId" style="width:200px" onchange="getPeriods()">
-                        <option value="NA">[ Select PeriodType ]</option>
-                        #foreach ( $type in $periodTypes )
-                            <option value="$type.name">$type.name</option>
-                        #end
-                    </select>
-                </td>
-                <td class="NormalB">                            
-                    OrganisationUnit : <br />
-                    <input type="text" name="ouNameTB" id="ouNameTB" size="20" class="{validate:{required:true}}" disabled >
-</td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td class="NormalB">
-        Periods : <br />
-        <select id="availablePeriods" name="availablePeriods" style="width:200px" class="{validate:{required:true}}">
-            <option value="EMPTY_PLACEHOLDER_VALUE"></option>
-        </select>
-        <select multiple id="selectedPeriods" name="selectedPeriods" style="display:none; width:200px; height:0px">
-            <option value="EMPTY_PLACEHOLDER_VALUE"></option>
-        </select>
-    </td>
-    <td class="NormalB">
-        Reports :<br />
-        <select id="reportList" name="reportList" style="width:200px" class="{validate:{required:true}}">
-            #foreach ( $report in $reportList )
-                <option value="$!report.name">$!report.name</option>
-            #end
-        </select>
-    </td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td class="NormalB">
-        <input type="radio" id="riRadio" name="riRadio" value="overWrite" checked> New And Updates
-            &nbsp;
-            <br>
+    <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
+        <tr>
+            <td class="NormalB">
+                PeriodType : <br />
+                <select id="periodTypeId" name="periodTypeId" style="width:200px" onchange="getPeriods()">
+                    <option value="NA">[ Select PeriodType ]</option>
+                    #foreach ( $type in $periodTypes )
+                        <option value="$type.name">$type.name</option>
+                    #end
+                </select>
+            </td>
+            <td class="NormalB">                            
+                OrganisationUnit : <br />
+                <input type="text" name="ouNameTB" id="ouNameTB" size="20" class="{validate:{required:true}}" disabled >
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="NormalB">
+                Periods : <br />
+                <select id="availablePeriods" name="availablePeriods" style="width:200px" class="{validate:{required:true}}">
+                    <option value="EMPTY_PLACEHOLDER_VALUE"></option>
+                </select>
+            </td>
+            <td class="NormalB">
+                Reports :<br />
+                <select id="reportList" name="reportList" style="width:200px" class="{validate:{required:true}}">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="NormalB">
+                <input type="radio" id="riRadio" name="riRadio" value="overWrite" checked> New And Updates
+                &nbsp;<br>
                 <input type="radio" id="riRadio" name="riRadio" value="reject" > New (No Updates)
-</td>
-<td class="NormalB">
-    ##<input type="file" id="excelFile" name="excelFile" size="45"></td>
-    <input type="file" id="upload" name="upload" size="45" class="{validate:{required:true}}"></td>
-    <td>&nbsp;</td>
-</tr>
-<tr>
-    <td>&nbsp;</td>
-    <td>
-            <br>
-                <br>
-                    ##<input type="submit" name="importReport" value='Import Data' onclick="submitImportForm()">
-
-          <input type="submit" name="importReport" value='Import Data' style="width:13em">
-
-
-                    <input type="hidden" name="autogen" id="autogen" value="0" >
-                    <input type="hidden" name="ouIDTB" id="ouIDTB">
-                    ##<input type="hidden" name="ouLevelTB" id="ouLevelTB">
-                    <input type="hidden" name="reportModelTB" id="reportModelTB">
-                    <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-                    <input type="hidden" name="checkerFileNameTB" id="checkerFileNameTB">
-                    <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="excelImportReportsList.xml">
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<span id="message"></span>
-</td></tr>
-</table>
+            </td>
+            <td class="NormalB"><input type="file" id="upload" name="upload" size="45" class="{validate:{required:true}}"></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <br /><br />
+                <input type="submit" name="importReport" value='Import Data' style="width:13em">
+                <input type="hidden" name="autogen" id="autogen" value="0" >
+                <input type="hidden" name="ouIDTB" id="ouIDTB">
+                <input type="hidden" name="reportModelTB" id="reportModelTB">
+                <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+                <input type="hidden" name="checkerFileNameTB" id="checkerFileNameTB">
+                <input type="hidden" name="dataSetId" id="dataSetId">
+                <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="excelImportReportsList.xml">
+                
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><span id="message"></span></td>
+        </tr>
+    </table>
 </form>
 
 <script>
 
-function onloadFun()
-{
-	#if($message)
-		document.getElementById( 'message' ).innerHTML = '$message';
-    	document.getElementById( 'message' ).style.display = 'block';
-
-        setTimeout(
+    function onloadFun()
+    {
+        #if($message)
+            document.getElementById( 'message' ).innerHTML = '$message';
+            document.getElementById( 'message' ).style.display = 'block';
+            setTimeout(
                 function()
                 {
                     document.getElementById( 'message' ).style.display = 'none';
                 },
                 4000
-        );
-    	
-    #end
-}
-
-onloadFun();
+            );  
+        #end
+    }
+    
+    onloadFun();
+    
 </script>
-</body>
-</html>

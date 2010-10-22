@@ -88,7 +88,7 @@ public class RemoveSelectedOrganisationUnitAction
 
     public String execute()
         throws Exception
-    {
+    { 
         try
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );

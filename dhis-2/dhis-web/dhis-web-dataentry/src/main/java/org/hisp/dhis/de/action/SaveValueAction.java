@@ -41,6 +41,7 @@ import org.hisp.dhis.datavalue.DataValueAuditService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -52,7 +53,7 @@ import com.opensymphony.xwork2.Action;
 public class SaveValueAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( SaveValueAction.class );    
+    private static final Log log = LogFactory.getLog( SaveValueAction.class );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -85,19 +86,26 @@ public class SaveValueAction
     {
         this.dataValueAuditService = dataValueAuditService;
     }
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }    
+    }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +129,13 @@ public class SaveValueAction
     public int getDataElementId()
     {
         return dataElementId;
+    }
+
+    private int organisationUnitId;
+
+    public void setOrganisationUnitId( int organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     private int statusCode;
@@ -148,16 +163,16 @@ public class SaveValueAction
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()    
-    {    	
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+    public String execute()
+    {
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = selectedStateManager.getSelectedPeriod();
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        storedBy = currentUserService.getCurrentUsername();       
-        
+        storedBy = currentUserService.getCurrentUsername();
+
         if ( storedBy == null )
         {
             storedBy = "[unknown]";
@@ -167,18 +182,18 @@ public class SaveValueAction
         {
             value = null;
         }
-        
+
         if ( value != null )
         {
             value = value.trim();
-        }   
-        
+        }
+
         // ---------------------------------------------------------------------
         // Save or update
         // ---------------------------------------------------------------------
-        
+
         DataElementCategoryOptionCombo defaultOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+
         DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, defaultOptionCombo );
 
         if ( dataValue == null )
@@ -187,7 +202,8 @@ public class SaveValueAction
             {
                 log.debug( "Adding DataValue" );
 
-                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, defaultOptionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null,
+                    defaultOptionCombo );
 
                 dataValueService.addDataValue( dataValue );
             }
@@ -195,22 +211,22 @@ public class SaveValueAction
         else
         {
             log.debug( "Updating DataValue" );
-            
-            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), storedBy, new Date(), "");
-            
+
+            DataValueAudit audit = new DataValueAudit( dataValue, dataValue.getValue(), storedBy, new Date(), "" );
+
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );
-            
+
             // -----------------------------------------------------------------
             // Add DataValueAudit
             // -----------------------------------------------------------------
-            
+
             if ( value != null )
             {
-            	dataValueAuditService.addDataValueAudit( audit );
+                dataValueAuditService.addDataValueAudit( audit );
             }
         }
 
@@ -220,6 +236,6 @@ public class SaveValueAction
             this.storedBy = dataValue.getStoredBy();
         }
 
-        return SUCCESS;        
-    }    
+        return SUCCESS;
+    }
 }

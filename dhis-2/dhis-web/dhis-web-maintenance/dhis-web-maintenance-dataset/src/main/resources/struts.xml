@@ -47,9 +47,7 @@
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <result name="success" type="redirect">section.action</result>
-      <param name="javascripts">javascript/section.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+      <param name="javascripts">javascript/section.js</param>
     </action>
     
     <action name="validateSection"
@@ -78,9 +76,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <param name="javascripts">javascript/dataSet.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+      <param name="javascripts">javascript/dataSet.js</param>
     </action>
     
     <action name="updateSection"
@@ -97,9 +93,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/greySection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <param name="javascripts">javascript/dataSet.js,javascript/section.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+      <param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
     </action>  
 	  
 	<action name="saveSectionGreyStatus"
@@ -148,9 +142,7 @@
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addDataSet.vm</param>
-      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
     
@@ -178,9 +170,7 @@
       class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editDataSet.vm</param>
-      <param name="javascripts">javascript/dataSet.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+      <param name="javascripts">javascript/shortName.js,javascript/dataSet.js</param>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
     
@@ -280,9 +270,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/viewDataEntryForm.vm</param>
       <param name="javascripts">
-      javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+      javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js</param>
       <param name="stylesheets">css/cde.css</param>
     </action>
     
@@ -354,9 +342,11 @@
 	  <result name="success" type="velocity">/main.vm</result>
 	  <param name="page">/dhis-web-maintenance-dataset/showAssignMultiDataSetForm.vm</param>
 	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-	  <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/shortName.js,javascript/dataSet.js
-      ,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js,javascript/multiDataSet.js
-      ,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/validationMessages.action</param>
+	  <param name="javascripts">../dhis-web-commons/oust/oust.js,
+	  		javascript/shortName.js,
+	  		javascript/dataSet.js,
+	  		javascript/multiDataSet.js
+     </param>
 	</action>
 	
 	<action name="saveAssignMultiDataSetForOrgunit"
@@ -396,6 +386,35 @@
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
-	
+	 <!-- PivotDataSetAssociationTableService -->
+    
+    <action name="displayAssociationTableForm" class="org.hisp.dhis.dataset.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/viewPivotAssociationTableForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+      <param name="javascripts">javascript/pivotAssociationTable.js,javascript/criteria.js</param>
+      <param name="stylesheets">css/pivot.css</param>
+    </action>
+    
+    <action name="getPivotAssociationTable" class="org.hisp.dhis.dataset.action.pivotassociation.GetPivotDataSetAssocicationTableAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responsePivotAssociationTable.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.dataset.action.pivotassociation.GetOrganisationUnitLevelsAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responseOrganisationUnitLevel.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="getPeriodTypes" class="org.hisp.dhis.dataset.action.pivotassociation.GetPeriodTypesAction">
+      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responsePeriodType.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
+    <action name="defineAssociation" class="org.hisp.dhis.dataset.action.pivotassociation.DefineAssociationAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+    
   </package>
 </struts>

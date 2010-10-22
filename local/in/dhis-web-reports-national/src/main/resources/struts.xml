@@ -16,6 +16,146 @@
 			<param name="page">/dhis-web-reports/welcome.vm</param>
 			<param name="menu">/dhis-web-reports/menu.vm</param>
 		</action>
+		<!-- Reports Management start 07/08/2010 Global-->
+		<action name="reportManagement"
+			class="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/reportsList.vm</param>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="javascripts">
+				javascript/reportManagement.js,javascript/filterTable.js</param>
+		</action>
+		
+        <!-- Report Management Addition Start-->
+        <action name="addReportForm"
+            class="org.hisp.dhis.reports.reportmanagement.action.AddReportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/addReportForm.vm</param>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+            <param name="javascripts">javascript/reportManagement.js</param>
+        </action>
+        <action name="addReport"
+            class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction">
+            <result name="success" type="redirect">reportManagement.action</result>
+        </action>
+        <!-- Report Management Addition End-->
+		
+        <!-- Report Editing/Updation Start-->
+        <action name="editReportForm"
+            class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportForm">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/editReportForm.vm</param>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+            <param name="javascripts">javascript/reportManagement.js</param>
+        </action>
+        <action name="editReport"
+            class="org.hisp.dhis.reports.reportmanagement.action.UpdateReportAction">
+            <result name="success" type="redirect">reportManagement.action</result>
+        </action>
+		  <!-- Report Editing/Updation End-->
+
+		<!-- Report Management Validation during Addition or Updation of Report Start-->
+        <action name="validateReport"
+            class="org.hisp.dhis.reports.reportmanagement.action.ValidateReportAction">
+            <result name="success" type="velocity-xml">
+                /dhis-web-reports/responseReportManagementSuccess.vm</result>
+            <result name="input" type="velocity-xml">
+                /dhis-web-reports/responseReportManagementInput.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>		
+        <!-- Report Management Validation during Addition or Updation of Report End-->	
+
+        <!-- Get Report details Start-->
+        
+        <action name="getReport"
+            class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
+            <result name="success" type="velocity-xml">/dhis-web-reports/responseReportManagementObject.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>		
+       <!-- Get Report details end -->	
+										
+		<!-- Report Association start -->
+		
+		<action name="defineReportAssociationsForm"
+			class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
+			<result name="success" type="chain">
+				defineReportAssociationsFormChain</result>
+		</action>
+		<action name="defineReportAssociationsFormChain"
+			class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="page">/dhis-web-reports/reportAssociations.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+		</action>
+		<!-- Report Association save start -->
+		<action name="defineReportAssociations"
+			class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction">
+			<result name="success" type="redirect">
+				reportManagement.action</result>
+		</action>
+		<!-- Report Association save end -->
+		
+		<!-- Report Association Remove All start -->
+		<action name="unselectAll"
+			class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction">
+			<result name="success" type="chain">
+				getNumberOfLevelsSelectLevelChain</result>
+		</action>
+		<!-- Report Association Remove All end -->
+		
+		<!-- Report Association select/unselect All at Level start -->
+		<action name="selectLevel"
+			class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction">
+			<result name="success" type="chain">
+				getNumberOfLevelsSelectLevelChain</result>
+		</action>
+		<action name="unselectLevel"
+			class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction">
+			<result name="success" type="chain">
+				getNumberOfLevelsSelectLevelChain</result>
+			
+		</action>
+		<!-- Report Association select/unselect All at Level end -->
+		
+		<!-- Report Association select/unselect All at Group start -->
+		<action name="selectgroup"
+			class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction">
+			<result name="success" type="chain">
+				getNumberOfLevelsSelectLevelChain</result>
+		</action>
+		<action name="unselectgroup"
+			class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction">
+			<result name="success" type="chain">
+				getNumberOfLevelsSelectLevelChain</result>
+		</action>
+		<!-- Report Association select/unselect All at Group end -->
+		
+		<!-- Chain for Associations start-->
+		<action name="getNumberOfLevelsSelectLevelChain"
+			class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
+			<result name="success" type="chain">getReportSelectLevelChain</result>
+		</action>
+		<action name="getReportSelectLevelChain"
+			class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-reports/menu.vm</param>
+			<param name="page">/dhis-web-reports/reportAssociations.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+		</action>
+		<!-- Chain for Associations end-->
+		
+		<!-- Report Association end -->
+		<!-- Report Deletion -->
+		<action name="delReport"
+			class="org.hisp.dhis.reports.reportmanagement.action.DelReportAction">
+			<result name="success" type="redirect">
+				reportManagement.action</result>
+		</action>
+		<!-- Report Deletion end -->
+		<!-- Reports Management end 07/08/2010 Global-->
 		
 		<!-- Routine Reports -->
 		<action name="routineReportAnalyser"
@@ -108,12 +248,13 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-
-                <!-- BenificiaryInfo Reports -->
+		
+		<!-- BenificiaryInfo Reports -->
 		<action name="benificiaryInfoReportsAnalyser"
 			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/benificiaryInfoReportsForm.vm</param>
+			<param name="page">
+				/dhis-web-reports/benificiaryInfoReportsForm.vm</param>
 			<param name="menu">
 				/dhis-web-reports/menuWithTreeForBenificiaryInfo.vm</param>
 			<param name="javascripts">
@@ -121,7 +262,7 @@
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
-
+		
 		<action name="generateBenificiaryInfoReport"
 			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction">
 			<result name="success" type="stream">
@@ -131,7 +272,7 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-
+		
 		<!-- Portal Reports -->
 		<action name="portalReportsAnalyser"
 			class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">

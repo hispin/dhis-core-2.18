@@ -1,5 +1,11 @@
 <h2>Report Analyser</h2>
 <ul>
+    <li>Report Management</li>
+    <ul>
+        <li><a href = "reportManagement.action">Report Management</a></li>
+    </ul>
+</ul>
+<ul>
     <li>Report Analysis</li>
     <ul>
         <li><a href = "upwardReportAnalyser.action">GOI Reports</a></li>

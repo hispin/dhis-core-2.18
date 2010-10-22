@@ -117,7 +117,7 @@ $.blockUI.defaults = {
 		right:  	'10px',
 		border: 	'none',
 		padding:	'5px',
-		opacity:	0.6,
+		opacity:	1,
 		cursor: 	'default',
 		color:		'#fff',
 		backgroundColor: '#000',

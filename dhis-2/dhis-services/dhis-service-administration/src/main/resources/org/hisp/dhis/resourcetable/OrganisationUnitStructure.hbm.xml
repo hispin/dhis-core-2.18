@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-  <class name="org.hisp.dhis.resourcetable.OrganisationUnitStructure" table="orgunitstructure">
+  <class name="org.hisp.dhis.resourcetable.OrganisationUnitStructure" table="_orgunitstructure">
     <id name="id" column="orgunitstructureid">
       <generator class="native"/>
     </id>

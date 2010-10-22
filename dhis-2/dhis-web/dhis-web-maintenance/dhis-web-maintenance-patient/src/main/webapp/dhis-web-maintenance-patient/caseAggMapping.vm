@@ -78,8 +78,8 @@
                                 <td>
                                     $i18n.getString( "case_properties" )<br>
                                     <select id="caseProperty" name="caseProperty" size="5" style="width:100px" ondblclick="displayCPInfo()">
-                                        <option value="[CP:GENDER]">$i18n.getString( "gender" )</option>
-                                        <option value="[CP:DOB]">$i18n.getString( "dob" )</option>
+                                        <option value="[CP:gender]">$i18n.getString( "gender" )</option>
+                                        <option value="[CP:dob]">$i18n.getString( "dob" )</option>
                                     </select>
                                 </td>
                                 <td>&nbsp;</td>
@@ -121,12 +121,12 @@
                     <td>
                         <select id="operator0" name="operator0">
                             <!--0--><option value="NA">$i18n.getString( "select" )</option>
-                            <!--1--><option value="less_than">&lt;</option>
-                            <!--2--><option value="greater_than">&gt;</option>
-                            <!--3--><option value="less_than_equal">&le;</option>
-                            <!--4--><option value="greater_than_equal">&ge;</option>
-                            <!--5--><option value="equal">=</option>
-                            <!--6--><option value="not_equal">!=</option>
+                            <!--1--><option value="<">&lt;</option>
+                            <!--2--><option value=">">&gt;</option>
+                            <!--3--><option value="<=">&le;</option>
+                            <!--4--><option value=">=">&ge;</option>
+                            <!--5--><option value="=">=</option>
+                            <!--6--><option value="!=">!=</option>
                             <!--7--><option value="in">IN</option>
                             <!--8--><option value="diff">DIFF</option>
                         </select>
@@ -135,8 +135,8 @@
                     <td>
                         <select id="andor0" name="andor0" onchange="addNewRow()">
                             <option value="NA">$i18n.getString( "select" )</option>
-                            <option value="and">$i18n.getString( "AND" )</option>
-                            <option value="or">$i18n.getString( "OR" )</option>
+                            <option value="AND">$i18n.getString( "AND" )</option>
+                            <option value="OR">$i18n.getString( "OR" )</option>
                         </select>                       
                     </td>
                     <td>

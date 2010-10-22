@@ -123,11 +123,6 @@ public class SelectFormAction
 
         groups = new ArrayList<String>( reportService.getReportExcelGroups() );
 
-        if ( organisationUnit == null )
-        {
-            return SUCCESS;
-        }
-
         periodDatabaseService.setSelectedPeriodTypeName( MonthlyPeriodType.NAME );
 
         periods = periodDatabaseService.getPeriodList();

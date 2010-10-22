@@ -123,7 +123,7 @@ function openUpdateDataElementOrderReceived(xmlObject)
 		var listDataElement = document.getElementById('dataElementIds');
 		listDataElement.options.length = 0;
 		byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
-		byId("code").value = xmlObject.getElementsByTagName('code')[0].firstChild.nodeValue;
+		byId("code").value = getElementValue(xmlObject,'code');
 		var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
 		
 		for(var i=0;i<dataElements.length;i++){

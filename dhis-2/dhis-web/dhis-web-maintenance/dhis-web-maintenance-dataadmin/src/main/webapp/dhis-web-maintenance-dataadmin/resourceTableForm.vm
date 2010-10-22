@@ -3,12 +3,12 @@
 
 <p>
     <input type="checkbox" name="resourceTableCheckBox" id="organisationUnit">
-    <label for="organisationUnit">$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(orgunitstructure)</span></label>
+    <label for="organisationUnit">$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(_orgunitstructure)</span></label>
 </p>
 
 <p>
     <input type="checkbox" name="resourceTableCheckBox" id="groupSet">
-    <label for="groupSet">$i18n.getString( "group_set_structure" ) <span style="color:#606060">(orgunitgroupsetstructure)</span></label>
+    <label for="groupSet">$i18n.getString( "group_set_structure" ) <span style="color:#606060">(_orgunitgroupsetstructure)</span></label>
 </p>
 
 <p>
@@ -33,15 +33,15 @@
 
 <p>
     <input type="checkbox" name="resourceTableCheckBox" id="categoryOptionComboName">
-    <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(categoryoptioncomboname)</span></label>
+    <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(_categoryoptioncomboname)</span></label>
 </p>
 
 
 <table>
 	<tr>
 		<td>
-			<input type="button" value='$i18n.getString( "select_all" )' id="selectAllButton" onclick="selectOrUnselectALL()"/>
-		    <input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="regenerateResourceTableAndViewTables()" style="width:175px"/> 
+			<input type="button" value='$i18n.getString( "select_all" )' id="selectAllButton" onclick="selectOrUnselectALL()" style="width:100px">
+		    <input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="regenerateResourceTableAndViewTables()" style="width:150px"> 
 		</td>
 	</tr>
 

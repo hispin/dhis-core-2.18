@@ -1,21 +1,8 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addExtendedDataElementForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#addDataElementGroupSet").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-									{
-										validateAddExtendedDataElement();
-									}
-				});
-				jQuery.validator.setMessages( validationMessage );
-			}
-	);
+
+	jQuery(document).ready(	function(){
+		validation( 'addExtendedDataElementForm', validateAddExtendedDataElement);				
+	});
 
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>

@@ -34,7 +34,6 @@ import java.util.Set;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 
@@ -73,16 +72,7 @@ public class DataSet
     * Property indicating whether the DataSet is locked for data entry.
     */
     private Boolean locked = false;
-    
-    /**
-     * All locked periods within the DataSet.
-     * 
-     * @deprecated Replaced by the DataSetLock object.
-     */
-    @Deprecated
-    private Set<Period> lockedPeriods = new HashSet<Period>();
-    
-    
+        
     private Set<Section> sections = new HashSet<Section>();
 
     /**
@@ -210,16 +200,6 @@ public class DataSet
     public void setSources( Set<Source> sources )
     {
         this.sources = sources;
-    }
-
-    public Set<Period> getLockedPeriods()
-    {
-        return lockedPeriods;
-    }
-
-    public void setLockedPeriods( Set<Period> lockedPeriods )
-    {
-        this.lockedPeriods = lockedPeriods;
     }
 
     public Boolean getLocked()

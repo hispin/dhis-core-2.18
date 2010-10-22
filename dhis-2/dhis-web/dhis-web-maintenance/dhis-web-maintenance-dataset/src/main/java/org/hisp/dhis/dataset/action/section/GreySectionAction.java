@@ -154,12 +154,19 @@ public class GreySectionAction
     {
         return greyedFields;
     }
+    
+    private Integer defaultOptionComboId;
+    
+    public Integer getDefaultOptionComboId() 
+    {
+		return defaultOptionComboId;
+	}	
 
     // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------    
 
-    public String execute()
+	public String execute()
         throws Exception
     {
         section = sectionService.getSection( sectionId.intValue() );
@@ -209,6 +216,11 @@ public class GreySectionAction
                     colRepeat.put( cat.getId(), cols );
                 }
             }
+        }       
+        
+        else
+        {
+        	defaultOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         }       
 
         for ( DataElementOperand operand : section.getGreyedFields() )

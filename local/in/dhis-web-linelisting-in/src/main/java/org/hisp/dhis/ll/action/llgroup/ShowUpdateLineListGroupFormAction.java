@@ -30,14 +30,10 @@ package org.hisp.dhis.ll.action.llgroup;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
-import com.opensymphony.xwork2.ActionSupport;
-import java.util.ArrayList;
-import java.util.List;
-import org.hisp.dhis.period.PeriodStore;
-import org.hisp.dhis.period.PeriodType;
+import com.opensymphony.xwork2.Action;
 
 public class ShowUpdateLineListGroupFormAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -49,14 +45,14 @@ public class ShowUpdateLineListGroupFormAction
     {
         this.lineListService = lineListService;
     }
-
+/*
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
     {
         this.periodStore = periodStore;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------

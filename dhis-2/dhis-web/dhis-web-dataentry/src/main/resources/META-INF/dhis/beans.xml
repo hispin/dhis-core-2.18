@@ -139,19 +139,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="dataValueAuditService" ref="org.hisp.dhis.datavalue.DataValueAuditService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.de.action.multidimensional.SaveValueAction"
-		class="org.hisp.dhis.de.action.multidimensional.SaveValueAction"
+	<bean id="org.hisp.dhis.de.action.multidimensional.SaveValueAction"	class="org.hisp.dhis.de.action.multidimensional.SaveValueAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.SaveCommentAction" class="org.hisp.dhis.de.action.SaveCommentAction"
@@ -162,6 +161,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.SaveMinMaxLimitsAction" class="org.hisp.dhis.de.action.SaveMinMaxLimitsAction"
