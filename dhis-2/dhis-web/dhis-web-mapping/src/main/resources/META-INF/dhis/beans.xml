@@ -64,11 +64,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
     </bean>
 
-    <bean id="org.hisp.dhis.mapping.action.GetDataMapValuesByLevelAction"
-        class="org.hisp.dhis.mapping.action.GetDataMapValuesByLevelAction" scope="prototype">
-        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-    </bean>
-
     <bean id="org.hisp.dhis.mapping.action.GetDataMapValuesByParentOrganisationUnitAction"
         class="org.hisp.dhis.mapping.action.GetDataMapValuesByParentOrganisationUnitAction" scope="prototype">
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
@@ -76,11 +71,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAction"
 		class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAction" scope="prototype">
-		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByLevelAction"
-		class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByLevelAction" scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
 	
@@ -94,14 +84,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
     </bean>
 
-	<bean id="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
-		class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction"
-		scope="prototype">
-		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-	</bean>
+    <bean id="org.hisp.dhis.mapping.action.GetMapUserSettingsAction"
+        class="org.hisp.dhis.mapping.action.GetMapUserSettingsAction"
+        scope="prototype">
+        <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    </bean>
 
-	<bean id="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
-		class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction"
+	<bean id="org.hisp.dhis.mapping.action.SetMapUserSettingsAction"
+		class="org.hisp.dhis.mapping.action.SetMapUserSettingsAction"
 		scope="prototype">
 		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
@@ -220,6 +210,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.mapping.action.GetMapLegendSetByDataElementAction"
+        class="org.hisp.dhis.mapping.action.GetMapLegendSetByDataElementAction"
+        scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetMapLegendSetsByTypeAction"
 		class="org.hisp.dhis.mapping.action.GetMapLegendSetsByTypeAction"
@@ -234,6 +230,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	</bean>
+
+    <bean
+        id="org.hisp.dhis.mapping.action.AssignDataElementsToMapLegendSetAction"
+        class="org.hisp.dhis.mapping.action.AssignDataElementsToMapLegendSetAction"
+        scope="prototype">
+        <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
 
 	<!-- MapView -->
 

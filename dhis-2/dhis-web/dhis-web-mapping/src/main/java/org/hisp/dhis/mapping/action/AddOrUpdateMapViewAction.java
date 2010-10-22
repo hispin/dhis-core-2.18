@@ -67,30 +67,30 @@ public class AddOrUpdateMapViewAction
         this.mapValueType = mapValueType;
     }
 
-    private int indicatorGroupId;
+    private Integer indicatorGroupId;
 
-    public void setIndicatorGroupId( int indicatorGroupId )
+    public void setIndicatorGroupId( Integer indicatorGroupId )
     {
         this.indicatorGroupId = indicatorGroupId;
     }
 
-    private int indicatorId;
+    private Integer indicatorId;
 
-    public void setIndicatorId( int indicatorId )
+    public void setIndicatorId( Integer indicatorId )
     {
         this.indicatorId = indicatorId;
     }
 
-    private int dataElementGroupId;
+    private Integer dataElementGroupId;
 
-    public void setDataElementGroupId( int dataElementGroupId )
+    public void setDataElementGroupId( Integer dataElementGroupId )
     {
         this.dataElementGroupId = dataElementGroupId;
     }
 
-    private int dataElementId;
+    private Integer dataElementId;
 
-    public void setDataElementId( int dataElementId )
+    public void setDataElementId( Integer dataElementId )
     {
         this.dataElementId = dataElementId;
     }
@@ -102,11 +102,25 @@ public class AddOrUpdateMapViewAction
         this.periodTypeId = periodTypeId;
     }
 
-    private int periodId;
+    private Integer periodId;
 
-    public void setPeriodId( int periodId )
+    public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
+    }
+
+    private String startDate;
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
     }
 
     private String mapSource;
@@ -136,9 +150,9 @@ public class AddOrUpdateMapViewAction
     {
         this.classes = classes;
     }
-    
+
     private String bounds;
-    
+
     public void setBounds( String bounds )
     {
         this.bounds = bounds;
@@ -158,9 +172,9 @@ public class AddOrUpdateMapViewAction
         this.colorHigh = colorHigh;
     }
 
-    private int mapLegendSetId;
+    private Integer mapLegendSetId;
 
-    public void setMapLegendSetId( int mapLegendSetId )
+    public void setMapLegendSetId( Integer mapLegendSetId )
     {
         this.mapLegendSetId = mapLegendSetId;
     }
@@ -194,8 +208,8 @@ public class AddOrUpdateMapViewAction
         throws Exception
     {
         mappingService.addOrUpdateMapView( name, mapValueType, indicatorGroupId, indicatorId, dataElementGroupId,
-            dataElementId, periodTypeId, periodId, mapSource, mapLegendType, method, classes, bounds, colorLow, colorHigh,
-            mapLegendSetId, longitude, latitude, zoom );
+            dataElementId, periodTypeId, periodId, startDate, endDate, mapSource, mapLegendType, method,
+            classes, bounds, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
 
         return SUCCESS;
     }

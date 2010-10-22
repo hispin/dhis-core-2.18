@@ -24,7 +24,7 @@
                 type="button" value="$i18n.getString( 'generate_workbook' )" style="width:150px"
                 onclick="window.location.href='getDataCompletenessWorkbook.action'"><br><br>
                 	
-        	<input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked" onclick="displayCompleteness()">
+            <input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked" onclick="displayCompleteness()">
             <label for="registrationRadio">$i18n.getString( 'based_on_registration' )</label><br>
             <input type="radio" name="criteria" id="compulsoryRadio" value="compulsory" onclick="displayCompleteness()">
             <label for="compulsoryRadio">$i18n.getString( 'based_on_compulsory' )</label><br>

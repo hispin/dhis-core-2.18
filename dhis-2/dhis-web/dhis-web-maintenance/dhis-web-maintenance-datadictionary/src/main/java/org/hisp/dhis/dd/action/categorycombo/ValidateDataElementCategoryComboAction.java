@@ -80,9 +80,9 @@ public class ValidateDataElementCategoryComboAction
         this.name = name;
     }
 
-    private Collection<String> selectedCategories = new HashSet<String>();
+    private Collection<Integer> selectedCategories = new HashSet<Integer>();
 
-    public void setSelectedCategories( Collection<String> selectedCategories )
+    public void setSelectedCategories( Collection<Integer> selectedCategories )
     {
         this.selectedCategories = selectedCategories;
     }
@@ -104,43 +104,27 @@ public class ValidateDataElementCategoryComboAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
-
             DataElementCategoryCombo match = dataElementCategoryService.getDataElementCategoryComboByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
+        }
 
-            for ( String id : selectedCategories )
+        for ( Integer id : selectedCategories )
+        {
+            DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
+
+            if ( dataElementCategory.getCategoryOptions().size() <= 0 )
             {
-                DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( Integer
-                    .parseInt( id ) );
+                message = i18n.getString( "no_option_assigned" );
 
-                if ( dataElementCategory.getCategoryOptions().size() <= 0 )
-                {
-                    message = i18n.getString( "no_option_assigned" );
-
-                    return INPUT;
-                }
+                return ERROR;
             }
         }
 

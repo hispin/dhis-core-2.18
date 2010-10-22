@@ -7,6 +7,7 @@
 var selectionTreeSelection = new SelectionTreeSelection();
 var selectionTree = new SelectionTree();
 var selectionTreePath = '../dhis-web-commons/oust/';
+var selectedOrganisationUnit = new Array();
 
 // -----------------------------------------------------------------------------
 // Selection
@@ -34,9 +35,15 @@ function SelectionTreeSelection()
     {
         multipleSelectionAllowed = allowed;
     };
+	
+	this.getSelected = function()
+	{
+		return selectedOrganisationUnit;
+	}
 
     this.select = function( unitId )
     {
+		
         if ( onSelectFunction )
         {
             onSelectFunction();
@@ -148,6 +155,8 @@ function SelectionTree()
 
     this.buildSelectionTree = function()
     {
+		selectedOrganisationUnit = new Array();
+		
         var treeTag = document.getElementById( 'selectionTree' );
         
         setLoadingMessage( treeTag );
@@ -260,6 +269,7 @@ function SelectionTree()
         if ( child.getAttribute( 'selected' ) == 'true' )
         {
             linkTag.className = 'selected';
+			selectedOrganisationUnit.push( childId );
         }
 
         var childTag = document.createElement( 'li' );

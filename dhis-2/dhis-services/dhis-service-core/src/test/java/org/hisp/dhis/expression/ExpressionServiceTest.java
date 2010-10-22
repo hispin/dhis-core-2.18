@@ -155,13 +155,13 @@ public class ExpressionServiceTest
     {
         Expression expression = new Expression( expressionA, descriptionA, dataElements );
         
-        Double value = expressionService.getExpressionValue( expression, period, source, false );
+        Double value = expressionService.getExpressionValue( expression, period, source, false, false );
         
         assertEquals( value, 15.0 );
         
         expression = new Expression( expressionB, descriptionB, dataElements );
 
-        value = expressionService.getExpressionValue( expression, period, source, false );
+        value = expressionService.getExpressionValue( expression, period, source, false, false );
         
         assertEquals( 0.0, value );
     }
@@ -250,11 +250,11 @@ public class ExpressionServiceTest
     @Test
     public void testGenerateExpression()
     {
-        String expression = expressionService.generateExpression( expressionA, period, source, false );
+        String expression = expressionService.generateExpression( expressionA, period, source, false, false );
         
         assertEquals( "10 + 5", expression );
         
-        expression = expressionService.generateExpression( expressionB, period, source, false );
+        expression = expressionService.generateExpression( expressionB, period, source, false, false );
         
         assertEquals( "0 - 0", expression );
     }

@@ -30,6 +30,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.dataentryform.DataEntryForm;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -51,6 +53,8 @@ public class ProgramStage
 
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
+    private DataEntryForm dataEntryForm;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -122,6 +126,16 @@ public class ProgramStage
     public void setId( int id )
     {
         this.id = id;
+    }
+
+    public DataEntryForm getDataEntryForm()
+    {
+        return dataEntryForm;
+    }
+
+    public void setDataEntryForm( DataEntryForm dataEntryForm )
+    {
+        this.dataEntryForm = dataEntryForm;
     }
 
     /**

@@ -1,8 +1,15 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addDataDictionaryForm', validateAddDataDictionary );				
+		validation( 'addDataDictionaryForm', function( form ){ form.submit()}, function(){
+			listValidator( 'memberValidator', 'selectedDataElements' );
+			listValidator( 'memberValidatorIn', 'selectedIndicators' );
+		} );	
+		
+		checkValueIsExist( "name", "validateDataDictionary.action");
+			
 	});
 </script>
+
 
 <h3>$i18n.getString( "create_new_data_dictionary" )</h3>
 
@@ -33,7 +40,9 @@
 	<tr>
 		<th>$i18n.getString( "available_data_elements" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_data_elements" )</th>
+		<th>$i18n.getString( "selected_data_elements" )
+		<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>
 	<tr>		
 		<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableDataElements' )" style="width:100%"></td>
@@ -66,7 +75,9 @@
 	<tr>		
 		<th>$i18n.getString( "available_indicators" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_indicators" )</th>
+		<th>$i18n.getString( "selected_indicators" )
+		<select id="memberValidatorIn" class="{validate:{required:true}}" style="display:none"/>
+		</th>
 	</tr>
 	<tr>		
 		<td><input type="text" id="availableIndicatorsFilter" onkeyup="filterList( this.value, 'availableIndicators' )" style="width:100%"></td>
@@ -99,13 +110,3 @@
 </p>
 
 </form>
-
-<span id="message"></span>
-
-<script type="text/javascript">
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

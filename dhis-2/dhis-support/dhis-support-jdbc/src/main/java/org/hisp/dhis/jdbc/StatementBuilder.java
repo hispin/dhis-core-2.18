@@ -104,7 +104,12 @@ public interface StatementBuilder
     String getDropDatasetForeignKeyForDataEntryFormTable();
     
     String getMoveDataValueToDestination( int sourceId, int destinationId );
-    
+
     String getSummarizeDestinationAndSourceWhereMatching( int sourceId, int destinationId );
 
+    String getMoveFromSourceToDestination( int destDataElementId, int destCategoryOptionComboId,
+        int sourceDataElementId, int sourceCategoryOptionComboId );
+
+    String getUpdateDestination( int destDataElementId, int destCategoryOptionComboId,
+        int sourceDataElementId, int sourceCategoryOptionComboId );
 }

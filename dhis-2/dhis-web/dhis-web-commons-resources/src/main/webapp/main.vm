@@ -4,8 +4,8 @@
     <title>DHIS 2</title>
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/util/css/redmond/jquery-ui.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/util/css/redmond/ui.datepicker.css">	
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/css/redmond/ui.datepicker.css">	
 	
     <link type="image/png" rel="icon" href="../images/favicon.png">    
     
@@ -17,16 +17,18 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
-    <script type="text/javascript" src="../dhis-web-commons/util/jquery.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.metadata.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/ui.datepicker.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.tablesorter.js"></script>	
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.blockUI.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.validate.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/util/jquery.validate.ext.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.datepicker.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.js"></script>	
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/commons.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/util/lists.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
 	
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
 	
@@ -37,6 +39,24 @@
     #foreach( $javascript in $javascripts )
       <script type="text/javascript" src="$javascript"></script>
     #end
+	
+	<script>
+		jQuery(document).ready( function()
+		{
+			jQuery.each(jQuery(":button, :submit"), function(i, item){
+				jQuery( item ).addClass( 'button' );
+			});
+			
+			jQuery.each(jQuery(":text, textarea"), function(i, item){
+				jQuery( item ).addClass( 'text' );
+			});
+			
+			jQuery.each(jQuery("select"), function(i, item){
+				jQuery( item ).addClass( 'combobox' );
+			});			
+			
+		});
+	</script>
 
   </head>
   
@@ -46,7 +66,7 @@
         
     <div id="header">
       <img id="header1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_left.png">
-      <img id="header2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
+      <img id="header2" src="../images/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
       <img id="header3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_right.png">
 
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">

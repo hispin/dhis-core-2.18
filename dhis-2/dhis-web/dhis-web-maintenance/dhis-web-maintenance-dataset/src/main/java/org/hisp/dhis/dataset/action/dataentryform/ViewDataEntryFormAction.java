@@ -39,7 +39,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.user.UserSettingService;
@@ -56,13 +55,6 @@ public class ViewDataEntryFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
 
     private DataSetService dataSetService;
 
@@ -139,7 +131,7 @@ public class ViewDataEntryFormAction
     {
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+        dataEntryForm = dataSet.getDataEntryForm();
 
         if ( dataEntryForm == null )
         {

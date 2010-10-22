@@ -1,7 +1,0 @@
-#set( $size = $object.indicators.size() )
-{ "mapLegendSet":
-  [{
-    "id": $!{object.id},
-    "indicators": [#foreach( $indicator in $object.indicators )$!{indicator.id}#if( $velocityCount < $size ),#end#end]
-  }]
-}

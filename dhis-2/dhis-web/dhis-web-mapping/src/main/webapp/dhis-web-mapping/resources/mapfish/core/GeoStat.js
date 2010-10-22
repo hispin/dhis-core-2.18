@@ -201,13 +201,13 @@ mapfish.GeoStat = OpenLayers.Class({
         this.requestSuccess(request);
         
         if (ACTIVEPANEL == thematicMap) {
-            if (!choropleth.isFormComplete()) {
+            if (!choropleth.validateForm()) {
                 MASK.hide();
             }
             choropleth.classify(false);
         }
         else if (ACTIVEPANEL == thematicMap2) {
-            if (!proportionalSymbol.isFormComplete()) {
+            if (!proportionalSymbol.validateForm()) {
                 MASK.hide();
             }
             proportionalSymbol.classify(false);

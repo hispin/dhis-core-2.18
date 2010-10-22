@@ -200,5 +200,29 @@ public class HibernateExcelItemStore
 
         session.delete( getDataElementGroupOrder( id ) );
     }
+
+    @Override
+    public ExcelItem getExcelItem( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( ExcelItem.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (ExcelItem) criteria.uniqueResult();
+    }
+
+    @Override
+    public ExcelItemGroup getExcelItemGroup( String name )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( ExcelItemGroup.class );
+
+        criteria.add( Restrictions.eq( "name", name ) );
+
+        return (ExcelItemGroup) criteria.uniqueResult();
+    }
     
 }

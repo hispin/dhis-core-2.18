@@ -7,17 +7,14 @@ function getXAxisIndicators( )
 	
     if ( indicatorGroupId != null )
     {
-        //var url = "getIndicators.action?id=" + indicatorGroupId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'indicator' );
-        request.setCallbackSuccess( getXAxisIndicatorsReceived );
-        //request.send( url );
-
-        var requestString = "getIndicators.action";
-        var params = "id=" + indicatorGroupId;
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getIndicators.action",
+		{
+			id:indicatorGroupId
+		},
+		function (data)
+		{
+			getXAxisIndicatorsReceived(data);
+		},'xml');
     }
 }
 
@@ -50,17 +47,15 @@ function getYAxisIndicators( )
 	
     if ( indicatorGroupId != null )
     {
-        //var url = "getIndicators.action?id=" + indicatorGroupId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'indicator' );
-        request.setCallbackSuccess( getYAxisIndicatorsReceived );
-        //request.send( url );
+		$.post("getIndicators.action",
+		{
+			id:indicatorGroupId
+		},
+		function (data)
+		{
+			getYAxisIndicatorsReceived(data);
+		},'xml');
 
-        var requestString = "getIndicators.action";
-        var params = "id=" + indicatorGroupId;
-        request.sendAsPost( params );
-        request.send( requestString );
     }
 }
 
@@ -93,16 +88,15 @@ function getZAxisDataElements()
             
     if ( dataElementGroupId != null )
     {
-        //var url = "getDataElements.action?id=" + dataElementGroupId;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        //request.send(url);
+		$.post("getDataElements.action",
+		{
+			id:dataElementGroupId
+		},
+		function (data)
+		{
+			getDataElementsReceived(data);
+		},'xml');
 
-        var requestString = "getDataElements.action";
-        var params = "id=" + dataElementGroupId;
-        request.sendAsPost( params );
-        request.send( requestString );
     }
 }// getDataElements end          
 
@@ -111,7 +105,6 @@ function getDataElementsReceived( xmlObject )
 {
     var zaxisDataelements = document.getElementById("zaxisDataelements");
     
-
     clearList(zaxisDataelements);
 
     var dataElements = xmlObject.getElementsByTagName("dataElement");
@@ -134,17 +127,14 @@ function getDataElementsReceived( xmlObject )
 
 function getOUDeatilsForMC(orgUnitIds)
 {
-    //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
-    var request = new Request();
-    request.setResponseTypeXML( 'orgunit' );
-    request.setCallbackSuccess( getOUDetailsForMARecevied );
-    //request.send( url );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds;
-    request.sendAsPost( params );
-    request.send( requestString );
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId:orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsForMARecevied(data);
+		},'xml');
 }
 
 function getOUDetailsForMARecevied(xmlObject)
@@ -190,17 +180,14 @@ function getOrgUnitGroups()
 	
     if ( orgUnitGroupSetId != null )
     {
-        //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
-		
-        var request = new Request();
-        request.setResponseTypeXML( 'orgunitgroup' );
-        request.setCallbackSuccess( getOrgUnitGroupsReceived );
-        //request.send( url );
-
-        var requestString = "getOrgUnitGroups.action";
-        var params = "orgUnitGroupSetId=" + orgUnitGroupSetId;
-        request.sendAsPost( params );
-        request.send( requestString );
+		$.post("getOrgUnitGroups.action",
+		{
+			orgUnitGroupSetId:orgUnitGroupSetId
+		},
+		function (data)
+		{
+			getOrgUnitGroupsReceived(data);
+		},'xml');
     }
 }
 

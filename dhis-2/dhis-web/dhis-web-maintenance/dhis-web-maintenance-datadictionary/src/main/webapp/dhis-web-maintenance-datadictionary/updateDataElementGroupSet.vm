@@ -1,6 +1,7 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'updateDataElementGroupSet', validateUpdateDataElementGroupSet );				
+		validation( 'updateDataElementGroupSet', function( form ){ form.submit()}, beforeSubmit );	
+		checkValueIsExist( "name", "validateDataElementGroupSet.action", {id: getFieldValue('id')});	
 	});
 </script>
 
@@ -24,7 +25,9 @@
 
 <table>
 	<tr>
-		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "group_members" )</th>
+		<th>$i18n.getString( "available_dataelementgroup" )</th><td></td><th>$i18n.getString( "group_members" )
+		<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+		</th>
 	</tr>
 	<tr>		
 		<td><input type="text" id="availableDataElementGroupsFilter" onkeyup="filterList( this.value, 'availableDataElementGroups' )" style="width:25em"></td>

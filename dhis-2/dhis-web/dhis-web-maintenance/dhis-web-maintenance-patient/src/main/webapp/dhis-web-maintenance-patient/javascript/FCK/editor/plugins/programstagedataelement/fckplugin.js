@@ -23,7 +23,7 @@ FCKToolbarItems.RegisterItem( 'InsertProgramStageDataElement', oInsertDataElemen
 var FCKSelectProgramStageElement = new Object() ;
 
 // Called by the popup to insert the selected data element.
-FCKSelectProgramStageElement.Add = function( programStageId, associationName, dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames)
+FCKSelectProgramStageElement.Add = function( programStageId, dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames)
 {
     viewByValue = "@@"+viewByValue+"@@";
     var strPSDataEntryId   = "value["+ programStageId +"].value:value["+ dataElementId +"].value";
@@ -32,8 +32,6 @@ FCKSelectProgramStageElement.Add = function( programStageId, associationName, da
     var datePSDataEntryId  = "value["+ programStageId +"].date:value["+ dataElementId +"].date";
     
     
-    if(associationName == "programstage")
-    {
 //    	for(k=0; k<selectedOptionComboIds.length; k++)
 //        {
 //    		var optionComboId = selectedOptionComboIds[k];
@@ -98,34 +96,5 @@ FCKSelectProgramStageElement.Add = function( programStageId, associationName, da
         	 strPSDataEntryId  = strPSDataEntryId + ":value["+ selectedOptionComboIds[0] +"].value";
              FCK.InsertHtml("<input name=\"entryfield\" id=\""+strPSDataEntryId+"\" type=\"text\" value=\"\" onkeypress=\"return keyPress(event, this)\" >");
          }
-    }
-    else if(associationName == "dataset")
-    {
-        for(k=0; k<selectedOptionComboIds.length; k++)
-        {
-            var optionComboId = selectedOptionComboIds[k];
-            var optionComboName = selectedOptionComboNames[k];
-
-            var titleValue = "-- "+dataElementId + ". "+ dataElementName+" "+optionComboId+". "+optionComboName+" ("+dataElementType+") --";
-            var displayName = dispName+" - "+optionComboName+" ]";
-            var dataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-            var boolDataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-            alert("dataElementType = "+dataElementType +" optionComboId = "+optionComboId +" optionComboName= "+optionComboName);
-            if (dataElementType == "bool")
-            {
-                selectString = "<select name=\"entryselect\" id=\""+boolDataEntryId+"\" > <option value=\"\">Select Value</option>";
-                selectString += "<option value=\"true\" >$i18n.getString( \"yes\" )</option>";
-                selectString += "<option value=\"false\" >$i18n.getString( \"no\" )</option>";
-                selectString += "</select>";
-
-                FCK.InsertHtml(selectString);
-            }
-            else
-            {
-                //alert("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>");
-                FCK.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" />");
-
-            }
-        }
-    }
+   
 }

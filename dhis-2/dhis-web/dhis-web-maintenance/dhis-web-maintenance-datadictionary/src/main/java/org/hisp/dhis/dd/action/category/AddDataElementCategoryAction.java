@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -53,7 +54,14 @@ public class AddDataElementCategoryAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-    
+
+    private ConceptService conceptService;
+
+    public void setConceptService( ConceptService conceptService )
+    {
+        this.conceptService = conceptService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -64,12 +72,12 @@ public class AddDataElementCategoryAction
     {
         this.name = name;
     }
-    
-    private String conceptName;
 
-    public void setConceptName( String conceptName )
+    private Integer conceptId;
+
+    public void setConceptId( Integer conceptId )
     {
-        this.conceptName = conceptName;
+        this.conceptId = conceptId;
     }
 
     private List<String> categoryOptionNames = new ArrayList<String>();
@@ -87,8 +95,8 @@ public class AddDataElementCategoryAction
     {
         DataElementCategory dataElementCategory = new DataElementCategory();
         dataElementCategory.setName( name );
-        dataElementCategory.setConceptName( conceptName );
-        
+        dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
+
         for ( String categoryOptionName : categoryOptionNames )
         {
             DataElementCategoryOption categoryOption = new DataElementCategoryOption( categoryOptionName );
@@ -97,7 +105,8 @@ public class AddDataElementCategoryAction
         }
 
         dataElementCategoryService.addDataElementCategory( dataElementCategory );
-        
+
         return SUCCESS;
     }
+
 }

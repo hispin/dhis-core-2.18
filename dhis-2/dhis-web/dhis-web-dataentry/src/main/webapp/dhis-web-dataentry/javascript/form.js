@@ -216,8 +216,8 @@ function SetGeneratedMinMaxValues()
             var deId = getElementValue( dataElements[i], 'dataelementId' );
             var ocId = getElementValue( dataElements[i], 'optionComboId' );
             
-            setFieldValue('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
-            setFieldValue('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
+            setInnerHTML('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
+            setInnerHTML('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
         }
         
     }
@@ -225,12 +225,8 @@ function SetGeneratedMinMaxValues()
     function handleHttpError( errorCode )
     {
         window.alert( i18n_saving_minmax_failed_error_code + '\n\n' + errorCode );
-    }
-    
-    function setFieldValue( fieldId, value )
-    {
-        document.getElementById( fieldId ).innerHTML = value;
-    }
+    }   
+   
     
     function getElementValue( parentElement, childElementName )
     {

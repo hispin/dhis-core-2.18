@@ -20,11 +20,15 @@ function getDataElements()
     //var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
     if ( dataElementGroupId != null )
     {
-        var url = "getDataElements.action?id=" + dataElementGroupId + "&deOptionValue=" + deopcombo;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getDataElementsReceived);
-        request.send(url);
+		$.post("getDataElements.action",
+			{
+				id : dataElementGroupId,
+				deOptionValue : deopcombo
+			},
+			function (data)
+			{
+				getDataElementsReceived (data);
+			},'xml');
     }
 }// getDataElements end     
 
@@ -43,11 +47,15 @@ function getDataElementTargets()
     }
     if ( dataElementGroupId != null )
     {
-        var url = "getDataElements.action?id=" + dataElementGroupId + "&deOptionValue=" + deopcombo;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess(getTargetsReceived);
-        request.send(url);
+		$.post("getDataElements.action",
+			{
+				id : dataElementGroupId,
+				deOptionValue : deopcombo
+			},
+			function (data)
+			{
+				getTargetsReceived (data);
+			},'xml');
     }
 }// getDataElementTargets end     
 
@@ -60,12 +68,14 @@ function getmsg()
     if(detarget.selectedIndex >=0) detarget.options[detarget.selectedIndex].selected = false ;
     if ( deID != null )
     {
-        var url = "getmessage.action?id=" + deID;
-        
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess( getMsgReceived );
-        request.send(url);
+		$.post("getmessage.action",
+			{
+				id : deID
+			},
+			function (data)
+			{
+				getMsgReceived (data);
+			},'xml');
     }
 }
 
@@ -112,12 +122,11 @@ function getDataElementsReceived( xmlObject )
         var id = dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
         var dataElementName = dataElements[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
         
-        
-            var option = document.createElement("option");
-            option.value = id;
-            option.text = dataElementName;
-            option.title = dataElementName;
-            availableDataElements.add(option, null);       
+        var option = document.createElement("option");
+        option.value = id;
+        option.text = dataElementName;
+        option.title = dataElementName;
+        availableDataElements.add(option, null);       
     }
         
 }// getDataElementsReceived end
@@ -137,7 +146,6 @@ function getTargetsReceived( xmlObject )
         var id = dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
         var dataElementName = dataElements[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
         
-        
             var option = document.createElement("option");
             option.value = id;
             option.text = dataElementName;
@@ -156,12 +164,16 @@ function getsave()
     var detargetID = detarget.options[ detarget.selectedIndex ].value;    
        
     if(detarget.selectedIndex >=0) detarget.options[detarget.selectedIndex].selected = false ;
-    
-     var url = 'saveMapping.action?deID=' + deID + '&detargetID=' + detargetID;
-        var request = new Request();
-        request.setResponseTypeXML('dataElement');
-        request.setCallbackSuccess( getMsgReceived );
-        request.send(url);
+   
+	$.post("saveMapping.action",
+		{
+			deID: deID,
+			detargetID : detargetID
+		},
+		function (data)
+		{
+			getMsgReceived (data);
+		},'xml');
 	
 }
 
@@ -173,13 +185,17 @@ function remMappingFunction()
 	var detarget = document.getElementById("availableDataElementTarget");
     var detargetID = detarget.options[ detarget.selectedIndex ].value;    
     
-     detarget.options[detarget.selectedIndex].selected = false ;
+    detarget.options[detarget.selectedIndex].selected = false ;
 	       
-            var url = 'delMapping.action?deID=' + deID + '&detargetID=' + detargetID;
- 				var request = new Request();
-                request.setResponseTypeXML('dataElement');
-                request.setCallbackSuccess( getMsgReceived );
-                request.send(url);           
+	$.post("delMapping.action",
+		{
+			deID: deID,
+			detargetID : detargetID
+		},
+		function (data)
+		{
+			getMsgReceived (data);
+		},'xml');				
       
 }// remMappingFunction end
 

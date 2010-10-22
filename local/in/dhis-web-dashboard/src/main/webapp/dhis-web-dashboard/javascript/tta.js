@@ -3,23 +3,22 @@
 // Get OptionCombos of a selected DataSet
 // -----------------------------------------------------------------------------
 function getOptionCombos()
-{
-  var request = new Request();
-  request.setResponseTypeXML( 'optionCombo' );
-  request.setCallbackSuccess( getOptionCombosCompleted );
+{ 
+	var dataSetSelector = document.getElementById( 'availableDataSets' );
+	var dataSetId = dataSetSelector.options[dataSetSelector.selectedIndex].value;
   
-  var dataSetSelector = document.getElementById( 'availableDataSets' );
-  var dataSetId = dataSetSelector.options[dataSetSelector.selectedIndex].value;
+	// Clear the OptionCombo list
+	var optionComboList = document.getElementById( 'availableOptionCombos' );
+	optionComboList.options.length = 0;
   
-  // Clear the OptionCombo list
-  var optionComboList = document.getElementById( 'availableOptionCombos' );
-  optionComboList.options.length = 0;
-
-  var requestString = 'getOptionCombos.action';
-  var params = 'dataSetId=' + dataSetId;  
-          
-  request.sendAsPost( params );
-  request.send( requestString );
+	$.post("getOptionCombos.action",
+		{
+			dataSetId:dataSetId
+		},
+		function (data)
+		{
+			getOptionCombosCompleted(data);
+		},'xml');
 
   return false;
 }

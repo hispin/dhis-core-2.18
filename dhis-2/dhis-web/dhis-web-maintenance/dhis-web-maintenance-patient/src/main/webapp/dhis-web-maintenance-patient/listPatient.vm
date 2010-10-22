@@ -6,6 +6,8 @@
 	#set ($sText = "" )
  #end
 
+
+
 <style>
 tr.relationship-row{background-color: #BFFFC2; display : none}
 </style>
@@ -38,6 +40,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
     <td style="vertical-align:top">    
       <table class="listTable">                   
           <col>
+            #if($mapPatientPatientAttr.size()!=0)
+                <col>
+            #end
           <col>
           <col>
           <col>
@@ -64,7 +69,10 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em">
 			</td>
           <tr>
-          	<th>#</th>
+            <th>#</th>
+            #if($mapPatientPatientAttr.size()!=0)
+                <th>$patientAttribute.name</th>
+            #end
             <th>$i18n.getString( "first_name" )</th>
             <th>$i18n.getString( "middle_name" )</th>
             <th>$i18n.getString( "last_name" )</th>            
@@ -80,30 +88,36 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
           #foreach( $patient in $patients )
 			##set( $mark = !$mark)
           	<tr #alternate( $mark )>
-          		<td>			
-					#set( $nr = ( ( $pagingUtil.currentPage - 1  ) * $pagingUtil.pageSize ) + $velocityCount )
-					$nr
-				</td>
-				<td>			
-					$encoder.htmlEncode( $patient.firstName )
-				</td>
-				<td>			
-					$encoder.htmlEncode( $patient.middleName )
-				</td>
-				<td>			
-					$encoder.htmlEncode( $patient.lastName )
-				</td>				
-				<td>			
-					$encoder.htmlEncode( $patient.gender )
-				</td>
-				<td>			
-					$format.formatDate( $patient.birthDate )
-				</td>
-				<td>            
+          	<td>			
+                    #set( $nr = ( ( $pagingUtil.currentPage - 1  ) * $pagingUtil.pageSize ) + $velocityCount )
+                    $nr
+		</td>
+                #if($mapPatientPatientAttr.size()!=0)
+                    <td>
+                        $mapPatientPatientAttr.get($patient)
+                    </td>
+                #end
+                
+		<td>			
+                    $encoder.htmlEncode( $patient.firstName )
+		</td>
+		<td>			
+                    $encoder.htmlEncode( $patient.middleName )
+		</td>
+		<td>			
+                    $encoder.htmlEncode( $patient.lastName )
+		</td>				
+		<td>			
+                    $encoder.htmlEncode( $patient.gender )
+		</td>
+		<td>			
+                    $format.formatDate( $patient.birthDate )
+		</td>
+		<td>            
                     $encoder.htmlEncode( $patient.getAge() )
                 </td>
 				
-				<td style="text-align:center"#alternate( $mark )>
+		<td style="text-align:center"#alternate( $mark )>
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
                 </td>                
                 

@@ -335,8 +335,6 @@ public class GenerateDataStatusResultAction
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
 
-        //System.out.println("CHECK BOX VALUE is : "+ includeZeros);
-        //System.out.println( "BLA : " + immChildOption + " : " + dsId + " : " + ouId + " : " + sDateLB + " : " + eDateLB );
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();
@@ -347,7 +345,6 @@ public class GenerateDataStatusResultAction
             selectedDataSets = new ArrayList<String>();
             selectedDataSets.add( dsId );
 
-            //System.out.println( "Inside ImmChild loop" );
         }
 
         // DataSet Related Info
@@ -451,8 +448,6 @@ public class GenerateDataStatusResultAction
         for ( Period p : periodList )
             periodInfo += "," + p.getId();
         
-        //System.out.println("PeriodInfo: "+periodInfo + " PeriodListSize : "+ periodList.size());
-
         dataViewName = createDataView( orgUnitInfo, deInfo, periodInfo );
       
         String query = "";

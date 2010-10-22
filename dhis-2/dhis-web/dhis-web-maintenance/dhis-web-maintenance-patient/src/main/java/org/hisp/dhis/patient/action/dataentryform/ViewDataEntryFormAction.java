@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.patient.screen.DataEntryManager;
 import org.hisp.dhis.program.ProgramStage;
@@ -67,13 +65,6 @@ public class ViewDataEntryFormAction
     public void setProgramStageService(ProgramStageService programStageService) {
 		this.programStageService = programStageService;
     }
-
-    private DataEntryFormAssociationService dataEntryFormAssociationService;
-    
-    public void setDataEntryFormAssociationService( DataEntryFormAssociationService dataEntryFormAssociationService )
-    {
-        this.dataEntryFormAssociationService = dataEntryFormAssociationService;
-    }
     
     private DataEntryManager dataEntryManager;
     
@@ -85,8 +76,6 @@ public class ViewDataEntryFormAction
     // Getters & Setters
     // -------------------------------------------------------------------------
     
-
-
     private int associationId;
 
     public void setAssociationId(int associationId) {
@@ -130,7 +119,7 @@ public class ViewDataEntryFormAction
     {
         association = programStageService.getProgramStage( associationId );
 
-        dataEntryForm = dataEntryFormService.getDataEntryFormByProgramStage(association);
+        dataEntryForm = association.getDataEntryForm();
         
         ProgramStage programStage = programStageService.getProgramStage( associationId );
         
@@ -149,7 +138,7 @@ public class ViewDataEntryFormAction
             int programStageId = itr.next().getId();
             listAssociationIds.add( programStageId );
         }
-        listDataEntryForm = dataEntryFormAssociationService.listDisctinctDataEntryFormByAssociationIds( DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, listAssociationIds );
+        listDataEntryForm = dataEntryFormService.listDisctinctDataEntryFormByProgramStageIds( listAssociationIds );
 
         if ( dataEntryForm == null )
         {

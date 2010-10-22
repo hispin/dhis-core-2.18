@@ -88,13 +88,13 @@ public class DataElementCategoryBatchHandler
     {
         statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
-        statementBuilder.setColumn( "conceptname" );
+        statementBuilder.setColumn( "conceptid" );
     }
     
     protected void setValues( DataElementCategory category )
     {        
         statementBuilder.setValue( category.getUuid() );
         statementBuilder.setValue( category.getName() );
-        statementBuilder.setValue( category.getConceptName() );
+        statementBuilder.setValue( category.getConcept() );
     }
 }

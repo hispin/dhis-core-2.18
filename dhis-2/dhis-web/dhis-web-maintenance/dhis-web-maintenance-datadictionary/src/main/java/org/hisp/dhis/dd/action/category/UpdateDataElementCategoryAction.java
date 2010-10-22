@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 
@@ -53,6 +54,13 @@ public class UpdateDataElementCategoryAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    private ConceptService conceptService;
+
+    public void setConceptService( ConceptService conceptService )
+    {
+        this.conceptService = conceptService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -71,11 +79,11 @@ public class UpdateDataElementCategoryAction
         this.name = name;
     }
 
-    private String conceptName;
+    private Integer conceptId;
 
-    public void setConceptName( String conceptName )
+    public void setConceptId( Integer conceptId )
     {
-        this.conceptName = conceptName;
+        this.conceptId = conceptId;
     }
 
     private List<String> categoryOptions = new ArrayList<String>();
@@ -92,21 +100,22 @@ public class UpdateDataElementCategoryAction
     public String execute()
     {
         DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( id );
-        dataElementCategory.setName( name );        
-        dataElementCategory.setConceptName( conceptName );
-        
+        dataElementCategory.setName( name );
+        dataElementCategory.setConcept( conceptService.getConcept( conceptId ) );
+
         // ---------------------------------------------------------------------
         // CategoryOptions can only be sorted on update
         // ---------------------------------------------------------------------
 
         dataElementCategory.getCategoryOptions().clear();
-        
+
         for ( String id : categoryOptions )
         {
-            dataElementCategory.getCategoryOptions().add( dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
+            dataElementCategory.getCategoryOptions().add(
+                dataElementCategoryService.getDataElementCategoryOption( Integer.parseInt( id ) ) );
         }
-        
-        dataElementCategoryService.updateDataElementCategory( dataElementCategory );        
+
+        dataElementCategoryService.updateDataElementCategory( dataElementCategory );
 
         return SUCCESS;
     }

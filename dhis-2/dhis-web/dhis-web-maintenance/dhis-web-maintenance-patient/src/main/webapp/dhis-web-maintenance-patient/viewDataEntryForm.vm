@@ -18,7 +18,15 @@
         oFCKeditor.ReplaceTextarea();
     }
     
-    
+	jQuery(document).ready(	function()
+	{		
+		validation( 'saveDataEntryForm', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
+		
+	});
+	
+	var previousName = '';
+
+</script>
      
 </script>
 
@@ -68,7 +76,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em"></td>
+        <td><input type="text" id="nameField" name="nameField" class="{validate:{required:true,rangelength:[4,150],alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"  value='#if($status == "EDIT")$dataEntryForm.name#end' style="width:20em"></td>
       </tr>
       <tr>
         <td colspan="2">&nbsp;</td>
@@ -106,6 +114,5 @@
 </table>
   
   <input type="hidden" name="associationIdField" id="associationIdField" value="$association.id" />
-  <input type="hidden" name="associationNameField" id="associationNameField" value="$associationName" />
 </form>
 

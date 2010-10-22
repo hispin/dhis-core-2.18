@@ -280,7 +280,8 @@ public class SelectAction
         // ---------------------------------------------------------------------
 
         dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
-
+System.out.println("\n\n\n +++++++++++++ \n organisationUnit : " + organisationUnit);
+System.out.println("\n  dataSets : " + dataSets);
         // ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType or are locked
         // ---------------------------------------------------------------------
@@ -293,7 +294,7 @@ public class SelectAction
             
             if(temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ))
             {
-                if ( !( temp.getPeriodType() instanceof CalendarPeriodType ) || temp.getLocked() )
+                if ( !( temp.getPeriodType() instanceof CalendarPeriodType ) )
                 {
                     it.remove();
                 }
@@ -429,7 +430,8 @@ public class SelectAction
         // ---------------------------------------------------------------------
 
         // Locate custom data entry form belonging to dataset, if any.
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( selectedDataSet );
+        DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
+        //dataEntryFormService.getDataEntryFormByDataSet( selectedDataSet );
         
         customDataEntryFormExists = ( dataEntryForm != null);
 

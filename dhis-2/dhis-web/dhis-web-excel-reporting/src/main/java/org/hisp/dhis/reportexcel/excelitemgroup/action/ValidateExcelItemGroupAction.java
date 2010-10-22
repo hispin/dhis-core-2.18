@@ -28,60 +28,58 @@ package org.hisp.dhis.reportexcel.excelitemgroup.action;
  */
 
 import org.hisp.dhis.reportexcel.action.ActionSupport;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
+import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class ValidateExcelItemGroupAction extends ActionSupport {
+public class ValidateExcelItemGroupAction
+    extends ActionSupport
+{
+    private ExcelItemService excelItemService;
 
-	// -------------------------------------------------------------------------
-	// Inputs
-	// -------------------------------------------------------------------------
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	private String name;
+    // -------------------------------------------------------------------------
+    // Inputs
+    // -------------------------------------------------------------------------
 
-	private String type;
+    private String name;
 
-	// -------------------------------------------------------------------------
-	// Setters
-	// -------------------------------------------------------------------------
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Integer id;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
+        ExcelItemGroup group = excelItemService.getExcelItemGroup( name );
 
-		message = "";
+        if ( group != null && (this.id == null || group.getId() != this.id) )
+        {
+            message = i18n.getString( "name_ready_exist" );
 
-		if (name == null || name.length() == 0) {
-
-			message += i18n.getString("name") + "<br>";
-		}
-
-		if (type == null || type.length() == 0) {
-
-			message += i18n.getString("row") + "<br>";
-		}
-
-		if (message.length() > 0) {
-
-			message = i18n.getString("error") + "<br>" + message
-					+ i18n.getString("not_null");
-
-			return ERROR;
-		}
-
-		return SUCCESS;
-	}
+            return ERROR;
+        }
+        
+        return SUCCESS;
+    }
 
 }

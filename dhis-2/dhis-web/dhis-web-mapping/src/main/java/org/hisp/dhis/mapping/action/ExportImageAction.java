@@ -72,13 +72,6 @@ public class ExportImageAction
         this.indicatorService = indicatorService;
     }
 
-    protected I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     // -------------------------------------------------------------------------
     // Output & input
     // -------------------------------------------------------------------------
@@ -104,9 +97,9 @@ public class ExportImageAction
         this.indicator = indicator;
     }
 
-    private Integer period;
+    private String period;
 
-    public void setPeriod( Integer period )
+    public void setPeriod( String period )
     {
         this.period = period;
     }
@@ -139,31 +132,43 @@ public class ExportImageAction
         this.height = height;
     }
 
-    private String imageFormat;
-
-    public void setImageFormat( String imageFormat )
-    {
-        this.imageFormat = imageFormat;
-    }
-
     private SVGDocument svgDocument;
 
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-
-        log.info( "Exporting image, width: " + svgDocument.getWidth() + ", height: " + svgDocument.getHeight()
-            + ", format: " + svgDocument.getImageFormat() );
-
-        if ( svgDocument.getImageFormat().equalsIgnoreCase( "image/png" ) )
+        log.info( "Exporting image, title: " + title + ", indicator: " + indicator + ", period" + period + ", width: " + width + ", height: " + height );
+        
+        log.info( "Legends: " + legends );
+        
+        if ( svg == null || title == null || indicator == null || period == null || width == null || height == null )
         {
-            SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
+            log.info( "Export map from session" );
+
+            svgDocument = (SVGDocument) SessionUtils.getSessionVar( SVGDOCUMENT );
         }
         else
         {
-            SVGUtils.convertToJPEG( svgDocument.getSVGForImage(), out, width, height );
+            log.info( "Export map from request" );
+
+            Indicator _indicator = indicatorService.getIndicator( indicator );
+
+            svgDocument = new SVGDocument();
+
+            svgDocument.setTitle( title );
+            svgDocument.setSvg( svg );
+            svgDocument.setIndicator( _indicator );
+            svgDocument.setPeriod( period );
+            svgDocument.setLegends( legends );
+            svgDocument.setIncludeLegends( includeLegends );
+            svgDocument.setWidth( width );
+            svgDocument.setHeight( height );
+
+            SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
         }
+        
+        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
 
         return SUCCESS;
     }
@@ -171,58 +176,18 @@ public class ExportImageAction
     @Override
     protected String getContentType()
     {
-        this.createSVGDocument();
-
-        return svgDocument.getImageFormat();
+        return "image/png";
     }
 
     @Override
     protected String getFilename()
     {
-        this.createSVGDocument();
-
-        if ( svgDocument.getImageFormat().equalsIgnoreCase( "image/png" ) )
-            return "dhis2-gis-image.png";
-        return "dhis2-gis-image.jpg";
+        return "dhis2_gis.png";
     }
-
-    private void createSVGDocument()
+    
+    @Override
+    protected boolean disallowCache()
     {
-        if ( svg == null || title == null || imageFormat == null || indicator == null || period == null
-            || width == null || height == null )
-        {
-            log.info( "Export map form session" );
-
-            svgDocument = (SVGDocument) SessionUtils.getSessionVar( SVGDOCUMENT );
-
-        }
-        else
-        {
-
-            log.info( "Export map form request" );
-
-            Period p = periodService.getPeriod( period );
-
-            p.setName( format.formatPeriod( p ) );
-
-            Indicator i = indicatorService.getIndicator( indicator );
-
-            svgDocument = new SVGDocument();
-
-            svgDocument.setTitle( this.title );
-            svgDocument.setSvg( this.svg );
-            svgDocument.setIndicator( i );
-            svgDocument.setPeriod( p );
-            svgDocument.setLegends( legends );
-            svgDocument.setIncludeLegends( includeLegends );
-            svgDocument.setWidth( width );
-            svgDocument.setHeight( height );
-            svgDocument.setImageFormat( imageFormat );
-
-            SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
-
-        }
-
+        return true;
     }
-
 }

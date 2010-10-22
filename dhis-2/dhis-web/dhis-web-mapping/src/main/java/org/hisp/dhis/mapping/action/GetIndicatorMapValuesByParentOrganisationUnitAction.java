@@ -31,7 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,25 +57,39 @@ public class GetIndicatorMapValuesByParentOrganisationUnitAction
     // Input
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int id )
+    public void setId( Integer id )
     {
         this.id = id;
     }
 
-    private int periodId;
+    private Integer periodId;
 
-    public void setPeriodId( int periodId )
+    public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
     }
 
-    private int parentId;    
+    private Integer parentId;    
 
-    public void setParentId( int parentId )
+    public void setParentId( Integer parentId )
     {
         this.parentId = parentId;
+    }
+    
+    private String startDate;
+    
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
     }
 
     // -------------------------------------------------------------------------
@@ -96,7 +110,14 @@ public class GetIndicatorMapValuesByParentOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getIndicatorMapValues( id, periodId, parentId );
+        if ( periodId != null ) // Period
+        {
+            object = mappingService.getIndicatorMapValues( id, periodId, parentId );
+        }
+        else // Start and end date
+        {
+            object = mappingService.getIndicatorMapValues( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), parentId );
+        }
         
         return SUCCESS;
     }

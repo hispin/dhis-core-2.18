@@ -23,6 +23,8 @@ public interface ExcelItemService
     public Collection<ExcelItemGroup> getAllExcelItemGroup();
 
     public ExcelItemGroup getExcelItemGroup( int id );
+    
+    public ExcelItemGroup getExcelItemGroup( String name );
 
     public Collection<ExcelItemGroup> getExcelItemGroups( OrganisationUnit organisationUnit );
 
@@ -39,6 +41,8 @@ public interface ExcelItemService
     public Collection<ExcelItem> getAllExcelItem();
 
     public ExcelItem getExcelItem( int id );
+    
+    public ExcelItem getExcelItem( String name );
 
     // --------------------------------------
     // DataElement Order

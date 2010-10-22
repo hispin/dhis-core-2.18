@@ -788,9 +788,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
 		</property>
-		<property name="dataEntryFormAssociationService">
-			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormAssociationService" />
-		</property>
 		<property name="dataEntryManager">
 			<ref bean="org.hisp.dhis.patient.screen.DataEntryManager" />
 		</property>
@@ -815,9 +812,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
-		</property>
-		<property name="entryFormAssociationService">
-			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormAssociationService" />
 		</property>
 	</bean>
 

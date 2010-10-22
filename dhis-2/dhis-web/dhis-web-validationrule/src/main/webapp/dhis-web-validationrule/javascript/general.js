@@ -9,19 +9,19 @@ function showValidationRuleDetails( validationId )
 
 function validationRuleReceived( validationElement )
 {
-    setFieldValue( 'nameField', getElementValue( validationElement, 'name' ) );
+    setInnerHTML( 'nameField', getElementValue( validationElement, 'name' ) );
     
     var description = getElementValue( validationElement, 'description' );
-    setFieldValue( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
     
     var leftSideDescription = getElementValue( validationElement, 'leftSideDescription' );
-    setFieldValue( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
+    setInnerHTML( 'leftSideDescriptionField', leftSideDescription ? leftSideDescription : '[' + i18n_none + ']' );
     
     var operator = getElementValue( validationElement, 'operator' );
-    setFieldValue( 'operatorField', i18nalizeOperator( operator ) );
+    setInnerHTML( 'operatorField', i18nalizeOperator( operator ) );
 	
     var rightSideDescription = getElementValue( validationElement, 'rightSideDescription' );
-    setFieldValue( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
+    setInnerHTML( 'rightSideDescriptionField', rightSideDescription ? rightSideDescription : '[' + i18n_none + ']' );
 
     showDetails();
 }
@@ -55,6 +55,7 @@ function i18nalizeOperator( operator )
     
     return null;
 }
+
 function getElementValue( parentElement, childElementName )
 {
     var textNode = parentElement.getElementsByTagName( childElementName )[0].firstChild;

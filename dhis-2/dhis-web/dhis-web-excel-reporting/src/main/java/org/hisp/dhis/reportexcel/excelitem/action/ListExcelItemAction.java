@@ -31,9 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
@@ -48,30 +45,25 @@ import com.opensymphony.xwork2.Action;
 public class ListExcelItemAction
     implements Action
 {
-
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ExcelItemService excelItemService;
 
-    private DataElementService dataElementService;
-
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input && Output
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private int excelItemGroupId;
+    private Integer excelItemGroupId;
 
     private ExcelItemGroup excelItemGroup;
 
     private List<ExcelItem> excelItems;
 
-    private List<DataElementGroup> dataElementGroups;
-
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and Setters
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public List<ExcelItem> getExcelItems()
     {
@@ -83,17 +75,7 @@ public class ListExcelItemAction
         this.excelItemService = excelItemService;
     }
 
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    public void setExcelItemGroupId( int excelItemGroupId )
+    public void setExcelItemGroupId( Integer excelItemGroupId )
     {
         this.excelItemGroupId = excelItemGroupId;
     }
@@ -103,22 +85,18 @@ public class ListExcelItemAction
         return excelItemGroup;
     }
 
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
         excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-        excelItems = new ArrayList<ExcelItem>( excelItemService.getExcelItemGroup( excelItemGroupId ).getExcelItems() );
+        excelItems = new ArrayList<ExcelItem>( excelItemGroup.getExcelItems() );
 
         Collections.sort( excelItems, new ExcelItemComparator() );
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         return SUCCESS;
     }

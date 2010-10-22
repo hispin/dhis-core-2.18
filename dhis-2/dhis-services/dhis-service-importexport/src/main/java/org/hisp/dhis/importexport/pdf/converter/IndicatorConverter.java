@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport.pdf.converter;
 
 import java.util.Collection;
 
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
@@ -54,9 +55,12 @@ public class IndicatorConverter
 {
     private IndicatorService indicatorService;
 
-    public IndicatorConverter( IndicatorService indicatorService )
+    private ExpressionService expressionService;
+
+    public IndicatorConverter( IndicatorService indicatorService, ExpressionService expressionService )
     {
         this.indicatorService = indicatorService;
+        this.expressionService = expressionService;
     }
 
     // -------------------------------------------------------------------------
@@ -106,11 +110,18 @@ public class IndicatorConverter
             table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
             table.addCell( getTextCell( i18n.getString( indicator.getNumeratorAggregationOperator() ) ) );
 
+            table.addCell( getItalicCell( i18n.getString( "numerator_formula" ), 1, ITALIC ) );
+            table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ), TEXT ) );
+
             table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
             table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
 
             table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
             table.addCell( getTextCell( i18n.getString( indicator.getDenominatorAggregationOperator() ) ) );
+
+            table.addCell( getItalicCell( i18n.getString( "denominator_formula" ), 1, ITALIC ) );
+            table
+                .addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ), TEXT ) );
 
             table.addCell( getCell( 2, 30 ) );
 

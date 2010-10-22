@@ -36,46 +36,48 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class GetExcelItemByIdAction implements Action {
+public class GetExcelItemByIdAction
+    implements Action
+{
 
-	// -------------------------------------------------------------------------
-	// Dependency
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	// -------------------------------------------------------------------------
-	// Input
-	// -------------------------------------------------------------------------
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	private int id;
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
 
-	private ExcelItem excelItem;
-	
-	// -------------------------------------------------------------------------
-	// Setters
-	// -------------------------------------------------------------------------
+    private Integer excelItemId;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setExcelItemId( Integer excelItemId )
+    {
+        this.excelItemId = excelItemId;
+    }
 
-	public ExcelItem getExcelItem() {
-		return excelItem;
-	}
+    private ExcelItem excelItem;
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public ExcelItem getExcelItem()
+    {
+        return excelItem;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-	public String execute() throws Exception {
+    public String execute()
+        throws Exception
+    {
+        excelItem = excelItemService.getExcelItem( excelItemId );
 
-		excelItem = excelItemService.getExcelItem(id);
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

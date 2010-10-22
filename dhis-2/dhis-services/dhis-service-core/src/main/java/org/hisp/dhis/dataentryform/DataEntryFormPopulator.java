@@ -72,7 +72,7 @@ public class DataEntryFormPopulator
         
         try
         {
-            jdbcTemplate.execute( "INSERT INTO dataentryformassociation SELECT 'dataset', datasetid, dataentryformid FROM dataentryform;" );
+//            jdbcTemplate.execute( "INSERT INTO dataentryformassociation SELECT 'dataset', datasetid, dataentryformid FROM dataentryform;" );
             jdbcTemplate.execute( statementBuilder.getDropDatasetForeignKeyForDataEntryFormTable() );
             jdbcTemplate.execute( "ALTER TABLE dataentryform DROP COLUMN datasetid;" );
         }

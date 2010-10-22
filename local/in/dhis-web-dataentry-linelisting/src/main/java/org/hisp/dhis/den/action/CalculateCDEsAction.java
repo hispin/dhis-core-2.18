@@ -35,8 +35,8 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.den.state.StatefulDataValueSaver;
@@ -137,8 +137,8 @@ public class CalculateCDEsAction
         	String value = null;
 
         	for ( CalculatedDataElement cde : cdes )
-        	{        		
-        		value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit, false ).toString();        			
+        	{        	
+        		value = expressionService.getExpressionValue( cde.getExpression(), period, organisationUnit, false, false ).toString();        			
         		
         		if ( value == null )
         		{

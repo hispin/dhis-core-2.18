@@ -15,8 +15,6 @@ import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
@@ -75,13 +73,6 @@ public class ProgramStageCustomDataEntryAction implements Action
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private DataEntryFormAssociationService associationService;
-
-    public void setAssociationService( DataEntryFormAssociationService associationService )
-    {
-        this.associationService = associationService;
     }
 
     private DataEntryScreenManager dataEntryScreenManager;
@@ -291,14 +282,12 @@ public class ProgramStageCustomDataEntryAction implements Action
         Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues(
              programStageInstance );
 
-        DataEntryFormAssociation association = associationService.getDataEntryFormAssociationByProgramStage( programStage.getId() );
-        if ( association == null )
+        DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+        if ( dataEntryForm == null )
         {
             return SUCCESS;
         }
 
-        dataEntryForm = association.getDataEntryForm();
-        
         boolean cdeFormExists = (dataEntryForm != null);
 
         // --------------------------------------------------------------
@@ -317,7 +306,6 @@ public class ProgramStageCustomDataEntryAction implements Action
         }
         
         return SUCCESS;
-
     }
 
 }

@@ -12,10 +12,10 @@ function showPatientAttributeGroupDetails( patientAttributeGroupId )
 
 function patientAttributeGroupReceived( patientAttributeGroupElement )
 {
-	setFieldValue( 'idField', getElementValue( patientAttributeGroupElement, 'id' ) );
-	setFieldValue( 'nameField', getElementValue( patientAttributeGroupElement, 'name' ) );	
-    setFieldValue( 'descriptionField', getElementValue( patientAttributeGroupElement, 'description' ) );
-	setFieldValue( 'requiredField', getElementValue( patientAttributeGroupElement, 'required' ) );
+	setInnerHTML( 'idField', getElementValue( patientAttributeGroupElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( patientAttributeGroupElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( patientAttributeGroupElement, 'description' ) );
+	setInnerHTML( 'requiredField', getElementValue( patientAttributeGroupElement, 'required' ) );
 
     showDetails();
 }
@@ -48,7 +48,7 @@ function removePatientAttributeGroupCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }

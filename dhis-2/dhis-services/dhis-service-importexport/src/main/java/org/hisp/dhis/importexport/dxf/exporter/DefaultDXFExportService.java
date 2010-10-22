@@ -27,6 +27,13 @@ package org.hisp.dhis.importexport.dxf.exporter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.ImportParams.ATTRIBUTE_NAMESPACE;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_EXPORTED;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_MINOR_VERSION;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.DXFROOT;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_11;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.NAMESPACE_10;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,11 +46,11 @@ import org.amplecode.quick.StatementManager;
 import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -101,9 +108,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.hisp.dhis.importexport.ImportParams.*;
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.*;
 
 
 /**
@@ -223,13 +227,13 @@ public class DefaultDXFExportService
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
 
-    private DataMartService dataMartService;
-    
-    public void setDataMartService( DataMartService dataMartService )
-    {
-        this.dataMartService = dataMartService;
-    }
+    private AggregatedDataValueService aggregatedDataValueService;
 
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+    
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -318,8 +322,8 @@ public class DefaultDXFExportService
                 completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
             
             thread.registerXMLConverter( params.isAggregatedData() ? 
-                new AggregatedDataValueConverter( dataMartService, dataSetService, periodService ) : 
-                new DataValueConverter( dataMartService, statementManager, periodService ) );
+                new AggregatedDataValueConverter( aggregatedDataValueService, dataSetService, periodService ) : 
+                new DataValueConverter( aggregatedDataValueService, statementManager, periodService ) );
             
             thread.start();
             

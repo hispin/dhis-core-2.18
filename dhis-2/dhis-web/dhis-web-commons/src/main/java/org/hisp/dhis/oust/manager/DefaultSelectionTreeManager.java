@@ -164,6 +164,11 @@ public class DefaultSelectionTreeManager
     {
         return reloadOrganisationUnits( getSelectedOrganisationUnits() );
     }
+    
+    public OrganisationUnit getReloadedSelectedOrganisationUnit()
+    {
+        return reloadOrganisationUnit( getSelectedOrganisationUnit() );
+    }
 
     public void clearSelectedOrganisationUnits()
     {

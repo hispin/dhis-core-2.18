@@ -32,8 +32,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Abyot Asalefew
@@ -52,6 +50,10 @@ public class ValidateDataElementCategoryAction
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
+
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
 
     private I18n i18n;
 
@@ -78,13 +80,6 @@ public class ValidateDataElementCategoryAction
         this.name = name;
     }
 
-    private String conceptName;
-
-    public void setConceptName( String conceptName )
-    {
-        this.conceptName = conceptName;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -102,39 +97,16 @@ public class ValidateDataElementCategoryAction
 
     public String execute()
     {
-        if ( name == null || name.isEmpty() )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
 
-            return INPUT;
-        }
-        else
-        {
             DataElementCategory match = dataElementCategoryService.getDataElementCategoryByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
-            }
-        }
-
-        if ( conceptName != null || !conceptName.isEmpty() )
-        {
-            // -----------------------------------------------------------------
-            // This string will be used as an XML attribute name.
-            // Start with a letter. No funny characters please. Max length 10.
-            // -----------------------------------------------------------------
-
-            Pattern conceptNamePattern = Pattern.compile( "^[a-zA-Z][a-zA-Z0-9_]{0,9}$" );
-            Matcher matcher = conceptNamePattern.matcher( conceptName );
-
-            if ( !matcher.matches() )
-            {
-                message = i18n.getString( "illegal_concept_name" );
-
-                return INPUT;
+                return ERROR;
             }
         }
 
@@ -142,4 +114,5 @@ public class ValidateDataElementCategoryAction
 
         return SUCCESS;
     }
+
 }

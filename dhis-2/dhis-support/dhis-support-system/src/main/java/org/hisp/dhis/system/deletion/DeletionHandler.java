@@ -28,6 +28,7 @@ package org.hisp.dhis.system.deletion;
  */
 
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
@@ -494,6 +495,15 @@ public abstract class DeletionHandler
     }
     
     public boolean allowDeleteLegend( Legend legend )
+    {
+        return true;
+    }
+    
+    public void deleteConcept( Concept concept )
+    {
+    }
+
+    public boolean allowDeleteConcept( Concept concept )
     {
         return true;
     }

@@ -18,8 +18,14 @@
 		<div class="paging">
 		#if ($currentPage > 1)
 			#set ( $prev = $currentPage - 1 )
-			<a href="${baseLink}currentPage=1&pageSize=${pageSize}" class="first" title="First">&laquo;&laquo;</a>
-			<a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}" class="prev" title="Previous">&laquo;</a>
+                        #if($mapPatientPatientAttr.size()!=0)
+                            <a href="${baseLink}currentPage=1&pageSize=${pageSize}&sortPatientAttributeId=$patientAttribute.id" class="first" title="First">&laquo;&laquo;</a>
+                            <a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}&sortPatientAttributeId=$patientAttribute.id" class="prev" title="Previous">&laquo;</a>
+                        #else
+                            <a href="${baseLink}currentPage=1&pageSize=${pageSize}" class="first" title="First">&laquo;&laquo;</a>
+                            <a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}" class="prev" title="Previous">&laquo;</a>
+                        #end
+			
 		#else
 			<span class="first" title="First">&laquo;&laquo;</span>
 			<span class="prev" title="Previous">&laquo;</span>
@@ -32,7 +38,11 @@
 					<span class="seperator">|</span>
 				#end
 				#if( $p != $currentPage )
+                                    #if($mapPatientPatientAttr.size()!=0)
+                                        <a href="${baseLink}currentPage=${p}&pageSize=${pageSize}&sortPatientAttributeId=$patientAttribute.id" class="page" title="Page $p">$p</a>
+                                    #else
 					<a href="${baseLink}currentPage=${p}&pageSize=${pageSize}" class="page" title="Page $p">$p</a>
+                                    #end
 				#else
 					<span class="page" title="Page $p">$p</span>
 				#end
@@ -41,8 +51,13 @@
 		
 		#if ( $currentPage < $numberOfPages )
 			#set ( $next = $currentPage + 1 )
-			<a href="${baseLink}currentPage=${next}&pageSize=${pageSize}" class="next" title="Next">&raquo;</a>
-			<a href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}" class="last" title="Last">&raquo;&raquo;</a>
+                        #if($mapPatientPatientAttr.size()!=0)
+                            <a href="${baseLink}currentPage=${next}&pageSize=${pageSize}&sortPatientAttributeId=$patientAttribute.id" class="next" title="Next">&raquo;</a>
+                            <a href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}&sortPatientAttributeId=$patientAttribute.id" class="last" title="Last">&raquo;&raquo;</a>
+                        #else
+                            <a href="${baseLink}currentPage=${next}&pageSize=${pageSize}" class="next" title="Next">&raquo;</a>
+                            <a href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}" class="last" title="Last">&raquo;&raquo;</a>
+                        #end
 		#else
 			<span class="next" title="Next">&raquo; </span>
 			<span class="last" title="Last">&raquo;&raquo;</span>

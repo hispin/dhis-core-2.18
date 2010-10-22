@@ -30,7 +30,6 @@ package org.hisp.dhis.patient.action.program;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
@@ -101,11 +100,6 @@ public class GetProgramListAction
     public void setPrograms( Collection<Program> programs )
     {
         this.programs = programs;
-    }
-
-    public String getAssociationName()
-    {
-        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
     }
 
     // -------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 <excelItemValues>
 #foreach($excelItemValue in $excelItemValues)
 	<excelItemValue>
-		<id>$encoder.xmlEncode($!excelItemValue.excelItem.id)</id>
+		<id>$!excelItemValue.excelItem.id</id>
 		<name>$encoder.xmlEncode($!excelItemValue.excelItem.name)</name>
 		<value>$excelItemValue.value</value>
 	</excelItemValue>

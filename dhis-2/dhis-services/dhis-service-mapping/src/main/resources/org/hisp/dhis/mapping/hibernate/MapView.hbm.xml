@@ -26,12 +26,18 @@
         
         <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" 
             column="dataelementid" foreign-key="fk_mapview_dataelementid"/>
+        
+        <property name="mapDateType"/>
 		
 		<many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" 
 			column="periodtypeid" foreign-key="fk_mapview_periodtypeid"/>
 		
 		<many-to-one name="period" class="org.hisp.dhis.period.Period" 
 			column="periodid" foreign-key="fk_mapview_periodid"/>
+        
+        <property name="startDate"/>
+        
+        <property name="endDate"/>
 		
 		<property name="mapSourceType"/>
 		

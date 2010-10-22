@@ -409,7 +409,7 @@
 			<result name="success" type="redirect">
 				showSqlViewListForm.action</result>
 			<result name="error" type="redirect">index.action</result>
-			<param name="requiredAuthorities">F_SQLVIEW_ADD</param>
+			<param name="requiredAuthorities">F_SQLVIEW_UPDATE</param>
 		</action>
 		
 		<action name="removeSqlViewObject"

@@ -26,7 +26,6 @@ package org.hisp.dhis.dashboard.aa.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,273 +56,229 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
 public class GenerateAnnualAnalysisDataAction
-    implements Action
+        implements Action
 {
 
     /* Dependencies */
     private OrganisationUnitService organisationUnitService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setOrganisationUnitService(OrganisationUnitService organisationUnitService)
     {
         this.organisationUnitService = organisationUnitService;
     }
-
     private PeriodService periodService;
 
-    public void setPeriodService( PeriodService periodService )
+    public void setPeriodService(PeriodService periodService)
     {
         this.periodService = periodService;
     }
-
     private IndicatorService indicatorService;
 
-    public void setIndicatorService( IndicatorService indicatorService )
+    public void setIndicatorService(IndicatorService indicatorService)
     {
         this.indicatorService = indicatorService;
     }
-
     private DataElementService dataElementService;
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setDataElementService(DataElementService dataElementService)
     {
         this.dataElementService = dataElementService;
     }
-
     private DashBoardService dashBoardService;
 
-    public void setDashBoardService( DashBoardService dashBoardService )
+    public void setDashBoardService(DashBoardService dashBoardService)
     {
         this.dashBoardService = dashBoardService;
     }
-
     private AggregationService aggregationService;
 
-    public void setAggregationService( AggregationService aggregationService )
+    public void setAggregationService(AggregationService aggregationService)
     {
         this.aggregationService = aggregationService;
     }
 
     /* Parameters */
     private OrganisationUnit selectedOrgUnit;
-
     private DataElement selectedDataElement;
-
     private Indicator selectedIndicator;
-
     private PeriodType monthlyPeriodType;
-
     private String[] series1;
 
     public String[] getSeries1()
     {
         return series1;
     }
-
     private String[] categories1;
 
     public String[] getCategories1()
     {
         return categories1;
     }
-
     private String[] series2;
 
     public String[] getSeries2()
     {
         return series2;
     }
-
     private String[] categories2;
 
     public String[] getCategories2()
     {
         return categories2;
     }
-
     String chartTitle = "Service : ";
 
-    public String getChartTitle()
-    {
+    public String getChartTitle() {
         return chartTitle;
     }
-
     String xAxis_Title;
 
     public String getXAxis_Title()
     {
         return xAxis_Title;
     }
-
     String yAxis_Title;
 
     public String getYAxis_Title()
     {
         return yAxis_Title;
     }
-
     List<String> numeratorDEList;
 
     public List<String> getNumeratorDEList()
     {
         return numeratorDEList;
     }
-
     List<String> denominatorDEList;
 
     public List<String> getDenominatorDEList()
     {
         return denominatorDEList;
     }
-
     Double data1[][];
 
     public Double[][] getData1()
     {
         return data1;
     }
-
     Double data2[][];
 
     public Double[][] getData2()
     {
         return data2;
     }
-
     List<List<Double>> dataList;
 
-    public List<List<Double>> getDataList()
-    {
+    public List<List<Double>> getDataList() {
         return dataList;
     }
-
     List<String> xseriesList;
 
-    public List<String> getXseriesList()
-    {
+    public List<String> getXseriesList() {
         return xseriesList;
     }
-
     List<String> yseriesList;
 
-    public List<String> getYseriesList()
-    {
+    public List<String> getYseriesList() {
         return yseriesList;
     }
-
     private DecimalFormat decimalFormat;
-    
-    public DecimalFormat getDecimalFormat()
-    {
+
+    public DecimalFormat getDecimalFormat() {
         return decimalFormat;
     }
 
     /* Input Parameters */
     private int availableDataElements;
-
     private int availableIndicators;
-
     private List<String> annualPeriodsListCB;
-
     private List<String> monthlyPeriodsListCB;
-
     private int ouIDTB;
-
     private String riRadio;
 
-    public String getRiRadio()
-    {
+    public String getRiRadio() {
         return riRadio;
     }
 
-    public void setRiRadio( String riRadio )
-    {
+    public void setRiRadio(String riRadio) {
         this.riRadio = riRadio;
     }
 
-    public void setAnnualPeriodsListCB( List<String> annualPeriodsListCB )
-    {
+    public void setAnnualPeriodsListCB(List<String> annualPeriodsListCB) {
         this.annualPeriodsListCB = annualPeriodsListCB;
     }
 
-    public void setAvailableDataElements( int availableDataElements )
-    {
+    public void setAvailableDataElements(int availableDataElements) {
         this.availableDataElements = availableDataElements;
     }
 
-    public void setAvailableIndicators( int availableIndicators )
-    {
+    public void setAvailableIndicators(int availableIndicators) {
         this.availableIndicators = availableIndicators;
     }
 
-    public void setMonthlyPeriodsListCB( List<String> monthlyPeriodsListCB )
-    {
+    public void setMonthlyPeriodsListCB(List<String> monthlyPeriodsListCB) {
         this.monthlyPeriodsListCB = monthlyPeriodsListCB;
     }
 
-    public void setOuIDTB( int ouIDTB )
-    {
+    public void setOuIDTB(int ouIDTB) {
         this.ouIDTB = ouIDTB;
     }
 
     public String execute()
-        throws Exception
-    {
+            throws Exception {
         dataList = new ArrayList<List<Double>>();
         xseriesList = new ArrayList<String>();
         yseriesList = new ArrayList<String>();
-        
+
         decimalFormat = new DecimalFormat("0.0");
 
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
-        selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+        selectedOrgUnit = organisationUnitService.getOrganisationUnit(ouIDTB);
         chartTitle = "Facility : " + selectedOrgUnit.getShortName();
 
         // Service Related Info
-        if ( riRadio.equals( "indicatorsRadio" ) )
-        {
+        if (riRadio.equals("indicatorsRadio")) {
             selectedIndicator = new Indicator();
-            selectedIndicator = indicatorService.getIndicator( availableIndicators );
+            selectedIndicator = indicatorService.getIndicator(availableIndicators);
             chartTitle += "\n Indicator : " + selectedIndicator.getName();
 
-        }
-        else
-        {
+        } else {
             selectedDataElement = new DataElement();
-            selectedDataElement = dataElementService.getDataElement( availableDataElements );
-            if ( selectedDataElement.getAlternativeName() != null )
+            selectedDataElement = dataElementService.getDataElement(availableDataElements);
+            if (selectedDataElement.getAlternativeName() != null) {
                 chartTitle += "\n DataElement : " + selectedDataElement.getAlternativeName();
-            else
+            } else {
                 chartTitle += "\n DataElement : " + selectedDataElement.getName();
+            }
         }
 
         // Period Related Info
-        monthlyPeriodType = dashBoardService.getPeriodTypeObject( "monthly" );
+        monthlyPeriodType = dashBoardService.getPeriodTypeObject("monthly");
 
         data1 = getServiceValuesByPeriod();
         xAxis_Title = "Month";
         yAxis_Title = "Facilty";
 
         int count1 = 0;
-        while ( count1 != categories1.length )
-        {
-            xseriesList.add( categories1[count1] );
+        while (count1 != categories1.length) {
+            xseriesList.add(categories1[count1]);
             count1++;
         }
 
         ActionContext ctx = ActionContext.getContext();
-        HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
+        HttpServletRequest req = (HttpServletRequest) ctx.get(ServletActionContext.HTTP_REQUEST);
 
         HttpSession session = req.getSession();
-        session.setAttribute( "data1", data1 );
-        session.setAttribute( "data2", data2 );
-        session.setAttribute( "series1", series1 );
-        session.setAttribute( "categories1", categories1 );
-        session.setAttribute( "series2", series2 );
-        session.setAttribute( "categories2", categories2 );
-        session.setAttribute( "chartTitle", chartTitle );
-        session.setAttribute( "xAxisTitle", xAxis_Title );
-        session.setAttribute( "yAxisTitle", yAxis_Title );
+        session.setAttribute("data1", data1);
+        session.setAttribute("data2", data2);
+        session.setAttribute("series1", series1);
+        session.setAttribute("categories1", categories1);
+        session.setAttribute("series2", series2);
+        session.setAttribute("categories2", categories2);
+        session.setAttribute("chartTitle", chartTitle);
+        session.setAttribute("xAxisTitle", xAxis_Title);
+        session.setAttribute("yAxisTitle", yAxis_Title);
 
         return SUCCESS;
     }// execute end
@@ -335,13 +290,12 @@ public class GenerateAnnualAnalysisDataAction
      * orgunit and selected service
      */
     @SuppressWarnings("unchecked")
-    public Double[][] getServiceValuesByPeriod()
-    {
+    public Double[][] getServiceValuesByPeriod() {
         DecimalFormat decFormat = new DecimalFormat("0.0");
-        
+
         Double[][] serviceValues = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
         data2 = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
-        String[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+        String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
         int count1 = 0;
         int count2 = 0;
@@ -353,103 +307,95 @@ public class GenerateAnnualAnalysisDataAction
         categories1 = new String[monthlyPeriodsListCB.size()];
         categories2 = new String[monthlyPeriodsListCB.size()];
         Iterator iterator1 = annualPeriodsListCB.iterator();
-        while ( iterator1.hasNext() )
-        {
+        while (iterator1.hasNext()) {
             List<Double> dataValues = new ArrayList<Double>();
-            int tempYear = Integer.parseInt( (String) iterator1.next() );
-            series1[count1] = "" + tempYear + "-" + (tempYear+1);
+            int tempYear = Integer.parseInt((String) iterator1.next());
+            series1[count1] = "" + tempYear + "-" + (tempYear + 1);
             series2[count1] = " ";
-            yseriesList.add( "" + tempYear + "-" + (tempYear+1));
+            yseriesList.add("" + tempYear + "-" + (tempYear + 1));
 
             Iterator iterator2 = monthlyPeriodsListCB.iterator();
             count2 = 0;
-            while ( iterator2.hasNext() )
+            while (iterator2.hasNext())
             {
-                int tempMonth = Integer.parseInt( (String) iterator2.next() );
-                p = dashBoardService.getPeriodByMonth( tempMonth, tempYear, monthlyPeriodType );
-                if ( p == null )
-                {
+                int tempMonth = Integer.parseInt((String) iterator2.next());
+                p = dashBoardService.getPeriodByMonth(tempMonth, tempYear, monthlyPeriodType);
+                if (p == null) {
                     serviceValues[count1][count2] = 0.0;
-                    System.out.println("PERIOD IS NULL for "+tempMonth+" : "+tempYear);
-                }
-                else
-                {
-                    if ( riRadio.equals( "indicatorsRadio" ) )
-                    {
+                    System.out.println("PERIOD IS NULL for " + tempMonth + " : " + tempYear);
+                } else {
+                    if (riRadio.equals("indicatorsRadio")) {
                         serviceValues[count1][count2] = aggregationService.getAggregatedIndicatorValue(
-                            selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-                        //System.out.println("indicators Radio is Selected");
-                    }
-                    else
-                    {
-                        double aggDataValue = 0.0;
+                                selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
+                        //System.out.println("indicators Radio is Selected " + serviceValues[count1][count2]);
+                    } else {
+                        Double aggDataValue = 0.0;
                         serviceValues[count1][count2] = 0.0;
                         DataElementCategoryCombo dataElementCategoryCombo = selectedDataElement.getCategoryCombo();
 
                         List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-                            dataElementCategoryCombo.getOptionCombos() );
+                                dataElementCategoryCombo.getOptionCombos());
 
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                        while ( optionComboIterator.hasNext() )
-                        {                        
+                        while (optionComboIterator.hasNext()) {
                             DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator.next();
 
-                            aggDataValue = aggregationService.getAggregatedDataValue( selectedDataElement, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+                            aggDataValue = aggregationService.getAggregatedDataValue(selectedDataElement, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
                             //System.out.println("selectedDataElement = "+selectedDataElement + " "+ p.getStartDate()+ " "+ p.getEndDate());
-                            if(aggDataValue == -1) aggDataValue = 0.0;
+                            if (aggDataValue == null) {
+                                aggDataValue = 0.0;
+                            }
                             serviceValues[count1][count2] += aggDataValue;
                             //System.out.println("aggDataValue = "+aggDataValue);
-                        } 
+                        }
                         //System.out.println("VALUE : "+serviceValues[count1][count2]);
                     }
-                    serviceValues[count1][count2] = Math.round( serviceValues[count1][count2] * Math.pow( 10, 1 ) )
-                        / Math.pow( 10, 1 );
+                    //if ( serviceValues[count1][count2] != null )
+                    //{
+                    if (serviceValues[count1][count2] == null) {
+                        serviceValues[count1][count2] = 0.0;
+                    }
+                    serviceValues[count1][count2] = Math.round(serviceValues[count1][count2] * Math.pow(10, 1)) / Math.pow(10, 1);
+                    //}
+
                 }
-                if ( serviceValues[count1][count2] == -1 )
-                {
+                if (serviceValues[count1][count2] == null) {
                     serviceValues[count1][count2] = 0.0;
                 }
                 categories1[count2] = monthNames[tempMonth];
                 categories2[count2] = monthNames[tempMonth];
                 data2[count1][count2] = 0.0;
-                dataValues.add( serviceValues[count1][count2] );
+                dataValues.add(serviceValues[count1][count2]);
                 count2++;
             }// Monthly PeriodList loop end
-            dataList.add( dataValues );
+            dataList.add(dataValues);
             count1++;
         } // Annual PeriodList loop end
         return serviceValues;
     }// getServiceValues method end
 
-    public Period getPeriodByMonth( int month, int year, PeriodType periodType )
-    {
-        int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    public Period getPeriodByMonth(int month, int year, PeriodType periodType) {
+        int monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
         Calendar cal = Calendar.getInstance();
-        cal.set( year, month, 1, 0, 0, 0 );
-        Date firstDay = new Date( cal.getTimeInMillis() );
+        cal.set(year, month, 1, 0, 0, 0);
+        Date firstDay = new Date(cal.getTimeInMillis());
 
-        if ( periodType.getName().equalsIgnoreCase( "Monthly" ) )
-        {
-            cal.set( year, month, 1, 0, 0, 0 );
-            if ( year % 4 == 0 && month == 1)
-            {
-                cal.set( Calendar.DAY_OF_MONTH, monthDays[month] + 1 );
+        if (periodType.getName().equalsIgnoreCase("Monthly")) {
+            cal.set(year, month, 1, 0, 0, 0);
+            if (year % 4 == 0 && month == 1) {
+                cal.set(Calendar.DAY_OF_MONTH, monthDays[month] + 1);
+            } else {
+                cal.set(Calendar.DAY_OF_MONTH, monthDays[month]);
             }
-            else
-            {
-                cal.set( Calendar.DAY_OF_MONTH, monthDays[month] );
-            }
-        }
-        else if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
-        {
-            cal.set( year, Calendar.DECEMBER, 31 );
+        } else if (periodType.getName().equalsIgnoreCase("Yearly")) {
+            cal.set(year, Calendar.DECEMBER, 31);
         }
 
-        Date lastDay = new Date( cal.getTimeInMillis() );
+        Date lastDay = new Date(cal.getTimeInMillis());
         //System.out.println( lastDay.toString() );
 
-        Period newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
+        Period newPeriod = periodService.getPeriod(firstDay, lastDay, periodType);
 
         return newPeriod;
     }
@@ -459,26 +405,22 @@ public class GenerateAnnualAnalysisDataAction
      * we pass name as Monthly then it returns the PeriodType Object for Monthly
      * PeriodType If there is no such PeriodType returns null
      */
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
+    public PeriodType getPeriodTypeObject(String periodTypeName) {
         Collection<PeriodType> periodTypes = periodService.getAllPeriodTypes();
         PeriodType periodType = null;
         Iterator<PeriodType> iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
+        while (iter.hasNext()) {
             PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().trim().equalsIgnoreCase( periodTypeName ) )
-            {
+            if (tempPeriodType.getName().trim().equalsIgnoreCase(periodTypeName)) {
                 periodType = tempPeriodType;
                 break;
             }
         }
-        if ( periodType == null )
-        {            
+        if (periodType == null) {
             return null;
         }
-        
+
         return periodType;
     }
-
 }// class end
+

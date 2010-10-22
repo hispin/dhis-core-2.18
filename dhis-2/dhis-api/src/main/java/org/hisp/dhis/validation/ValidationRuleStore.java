@@ -61,5 +61,19 @@ public interface ValidationRuleStore
      */
     void updateValidationRule( ValidationRule validationRule );
     
+    /**
+     * Returns all ValidationRules which are associated through their left or
+     * right side Expression with the given collection of DataElements.
+     * 
+     * @param dataElements the collection of DataElements.
+     * @return a collection of ValidationRules.
+     */
     Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
+    
+    /**
+     * Returns the number of ValidationRules.
+     * 
+     * @return the number of ValidationRules.
+     */
+    Integer getNumberOfValidationRules();
 }

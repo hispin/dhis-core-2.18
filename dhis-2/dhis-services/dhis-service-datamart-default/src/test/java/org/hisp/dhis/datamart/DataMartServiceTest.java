@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -69,8 +70,8 @@ public class DataMartServiceTest
     
     private DataMartService dataMartService;
     
-    private DataMartStore dataMartStore;
-
+    private AggregatedDataValueService aggregatedDataValueService;
+    
     private DataElementCategoryCombo categoryCombo;
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
@@ -105,8 +106,8 @@ public class DataMartServiceTest
     {
         dataMartService = (DataMartService) getBean( DataMartService.ID );
         
-        dataMartStore = (DataMartStore) getBean( DataMartStore.ID );
-
+        aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
+        
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -269,23 +270,23 @@ public class DataMartServiceTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA ), 240.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB ), 150.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitC ), 90.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitD ), 10.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitE ), 35.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitF ), 105.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitG ), 20.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitH ), 60.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA ), 240.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB ), 150.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitC ), 90.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitD ), 10.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitE ), 35.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitF ), 105.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitG ), 20.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitH ), 60.0 );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitA ), 835.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitB ), 580.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitC ), 255.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitD ), 90.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitE ), 145.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitF ), 345.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitG ), 90.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitH ), 145.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitA ), 835.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitB ), 580.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitC ), 255.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitD ), 90.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitE ), 145.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitF ), 345.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitG ), 90.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitH ), 145.0 );
     }
 
     @Test
@@ -297,23 +298,23 @@ public class DataMartServiceTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA ), 240.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB ), 150.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitC ), 90.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitD ), 10.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitE ), 35.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitF ), 105.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitG ), 20.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitH ), 60.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA ), 240.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB ), 150.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitC ), 90.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitD ), 10.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitE ), 35.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitF ), 105.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitG ), 20.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitH ), 60.0 );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitA ), 278.5, 0.5 ); 
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitB ), 193.8, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitC ), 85.1, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitD ), 30.1, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitE ), 48.3, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitF ), 115.4, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitG ), 30.2, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitH ), 48.6, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitA ), 278.5, 0.5 ); 
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitB ), 193.8, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitC ), 85.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitD ), 30.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitE ), 48.3, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitF ), 115.4, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitG ), 30.2, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodD, unitH ), 48.6, 0.5 );
     }
 
     @Test
@@ -325,23 +326,23 @@ public class DataMartServiceTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA ), 4.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB ), 3.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitC ), 1.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitD ), 1.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE ), 0.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF ), 2.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitG ), 0.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitH ), 1.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA ), 4.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB ), 3.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitC ), 1.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitD ), 1.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE ), 0.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF ), 2.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitG ), 0.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitH ), 1.0 );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 12.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 10.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 2.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 2.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 1.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 7.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 1.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 3.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 12.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 10.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 2.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 2.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 1.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 7.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 1.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 3.0 );
     }
 
     @Test
@@ -353,23 +354,23 @@ public class DataMartServiceTest
         
         dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA ), 66.7 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB ), 60.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitC ), 100.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitD ), 100.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE ), 0.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF ), 66.7 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitG ), 0.0 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitH ), 100.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA ), 66.7 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB ), 60.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitC ), 100.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitD ), 100.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitE ), 0.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitF ), 66.7 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitG ), 0.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitH ), 100.0 );
         
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 66.8, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 66.8, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 65.9, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 67.0, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.0, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 78.0, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 34.1, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 100.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitA ), 66.8, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitB ), 66.8, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitC ), 65.9, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitD ), 67.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitE ), 33.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitF ), 78.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitG ), 34.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodD, unitH ), 100.0, 0.5 );
     }
 
     @Test
@@ -473,13 +474,13 @@ public class DataMartServiceTest
         // Assert
         // ---------------------------------------------------------------------
         
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodA, unitF ), 104.7, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodA, unitG ), 10.0, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodA, unitH ), 22.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitF ), 104.7, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitG ), 10.0, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitH ), 22.1, 0.5 );
         
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitF ), 681.6, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitG ), 51.3, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodD, unitH ), 480.6, 2.0 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodD, unitF ), 681.6, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodD, unitG ), 51.3, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodD, unitH ), 480.6, 2.0 );
     }
 
     @Test
@@ -561,9 +562,9 @@ public class DataMartServiceTest
         // Assert
         // ---------------------------------------------------------------------
         
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodC, unitF ), 500.4, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodC, unitG ), 16.1, 0.5 );
-        assertEquals( dataMartStore.getAggregatedValue( indicatorA, periodC, unitH ), 412.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitF ), 500.4, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitG ), 16.1, 0.5 );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitH ), 412.1, 0.5 );
     }
 
     @Test
@@ -632,8 +633,8 @@ public class DataMartServiceTest
         // Assert
         // ---------------------------------------------------------------------
         
-        assertEquals( 430.0, dataMartStore.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitF ) );
-        assertEquals( 110.0, dataMartStore.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitG ) );
-        assertEquals( 175.0, dataMartStore.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitH ) );
+        assertEquals( 430.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitF ) );
+        assertEquals( 110.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitG ) );
+        assertEquals( 175.0, aggregatedDataValueService.getAggregatedValue( calculated, categoryOptionCombo, periodA, unitH ) );
     }
 }

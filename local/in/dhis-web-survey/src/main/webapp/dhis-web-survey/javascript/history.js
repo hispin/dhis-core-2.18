@@ -66,13 +66,18 @@ function CommentSaver( dataElementId_, optionComboId_, value_ )
     var value = value_;
     
     this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveComment.action?dataElementId=' +
-                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
+    {		
+		$.ajax({
+			   type: "POST",
+			   url: "saveComment.action",
+			   data: "dataElementId=" +dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value,
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
     
     function handleResponse( rootElement )
@@ -192,14 +197,20 @@ function saveMinLimit( organisationUnitId, dataElementId, optionComboId )
 {
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
-
-    var request = new Request();
-    request.setCallbackSuccess( refreshWindow );
-    request.setCallbackError( refreshWindow );
-
+	
     if ( minLimitField.value == '' )
     {
-        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
+		$.ajax({
+			   type: "POST",
+			   url: "removeMinMaxLimits.action",
+			   data: "organisationUnitId=" + organisationUnitId + "&dataElementId=" + dataElementId + "&optionComboId=" + optionComboId,
+			   success: function(result){
+					refreshWindow (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					refreshWindow (request);
+			   }
+			});
     }
     else
     {
@@ -218,7 +229,17 @@ function saveMinLimit( organisationUnitId, dataElementId, optionComboId )
                 maxLimit = minLimit + 1;
             }
 
-            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+			$.ajax({
+			   type: "POST",
+			   url: "removeMinMaxLimits.action",
+			   data: "organisationUnitId=" + organisationUnitId + "&dataElementId=" + dataElementId + "&optionComboId=" + optionComboId + "&minLimit=" + minLimit + "&maxLimit=" + maxLimit,
+			   success: function(result){
+					refreshWindow (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					refreshWindow (request);
+			   }
+			});
         }
         else
         {
@@ -232,13 +253,19 @@ function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
 
-    var request = new Request();
-    request.setCallbackSuccess( refreshWindow );
-    request.setCallbackError( refreshWindow );
-
     if ( maxLimitField.value == '' )
     {
-        request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId );
+		$.ajax({
+			   type: "POST",
+			   url: "removeMinMaxLimits.action",
+			   data: "organisationUnitId=" + organisationUnitId + "&dataElementId=" + dataElementId + "&optionComboId=" + optionComboId,
+			   success: function(result){
+					refreshWindow (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					refreshWindow (request);
+			   }
+			});
     }
     else
     {
@@ -261,7 +288,17 @@ function saveMaxLimit( organisationUnitId, dataElementId, optionComboId )
                 minLimit = maxLimit - 1;
             }
 
-            request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+			$.ajax({
+			   type: "POST",
+			   url: "saveMinMaxLimits.action",
+			   data: "organisationUnitId=" + organisationUnitId + "&dataElementId=" + dataElementId + "&optionComboId=" + optionComboId + "&minLimit=" + minLimit + "&maxLimit=" + maxLimit,
+			   success: function(result){
+					refreshWindow (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					refreshWindow (request);
+			   }
+			});
         }
         else
         {

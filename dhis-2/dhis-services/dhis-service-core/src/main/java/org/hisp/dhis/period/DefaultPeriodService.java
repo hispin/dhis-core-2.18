@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.Filter;
@@ -228,6 +229,16 @@ public class DefaultPeriodService
 
         Collections.reverse( periods );
 
+        return periods;
+    }
+    
+    public Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format )
+    {
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
+        
         return periods;
     }
     

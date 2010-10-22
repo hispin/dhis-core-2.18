@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -102,8 +103,13 @@ public class HibernateValidationRuleStore
         
         hql = "select distinct v from ValidationRule v join v.rightSide rs join rs.dataElementsInExpression rsd where rsd.id in (:ids)";
 
-        validationRules.addAll( sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ids ).list() );
+        validationRules.addAll( getQuery( hql ).setParameterList( "ids", ids ).list() );
         
         return validationRules;
+    }
+    
+    public Integer getNumberOfValidationRules()
+    {
+        return (Integer) getSqlQuery( "select count(*) as no from validationrule" ).addScalar( "no", Hibernate.INTEGER ).uniqueResult();
     }
 }

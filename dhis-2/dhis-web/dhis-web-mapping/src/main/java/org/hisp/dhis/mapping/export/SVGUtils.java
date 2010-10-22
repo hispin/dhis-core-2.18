@@ -59,7 +59,8 @@ public class SVGUtils
         PNGTranscoder t = new PNGTranscoder();
 
         t.addTranscodingHint( PNGTranscoder.KEY_HEIGHT, new Float( height ) );
-        t.addTranscodingHint( PNGTranscoder.KEY_WIDTH, new Float( width ) );        
+        t.addTranscodingHint( PNGTranscoder.KEY_WIDTH, new Float( width ) );
+        t.addTranscodingHint( JPEGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE );
 
         TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
 
@@ -86,7 +87,6 @@ public class SVGUtils
         t.addTranscodingHint( JPEGTranscoder.KEY_HEIGHT, new Float( height ) );
         t.addTranscodingHint( JPEGTranscoder.KEY_WIDTH, new Float( width ) );
         t.addTranscodingHint( JPEGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE );
-        t.addTranscodingHint( JPEGTranscoder.KEY_QUALITY, new Float( .8 ) );
 
         TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
 

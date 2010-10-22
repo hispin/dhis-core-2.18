@@ -423,29 +423,43 @@ public class GenerateNullReporterResultAction
                                 de.getCategoryCombo().getOptionCombos() );
                             for ( DataElementCategoryOptionCombo decoc : decocList )
                             {
-                                double tempVal = aggregationService.getAggregatedDataValue( de, decoc,
+                                Double tempVal = aggregationService.getAggregatedDataValue( de, decoc,
                                     p.getStartDate(), p.getEndDate(), curOu );
                                 // System.out.println("tempVal = " + tempVal);
                                 if ( includeZeros != null )
                                 {
-                                    if ( tempVal > 0.0 )
+                                    if(tempVal == null)
                                     {
-                                        aggValue += tempVal;
+                                        aggValue = -1.0;
                                     }
                                     else
                                     {
-                                        aggValue = -1.0;
+                                        if ( tempVal > 0.0 )
+                                        {
+                                            aggValue += tempVal;
+                                        }
+                                        else
+                                        {
+                                            aggValue = -1.0;
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if ( tempVal >= 0.0 )
+                                    if(tempVal == null)
                                     {
-                                        aggValue += tempVal;
+                                        aggValue = -1.0;
                                     }
                                     else
                                     {
-                                        aggValue = -1.0;
+                                        if ( tempVal > 0.0 )
+                                        {
+                                            aggValue += tempVal;
+                                        }
+                                        else
+                                        {
+                                            aggValue = -1.0;
+                                        }
                                     }
                                 }
                             }

@@ -78,12 +78,6 @@
             <result name="success" type="velocity-json">
                 /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
         </action>
-
-        <action name="getDataMapValuesByLevel"
-            class="org.hisp.dhis.mapping.action.GetDataMapValuesByLevelAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
-        </action>
         
         <action name="getDataMapValuesByParentOrganisationUnit"
             class="org.hisp.dhis.mapping.action.GetDataMapValuesByParentOrganisationUnitAction">
@@ -97,12 +91,6 @@
 				/dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
 		</action>
 
-		<action name="getIndicatorMapValuesByLevel"
-			class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByLevelAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
-		</action>
-		
 		<action name="getIndicatorMapValuesByMapAndFeatureId"
             class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesByMapAndFeatureIdAction">
             <result name="success" type="velocity-json">
@@ -115,16 +103,16 @@
                 /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
         </action>
 
-		<action name="setMapSourceTypeUserSetting"
-			class="org.hisp.dhis.mapping.action.SetMapSourceTypeUserSettingAction">
+        <action name="getMapUserSettings"
+            class="org.hisp.dhis.mapping.action.GetMapUserSettingsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonUserSettings.vm</result>
+        </action>
+
+		<action name="setMapUserSettings"
+			class="org.hisp.dhis.mapping.action.SetMapUserSettingsAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
-		</action>
-
-		<action name="getMapSourceTypeUserSetting"
-			class="org.hisp.dhis.mapping.action.GetMapSourceTypeUserSettingAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonUserSetting.vm</result>
 		</action>
 
 		<action name="getBaseCoordinate"
@@ -241,16 +229,16 @@
 				/dhis-web-mapping/jsonMapLegendSet.vm</result>
 		</action>
 
+        <action name="getMapLegendSetByDataElement"
+            class="org.hisp.dhis.mapping.action.GetMapLegendSetByDataElementAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonMapLegendSet.vm</result>
+        </action>
+
 		<action name="getMapLegendSetsByType"
 			class="org.hisp.dhis.mapping.action.GetMapLegendSetsByTypeAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-mapping/jsonminMapLegendSets.vm</result>
-		</action>
-
-		<action name="getMapLegendSetIndicators"
-			class="org.hisp.dhis.mapping.action.GetMapLegendSetAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-mapping/jsonMapLegendSetIndicators.vm</result>
 		</action>
 
 		<action name="assignIndicatorsToMapLegendSet"
@@ -258,6 +246,12 @@
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
 		</action>
+
+        <action name="assignDataElementsToMapLegendSet"
+            class="org.hisp.dhis.mapping.action.AssignDataElementsToMapLegendSetAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/void.vm
+            </result>
+        </action>
 
 		<!-- MapView -->
 
@@ -382,6 +376,7 @@
 			<result name="Point" type="velocity-json">/dhis-web-mapping/pointShapefile.vm</result>
 			<result name="Polygon" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
 			<result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
+			<result name="None" type="velocity-json">/dhis-web-mapping/polygonShapefile.vm</result>
 		</action>
 
 		<action name="getGeoJsonFromFile"

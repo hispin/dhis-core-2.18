@@ -42,10 +42,10 @@ import java.util.zip.ZipOutputStream;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.importexport.CSVConverter;
@@ -88,11 +88,11 @@ public class DataValueConverter
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataValueConverter( PeriodService periodService, DataMartService dataMartService,
+    public DataValueConverter( PeriodService periodService, AggregatedDataValueService aggregatedDataValueService,
         StatementManager statementManager )
     {
         this.periodService = periodService;
-        this.dataMartService = dataMartService;
+        this.aggregatedDataValueService = aggregatedDataValueService;
         this.statementManager = statementManager;
     }
     
@@ -158,7 +158,7 @@ public class DataValueConverter
                     {
                         for ( final Period period : periods )
                         {
-                            values = dataMartService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
+                            values = aggregatedDataValueService.getDeflatedDataValues( element, period.getId(), params.getOrganisationUnits() );
                             
                             for ( final DeflatedDataValue value : values )
                             {   

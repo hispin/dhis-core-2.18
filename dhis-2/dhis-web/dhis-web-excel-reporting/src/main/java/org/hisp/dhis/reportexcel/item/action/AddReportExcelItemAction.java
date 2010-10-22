@@ -1,3 +1,5 @@
+package org.hisp.dhis.reportexcel.item.action;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,8 +26,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel.item.action;
-
 
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
@@ -45,76 +45,58 @@ public class AddReportExcelItemAction
 
     private ReportExcelService reportService;
 
+    public void setReportService( ReportExcelService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
 
     private String name;
 
-    private String itemType;
-
-    private String expression;
-
-    private String periodType;
-
-    private Integer row;
-
-    private Integer column;
-
-    private Integer reportId;
-
-    private ReportExcelItem reportItem;
-
-    private Integer sheetNo;
-
-    // -------------------------------------------
-    // Getter & Setter
-    // -------------------------------------------
-
-    public void setReportService( ReportExcelService reportService )
-    {
-        this.reportService = reportService;
-    }   
-
-    public void setSheetNo( Integer sheetNo )
-    {
-        this.sheetNo = sheetNo;
-    }
-
-    public ReportExcelItem getReportItem()
-    {
-        return reportItem;
-    }
-
     public void setName( String name )
     {
         this.name = name;
     }
+
+    private String itemType;
 
     public void setItemType( String itemType )
     {
         this.itemType = itemType;
     }
 
+    private String expression;
+
     public void setExpression( String expression )
     {
         this.expression = expression;
     }
+
+    private String periodType;
 
     public void setPeriodType( String periodType )
     {
         this.periodType = periodType;
     }
 
+    private Integer row;
+
     public void setRow( Integer row )
     {
         this.row = row;
     }
 
+    private Integer column;
+
     public void setColumn( Integer column )
     {
         this.column = column;
     }
+
+    private Integer reportId;
 
     public void setReportId( Integer reportId )
     {
@@ -126,23 +108,28 @@ public class AddReportExcelItemAction
         return reportId;
     }
 
+    private Integer sheetNo;
+
+    public void setSheetNo( Integer sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
+
     public String execute()
         throws Exception
-    {        
+    {
 
-        reportItem = new ReportExcelItem();
+        ReportExcelItem reportItem = new ReportExcelItem();
         reportItem.setName( name );
-        reportItem.setItemType( itemType.trim() );
+        reportItem.setItemType( itemType );
         reportItem.setRow( row );
         reportItem.setColumn( column );
-        reportItem.setExpression( expression.trim() );
-        reportItem.setPeriodType( periodType.trim() );
-        reportItem.setSheetNo( (sheetNo == null ? 1 : sheetNo) );
+        reportItem.setExpression( expression );
+        reportItem.setPeriodType( periodType );
+        reportItem.setSheetNo( (sheetNo) );
         reportItem.setReportExcel( reportService.getReportExcel( reportId ) );
-        
 
-        reportService.addReportExcelItem( reportItem );        
-       
+        reportService.addReportExcelItem( reportItem );
 
         return SUCCESS;
     }

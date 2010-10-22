@@ -27,9 +27,9 @@ package org.hisp.dhis.reportexcel.excelitem.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItemService;
 
 /**
@@ -53,18 +53,12 @@ public class ValidateExcelItemAction
 
     private String name;
 
-    private String expression;
-
-    private Integer row;
-
-    private Integer column;
-
-    private Integer sheetNo;
-
-    private Integer excelItemGroupId;
-
     private Integer id;
 
+    private String message;
+
+    private I18n i18n;
+    
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -72,6 +66,11 @@ public class ValidateExcelItemAction
     public void setExcelItemService( ExcelItemService excelItemService )
     {
         this.excelItemService = excelItemService;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 
     public void setId( Integer id )
@@ -83,32 +82,7 @@ public class ValidateExcelItemAction
     {
         this.name = name;
     }
-
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
-    }
-
-    public void setRow( Integer row )
-    {
-        this.row = row;
-    }
-
-    public void setColumn( Integer column )
-    {
-        this.column = column;
-    }
-
-    public void setSheetNo( Integer sheetNo )
-    {
-        this.sheetNo = sheetNo;
-    }
-
-    public void setExcelItemGroupId( Integer excelItemGroupId )
-    {
-        this.excelItemGroupId = excelItemGroupId;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -116,82 +90,13 @@ public class ValidateExcelItemAction
     public String execute()
         throws Exception
     {
-        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
+        ExcelItem excelItem = excelItemService.getExcelItem( name );
 
-        if ( name == null || name.length() == 0 )
+        if ( excelItem != null && (this.id == null || excelItem.getId() != this.id) )
         {
-            message = i18n.getString( "name" ) + " " + i18n.getString( "not_null" );
+            message = i18n.getString( "name_ready_exist" );
 
             return ERROR;
-        }
-
-        if ( expression == null || expression.length() == 0 )
-        {
-            message = i18n.getString( "expression" ) + " " + i18n.getString( "not_null" );
-
-            return ERROR;
-        }
-
-        if ( sheetNo == null )
-        {
-            message = i18n.getString( "sheetNo" ) + " " + i18n.getString( "not_null" );
-
-            return ERROR;
-        }
-
-        if ( row == null )
-        {
-            message = i18n.getString( "row" ) + " " + i18n.getString( "not_null" );
-
-            return ERROR;
-        }
-
-        if ( column == null )
-        {
-            message = i18n.getString( "column" ) + " " + i18n.getString( "not_null" );
-
-            return ERROR;
-        }
-
-        if ( id == null )
-        {
-
-            if ( excelItemGroup.excelItemIsExist( name ) )
-            {
-                message = i18n.getString( "name_ready_exist" );
-
-                return ERROR;
-            }
-
-            if ( excelItemGroup.rowAndColumnIsExist( sheetNo, row, column ) )
-            {
-                message = i18n.getString( "cell_exist" );
-
-                return ERROR;
-            }
-        }
-        else
-        {
-            ExcelItem excelItem = excelItemService.getExcelItem( id );
-
-            ExcelItem temp = excelItemGroup.getExcelItemByName( name );
-
-            if ( temp != null && excelItem != temp )
-            {
-                message = i18n.getString( "name_ready_exist" );
-
-                return ERROR;
-            }
-
-            temp = excelItemGroup.getExcelItemBySheetRowColumn( sheetNo, row, column );
-
-            if ( temp != null && excelItem != temp )
-            {
-                message = i18n.getString( "cell_exist" );
-
-                return ERROR;
-            }
-
         }
 
         return SUCCESS;

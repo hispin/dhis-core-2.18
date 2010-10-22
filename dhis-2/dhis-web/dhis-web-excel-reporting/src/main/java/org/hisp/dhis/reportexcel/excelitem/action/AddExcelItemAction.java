@@ -54,13 +54,13 @@ public class AddExcelItemAction
 
     private String expression;
 
-    private int row;
+    private Integer row;
 
-    private int column;
+    private Integer column;
 
-    private int sheetNo;
+    private Integer sheetNo;
 
-    private int excelItemGroupId;
+    private Integer excelItemGroupId;
 
     // -------------------------------------------------------------------------
     // Setters
@@ -81,22 +81,27 @@ public class AddExcelItemAction
         this.expression = expression;
     }
 
-    public void setRow( int row )
+    public void setRow( Integer row )
     {
         this.row = row;
     }
 
-    public void setExcelItemGroupId( int excelItemGroupId )
+    public void setExcelItemGroupId( Integer excelItemGroupId )
     {
         this.excelItemGroupId = excelItemGroupId;
     }
 
-    public void setColumn( int column )
+    public Integer getExcelItemGroupId()
+    {
+        return excelItemGroupId;
+    }
+
+    public void setColumn( Integer column )
     {
         this.column = column;
     }
 
-    public void setSheetNo( int sheetNo )
+    public void setSheetNo( Integer sheetNo )
     {
         this.sheetNo = sheetNo;
     }
@@ -108,7 +113,6 @@ public class AddExcelItemAction
     public String execute()
         throws Exception
     {
-
         ExcelItem excelItem = new ExcelItem();
 
         excelItem.setName( name );

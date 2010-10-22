@@ -10,12 +10,15 @@ function getDataElements()
 	
 	if ( dataElementGroupId != null )
 	{
-		var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + dataElementGroupId + "&aggregate=true";
-				
-		var request = new Request();
-	    request.setResponseTypeXML( 'dataElement' );
-	    request.setCallbackSuccess( getDataElementsReceived );
-	    request.send( url );
+		$.post("../dhis-web-commons-ajax/getDataElements.action",
+		{
+			id : dataElementGroupId,
+			aggregate : "true"
+		},
+		function (data)
+		{
+			getDataElementsReceived(data);
+		},'xml');
 	}
 }
 
@@ -50,12 +53,15 @@ function getCategoryComboDataElements()
     
     if ( categoryComboId != null )
     {
-        var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
-        
-        var request = new Request();
-        request.setResponseTypeXML( 'dataElement' );
-        request.setCallbackSuccess( getCategoryComboDataElementsReceived );
-        request.send( url );
+		$.post("../dhis-web-commons-ajax/getDataElements.action",
+		{
+			categoryComboId : categoryComboId,
+			aggregate : "true"
+		},
+		function (data)
+		{
+			getCategoryComboDataElementsReceived(data);
+		},'xml');
     }
 }
 
@@ -88,12 +94,14 @@ function getIndicators()
 	
 	if ( indicatorGroupId != null )
 	{
-		var url = "../dhis-web-commons-ajax/getIndicators.action?id=" + indicatorGroupId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'indicator' );
-	    request.setCallbackSuccess( getIndicatorsReceived );
-	    request.send( url );	    
+		$.post("../dhis-web-commons-ajax/getIndicators.action",
+		{
+			id : indicatorGroupId
+		},
+		function (data)
+		{
+			getIndicatorsReceived(data);
+		},'xml');		
 	}
 }
 
@@ -128,12 +136,15 @@ function getOrganisationUnits()
 	
 	if ( organisationUnitLevel != null )
 	{
-		var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+		{
+			level : organisationUnitLevel
+		},
+		function (data)
+		{
+			getOrganisationUnitsReceived(data);
+		},'xml');
 		
-		var request = new Request();
-	    request.setResponseTypeXML( 'organisationUnit' );
-	    request.setCallbackSuccess( getOrganisationUnitsReceived );
-	    request.send( url );	    
 	}
 }
 
@@ -168,12 +179,15 @@ function getOrganisationUnitsToSelected()
     
     if ( organisationUnitLevel != null )
     {
-        var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
-        
-        var request = new Request();
-        request.setResponseTypeXML( 'organisationUnit' );
-        request.setCallbackSuccess( getOrganisationUnitsToSelectedReceived );
-        request.send( url );        
+		$.post("../dhis-web-commons-ajax/getOrganisationUnits.action",
+		{
+			level : organisationUnitLevel
+		},
+		function (data)
+		{
+			getOrganisationUnitsToSelectedReceived(data);
+		},'xml');
+		
     }
 }
 
@@ -204,12 +218,14 @@ function getOrganisationUnitChildren()
 	
 	if ( organisationUnitId != null )
 	{
-		var url = "../dhis-web-commons-ajax/getOrganisationUnitChildren.action?id=" + organisationUnitId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'organisationUnit' );
-	    request.setCallbackSuccess( getOrganisationUnitChildrenReceived );
-	    request.send( url );	
+		$.post("../dhis-web-commons-ajax/getOrganisationUnitChildren.action",
+		{
+			id : organisationUnitId
+		},
+		function (data)
+		{
+			getOrganisationUnitChildrenReceived(data);
+		},'xml');		
 	}
 }
 
@@ -242,12 +258,14 @@ function getPeriods()
 	
 	if ( periodTypeId != null )
 	{		
-		var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
-		
-		var request = new Request();
-	    request.setResponseTypeXML( 'period' );
-	    request.setCallbackSuccess( getPeriodsReceived );
-	    request.send( url );
+		$.post("../dhis-web-commons-ajax/getPeriods.action",
+		{
+			name : periodTypeId
+		},
+		function (data)
+		{
+			getPeriodsReceived(data);
+		},'xml');		
 	}
 }
 
@@ -281,13 +299,15 @@ function getPeriodsToSelected()
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
     
     if ( periodTypeId != null )
-    {       
-        var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
-        
-        var request = new Request();
-        request.setResponseTypeXML( 'period' );
-        request.setCallbackSuccess( getPeriodsToSelectedReceived );
-        request.send( url );
+    {
+		$.post("../dhis-web-commons-ajax/getPeriods.action",
+		{
+			name : periodTypeId
+		},
+		function (data)
+		{
+			getPeriodsToSelectedReceived(data);
+		},'xml');	
     }
 }
 

@@ -37,7 +37,7 @@ import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionComboService;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -55,8 +55,9 @@ public class MobileImportProcessAction
     implements Action
 {
 
-	//private static final Log LOG = LogFactory.getLog( MobileImportProcessAction.class );
-	
+    // private static final Log LOG = LogFactory.getLog(
+    // MobileImportProcessAction.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -89,12 +90,11 @@ public class MobileImportProcessAction
         this.userStore = userStore;
     }
 
-    private DataElementCategoryOptionComboService dataElementCategoryOptionComboService;
+    private DataElementCategoryService dataElementCategoryService;
 
-    public void setDataElementCategoryOptionComboService(
-        DataElementCategoryOptionComboService dataElementCategoryOptionComboService )
+    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+        this.dataElementCategoryService = dataElementCategoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -107,7 +107,7 @@ public class MobileImportProcessAction
     {
         return importStatus;
     }
-    
+
     private String statusMessage;
 
     public String getStatusMessage()
@@ -116,7 +116,7 @@ public class MobileImportProcessAction
     }
 
     private String storedBy;
-    
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -138,8 +138,9 @@ public class MobileImportProcessAction
 
             if ( mobImportParameters == null )
             {
-            	//LOG.debug( importFile + " Import File is not Propely Formated First" );
-            	
+                // LOG.debug( importFile +
+                // " Import File is not Propely Formated First" );
+
                 System.out.println( importFile + " Import File is not Propely Formated First" );
 
                 importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Propely Formated.";
@@ -153,29 +154,37 @@ public class MobileImportProcessAction
 
             UserCredentials userCredentials = userStore.getUserCredentials( curUser );
 
-            if( (userCredentials != null) && ( mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber()) ) )
+            if ( (userCredentials != null)
+                && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
             {
-            	storedBy = userCredentials.getUsername();
+                storedBy = userCredentials.getUsername();
             }
-            else {
-            	//LOG.debug( " Import File Contains Unrecognised Phone Numbers : " + mobImportParameters.getMobileNumber() );
-            	System.out.println( " Import File Contains Unrecognised Phone Numbers : " + mobImportParameters.getMobileNumber() );
-            	importStatus += "<br><font color=red><b>Import File Contains Unrecognised Phone Numbers :" + mobImportParameters.getMobileNumber()+ ".</b></font>";
-            	
-            	mobileImportService.moveFailedFile( importFile );
-            	continue;
-            	//mobileImportService.moveFailedFile( importFile );
+            else
+            {
+                // LOG.debug(
+                // " Import File Contains Unrecognised Phone Numbers : " +
+                // mobImportParameters.getMobileNumber() );
+                System.out.println( " Import File Contains Unrecognised Phone Numbers : "
+                    + mobImportParameters.getMobileNumber() );
+                importStatus += "<br><font color=red><b>Import File Contains Unrecognised Phone Numbers :"
+                    + mobImportParameters.getMobileNumber() + ".</b></font>";
+
+                mobileImportService.moveFailedFile( importFile );
+                continue;
+                // mobileImportService.moveFailedFile( importFile );
             }
 
             List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
 
-            if ( sources == null || sources.size() <= 0 ){
+            if ( sources == null || sources.size() <= 0 )
+            {
                 System.out.println( "Source is NULL" );
-                
-                importStatus += "<br><font color=red><b>No User Exist Who Registered Phone No. Is :" + mobImportParameters.getMobileNumber()+ ".</b></font>";
-                
+
+                importStatus += "<br><font color=red><b>No User Exist Who Registered Phone No. Is :"
+                    + mobImportParameters.getMobileNumber() + ".</b></font>";
+
                 mobileImportService.moveFailedFile( importFile );
-                //return SUCCESS;
+                // return SUCCESS;
                 continue;
             }
             Source source = sources.get( 0 );
@@ -188,22 +197,27 @@ public class MobileImportProcessAction
 
             Map<String, Integer> dataValueMap = new HashMap<String, Integer>( mobImportParameters.getDataValues() );
 
-            if ( dataValueMap == null || dataValueMap.size() <= 0 ){
+            if ( dataValueMap == null || dataValueMap.size() <= 0 )
+            {
                 System.out.println( "dataValue map is null" );
             }
-            else if ( source == null ){
+            else if ( source == null )
+            {
                 System.out.println( "source is null" );
             }
-            else if ( period == null ){
+            else if ( period == null )
+            {
                 System.out.println( "period is null" );
             }
-            else if ( timeStamp == null ){
+            else if ( timeStamp == null )
+            {
                 System.out.println( "timeStamp is null" );
             }
 
             if ( source == null || period == null || timeStamp == null || dataValueMap == null
-                || dataValueMap.size() <= 0 ){
-            	
+                || dataValueMap.size() <= 0 )
+            {
+
                 System.out.println( importFile + " Import File is not Propely Formated" );
 
                 importStatus += "<br>" + new Date() + ": " + importFile + " Import File is not Propely Formated.<br>";
@@ -221,8 +235,8 @@ public class MobileImportProcessAction
                 // key );
 
                 String parts[] = key.split( "\\." );
-                
-                System.out.println(key + "\t : \t" + parts.length);
+
+                System.out.println( key + "\t : \t" + parts.length );
 
                 String deStr = parts[0];
 
@@ -236,19 +250,23 @@ public class MobileImportProcessAction
 
                 DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
 
-                optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( Integer
+                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
                     .valueOf( optStr ) );
 
                 DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
 
-                if ( dataValue == null ){
-                    if ( value != null ){
-                        dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp, null, optionCombo );
+                if ( dataValue == null )
+                {
+                    if ( value != null )
+                    {
+                        dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp, null,
+                            optionCombo );
 
                         dataValueService.addDataValue( dataValue );
                     }
                 }
-                else{
+                else
+                {
                     dataValue.setValue( value );
 
                     dataValue.setTimestamp( timeStamp );

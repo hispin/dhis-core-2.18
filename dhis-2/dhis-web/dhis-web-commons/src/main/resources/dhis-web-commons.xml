@@ -62,8 +62,8 @@
 				class="org.hisp.dhis.webportal.interceptor.XWorkPortalUserInterceptor" />
 			<interceptor name="securityInterceptor"
 				class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" />
-            <interceptor name="postHttpMethodInterceptor"
-                class="org.hisp.dhis.security.intercept.HttpMethodInterceptor" />
+			<interceptor name="postHttpMethodInterceptor"
+				class="org.hisp.dhis.security.intercept.HttpMethodInterceptor" />
 
 			<interceptor-stack name="commonInterceptors">
 				<interceptor-ref name="staticParams" />
@@ -106,10 +106,11 @@
 
 		<default-interceptor-ref name="exceptionStack" />
 
-		<global-results>					
+		<global-results>
 			<result name="exceptionDefault" type="velocity">/exception.vm</result>
 			<result name="accessDenied" type="velocity">/accessDenied.vm</result>
-			<result name="jsonAccessDenied" type="velocity">/dhis-web-commons/ajax/jsonAccessDenied.vm</result>
+			<result name="jsonAccessDenied" type="velocity">/dhis-web-commons/ajax/jsonAccessDenied.vm
+			</result>
 			<result name="plainTextError" type="plainTextErrorResult">
 				<param name="parse">true</param>
 				<param name="message">${exception.class.name}: ${exception.message}</param>
@@ -154,7 +155,7 @@
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="clearSelectedOrganisationUnits"
 			class="org.hisp.dhis.oust.action.ClearSelectedOrganisationUnitsAction">
 			<result name="success" type="velocity-xml">
@@ -209,7 +210,15 @@
 				/dhis-web-commons/ouwt/responseSelect.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
+		<action name="getOrganisationUnitByCode"
+			class="org.hisp.dhis.ouwt.action.GetOrganisationUnitByCodeAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+		</action>
+		
 	</package>
 
 	<!-- Menu -->
@@ -261,13 +270,17 @@
 		</action>
 
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">
-			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm</result>
+			<result name="success" type="velocity">/dhis-web-commons/i18n/goback.vm
+			</result>
 			<result name="input" type="chain">i18n</result>
 		</action>
-		
-		<action name="validateAddDuplicatedTranslation" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
-			<result name="success" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationSuccess.vm</result>
-			<result name="input" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationInput.vm</result>
+
+		<action name="validateAddDuplicatedTranslation"
+			class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
+			<result name="success" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationSuccess.vm
+			</result>
+			<result name="input" type="velocity-xml">/dhis-web-commons/i18n/responseTranslationInput.vm
+			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -276,9 +289,10 @@
 				/dhis-web-commons/i18n/responseTranslations.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="i18nJavaScriptSupport" class="org.hisp.dhis.commons.action.NoAction">
-			<result name="success" type="velocity">/dhis-web-commons/i18n/i18n.vm</result>			
+			<result name="success" type="velocity">/dhis-web-commons/i18n/i18n.vm
+			</result>
 		</action>
 
 	</package>
@@ -337,7 +351,7 @@
 			class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlOrganisationUnits.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>			
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="getOrganisationUnitChildren"
@@ -379,6 +393,13 @@
 	<package name="dhis-web-commons-ajax-json" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-ajax-json">
 
+		<action name="getDataElementGroups"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataElementGroups.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getDataElement"
 			class="org.hisp.dhis.commons.action.GetDataElementAction">
 			<result name="success" type="velocity-json">
@@ -402,6 +423,13 @@
 		<action name="getDataSets" class="org.hisp.dhis.commons.action.GetDataSetsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonDataSets.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getIndicatorGroups"
+			class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonIndicatorGroups.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -469,12 +497,37 @@
 				/dhis-web-commons/ajax/jsonOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
-		<action name="getAvailablePeriods" class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction">
+
+		<action name="getAvailablePeriods"
+			class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="getExpressionText"
+			class="org.hisp.dhis.commons.action.GetExpressionTextAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="getOrganisationUnitLevels"
+			class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOrganisationUnitLevels.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="getOrganisationUnitGroups"
+			class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOrganisationUnitGroups.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+				
 
 	</package>
 
@@ -528,13 +581,13 @@
 		</action>
 
 		<action name="updateUserAccount"
-			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">		
+			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
 			<result name="success" type="velocity">
 				/dhis-web-commons/useraccount/updateUserSuccess.vm</result>
 			<result name="input" type="velocity">
 				/dhis-web-commons/useraccount/updateUserInput.vm</result>
 		</action>
-		
+
 	</package>
 
 </struts>

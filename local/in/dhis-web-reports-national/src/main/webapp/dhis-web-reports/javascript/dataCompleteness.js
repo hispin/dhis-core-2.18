@@ -34,11 +34,11 @@ function displayCompleteness()
         
         setMessage( i18n_processing + "..." );
         
-        var request = new Request();
+        //var request = new Request();
         
-        var url = null;
+       // var url = null;
         
-        request.setResponseTypeXML( "dataSetCompletenessResult" );
+        //request.setResponseTypeXML( "dataSetCompletenessResult" );
         var params;
         if ( dataSetId == "ALL" )
         {            
@@ -48,9 +48,19 @@ function displayCompleteness()
             
             //url = "getDataCompleteness.action?periodId=" + periodId +
             //"&organisationUnitId=" + selectedOrganisationUnitId;
-            params = "periodId=" + periodId + "&organisationUnitId=" + selectedOrganisationUnitId;
+            /* params = "periodId=" + periodId + "&organisationUnitId=" + selectedOrganisationUnitId;
             
-            request.setCallbackSuccess( displayCompletenessByDataSetReceived );
+            request.setCallbackSuccess( displayCompletenessByDataSetReceived ); */
+			
+			$.post("getDataCompleteness.action",
+			{
+				periodId : periodId,
+				organisationUnitId : selectedOrganisationUnitId
+			},
+			function (data)
+			{
+				displayCompletenessByDataSetReceived(data);
+			},'xml');
         }
         else
         {
@@ -61,15 +71,33 @@ function displayCompleteness()
             //url = "getDataCompleteness.action?periodId=" + periodId +
             //"&organisationUnitId=" + selectedOrganisationUnitId +
             //"&dataSetId=" + dataSetId;
-            params = "periodId=" + periodId + "&organisationUnitId=" + selectedOrganisationUnitId + "&dataSetId=" + dataSetId;
+            /* params = "periodId=" + periodId + "&organisationUnitId=" + selectedOrganisationUnitId + "&dataSetId=" + dataSetId;
             
-            request.setCallbackSuccess( displayCompletenessByOrganisationUnitReceived );
+            request.setCallbackSuccess( displayCompletenessByOrganisationUnitReceived ); */
+			
+			$.post("getDataCompleteness.action",
+			{
+				periodId : periodId,
+				organisationUnitId : selectedOrganisationUnitId,
+				dataSetId : dataSetId
+			},
+			function (data)
+			{
+				displayCompletenessByOrganisationUnitReceived(data);
+			},'xml');
         }               
 
-        var requestString = "getDataCompleteness.action";
+        /* var requestString = "getDataCompleteness.action";
         request.sendAsPost( params );
         request.send( requestString );
-        request.send( url );
+        request.send( url ); */
+		
+		$.post("getDataCompleteness.action",
+			{
+			},
+			function (data)
+			{
+			},'xml');
     }
 }
 
@@ -196,7 +224,7 @@ function getPeriods()
     
     if ( periodTypeId != null )
     {       
-       // var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+       /* // var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
         
         var request = new Request();
         request.setResponseTypeXML( "period" );
@@ -206,7 +234,16 @@ function getPeriods()
         var requestString = "../dhis-web-commons-ajax/getPeriods.action";
         var params = "name=" + periodTypeId;
         request.sendAsPost( params );
-        request.send( requestString );
+        request.send( requestString ); */
+		
+		$.post("../dhis-web-commons-ajax/getPeriods.action",
+			{
+				name : periodTypeId
+			},
+			function (data)
+			{
+				getPeriodsReceived(data);
+			},'xml');
     }
 }
 

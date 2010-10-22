@@ -1,25 +1,12 @@
-// -----------------------------------------------------------------------------
-// Validate Update Data Element Group
-// -----------------------------------------------------------------------------
-
-function validateUpdateDataElementGroupSet(){
-
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( validateUpdateDataElementGroupSetCompleted );
-    request.sendAsPost( "id=" + getFieldValue("id") + "&name=" +  getFieldValue("name"));
-    request.send( "validateDataElementGroupSet.action");
+function beforeSubmit()
+{
+	memberValidator = jQuery( "#memberValidator");
+	memberValidator.children().remove();
 	
-}
-
-function validateUpdateDataElementGroupSetCompleted( message ){
-    var type = message.getAttribute("type");
-    if(type=="success"){
-        selectAllById("groupMembers");
-        document.forms['updateDataElementGroupSet'].submit();
-    }else{
-        setMessage(message.firstChild.nodeValue);
-    }
+	jQuery.each( jQuery( "#groupMembers" ).children(), function(i, item){
+		item.selected = 'selected';
+		memberValidator.append( '<option value="' + item.value + '" selected="selected">' + item.value + '</option>');
+	});
 }
 
 // -----------------------------------------------------------------------------
@@ -74,8 +61,8 @@ function showDataElementGroupSetDetails( id ){
 
 function showDetailsCompleted( dataElementGroupSet ){
 
-    setFieldValue( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
-    setFieldValue( 'memberCountField', getElementValue( dataElementGroupSet, 'memberCount' ) );
+    setInnerHTML( 'nameField', getElementValue( dataElementGroupSet, 'name' ) );
+    setInnerHTML( 'memberCountField', getElementValue( dataElementGroupSet, 'memberCount' ) );
 
     showDetails();
 }

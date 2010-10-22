@@ -88,7 +88,7 @@
 		<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -189,7 +189,7 @@
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 	</bean>
 
 	<bean
@@ -245,7 +245,7 @@
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
         <property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-        <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
         <property name="batchHandlerFactory" ref="batchHandlerFactory" />
         <property name="objectMappingGenerator"
                   ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
@@ -290,7 +290,7 @@
 		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -303,6 +303,8 @@
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="expressionService"
+			ref="org.hisp.dhis.expression.ExpressionService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -314,7 +316,7 @@
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-		<property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
+		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 		<property name="statementManager" ref="statementManager" />
 	</bean>
 

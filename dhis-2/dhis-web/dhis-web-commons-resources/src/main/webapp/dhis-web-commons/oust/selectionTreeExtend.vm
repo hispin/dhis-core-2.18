@@ -1,0 +1,101 @@
+<script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
+
+## You don't have to use this template directly if you don't want to
+
+<div style="height:360px;background-image:url( ../images/loading.png );background-repeat:no-repeat">	
+	<div id="selectionTreeContainer" style="display:none">
+		<input type="button" value="$i18n.getString( 'select_all_at_level' )" onclick="selectOrganisationUnitAtLevel()" style="width:12em"/>
+		<select id="levelList" name="levelList" style="width:12em"/>
+		<input type="button" value="$i18n.getString( 'unselect_all_at_level' )" onclick="unSelectOrganisationUnitAtLevel()" style="width:12em"/>
+		<input type="button" value="$i18n.getString( 'unselect_all' )" onclick="unSelectAll()" style="width:12em"/>	
+		<br>
+		<input type="button" value="$i18n.getString( 'select_all_in_group' )" onclick="selectOrganisationUnitByGroup()" style="width:12em">
+		<select id="groupList" name="groupList" style="width:12em"/>
+		<input type="button" value="$i18n.getString( 'unselect_all_in_group' )" onclick="unSelectOrganisationUnitByGroup()" style="width:12em">	
+		
+		<div id="selectionTree"></div>	
+	</div>
+</div>
+<script type="text/javascript">
+	
+	function selectOrganisationUnitAtLevel()
+	{
+		jQuery.get( '../dhis-web-commons/oust/addorgunit.action',
+			{level: getFieldValue( 'levelList' )},
+			function( xml ){
+				selectionTree.buildSelectionTree();
+			});
+	}
+	
+	function unSelectOrganisationUnitAtLevel()
+	{
+		jQuery.get( '../dhis-web-commons/oust/removeorgunit.action',
+			{level: getFieldValue( 'levelList' )},
+			function( xml ){
+				selectionTree.buildSelectionTree();
+			});
+	}
+	
+	function unSelectAll()
+	{
+		jQuery.get( '../dhis-web-commons/oust/clearSelectedOrganisationUnits.action',			
+			function( xml ){
+				selectionTree.buildSelectionTree();
+			});
+	}
+	
+	function selectOrganisationUnitByGroup()
+	{
+		jQuery.get( '../dhis-web-commons/oust/addorgunit.action',
+			{organisationUnitGroupId: getFieldValue( 'groupList' )},
+			function( xml ){
+				selectionTree.buildSelectionTree();
+			});
+	}
+	
+	function unSelectOrganisationUnitByGroup()
+	{
+		jQuery.get( '../dhis-web-commons/oust/removeorgunit.action',
+			{organisationUnitGroupId: getFieldValue( 'groupList' )},
+			function( xml ){
+				selectionTree.buildSelectionTree();
+			});
+	}
+	
+	
+	
+	function loadOrganisationUnitLevel()
+	{		
+		jQuery.getJSON('../dhis-web-commons-ajax-json/getOrganisationUnitLevels.action',
+		function( json ){
+			var levels = jQuery("#levelList");
+			levels.empty();
+			jQuery.each( json.levels, function(i, item){
+				levels.append( '<option value="' + item.level + '">' + item.name + '</option>');
+			});			
+			jQuery( "#selectionTreeContainer" ).fadeIn();
+		});
+	}
+	
+	function loadOrganisationUnitGroup()
+	{
+		jQuery.getJSON('../dhis-web-commons-ajax-json/getOrganisationUnitGroups.action',
+		function( json ){
+			var groups = jQuery("#groupList");
+			groups.empty();
+			jQuery.each( json.organisationUnitGroups, function(i, item){
+				groups.append( '<option value="' + item.id + '">' + item.name + '</option>');
+			});	
+
+			loadOrganisationUnitLevel();	
+		});
+	}
+	
+	
+	jQuery(document).ready( function(){		
+		loadOrganisationUnitGroup();
+		selectionTreeSelection.setMultipleSelectionAllowed( true );			
+		selectionTree.buildSelectionTree();	
+	});
+	
+</script>

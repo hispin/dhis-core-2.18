@@ -33,6 +33,7 @@ import java.util.HashSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
@@ -40,7 +41,8 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddSelectedOrganisationUnitAction.java 2869 2007-02-20 14:26:09Z andegje $
+ * @version $Id: AddSelectedOrganisationUnitAction.java 2869 2007-02-20
+ *          14:26:09Z andegje $
  */
 public class AddSelectedOrganisationUnitAction
     implements Action
@@ -58,6 +60,13 @@ public class AddSelectedOrganisationUnitAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -69,11 +78,25 @@ public class AddSelectedOrganisationUnitAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int organisationUnitId )
+    public void setId( Integer organisationUnitId )
     {
         this.id = organisationUnitId;
+    }
+
+    private Integer level;
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
+    private Integer organisationUnitGroupId;
+
+    public void setOrganisationUnitGroupId( Integer organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     private Collection<OrganisationUnit> selectedUnits;
@@ -92,10 +115,25 @@ public class AddSelectedOrganisationUnitAction
     {
         try
         {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-
             selectedUnits = new HashSet<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
-            selectedUnits.add( unit );
+
+            if ( id != null )
+            {
+                OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+                selectedUnits.add( unit );
+            }
+
+            if ( level != null )
+            {
+                selectedUnits.addAll( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+            }
+
+            if ( organisationUnitGroupId != null )
+            {
+                selectedUnits.addAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
+                    .getMembers() );
+            }
+
             selectionTreeManager.setSelectedOrganisationUnits( selectedUnits );
         }
         catch ( Exception e )

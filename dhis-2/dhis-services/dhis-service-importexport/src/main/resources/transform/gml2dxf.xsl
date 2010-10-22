@@ -13,14 +13,17 @@
   <xsl:param name="coordinates"/>
   <xsl:variable name="newlist" select="concat(normalize-space($coordinates), ' ')"/>
   <xsl:variable name="first" select="substring-before($newlist, ' ')"/>
+  <xsl:variable name="xcoord" select="substring-before($first, ',')"/>
+  <xsl:variable name="ycoord" select="substring-after($first, ',')"/>
   <xsl:variable name="remaining" select="substring-after($newlist, ' ')"/>
-  <coord><xsl:value-of select="$first"/></coord>
+  <coord><xsl:value-of select="round(10000*$xcoord) div 10000"/>,<xsl:value-of select="round(10000*$ycoord) div 10000"/></coord>
   <xsl:if test="$remaining">
     <xsl:call-template name="coordinates-delimiter">
       <xsl:with-param name="coordinates" select="$remaining"/>
     </xsl:call-template>
   </xsl:if>
 </xsl:template>
+
 
 <xsl:template match="gml:Polygon">
   <feature type="Polygon">

@@ -19,7 +19,7 @@
     
     #if( "$!ouMapDataStatusResult" == "" || $ouMapDataStatusResult.isEmpty() || $ouMapDataStatusResult.size() == 0 )
 	
-		<div align="center" class="NormalB">Selected OrgUnit and its Children are Not assigned to $selDataSet.name</div>
+		<div align="center" class="NormalB">Selected OrgUnit and its Children are Either Not assigned to $selDataSet.name Or Not in  $selectedOrgUnitGroup.getName() Group</div>
 
 	#else
 

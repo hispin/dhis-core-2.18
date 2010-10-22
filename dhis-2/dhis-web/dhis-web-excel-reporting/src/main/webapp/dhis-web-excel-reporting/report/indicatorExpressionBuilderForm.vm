@@ -1,0 +1,48 @@
+<div id="indicator" style="display:none">
+	<table width="100%">
+		<tr>			
+			<th>$i18n.getString( "indicator" )</th>
+		<tr>
+		<tr valign="top">			
+			<td>	
+				<select id="groupSelect" style="width:500px"onchange="getIndicators(this.value, '#indicator select[id=elementSelect]')"></select>								
+				<select id="elementSelect" size="15" style="width:500px;"></select>					
+			</td>			
+		</tr>	
+	</table>
+	<br>
+	<br>
+	<center>
+		<input type="button" value="$i18n.getString('ok')" onclick="updateInExpression()" style="width:100px"/>		
+		<input type="button" value="$i18n.getString('cancel')" onclick="closeInExpression()" style="width:100px"/>
+	</center>
+</div>
+
+<script>
+	function updateInExpression()
+	{
+		expression = jQuery( '#indicator select[id=elementSelect]' ).val();
+		setFieldValue( 'expression', '[' + expression + ']');
+		closeInExpression();
+	}
+	
+	
+	function inExpressionBuilderForm()
+	{
+		loadIndicatorGroups( "#indicator select[id=groupSelect]");		
+		
+		showPopupWindowById( 'indicator', 510, 340 );
+	}
+		
+	function getIndicators( id, target)
+	{
+		loadIndicatorsByGroup( id, target );
+	}
+	
+	function closeInExpression()
+	{
+		hideById('indicator');
+		unLockScreen();
+	}
+	
+</script>

@@ -40,6 +40,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFO
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.options.style.StyleManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +62,13 @@ public class SetSystemSettingsAction
         this.systemSettingManager = systemSettingManager;
     }
 
+    private StyleManager styleManager;
+
+    public void setStyleManager( StyleManager styleManager )
+    {
+        this.styleManager = styleManager;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -141,6 +149,13 @@ public class SetSystemSettingsAction
         this.factorDeviation = factorDeviation;
     }
 
+    private String currentStyle;
+
+    public void setCurrentStyle( String style )
+    {
+        this.currentStyle = style;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -173,9 +188,9 @@ public class SetSystemSettingsAction
             omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager
             .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
-        
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
-
+        styleManager.setCurrentStyle( currentStyle );
+        
         return SUCCESS;
     }
 }

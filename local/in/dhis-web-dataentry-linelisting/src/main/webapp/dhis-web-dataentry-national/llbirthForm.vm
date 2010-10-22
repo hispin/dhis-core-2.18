@@ -95,7 +95,7 @@
 	#foreach( $llDataValue in $llDataValues)
 		#if($count1 == 3)
 			<td>
-				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLBSexField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLBSexField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end>
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="M" #if($llDataValue.getValue() && $llDataValue.getValue()=="M") selected #end>Male</option>
 					<option value="F" #if($llDataValue.getValue() && $llDataValue.getValue()=="F") selected #end>Female</option>
@@ -103,29 +103,29 @@
 			</td>			
 		#elseif($count1 == 6)
 			<td>
-				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLBBreastFedField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateLLBBreastFedField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end>
 					<option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
 					<option value="Y" #if($llDataValue.getValue() && $llDataValue.getValue()=="Y") selected #end>YES</option>
 					<option value="N" #if($llDataValue.getValue() && $llDataValue.getValue()=="N") selected #end>NO</option>
 					<option value="NK" #if($llDataValue.getValue() && $llDataValue.getValue()=="NK") selected #end>NOT KNOWN</option>
 				</select>
 			</td>
-            <td>
-            	<a href="#" onclick="javascript:removeLLRecord( '$llDataValue.getRecordNo()' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+            <td #if( $locked ) style="display:none" #end>
+            	<a href="#" onclick="javascript:removeLLRecord( '$llDataValue.getRecordNo()' )" title="$i18n.getString( "remove" )" #if( $locked ) disabled="disabled"#end><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
             </td>			
 		#elseif($count1 == 4)
 			<td>
-				<input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBDOBField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:10em text-align:center">
-				<img src="../images/calendar_icon.gif" width="16" height="16" id="getvalue[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+				<input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBDOBField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:10em text-align:center" #if( $locked ) disabled="disabled"#end>
+				#if( !$locked ) <img src="../images/calendar_icon.gif" width="16" height="16" id="getvalue[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" > #end
 			</td>
 			#set($calInfo = $calInfo + "Calendar.setup({inputField:'value["+$llDataValue.getDataElement().getId()+"].value:value["+$llDataValue.getRecordNo()+"].value',ifFormat:'$i18n.getString('format.date.label')',button:'getvalue["+$llDataValue.getDataElement().getId()+"].value:value["+$llDataValue.getRecordNo()+"].value'});")
 		#elseif($count1 == 1)
 			<td align="center"><div id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].slno" align='center'>$slno</div></td>
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBNameField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBNameField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  #if( $locked ) disabled="disabled"#end></td>
         #elseif($count1 == 5)
-            <td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBWeightField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>											
+            <td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBWeightField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  #if( $locked ) disabled="disabled"#end></td>											
 		#else
-			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBVillageField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>		
+			<td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue())$llDataValue.getValue()#end" onchange="validateLLBVillageField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  #if( $locked ) disabled="disabled"#end></td>		
 		#end
 		#set( $count1 = $count1 + 1 )
 		#set( $lastRecord = $llDataValue.getRecordNo() )				
@@ -133,6 +133,7 @@
 	#set( $slno = $slno + 1 )
 	</tr>	
 #end
+#if( !$locked )
 <tr>
 	<td align="center"><div id='value[1020].value:value[$recordNo].slno' align='center'>$slno</div></td>	
 	<td><input name="entryfield" id="value[1020].value:value[$recordNo].value" type="text" value="" onchange="validateLLBNameField(1020,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
@@ -168,6 +169,7 @@
         <input type="hidden" value="$!selEndDate" id="selEndDate" name="selEndDate" >
     </td>
  </tr>
+#end
 </table>
 
 

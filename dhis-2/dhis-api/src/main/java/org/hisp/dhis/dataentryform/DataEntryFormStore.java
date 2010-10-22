@@ -28,8 +28,7 @@ package org.hisp.dhis.dataentryform;
  */
 
 import java.util.Collection;
-
-import org.hisp.dhis.dataset.DataSet;
+import java.util.List;
 
 public interface DataEntryFormStore
 {
@@ -78,19 +77,14 @@ public interface DataEntryFormStore
     DataEntryForm getDataEntryFormByName( String name );
 
     /**
-     * Returns a DataEntryForm corresponding to the given dataSet.
-     * 
-     * @param dataSet The dataset.
-     * @return The DataEntryForm corresponds to the given dataSet or null if it
-     *         does not exist.
-     */
-    DataEntryForm getDataEntryFormByDataSet( DataSet dataSet );
-
-    /**
      * Get all DataEntryForms.
      * 
      * @return A collection containing all DataEntryForms.
      */
     Collection<DataEntryForm> getAllDataEntryForms();
     
+    Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
+    
+    Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );
+   
 }

@@ -6,12 +6,10 @@
 // Register the command.
 var associationIdField = window.parent.document.getElementById( 'associationIdField' );
 var associationId = associationIdField.value;
-var associationNameField = window.parent.document.getElementById( 'associationNameField' );
-var associationName = associationNameField.value;
 var urlLocation = window.parent.location.href;
 var urlParts = new Array();
 urlParts = urlLocation.split('viewDataEntryForm.action');
-var urlPath = urlParts[0]+'selectDataElement.action?associationId='+associationId+'&associationName='+associationName;
+var urlPath = urlParts[0]+'selectDataElement.action?associationId='+associationId;
 
 FCKCommands.RegisterCommand( 'InsertDataElement', new FCKDialogCommand( 'Insert data element', 'Data element selector', urlPath, 700, 550 ) ) ;
 
@@ -25,7 +23,7 @@ FCKToolbarItems.RegisterItem( 'InsertDataElement', oInsertDataElementItem ) ;
 var FCKSelectElement = new Object() ;
 
 // Called by the popup to insert the selected data element.
-FCKSelectElement.Add = function( associationId, associationName, dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames)
+FCKSelectElement.Add = function( associationId,  dataElementId, dataElementName, dataElementType, dispName, viewByValue, selectedOptionComboIds, selectedOptionComboNames)
 {
     viewByValue = "@@"+viewByValue+"@@";
     var strPSDataEntryId   = "value["+ associationId +"].value:value["+ dataElementId +"].value";
@@ -33,8 +31,7 @@ FCKSelectElement.Add = function( associationId, associationName, dataElementId, 
     var boolPSDataEntryId  = "value["+ associationId +"].boolean:value["+ dataElementId +"].boolean";
     var datePSDataEntryId  = "value["+ associationId +"].date:value["+ dataElementId +"].date";
 
-    if(associationName == "programstage")
-    {
+    
         var selectString = "";
         if(dataElementType == "string" && (selectedOptionComboNames.indexOf("(default)")== -1 ))
         {
@@ -89,35 +86,6 @@ FCKSelectElement.Add = function( associationId, associationName, dataElementId, 
         	strPSDataEntryId  = strPSDataEntryId + ":value["+ selectedOptionComboIds[0] +"].value";
             FCK.InsertHtml("<input name=\"entryfield\" id=\""+strPSDataEntryId+"\" type=\"text\" value=\"\" onkeypress=\"return keyPress(event, this)\" >");
         }
-    }
-    else if(associationName == "dataset")
-    {
-        for(k=0; k<selectedOptionComboIds.length; k++)
-        {
-            var optionComboId = selectedOptionComboIds[k];
-            var optionComboName = selectedOptionComboNames[k];
-
-            var titleValue = "-- "+dataElementId + ". "+ dataElementName+" "+optionComboId+". "+optionComboName+" ("+dataElementType+") --";
-            var displayName = dispName+" - "+optionComboName+" ]";
-            var dataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-            var boolDataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-//            alert("dataElementType = "+dataElementType +" optionComboId = "+optionComboId +" optionComboName= "+optionComboName);
-            if (dataElementType == "bool")
-            {
-                selectString = "<select name=\"entryselect\" id=\""+boolDataEntryId+"\" > <option value=\"\">Select Value</option>";
-                selectString += "<option value=\"true\" >$i18n.getString( \"yes\" )</option>";
-                selectString += "<option value=\"false\" >$i18n.getString( \"no\" )</option>";
-                selectString += "</select>";
-
-                FCK.InsertHtml(selectString);
-            }
-            else
-            {
-                //alert("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>");
-                FCK.InsertHtml("<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>");
-
-            }
-        }
-
-    }
+    
+   
 }

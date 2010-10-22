@@ -89,19 +89,22 @@ function previewNormal( xmlObject ){
 	for(var i=0;i<availableObjectList.length;i++){
 		
 		// get values
-		var itermValue = availableObjectList.item(i);
+		var itemValue = availableObjectList.item(i);
 		// add new row
 		var newTR = document.createElement('tr');
 		// create new column
 		var newTD2 = document.createElement('td');
-		newTD2.innerHTML = itermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
 		// create new column
 		var newTD3 = document.createElement('td');
-		var value = itermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		var value = 0;
+		if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
+			value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		}
 		newTD3.innerHTML = value;
 		// create new column
 		var newTD1 = document.createElement('td');
-		var id = itermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var id = itemValue.getElementsByTagName('id')[0].firstChild.nodeValue;
 		if(value!=0){
 			newTD1.innerHTML= "<input type='checkbox' name='excelItems' onChange='javascript: checkAllSelect(this);' id='excelItems' value='" + id + "'>" ;
 		}
@@ -171,7 +174,11 @@ function previewOrganisation( xmlObject ){
 			newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
 			// create new column
 			var newTD3 = document.createElement('td');
-			var value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+			var value = 0;
+			if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
+				value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+			}
+			//var value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
 			newTD3.innerHTML = value;
 			// create new column
 			var newTD1 = document.createElement('td');
@@ -217,21 +224,26 @@ function previewCategory( xmlObject ){
 	for(var i=0;i<availableObjectList.length;i++){
 		
 		// get values
-		var itermValue = availableObjectList.item(i);
+		var itemValue = availableObjectList.item(i);
 		// add new row
 		var newTR = document.createElement('tr');
 		// create new column
 		var newTD2 = document.createElement('td');
-		newTD2.innerHTML = itermValue.getElementsByTagName('name')[0].firstChild.nodeValue;
+		newTD2.innerHTML = itemValue.getElementsByTagName('name')[0].firstChild.nodeValue;
 		// create new column
 		var newTD3 = document.createElement('td');
-		var value = itermValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		var value = 0;
+		if( itemValue.getElementsByTagName('value')[0].firstChild != null ) {
+			value = itemValue.getElementsByTagName('value')[0].firstChild.nodeValue;
+		}
+
 		newTD3.innerHTML = value;
+		
 		// create new column
 		var newTD1 = document.createElement('td');
-		var id = itermValue.getElementsByTagName('id')[0].firstChild.nodeValue;
-		var row = itermValue.getElementsByTagName('row')[0].firstChild.nodeValue;
-		var expression = itermValue.getElementsByTagName('expression')[0].firstChild.nodeValue
+		var id = itemValue.getElementsByTagName('id')[0].firstChild.nodeValue;
+		var row = itemValue.getElementsByTagName('row')[0].firstChild.nodeValue;
+		var expression = itemValue.getElementsByTagName('expression')[0].firstChild.nodeValue
 		if(value!=0){
 			newTD1.innerHTML= "<input type='checkbox' name='excelItems' id='excelItems' value='" + id + "-" + row + "-" + expression + "'>" ;
 		}

@@ -29,6 +29,7 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
@@ -57,7 +58,7 @@ public class ValidateGroupSetAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -74,25 +75,11 @@ public class ValidateGroupSetAction
     public void setName( String name )
     {
         this.name = name;
-    }
+    }    
 
-    private String description;
+    private Collection<Integer> selectedGroups = new HashSet<Integer>();
 
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    private boolean compulsory;
-
-    public void setCompulsory( boolean compulsory )
-    {
-        this.compulsory = compulsory;
-    }
-
-    private Collection<String> selectedGroups;
-
-    public void setSelectedGroups( Collection<String> selectedGroups )
+    public void setSelectedGroups( Collection<Integer> selectedGroups )
     {
         this.selectedGroups = selectedGroups;
     }
@@ -125,81 +112,43 @@ public class ValidateGroupSetAction
         // Validate values
         // ---------------------------------------------------------------------
 
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_a_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_a_name" );
-
-                return INPUT;
-            }
-
             OrganisationUnitGroupSet match = organisationUnitGroupService.getOrganisationUnitGroupSetByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
-        }
-
-        if ( description == null )
-        {
-            message = i18n.getString( "specify_a_description" );
-
-            return INPUT;
-        }
-        else
-        {
-            description = description.trim();
-
-            if ( description.length() == 0 )
-            {
-                message = i18n.getString( "specify_a_description" );
-
-                return INPUT;
-            }
-        }
-
-        if ( compulsory && (selectedGroups == null || selectedGroups.size() == 0) )
-        {
-            message = i18n.getString( "compulsory_must_have_member" );
-
-            return INPUT;
-        }
+        }      
 
         // ---------------------------------------------------------------------
         // When adding or updating an exclusive group set any unit in the
         // selected groups can not be a member of more than one group
         // ---------------------------------------------------------------------
 
-        if ( selectedGroups != null && selectedGroups.size() > 0 )
-        {            
+        if ( !this.selectedGroups.isEmpty() )
+        {
             List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
 
-            for ( String groupId : selectedGroups )
+            for ( Integer groupId : selectedGroups )
             {
-                units.addAll( organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( groupId ) ).getMembers() );
+                units.addAll( organisationUnitGroupService.getOrganisationUnitGroup( groupId ).getMembers() );
             }
 
-            Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units, new OrganisationUnitNameComparator() );
-            
+            Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units,
+                new OrganisationUnitNameComparator() );
+
             if ( duplicates.size() > 0 )
             {
                 message = i18n.getString( "the_group_set_can_not_be_creat_bec_it_is_exc_and" ) + " "
-                    + duplicates.iterator().next().getShortName() + " " + i18n.getString( "is_a_member_of_more_than_one_selected_group" );
-                
-                return INPUT;
-            }            
+                    + duplicates.iterator().next().getShortName() + " "
+                    + i18n.getString( "is_a_member_of_more_than_one_selected_group" );
+
+                return ERROR;
+            }
         }
 
         message = "OK";

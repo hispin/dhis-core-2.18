@@ -1,5 +1,8 @@
 package org.hisp.dhis.reportexcel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -201,9 +204,7 @@ public class ReportExcelItem
 
         public static final String ORGANISATION = "organisation";
 
-        public static final String INDICATOR = "indicator";
-
-        public static final String CALCULATION = "calculation";
+        public static final String INDICATOR = "indicator";       
 
         public static final String DATAELEMENT_CODE = "dataelement_code";
 
@@ -224,10 +225,26 @@ public class ReportExcelItem
 
         public static final String LAST_6_MONTH = "last_6_month";
 
-        public static final String QUATERLY = "quaterly";
+        public static final String QUARTERLY = "quaterly";
 
         public static final String SIX_MONTH = "6_month";
 
         public static final String YEARLY = "yealy";
+        
+        public static List<String> getPeriodTypes()
+        {
+            List<String> list = new ArrayList<String>();
+            list.add( SELECTED_MONTH );
+            list.add( LAST_3_MONTH );
+            list.add( SO_FAR_THIS_YEAR );
+            list.add( LAST_6_MONTH );
+            list.add( QUARTERLY );
+            list.add( SIX_MONTH );
+            list.add( YEARLY );
+            
+            return list;
+        }
     }
+    
+    
 }

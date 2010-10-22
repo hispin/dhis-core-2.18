@@ -1,0 +1,214 @@
+<div id="indicator-expression-container" style="display:none">
+<form id="indicator-expression-form">
+<table width="750">
+	<colgroup>
+		<col width="250">
+		<col width="50">
+		<col width="450">
+	</colgroup>
+	<tr>
+		<th colspan="2">$i18n.getString( "description" )</th>
+		<th>$i18n.getString( "aggregation_operator" )</th>
+	</tr>
+	<tr>
+		<td>
+			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
+		</td>
+		<td></td>
+		<td>
+			<input type="radio" name="aggregationOperator" checked="true" value="sum" onclick="getOperandsByDataElementGroup()"/>	
+			$i18n.getString( "sum" )<br>
+			<input type="radio" name="aggregationOperator" value="average" onclick="getOperandsByDataElementGroup()"/>
+			$i18n.getString( "average" )
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<th colspan="2">$i18n.getString( "formula" )</th>
+		<th>$i18n.getString( "list_of_data_elements" )</th>
+	</tr>
+	<tr>
+		<td valign="top">
+		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br>
+		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( "left_brackets" )"></a>
+		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( "right_brackets" )"></a>
+		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( "multiply" )"></a>
+		<a href="javascript:insertText( 'expression', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( "divide" )"></a>
+		<a href="javascript:insertText( 'expression', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( "plus" )"></a>
+		<a href="javascript:insertText( 'expression', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( "minus" )"></a>
+		</td>
+		<td></td>
+		<td valign="top">
+			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br>
+			<input type="text" id="filter" name="filter" style="width:450px" onkeyup="filterList( this.value, 'dataElementId' )"><br>
+
+			<select id="dataElementGroupId" name="dataElementGroupId" style="width:450px" onchange="getOperandsByDataElementGroup(this.value)">				
+			</select><br>
+
+			<select id="dataElementId" name="dataElementId" size="10" style="min-width:450px"		
+			ondblclick="insertText( 'expression', this.value, 'aggregationOperator' )">				
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="3">$i18n.getString( "description" )</th>		
+	</tr>
+	<tr>
+		<td colspan="3"><div id="formulaText" style="width:740px;height:70px;overflow:auto"></div></td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<input type="submit" value="$i18n.getString( 'save' )" style="width:125px"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="closeExpressionBuilder()">
+		</td>
+	</tr>	
+</table>
+</form>
+</div>
+
+<script>
+
+	var numerator = false;	
+	var validator = null;
+
+	function indicatorNumeratorForm()
+	{
+		numerator = true;
+		
+		loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
+		
+		validator.resetForm();
+		
+		var expression = getFieldValue( 'numerator' );
+		var description = getFieldValue( 'numeratorDescription' );
+		var aggregationOperator = getFieldValue( 'numeratorAggregationOperator' );
+		setFieldValue( 'indicator-expression-container textarea[id=expression]', expression );
+		setFieldValue( 'indicator-expression-container input[id=description]', description );
+		setRadioValue( 'aggregationOperator', aggregationOperator );
+		
+		checAggregationOperator();
+		getExpressionText();
+		
+		showPopupWindowById( 'indicator-expression-container', 750, 440 );		
+	}
+	
+	function indicatorDenominatorForm()
+	{
+		numerator = false;
+		
+		loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
+		
+		validator.resetForm();
+		
+		var expression = getFieldValue( 'denominator' );
+		var description = getFieldValue( 'denominatorDescription' );
+		var aggregationOperator = getFieldValue( 'denominatorAggregationOperator' );
+		setFieldValue( 'indicator-expression-container textarea[id=expression]', expression );
+		setFieldValue( 'indicator-expression-container input[id=description]', description );
+		setRadioValue( 'aggregationOperator', aggregationOperator );
+		
+		checAggregationOperator();
+		getExpressionText();
+		
+		showPopupWindowById( 'indicator-expression-container', 750, 440 );		
+	}
+	
+	function getOperandsByDataElementGroup()
+	{
+		var aggregationOperator = getRadioValue( 'aggregationOperator' );
+		
+		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");
+		
+		loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator} );	
+		
+		checAggregationOperator();
+	}	
+	
+	function getExpressionText()
+	{
+		if( hasText('expression') ){
+			jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
+				expression: getFieldValue('expression')
+			}, function( json ){
+				if( json.response == 'success')
+				{
+					jQuery( "#formulaText").html( json.message );
+				}else{
+					jQuery( "#formulaText").html( '' );
+				}
+			});
+		}else{
+			jQuery( "#formulaText").html( '' );
+		}
+	}
+	
+	function insertText( inputAreaName, inputText, radioGroupName )
+	{
+		insertTextCommon( inputAreaName, inputText );	
+
+		checAggregationOperator();
+		
+		getExpressionText();
+	}
+	
+	function cleanExpression()
+	{
+		checAggregationOperator();
+		
+		getExpressionText();
+	}
+	
+	function checAggregationOperator()
+	{
+		if( hasText('expression') )disableGroup( "input[name=aggregationOperator]" );
+		else enableGroup( "input[name=aggregationOperator]" );
+	}
+	
+	function closeExpressionBuilder()
+	{
+		hideById( 'indicator-expression-container' );
+		unLockScreen();
+	}
+	
+	function inserExpression()
+	{
+		var expression = getFieldValue( 'indicator-expression-container textarea[id=expression]' );
+		var description = getFieldValue( 'indicator-expression-container input[id=description]' );
+		var aggregationOperator = getRadioValue( 'aggregationOperator' );
+		
+		jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+			{expression: expression},
+			function( json ){
+				if( json.response == 'error') markInvalid( 'indicator-expression-container textarea[id=expression]' , json.message );
+				else {								
+					if( numerator ){								
+						setFieldValue( 'numerator', expression );
+						setFieldValue( 'numeratorDescription', description );
+						setFieldValue( 'numeratorAggregationOperator', aggregationOperator );			
+					}else{
+						setFieldValue( 'denominator', expression );
+						setFieldValue( 'denominatorDescription', description );
+						setFieldValue( 'denominatorAggregationOperator', aggregationOperator );									
+					}
+					
+					closeExpressionBuilder();
+				}
+				
+				
+			});		
+		
+	}
+	
+	jQuery( document ).ready( function(){
+		validator = validation( 'indicator-expression-form', inserExpression );
+	});
+
+	
+</script>
+
+

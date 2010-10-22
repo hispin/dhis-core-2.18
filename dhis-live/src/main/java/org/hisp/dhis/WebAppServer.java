@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,20 +24,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 /**
  *
  * @author Bob Jolliffe
  * @version $$Id$$
  */
-
 package org.hisp.dhis;
 
 
 import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mortbay.component.LifeCycle;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.ContextHandlerCollection;
@@ -49,6 +46,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
  */
 public class WebAppServer
 {
+
     public static final String DHIS_DIR = "/webapps/dhis";
 
     public static final String BIRT_DIR = "/webapps/birt";
@@ -64,7 +62,6 @@ public class WebAppServer
     protected Server server;
 
     protected Connector connector;
-    private SimpleConfigReader configReader;
 
     public WebAppServer()
     {
@@ -72,23 +69,26 @@ public class WebAppServer
         connector = new SelectChannelConnector();
     }
 
-    public void init( String installDir, LifeCycle.Listener serverListener )
+    public void init()
         throws Exception
     {
+        String installDir = TrayApp.installDir;
         try
         {
             int portFromConfig = this.getPortFromConfig();
             connector.setPort( portFromConfig );
             log.info( "Loading DHIS 2 on port: " + portFromConfig );
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             log.info( "Couldn't load port number from " + installDir + JETTY_PORT_CONF );
             connector.setPort( DEFAULT_JETTY_PORT );
             log.info( "Loading DHIS 2 on port: " + DEFAULT_JETTY_PORT );
         }
 
-        server.setConnectors( new Connector[] { connector } );
+        server.setConnectors( new Connector[]
+            {
+                connector
+            } );
 
         ContextHandlerCollection handlers = new ContextHandlerCollection();
 
@@ -107,7 +107,7 @@ public class WebAppServer
         }
 
         server.setHandler( handlers );
-        server.addLifeCycleListener( serverListener );
+        server.addLifeCycleListener( TrayApp.getInstance() );
     }
 
     public void start()
@@ -130,18 +130,6 @@ public class WebAppServer
 
     private int getPortFromConfig()
     {
-        configReader = new SimpleConfigReader();
-        int preferredJettyPort = DEFAULT_JETTY_PORT;
-        try
-        {
-        int portFromConfig = configReader.preferredJettyPort();
-        preferredJettyPort = portFromConfig;
-        }
-        catch (Exception e)
-            {
-            log.error ("There was a problem reading the preferred jetty port. Using default.");
-            preferredJettyPort = DEFAULT_JETTY_PORT;
-            }
-        return preferredJettyPort;
+        return TrayApp.getInstance().getConfig().getPort();
     }
 }

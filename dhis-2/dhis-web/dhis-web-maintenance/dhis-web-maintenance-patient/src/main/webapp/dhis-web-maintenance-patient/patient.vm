@@ -6,8 +6,19 @@
         <td><label>$i18n.getString( "registering_unit" )</label></td>
         <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px"></td>
         <td>&nbsp;</td>
-        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='listAllPatients.action'"></td>        
-    </tr>        
+        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='listAllPatients.action'"></td>
+    </tr>
+    <tr>
+        <td align="right"><label>$i18n.getString( "sort_by" )</label></td>
+	<td>
+	<select id="patientAttributeId" name="patientAttributeId" style="min-width:350px" onchange="javascript:selectPatientAttribute()" #if( $programs.size() == 0 ) disabled="disabled" #end>
+            <option value="0">[$i18n.getString( "select" )]</option>
+            #foreach( $patientAttribute in $patientAttributes )
+                <option value="$patientAttribute.id" #if( $sortPatientAttributeId && $patientAttribute.id == $sortPatientAttributeId ) selected="selected" #end>$encoder.htmlEncode( $patientAttribute.name )</option>
+            #end
+        </select>
+	</td>
+    </tr>
 </table>
 
 <hr style="clear:both">
@@ -42,4 +53,13 @@
 
 <script type="text/javascript">	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
+
+    function selectPatientAttribute()
+    {
+
+        var patientAttributeLB = document.getElementById('patientAttributeId');
+        var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
+
+	window.location.href='listAllPatients.action?sortPatientAttributeId='+patientAttributeId;
+    }
 </script>

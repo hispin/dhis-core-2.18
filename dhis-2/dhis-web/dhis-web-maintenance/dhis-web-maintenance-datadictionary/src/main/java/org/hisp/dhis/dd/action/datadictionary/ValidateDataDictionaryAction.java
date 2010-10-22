@@ -50,7 +50,7 @@ public class ValidateDataDictionaryAction
     {
         this.dataDictionaryService = dataDictionaryService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -93,33 +93,19 @@ public class ValidateDataDictionaryAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
 
             DataDictionary match = dataDictionaryService.getDataDictionaryByName( name );
 
-            if ( match != null && ( id == null || match.getId() != id ) )
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
-        
+
         return SUCCESS;
     }
 }

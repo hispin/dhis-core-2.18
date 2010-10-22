@@ -85,10 +85,12 @@ public interface DataBrowserService
      * @param startDate the start date
      * @param endDate the end date
      * @param periodType the period type
+     * @param maxLevel is the max level of the hierarchy
      * @return DataBrowserTable the DataBrowserTable with structure for
      *         presentation
      */
-    DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate, PeriodType periodType );
+    DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
+        PeriodType periodType, Integer maxLevel );
 
     /**
      * Method that retrieves - all the DataElements count - in a given period -

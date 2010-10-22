@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,8 @@ public class DefaultDataPruneService
     @Transactional
     public void pruneOrganisationUnit( OrganisationUnit organisationUnit )
     {
+        deleteLevels( organisationUnit );
+
         if ( organisationUnit.getParent() != null )
         {
             organisationUnit.setParent( null );
@@ -75,6 +78,25 @@ public class DefaultDataPruneService
         dataPruneStore.deleteMultiOrganisationUnit( deletedOrgUnits );
     }
 
+    private void deleteLevels( OrganisationUnit organisationUnit )
+    {
+        if ( organisationUnit.getParent() != null )
+        {
+            OrganisationUnitLevel level = organisationUnitService
+                .getOrganisationUnitLevelByLevel( organisationUnitService.getLevelOfOrganisationUnit( organisationUnit
+                    .getParent() ) );
+
+            if ( level != null )
+            {
+                organisationUnitService.deleteOrganisationUnitLevel( level );
+            }
+        }
+        if ( organisationUnit.getParent().getParent() != null )
+        {
+            deleteLevels( organisationUnit.getParent() );
+        }
+    }
+    
     private List<OrganisationUnit> pruneOrganisationUnitLocal( OrganisationUnit organisationUnit )
     {
         List<OrganisationUnit> deleteOrgUnits = new ArrayList<OrganisationUnit>();

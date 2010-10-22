@@ -1,3 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/* Search button for orgunit                                                  */
+/*----------------------------------------------------------------------------*/
+
+.searchOrgunit
+{
+  display: none; 
+  position: absolute;
+  width: 200px;
+  margin-left: 22px;
+  z-index: 9999;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Right bar                                                                  */
@@ -205,11 +217,10 @@ div#selectionTree
 {
   font-size: 9pt; /* <-- Size to change */
   background-color: white;
-  height: 200px;
-  width:30em;
-  height:30em;
+  height: 300px;
+  width:595px;  
   overflow:auto;
-  border:1px solid #cccccc;
+  border:1px solid #cccccc;   
 }
 
 div#selectionTree ul 
@@ -734,13 +745,74 @@ div.growlUI h1, div.growlUI h2 { color: white; padding: 5px 5px 5px 75px; text-a
 div.growlUI h2 { font-size: small }
 
 span.error {
-	background: url('../images/unchecked.gif') no-repeat;
+	background: url('../images/invalid.png') no-repeat;
 	padding-left: 16px;
 	margin-left: .3em;
 }
 span.valid {
-	background: url('../images/checked.gif') no-repeat;	
-	width: 16px;
-	height: 16px;
+	background: url('../images/valid.png') no-repeat;	
+	padding-left: 16px;
+	margin-left: .3em;
 }
+
+.button
+{
+	padding: 2px 10px 2px 10px;
+
+	border: none;
+	background-image: url('../images/buttonblue.png');	
+	background-color: #fff;
+	background-position: left bottom;
+	background-repeat: repeat-x;
+	
+	
+	font-weight: bold;
+	color: #3f4855;
+	text-shadow: 0 1px 1px #fff;
+	
+	border: 1px solid #9da1aa;
+	border-bottom-color: #9da1aa;
+	border-top-color: #adb1ba;
+
+	-webkit-box-shadow: #f6f7f9 0 1px 1px;
+	-moz-box-shadow: #f6f7f9 0 1px 1px;
+	box-shadow: #f6f7f9 0 1px 1px;			
+	margin-right:5px;
+	margin-bottom: 2px;
+	cursor:pointer;
+}
+
+.text
+{	
+	border: none;
+	padding:2px;
+	background-color: #fff;	
+	
+	border: 1px solid #9da1aa;
+	border-bottom-color: #9da1aa;
+	border-top-color: #adb1ba;
+
+	-webkit-box-shadow: #f6f7f9 0 1px 1px;
+	-moz-box-shadow: #f6f7f9 0 1px 1px;
+	box-shadow: #f6f7f9 0 1px 1px;		
+}
+
+.combobox
+{	
+	border: none;
+	padding:2px;
+	background-color: #fff;	
+	
+	border: 1px solid #9da1aa;
+	border-bottom-color: #9da1aa;
+	border-top-color: #adb1ba;
+
+	-webkit-box-shadow: #f6f7f9 0 1px 1px;
+	-moz-box-shadow: #f6f7f9 0 1px 1px;
+	box-shadow: #f6f7f9 0 1px 1px;		
+	margin-right:5px;
+	margin-bottom: 2px;
+}
+	
+	
 

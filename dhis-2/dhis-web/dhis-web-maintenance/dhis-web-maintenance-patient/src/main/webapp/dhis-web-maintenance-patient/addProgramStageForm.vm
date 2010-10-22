@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "add_new_program_stage" )</h3>
 																		
-<form id="addProgramStageForm" name "addProgramStageForm" action="addProgramStage.action" method="post" onsubmit="submitForm(this);return validateAddProgramStage();  ">
+<form id="addProgramStageForm" name="addProgramStageForm" action="addProgramStage.action" method="post" onsubmit="submitForm(this);return validateAddProgramStage();">
 
 
 <div style="display:inline">

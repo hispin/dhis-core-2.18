@@ -61,7 +61,7 @@
 		
 		<action name="getSortedData"
 			class="org.hisp.dhis.dashboard.action.GetSortedDataAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseSortedData.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -178,6 +178,24 @@
 				/dhis-web-dashboard/groupWiseDataStatusResult.vm</result>
 			<param name="javascripts">
 				javascript/ds.js,javascript/hashtable.js,javascript/date.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		</action>
+
+                <action name="validationStatusResult"
+			class="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction">
+			<result name="success" type="velocity">
+				/dhis-web-dashboard/validationSatusResult.vm</result>
+			<param name="javascripts">
+				javascript/ds.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		</action>
+
+		<action name="lastUpdatedDataSetResult"
+			class="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction">
+			<result name="success" type="velocity">
+				/dhis-web-dashboard/lastUpdatedDataSetSatusResult.vm</result>
+			<param name="javascripts">
+				javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>
 		
@@ -405,7 +423,7 @@
 		
 		<action name="getDataElements"
 			class="org.hisp.dhis.dashboard.action.GetDataElementsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseDataElement.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -413,13 +431,13 @@
 
         <action name="getDataElementsForTA"
             class="org.hisp.dhis.dashboard.action.GetDataElementsForTabularAnalysisAction">
-            <result name="success" type="velocity">/dhis-web-dashboard/responseDataElement.vm</result>
+            <result name="success" type="velocity-xml">/dhis-web-dashboard/responseDataElement.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 				
 		<action name="getOrgUnitDetails"
 			class="org.hisp.dhis.dashboard.action.GetOrgUnitsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOrgUnit.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -427,7 +445,7 @@
 		
 		<action name="getIndicators"
 			class="org.hisp.dhis.dashboard.action.GetIndicatorsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseIndicator.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -435,7 +453,7 @@
 		
 		<action name="getOrgUnitGroups"
 			class="org.hisp.dhis.dashboard.action.GetOrgUnitGroupsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOrgUnitGroup.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -443,7 +461,7 @@
 		
 		<action name="getPeriods"
 			class="org.hisp.dhis.dashboard.action.GetPeriodsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responsePeriod.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -451,7 +469,7 @@
 		
 		<action name="getDataSetPeriods"
 			class="org.hisp.dhis.dashboard.action.GetDataSetPeriodsAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/dSetResponsePeriod.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
@@ -480,7 +498,7 @@
 		
 		<action name="getOptionCombos"
 			class="org.hisp.dhis.dashboard.topten.action.GetOptionCombosAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOptionCombo.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>

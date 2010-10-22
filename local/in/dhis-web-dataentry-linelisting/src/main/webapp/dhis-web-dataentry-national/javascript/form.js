@@ -166,7 +166,10 @@ window.onload = function ()
 
 	for ( var i = 0, input; input = inputs[i]; i++ )
 	{
-		input.addEventListener('focus', valueFocus, false);
+		$('#'+ input.name).focus(function() {
+			valueFocus(input);
+		});
+		//input.addEventListener('focus', valueFocus, false);
 	}
 
     var selects = document.getElementsByName( "entryselect" );
@@ -180,7 +183,6 @@ window.onload = function ()
 
 function viewHistory( dataElementId )
 {
-	
     window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + ocId, '_blank', 'width=560,height=550,scrollbars=yes' );
 }
 
@@ -195,7 +197,8 @@ var customDataEntryFormExists = "false";
 function valueFocus(e) 
 {
 	//Retrieve the data element id from the id of the field
-	var baseId = e.target.id;	
+	//var baseId = e.target.id;	
+	var baseId = e.id;
 	
 	var opId = baseId;
 	var str = baseId;

@@ -48,13 +48,6 @@ public class DataEntryFormDeletionHandler
         this.dataEntryFormService = dataEntryFormService;
     }
 
-    private DataEntryFormAssociationService dataEntryFormAssociationService;
-
-    public void setDataEntryFormAssociationService( DataEntryFormAssociationService dataEntryFormAssociationService )
-    {
-        this.dataEntryFormAssociationService = dataEntryFormAssociationService;
-    }
-
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -68,17 +61,13 @@ public class DataEntryFormDeletionHandler
     @Override
     public void deleteDataSet( DataSet dataSet )
     {
-        DataEntryFormAssociation dataEntryFormAssociation = dataEntryFormAssociationService
-            .getDataEntryFormAssociation( DataEntryFormAssociation.DATAENTRY_ASSOCIATE_DATASET, dataSet.getId() );
 
-        if ( dataEntryFormAssociation != null )
+        DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
+
+        if ( dataEntryForm != null )
         {
-            DataEntryForm dataEntryForm = dataEntryFormAssociation.getDataEntryForm();
-
-            if ( dataEntryForm != null )
-            {
-                dataEntryFormService.deleteDataEntryForm( dataEntryForm );
-            }
+            dataEntryFormService.deleteDataEntryForm( dataEntryForm );
         }
+
     }
 }

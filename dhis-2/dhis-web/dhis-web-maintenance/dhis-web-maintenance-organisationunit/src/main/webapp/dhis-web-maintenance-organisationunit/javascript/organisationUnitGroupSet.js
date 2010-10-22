@@ -16,21 +16,21 @@ function showOrganisationUnitGroupSetDetails( groupSetId )
 
 function organisationUnitGroupSetReceived( unitElement )
 {
-	setFieldValue( 'nameField', getElementValue( unitElement, 'name' ) );
-    setFieldValue( 'descriptionField', getElementValue( unitElement, 'description' ) );
+	setInnerHTML( 'nameField', getElementValue( unitElement, 'name' ) );
+    setInnerHTML( 'descriptionField', getElementValue( unitElement, 'description' ) );
     
     var compulsory = getElementValue( unitElement, 'compulsory' );
         
     if ( compulsory == "true" )
     {
-    	setFieldValue( 'compulsoryField', i18n_yes );
+    	setInnerHTML( 'compulsoryField', i18n_yes );
     }
     else
     {
-    	setFieldValue( 'compulsoryField', i18n_no );
+    	setInnerHTML( 'compulsoryField', i18n_no );
     }
         
-    setFieldValue( 'memberCountField', getElementValue( unitElement, 'memberCount' ) );
+    setInnerHTML( 'memberCountField', getElementValue( unitElement, 'memberCount' ) );
     
     showDetails();
 }
@@ -44,107 +44,26 @@ function removeOrganisationUnitGroupSet( groupSetId, groupSetName )
 	removeItem( groupSetId, groupSetName, confirm_to_delete_org_unit_group_set, 'removeOrganisationUnitGroupSet.action' );
 }
 
-// -----------------------------------------------------------------------------
-// Add organisation unit group set
-// -----------------------------------------------------------------------------
-
-function validateAddOrganisationUnitGroupSet()
+function changeCompulsory( value )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted );
-    
-    var params = 'name=' + getFieldValue( 'name' ) +
-        '&description=' + getFieldValue( 'description' ) +
-        '&compulsory=' + getFieldValue( 'compulsory' ) + '&';
-        
-    var selectedGroups = document.getElementById( 'selectedGroups' );
-    
-    for ( var i = 0; i < selectedGroups.options.length; i++ )
-    {
-    	params += 'selectedGroups=' + selectedGroups.options[i].value + '&';
-    }
-    
-    var url = 'validateOrganisationUnitGroupSet.action';
-    
-    request.sendAsPost( params );    
-    request.send( url );
-
-    return false;
+	if( value == 'true' ){
+		addValidatorRulesById( 'selectedGroups', {required:true} );
+	}else{
+		removeValidatorRulesById( 'selectedGroups' );
+	}
 }
 
-function addValidationCompleted( messageElement )
+function validateAddOrganisationGroupSet( form )
 {
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-    	selectAllById( 'selectedGroups' );
-    	
-        var form = document.getElementById( 'addOrganisationUnitGroupSetForm' );
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( adding_the_org_unit_group_set_failed + ':\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Update organisation unit group set
-// -----------------------------------------------------------------------------
-
-function validateUpdateOrganisationUnitGroupSet()
-{
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( updateValidationCompleted );
-    
-    var params = 'id=' + getFieldValue( 'id' ) +
-    	'&name=' + getFieldValue( 'name' ) +
-        '&description=' + getFieldValue( 'description' ) +
-        '&compulsory=' + getFieldValue( 'compulsory' ) + '&';
-    
-    var selectedGroups = document.getElementById( 'selectedGroups' );
-    
-    for ( var i = 0; i < selectedGroups.options.length; i++ )
-    {
-    	params += 'selectedGroups=' + selectedGroups.options[i].value + '&';
-    }
-    
-    var url = 'validateOrganisationUnitGroupSet.action';
-    
-    request.sendAsPost( params );    
-    request.send( url );
-
-    return false;
-}
-
-function updateValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-    	selectAllById( 'selectedGroups' );
-    	
-        var form = document.getElementById( 'updateOrganisationUnitGroupSetForm' );
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( saving_the_org_unit_group_set_failed + ':\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
+	jQuery.postJSON('validateOrganisationUnitGroupSet.action', 
+		{selectedGroups: getArrayValueOfListById('selectedGroups')},
+		function( json ){
+			if( json.response == 'success' ){
+				markValid( 'selectedGroups' );
+				form.submit();
+			}else{
+				markInvalid( 'selectedGroups', json.message );				
+			}
+		});		
+		
 }

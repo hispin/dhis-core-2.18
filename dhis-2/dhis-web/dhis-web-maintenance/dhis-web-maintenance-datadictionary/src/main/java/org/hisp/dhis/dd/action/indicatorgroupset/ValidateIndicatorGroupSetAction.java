@@ -30,6 +30,7 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -90,40 +91,15 @@ public class ValidateIndicatorGroupSetAction
 
     public String execute()
     {
-        if ( name == null )
-        {
-            message = i18n.getString( "please_enter_name" );
 
-            return ERROR;
-        }
-
-        if ( name.trim().length() == 0 )
-        {
-            message = i18n.getString( "please_enter_name" );
-
-            return ERROR;
-        }
-
-        IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSetByName( name.trim() );
-
-        if ( id == null )
+        if ( name != null )
         {
 
-            if ( indicatorGroupSet != null )
+            IndicatorGroupSet match = indicatorService.getIndicatorGroupSetByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
             {
-                message = i18n.getString( "name_aldready_exists" );
-
-                return ERROR;
-            }
-        }
-        else
-        {
-            IndicatorGroupSet indicatorGroupSetTemp = indicatorService.getIndicatorGroupSet( id );
-
-            if ( indicatorGroupSet != null && (!indicatorGroupSetTemp.equals( indicatorGroupSet )) )
-            {
-
-                message = i18n.getString( "name_aldready_exists" );
+                message = i18n.getString( "name_in_use" );
 
                 return ERROR;
             }

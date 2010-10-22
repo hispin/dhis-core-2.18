@@ -54,8 +54,8 @@ function showValidationCriteriaDetails( criteriaId )
 
 function validationCriteriaReceived( validationCriteria )
 {
-    setFieldValue( 'nameField', getElementValue( validationCriteria, 'name' ) );
-    setFieldValue( 'descriptionField', getElementValue( validationCriteria, 'description' ) );
+    setInnerHTML( 'nameField', getElementValue( validationCriteria, 'name' ) );
+    setInnerHTML( 'descriptionField', getElementValue( validationCriteria, 'description' ) );
 	
 	var property = getElementValue( validationCriteria, 'property' )
 	var operator = getElementValue( validationCriteria, 'operator' )
@@ -70,7 +70,7 @@ function validationCriteriaReceived( validationCriteria )
 		operator = '>';
 	}
 	
-	setFieldValue('criteriaField', property + " " + operator + " " + value );
+	setInnerHTML('criteriaField', property + " " + operator + " " + value );
     showDetails();
 }
 

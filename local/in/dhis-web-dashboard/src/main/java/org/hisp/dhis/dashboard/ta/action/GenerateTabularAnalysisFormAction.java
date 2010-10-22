@@ -59,6 +59,8 @@ import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 
 public class GenerateTabularAnalysisFormAction
     implements Action
@@ -94,6 +96,13 @@ public class GenerateTabularAnalysisFormAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -198,6 +207,13 @@ public class GenerateTabularAnalysisFormAction
         return periodNameList;
     }
 
+    private List<OrganisationUnitGroup> orgUnitGroups;
+
+    public List<OrganisationUnitGroup> getOrgUnitGroups()
+    {
+        return orgUnitGroups;
+    }
+
     public String execute()
         throws Exception
     {
@@ -261,6 +277,8 @@ public class GenerateTabularAnalysisFormAction
 
         /* Organisationunit Levels */
         maxOrgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
+
+        orgUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() );
 
         return SUCCESS;
     }

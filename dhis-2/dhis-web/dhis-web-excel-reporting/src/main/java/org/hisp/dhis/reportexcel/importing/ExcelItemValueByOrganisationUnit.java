@@ -5,43 +5,48 @@ import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-public class ExcelItemValueByOrganisationUnit {
+public class ExcelItemValueByOrganisationUnit
+{
 
-	private OrganisationUnit organisationUnit;
+    private OrganisationUnit organisationUnit;
 
-	private Collection<ExcelItemValue> excelItemValues;
+    private Collection<ExcelItemValue> excelItemValues;
 
-	// ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
-       
-    public ExcelItemValueByOrganisationUnit(OrganisationUnit organisationUnit )
+
+    public ExcelItemValueByOrganisationUnit( OrganisationUnit organisationUnit )
     {
         super();
-        
+
         this.organisationUnit = organisationUnit;
-        
+
         excelItemValues = new ArrayList<ExcelItemValue>();
     }
-    
-	// ----------------------------------------------------------------------
-	// Getters and setters
-	// ----------------------------------------------------------------------
 
-	public OrganisationUnit getOrganisationUnit() {
-		return organisationUnit;
-	}
+    // ----------------------------------------------------------------------
+    // Getters and setters
+    // ----------------------------------------------------------------------
 
-	public void setOrganisationUnit(OrganisationUnit organisationUnit) {
-		this.organisationUnit = organisationUnit;
-	}
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	public Collection<ExcelItemValue> getExcelItemValues() {
-		return excelItemValues;
-	}
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
 
-	public void setExcelItemValues(Collection<ExcelItemValue> excelItemValues) {
-		this.excelItemValues = excelItemValues;
-	}
+    public Collection<ExcelItemValue> getExcelItemValues()
+    {
+        return excelItemValues;
+    }
+
+    public void setExcelItemValues( Collection<ExcelItemValue> excelItemValues )
+    {
+        this.excelItemValues = excelItemValues;
+    }
 
 }

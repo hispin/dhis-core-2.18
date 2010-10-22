@@ -3,29 +3,36 @@
 // -----------------------------------------------------------------------------
 
 function showReportDetails(reportId) {
-	var request = new Request();
+	/* var request = new Request();
 	request.setResponseTypeXML('report');
 	request.setCallbackSuccess(reportRecieved);
-	request.send('getReport.action?reportId=' + reportId);
+	request.send('getReport.action?reportId=' + reportId); */
+	
+	$.post("getReport.action",
+		{
+			reportId : reportId
+		},
+		function (data)
+		{
+			reportRecieved(data);
+		},'xml');
 }
 
 function reportRecieved(reportElement) {
-	setFieldValue('idField', getElementValue(reportElement, 'id'));
+	
+	byId('idField').innerHTML = reportElement.getElementsByTagName( 'id' )[0].firstChild.nodeValue;
 
-	setFieldValue('nameField', getElementValue(reportElement, 'name'));
+	byId('nameField').innerHTML = reportElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
 
-	setFieldValue('modelField', getElementValue(reportElement, 'model'));
+	byId('modelField').innerHTML = reportElement.getElementsByTagName( 'model' )[0].firstChild.nodeValue;
 
-	setFieldValue('frequencyField', getElementValue(reportElement, 'frequency'));
+	byId('frequencyField').innerHTML = reportElement.getElementsByTagName( 'frequency' )[0].firstChild.nodeValue;
 
-	setFieldValue('reportTypeField', getElementValue(reportElement,
-			'reportType'));
+	byId('reportTypeField').innerHTML = reportElement.getElementsByTagName( 'reportType' )[0].firstChild.nodeValue;
 
-	setFieldValue('excelTemplateField', getElementValue(reportElement,
-			'exceltemplate'));
+	byId('excelTemplateField').innerHTML = reportElement.getElementsByTagName( 'exceltemplate' )[0].firstChild.nodeValue;
 
-	setFieldValue('xmlTemplateField', getElementValue(reportElement,
-			'xmltemplate'));
+	byId('xmlTemplateField').innerHTML = reportElement.getElementsByTagName( 'xmltemplate' )[0].firstChild.nodeValue;
 
 	showDetails();
 }
@@ -62,7 +69,7 @@ function validateAddReport() {
 	 * 'block'; return false; }
 	 */
 
-	var request = new Request();
+	/* var request = new Request();
 	request.setResponseTypeXML('message');
 	request.setCallbackSuccess(addreportValidationCompleted);
 
@@ -71,20 +78,31 @@ function validateAddReport() {
 			+ document.getElementById('excelname').value + '&xmlnameValue='
 			+ document.getElementById('xmlname').value;
 
-	request.send(requestString);
+	request.send(requestString); */
+	
+	$.post("validateReport.action",
+		{
+			name : byId('name').value,
+			excelnameValue : byId('excelname').value,
+			xmlnameValue : byId('xmlname').value
+		},
+		function (data)
+		{
+			addreportValidationCompleted(data);
+		},'xml');
 
 	return false;
 }
 
 function addreportValidationCompleted(messageElement) {
-	var type = messageElement.getAttribute('type');
-	var message = messageElement.firstChild.nodeValue;
-
+	
+	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
+	
 	if (type == 'success') {
 		document.forms['addReportForm'].submit();
 	} else if (type == 'input') {
-		document.getElementById('message').innerHTML = message;
-		document.getElementById('message').style.display = 'block';
+		setMessage( messageElement.firstChild.nodeValue );
 	}
 }
 
@@ -105,7 +123,8 @@ function validateEditReport() {
 		return false;
 	}
 	*/
-	var request = new Request();
+	
+	/* var request = new Request();
 	request.setResponseTypeXML('message');
 	request.setCallbackSuccess(editreportValidationCompleted);
 
@@ -115,15 +134,30 @@ function validateEditReport() {
 			+ document.getElementById('excelname').value + '&xmlnameValue='
 			+ document.getElementById('xmlname').value;
 
-	request.send(requestString);
+	request.send(requestString); */
+	
+	$.post("validateReport.action",
+		{
+			name : byId('name').value,
+			reportId : byId('reportId').value,
+			excelnameValue : byId('excelname').value,
+			xmlnameValue : byId('xmlname').value
+		},
+		function (data)
+		{
+			editreportValidationCompleted(data);
+		},'xml');
 
 	return false;
 }
 
 function editreportValidationCompleted(messageElement) {
-	var type = messageElement.getAttribute('type');
-	var message = messageElement.firstChild.nodeValue;
+	//var type = messageElement.getAttribute('type');
+	//var message = messageElement.firstChild.nodeValue;
 
+	messageElement = messageElement.getElementsByTagName( "message" )[0];
+	var type = messageElement.getAttribute( "type" );
+	
 	if (type == 'success') {
 		document.forms['editReportForm'].submit();
 	} else if (type == 'input') {
@@ -142,12 +176,22 @@ function getPeriods() {
 	var availablePeriods = document.getElementById('availablePeriods');
 
 	if (periodTypeId != "NA") {
-		var url = "getPeriods.action?id=" + periodTypeId;
+		/* var url = "getPeriods.action?id=" + periodTypeId;
 
 		var request = new Request();
 		request.setResponseTypeXML('period');
 		request.setCallbackSuccess(getPeriodsReceived);
-		request.send(url);
+		request.send(url); */
+		
+		$.post("getPeriods.action",
+			{
+				id : periodTypeId
+			},
+			function (data)
+			{
+				getPeriodsReceived(data);
+			},'xml');
+			
 	} else {
 		clearList(availablePeriods);
 		clearList(reportsList);
@@ -186,13 +230,25 @@ function getReports(ouId, reportType) {
 	// var autogenvalue = document.getElementById( 'autogen' ).value;
 
 	if (periodType != "NA" && ouId != null && ouId != "") {
-		var url = "getReports.action?periodType=" + periodType + "&ouId="
+		
+		/* var url = "getReports.action?periodType=" + periodType + "&ouId="
 				+ ouId + "&reportType=" + reportType;
 
 		var request = new Request();
 		request.setResponseTypeXML('report');
 		request.setCallbackSuccess(getReportsReceived);
-		request.send(url);
+		request.send(url); */
+		
+		$.post("getReports.action",
+			{
+				periodType : periodType,
+				ouId : ouId,
+				reportType : reportType
+			},
+			function (data)
+			{
+				getReportsReceived(data);
+			},'xml');
 	}
 }
 

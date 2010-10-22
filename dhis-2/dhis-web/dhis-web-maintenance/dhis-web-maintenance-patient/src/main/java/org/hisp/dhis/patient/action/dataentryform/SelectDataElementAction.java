@@ -34,7 +34,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
@@ -91,16 +90,6 @@ public class SelectDataElementAction
 
     public void setAssociationId(int associationId) {
         this.associationId = associationId;
-    }
-
-    private String associationName;
-
-    public void setAssociationName(String associationName) {
-        this.associationName = DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
-    }
-
-    public String getAssociationName() {
-        return associationName;
     }
     
     private boolean typeTextOnly;

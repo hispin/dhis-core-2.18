@@ -1,7 +1,33 @@
 <script>
+	var validator = null;
+	
 	jQuery(document).ready(	function(){
-			validation( 'editDataElementCategoryForm', validateEditDataElementCategory );				
+		validator = validation( 'editDataElementCategoryForm', function( form ){ form.submit()}, function(){
+			listValidator( 'memberValidator', 'categoryOptionNames' );			
+		} );		
+		checkValueIsExist( "name", "validateDataElementCategory.action", {id: $dataElementCategory.id});		
+		
 	});
+	
+	function updateCategoryOption()
+	{
+		var name = getFieldValue( 'categoryOptionName' );
+		var id = getFieldValue( 'categoryOptions' );
+		
+		if( name.length == 0 ) markInvalid( 'categoryOptionName', i18n_specify_category_option_name );		
+		else if( !listContainsById( 'categoryOptions', name, true) ){
+			jQuery.postJSON( 'validateDataElementCategoryOption.action', 
+			{name: name, id: id }, function(json){
+				if( json.response == 'success' ){					
+					updateCategoryOptionName();
+				}else{
+					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+				}
+			});
+			
+		}
+
+	}
 </script>
 
 <h3>$i18n.getString( "edit_data_element_category" )</h3>
@@ -12,8 +38,7 @@
   
   <table>
     <tr>
-      <th colspan="2">$i18n.getString( "details" )</th>
-      <td></td>
+      <th colspan="3">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
@@ -22,31 +47,40 @@
     </tr>      
     <tr>
       <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-      <td><input type="text" id="conceptName" name="conceptName" value="$!encoder.htmlEncode( $dataElementCategory.conceptName )" style="width:25em" maxlength="10" class="{validate:{minlength:2,maxlength:10}}"></td>
+	  <td>
+		<div style="inline">
+			#set ( $conceptId = $!dataElementCategory.concept.id )
+			<select id="conceptId" name="conceptId" style="min-width:140px" class="{validate:{required:true}}">				
+				#foreach( $concept in $concepts )
+				<option value="$concept.id" #if ( $concept.id == $conceptId ) selected #end>$concept.name</option>
+				#end
+			</select>
+		</div>
+	  </td>
       <td></td>
     </tr>  
     <tr>
       <td colspan="3" style="height:15px"></td>
     </tr>
     <tr>
-      <th colspan="2">$i18n.getString( "category_options" )</th>
-      <td></td>
+      <th colspan="3">$i18n.getString( "category_options" )
+	  <select id="memberValidator" class="{validate:{required:true}}" style="display:none"/></th>      
     </tr>
 	<tr>
 	  <td><label>$i18n.getString( "selected_name" )</label></td>
-	  <td><input type="text" id="categoryOptionName" style="width:25em"></td>
+	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"></td>
 	  <td></td>
 	</tr>
 	 <tr>
       <td></td>
       <td colspan="2">
-      	<input type="button" value="$i18n.getString( "edit_category_option" )" onclick="validateAddCategoryOption();" style="width:200px">
+      	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:200px">
       </td>
     </tr>
     <tr>
       <td></td>
       <td>
-        <select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px" onchange='showName();'>
+        <select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px" onclick='getSelectedCategoryOption();'>
         #foreach( $categoryOption in $dataElementCategory.categoryOptions )
         	<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.name )</option>
         #end
@@ -78,8 +112,27 @@
 	var i18n_option_rename_successfully = '$encoder.jsEscape( $i18n.getString( "option_rename_successfully" ) , "'")';
 	var mode = 'update';
 	
-	function showName(){
+	function getSelectedCategoryOption(){
 		var categoryOptions = byId('categoryOptions');
 		byId('categoryOptionName').value=categoryOptions[categoryOptions.selectedIndex].text;
 	}
+	
+	function updateCategoryOptionName(){
+		var request = new Request();
+	    request.setResponseTypeXML( 'xmlObject' );
+	    request.setCallbackSuccess( updateCategoryOptionNameReceived );
+		var params = "id=" + byId('categoryOptions').value;
+			params += '&name=' + byId('categoryOptionName').value;
+		request.sendAsPost(params);
+		request.send('updateDataElementCategoryOption.action');
+	}
+
+	function updateCategoryOptionNameReceived(xmlObject){
+		var categoryOptions = byId('categoryOptions');
+		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
+		showSuccessMessage( i18n_option_rename_successfully );
+		
+	}
+
+	
 </script>

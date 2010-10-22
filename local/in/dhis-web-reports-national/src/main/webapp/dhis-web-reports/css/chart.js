@@ -9,9 +9,18 @@ function runAndViewChart( chartId )
 {
     tempChartId = chartId;
     
-    var request = new Request();
+    /* var request = new Request();
     request.setCallbackSuccess( runAndViewChartReceived );    
-    request.send( "createChart.action?id=" + chartId );
+    request.send( "createChart.action?id=" + chartId ); */
+	
+	$.post("createChart.action",
+		{
+			id : chartId
+		},
+		function (data)
+		{
+			runAndViewChartReceived(data);
+		},'xml');
 }
 
 function runAndViewChartReceived( messageElement )
@@ -21,12 +30,20 @@ function runAndViewChartReceived( messageElement )
 
 function getChartStatus()
 {   
-    var url = "getStatus.action";
+    /* var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );
     request.setCallbackSuccess( chartStatusReceived );    
-    request.send( url );
+    request.send( url ); */
+	
+	$.post("getStatus.action",
+		{
+		},
+		function (data)
+		{
+			 chartStatusReceived(data);
+		},'xml');
 }
 
 function chartStatusReceived( xmlObject )
@@ -71,10 +88,19 @@ function removeChart( chartId, chartTitle )
 
 function showChartDetails( chartId )
 {
-    var request = new Request();
+    /* var request = new Request();
     request.setResponseTypeXML( 'chart' );
     request.setCallbackSuccess( chartReceived );
-    request.send( 'getChart.action?id=' + chartId );
+    request.send( 'getChart.action?id=' + chartId ); */
+	
+	$.post("getChart.action",
+		{
+			id : chartId
+		},
+		function (data)
+		{
+			 chartReceived(data);
+		},'xml');
 }
 
 function chartReceived( xmlObject )
@@ -97,14 +123,25 @@ function saveChart()
     if ( validateCollections() )
     {
         var id = document.getElementById( "id" ).value;
-        var title = document.getElementById( "title" ).value;
+        var title = htmlEncode(document.getElementById( "title" ).value);
         
-        var url = "validateChart.action?id=" + id + "&title=" + htmlEncode( title );
+        /* var url = "validateChart.action?id=" + id + "&title=" + htmlEncode( title );
 
         var request = new Request();
         request.setResponseTypeXML( 'message' );
         request.setCallbackSuccess( saveChartReceived );
-        request.send( url );
+        request.send( url ); */
+		
+		$.post("validateChart.action",
+			{
+				id : id,
+				title : title
+			},
+			function (data)
+			{
+				 saveChartReceived(data);
+			},'xml');
+			
     }
 }
 

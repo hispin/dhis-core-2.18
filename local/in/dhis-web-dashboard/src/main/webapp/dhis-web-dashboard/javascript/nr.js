@@ -6,17 +6,15 @@ function ouSelCBChange()
 
 	if( ouSelCBId.checked )
 	{
-		ouListCDId.disabled = false;
-
-		clearList( ouLevelId );
-                ouLevelId.disabled = true;
+                 $('#orgUnitListCB').removeAttr('disabled');
+                clearList( ouLevelId );
+                $("#orgUnitLevelCB").attr("disabled", "disabled");
 	}
 	else
 	{
-		ouLevelId.disabled = false;
-
-		clearList( ouListCDId );
-		ouListCDId.disabled = true;
+            $('#orgUnitLevelCB').removeAttr('disabled');
+            clearList( ouListCDId );
+            $("#orgUnitListCB").attr("disabled", "disabled");
 	}
 
     if( selOrgUnitId != null && selOrgUnitId != "NONE" && selOrgUnitId != "")
@@ -28,17 +26,15 @@ function ouSelCBChange()
 
 function getOUDeatilsForNR( orgUnitIds )
 {
-	//var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
-
-	var request = new Request();
-	request.setResponseTypeXML( 'orgunit' );
-	request.setCallbackSuccess( getOUDetailsForNRRecevied );
-	//request.send( url );
-
-    var requestString = "getOrgUnitDetails.action";
-    var params = "orgUnitId=" + orgUnitIds+"&type=ta";
-    request.sendAsPost( params );
-    request.send( requestString );
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId:orgUnitIds,
+			type:"ta"
+		},
+		function (data)
+		{
+			getOUDetailsForNRRecevied(data);
+		},'xml');
 }
 
 function getOUDetailsForNRRecevied(xmlObject)

@@ -1,0 +1,69 @@
+<script>
+  //Global Variables
+   
+  var reportModels = new HashTable();
+  var reportFileNames = new HashTable();
+          
+  function formValidations()
+  {                 
+    var reportListIndex = document.physicalForm.reportList.selectedIndex;
+    var periodIndex = document.physicalForm.availablePeriods.selectedIndex;
+    var orgunitIdValue = document.physicalForm.ouIDTB.value;
+                      
+    if (reportListIndex < 0 || document.physicalForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
+    else if(document.physicalForm.availablePeriods.options[periodIndex].text == null || document.reportForm.availablePeriods.options[periodIndex].text== "") {alert("Please Select Period"); return false;}
+    else if(orgunitIdValue == null || orgunitIdValue=="" || orgunitIdValue==" ") {alert("Please Select OrganisationUnit"); return false;}
+            
+    document.physicalForm.reportModelTB.value = reportModels.get(document.physicalForm.reportList.options[reportListIndex].value);
+    document.physicalForm.reportFileNameTB.value = reportFileNames.get(document.physicalForm.reportList.options[reportListIndex].value);
+    return true;
+  }     
+</script>
+<h3>Quarterly Physical output Report</h3>
+<hr>  </hr>
+
+<br />
+<form id="PhysicalForm" name="PhysicalForm" action="generatePhysicalReport.action" method="post" onsubmit="return formValidations()" target="_blank">        
+  <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>                    
+    <tr>
+      <td class="NormalB">
+        Years : <br />
+                <select id="periodNameList" name="periodNameList" style="width:220px">
+          
+          #foreach ( $type in $periodNameList )
+            <option value="$type">$type</option>
+                    #end
+                </select>
+        </td>
+            <td class="NormalB">
+        Report Lists :<br />
+                <select id="reportList" name="reportList" style="width:200px">
+                    #foreach( $report in $reportList )                      
+          <option value="$report.id">$report.name</option>
+                #end
+        </select>
+            </td>
+        </tr>
+        <tr>
+      <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+      <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>     
+  <tr>
+    <td> 
+      <input type="submit" id="Generate" name ="Generate" title= "Generate report" value="$i18n.getString( "generate" )" style="width:6em" disable="false">    
+    </td>  
+  </tr>
+      <tr>
+      <td>&nbsp;</td>
+            <td>
+                <input type="hidden" name="reportModelTB" id="reportModelTB">
+        <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+        <input type="hidden" name="reportListFileNameTB" id="reportListFileNameTB" value="">  
+            </td>
+        </tr>
+    </table>
+</form>

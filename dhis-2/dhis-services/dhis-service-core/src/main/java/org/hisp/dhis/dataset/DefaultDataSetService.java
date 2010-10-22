@@ -39,7 +39,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -69,13 +68,6 @@ public class DefaultDataSetService
     public void setDataSetStore( DataSetStore dataSetStore )
     {
         this.dataSetStore = dataSetStore;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private I18nService i18nService;
@@ -203,7 +195,7 @@ public class DefaultDataSetService
 
         for ( DataSet dataSet : dataSetList )
         {
-            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+            DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
 
             if ( dataEntryForm == null )
             {
@@ -221,7 +213,7 @@ public class DefaultDataSetService
 
         for ( DataSet dataSet : dataSetList )
         {
-            DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( dataSet );
+            DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
 
             if ( dataEntryForm != null )
             {

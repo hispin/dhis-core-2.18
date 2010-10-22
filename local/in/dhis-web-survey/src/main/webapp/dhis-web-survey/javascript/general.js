@@ -96,11 +96,17 @@ function ValueSaver( indicatorId_, value_, resultColor_, selectedOption_ )
     
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveValue.action?indicatorId=' + indicatorId + '&value=' + value );
+		$.ajax({
+			   type: "POST",
+			   url: "saveValue.action",
+			   data: "indicatorId=" + indicatorId + "&value=" + value,
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+		});
     };
     
     function handleResponse( rootElement )
@@ -127,7 +133,7 @@ function ValueSaver( indicatorId_, value_, resultColor_, selectedOption_ )
     
     function markValue( color )
     {        
-        var element = document.getElementById( 'value[' + indicatorId + '].value' );
+        var element = byId( 'value[' + indicatorId + '].value' );
                 
         element.style.backgroundColor = color;
     }

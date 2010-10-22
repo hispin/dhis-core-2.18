@@ -33,8 +33,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -59,13 +57,6 @@ public class SaveDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }
-
-    private DataEntryFormAssociationService entryFormAssociationService;
-
-    public void setEntryFormAssociationService( DataEntryFormAssociationService entryFormAssociationService )
-    {
-        this.entryFormAssociationService = entryFormAssociationService;
     }
 
     private ProgramStageService programStageService;
@@ -122,23 +113,21 @@ public class SaveDataEntryFormAction
         throws Exception
     {
         ProgramStage association = programStageService.getProgramStage( associationIdField );
-        DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryFormByProgramStage( association );
+        DataEntryForm dataEntryForm = association.getDataEntryForm();
         ;
         if ( dataEntryForm == null )
         {
             if ( "choose".equalsIgnoreCase( saveMethod ) && dataEntryFormId != null && dataEntryFormId > 0 )
             {
                 dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-                DataEntryFormAssociation formAssociation = new DataEntryFormAssociation(
-                    DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, associationIdField, dataEntryForm );
-                entryFormAssociationService.addDataEntryFormAssociation( formAssociation );
             }
             else
             {
                 dataEntryForm = new DataEntryForm( nameField, prepareDataEntryFormCode( designTextarea ) );
-                dataEntryFormService.addDataEntryForm( dataEntryForm,
-                    DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE, association.getId() );
             }
+            
+            association.setDataEntryForm(dataEntryForm);
+            programStageService.updateProgramStage( association );
         }
         else
         {

@@ -2,10 +2,7 @@
 <html>
 	<head>
     	<title>DataStatus Result</title>
-        <link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">
-		
-		<!-- <script type="text/javascript" src="javascript/ds.js"></script> -->
-	
+        <link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">	
         <script>
         	var startDate = "$sDateLB"; 
         	var endDate = "$eDateLB";
@@ -15,11 +12,7 @@
 			{
 
 				immChildOption = "yes";        		
-    
-    			//var urlForImmChild = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit;    		
-				//evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit;
-				
-				if( document.getElementById('includeZeros').checked )
+                                if( document.getElementById('includeZeros').checked )
 				{
 				    evt.target.href = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
 				}

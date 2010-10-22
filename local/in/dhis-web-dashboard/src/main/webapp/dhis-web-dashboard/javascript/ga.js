@@ -6,12 +6,13 @@ function orgUnitGroupSetCB()
 	var orgUnitList = document.getElementById( 'orgUnitListCB' );
 	if(document.getElementById( 'ougSetCB' ).checked)
 	{
-		orgUnitGroupSetList.disabled = false;
+                $('#orgUnitGroupSetListCB').removeAttr('disabled');
+
 		getOrgUnitGroups();		
 	}
 	else
 	{
-		orgUnitGroupSetList.disabled = true;
+                $("#orgUnitGroupSetListCB").attr("disabled", "disabled");
 	}
 	clearList(orgUnitList);
 }
@@ -43,26 +44,27 @@ function deSelectionChangeFuntion(evt)
 // Category ListBox Change function
 function categoryChangeFunction(evt)
 {
-	selCategory = evt.target.value;
+        selCategory = $("select#categoryLB").val();
+
 	if(selCategory == "period")
 	{
-		document.ChartGenerationForm.facilityLB.disabled = true;
+                $("#facilityLB").attr("disabled", "disabled");
 		var index = document.ChartGenerationForm.orgUnitListCB.options.length;
-        for(i=0;i<index;i++)
-    	{
+            for(i=0;i<index;i++)
+            {
     		document.ChartGenerationForm.orgUnitListCB.options[0] = null;
-    	}
+            }
 	}
 	else
 	{
-		document.ChartGenerationForm.facilityLB.disabled = false;
+            $('#facilityLB').removeAttr('disabled');
 	}
 }// categoryChangeFunction end
 			          
 //Facility ListBox Change Function
 function facilityChangeFunction(evt)
 {
-	selFacility = evt.target.value;
+        selFacility = $("select#facilityLB").val();
 	if(selFacility == "children")
 	{
 		var index = document.ChartGenerationForm.orgUnitListCB.options.length;
@@ -76,8 +78,10 @@ function facilityChangeFunction(evt)
 // Indicator or Dataelement radio button changed function
 function riradioSelection(evt)
 {
-	selriRadioButton = evt.target.value;
-  if(selriRadioButton == "dataElementsRadio")
+    
+	//selriRadioButton = evt.toElement.value;
+        var criteria = $( "input[name='riRadio']:checked" ).val();
+  if(criteria == 'dataElementsRadio')
   {
 		document.ChartGenerationForm.indicatorGroupId.disabled = true;
 	  document.ChartGenerationForm.availableIndicators.disabled = true;

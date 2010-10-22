@@ -119,10 +119,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="dataElementCategoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		</property>
+		</property>		
 	</bean>
 
 	<!-- Data Element Group -->
@@ -563,46 +560,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="indicatorService">
 			<ref bean="org.hisp.dhis.indicator.IndicatorService" />
 		</property>
-	</bean>
-
-	<!-- Indicator denum -->
-
-	<bean
-		id="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.GetFilteredDataElementsAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="dataElementCategoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.GetFormulaTextAction"
-		scope="prototype">
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dd.action.indicatordenum.GetDenumAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.GetDenumAction">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.dd.action.indicatordenum.ValidateDenumAction"
-		class="org.hisp.dhis.dd.action.indicatordenum.ValidateDenumAction">
-		<property name="expressionService">
-			<ref bean="org.hisp.dhis.expression.ExpressionService" />
-		</property>
-	</bean>
+	</bean>	
 
 	<!-- DataDictionary -->
 
@@ -766,6 +724,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
+		<property name="conceptService">
+			<ref bean="org.hisp.dhis.concept.ConceptService" />
+		</property>
 	</bean>
 
 	<bean
@@ -793,6 +754,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
+		<property name="conceptService">
+			<ref bean="org.hisp.dhis.concept.ConceptService" />
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction"
@@ -800,6 +764,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+		<property name="conceptService">
+			<ref bean="org.hisp.dhis.concept.ConceptService" />
 		</property>
 	</bean>
 
@@ -908,6 +875,50 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
+	</bean>
+	
+	<!-- Concept Name -->
+	
+	<bean id="org.hisp.dhis.dd.action.concept.AddConceptAction"
+		class="org.hisp.dhis.dd.action.concept.AddConceptAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dd.action.concept.UpdateConceptAction"
+		class="org.hisp.dhis.dd.action.concept.UpdateConceptAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dd.action.concept.RemoveConceptAction"
+		class="org.hisp.dhis.dd.action.concept.RemoveConceptAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dd.action.concept.GetConceptAction"
+		class="org.hisp.dhis.dd.action.concept.GetConceptAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dd.action.concept.GetConceptListAction"
+		class="org.hisp.dhis.dd.action.concept.GetConceptListAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction"
+		class="org.hisp.dhis.dd.action.concept.ValidateAddUpdateConceptAction"
+		scope="prototype">
+		<property name="conceptService" 
+			ref="org.hisp.dhis.concept.ConceptService" />
 	</bean>
 	
 </beans>

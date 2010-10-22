@@ -12,14 +12,14 @@ function showPatientAttributeDetails( patientAttributeId )
 
 function patientAttributeReceived( patientAttributeElement )
 {
-	setFieldValue( 'idField', getElementValue( patientAttributeElement, 'id' ) );
-	setFieldValue( 'nameField', getElementValue( patientAttributeElement, 'name' ) );	
-    setFieldValue( 'descriptionField', getElementValue( patientAttributeElement, 'description' ) );
+	setInnerHTML( 'idField', getElementValue( patientAttributeElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( patientAttributeElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( patientAttributeElement, 'description' ) );
     
     var valueTypeMap = { 'NUMBER':i18n_number, 'BOOL':i18n_yes_no, 'TEXT':i18n_text, 'DATE':i18n_date, 'COMBO':i18n_combo };
     var valueType = getElementValue( patientAttributeElement, 'valueType' );    
     
-    setFieldValue( 'valueTypeField', valueTypeMap[valueType] );    
+    setInnerHTML( 'valueTypeField', valueTypeMap[valueType] );    
    
     showDetails();
 }
@@ -52,7 +52,7 @@ function removePatientAttributeCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }

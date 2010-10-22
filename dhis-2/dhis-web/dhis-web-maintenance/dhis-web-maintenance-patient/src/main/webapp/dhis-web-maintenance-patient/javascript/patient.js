@@ -23,6 +23,7 @@ function isInt( value )
     return true;
 }
 
+
 //------------------------------------------------------------------------------
 // Validate EnrollmentDate
 //------------------------------------------------------------------------------
@@ -162,7 +163,7 @@ function patientReceived( patientElement )
 		identifierText = identifierText + identifiers[ i ].getElementsByTagName( "identifierText" )[0].firstChild.nodeValue + '<br>';		
 	}
 	
-	setFieldValue( 'identifierField', identifierText );
+	setInnerHTML( 'identifierField', identifierText );
 	
 	var attributes = patientElement.getElementsByTagName( "attribute" );   
     
@@ -173,7 +174,7 @@ function patientReceived( patientElement )
 		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
 	}
 	
-	setFieldValue( 'attributeField', attributeValues );
+	setInnerHTML( 'attributeField', attributeValues );
     
     var programs = patientElement.getElementsByTagName( "program" );   
     
@@ -184,7 +185,7 @@ function patientReceived( patientElement )
 		programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';		
 	}
 	
-	setFieldValue( 'programField', programName );
+	setInnerHTML( 'programField', programName );
    
     showDetails();
 }
@@ -217,7 +218,7 @@ function removePatientCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         
         showWarning();
     }

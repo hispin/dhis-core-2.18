@@ -35,7 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateIndicatorTypeAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: ValidateIndicatorTypeAction.java 3305 2007-05-14 18:55:52Z
+ *          larshelg $
  */
 public class ValidateIndicatorTypeAction
     extends ActionSupport
@@ -50,7 +51,7 @@ public class ValidateIndicatorTypeAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -76,13 +77,6 @@ public class ValidateIndicatorTypeAction
         this.name = name;
     }
 
-    private Integer factor;
-
-    public void setFactor( Integer factor )
-    {
-        this.factor = factor;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -100,22 +94,8 @@ public class ValidateIndicatorTypeAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
 
             IndicatorType match = indicatorService.getIndicatorTypeByName( name );
 
@@ -123,25 +103,10 @@ public class ValidateIndicatorTypeAction
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
-
-        if ( factor == null )
-        {
-            message = i18n.getString( "specify_integer_factor" );
-
-            return INPUT;
-        }
-        else
-        {
-            if ( factor == 0 )
-            {
-                message = i18n.getString( "factor_cannot_be_zero" );
-                
-                return INPUT;
-            }
-        }
+      
 
         message = i18n.getString( "everything_is_ok" );
 

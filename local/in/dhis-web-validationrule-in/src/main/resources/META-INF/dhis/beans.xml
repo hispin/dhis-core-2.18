@@ -145,9 +145,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-	<property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>
+	<property name="dataElementCategoryService"
+      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/> 
 	</bean>
   
   <bean id="org.hisp.dhis.validationrule.action.GetExpressionAction"
@@ -219,9 +218,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>  
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>
-    </property>  
+    <property name="dataElementCategoryService"
+      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>   
   </bean>  
   
     <bean id="org.hisp.dhis.validationrule.action.ValidationByAverageActionIN"
@@ -239,9 +237,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>      
-    </property>
+    <property name="dataElementCategoryService"
+      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/> 
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>      
     </property>
@@ -267,9 +264,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
     </property>
-    <property name="dataElementCategoryOptionComboService">
-      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryOptionComboService"/>      
-    </property>
+   <property name="dataElementCategoryService"
+      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/> 
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService"/>      
     </property>

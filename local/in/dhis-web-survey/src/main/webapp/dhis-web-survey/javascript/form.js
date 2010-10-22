@@ -5,7 +5,9 @@ window.onload = function ()
 
 	for ( var i = 0, input; input = inputs[i]; i++ )
 	{
-		input.addEventListener('focus', valueFocus, false);
+		$('#'+ input.id).focus(function() {
+			valueFocus(input);
+		});
 	}
 
     var selects = document.getElementsByName( "entryselect" );
@@ -105,11 +107,11 @@ function valueFocus(e)
 	    }
 	}
 	    */
-    var curDeSpan = document.getElementById('currentIndicator');
+    //var curDeSpan = byId('currentIndicator');
      
-    curDeSpan.firstChild.nodeValue = name;
+    //curDeSpan.firstChild.nodeValue = name;
     
-    //document.getElementById("currentOptionCombo").innerHTML  = optionName;
+    ////document.getElementById("currentOptionCombo").innerHTML  = optionName;
 	
 }
 
@@ -206,11 +208,17 @@ function SetGeneratedMinMaxValues()
 {
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'minmax' );
-        request.send( 'minMaxGeneration.action' );
+		$.ajax({
+		   type: "POST",
+		   url: "minMaxGeneration.action",
+		   success: function(result){
+				handleResponse (result);
+		   },
+		   error: function(request,status,errorThrown) {
+				handleHttpError (request);
+		   }
+		 });
+		
     };
     
     function handleResponse( rootElement )
@@ -269,12 +277,14 @@ function validateCompleteDataSet()
 	
 	if ( confirmed )
 	{
-	    var url = "getValidationViolations.action";
-    
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( registerCompleteDataSet );
-        request.send( url );        
+		$.post("getValidationViolations.action",
+			{
+			},
+			function (data)
+			{
+				registerCompleteDataSet(data);
+			},'xml');
+		
 	}
 }
 
@@ -286,11 +296,14 @@ function registerCompleteDataSet( messageElement )
     {
         var date = document.getElementById( "dateField" ).value;
     
-        var url = "registerCompleteDataSet.action?date=" + date;
-    
-        var request = new Request();
-        request.setCallbackSuccess( registerReceived );
-        request.send( url );
+		$.post("registerCompleteDataSet.action",
+			{
+				date : date
+			},
+			function (data)
+			{
+				registerReceived(data);
+			},'xml');
     }
     else
     {
@@ -300,7 +313,7 @@ function registerCompleteDataSet( messageElement )
 
 function registerReceived( messageElement )
 {
-	document.getElementById( "completeButton" ).disabled = true;
+	byId("completeButton" ).disabled = true;
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
@@ -312,11 +325,13 @@ function undoCompleteDataSet()
 	
 	if ( confirmed )
 	{
-        var url = "undoCompleteDataSet.action";
-    
-        var request = new Request();
-        request.setCallbackSuccess( undoReceived );
-        request.send( url );
+		$.post("undoCompleteDataSet.action",
+			{
+			},
+			function (data)
+			{
+				undoReceived(data);
+			},'xml');
 	}
 }
 

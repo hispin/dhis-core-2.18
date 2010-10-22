@@ -29,9 +29,9 @@ package org.hisp.dhis.dataadmin.action.maintenance;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.maintenance.MaintenanceService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -64,12 +64,12 @@ public class PerformMaintenanceAction
     {
         this.completenessStore = completenessStore;
     }
-    
-    private DataMartStore dataMartStore;
 
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartStore = dataMartStore;
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
     
     private PeriodService periodService;
@@ -127,12 +127,12 @@ public class PerformMaintenanceAction
     {
         if ( aggregatedDataValues )
         {
-            dataMartStore.deleteAggregatedDataValues();
+            aggregatedDataValueService.deleteAggregatedDataValues();
         }
         
         if ( aggregatedIndicatorValues )
         {
-            dataMartStore.deleteAggregatedIndicatorValues();
+            aggregatedDataValueService.deleteAggregatedIndicatorValues();
         }
         
         if ( zeroValues )

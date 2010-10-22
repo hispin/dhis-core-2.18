@@ -42,80 +42,89 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $Id$
  */
-public class UpdateSortedDataElementForCategoryAction implements Action {
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class UpdateSortedDataElementForCategoryAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	private DataElementService dataElementService;
+    private DataElementService dataElementService;
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	private Integer id;
+    private Integer id;
 
-	private List<String> dataElementIds = new ArrayList<String>();
+    private List<String> dataElementIds = new ArrayList<String>();
 
-	public String message;
+    public String message;
 
-	public I18n i18n;
+    public I18n i18n;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage()
+    {
+        return message;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setDataElementService(DataElementService dataElementService) {
-		this.dataElementService = dataElementService;
-	}
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
 
-	public void setDataElementIds(List<String> dataElementIds) {
-		this.dataElementIds = dataElementIds;
-	}
+    public void setDataElementIds( List<String> dataElementIds )
+    {
+        this.dataElementIds = dataElementIds;
+    }
 
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
-	}
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
-	// -------------------------------------------
-	// Action implementation
-	// -------------------------------------------
+    // -------------------------------------------
+    // Action implementation
+    // -------------------------------------------
 
-	public String execute() throws Exception {
-	
-		DataElementGroupOrder dataElementGroupOrder = excelItemService
-				.getDataElementGroupOrder(id.intValue());
-		
-		List<DataElement> dataElements = new ArrayList<DataElement>();
+    public String execute()
+        throws Exception
+    {
 
-		for (String dataElementId : this.dataElementIds) {
+        DataElementGroupOrder dataElementGroupOrder = excelItemService.getDataElementGroupOrder( id.intValue() );
 
-			DataElement dataElement = dataElementService.getDataElement(Integer
-					.parseInt(dataElementId));
-			dataElements.add(dataElement);
+        List<DataElement> dataElements = new ArrayList<DataElement>();
 
-		}
+        for ( String dataElementId : this.dataElementIds )
+        {
 
-		dataElementGroupOrder.setDataElements(dataElements);
+            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementId ) );
+            dataElements.add( dataElement );
 
-		this.message = i18n.getString("update_sort_dataelement_success");
+        }
 
-		excelItemService.updateDataElementGroupOrder(dataElementGroupOrder);
+        dataElementGroupOrder.setDataElements( dataElements );
 
-		return SUCCESS;
-	}
+        this.message = i18n.getString( "update_sort_dataelement_success" );
+
+        excelItemService.updateDataElementGroupOrder( dataElementGroupOrder );
+
+        return SUCCESS;
+    }
 }

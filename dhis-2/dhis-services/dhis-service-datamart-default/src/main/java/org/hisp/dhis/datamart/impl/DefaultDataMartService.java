@@ -32,18 +32,11 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.engine.DataMartEngine;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -67,13 +60,6 @@ public class DefaultDataMartService
     public void setDataMartEngine( DataMartEngine dataMartEngine )
     {
         this.dataMartEngine = dataMartEngine;
-    }
-
-    private DataMartStore dataMartStore;
-    
-    public void setDataMartStore( DataMartStore dataMartStore )
-    {
-        this.dataMartStore = dataMartStore;
     }
 
     private GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore;
@@ -131,74 +117,6 @@ public class DefaultDataMartService
         }
         
         return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, new OutputHolderState() );
-    }
-
-    // ----------------------------------------------------------------------
-    // AggregatedDataValue
-    // ----------------------------------------------------------------------
-    
-    public Double getAggregatedValue( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
-    {
-        return dataMartStore.getAggregatedValue( dataElement, period, organisationUnit );
-    }
-    
-    public Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
-    {
-        return dataMartStore.getAggregatedValue( dataElement, dimensionOption, period, organisationUnit );
-    }
-    
-    public Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit organisationUnit )
-    {
-        return dataMartStore.getAggregatedValue( dataElement, categoryOptionCombo, period, organisationUnit );
-    }
-    
-    public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
-    {
-        return dataMartStore.getAggregatedDataValues( dataElementId, periodIds, organisationUnitIds );
-    }
-    
-    public int deleteAggregatedDataValues()
-    {
-        return dataMartStore.deleteAggregatedDataValues();
-    }
-
-    // -------------------------------------------------------------------------
-    // AggregatedIndicatorValue
-    // -------------------------------------------------------------------------
-    
-    public Double getAggregatedValue( Indicator indicator, Period period, OrganisationUnit unit )
-    {
-        return dataMartStore.getAggregatedValue( indicator, period, unit );
-    }
-    
-    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
-    {
-        return dataMartStore.getAggregatedIndicatorValues( periodIds, organisationUnitIds );
-    }
-    
-    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
-    {
-        return dataMartStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
-    }
-    
-    public int deleteAggregatedIndicatorValues()
-    {
-        return dataMartStore.deleteAggregatedIndicatorValues();
-    }
-
-    // ----------------------------------------------------------------------
-    // DataValue
-    // ----------------------------------------------------------------------
-    
-    public Collection<DeflatedDataValue> getDeflatedDataValues( int dataElementId, int periodId, Collection<Integer> sourceIds )
-    {
-        return dataMartStore.getDeflatedDataValues( dataElementId, periodId, sourceIds );
-    }
-    
-    public DataValue getDataValue( int dataElementId, int categoryOptionComboId, int periodId, int sourceId )
-    {
-        return dataMartStore.getDataValue( dataElementId, categoryOptionComboId, periodId, sourceId );
     }
     
     // -------------------------------------------------------------------------

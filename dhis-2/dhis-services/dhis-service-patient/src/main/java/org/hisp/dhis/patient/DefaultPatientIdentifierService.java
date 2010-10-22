@@ -182,6 +182,7 @@ public class DefaultPatientIdentifierService
         return patientIdentifierStore.listPatientByOrganisationUnit( organisationUnit, min, max );
     }
 
+
     public PatientIdentifier get( PatientIdentifierType type, String identifier )
     {
         return patientIdentifierStore.get( type, identifier );

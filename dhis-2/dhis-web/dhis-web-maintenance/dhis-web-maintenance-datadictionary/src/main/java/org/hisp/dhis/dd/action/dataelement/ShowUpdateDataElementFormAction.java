@@ -81,7 +81,7 @@ public class ShowUpdateDataElementFormAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -112,15 +112,15 @@ public class ShowUpdateDataElementFormAction
     public Collection<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
-    }  
-    
+    }
+
     private Map<String, Integer> factorMap;
 
     public Map<String, Integer> getFactorMap()
     {
         return factorMap;
     }
-    
+
     private Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
     public Collection<DataElementOperand> getOperands()
@@ -129,21 +129,21 @@ public class ShowUpdateDataElementFormAction
     }
 
     private final static int ALL = 0;
-    
+
     public int getALL()
     {
         return ALL;
     }
-    
+
     private List<DataElementCategoryCombo> dataElementCategoryCombos;
-    
+
     public List<DataElementCategoryCombo> getDataElementCategoryCombos()
     {
         return dataElementCategoryCombos;
     }
 
     private List<DataElementGroupSet> dataElementGroupSets;
-    
+
     public List<DataElementGroupSet> getDataElementGroupSets()
     {
         return dataElementGroupSets;
@@ -155,63 +155,82 @@ public class ShowUpdateDataElementFormAction
     {
         return organisationUnitLevels;
     }
-    
+
     private List<OrganisationUnitLevel> aggregationLevels = new ArrayList<OrganisationUnitLevel>();
 
     public List<OrganisationUnitLevel> getAggregationLevels()
     {
         return aggregationLevels;
     }
-     
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-    {    	
-    	dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() );
-    	
-        dataElement = dataElementService.getDataElement( id );       
+    {
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
+            .getAllDataElementCategoryCombos() );
+
+        dataElement = dataElementService.getDataElement( id );
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-        
+
+        List<OrganisationUnitLevel> filledOrganisationUnitLevels = organisationUnitService
+            .getFilledOrganisationUnitLevels();
+
         for ( Integer level : dataElement.getAggregationLevels() )
         {
-            aggregationLevels.add( organisationUnitService.getOrganisationUnitLevelByLevel( level ) );
+            aggregationLevels.add( getOrganisationUnitLevel( level, filledOrganisationUnitLevels ) );
         }
-        
+
         organisationUnitLevels.removeAll( aggregationLevels );
-        
+
         if ( dataElement != null && dataElement instanceof CalculatedDataElement )
         {
             calculatedDataElement = (CalculatedDataElement) dataElement;
             dataElementGroups = dataElementService.getAllDataElementGroups();
-            
+
             Collection<String> operandIds = new ArrayList<String>();
-            
+
             operandIds = dataElementService.getOperandIds( calculatedDataElement );
-            factorMap = dataElementService.getOperandFactors( calculatedDataElement );    
-            
-            for( String operandId : operandIds )
+            factorMap = dataElementService.getOperandFactors( calculatedDataElement );
+
+            for ( String operandId : operandIds )
             {
-            	String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );                
-                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId.length() );
-    			
-    		DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
-    		DataElementCategoryOptionCombo optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );    			    			
-    			
-    		DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(), dataElement.getName() + optionCombo.getName() );
-        		
-        	operands.add( operand );
-            }            
-        }               
+                String dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
+                String optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
+                    .length() );
+
+                DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryService
+                    .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
+
+                DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(),
+                    dataElement.getName() + optionCombo.getName() );
+
+                operands.add( operand );
+            }
+        }
 
         dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
 
         dataElementGroupSets.removeAll( dataElement.getGroupSets() );
-        
+
         Collections.sort( dataElementGroupSets, new IdentifiableObjectNameComparator() );
-        
-        return SUCCESS;        
+
+        return SUCCESS;
+    }
+
+    private OrganisationUnitLevel getOrganisationUnitLevel( Integer level,
+        List<OrganisationUnitLevel> organisationUnitLevels )
+    {
+        for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
+        {
+            if ( level.equals( organisationUnitLevel.getLevel() ) )
+                return organisationUnitLevel;
+        }
+
+        return null;
     }
 }

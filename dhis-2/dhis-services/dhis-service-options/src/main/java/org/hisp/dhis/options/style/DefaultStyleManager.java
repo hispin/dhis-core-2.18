@@ -30,8 +30,7 @@ package org.hisp.dhis.options.style;
 import java.io.File;
 import java.util.SortedMap;
 
-import org.hisp.dhis.user.NoCurrentUserException;
-import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.options.SystemSettingManager;
 
 /**
  * @author Lars Helge Overland
@@ -41,19 +40,20 @@ public class DefaultStyleManager
     implements StyleManager
 {
     private static final String SETTING_NAME_STYLE = "currentStyle";
-        
+
     private static final String SEPARATOR = "/";
+
     private static final String SYSTEM_SEPARATOR = File.separator;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingService userSettingService;
-    
-    public void setUserSettingService( UserSettingService userSettingService )
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.userSettingService = userSettingService;
+        this.systemSettingManager = systemSettingManager;
     }
 
     private String defaultStyle;
@@ -64,7 +64,7 @@ public class DefaultStyleManager
     }
 
     private SortedMap<String, String> styles;
-    
+
     public void setStyles( SortedMap<String, String> styles )
     {
         this.styles = styles;
@@ -76,37 +76,31 @@ public class DefaultStyleManager
 
     public void setCurrentStyle( String file )
     {
-        try
-        {
-            userSettingService.saveUserSetting( SETTING_NAME_STYLE, file );
-        }
-        catch ( NoCurrentUserException ex )
-        {   
-        }
+         systemSettingManager.saveSystemSetting( SETTING_NAME_STYLE, file );
     }
-    
+
     public String getCurrentStyle()
     {
-        return (String) userSettingService.getUserSetting( SETTING_NAME_STYLE, styles.get( defaultStyle ) );
+        return (String) systemSettingManager.getSystemSetting( SETTING_NAME_STYLE, styles.get( defaultStyle ) );
     }
-    
+
     public String getCurrentStyleDirectory()
     {
         String currentStyle = getCurrentStyle();
-        
+
         if ( currentStyle.lastIndexOf( SEPARATOR ) != -1 )
         {
             return currentStyle.substring( 0, currentStyle.lastIndexOf( SEPARATOR ) );
         }
-        
+
         if ( currentStyle.lastIndexOf( SYSTEM_SEPARATOR ) != -1 )
         {
             return currentStyle.substring( 0, currentStyle.lastIndexOf( SYSTEM_SEPARATOR ) );
         }
-        
+
         return currentStyle;
     }
-    
+
     public SortedMap<String, String> getStyles()
     {
         return styles;

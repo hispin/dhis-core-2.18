@@ -34,8 +34,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -107,13 +105,6 @@ public class DataRecordingSelectAction
     public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    private DataEntryFormAssociationService associationService;
-
-    public void setAssociationService( DataEntryFormAssociationService associationService )
-    {
-        this.associationService = associationService;
     }
 
     // -------------------------------------------------------------------------
@@ -305,9 +296,9 @@ public class DataRecordingSelectAction
         Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient,
             selectedProgram, false );
 
-        if( progamInstances == null || progamInstances.iterator() == null || !progamInstances.iterator().hasNext() )
+        if ( progamInstances == null || progamInstances.iterator() == null || !progamInstances.iterator().hasNext() )
             return SUCCESS;
-        
+
         programInstance = progamInstances.iterator().next();
 
         colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
@@ -323,7 +314,7 @@ public class DataRecordingSelectAction
         // ---------------------------------------------------------------------
 
         ProgramStage selectedProgramStage;
-        
+
         if ( programStageId != null )
         {
             selectedProgramStage = programStageService.getProgramStage( programStageId );
@@ -361,10 +352,7 @@ public class DataRecordingSelectAction
         // Check if there is custom DataEntryForm
         // ---------------------------------------------------------------------
 
-        DataEntryFormAssociation association = associationService
-            .getDataEntryFormAssociationByProgramStage( programStageId );
-
-        if ( association != null && association.getDataEntryForm() != null )
+        if ( selectedProgramStage.getDataEntryForm() != null )
         {
             customDataEntryFormExists = true;
         }

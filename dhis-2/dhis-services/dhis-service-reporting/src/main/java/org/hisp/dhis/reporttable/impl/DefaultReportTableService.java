@@ -38,6 +38,7 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
@@ -59,7 +60,8 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
-import org.hisp.dhis.system.grid.Grid;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,7 +131,14 @@ public class DefaultReportTableService
     {
         this.dataMartService = dataMartService;
     }
-        
+
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+
     private DataSetCompletenessService completenessService;
 
     public void setCompletenessService( DataSetCompletenessService completenessService )
@@ -387,7 +396,7 @@ public class DefaultReportTableService
     
     private Grid getGrid( ReportTable reportTable )
     {
-        final Grid grid = new Grid();
+        final Grid grid = new ListGrid();
         
         for ( final IdentifiableObject metaObject : reportTable.getReportIndicators() )
         {
@@ -493,11 +502,11 @@ public class DefaultReportTableService
                         {
                             for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
                             {
-                                grid.addValue( String.valueOf( dataMartService.
+                                grid.addValue( String.valueOf( aggregatedDataValueService.
                                     getAggregatedValue( (DataElement) metaObject, dimensionOption, period, unit ) ) );
                             }
                             
-                            grid.addValue( String.valueOf( dataMartService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
+                            grid.addValue( String.valueOf( aggregatedDataValueService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
                         }
                     }
                 }

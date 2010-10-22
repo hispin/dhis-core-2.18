@@ -28,10 +28,11 @@ package org.hisp.dhis.dataentryform;
  */
 
 import java.util.Collection;
+import java.util.List;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.program.ProgramStage;
-
+/**
+ * @author Bharath Kumar
+ */
 public interface DataEntryFormService
 {
     String ID = DataEntryFormService.class.getName();
@@ -46,7 +47,7 @@ public interface DataEntryFormService
      * @param dataEntryForm The DataEntryForm to add.
      * @return The generated unique identifier for this DataEntryForm.
      */
-    int addDataEntryForm( DataEntryForm dataEntryForm , String associationTableName, int associationId);
+    int addDataEntryForm( DataEntryForm dataEntryForm );
 
     /**
      * Updates a DataEntryForm.
@@ -77,25 +78,7 @@ public interface DataEntryFormService
      * @return A DataEntryForm with the given name.
      */
     DataEntryForm getDataEntryFormByName( String name );
-
-    /**
-     * Returns a DataEntryForm corresponding to the given dataSet.
-     * 
-     * @param dataSet The dataset.
-     * @return The DataEntryForm corresponds to the given dataSet or null if it
-     *         does not exist.
-     */
-    DataEntryForm getDataEntryFormByDataSet( DataSet dataSet );
     
-    /**
-     * Returns a DataEntryForm corresponding to the given programStage
-     * @param programStage the ProgramStage
-     * @return The DataEntryForm corresponds to the given programStage or null if it 
-     * 			does not exist
-     */
-    DataEntryForm getDataEntryFormByProgramStage( ProgramStage programStage );
-    
-
     /**
      * Get all DataEntryForms.
      * 
@@ -110,4 +93,7 @@ public interface DataEntryFormService
      */
     String prepareDataEntryFormCode( String preparedCode );
     
+    Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
+    
+    Collection<DataEntryForm> listDisctinctDataEntryFormByDataSetIds( List<Integer> dataSetIds );    
 }

@@ -31,11 +31,11 @@ function showChartDetails( chartId )
 
 function chartReceived( xmlObject )
 {
-    setFieldValue( 'titleField', getElementValue( xmlObject, 'title' ) );
-    setFieldValue( 'dimensionField', getElementValue( xmlObject, 'dimension' ) );
-    setFieldValue( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
-    setFieldValue( 'periodsField', getElementValue( xmlObject, 'periods' ) );
-    setFieldValue( 'organisationUnitsField', getElementValue( xmlObject, 'organisationUnits' ) );
+    setInnerHTML( 'titleField', getElementValue( xmlObject, 'title' ) );
+    setInnerHTML( 'dimensionField', getElementValue( xmlObject, 'dimension' ) );
+    setInnerHTML( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
+    setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
+    setInnerHTML( 'organisationUnitsField', getElementValue( xmlObject, 'organisationUnits' ) );
     
     showDetails();
 }

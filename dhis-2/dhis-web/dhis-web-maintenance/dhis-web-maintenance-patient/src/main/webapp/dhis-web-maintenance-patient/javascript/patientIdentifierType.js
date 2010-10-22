@@ -12,10 +12,10 @@ function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 
 function patientIdentifierTypeReceived( patientIdentifierTypeElement )
 {
-	setFieldValue( 'idField', getElementValue( patientIdentifierTypeElement, 'id' ) );
-	setFieldValue( 'nameField', getElementValue( patientIdentifierTypeElement, 'name' ) );	
-    setFieldValue( 'descriptionField', getElementValue( patientIdentifierTypeElement, 'description' ) );
-    setFieldValue( 'formatField', getElementValue( patientIdentifierTypeElement, 'format' ) );
+	setInnerHTML( 'idField', getElementValue( patientIdentifierTypeElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( patientIdentifierTypeElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( patientIdentifierTypeElement, 'description' ) );
+    setInnerHTML( 'formatField', getElementValue( patientIdentifierTypeElement, 'format' ) );
     showDetails();
 }
 
@@ -48,7 +48,7 @@ function removePatientIdentifierTypeCompleted( messageElement )
     }
     else if ( type = 'error' )
     {
-        setFieldValue( 'warningField', message );
+        setInnerHTML( 'warningField', message );
         showWarning();
     }
 }

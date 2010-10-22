@@ -15,7 +15,7 @@ selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitId );
 
 function displayCompleteness()
 {
-	var criteria = $( "input[name='criteria']:checked" ).val();	
+    var criteria = $( "input[name='criteria']:checked" ).val();
     var dataSetList = document.getElementById( "dataSetId" );    
     var dataSetId = dataSetList.options[ dataSetList.selectedIndex ].value;    
     var periodList = document.getElementById( "periodId" );

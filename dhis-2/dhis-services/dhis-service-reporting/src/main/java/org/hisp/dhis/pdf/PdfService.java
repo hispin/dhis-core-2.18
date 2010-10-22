@@ -30,7 +30,6 @@ package org.hisp.dhis.pdf;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataset.DataSet;

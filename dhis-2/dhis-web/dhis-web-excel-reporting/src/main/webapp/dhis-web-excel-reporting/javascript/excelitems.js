@@ -2,290 +2,101 @@
 // EXCEL ITEM GROUP
 // ========================================================================================================================
 
-// ========================================================================================================================
-// Open Add Excel item form
-// ========================================================================================================================
-
-function openAddExcelItem() 
-{	
-	byId( "okButton" ).onclick = validateAddExcelItem;
-	enable( "name" );
-	$( "#divExcelitem" ).showAtCenter( true );
-}
-
-// ========================================================================================================================
-// Open Update Excel item form
-// ========================================================================================================================
-
-function openUpdateExcelItem( id ) 
-{	
-	var request = new Request();
-	request.setResponseTypeXML( 'excelItem' );
-	request.setCallbackSuccess( openUpdateExcelItemReceived );	
-	request.send( "getExcelItem.action?id=" + id );		
-}
-
-function openUpdateExcelItemReceived( xmlObject ) 
+function changeItemType()
 {
+	var type = getFieldValue( 'excelItemGroupType' );
 	
-	byId("id").value = xmlObject.getElementsByTagName('id')[0].firstChild.nodeValue;
-	byId("name").value = xmlObject.getElementsByTagName('name')[0].firstChild.nodeValue;
-	byId("expression").value = xmlObject.getElementsByTagName('expression')[0].firstChild.nodeValue;
-	byId("row").value = xmlObject.getElementsByTagName('row')[0].firstChild.nodeValue;
-	byId("column").value = xmlObject.getElementsByTagName('column')[0].firstChild.nodeValue;
-	byId("sheetNo").value = xmlObject.getElementsByTagName('sheetNo')[0].firstChild.nodeValue;	
-	byId( "okButton" ).onclick = validateUpdateExcelItem;
-	enable("name");
-	$("#divExcelitem").showAtCenter( true );
-	
+	if( type == 'NORMAL' ){
+		byId('expression-button' ).onclick = openExpressionBuild;
+	}else {
+		byId('expression-button' ).onclick =  caExpressionBuilderForm;
+	}	
 }
 
-// ========================================================================================================================
-// Validate Add Excel item 
-// ========================================================================================================================
+// -----------------------------------------------------------------------
+// Open Expression Form for Normal Excel-Item group
+// -----------------------------------------------------------------------
 
-function validateAddExcelItem() 
-{
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( validateAddExcelItemReceived );	
-	
-	var params = "name=" + byId("name").value;
-	params += "&expression=" + byId("expression").value;
-	params += "&row=" + byId("row").value;
-	params += "&column=" + byId("column").value;
-	params += "&sheetNo=" + byId("sheetNo").value;
-	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
-	
-	request.sendAsPost( params );
-	request.send( "validateExcelItem.action" );	
-	
-}
-
-function validateAddExcelItemReceived( message )
-{
-	var type = message.getAttribute( 'type' );
-	
-	if ( type == 'error' )
-	{
-		setMessage(message.firstChild.nodeValue);		
-	}
-	else if ( type == 'success' )
-	{				
-		addExcelItem();		
-	}
-}
-// ========================================================================================================================
-// Validate Update Excel item 
-// ========================================================================================================================
-
-function validateUpdateExcelItem() 
-{	
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( validateUpdateExcelItemReceived );
-	
-	var params = "name=" + byId("name").value;
-	params += "&expression=" + byId("expression").value;
-	params += "&row=" + byId("row").value;
-	params += "&column=" + byId("column").value;
-	params += "&sheetNo=" + byId("sheetNo").value;
-	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
-	params += "&id=" + byId( "id" ).value; 
-	
-	request.sendAsPost( params );
-	
-	request.send( "validateExcelItem.action" );	
-	
-}
-
-function validateUpdateExcelItemReceived( xmlObject ) 
-{
-	
-	var type = xmlObject.getAttribute( 'type' );
-	
-	if ( type == 'error' )
-	{
-		setMessage(xmlObject.firstChild.nodeValue);
-	}
-	else if ( type == 'success' )
-	{		
-		updateExcelItem();		
-	}
-}
-// ========================================================================================================================
-// Add Excel item
-// ========================================================================================================================
-
-function addExcelItem() {
-	
-	/* var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( Completed );
-	var params = "name=" + byId("name").value;	
-	params += "&expression=" + byId("expression").value; 
-	params += "&row=" + byId("row").value; 
-	params += "&column=" + byId("column").value; 
-	params += "&sheetNo=" + byId("sheetNo").value; 
-	params += "&excelItemGroupId=" + byId( "excelItemGroupId" ).value; 
-	request.sendAsPost( params );
-	request.send( "addExcelItem.action" ); */
-	
-	$.post("addExcelItem.action",{
-		name:$("#name").val(),		
-		expression:$("#expression").val(),
-		row:$("#row").val(),	
-		column:$("#column").val(),		
-		sheetNo:byId("sheetNo").value,
-		excelItemGroupId:byId("excelItemGroupId").value
-		
-	}, function (data){
-		window.location.reload();
-	},'xml');
-}
-
-function Completed( xmlObject ) {
-
-	window.location.reload();
-}
-
-// ========================================================================================================================
-// Update Excel Item
-// ========================================================================================================================
-
-function updateExcelItem() {
-
-	$.post("updateExcelItem.action",{
-		id:$("#id").val(),	
-		name:$("#name").val(),		
-		expression:$("#expression").val(),
-		row:$("#row").val(),	
-		column:$("#column").val(),		
-		sheetNo:byId("sheetNo").value,
-		excelItemGroupId:byId("excelItemGroupId").value
-		
-	}, function (data){
-		window.location.reload();
-	},'xml');
-	
-}
-// ===============================================================================
 // Open Expression Form
-// ===============================================================================
-
 function openExpressionBuild() {
 	
 	byId("formula").value = byId("expression").value;
-	
-	getALLDataElementGroup();
-	getDataElementsByGroup();
-	enable("dataElementGroup");
-	enable("availableDataElements");
-	
+	loadDataElementGroups( "#divExpression select[id=dataElementGroup]" );
+	loadAllDataElements( "#divExpression select[id=availableDataElements]" );
 	$( "#availableDataElements" ).change(getOptionCombos);		
-	$( "#divExpression" ).showAtCenter( true );
 	
+	showPopupWindowById( 'divExpression', 600, 300 );
 }
 
-// ===============================================================================
-// Get all Dataelement Group
-// ===============================================================================
-
-function getALLDataElementGroup() {
-
-	var list = byId( 'dataElementGroup' );
-	
-	list.options.length = 0;
-	list.add( new Option( "ALL", "ALL" ), null );
-	
-	for ( id in dataElementGroups )
-	{
-		list.add( new Option( dataElementGroups[id], id ), null );
-	}
-}
-
-// ===============================================================================
-// Get DataElements by Group
-// ===============================================================================
-
-function getDataElementsByGroup()
-{		
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getDataElementsByGroupCompleted );
-    var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + byId("dataElementGroup").value;
-	request.send( url );	
-}
-
-function getDataElementsByGroupCompleted( xmlObject ) {
-
-	var dataElementList = byId( "availableDataElements" );
-		
-	dataElementList.options.length = 0;
-	
-	var dataelements = xmlObject.getElementsByTagName( "dataElement" );
-	
-	for ( var i = 0; i < dataelements.length; i++)
-	{
-		var id = dataelements[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-		var elementName = dataelements[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-		var option = new Option( elementName, id );
-		option.onmousemove  = function(e){
-			showToolTip( e, this.text);
-		}
-		dataElementList.add( option, null );		
-	}
-}
-
-// ===============================================================================
-// Get OptionCombos by DataElement
-// ===============================================================================
-
+// Get option combos for selected dataelement
 function getOptionCombos() {
-	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getOptionCombosReceived);
-	request.send( "getOptionCombos.action?dataElementId=" + byId("availableDataElements").value );	
+	loadCategoryOptionComboByDE( byId("availableDataElements").value, "#divExpression select[id=optionCombos]" );
 }
 
-function getOptionCombosReceived( xmlObject ) {
-	
-	xmlObject = xmlObject.getElementsByTagName('categoryOptions')[0];
-	
-	var optionComboList = byId( "optionCombos" );			
-	optionComboList.options.length = 0;
-	var optionCombos = xmlObject.getElementsByTagName( "categoryOption" );
-	
-	for ( var i = 0; i < optionCombos.length; i++ )
-	{
-		var id = optionCombos[ i ].getAttribute('id');
-		var name = optionCombos[ i ].firstChild.nodeValue;			
-		var option = document.createElement( "option" );
-		option.value = id ;
-		option.text = name;
-		optionComboList.add( option, null );	
-	}
-}
-
-// ===============================================================================
-// Insert dataelement's id into the Formular textbox
-// ===============================================================================
-
+// Insert operand into the Formular textbox
 function insertDataElementId() {
 
 	var dataElementComboId = "[" + byId("availableDataElements").value + "." + byId("optionCombos").value + "]";
 	byId("formula").value += dataElementComboId;
 }
 
-// ===============================================================================
 // Insert operators into the Formular textbox
-// ===============================================================================
-
 function insertOperation( target, value ) {
 
 	byId( target ).value += value;
+}
+
+// Update expression for item
+function updateNormalExpression()
+{
+	expression = jQuery( '#divExpression textarea[id=formula]' ).val();
+	setFieldValue( 'expression', getFieldValue('formula' ) );
+	hideById('divExpression'); 
+	unLockScreen();
+}
+
+// -----------------------------------------------------------------------
+// Open Expression Form for Catagory Excel-Item group
+// -----------------------------------------------------------------------
+
+// Open Expression Form
+function caExpressionBuilderForm()
+{
+	loadDataElementGroups( "#divCategory select[id=dataElementGroup]" );
+	loadAllDataElements( "#divCategory select[id=availableDataElements]" );
+	
+	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue('expression') );
+	showPopupWindowById( 'divCategory', 600, 320 );				
+}
+
+// Insert operand into the Formular textbox
+function insertExpression() 
+{
+	var expression = "[*." + getFieldValue("divCategory select[id=optionCombos]") + "]";
+	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue( 'divCategory textarea[id=formula]') + expression );	
+}
+
+// Update expression for item
+function updateCaExpression()
+{
+	expression = jQuery( '#divCategory textarea[id=formula]' ).val();
+	setFieldValue( 'expression', expression );
+	hideById('divCategory'); 
+	unLockScreen();
+}
+
+// Get option combos for selected dataelement
+function getOptionCombos(id, target) {
+	loadCategoryOptionComboByDE( id, target);
+}
+
+// -----------------------------------------------------------------------
+// Get Dataelement by Group
+// -----------------------------------------------------------------------
+
+function getDataElements( id, target )
+{
+	loadDataElementsByGroup( id, target );
 }
 
 // -----------------------------------------------------------------------
@@ -322,7 +133,7 @@ function copySelectedItemToGroupReceived( xmlObject ) {
 		options.add(new Option(name,id), null);
 	}
 	
-	$("#copyTo").showAtCenter( true );
+	showPopupWindowById( 'copyTo', 450, 110 );
 }
 
 function validateCopyExcelItemsToExcelItemGroup() {
@@ -463,8 +274,8 @@ function saveCopiedExcelItemsToExcelItemGroup() {
 		setMessage( warningMessages );
 	}
 		
-	hideById("copyTo");
-	deleteDivEffect();
+	hideById('copyTo'); 
+	unLockScreen();
 }
 
 function saveCopiedExcelItemsToExcelItemGroupReceived( data ) {

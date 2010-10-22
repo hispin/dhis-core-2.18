@@ -37,6 +37,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.pdf.converter.DataElementConverter;
@@ -83,6 +84,13 @@ public class ITextPDFExportService
         this.organisationUnitService = organisationUnitService;
     }
 
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -111,7 +119,7 @@ public class ITextPDFExportService
             thread.setExportParams( params );
 
             thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
-            thread.setIndicatorConverter( new IndicatorConverter( indicatorService ) );
+            thread.setIndicatorConverter( new IndicatorConverter( indicatorService, expressionService ) );
             thread.setExtendedDataElementConverter( new ExtendedDataElementConverter( dataElementService ) );
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
                 organisationUnitService ) );

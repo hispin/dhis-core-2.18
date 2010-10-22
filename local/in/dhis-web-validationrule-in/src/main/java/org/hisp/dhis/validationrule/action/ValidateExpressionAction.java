@@ -116,7 +116,7 @@ public class ValidateExpressionAction
         
         String result = expressionService.expressionIsValid( expression );
         
-        if ( result.equals( ExpressionService.VALID ) )
+        if ( !result.equals( ExpressionService.VALID ) )
         {
             message = i18n.getString( "could_not_save" ) + ": ";
             

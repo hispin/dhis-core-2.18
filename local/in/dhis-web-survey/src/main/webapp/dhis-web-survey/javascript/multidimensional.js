@@ -204,14 +204,18 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_, selec
     var inputId = dataElementId + ':' +  optionComboId;
     
     this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        
-        request.send( 'saveMultiDimensionalValue.action?inputId=' +
-                inputId + '&value=' + value );
+    {		
+		$.ajax({
+			   type: "POST",
+			   url: "saveMultiDimensionalValue.action",
+			   data: "inputId=" +inputId + "&value=" + value,
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
     
     function handleResponse( rootElement )
@@ -270,13 +274,18 @@ function CommentSaver( dataElementId_, optionComboId_, value_ )
     var value = value_;
     
     this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveComment.action?dataElementId=' +
-                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
+    {		
+		$.ajax({
+			   type: "POST",
+			   url: "saveComment.action",
+			   data: "dataElementId=" +dataElementId + "&optionComboId=" + optionComboId + "&comment=" + value,
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
     
     function handleResponse( rootElement )
@@ -373,10 +382,13 @@ function getCalculatedDataElement( dataElementId )
 
 function calculateAndSaveCDEs()
 {
-    var request = new Request();
-    request.setCallbackSuccess( dataValuesReceived );
-    request.setResponseTypeXML( 'dataValues' );
-    request.send( 'calculateCDEs.action' );
+	$.post("calculateCDEs.action",
+		{
+		},
+		function (data)
+		{
+			dataValuesReceived(data);
+		},'xml');
 }
 
 function dataValuesReceived( node )
@@ -410,11 +422,16 @@ function SetGeneratedMinMaxValues()
 {
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'minmax' );
-        request.send( 'minMaxGeneration.action' );
+		$.ajax({
+			   type: "POST",
+			   url: "minMaxGeneration.action",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+		});
     };
     
     function handleResponse( rootElement )

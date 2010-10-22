@@ -44,24 +44,20 @@ public class DeleteExcelItemAction
 
     private ExcelItemService excelItemService;
 
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private int id;
 
-    // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    public void setExcelItemService( ExcelItemService excelItemService )
-    {
-        this.excelItemService = excelItemService;
     }
 
     // -------------------------------------------------------------------------
@@ -71,18 +67,14 @@ public class DeleteExcelItemAction
     public String execute()
         throws Exception
     {
-
         try
         {
-
             excelItemService.deleteExcelItem( id );
 
             message = i18n.getString( "success" );
-
         }
         catch ( Exception ex )
         {
-
             message = i18n.getString( "error" );
 
             return ERROR;

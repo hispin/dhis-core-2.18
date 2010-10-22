@@ -28,23 +28,27 @@ package org.hisp.dhis.reportexcel.datasetcompleted.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 
 import com.opensymphony.xwork2.Action;
 
@@ -90,20 +94,13 @@ public class ViewCompletedReportByPeriodsAction
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    public DataValueService dataValueService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setDataValueService( DataValueService dataValueService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.dataValueService = dataValueService;
     }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
+    
     // -------------------------------------------
     // Input
     // -------------------------------------------
@@ -147,9 +144,9 @@ public class ViewCompletedReportByPeriodsAction
         return dataSet;
     }
 
-    private Map<String, String> completedValues;
+    private Map<String, Integer> completedValues;
 
-    public Map<String, String> getCompletedValues()
+    public Map<String, Integer> getCompletedValues()
     {
         return completedValues;
     }
@@ -169,7 +166,7 @@ public class ViewCompletedReportByPeriodsAction
 
         CompleteDataSetRegistration completeDataSetRegistration = null;
 
-        completedValues = new HashMap<String, String>();
+        completedValues = new HashMap<String, Integer>();
 
         for ( Integer id : columns )
         {
@@ -177,18 +174,35 @@ public class ViewCompletedReportByPeriodsAction
 
             for ( OrganisationUnit o : organisationUnits )
             {
-                if ( o.getDataSets().contains( dataSet ) )
+                 if ( o.getDataSets().contains( dataSet ) )
                 {
+                    Collection<DataElement> dataElements = dataSet.getDataElements();
+                    Collection<DataValue> values = dataValueService.getDataValues( o, period, dataElements );
+                    int count = 0;
+                    for(DataElement de : dataElements)
+                    {
+                        int opCount = 1;
+                        for ( DataElementCategory ca : de.getCategoryCombo().getCategories()){
+                            opCount *= ca.getCategoryOptions().size();
+                        }
+                        count += opCount;
+                    }
+                    int percent = (values.size() * 100 ) / count ;
+                    
                     completeDataSetRegistration = completeDataSetRegistrationService.getCompleteDataSetRegistration(
                         dataSet, period, o );
 
                     if ( completeDataSetRegistration != null )
                     {
-                        completedValues.put( o.getId() + ":" + id, format.formatDate( completeDataSetRegistration
-                            .getDate() ) );
+                        completedValues.put( o.getId() + ":" + id, percent );
+                    }else{
+                        percent = (percent == 0 ) ? 900 : ( 1000 * percent ) ;
+                        completedValues.put( o.getId() + ":" + id, percent );
                     }
-                }else{
-                    completedValues.put( o.getId() + ":" + id, "" );
+                }
+                else
+                {
+                    completedValues.put( o.getId() + ":" + id, null );
                 }
             }
 

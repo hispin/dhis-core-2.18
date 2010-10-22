@@ -27,10 +27,10 @@ package org.hisp.dhis.datamart.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
+import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
 
 import java.util.ArrayList;
@@ -41,13 +41,13 @@ import java.util.Set;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartStore;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart;
@@ -82,14 +82,14 @@ public class DefaultDataMartEngine
     {
         this.aggregationCache = aggregationCache;
     }
-    
-    private DataMartStore dataMartStore;
 
-    public void setDataMartStore( DataMartStore dataMartStore )
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
-        this.dataMartStore = dataMartStore;
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
-
+    
     private CrossTabService crossTabService;
 
     public void setCrossTabService( CrossTabService crossTabService )
@@ -213,9 +213,9 @@ public class DefaultDataMartEngine
         // Delete existing aggregated data
         // ---------------------------------------------------------------------
 
-        dataMartStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+        aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
         
-        dataMartStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+        aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
         
         log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
 

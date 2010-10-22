@@ -1,7 +1,7 @@
 function openCloseSection( sectionId )
 {
 	var divSection = document.getElementById( sectionId );
-	var sectionLabel = document.getElementById( sectionId + ":title" );	
+	var sectionLabel = document.getElementById( sectionId + ":name" );	
 	
 	if( divSection.style.display == 'none' )
 	{			

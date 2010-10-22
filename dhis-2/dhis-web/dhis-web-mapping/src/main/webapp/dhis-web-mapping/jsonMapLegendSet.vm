@@ -1,10 +1,10 @@
+#set( $indicators_size = $object.indicators.size() )
+#set( $dataelements_size = $object.dataElements.size() )
 { "mapLegendSet":
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsEncode( ${object.name} )",
-    "method": "$!{object.method}",
-    "classes": "$!{object.classes}",
-    "colorLow": "$!encoder.jsEncode( ${object.colorLow} )",
-    "colorHigh": "$!encoder.jsEncode( ${object.colorHigh} )"
+    "indicators": [#foreach( $indicator in $object.indicators )$!{indicator.id}#if( $velocityCount < $indicators_size ),#end#end],
+    "dataElements": [#foreach( $dataElement in $object.dataElements )$!{dataElement.id}#if( $velocityCount < $dataelements_size ),#end#end]
   }]
 }

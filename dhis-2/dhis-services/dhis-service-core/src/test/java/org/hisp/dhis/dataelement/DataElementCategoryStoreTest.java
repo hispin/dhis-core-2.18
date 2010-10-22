@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.junit.Test;
 
@@ -49,15 +50,25 @@ public class DataElementCategoryStoreTest
     extends DhisSpringTest
 {
     private GenericIdentifiableObjectStore<DataElementCategory> categoryStore;
-    
+
+    private Concept conceptA;
+
+    private Concept conceptB;
+
+    private Concept conceptC;
+
     private DataElementCategoryOption categoryOptionA;
+
     private DataElementCategoryOption categoryOptionB;
+
     private DataElementCategoryOption categoryOptionC;
-    
+
     private DataElementCategory categoryA;
+
     private DataElementCategory categoryB;
+
     private DataElementCategory categoryC;
-    
+
     private List<DataElementCategoryOption> categoryOptions;
 
     // -------------------------------------------------------------------------
@@ -68,22 +79,27 @@ public class DataElementCategoryStoreTest
     public void setUpTest()
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
-        
+
         categoryStore = (GenericIdentifiableObjectStore<DataElementCategory>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryStore" );
+
+        conceptA = new Concept( "ConceptA" );
+        conceptB = new Concept( "ConceptB" );
+        conceptC = new Concept( "ConceptC" );
 
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
-        
+
         categoryService.addDataElementCategoryOption( categoryOptionA );
         categoryService.addDataElementCategoryOption( categoryOptionB );
         categoryService.addDataElementCategoryOption( categoryOptionC );
-        
+
         categoryOptions = new ArrayList<DataElementCategoryOption>();
-        
+
         categoryOptions.add( categoryOptionA );
         categoryOptions.add( categoryOptionB );
-        categoryOptions.add( categoryOptionC );         
+        categoryOptions.add( categoryOptionC );
+
     }
 
     // -------------------------------------------------------------------------
@@ -93,25 +109,25 @@ public class DataElementCategoryStoreTest
     @Test
     public void testAddGet()
     {
-        categoryA = new DataElementCategory( "CategoryA", "ConceptA", categoryOptions );
-        categoryB = new DataElementCategory( "CategoryB", "ConceptB", categoryOptions );
-        categoryC = new DataElementCategory( "CategoryC", "ConceptC", categoryOptions );
-        
+        categoryA = new DataElementCategory( "CategoryA", conceptA, categoryOptions );
+        categoryB = new DataElementCategory( "CategoryB", conceptB, categoryOptions );
+        categoryC = new DataElementCategory( "CategoryC", conceptC, categoryOptions );
+
         int idA = categoryStore.save( categoryA );
         int idB = categoryStore.save( categoryB );
         int idC = categoryStore.save( categoryC );
-        
+
         assertEquals( categoryA, categoryStore.get( idA ) );
         assertEquals( categoryB, categoryStore.get( idB ) );
         assertEquals( categoryC, categoryStore.get( idC ) );
 
-        assertEquals( "ConceptA", categoryStore.get( idA ).getConceptName() );
-        assertEquals( "ConceptB", categoryStore.get( idB ).getConceptName() );
-        assertEquals( "ConceptC", categoryStore.get( idC ).getConceptName() );
-        
+        assertEquals( "ConceptA", categoryStore.get( idA ).getConcept().getName() );
+        assertEquals( "ConceptB", categoryStore.get( idB ).getConcept().getName() );
+        assertEquals( "ConceptC", categoryStore.get( idC ).getConcept().getName() );
+
         assertEquals( categoryOptions, categoryStore.get( idA ).getCategoryOptions() );
         assertEquals( categoryOptions, categoryStore.get( idB ).getCategoryOptions() );
-        assertEquals( categoryOptions, categoryStore.get( idC ).getCategoryOptions() );        
+        assertEquals( categoryOptions, categoryStore.get( idC ).getCategoryOptions() );
     }
 
     @Test
@@ -120,15 +136,15 @@ public class DataElementCategoryStoreTest
         categoryA = new DataElementCategory( "CategoryA", categoryOptions );
         categoryB = new DataElementCategory( "CategoryB", categoryOptions );
         categoryC = new DataElementCategory( "CategoryC", categoryOptions );
-        
+
         int idA = categoryStore.save( categoryA );
         int idB = categoryStore.save( categoryB );
         int idC = categoryStore.save( categoryC );
-        
+
         assertNotNull( categoryStore.get( idA ) );
         assertNotNull( categoryStore.get( idB ) );
         assertNotNull( categoryStore.get( idC ) );
-        
+
         categoryStore.delete( categoryA );
 
         assertNull( categoryStore.get( idA ) );
@@ -139,7 +155,7 @@ public class DataElementCategoryStoreTest
 
         assertNull( categoryStore.get( idA ) );
         assertNull( categoryStore.get( idB ) );
-        assertNotNull( categoryStore.get( idC ) );        
+        assertNotNull( categoryStore.get( idC ) );
     }
 
     @Test
@@ -152,12 +168,12 @@ public class DataElementCategoryStoreTest
         categoryStore.save( categoryA );
         categoryStore.save( categoryB );
         categoryStore.save( categoryC );
-        
+
         Collection<DataElementCategory> categories = categoryStore.getAll();
-        
+
         assertEquals( 4, categories.size() ); // Including default
         assertTrue( categories.contains( categoryA ) );
         assertTrue( categories.contains( categoryB ) );
-        assertTrue( categories.contains( categoryC ) );        
+        assertTrue( categories.contains( categoryC ) );
     }
 }

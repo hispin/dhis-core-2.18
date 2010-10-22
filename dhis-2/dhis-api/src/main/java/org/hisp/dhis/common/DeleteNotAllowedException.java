@@ -29,7 +29,6 @@ package org.hisp.dhis.common;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DeleteNotAllowedException
     extends RuntimeException

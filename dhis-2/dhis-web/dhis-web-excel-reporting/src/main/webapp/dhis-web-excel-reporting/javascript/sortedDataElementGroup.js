@@ -191,13 +191,17 @@ function updateSortedDataElement(){
 
 	var request = new Request();
 	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( Completed );
+	request.setCallbackSuccess( updateSortedDataElementCompleted );
 	var params = "id=" + byId('dataElementGroupOrderId').value;
-		params += getQueryStringFromList( 'sortdataElement', 'dataElementIds');
-	request.send("updateSortedDataElementsForCategory");
+		params += "&"+getQueryStringFromList( 'sortdataElement', 'dataElementIds');
+	request.sendAsPost( params );
+	request.send("updateSortedDataElementsForCategory.action");
 
 }
 
+function updateSortedDataElementCompleted( xmlObject ){
+	history.go(-1);
+}
 // -----------------------------------------------------------------------------
 // SHOW TOOLTIP
 // -----------------------------------------------------------------------------

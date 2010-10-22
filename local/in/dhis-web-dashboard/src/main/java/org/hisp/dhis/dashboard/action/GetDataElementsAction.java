@@ -145,6 +145,7 @@ public class GetDataElementsAction
         if ( id == null || id == ALL )
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            System.out.println("id = "+id + " dataElements size = "+dataElements.size());
         } 
         else
         {
@@ -153,11 +154,13 @@ public class GetDataElementsAction
             if ( dataElementGroup != null )
             {
                 dataElements = new ArrayList<DataElement>( dataElementGroup.getMembers() );
+                System.out.println("dataElementGroup id = "+id + " dataElements size = "+dataElements.size());
             } else
             {
                 dataElements = new ArrayList<DataElement>();
             }
         }
+        System.out.println(" dataElements size = "+dataElements.size());
         Iterator<DataElement> alldeIterator = dataElements.iterator();
         while ( alldeIterator.hasNext() )
         {
@@ -167,6 +170,7 @@ public class GetDataElementsAction
                 alldeIterator.remove();
             }
         }
+        System.out.println(" dataElements size = "+dataElements.size());
         Collections.sort( dataElements, dataElementComparator );
 
         displayPropertyHandler.handle( dataElements );

@@ -37,7 +37,7 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,8 +53,6 @@ public class GenerateMinMaxValuesAction
     // Dependencies
     // -------------------------------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
     private DataSetService dataSetService;
 
     private MinMaxValuesGenerationService minMaxValuesGenerationService;
@@ -63,6 +61,13 @@ public class GenerateMinMaxValuesAction
 
     private SystemSettingManager systemSettingManager;
 
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
+    
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
@@ -76,11 +81,6 @@ public class GenerateMinMaxValuesAction
     // -------------------------------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------------------------------
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
-    {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
-    }
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
@@ -132,11 +132,12 @@ public class GenerateMinMaxValuesAction
     {
         if ( dataSetIds == null )
         {
-            organisationUnitSelectionManager.clearSelectedOrganisationUnits();
+            selectionTreeManager.clearSelectedOrganisationUnits();
             return INPUT;
         }
         
-        Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
+        Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
         if ( orgUnits == null || orgUnits.size() ==0 )
         {
             message = i18n.getString( "not_choose_organisation" );

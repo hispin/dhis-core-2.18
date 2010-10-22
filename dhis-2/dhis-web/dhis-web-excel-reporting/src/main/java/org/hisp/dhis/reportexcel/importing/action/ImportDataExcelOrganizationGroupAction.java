@@ -60,7 +60,6 @@ import org.hisp.dhis.user.CurrentUserService;
 public class ImportDataExcelOrganizationGroupAction
     extends ActionSupport
 {
-
     // --------------------------------------------------------------------
     // Dependencies
     // --------------------------------------------------------------------
@@ -188,9 +187,7 @@ public class ImportDataExcelOrganizationGroupAction
 
                 if ( exelItem.getId() == excelItemId )
                 {
-
                     writeDataValue( exelItem, wb, row, o, period );
-
                 }// end if( exelItem ...
 
             }// end for (int i ...

@@ -164,9 +164,9 @@ public class ExportExcelAction
         this.indicator = indicator;
     }
 
-    private Integer period;
+    private String period;
 
-    public void setPeriod( Integer period )
+    public void setPeriod( String period )
     {
         this.period = period;
     }
@@ -216,10 +216,6 @@ public class ExportExcelAction
     {
         log.info( "Exporting workbook, width: " + width + ", height: " + height );
         
-        Period p = periodService.getPeriod( period );
-
-        p.setName( format.formatPeriod( p ) );
-
         Indicator i = indicatorService.getIndicator( indicator );
 
         // ---------------------------------------------------------------------
@@ -230,7 +226,7 @@ public class ExportExcelAction
 
         svgDocument.setTitle( this.title );
         svgDocument.setSvg( this.svg );
-        svgDocument.setPeriod( p );
+        svgDocument.setPeriod( period );
         svgDocument.setIndicator( i );        
         svgDocument.setLegends( this.legends );        
         svgDocument.setIncludeLegends( this.includeLegends );        
@@ -286,7 +282,7 @@ public class ExportExcelAction
         sheet.addCell( new Label( titlePositionCol, titlePositionRow + 1, i18n.getString( "Indicator" ), header ) );
         sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, i.getName(), headerContent ) );
         sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "Period" ), header ) );
-        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, p.getName(), headerContent ) );
+        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, period, headerContent ) );
 
         // ---------------------------------------------------------------------
         // Write data values to workbook
@@ -355,6 +351,6 @@ public class ExportExcelAction
     @Override
     protected String getFilename()
     {
-        return "dhis2-gis-workbook.xls";
+        return "dhis2_gis.xls";
     }
 }

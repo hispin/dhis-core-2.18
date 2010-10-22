@@ -66,7 +66,7 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     @Autowired
     private XMLPreConverter preConverter;
 
@@ -76,7 +76,7 @@ public class DefaultImportService
     // -------------------------------------------------------------------------
     // ImportService implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public void importData( ImportParams params, InputStream inputStream )
         throws ImportException
@@ -99,15 +99,13 @@ public class DefaultImportService
 
         try
         {
-
-            if ( StreamUtils.isZip( bufin ) )
-            {
-                // if it's a zip file we must figure out what kind of package it is
+            if ( StreamUtils.isZip( bufin ) ) // If it's a ZIP file we must figure out what kind of package it is
+            {                
                 log.info( "Zip file detected" );
+                
                 tempZipFile = File.createTempFile( "IMPORT_", "_ZIP" );
-                // save it to disk
-                BufferedOutputStream ostream =
-                    new BufferedOutputStream( new FileOutputStream( tempZipFile ) );
+                
+                BufferedOutputStream ostream = new BufferedOutputStream( new FileOutputStream( tempZipFile ) ); // Save it to disk                
 
                 StreamUtils.streamcopy( bufin, ostream );
 
@@ -124,19 +122,20 @@ public class DefaultImportService
                     state.setMessage( "Unknown file type" );
                     throw new ImportException( "Unknown file type" );
                 }
-            } else
+            }
+            else
             {
                 if ( StreamUtils.isGZip( bufin ) )
                 {
-                    // pass through the uncompressed stream
-                    xmlDataStream = new BufferedInputStream( new GZIPInputStream( bufin ) );
-                } else
+                    xmlDataStream = new BufferedInputStream( new GZIPInputStream( bufin ) ); // Pass through the uncompressed stream
+                }
+                else
                 {
-                    // assume uncompressed xml and keep moving
-                    xmlDataStream = bufin;
+                    xmlDataStream = bufin; // Assume uncompressed XML and keep moving
                 }
             }
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             state.setMessage( "Error processing input stream" );
             throw new ImportException( "Error processing input stream", ex );
@@ -151,13 +150,13 @@ public class DefaultImportService
         try
         {
             if ( documentRootName.getLocalPart().equals( DXFConverter.DXFROOT ) )
-            {
-                // Native DXF stream - no transform required
-                log.debug( "Importing dxf native stream" );
+            {                
+                log.info( "Importing DXF native stream" ); // Native DXF stream, no transform required
                 dxfReader = XMLFactory.getXMLReader( xmlDataStream );
-            } else
+            }
+            else
             {
-                log.debug( "Transforming stream" );
+                log.info( "Transforming stream" );
                 state.setMessage( "Transforming stream" );
                 transformOutput = File.createTempFile( "TRANSFORM_", ".xml" );
                 Source source = new StreamSource( xmlDataStream );
@@ -166,26 +165,25 @@ public class DefaultImportService
                 String xsltIdentifierTag = documentRootName.toString();
                 log.debug( "Tag for transformer: " + xsltIdentifierTag );
 
-                //String currentUserName = currentUserService.getCurrentUsername();
                 preConverter.transform( source, result, xsltIdentifierTag, tempZipFile, null );
                 transformOutStream.flush();
                 transformOutStream.close();
 
-                log.debug( "Transform successful" );
+                log.info( "Transform successful" );
                 dxfInStream = new FileInputStream( transformOutput );
                 dxfReader = XMLFactory.getXMLReader( dxfInStream );
             }
 
-            log.debug( "sending dxf to converter" );
+            log.debug( "Sending DXF to converter" );
             converter.read( dxfReader, params, state );
-
-        } catch ( Exception ex )
+        }
+        catch ( IOException ex )
         {
             throw new ImportException( "Failed to import stream", ex );
-        } finally
+        }
+        finally
         {
-            // clean up whatever streams might be open
-            if ( dxfReader != null )
+            if ( dxfReader != null ) // Clean up whatever streams might be open
             {
                 dxfReader.closeReader();
             }
@@ -208,12 +206,11 @@ public class DefaultImportService
                 {
                     zipFile.close();
                 }
-            } catch ( IOException ex )
+            }
+            catch ( IOException ex )
             {
-                // this really shouldn't happen
                 log.warn( "Failed to close zipfile" );
             }
         }
     }
 }
-

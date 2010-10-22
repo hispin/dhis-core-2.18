@@ -35,7 +35,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: ValidateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: ValidateIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
+ *          larshelg $
  */
 public class ValidateIndicatorGroupAction
     extends ActionSupport
@@ -50,7 +51,7 @@ public class ValidateIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -93,22 +94,8 @@ public class ValidateIndicatorGroupAction
 
     public String execute()
     {
-        if ( name == null )
+        if ( name != null )
         {
-            message = i18n.getString( "specify_name" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_name" );
-
-                return INPUT;
-            }
 
             IndicatorGroup match = indicatorService.getIndicatorGroupByName( name );
 
@@ -116,7 +103,7 @@ public class ValidateIndicatorGroupAction
             {
                 message = i18n.getString( "name_in_use" );
 
-                return INPUT;
+                return ERROR;
             }
         }
 

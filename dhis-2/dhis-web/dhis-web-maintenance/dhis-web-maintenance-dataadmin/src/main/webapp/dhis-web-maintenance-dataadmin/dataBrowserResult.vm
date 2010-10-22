@@ -14,8 +14,7 @@
 
 </style>
 
-
-<h3>$i18n.getString( "search_results_for" ) $searchOption - $parentName</h3>
+<h3>$i18n.getString( "search_results_for" ) $searchOption #if ($parentName != "") - $parentName #end</h3>
 
     <span id="info">
     	$i18n.getString( "request_returned_in" ): ${requestTime} $i18n.getString( "ms" ). 
@@ -108,23 +107,21 @@
 	#end
 	    
 	<div>
-    	<form method="get" action="exportPDF.action" onsubmit="window.location.href='exportPDF.action'">
-	    	<div>
-				<input type="submit" value="$i18n.getString( 'Export PDF' )" style="width:100px">	
-				Filename:
-		    	<input type="text" id="fileName" name="fileName" value="export" title="Filename to be used for export">
-		    	Font size: 
-				<select id="fontSize" name="fontSize" title="Font size to be used for export">
-					<option value="8">$i18n.getString( "8" )</option>
-					<option value="6">$i18n.getString( "6" )</option>
-					<option value="4">$i18n.getString( "4" )</option>
-				</select>
-				Page layout:
-				<select id="pageLayout" name="pageLayout" title="Page layout to be used for export">
-					<option value="Landscape">$i18n.getString( "Landscape" )</option>
-					<option value="Portrait" >$i18n.getString( "Portrait" )</option>
-				</select>
-			</div>
+    	<form id="exportPDF" method="get" action="exportPDF.action">
+			Filename:
+		    <input type="text" id="fileName" name="fileName" value="export" class="{validate:{required:true}}"/>
+			Font size: 
+			<select id="fontSize" name="fontSize" title="Font size to be used for export">
+				<option value="8">$i18n.getString( "8" )</option>
+				<option value="6">$i18n.getString( "6" )</option>
+				<option value="4">$i18n.getString( "4" )</option>
+			</select>
+			Page layout:
+			<select id="pageLayout" name="pageLayout" title="Page layout to be used for export">
+				<option value="Landscape">$i18n.getString( "Landscape" )</option>
+				<option value="Portrait" >$i18n.getString( "Portrait" )</option>
+			</select>	
+			<input type="submit" value="$i18n.getString( 'Export PDF' )" style="width:100px"/>		
 		</form>
 	</div>    
     
@@ -168,7 +165,7 @@
 				<td style="min-width:200px">$rowMeta.name</td>
 			#end
 			#foreach ( $rowItem in $col )
-				<td style="min-width:80px;text-align:right">#if ( $rowItem > 0 )$rowItem #else<span style="color:blue;font-weight:bold;">$rowItem</span> #end</td>
+				<td style="min-width:80px;text-align:right" title="$rowItem $i18n.getString('no_hits')">#if ( $rowItem > 0 )$rowItem #else<span style="color:blue;font-weight:bold;">$rowItem</span> #end</td>
 			#end
 			</tr>
 		#end
@@ -197,6 +194,10 @@
 	</div>
 
 	<script type="text/javascript">
-		loadListeners();		
+		loadListeners();	
+		jQuery(document).ready(	function()
+		{		
+			validation( 'exportPDF', function( form ){ form.submit() });	
+		});
 	</script>
 	

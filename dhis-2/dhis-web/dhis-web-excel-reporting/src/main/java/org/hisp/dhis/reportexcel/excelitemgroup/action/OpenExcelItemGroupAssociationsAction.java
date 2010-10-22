@@ -41,67 +41,73 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class OpenExcelItemGroupAssociationsAction implements Action {
+public class OpenExcelItemGroupAssociationsAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependencies
+    // -------------------------------------------
 
-	// -------------------------------------------
-	// Dependencies
-	// -------------------------------------------
+    private ExcelItemService excelItemService;
 
-	private ExcelItemService excelItemService;
+    private SelectionTreeManager selectionTreeManager;
 
-	private SelectionTreeManager selectionTreeManager;
+    private OrganisationUnitService organisationUnitService;
 
-	private OrganisationUnitService organisationUnitService;
+    // -------------------------------------------
+    // Input & Output
+    // -------------------------------------------
 
-	// -------------------------------------------
-	// Input & Output
-	// -------------------------------------------
+    private Integer excelItemGroupId;
 
-	private Integer excelItemGroupId;
+    private ExcelItemGroup excelItemGroup;
 
-	private ExcelItemGroup excelItemGroup;
+    private List<OrganisationUnitLevel> levels;
 
-	private List<OrganisationUnitLevel> levels;
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
-	public void setOrganisationUnitService(
-			OrganisationUnitService organisationUnitService) {
-		this.organisationUnitService = organisationUnitService;
-	}
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
 
-	public void setSelectionTreeManager(
-			SelectionTreeManager selectionTreeManager) {
-		this.selectionTreeManager = selectionTreeManager;
-	}
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
 
-	public List<OrganisationUnitLevel> getLevels() {
-		return levels;
-	}
+    public ExcelItemGroup getExcelItemGroup()
+    {
+        return excelItemGroup;
+    }
 
-	public ExcelItemGroup getExcelItemGroup() {
-		return excelItemGroup;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemGroupId( Integer excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public String execute()
+        throws Exception
+    {
 
-	public String execute() throws Exception {
+        excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-		excelItemGroup = excelItemService.getExcelItemGroup(excelItemGroupId);
+        selectionTreeManager.setSelectedOrganisationUnits( excelItemGroup.getOrganisationAssocitions() );
 
-		selectionTreeManager.setSelectedOrganisationUnits(excelItemGroup
-				.getOrganisationAssocitions());
+        levels = organisationUnitService.getOrganisationUnitLevels();
 
-		levels = organisationUnitService.getOrganisationUnitLevels();
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 }

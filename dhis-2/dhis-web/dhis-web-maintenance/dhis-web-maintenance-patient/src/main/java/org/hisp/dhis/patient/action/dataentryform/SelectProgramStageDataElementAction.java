@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -81,12 +80,7 @@ public class SelectProgramStageDataElementAction
     {
         return programStage;
     }
-
-    public String getAssociationName()
-    {
-        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------

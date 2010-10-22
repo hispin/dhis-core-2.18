@@ -13,25 +13,25 @@ function showDataElementDetails( dataElementId )
 
 function dataElementReceived( dataElementElement )
 {
-    setFieldValue( 'nameField', getElementValue( dataElementElement, 'name' ) );
+    setInnerHTML( 'nameField', getElementValue( dataElementElement, 'name' ) );
     
-    setFieldValue( 'shortNameField', getElementValue( dataElementElement, 'shortName' ) );
+    setInnerHTML( 'shortNameField', getElementValue( dataElementElement, 'shortName' ) );
 
     var alternativeName = getElementValue( dataElementElement, 'alternativeName' );
-    setFieldValue( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
+    setInnerHTML( 'alternativeNameField', alternativeName ? alternativeName : '[' + i18n_none + ']' );
     
     var code = getElementValue( dataElementElement, 'code' );
-    setFieldValue( 'codeField', code ? code : '[' + i18n_none + ']' );
+    setInnerHTML( 'codeField', code ? code : '[' + i18n_none + ']' );
 
     var description = getElementValue( dataElementElement, 'description' );
-    setFieldValue( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
 
     var active = getElementValue( dataElementElement, 'active' );
-    setFieldValue( 'activeField', active == 'true' ? i18n_yes : i18n_no );
+    setInnerHTML( 'activeField', active == 'true' ? i18n_yes : i18n_no );
     
     var typeMap = { 'int':i18n_number, 'bool':i18n_yes_no, 'string':i18n_text };
     var type = getElementValue( dataElementElement, 'type' );
-    setFieldValue( 'typeField', typeMap[type] );
+    setInnerHTML( 'typeField', typeMap[type] );
     
     var aggregationOperator = getElementValue( dataElementElement, 'aggregationOperator' );
     var aggregationOperatorText = i18n_none;
@@ -43,10 +43,10 @@ function dataElementReceived( dataElementElement )
     {
         aggregationOperatorText = i18n_average;
     }
-    setFieldValue( 'aggregationOperatorField', aggregationOperatorText );
+    setInnerHTML( 'aggregationOperatorField', aggregationOperatorText );
     
     var selectedCategoryComboId = getElementValue( dataElementElement, 'selectedCategoryComboId' );
-    setFieldValue( 'selectedCategoryComboIdField', selectedCategoryComboId );
+    setInnerHTML( 'selectedCategoryComboIdField', selectedCategoryComboId );
     
     showDetails();
 }

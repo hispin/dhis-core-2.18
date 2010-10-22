@@ -275,14 +275,14 @@ function showTableDetails( tableId )
 
 function tableReceived( xmlObject )
 {
-	setFieldValue( 'nameField', getElementValue( xmlObject, 'name' ) );
-	setFieldValue( 'tableNameField', getElementValue( xmlObject, 'tableName' ) );
-	setFieldValue( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
-	setFieldValue( 'periodsField', getElementValue( xmlObject, 'periods' ) );
-	setFieldValue( 'unitsField', getElementValue( xmlObject, 'units' ) );
-	setFieldValue( 'doIndicatorsField', parseBool( getElementValue( xmlObject, 'doIndicators' ) ) );
-	setFieldValue( 'doPeriodsField', parseBool( getElementValue( xmlObject, 'doPeriods' ) ) );
-	setFieldValue( 'doUnitsField', parseBool( getElementValue( xmlObject, 'doUnits' ) ) );
+	setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
+	setInnerHTML( 'tableNameField', getElementValue( xmlObject, 'tableName' ) );
+	setInnerHTML( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
+	setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
+	setInnerHTML( 'unitsField', getElementValue( xmlObject, 'units' ) );
+	setInnerHTML( 'doIndicatorsField', parseBool( getElementValue( xmlObject, 'doIndicators' ) ) );
+	setInnerHTML( 'doPeriodsField', parseBool( getElementValue( xmlObject, 'doPeriods' ) ) );
+	setInnerHTML( 'doUnitsField', parseBool( getElementValue( xmlObject, 'doUnits' ) ) );
 	
 	showDetails();
 }

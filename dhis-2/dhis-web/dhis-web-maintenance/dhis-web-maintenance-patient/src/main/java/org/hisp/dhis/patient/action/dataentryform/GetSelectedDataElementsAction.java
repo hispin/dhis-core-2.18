@@ -33,13 +33,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataentryform.DataEntryFormAssociation;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bharath Kumar
@@ -96,11 +95,6 @@ public class GetSelectedDataElementsAction
     public List<DataElement> getDataElementList()
     {
         return dataElementList;
-    }
-
-    public String getAssociationName()
-    {
-        return DataEntryFormAssociation.DATAENTRY_ASSOCIATE_PROGRAMSTAGE;
     }
 
     // -------------------------------------------------------------------------
