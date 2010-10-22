@@ -1323,6 +1323,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.indicator.IndicatorDeletionHandler">
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="expressionService"
+      ref="org.hisp.dhis.expression.ExpressionService"/>
   </bean>
   
   <bean id="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler"

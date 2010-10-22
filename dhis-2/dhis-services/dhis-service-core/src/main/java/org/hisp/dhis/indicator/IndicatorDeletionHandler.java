@@ -27,6 +27,10 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Set;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -46,7 +50,14 @@ public class IndicatorDeletionHandler
     {
         this.indicatorService = indicatorService;
     }
-    
+
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -56,7 +67,7 @@ public class IndicatorDeletionHandler
     {
         return Indicator.class.getSimpleName();
     }
-    
+
     @Override
     public boolean allowDeleteIndicatorType( IndicatorType indicatorType )
     {
@@ -65,12 +76,12 @@ public class IndicatorDeletionHandler
             if ( indicator.getIndicatorType().equals( indicatorType ) )
             {
                 return false;
-            }   
+            }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public void deleteIndicatorType( IndicatorType indicatorType )
     {
@@ -79,7 +90,22 @@ public class IndicatorDeletionHandler
             if ( indicator.getIndicatorType().equals( indicatorType ) )
             {
                 indicatorService.deleteIndicator( indicator );
-            }   
+            }
         }
     }
+
+    public boolean allowDeleteDataElement( DataElement dataElement )
+    {
+        for ( Indicator indicator : indicatorService.getAllIndicators() )
+        {
+            Set<DataElement> daels = expressionService.getDataElementsInExpression( indicator.getNumerator() );
+            if ( daels != null && daels.contains( dataElement ) ) return false;
+            
+            daels = expressionService.getDataElementsInExpression( indicator.getDenominator() );
+            if ( daels != null && daels.contains( dataElement ) ) return false;
+        }
+
+        return true;
+    }
+
 }
