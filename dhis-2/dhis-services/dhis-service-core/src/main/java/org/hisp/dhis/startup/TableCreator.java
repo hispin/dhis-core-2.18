@@ -160,5 +160,34 @@ public class TableCreator
         {
             log.info( "Table datavaluearchive exists" );
         }
+        
+        // -----------------------------------------------------------------
+        // ArchivedPatientDataValue
+        // -----------------------------------------------------------------
+
+        try
+        {
+            final String sql = 
+                "CREATE TABLE patientdatavaluearchive ( " +
+                 " programstageinstanceid integer NOT NULL, " +
+                 " dataelementid integer NOT NULL, " +
+                 " organisationunitid integer NOT NULL, " +
+                 " categoryoptioncomboid integer default NULL, " +
+                 " value varchar(255) default NULL, " +
+                 " providedbyanotherfacility boolean NOT NULL, " +
+                 " timestamp TIMESTAMP, " +
+                 " PRIMARY KEY  (programstageinstanceid,dataelementid,organisationunitid), " +
+                 " CONSTRAINT fk_patientdatavaluearchive_organisationunitid FOREIGN KEY (organisationunitid) REFERENCES organisationunit (organisationunitid), " +
+                 " CONSTRAINT fk_patientdatavaluearchive_programstageinstanceid FOREIGN KEY (programstageinstanceid) REFERENCES programstageinstance (programstageinstanceid) " +
+                 "        );";
+                            
+            jdbcTemplate.execute( sql );
+            
+            log.info( "Created table patientdatavaluearchive" );
+        }
+        catch ( Exception ex )
+        {
+            log.info( "Table patientdatavaluearchive exists" );
+        }
     }
 }

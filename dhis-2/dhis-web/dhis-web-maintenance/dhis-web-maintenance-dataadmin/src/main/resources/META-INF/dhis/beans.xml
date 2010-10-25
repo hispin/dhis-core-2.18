@@ -202,10 +202,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.dataadmin.action.dataarchive.ArchivePatientDataAction"
+		class="org.hisp.dhis.dataadmin.action.dataarchive.ArchivePatientDataAction"
+		scope="prototype">
+		<property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService" />
+	</bean>
 
 	<bean
 		id="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction"
 		class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapsAction"
+		scope="prototype">
+		<property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapingPatientValuesAction"
+		class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapingPatientValuesAction"
 		scope="prototype">
 		<property name="dataArchiveService" ref="org.hisp.dhis.dataarchive.DataArchiveService" />
 	</bean>

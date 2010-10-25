@@ -52,6 +52,9 @@ public class DataValue
     public static final String TRUE = "true";
     public static final String FALSE = "false";
     
+    
+    
+    
     /**
      * Part of the DataValue's composite ID
      */

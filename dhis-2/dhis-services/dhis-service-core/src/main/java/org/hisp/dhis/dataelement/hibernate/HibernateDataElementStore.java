@@ -40,7 +40,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
@@ -137,7 +136,7 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
-    
+
     public DataElement getDataElementByAlternativeName( String alternativeName )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -176,7 +175,7 @@ public class HibernateDataElementStore
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.setCacheable( true );
         criteria.addOrder( Order.asc( "name" ) );
-        
+
         return criteria.list();
     }
 
@@ -261,16 +260,29 @@ public class HibernateDataElementStore
 
         return query.list();
     }
-    
+
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
     {
-        String sql = "update dataelement set zeroissignificant=false";
-        
-        statementManager.getHolder().executeUpdate( sql );
-        
-        sql = "update dataelement set zeroissignificant=true where dataelementid in (" + TextUtils.getCommaDelimitedString( dataElementIds ) + ")";
-        
-        statementManager.getHolder().executeUpdate( sql );
+        Session session = sessionFactory.getCurrentSession();
+
+        String sql = "update DataElement set zeroIsSignificant = false";
+
+        Query query = session.createQuery( sql );
+
+        query.executeUpdate();
+
+        if ( !dataElementIds.isEmpty() )
+        {
+
+            sql = "update DataElement set zeroIsSignificant=true where id in (:dataElementIds)";
+
+            query = session.createQuery( sql );
+            query.setParameterList( "dataElementIds", dataElementIds );
+
+            query.executeUpdate();
+
+        }
+
     }
 
     @SuppressWarnings( "unchecked" )
@@ -288,7 +300,7 @@ public class HibernateDataElementStore
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         String hql = "from DataElement d where d.groups.size = 0";
-        
+
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
 
@@ -296,21 +308,21 @@ public class HibernateDataElementStore
     public Collection<DataElement> getDataElementsWithoutDataSets()
     {
         String hql = "from DataElement d where d.dataSets.size = 0";
-        
+
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
     }
-    
+
     public boolean dataElementExists( int id )
     {
         final String sql = "select count(*) from dataelement where dataelementid=" + id;
-        
+
         return statementManager.getHolder().queryForInteger( sql ) > 0;
     }
-    
+
     public boolean dataElementCategoryOptionComboExists( int id )
     {
         final String sql = "select count(*) from categoryoptioncombo where categoryoptioncomboid=" + id;
-        
+
         return statementManager.getHolder().queryForInteger( sql ) > 0;
     }
 
@@ -318,10 +330,11 @@ public class HibernateDataElementStore
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
     {
         String hql = "select distinct de from DataElement de join de.dataSets ds where ds.id in (:ids)";
-        
-        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
+
+        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids",
+            ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
     }
-    
+
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------
@@ -435,56 +448,57 @@ public class HibernateDataElementStore
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
-    
+
     public Collection<DataElementOperand> getAllGeneratedOperands()
     {
         final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
-        
-        final String sql =
-            "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
-            "FROM dataelement as de " +
-            "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
-            "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
-            "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
-        
+
+        final String sql = "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname "
+            + "FROM dataelement as de "
+            + "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid "
+            + "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid "
+            + "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid;";
+
         try
         {
             ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
-            
+
             return mapper.getCollection( resultSet, new DataElementOperandMapper() );
         }
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to get all operands", ex );
-        }   
-    }
-    
-    public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
-    {
-        final String dataElementString = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
-        
-        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
-        
-        final String sql =
-            "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname " +
-            "FROM dataelement as de " +
-            "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid " +
-            "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid " +
-            "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid " +
-            "WHERE de.dataelementid IN (" + dataElementString + ");";
-        
-        try
-        {
-            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
-            
-            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
         }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get all operands", ex );
-        }   
     }
 
+    public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
+    {
+        final String dataElementString = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers(
+            DataElement.class, dataElements ) );
+
+        final ObjectMapper<DataElementOperand> mapper = new ObjectMapper<DataElementOperand>();
+
+        final String sql = "SELECT de.dataelementid, de.name, cocn.categoryoptioncomboid, cocn.categoryoptioncomboname "
+            + "FROM dataelement as de "
+            + "JOIN categorycombo as cc on de.categorycomboid=cc.categorycomboid "
+            + "JOIN categorycombos_optioncombos as ccoc on cc.categorycomboid=ccoc.categorycomboid "
+            + "LEFT JOIN _categoryoptioncomboname as cocn on ccoc.categoryoptioncomboid=cocn.categoryoptioncomboid "
+            + "WHERE de.dataelementid IN (" + dataElementString + ");";
+
+        try
+        {
+            ResultSet resultSet = statementManager.getHolder().getStatement().executeQuery( sql );
+
+            return mapper.getCollection( resultSet, new DataElementOperandMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get all operands", ex );
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public Collection<DataElement> getAllDataElements( int from, int to )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -500,28 +514,19 @@ public class HibernateDataElementStore
 
     public int getNumberOfDataElements()
     {
-//        Session session = sessionFactory.getCurrentSession();
-//
-//        Criteria criteria = session.createCriteria( DataElement.class );
-//        criteria.setCacheable( true );
-//        criteria.setProjection( Projections.rowCount() ).uniqueResult();
-//
-//        return ((Number) criteria).intValue();
-        
         String sql = "select count(*) from DataElement";
         Query query = sessionFactory.getCurrentSession().createQuery( sql );
         Number countResult = (Number) query.uniqueResult();
-        
+
         return countResult.intValue();
     }
 
-    @Override
     public int countNumberOfSearchDataElementByName( String key )
     {
         return searchDataElementByName( key ).size();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     public Collection<DataElement> searchDataElementByName( String key, int from, int to )
     {
         Session session = sessionFactory.getCurrentSession();

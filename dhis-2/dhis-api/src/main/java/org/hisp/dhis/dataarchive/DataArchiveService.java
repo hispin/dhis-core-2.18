@@ -39,4 +39,8 @@ public interface DataArchiveService
     int archiveData( Date startDate, Date endDate, DataArchiveOperation operation, DataEliminationStrategy strategy );
 
     int getNumberOfOverlappingValues();
+    
+    int archivePatientData( Date startDate, Date endDate, DataArchiveOperation operation, DataEliminationStrategy strategy );
+    
+    int getNumberOfOverlappingPatientValues();
 }

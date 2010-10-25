@@ -31,12 +31,10 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.QuarterlyPeriodType;
 
 /**
  * @author Pham Thi Thuy

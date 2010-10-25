@@ -27,7 +27,6 @@
     <module>dhis-web-api</module>
     <module>dhis-web-portal</module>
   </modules>
-
   <build>
     <plugins>
       <plugin>

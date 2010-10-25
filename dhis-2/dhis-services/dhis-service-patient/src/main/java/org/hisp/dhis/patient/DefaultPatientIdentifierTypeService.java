@@ -56,8 +56,7 @@ public class DefaultPatientIdentifierTypeService
 
     public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
     {
-        patientIdentifierTypeStore.save( patientIdentifierType );
-
+        patientIdentifierTypeStore.delete( patientIdentifierType );
     }
 
     public Collection<PatientIdentifierType> getAllPatientIdentifierTypes()

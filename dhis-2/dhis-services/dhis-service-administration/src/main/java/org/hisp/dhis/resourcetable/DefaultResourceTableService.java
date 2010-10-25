@@ -63,7 +63,6 @@ import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -130,7 +129,6 @@ public class DefaultResourceTableService
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
 
-    @Transactional
     public void generateOrganisationUnitStructures()
     {
         resourceTableStore.createOrganisationUnitStructure();
@@ -183,7 +181,6 @@ public class DefaultResourceTableService
     // DataElementCategoryOptionComboName
     // -------------------------------------------------------------------------
 
-    @Transactional
     public void generateCategoryOptionComboNames()
     {
         resourceTableStore.createDataElementCategoryOptionComboName();

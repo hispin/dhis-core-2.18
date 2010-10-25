@@ -171,8 +171,6 @@ public class EditSectionAction
 
         dataSet = section.getDataSet();
 
-        categoryCombo = section.getDataElements().iterator().next().getCategoryCombo();
-
         dataElementOfDataSet = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         Collection<Section> sections = dataSet.getSections();
@@ -182,15 +180,20 @@ public class EditSectionAction
             dataElementOfDataSet.removeAll( s.getDataElements() );
         }
 
-        Iterator<DataElement> dataElementIterator = dataElementOfDataSet.iterator();
-
-        while ( dataElementIterator.hasNext() )
-        {
-            DataElement de = dataElementIterator.next();
-
-            if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+        categoryCombo = section.getCategoryCombo();
+        
+        if ( categoryCombo != null )
+        {        
+            Iterator<DataElement> dataElementIterator = dataElementOfDataSet.iterator();
+            
+            while ( dataElementIterator.hasNext() )
             {
-                dataElementIterator.remove();
+                DataElement de = dataElementIterator.next();
+                
+                if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+                {
+                    dataElementIterator.remove();
+                }
             }
         }
 
@@ -204,5 +207,4 @@ public class EditSectionAction
 
         return SUCCESS;
     }
-
 }

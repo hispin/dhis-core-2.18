@@ -69,6 +69,8 @@ public class UpdateZeroIsSignificantForDataElementsAction
         throws Exception
     {
         dataElementService.setZeroIsSignificantForDataElements( zeroDataValueElements );
+        
+        
 
         return SUCCESS;
     }

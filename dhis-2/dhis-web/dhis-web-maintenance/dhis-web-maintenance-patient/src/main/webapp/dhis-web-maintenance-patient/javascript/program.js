@@ -4,20 +4,16 @@
 
 function showProgramDetails( programId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'program' );
-    request.setCallbackSuccess( programReceived );
-    request.send( 'getProgram.action?id=' + programId );
-}
-
-function programReceived( programElement )
-{
-	setInnerHTML( 'idField', getElementValue( programElement, 'id' ) );
-	setInnerHTML( 'nameField', getElementValue( programElement, 'name' ) );	
-    setInnerHTML( 'descriptionField', getElementValue( programElement, 'description' ) );    
-    setInnerHTML( 'programStageCountField', getElementValue( programElement, 'programStageCount' ) );
+	jQuery.postJSON( "getProgram.action", {
+		id:programId
+	}, function(json){
+		setInnerHTML( 'idField', json.id );
+		setInnerHTML( 'nameField', json.name );	
+		setInnerHTML( 'descriptionField', json.description );    
+		setInnerHTML( 'programStageCountField',  json.programStageCount );
    
-    showDetails();
+		showDetails();
+	});   
 }
 
 // -----------------------------------------------------------------------------

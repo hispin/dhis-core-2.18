@@ -93,19 +93,19 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.addFeatures(format.read(doc));
         this.requestSuccess(request);
 
-        if (ACTIVEPANEL == GLOBALS.config.thematicMap) {
+        if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
             if (!choropleth.validateForm()) {
                 MASK.hide();
             }
             choropleth.classify(false);
         }
-        else if (ACTIVEPANEL == GLOBALS.config.thematicMap2) {
+        else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
             if (!proportionalSymbol.validateForm()) {
                 MASK.hide();
             }
             proportionalSymbol.classify(false);
         }
-        else if (ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment) {
+        else if (ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment) {
             mapping.classify(false);
         }
     },
@@ -204,7 +204,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     },
 
     defaultLabelGenerator: function(bin, binIndex, nbBins, maxDec) {
-		if (ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment) {
+		if (ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment) {
             return bin.upperBound < 1 ?
                 'Available' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )' : 'Assigned' + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
 		}
@@ -258,10 +258,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 			imageLegend[i].label = bins[i].label.replace('&nbsp;&nbsp;', ' ');
         }
         
-        if (ACTIVEPANEL == GLOBALS.config.thematicMap) {
+        if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
             choropleth.imageLegend = imageLegend;
         }
-        else if (ACTIVEPANEL == GLOBALS.config.thematicMap2) {
+        else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
             proportionalSymbol.imageLegend = imageLegend;
         }
         
@@ -307,14 +307,14 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     },
 	
     classify: function(method, nbBins, bounds) {
-        var mlt = ACTIVEPANEL == GLOBALS.config.thematicMap ?
-            choropleth.legend.type : ACTIVEPANEL == GLOBALS.config.thematicMap2 ?
-                proportionalSymbol.legend.type : ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment ?
-                    GLOBALS.config.map_legend_type_automatic : GLOBALS.config.map_legend_type_automatic;
+        var mlt = ACTIVEPANEL == GLOBALS.conf.thematicMap ?
+            choropleth.legend.type : ACTIVEPANEL == GLOBALS.conf.thematicMap2 ?
+                proportionalSymbol.legend.type : ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment ?
+                    GLOBALS.conf.map_legend_type_automatic : GLOBALS.conf.map_legend_type_automatic;
     
-		if (mlt == GLOBALS.config.map_legend_type_automatic) {
+		if (mlt == GLOBALS.conf.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = ACTIVEPANEL == GLOBALS.config.thematicMap ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
+				var str = ACTIVEPANEL == GLOBALS.conf.thematicMap ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
 				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
@@ -336,7 +336,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				
 				var newInput = bounds.join(',');
                 
-                if (ACTIVEPANEL == GLOBALS.config.thematicMap) {
+                if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
                     Ext.getCmp('bounds_tf').setValue(newInput);
                 }
                 else {
@@ -354,12 +354,12 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				bounds.push(this.maxVal);
 			}
 		}
-		else if (mlt == GLOBALS.config.map_legend_type_predefined) {
-			bounds = ACTIVEPANEL == GLOBALS.config.thematicMap ? choropleth.bounds : proportionalSymbol.bounds;
+		else if (mlt == GLOBALS.conf.map_legend_type_predefined) {
+			bounds = ACTIVEPANEL == GLOBALS.conf.thematicMap ? choropleth.bounds : proportionalSymbol.bounds;
 
 			if (bounds[0] > this.minVal) {
 				bounds.unshift(this.minVal);
-                if (ACTIVEPANEL == GLOBALS.config.thematicMap) {
+                if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
                     choropleth.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
                 }
                 else {
@@ -369,7 +369,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 
 			if (bounds[bounds.length-1] < this.maxVal) {
 				bounds.push(this.maxVal);
-                if (ACTIVEPANEL == GLOBALS.config.thematicMap) {
+                if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
                     choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
                 }
                 else {
@@ -377,7 +377,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                 }
 			}
 			
-			method = ACTIVEPANEL == GLOBALS.config.organisationUnitAssignment ? mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS : mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
+			method = ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment ? mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS : mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
 		}
         
         var classification = null;

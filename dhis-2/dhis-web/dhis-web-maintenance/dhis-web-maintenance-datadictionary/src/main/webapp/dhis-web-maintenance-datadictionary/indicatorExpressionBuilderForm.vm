@@ -1,4 +1,4 @@
-<div id="indicator-expression-container" style="display:none">
+<div id="indicator-expression-container">
 <form id="indicator-expression-form">
 <table width="750">
 	<colgroup>
@@ -72,8 +72,24 @@
 
 <script>
 
+	
+
 	var numerator = false;	
 	var validator = null;
+	var dialog = null;
+	
+	jQuery(function(){
+		dialog = jQuery("#indicator-expression-container").dialog({
+			modal: true,
+			autoOpen:false,
+			minWidth: 770,
+			minHeight: 500,
+			width:770,
+			height:500
+		});
+		
+		getOperandsByDataElementGroup();
+	});
 
 	function indicatorNumeratorForm()
 	{
@@ -92,8 +108,9 @@
 		
 		checAggregationOperator();
 		getExpressionText();
+		dialog.dialog("option", "title", "$i18n.getString( 'edit_numerator' )");
+		dialog.dialog( "open");
 		
-		showPopupWindowById( 'indicator-expression-container', 750, 440 );		
 	}
 	
 	function indicatorDenominatorForm()
@@ -114,7 +131,8 @@
 		checAggregationOperator();
 		getExpressionText();
 		
-		showPopupWindowById( 'indicator-expression-container', 750, 440 );		
+		dialog.dialog("option", "title", "$i18n.getString( 'edit_denominator' )");
+		dialog.dialog( "open");
 	}
 	
 	function getOperandsByDataElementGroup()
@@ -170,8 +188,7 @@
 	
 	function closeExpressionBuilder()
 	{
-		hideById( 'indicator-expression-container' );
-		unLockScreen();
+		dialog.dialog( "close" );
 	}
 	
 	function insertExpression()

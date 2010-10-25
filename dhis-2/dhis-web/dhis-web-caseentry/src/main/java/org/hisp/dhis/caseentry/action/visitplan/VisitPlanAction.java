@@ -166,13 +166,12 @@ public class VisitPlanAction
     public String execute()
         throws Exception
     {
-
         // ---------------------------------------------------------------------
         // Make attributes available so that users can sort based on attributes
         // ---------------------------------------------------------------------
 
         attributes = patientAttributeService.getAllPatientAttributes();
-
+        
         // ---------------------------------------------------------------------
         // Get the facility planning to do a visit
         // ---------------------------------------------------------------------

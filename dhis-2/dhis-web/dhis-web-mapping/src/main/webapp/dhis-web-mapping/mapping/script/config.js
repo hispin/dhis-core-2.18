@@ -1,6 +1,6 @@
 var GLOBALS = {};
 
-GLOBALS.config = {
+GLOBALS.conf = {
 
 //  Ajax requests
 

@@ -55,4 +55,6 @@ public interface ProgramStageDataElementValidationService
     Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStageDataElement element );
 
     Collection<ProgramStageDataElementValidation> getAllProgramStageDataElementValidations();
+    
+    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStage programStage );
 }

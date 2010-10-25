@@ -48,7 +48,43 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
     </bean>
 	
-
+	<!--edit -->
+	 
+	
+	  <bean id="org.hisp.dhis.mobile.user.action.EditUserGroupFormAction"
+          class="org.hisp.dhis.mobile.user.action.EditUserGroupFormAction"
+          scope="prototype">
+        <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    </bean>
+	
+     <!-- End of edit -->
+	
+	
+<!-- update -->
+	<bean id="org.hisp.dhis.mobile.user.action.UpdateUserGroupAction"
+          class="org.hisp.dhis.mobile.user.action.UpdateUserGroupAction"
+          scope="prototype">
+        <property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    </bean>
+<!-- End of update -->
+	<!-- Remove-->
+	
+	<bean id="org.hisp.dhis.mobile.user.action.RemoveUserGroupAction"
+          class="org.hisp.dhis.mobile.user.action.RemoveUserGroupAction"
+          scope="prototype">
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    </bean>
+	
+	
+	<bean id="org.hisp.dhis.mobile.user.action.GetUserGroupAction"
+          class="org.hisp.dhis.mobile.user.action.GetUserGroupAction"
+          scope="prototype">
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+    </bean>
+	
+	
     <bean id="org.hisp.dhis.mobile.app.action.CreateMobileAppAction"
           class="org.hisp.dhis.mobile.app.action.CreateMobileAppAction"
           scope="prototype">

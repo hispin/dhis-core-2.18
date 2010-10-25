@@ -33,6 +33,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementValidation;
 import org.hisp.dhis.program.ProgramStageDataElementValidationStore;
@@ -81,4 +82,19 @@ public class HibernateProgramStageDataElementValidationStore
         return query.list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations(
+        ProgramStage programStage )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session
+            .createQuery( "from ProgramStageDataElementValidation c where "
+                + "c.leftProgramStageDataElement.programStage.id = :programStageId or "
+                + "c.rightProgramStageDataElement.programStage.id = :programStageId" );
+
+        query.setInteger( "programStageId", programStage.getId() );
+
+        return query.list();
+    }
 }

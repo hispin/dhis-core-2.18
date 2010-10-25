@@ -555,6 +555,13 @@
       <para>To unarchive data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
       <para>In some cases you might end up with overlapping data. For instance one might archive data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
     </section>
+	<section id="patientDataArchive">
+      <title>Patient Data Archive</title>
+      <para>The purpose of the patient data archive function is to move patient data value which is currently not being used for analysis to a secondary storage location in order to improve performance of the application. Data can be both archived and unarchived. When archiving data one moves it from the primary storage to the secondary storage location, while unarchiving moves it from the secondary storage location to the primary. Analysis functionality in DHIS 2 heavily utilizes queries to the data value database table, and by reducing the size of this table these operations will be significantly faster. Typically one would want to archive patient data that is older than two years.</para>
+      <para>To archive patient data, first enter a start date and an end date for the time span of the data which should be archived. Then press the archive button. The operation might take a few minutes.</para>
+      <para>To unarchive patient data, first enter a start date and an end date for the time span of the data which should be unarchived. Then press the unarchive button. The operation might take a few minutes.</para>
+      <para>In some cases you might end up with overlapping data. For instance one might archive patient data for a given timespan, then later enter data for a period in that timespan. In such cases the system will automatically overwrite the oldest of the overlapping values with the newest during the archive or unarchive operation.</para>
+    </section>
     <section id="maintenance">
       <title>Maintenance</title>
       <para>The data maintenance module has five options, each described below. </para>

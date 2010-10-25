@@ -92,4 +92,10 @@ public class DefaultProgramStageDataElementValidationService
         return validationStore.getProgramStageDataElementValidations( element );
     }
 
+    public Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations(
+        ProgramStage programStage )
+    {
+        return validationStore.getProgramStageDataElementValidations( programStage );
+    }
+
 }

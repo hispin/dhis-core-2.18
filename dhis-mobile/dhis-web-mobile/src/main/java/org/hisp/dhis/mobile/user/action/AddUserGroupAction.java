@@ -57,17 +57,24 @@ public class AddUserGroupAction implements Action
     public String execute() throws Exception
     {
 
+        
+        
         Set<User> userList = new HashSet<User>();
         
         for( Integer groupMember : groupMembers )
         {
             User user = userStore.getUser( groupMember );
             userList.add( user );
+           
+            
         }
         
         UserGroup userGroup = new UserGroup( name, userList );
         
         userGroupService.addUserGroup( userGroup );
+        
+        
+        
         
         return SUCCESS;
     }

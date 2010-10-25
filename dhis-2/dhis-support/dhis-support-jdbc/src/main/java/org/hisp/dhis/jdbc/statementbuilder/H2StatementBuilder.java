@@ -285,4 +285,67 @@ public class H2StatementBuilder
            "AND a.categoryoptioncomboid=d.categoryoptioncomboid " +
            "AND a.lastupdated<=d.lastupdated)";
     }
+    
+    public String archivePatientData ( String startDate, String endDate )
+    {
+        return "DELETE FROM patientdatavalue AS pdv " 
+                + "USING programstageinstance AS psi ,  programinstance AS pi "
+                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+                + "AND pi.programinstanceid = psi.programinstanceid "
+                + "WHERE pi.enddate >= '" + startDate + "' "
+                +    "AND pi.enddate <= '" +  endDate + "';";
+    }
+    
+    public String unArchivePatientData ( String startDate, String endDate )
+    {
+        return "DELETE FROM patientdatavaluearchive AS pdv " 
+                + "USING programstageinstance AS psi ,  programinstance AS pi "
+                + "WHERE pdv.programstageinstanceid = psi.programstageinstanceid "
+                + "AND pi.programinstanceid = psi.programinstanceid "
+                + "WHERE pi.enddate >= '" + startDate + "' "
+                +    "AND pi.enddate <= '" +  endDate + "';";
+    }
+
+    public String deleteRegularOverlappingPatientData()
+    {
+        return "DELETE FROM patientdatavalue AS d " +
+                "USING patientdatavaluearchive AS a " +
+                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+                "AND d.dataelementid=a.dataelementid " +
+                "AND d.organisationunitid=a.organisationunitid " +
+                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
+                "AND d.timestamp<a.timestamp;";
+    }
+    
+    public String deleteArchivedOverlappingPatientData()
+    {
+        return "DELETE FROM patientdatavaluearchive AS a " +
+                "USING patientdatavalue AS d " +
+                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+                "AND d.dataelementid=a.dataelementid " +
+                "AND d.organisationunitid=a.organisationunitid " +
+                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+    }
+    
+    public String deleteOldestOverlappingPatientDataValue()
+    {
+        return "DELETE FROM patientdatavalue AS d " +
+                "USING patientdatavaluearchive AS a " +
+                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+                "AND d.dataelementid=a.dataelementid " +
+                "AND d.organisationunitid=a.organisationunitid " +
+                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
+                "AND d.timestamp<a.timestamp;";
+    }
+    
+    public String deleteOldestOverlappingPatientArchiveData()
+    {
+        return "DELETE FROM patientdatavalue AS d " +
+                "USING patientdatavaluearchive AS a " +
+                "WHERE d.programstageinstanceid=a.programstageinstanceid " +
+                "AND d.dataelementid=a.dataelementid " +
+                "AND d.organisationunitid=a.organisationunitid " +
+                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
+                "AND a.timestamp<=d.timestamp;";
+    }
 }

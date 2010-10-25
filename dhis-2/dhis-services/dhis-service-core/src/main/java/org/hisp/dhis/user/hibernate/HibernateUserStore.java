@@ -117,11 +117,11 @@ public class HibernateUserStore
 
         return session.createQuery( "from User" ).list();
     }
-    
+
+    @SuppressWarnings( "unchecked" )
     public Collection<User> getAllUsers( int from, int to )
     {
         Session session = sessionFactory.getCurrentSession();
-
 
         return session.createQuery( "from User" ).setFirstResult( from ).setMaxResults( to ).list();
     }

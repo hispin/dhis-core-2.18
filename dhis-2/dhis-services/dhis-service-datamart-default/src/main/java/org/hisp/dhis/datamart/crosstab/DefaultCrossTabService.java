@@ -49,155 +49,159 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultCrossTabService.java 6268 2008-11-12 15:16:02Z larshelg $
+ * @version $Id: DefaultCrossTabService.java 6268 2008-11-12 15:16:02Z larshelg
+ *          $
  */
 public class DefaultCrossTabService
     implements CrossTabService
 {
     private static final Log log = LogFactory.getLog( DefaultCrossTabService.class );
-    
+
     private static final int MAX_LENGTH = 20;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     @Autowired
     private BatchHandlerFactory batchHandlerFactory;
-        
+
     private CrossTabStore crossTabStore;
-        
+
     public void setCrossTabStore( CrossTabStore crossTabTableManager )
     {
         this.crossTabStore = crossTabTableManager;
     }
-    
+
     private AggregatedDataValueService aggregatedDataValueService;
 
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
-    
+
     // -------------------------------------------------------------------------
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands, 
+    public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
     {
-        final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>( operands );
-
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
+            final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>( operands );
+
             final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( operands );
-            
+
             Collections.sort( operandList );
 
             crossTabStore.dropCrossTabTable( key );
-            
+
             log.info( "Dropped crosstab table" );
-            
+
             crossTabStore.createCrossTabTable( operandList, key );
-            
+
             log.info( "Created crosstab table" );
-            
-            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+
+            final BatchHandler<Object> batchHandler = batchHandlerFactory
+                .createBatchHandler( GenericBatchHandler.class );
             batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
             batchHandler.init();
-            
+
             Map<DataElementOperand, String> map = null;
-            
+
             List<String> valueList = null;
-            
+
             boolean hasValues = false;
-            
+
             String value = null;
-            
+
             for ( final Integer periodId : periodIds )
             {
                 for ( final Integer sourceId : organisationUnitIds )
                 {
                     map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
-                    
+
                     valueList = new ArrayList<String>( operandList.size() + 2 );
-                    
+
                     valueList.add( String.valueOf( periodId ) );
                     valueList.add( String.valueOf( sourceId ) );
 
                     hasValues = false;
-                    
+
                     for ( DataElementOperand operand : operandList )
                     {
                         value = map.get( operand );
-                        
+
                         if ( value != null && value.length() > MAX_LENGTH )
                         {
-                            log.warn( "Value ignored, too long: '" + value + 
-                                "', for dataelement id: '" + operand.getDataElementId() +
-                                "', categoryoptioncombo id: '" + operand.getOptionComboId() +
-                                "', period id: '" + periodId + 
-                                "', source id: '" + sourceId + "'" );
-                            
+                            log.warn( "Value ignored, too long: '" + value + "', for dataelement id: '"
+                                + operand.getDataElementId() + "', categoryoptioncombo id: '"
+                                + operand.getOptionComboId() + "', period id: '" + periodId + "', source id: '"
+                                + sourceId + "'" );
+
                             value = null;
-                        }                        
-                        
+                        }
+
                         if ( value != null )
                         {
-                            hasValues = true;                            
-                            operandsWithData.add( operand );                            
+                            hasValues = true;
+                            operandsWithData.add( operand );
                         }
-                        
+
                         valueList.add( value );
                     }
-                    
+
                     if ( hasValues )
                     {
                         batchHandler.addObject( valueList );
                     }
                 }
-                
+
                 log.info( "Crosstabulated data for period " + periodId );
             }
-            
+
             batchHandler.flush();
+            
+            return operandsWithData;
         }
 
-        return operandsWithData;
+        return null;
+
     }
-    
+
     public void dropCrossTabTable( String key )
     {
         crossTabStore.dropCrossTabTable( key );
     }
-    
+
     public void trimCrossTabTable( Collection<DataElementOperand> operands, String key )
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
-        
+
         crossTabStore.createTrimmedCrossTabTable( operands, key );
-        
+
         crossTabStore.dropCrossTabTable( key );
-        
+
         crossTabStore.renameTrimmedCrossTabTable( key );
     }
-    
+
     public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key )
     {
         final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns( key );
 
         final Map<DataElementOperand, Integer> operandMap = new HashMap<DataElementOperand, Integer>();
-        
+
         for ( DataElementOperand operand : operands )
         {
             final String col = operand.getSimpleName();
-            
+
             if ( columnNameIndexMap.containsKey( col ) )
             {
                 operandMap.put( operand, columnNameIndexMap.get( col ) );
             }
         }
-        
+
         return operandMap;
     }
 
@@ -205,44 +209,48 @@ public class DefaultCrossTabService
     {
         return crossTabStore.validateCrossTabTable( operands );
     }
-    
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap,
+        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
         return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds, key );
     }
-    
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId, String key )
+
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap,
+        Collection<Integer> periodIds, int sourceId, String key )
     {
         return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceId, key );
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
     /**
-     * Validates whether the given collections of identifiers are not null and of size greater than 0.
+     * Validates whether the given collections of identifiers are not null and
+     * of size greater than 0.
      */
-    private boolean validate( Collection<DataElementOperand> operands, Collection<Integer> periodIds, Collection<Integer> unitIds )
+    private boolean validate( Collection<DataElementOperand> operands, Collection<Integer> periodIds,
+        Collection<Integer> unitIds )
     {
         if ( operands == null || operands.size() == 0 )
         {
-            log.warn( "No operands selected for crosstab table" );            
+            log.warn( "No operands selected for crosstab table" );
             return false;
         }
-        
+
         if ( periodIds == null || periodIds.size() == 0 )
         {
-            log.warn( "No periods selected for crosstab table" );            
+            log.warn( "No periods selected for crosstab table" );
             return false;
         }
-        
+
         if ( unitIds == null || unitIds.size() == 0 )
         {
             log.warn( "No organisation units selected for crosstab table" );
             return false;
         }
-        
+
         return true;
     }
 }

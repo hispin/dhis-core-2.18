@@ -63,7 +63,20 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.source.Source;
@@ -71,6 +84,7 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
+import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 
@@ -99,27 +113,27 @@ public abstract class DeletionHandler
     // -------------------------------------------------------------------------
 
     public void deleteChart( Chart chart )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteChart( Chart chart )
     {
         return true;
     }
-    
+
     public void deleteDataDictionary( DataDictionary dataDictionary )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteDataDictionary( DataDictionary dataDictionary )
     {
         return true;
     }
-    
+
     public void deleteDataElement( DataElement dataElement )
     {
     }
-    
+
     public boolean allowDeleteDataElement( DataElement dataElement )
     {
         return true;
@@ -128,12 +142,12 @@ public abstract class DeletionHandler
     public void deleteCalculatedDataElement( CalculatedDataElement dataElement )
     {
     }
-    
+
     public boolean allowDeleteCalculatedDataElement( CalculatedDataElement dataElement )
     {
         return true;
     }
-    
+
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
     }
@@ -142,16 +156,16 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
     {
     }
-    
+
     public boolean allowDeleteDataElementGroupSet( DataElementGroupSet dataElementGroupSet )
     {
         return true;
     }
-    
+
     public void deleteDataElementCategory( DataElementCategory category )
     {
     }
@@ -160,7 +174,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
     }
@@ -169,7 +183,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
     }
@@ -178,7 +192,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
     }
@@ -186,8 +200,8 @@ public abstract class DeletionHandler
     public boolean allowDeleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo )
     {
         return true;
-    }    
-    
+    }
+
     public void deleteDataSet( DataSet dataSet )
     {
     }
@@ -196,25 +210,25 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteSection( Section section )
-    {   
+    {
     }
 
     public boolean allowDeleteSection( Section section )
     {
         return true;
     }
-    
+
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         return true;
     }
-    
+
     public void deleteDataValue( DataValue dataValue )
     {
     }
@@ -223,7 +237,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteExpression( Expression expression )
     {
     }
@@ -232,16 +246,16 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
-    {   
+    {
     }
 
     public boolean allowDeleteMinMaxDataElement( MinMaxDataElement minMaxDataElement )
     {
         return true;
     }
-    
+
     public void deleteIndicator( Indicator indicator )
     {
     }
@@ -250,7 +264,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
     }
@@ -259,9 +273,9 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteIndicatorType( IndicatorType indicatorType )
-    {   
+    {
     }
 
     public boolean allowDeleteIndicatorType( IndicatorType indicatorType )
@@ -272,12 +286,12 @@ public abstract class DeletionHandler
     public void deleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
     }
-    
+
     public boolean allowDeleteIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet )
     {
         return true;
     }
-    
+
     public void deletePeriod( Period period )
     {
     }
@@ -286,7 +300,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteSource( Source source )
     {
     }
@@ -295,7 +309,7 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteValidationRule( ValidationRule validationRule )
     {
     }
@@ -304,43 +318,43 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
-    {   
+    {
     }
 
     public boolean allowDeleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
     {
         return true;
     }
-    
+
     public void deleteFrequencyOverrideAssociation( FrequencyOverrideAssociation association )
-    {   
+    {
     }
 
     public boolean allowDeleteFrequencyOverrideAssociation( FrequencyOverrideAssociation association )
     {
         return true;
     }
-    
+
     public void deleteDataEntryForm( DataEntryForm form )
-    {   
+    {
     }
 
     public boolean allowDeleteDataEntryForm( DataEntryForm form )
     {
         return true;
     }
-    
+
     public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
-    {   
+    {
     }
 
     public boolean allowDeleteOrganisationUnitGroup( OrganisationUnitGroup group )
     {
         return true;
     }
-    
+
     public void deleteOrganisationUnitGroupSet( OrganisationUnitGroupSet groupSet )
     {
     }
@@ -349,138 +363,157 @@ public abstract class DeletionHandler
     {
         return true;
     }
-    
+
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
-    {   
+    {
     }
 
     public boolean allowDeleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         return true;
     }
-    
+
     public void deleteReport( Report report )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteReport( Report report )
     {
         return true;
     }
-    
+
     public void deleteReportTable( ReportTable reportTable )
-    {   
+    {
     }
 
     public boolean allowDeleteReportTable( ReportTable reportTable )
     {
         return true;
     }
-    
+
     public void deleteUser( User user )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteUser( User user )
     {
         return true;
     }
-    
+
     public void deleteUserCredentials( UserCredentials credentials )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteUserCredentials( UserCredentials credentials )
     {
         return true;
     }
-    
+
     public void deleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteUserAuthorityGroup( UserAuthorityGroup authorityGroup )
     {
         return true;
     }
-    
+
     public void deleteUserSetting( UserSetting userSetting )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteUserSetting( UserSetting userSetting )
     {
         return true;
     }
-    
+
     public void deleteDataMartExport( DataMartExport dataMartExport )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteDataMartExport( DataMartExport dataMartExport )
     {
         return true;
     }
-    
+
     public void deleteOlapURL( OlapURL olapURL )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteOlapURL( OlapURL olapURL )
     {
         return true;
     }
-    
+
     public void deleteDocument( Document document )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteDocument( Document document )
     {
         return true;
     }
-    
+
     public void deleteMap( Map map )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteMap( Map map )
     {
         return true;
     }
-    
+
     public void deleteMapLegend( MapLegend mapLegend )
     {
     }
-    
+
     public boolean allowDeleteMapLegend( MapLegend mapLegend )
     {
         return true;
     }
-    
+
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteMapLegendSet( MapLegendSet mapLegendSet )
     {
         return true;
     }
-    
+
     public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
     {
         return true;
     }
-    
+
     public void deleteMapView( MapView mapView )
-    {   
+    {
     }
-    
+
     public boolean allowDeleteMapView( MapView mapView )
+    {
+        return true;
+    }
+
+    public boolean allowDeleteLegend( Legend legend )
+    {
+        return true;
+    }
+
+    public void deleteConcept( Concept concept )
+    {
+    }
+
+    public boolean allowDeleteConcept( Concept concept )
+    {
+        return true;
+    }
+
+    public boolean allowDeletePatient( Patient patient )
     {
         return true;
     }
@@ -489,22 +522,131 @@ public abstract class DeletionHandler
     {
     }
 
-    public boolean allowDeletePatient( Patient patient )
+    public boolean allowDeletePatientAttribute( PatientAttribute patientAttribute )
     {
         return true;
     }
-    
-    public boolean allowDeleteLegend( Legend legend )
+
+    public void deletePatientAttribute( PatientAttribute patientAttribute )
+    {
+
+    }
+
+    public boolean allowDeletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
     {
         return true;
     }
-    
-    public void deleteConcept( Concept concept )
+
+    public void deletePatientAttributeValue( PatientAttributeValue patientAttributeValue )
     {
     }
 
-    public boolean allowDeleteConcept( Concept concept )
+    public boolean allowDeletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
     {
         return true;
+    }
+
+    public void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    {
+    }
+
+    public boolean allowDeletePatientIdentifier( PatientIdentifier patientIdentifier )
+    {
+        return true;
+    }
+
+    public void deletePatientIdentifier( PatientIdentifier patientIdentifier )
+    {
+    }
+
+    public boolean allowDeletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
+    {
+        return true;
+    }
+
+    public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
+    {
+    }
+
+    public boolean allowDeleteRelationship( Relationship relationship )
+    {
+        return true;
+    }
+
+    public void deleteRelationship( Relationship relationship )
+    {
+    }
+
+    public boolean allowDeleteRelationshipType( RelationshipType relationshipType )
+    {
+        return true;
+    }
+
+    public void deleteRelationshipType( RelationshipType relationshipType )
+    {
+    }
+    
+    public boolean allowDeleteProgram( Program program )
+    {
+        return true;
+    }
+
+    public void deleteProgram( Program program )
+    {
+    }
+
+    public boolean allowDeleteProgramInstance( ProgramInstance programInstance )
+    {
+        return true;
+    }
+
+    public void deleteProgramInstance( ProgramInstance programInstance )
+    {
+    }
+    
+    public boolean allowDeleteProgramStage( ProgramStage programStage )
+    {
+        return true;
+    }
+
+    public void deleteProgramStage( ProgramStage programStage )
+    {
+    }
+    
+    public boolean allowDeleteProgramStageInstance( ProgramStageInstance programStageInstance )
+    {
+        return true;
+    }
+
+    public void deleteProgramStageInstance( ProgramStageInstance programStageInstance )
+    {
+    }
+    
+    public boolean allowDeleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
+    {
+        return true;
+    }
+
+    public void deleteProgramStageDataElement( ProgramStageDataElement programStageDataElement )
+    {
+    }
+    
+    
+    public boolean allowDeletePatientDataValue( PatientDataValue patientDataValue )
+    {
+        return true;
+    }
+
+    public void deletePatientDataValue( PatientDataValue patientDataValue )
+    {
+    }
+    
+    public boolean allowDeleteValidationCriteria( ValidationCriteria validationCriteria )
+    {
+        return true;
+    }
+
+    public void deleteValidationCriteria( ValidationCriteria validationCriteria )
+    {
     }
 }

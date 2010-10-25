@@ -55,14 +55,14 @@ public class HibernatePatientAttributeValueStore
 
     public int deleteByAttribute( PatientAttribute patientAttribute )
     {
-        Query query = getQuery( "delete PatientAttributeValue where patientAttribute = :patientAttribute" );
+        Query query = getQuery( "delete from PatientAttributeValue where patientAttribute = :patientAttribute" );
         query.setEntity( "patientAttribute", patientAttribute );
         return query.executeUpdate();
     }
 
     public int deleteByPatient( Patient patient )
     {
-        Query query = getQuery( "delete PatientAttributeValue where patient = :patient" );
+        Query query = getQuery( "delete from PatientAttributeValue where patient = :patient" );
         query.setEntity( "patient", patient );
         return query.executeUpdate();
     }
@@ -100,7 +100,7 @@ public class HibernatePatientAttributeValueStore
 
     public int delete( DataElementCategoryOptionCombo optionCombo )
     {
-        Query query = getQuery( "delete PatientDataValue where optionCombo = :optionCombo" );
+        Query query = getQuery( "delete from PatientDataValue where optionCombo = :optionCombo" );
         query.setEntity( "optionCombo", optionCombo );
         return query.executeUpdate();
     }

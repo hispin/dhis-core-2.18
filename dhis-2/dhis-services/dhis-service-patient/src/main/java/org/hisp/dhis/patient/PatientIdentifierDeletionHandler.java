@@ -27,6 +27,8 @@ package org.hisp.dhis.patient;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -56,15 +58,30 @@ public class PatientIdentifierDeletionHandler
     {
         return PatientIdentifier.class.getSimpleName();
     }
-    
+
     @Override
     public void deletePatient( Patient patient )
     {
-        PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
+        Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers( patient );
 
-        if ( patientIdentifier != null )
+        if ( patientIdentifiers.size() > 0 )
         {
-            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
+            for ( PatientIdentifier identifier : patientIdentifiers )
+            {
+                patientIdentifierService.deletePatientIdentifier( identifier );
+            }
+        }
+    }
+
+    @Override
+    public void deletePatientIdentifierType( PatientIdentifierType patientIdentifierType )
+    {
+        Collection<PatientIdentifier> identifiers = patientIdentifierService
+            .getPatientIdentifiersByType( patientIdentifierType );
+
+        for ( PatientIdentifier identifier : identifiers )
+        {
+            patientIdentifierService.deletePatientIdentifier( identifier );
         }
     }
 }

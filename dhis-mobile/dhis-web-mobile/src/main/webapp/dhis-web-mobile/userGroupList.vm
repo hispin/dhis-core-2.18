@@ -47,7 +47,8 @@
                     <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
                 </div>
                 <p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
-                <p><label>$i18n.getString( "number_of_users" ):</label><br/><span id="userCountField"></span></p>
+                <p><label>$i18n.getString( "id" ):</label><br/><span id="idField"></span></p>
+                <p><label>$i18n.getString( "no_of_group" ):</label><br/><span id="noOfGroupField"></span></p>
             </div>
             
             <div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
@@ -68,4 +69,9 @@
         tableSorter( 'listTable' ); 
     });
 
+
+function removeUserGroup( userGroupId, userGroupName )
+{
+    removeItem( userGroupId, userGroupName, i18n_confirm_delete, "removeUserGroup.action" );
+}
 </script>

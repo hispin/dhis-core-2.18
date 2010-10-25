@@ -299,13 +299,16 @@ public class DataElement
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+    
+    
 
     /**
      * Null-safe check.
      */
     public boolean isZeroIsSignificant()
     {
-        return zeroIsSignificant != null && zeroIsSignificant;
+        return zeroIsSignificant != null && zeroIsSignificant;    
+        
     }
     
     /**

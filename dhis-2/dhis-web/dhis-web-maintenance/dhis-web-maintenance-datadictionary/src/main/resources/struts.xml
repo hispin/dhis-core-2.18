@@ -16,12 +16,6 @@
 		</action>
 
 		<!-- DataElement -->
-		
-		<action name="showDataElementDetails"
-			class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction">
-			<result name="success" type="velocity">/dhis-web-maintenance-datadictionary/ajax/htmlDataElement.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
 
 		<action name="dataElement"
 			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
@@ -90,7 +84,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/addDataElementForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js</param>
-			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
 		</action>
 
@@ -106,7 +99,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/updateDataElementForm.vm</param>
 			<param name="javascripts">javascript/shortName.js,javascript/dataElement.js,javascript/updateLoad.js</param>
-			<param name="stylesheets">style/dhis-web-maintenance-datadictionary.css</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
 		</action>
 
@@ -207,14 +199,7 @@
 			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
 		</action>
 
-		<!-- DataElementGroup -->
-		
-		<action name="showDataElementGroupDetails"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-datadictionary/ajax/htmlDataElementGroup.vm
-			</result>
-		</action>
+		<!-- DataElementGroup -->	
 
 		<action name="dataElementGroup"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction">
