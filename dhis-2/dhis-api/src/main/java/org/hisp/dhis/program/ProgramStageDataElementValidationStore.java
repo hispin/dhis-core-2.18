@@ -47,5 +47,6 @@ public interface ProgramStageDataElementValidationStore
     Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( Program program );
 
     Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStageDataElement element );
-
+    
+    Collection<ProgramStageDataElementValidation> getProgramStageDataElementValidations( ProgramStage programStage );
 }

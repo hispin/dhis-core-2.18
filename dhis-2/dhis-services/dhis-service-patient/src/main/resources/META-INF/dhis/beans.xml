@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<!-- Store definitions -->
 	
@@ -233,6 +235,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
+	<!-- Table Alteror -->
+
+	<bean id="org.hisp.dhis.patient.TableAlteror" class="org.hisp.dhis.patient.TableAlteror" init-method="execute">
+		<property name="statementManager" ref="statementManager" />
+	</bean>
+	
 	<!-- DeletionHandlers -->
 	
 	<bean id="org.hisp.dhis.patient.PatientIdentifierDeletionHandler" 
@@ -240,33 +248,115 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService"/>
 	</bean>
 
-	<bean id="org.hisp.dhis.program.ProgramInstanceDeleteHandler" 
-		class="org.hisp.dhis.program.ProgramInstanceDeleteHandler">
+	<bean id="org.hisp.dhis.program.ProgramInstanceDeletionHandler" 
+		class="org.hisp.dhis.program.ProgramInstanceDeletionHandler">
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
+		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler" 
+		class="org.hisp.dhis.relationship.RelationshipDeletionHandler">
+		<property name="relationshipSevice" ref="org.hisp.dhis.relationship.RelationshipService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" 
+		class="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler">
+		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" 
+		class="org.hisp.dhis.program.ProgramDeletionHandler">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" 
 		class="org.hisp.dhis.patient.PatientDeletionHandler">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 	</bean>
-
+	
+	<bean id="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler" 
+		class="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler">
+		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
+		<property name="programStageDEValidationService" ref="org.hisp.dhis.program.ProgramStageDataElementValidationService"/>
+	</bean>
+	
 	<!-- DeletionManager -->
   
   	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="deletionManager"/>
-		<property name="targetMethod" value="addDeletionHandlers"/>
-		<property name="arguments">
+    	<property name="targetObject" ref="deletionManager"/>
+    	<property name="targetMethod" value="addDeletionHandlers"/>
+    	<property name="arguments">
 		  <list>
 			<list>
+			  <ref local="org.hisp.dhis.patient.PatientDeletionHandler"/>
+			  <ref local="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler"/>
 			  <ref local="org.hisp.dhis.patient.PatientIdentifierDeletionHandler"/>
-			  <ref local="org.hisp.dhis.program.ProgramInstanceDeleteHandler"/>
+			  <ref local="org.hisp.dhis.relationship.RelationshipDeletionHandler"/>
+			  
+			  <ref local="org.hisp.dhis.program.ProgramDeletionHandler"/>
+			  <ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler"/>
+			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
 			</list>
 		  </list>
 		</property>
 	</bean>
 	
-	<!-- Table Alteror -->
-	<bean id="org.hisp.dhis.patient.TableAlteror" class="org.hisp.dhis.patient.TableAlteror" init-method="execute">
-		<property name="statementManager" ref="statementManager" />
-	</bean>
+	<!-- AOP definitions -->
+  
+  	<aop:config>
+  	
+	    <aop:aspect ref="deletionInterceptor">
+	       
+	      <aop:before 
+		      pointcut="execution( * org.hisp.dhis.patient.PatientService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+	      	pointcut="execution( * org.hisp.dhis.patientattributevalue.PatientAttributeValueService.delete*(..) )" 
+	      	method="intercept"/>
+	      <aop:before
+		      pointcut="execution( * org.hisp.dhis.patient.PatientAttributeService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.patient.PatientIdentifierService.delete*(..) )" 
+		      method="intercept"/>
+		   <aop:before 
+		      pointcut="execution( * org.hisp.dhis.patient.PatientIdentifierTypeService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.relationship.RelationshipService.delete*(..) )" 
+		      method="intercept"/>
+		   <aop:before 
+		      pointcut="execution( * org.hisp.dhis.relationship.RelationshipTypeService.delete*(..) )" 
+		      method="intercept"/>
+		 
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramInstanceService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramStageService.delete*(..) )" 
+		      method="intercept"/>
+	      <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramStageInstanceService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramStageDataElementService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.program.ProgramStageInstanceService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.patientdatavalue.PatientDataValueService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.validation.ValidationCriteriaService.delete*(..) )" 
+		      method="intercept"/>
+	    </aop:aspect>
+      
+  	</aop:config>
+  
 </beans>

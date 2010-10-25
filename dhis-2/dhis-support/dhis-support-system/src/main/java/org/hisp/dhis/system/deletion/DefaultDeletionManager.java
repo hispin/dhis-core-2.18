@@ -38,7 +38,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.source.Source;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Lars Helge Overland
@@ -71,7 +70,6 @@ public class DefaultDeletionManager
     @SuppressWarnings( "unchecked" )
     public void execute( Object object )
     {
-
         Class clazz = object.getClass();
 
         if ( object instanceof OrganisationUnit )
@@ -92,11 +90,11 @@ public class DefaultDeletionManager
         try
         {
             Method allowMethod = DeletionHandler.class.getMethod( allowMethodName, new Class[] { clazz }  );
-            
+
             for ( DeletionHandler handler : handlers )
             {   
                 currentHandler = handler.getClass().getSimpleName();
-                
+
                 boolean allow = (Boolean) allowMethod.invoke( handler, object );
                 
                 if ( !allow )
@@ -127,7 +125,7 @@ public class DefaultDeletionManager
         try
         {
             Method deleteMethod = DeletionHandler.class.getMethod( deleteMethodName, new Class[] { clazz } );
-        
+
             for ( DeletionHandler handler : handlers )
             {
                 currentHandler = handler.getClass().getSimpleName();

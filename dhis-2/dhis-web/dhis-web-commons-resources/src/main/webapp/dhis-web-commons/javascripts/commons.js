@@ -1277,25 +1277,6 @@ function jumpToPage( baseLink )
     window.location.href = baseLink +"pageSize=" + pageSize +"&currentPage=" +currentPage;
 }
 
-function addShowDetail( jQueryString, width, success, responseType )
-{
-	if( success == undefined ) success = function(data){return data;}
-	if( responseType == undefined ) responseType = 'html';	
-	jQuery( jQueryString ).cluetip( {
-		ajaxProcess: success,
-		ajaxCache: true,
-		ajaxSettings: {
-			dataType: responseType
-		},
-		activation: 'click',
-		sticky: true,
-		closePosition: 'title',
-		closeText: '<img src="../images/hide.png" alt="" />',
-		width: width,
-		arrows: true
-	});
-}
-
 /**
  * Used to export PDF file by the given type and
  * the active items in table

@@ -51,7 +51,7 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  *          ch_bharath1 $
  */
 public class GetDataElementListAction
-    extends ActionPagingSupport
+    extends ActionPagingSupport<DataElement>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -301,16 +301,17 @@ public class GetDataElementListAction
 
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
     }
-    
+
     private List<DataElement> searchByDataElementName( List<DataElement> dataElementList, String key )
-    { 
+    {
         List<DataElement> result = new ArrayList<DataElement>();
-        for(DataElement eachElement : dataElementList) {
-            if(eachElement.getName().contains( key.trim() ) ) {
+        for ( DataElement eachElement : dataElementList )
+        {
+            if ( eachElement.getName().contains( key.trim() ) )
+            {
                 result.add( eachElement );
             }
         }
         return result;
-    }
-    
+    }    
 }

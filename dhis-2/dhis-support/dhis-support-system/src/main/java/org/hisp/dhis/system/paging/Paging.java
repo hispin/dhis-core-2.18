@@ -1,3 +1,5 @@
+package org.hisp.dhis.system.paging;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -24,8 +26,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.system.paging;
 
+/**
+ * @author Quang Nguyen
+ */
 public class Paging
 {
     static final int MAX_ALLOWED_PAGE_SIZE = 50;
@@ -52,31 +56,30 @@ public class Paging
 
     public String getBaseLink()
     {
-        if ( link.indexOf( "?" ) < 0 )
-            return (new StringBuilder( String.valueOf( link ) )).append( "?" ).toString();
-        else
-            return (new StringBuilder( String.valueOf( link ) )).append( "&" ).toString();
+        return link.indexOf( "?" ) < 0 ? ( link + "?" ) : ( link + "&" );
     }
 
     public int getNumberOfPages()
     {
-        if ( total % pageSize == 0 )
-            return total / pageSize;
-        else
-            return total / pageSize + 1;
+        return  total % pageSize == 0 ? total / pageSize : total / pageSize + 1;
     }
 
     public int getStartPage()
     {
         int startPage = 1;
+        
         if ( currentPage > 2 )
         {
             startPage = currentPage - 2;
+            
             if ( getNumberOfPages() - startPage < 4 )
             {
                 startPage = getNumberOfPages() - 4;
+                
                 if ( startPage <= 0 )
+                {
                     startPage = 1;
+                }
             }
         }
         return startPage;
@@ -97,16 +100,16 @@ public class Paging
     public int getCurrentPage()
     {
         if ( currentPage > total )
+        {
             currentPage = total;
+        }
+        
         return currentPage;
     }
 
     public void setCurrentPage( int currentPage )
     {
-        if ( currentPage > 0 )
-            this.currentPage = currentPage;
-        else
-            this.currentPage = 1;
+        this.currentPage = currentPage > 0 ? currentPage : 1;
     }
 
     public int getPageSize()
@@ -116,10 +119,7 @@ public class Paging
 
     public void setPageSize( int pageSize )
     {
-        if ( pageSize > 0 )
-            this.pageSize = pageSize;
-        else
-            this.pageSize = 50;
+        this.pageSize = pageSize > 0 ? pageSize : 50;
     }
 
     public int getTotal()
@@ -141,5 +141,4 @@ public class Paging
     {
         this.link = link;
     }
-
 }

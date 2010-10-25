@@ -1,4 +1,4 @@
-package org.hisp.dhis.program;
+package org.hisp.dhis.mock;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,43 +27,18 @@ package org.hisp.dhis.program;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.hisp.dhis.i18n.I18n;
 
 /**
- * @author Quang Nguyen
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ProgramInstanceDeleteHandler
-    extends DeletionHandler
+public class MockI18n
+    extends I18n
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private ProgramInstanceService programInstanceService;
-
-    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    public MockI18n()
     {
-        this.programInstanceService = programInstanceService;
+        super( null, null );
     }
 
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public String getClassName()
-    {
-        return ProgramInstance.class.getSimpleName();
-    }
-
-    @Override
-    public void deletePatient( Patient patient )
-    {
-        for(ProgramInstance programInstance : programInstanceService.getProgramInstances( patient ))
-        {
-            programInstanceService.deleteProgramInstance( programInstance );
-        }
-    }
 }

@@ -35,16 +35,35 @@ import java.util.Date;
 public interface DataArchiveStore
 {
     void archiveData( Date startDate, Date endDate );
-    
+
     void unArchiveData( Date startDate, Date endDate );
-    
+
     int getNumberOfOverlappingValues();
-    
+
     int getNumberOfArchivedValues();
-    
+
     void deleteRegularOverlappingData();
-    
+
     void deleteArchivedOverlappingData();
-    
+
     void deleteOldestOverlappingData();
+
+    // -------------------------------------------------------------------------
+    // Archive for patient data value
+    // -------------------------------------------------------------------------
+
+    void archivePatientData( Date startDate, Date endDate );
+
+    void unArchivePatientData( Date startDate, Date endDate );
+    
+    int getNumberOfOverlappingPatientValues();
+
+    int getNumberOfArchivedPatientValues();
+
+    void deleteRegularOverlappingPatientData();
+
+    void deleteArchivedOverlappingPatientData();
+
+    void deleteOldestOverlappingPatientData();
+    
 }

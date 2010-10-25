@@ -95,7 +95,7 @@ public interface PatientService
 
     int createPatient( Patient patient,Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues );
-    
+
     void updatePatient( Patient patient, Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> valuesForSave,
         List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete );

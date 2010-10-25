@@ -40,7 +40,7 @@
 }
 .x-toolbar .xtb-sep {
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
-    height:25px;
+    height:23px;
 }
 #map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
     border:1px solid #bbbbbb;
@@ -185,6 +185,10 @@
 }
 
 /* Ext Button */
+.x-btn-icon .x-btn-small .x-btn-text {
+    height:14px;
+    width:14px;
+}
 .x-btn button {
 	font:normal 10px lucida sans unicode,arial;
 }
@@ -210,7 +214,7 @@
 	background-image:url(../../../images/pdf.png);
 }
 .x-btn .icon-favorite {
-	background-image:url(../../../images/favorite_star2.png);
+	background-image:url(../../../images/favorite_star.gif);
 }
 .x-btn .icon-automaticlegendset {
 	background-image:url(../../../images/color_swatch2.png);
@@ -219,7 +223,7 @@
 	background-image:url(../../../images/color_swatch.png);
 }
 .x-btn .icon-help {
-	background-image:url(../../../images/help.png);
+	background-image:url(../../../images/help2.png);
 }
 .aa_med button {
 	color:#333;
@@ -227,18 +231,19 @@
 }
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
     padding-bottom:2px;
-    padding-left:20px;
+    padding-left:17px;
+}
+.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+    height:15px;
 }
 .ext-gecko .x-btn button, .ext-webkit .x-btn button {
-    padding-left:7px;
-    padding-right:7px;
+    padding-right:2px;
 }
 #ext-gen105 {
     background-position:0 center;
     background-repeat:no-repeat;
-    height:16px;
-	padding-left:21px;
-    padding-right:4px;
+    width:14px;
+    height:14px;
 }
 
 /* Ext Loading Mask */
@@ -278,7 +283,7 @@
 }
 #window-favorites-title {
 	padding:0 0 3px 21px;
-	background:url('../../../images/favorite_star2.png') no-repeat 0 0 transparent;
+	background:url('../../../images/favorite_star.gif') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }

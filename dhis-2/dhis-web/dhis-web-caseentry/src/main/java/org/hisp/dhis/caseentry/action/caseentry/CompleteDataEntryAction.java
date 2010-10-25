@@ -38,8 +38,6 @@ import com.opensymphony.xwork2.Action;
  */
 public class CompleteDataEntryAction implements Action
 {
-   
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

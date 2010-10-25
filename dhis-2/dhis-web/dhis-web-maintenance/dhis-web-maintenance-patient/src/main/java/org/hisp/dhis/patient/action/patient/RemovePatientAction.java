@@ -27,7 +27,8 @@
 
 package org.hisp.dhis.patient.action.patient;
 
-import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientService;
 
 import com.opensymphony.xwork2.Action;
@@ -61,16 +62,39 @@ public class RemovePatientAction
         this.id = id;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        Patient patient = patientService.getPatient( id );
+        try
+        {
+            patientService.deletePatient( patientService.getPatient( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
 
-        patientService.deletePatient( patient );
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }

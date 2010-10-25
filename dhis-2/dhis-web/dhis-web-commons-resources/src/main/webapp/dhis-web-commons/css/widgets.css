@@ -755,64 +755,6 @@ span.valid {
 	margin-left: .3em;
 }
 
-.button
-{
-	padding: 2px 10px 2px 10px;
-
-	border: none;
-	background-image: url('../images/buttonblue.png');	
-	background-color: #fff;
-	background-position: left bottom;
-	background-repeat: repeat-x;
-	
-	
-	font-weight: bold;
-	color: #3f4855;
-	text-shadow: 0 1px 1px #fff;
-	
-	border: 1px solid #9da1aa;
-	border-bottom-color: #9da1aa;
-	border-top-color: #adb1ba;
-
-	-webkit-box-shadow: #f6f7f9 0 1px 1px;
-	-moz-box-shadow: #f6f7f9 0 1px 1px;
-	box-shadow: #f6f7f9 0 1px 1px;			
-	margin-right:5px;
-	margin-bottom: 2px;
-	cursor:pointer;
-}
-
-.text
-{	
-	border: none;
-	padding:2px;
-	background-color: #fff;	
-	
-	border: 1px solid #9da1aa;
-	border-bottom-color: #9da1aa;
-	border-top-color: #adb1ba;
-
-	-webkit-box-shadow: #f6f7f9 0 1px 1px;
-	-moz-box-shadow: #f6f7f9 0 1px 1px;
-	box-shadow: #f6f7f9 0 1px 1px;		
-}
-
-.combobox
-{	
-	border: none;
-	padding:2px;
-	background-color: #fff;	
-	
-	border: 1px solid #9da1aa;
-	border-bottom-color: #9da1aa;
-	border-top-color: #adb1ba;
-
-	-webkit-box-shadow: #f6f7f9 0 1px 1px;
-	-moz-box-shadow: #f6f7f9 0 1px 1px;
-	box-shadow: #f6f7f9 0 1px 1px;		
-	margin-right:5px;
-	margin-bottom: 2px;
-}
 #cluetip-inner{
 	font-size:10pt;
 }

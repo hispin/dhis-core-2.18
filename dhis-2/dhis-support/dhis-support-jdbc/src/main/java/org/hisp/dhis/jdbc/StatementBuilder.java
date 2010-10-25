@@ -131,4 +131,16 @@ public interface StatementBuilder
     String deleteOldestOverlappingDataValue();
     
     String deleteOldestOverlappingArchiveData();
+    
+    String archivePatientData ( String startDate, String endDate );
+    
+    String unArchivePatientData ( String startDate, String endDate );
+    
+    String deleteRegularOverlappingPatientData();
+    
+    String deleteArchivedOverlappingPatientData();
+    
+    String deleteOldestOverlappingPatientDataValue();
+    
+    String deleteOldestOverlappingPatientArchiveData();
 }

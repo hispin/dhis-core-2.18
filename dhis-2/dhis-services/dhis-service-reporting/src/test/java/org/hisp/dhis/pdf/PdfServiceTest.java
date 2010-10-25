@@ -27,8 +27,9 @@ package org.hisp.dhis.pdf;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -36,14 +37,13 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mock.MockI18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Hieu
  */
 public class PdfServiceTest
     extends DhisSpringTest
@@ -62,11 +62,6 @@ public class PdfServiceTest
 
     private I18n i18n;
 
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -74,6 +69,8 @@ public class PdfServiceTest
     @Override
     public void setUpTest()
     {
+        i18n = new MockI18n();
+
         pdfService = (PdfService) getBean( PdfService.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
@@ -100,41 +97,48 @@ public class PdfServiceTest
 
     // -------------------------------------------------------------------------
     // Tests
+    //
+    // Change to
+    // new BufferedOutputStream( new FileOutputStream( "file.pdf" ) )
+    // to verify output visually
     // -------------------------------------------------------------------------
 
     @Test
-    @Ignore
     public void testWriteAllDataElements()
         throws Exception
     {
-        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.pdf" ) );
+        OutputStream outputStreamA = new ByteArrayOutputStream();
 
-        pdfService.writeAllDataElements( outputStream, i18n );
+        pdfService.writeAllDataElements( outputStreamA, i18n );
+        
+        assertNotNull( outputStreamA );
 
-        StreamUtils.closeOutputStream( outputStream );
+        StreamUtils.closeOutputStream( outputStreamA );
     }
 
     @Test
-    @Ignore
     public void testWriteAllIndicators()
         throws Exception
     {
-        OutputStream outputStreamB = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.pdf" ) );
+        OutputStream outputStreamB = new ByteArrayOutputStream();
 
         pdfService.writeAllIndicators( outputStreamB, i18n );
 
+        assertNotNull( outputStreamB );
+        
         StreamUtils.closeOutputStream( outputStreamB );
     }
 
     @Test
-    @Ignore
     public void testWriteAllOrganisationUnits()
         throws Exception
     {
-        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.pdf" ) );
+        OutputStream outputStreamC = new ByteArrayOutputStream();
 
-        pdfService.writeAllOrganisationUnits( outputStream, i18n );
+        pdfService.writeAllOrganisationUnits( outputStreamC, i18n );
 
-        StreamUtils.closeOutputStream( outputStream );
+        assertNotNull( outputStreamC );
+        
+        StreamUtils.closeOutputStream( outputStreamC );
     }
 }

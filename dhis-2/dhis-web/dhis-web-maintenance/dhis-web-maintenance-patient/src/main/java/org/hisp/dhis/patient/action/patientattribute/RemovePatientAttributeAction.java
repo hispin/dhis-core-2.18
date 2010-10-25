@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.patient.action.patientattribute;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 
@@ -60,13 +62,42 @@ public class RemovePatientAttributeAction
     {
         this.id = id;
     }
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Implementation Action
+    // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
+        try
+        {
+            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
-        patientAttributeService.deletePatientAttribute( patientAttribute );
+            patientAttributeService.deletePatientAttribute( patientAttribute );
+
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+
+                return ERROR;
+            }
+        }
 
         return SUCCESS;
     }

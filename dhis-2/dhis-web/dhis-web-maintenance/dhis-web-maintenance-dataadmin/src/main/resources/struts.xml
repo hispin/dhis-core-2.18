@@ -281,6 +281,27 @@
 				/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
 		</action>
 		
+		<action name="displayPatientDataArchiveForm"
+			class="org.hisp.dhis.dataadmin.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-maintenance-dataadmin/patientDataArchiveForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+			<param name="javascripts">javascript/dataArchive.js</param>
+		</action>
+		
+		<action name="archivePatientData"
+			class="org.hisp.dhis.dataadmin.action.dataarchive.ArchivePatientDataAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+		</action>
+		
+		<action name="getNumberOfOverlapingPatientValues"
+			class="org.hisp.dhis.dataadmin.action.dataarchive.GetNumberOfOverlapingPatientValuesAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-dataadmin/responseNumber.vm</result>
+		</action>
+		
 		<!-- Min/Max validation -->
 		
 		<action name="generateMinMaxValue"

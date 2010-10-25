@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.patient.action.patientidentifiertype;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
@@ -51,43 +52,55 @@ public class RemovePatientIdentifierTypeAction
     // -------------------------------------------------------------------------
 
     private Integer id;
-    
+
     private String message;
-    
+
     private I18n i18n;
-    
+
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        
-        if( id == null ){
-            message = i18n.getString("can_not_find_patient_identifier_type_with_id_null") ;
-            return ERROR;
+        try
+        {
+            if ( id == null )
+            {
+                message = i18n.getString( "can_not_find_patient_identifier_type_with_id_null" );
+                return ERROR;
+            }
+
+            PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
+
+            if ( patientIdentifierType != null )
+            {
+                patientIdentifierTypeService.deletePatientIdentifierType( patientIdentifierType );
+                message = i18n.getString( "delete_successfull" ) + patientIdentifierType.getName();
+                return SUCCESS;
+            }
+            else
+            {
+                message = i18n.getString( "can_not_find_patient_identifier_type_with_id" ) + id.toString();
+                return ERROR;
+            }
         }
-        
-        PatientIdentifierType patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
-        
-        if( patientIdentifierType != null ){
-            patientIdentifierTypeService.deletePatientIdentifierType( patientIdentifierType );
-            message = i18n.getString("delete_successfull") + patientIdentifierType.getName();
-            return SUCCESS;
-        }
-        else {
-            message = i18n.getString("can_not_find_patient_identifier_type_with_id") + id.toString();
-            return ERROR;
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+
+                return ERROR;
+            }
         }
 
+        return ERROR;
     }
-    
-    
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
 
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
@@ -98,7 +111,7 @@ public class RemovePatientIdentifierTypeAction
     {
         this.id = id;
     }
-    
+
     public String getMessage()
     {
         return message;

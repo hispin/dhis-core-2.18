@@ -555,7 +555,8 @@ public class SectionFormAction
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
-
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_DATE, i18n.getString( "date" ) );
+        
         return SUCCESS;
 
     }

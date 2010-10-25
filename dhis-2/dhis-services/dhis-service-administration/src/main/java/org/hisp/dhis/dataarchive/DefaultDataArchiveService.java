@@ -92,4 +92,46 @@ public class DefaultDataArchiveService
     {
         return dataArchiveStore.getNumberOfOverlappingValues();
     }
+    
+    @Transactional
+    public int archivePatientData( Date startDate, Date endDate, DataArchiveOperation operation, DataEliminationStrategy strategy )
+    {
+        // ---------------------------------------------------------------------
+        // Eliminate duplicate data
+        // ---------------------------------------------------------------------
+
+        if ( DataEliminationStrategy.ARCHIVE.equals( strategy ) )
+        {
+            dataArchiveStore.deleteArchivedOverlappingPatientData();
+        }
+        else if ( DataEliminationStrategy.REGULAR.equals( strategy ) )
+        {
+            dataArchiveStore.deleteRegularOverlappingPatientData();
+        }
+        else // OLDEST
+        {
+            dataArchiveStore.deleteOldestOverlappingPatientData();
+        }
+        
+        // ---------------------------------------------------------------------
+        // Archive data
+        // ---------------------------------------------------------------------
+
+        if ( DataArchiveOperation.ARCHIVE.equals( operation ) )
+        {
+            dataArchiveStore.archivePatientData( startDate, endDate );
+        }
+        else // UNARCHIVE
+        {
+            dataArchiveStore.unArchivePatientData( startDate, endDate );
+        }
+
+        return dataArchiveStore.getNumberOfArchivedPatientValues();
+    }
+
+    public int getNumberOfOverlappingPatientValues()
+    {
+        return dataArchiveStore.getNumberOfOverlappingPatientValues();
+    }
+    
 }

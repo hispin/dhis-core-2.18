@@ -65,7 +65,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     initComponent : function() {
         
         var mapStore = new Ext.data.JsonStore({
-            url: GLOBALS.config.path_mapping + 'getAllMaps' + GLOBALS.config.type,
+            url: GLOBALS.conf.path_mapping + 'getAllMaps' + GLOBALS.conf.type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',
             fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel'],
@@ -73,7 +73,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         });
             
         var gridStore = new Ext.data.JsonStore({
-            url: GLOBALS.config.path_mapping + 'getAvailableMapOrganisationUnitRelations' + GLOBALS.config.type,
+            url: GLOBALS.conf.path_mapping + 'getAvailableMapOrganisationUnitRelations' + GLOBALS.conf.type,
             root: 'mapOrganisationUnitRelations',
             fields: ['id', 'organisationUnit', 'organisationUnitId', 'featureId'],
             sortInfo: { field: 'organisationUnit', direction: 'ASC' },
@@ -114,11 +114,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 mode: 'remote',
                 forceSelection: true,
                 triggerAction: 'all',
-                emptyText: GLOBALS.config.emptytext,
+                emptyText: GLOBALS.conf.emptytext,
                 selectOnFocus: true,
-				labelSeparator: GLOBALS.config.labelseparator,
-                width: GLOBALS.config.combo_width,
-                minListWidth: GLOBALS.config.combo_width,
+				labelSeparator: GLOBALS.conf.labelseparator,
+                width: GLOBALS.conf.combo_width,
+                minListWidth: GLOBALS.conf.combo_width,
                 store: mapStore,
                 listeners: {
                     'select': {
@@ -140,9 +140,9 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 				xtype: 'textfield',
 				id: 'filter_tf',
 				fieldLabel: i18n_filter,
-				labelSeparator: GLOBALS.config.labelseparator,
+				labelSeparator: GLOBALS.conf.labelseparator,
 				isFormField: true,
-				width: GLOBALS.config.combo_width,
+				width: GLOBALS.conf.combo_width,
 				enableKeyEvents: true,
 				disabled: true,
 				listeners: {
@@ -159,10 +159,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 xtype: 'grid',
                 id: 'grid_gp',
                 store: gridStore,
-                columns: [ { header: i18n_organisation_units, id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: GLOBALS.config.gridpanel_width } ],
+                columns: [ { header: i18n_organisation_units, id: 'organisationUnitId', dataIndex: 'organisationUnit', sortable: true, width: GLOBALS.conf.gridpanel_width } ],
 				autoExpandColumn: 'organisationUnitId',
 				enableHdMenu: true,
-                width: GLOBALS.config.gridpanel_width,
+                width: GLOBALS.conf.gridpanel_width,
                 height: GLOBALS.util.getGridPanelHeight(),
                 view: gridView,
                 style: 'left:0px',
@@ -202,7 +202,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                                 var mlp = Ext.getCmp('maps_cb').getValue();
                                 
                                 Ext.Ajax.request({
-                                    url: GLOBALS.config.path_mapping + 'deleteMapOrganisationUnitRelationsByMap' + GLOBALS.config.type,
+                                    url: GLOBALS.conf.path_mapping + 'deleteMapOrganisationUnitRelationsByMap' + GLOBALS.conf.type,
                                     method: 'GET',
                                     params: { mapLayerPath: mlp },
                                     success: function( responseObject ) {
@@ -255,7 +255,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								params += '&mapLayerPath=' + mlp;
 								
 								Ext.Ajax.request({
-									url: GLOBALS.config.path_mapping + 'deleteMapOrganisationUnitRelations' + type + params,
+									url: GLOBALS.conf.path_mapping + 'deleteMapOrganisationUnitRelations' + type + params,
 									method: 'GET',
 									success: function(r) {
 										Ext.getCmp('grid_gp').getStore().setBaseParam('mapLayerPath', mlp);
@@ -280,14 +280,14 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 								var mlp = Ext.getCmp('maps_cb').getValue();
 								
 								Ext.Ajax.request({
-									url: GLOBALS.config.path_mapping + 'getMapOrganisationUnitRelationByFeatureId' + GLOBALS.config.type,
+									url: GLOBALS.conf.path_mapping + 'getMapOrganisationUnitRelationByFeatureId' + GLOBALS.conf.type,
 									method: 'POST',
 									params: {featureId:mapping.relation, mapLayerPath:mlp},
 									success: function(r) {
 										var mour = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelation[0];
 										if (mour.featureId == '') {
 											Ext.Ajax.request({
-												url: GLOBALS.config.path_mapping + 'addOrUpdateMapOrganisationUnitRelation' + GLOBALS.config.type,
+												url: GLOBALS.conf.path_mapping + 'addOrUpdateMapOrganisationUnitRelation' + GLOBALS.conf.type,
 												method: 'POST',
 												params: {mapLayerPath:mlp, organisationUnitId:id, featureId:mapping.relation},
 												success: function() {
@@ -372,11 +372,11 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         if (url != mapping.newUrl) {
             mapping.newUrl = url;
             
-            if (MAPSOURCE == GLOBALS.config.map_source_type_geojson) {
-                mapping.setUrl(GLOBALS.config.path_mapping + 'getGeoJsonFromFile.action?name=' + url);
+            if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+                mapping.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + url);
             }
-			else if (MAPSOURCE == GLOBALS.config.map_source_type_shapefile) {
-				mapping.setUrl(GLOBALS.config.path_geoserver + GLOBALS.config.wfs + url + GLOBALS.config.output);
+			else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+				mapping.setUrl(GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + url + GLOBALS.conf.output);
 			}
         }
     },
@@ -392,7 +392,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         var colorA = new mapfish.ColorRgb();
         colorA.setFromHex(color);
         var colorB = new mapfish.ColorRgb();
-        colorB.setFromHex(GLOBALS.config.assigned_row_color);
+        colorB.setFromHex(GLOBALS.conf.assigned_row_color);
         options.colors = [colorA, colorB];
         
         mapping.coreComp.updateOptions(options);
@@ -409,7 +409,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         var level = this.mapData.organisationUnitLevel;
 
         Ext.Ajax.request({
-            url: GLOBALS.config.path_mapping + 'getOrganisationUnitsAtLevel' + GLOBALS.config.type,
+            url: GLOBALS.conf.path_mapping + 'getOrganisationUnitsAtLevel' + GLOBALS.conf.type,
             method: 'POST',
             params: {level: level},
             scope: this,
@@ -442,7 +442,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                 MASK.show();
 
                 Ext.Ajax.request({
-                    url: GLOBALS.config.path_mapping + 'addOrUpdateMapOrganisationUnitRelations' + GLOBALS.config.type,
+                    url: GLOBALS.conf.path_mapping + 'addOrUpdateMapOrganisationUnitRelations' + GLOBALS.conf.type,
                     method: 'POST',
                     params: {mapLayerPath:mlp, relations:relations},
                     scope: this,
@@ -466,7 +466,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
             MASK.show();
             
             Ext.Ajax.request({
-                url: GLOBALS.config.path_mapping + 'getMapByMapLayerPath' + GLOBALS.config.type,
+                url: GLOBALS.conf.path_mapping + 'getMapByMapLayerPath' + GLOBALS.conf.type,
                 method: 'POST',
                 params: {mapLayerPath: mapping.newUrl},
                 scope: this,
@@ -504,7 +504,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                         }
                     }
 
-                    var color = noCls > 1 && noAssigned == this.layer.features.length ? GLOBALS.config.assigned_row_color : GLOBALS.config.unassigned_row_color;
+                    var color = noCls > 1 && noAssigned == this.layer.features.length ? GLOBALS.conf.assigned_row_color : GLOBALS.conf.unassigned_row_color;
                     noCls = noCls > 1 && noAssigned == this.layer.features.length ? 1 : noCls;
                     
                     mapping.applyValues(color, noCls);

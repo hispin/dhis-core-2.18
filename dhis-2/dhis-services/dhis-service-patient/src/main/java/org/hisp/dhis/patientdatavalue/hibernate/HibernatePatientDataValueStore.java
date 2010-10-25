@@ -54,21 +54,21 @@ public class HibernatePatientDataValueStore
 
     public int delete( ProgramStageInstance programStageInstance )
     {
-        Query query = getQuery( "delete PatientDataValue where programStageInstance = :programStageInstance" );
+        Query query = getQuery( "delete from PatientDataValue where programStageInstance = :programStageInstance" );
         query.setEntity( "programStageInstance", programStageInstance );
         return query.executeUpdate();
     }
 
     public int delete( DataElement dataElement )
     {
-        Query query = getQuery( "delete PatientDataValue where dataElement = :dataElement" );
+        Query query = getQuery( "delete from PatientDataValue where dataElement = :dataElement" );
         query.setEntity( "dataElement", dataElement );
         return query.executeUpdate();
     }
 
     public int delete( DataElementCategoryOptionCombo optionCombo )
     {
-        Query query = getQuery( "delete PatientDataValue where optionCombo = :optionCombo" );
+        Query query = getQuery( "delete from PatientDataValue where optionCombo = :optionCombo" );
         query.setEntity( "optionCombo", optionCombo );
         return query.executeUpdate();
     }

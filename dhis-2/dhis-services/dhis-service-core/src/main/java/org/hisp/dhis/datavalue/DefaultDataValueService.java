@@ -83,6 +83,7 @@ public class DefaultDataValueService
             {
                 log.info( "DataValue was ignored as zero values are insignificant for this data element: "
                     + dataValue.getDataElement() );
+                
             }
             else
             {

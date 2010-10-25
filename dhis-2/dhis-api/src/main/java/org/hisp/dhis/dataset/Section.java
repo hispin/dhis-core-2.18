@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 
 public class Section
@@ -62,6 +63,15 @@ public class Section
         this.greyedFields = greyedFields;
     }
 
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public DataElementCategoryCombo getCategoryCombo()
+    {
+        return dataElements != null && dataElements.size() > 0 ? dataElements.iterator().next().getCategoryCombo() : null;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

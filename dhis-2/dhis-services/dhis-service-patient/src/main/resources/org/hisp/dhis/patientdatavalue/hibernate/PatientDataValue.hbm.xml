@@ -22,7 +22,7 @@
          
     <property name="providedByAnotherFacility" column="providedbyanotherfacility" not-null="true"/>
       
-    <property name="timestamp"/>
+    <property name="timestamp" type="date"/>
         
   </class>
 </hibernate-mapping>
