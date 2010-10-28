@@ -1,47 +1,51 @@
 package org.hisp.dhis.ll.action.employee;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.EmployeeService;
 
 import com.opensymphony.xwork2.Action;
 
-public class GetEmployeeListAction implements Action
+public class GetEmployeeAction
+implements Action
 {
-
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+	
+	private EmployeeService employeeService;
 
-    private EmployeeService employeeService;
-
-    public void setEmployeeService( EmployeeService employeeService )
-    {
-        this.employeeService = employeeService;
-    }
-
+	public void setEmployeeService(EmployeeService employeeService)
+	{
+		this.employeeService = employeeService;
+	}
+	
     // -------------------------------------------------------------------------
-    // Parameters
+    // Input/output
     // -------------------------------------------------------------------------
 
-    private List<Employee> employeeList;
-    
-    public List<Employee> getEmployeeList()
-    {
-        return employeeList;
-    }
-    
+	private String pdsCode;
+
+	public void setPdsCode(String pdsCode) 
+	{
+		this.pdsCode = pdsCode;
+	}
+	
+	private Employee employee;
+
+	public Employee getEmployee()
+	{
+		return employee;
+	}
+	
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
 	public String execute()
-    {
-    	
-    	employeeList = new ArrayList<Employee>( employeeService.getAllEmployee() );
-        
-        return SUCCESS;
-    }
+	{
+		employee = employeeService.getEmployeeByPDSCode( pdsCode );
+		
+		return SUCCESS;
+	}
+
 }

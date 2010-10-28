@@ -337,6 +337,55 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
     </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.AddEmployeeAction"
+    class="org.hisp.dhis.ll.action.employee.AddEmployeeAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction"
+    class="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction"
+    class="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction"
+    class="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.GetEmployeeAction"
+    class="org.hisp.dhis.ll.action.employee.GetEmployeeAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
+	<bean id="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction"
+    class="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction"
+    scope="prototype">
+        <property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
+    </bean>	
+	
 <!-- Line List Employee List 16/10/2010 end -->
 	
     <!-- Line List Data Entry -->
