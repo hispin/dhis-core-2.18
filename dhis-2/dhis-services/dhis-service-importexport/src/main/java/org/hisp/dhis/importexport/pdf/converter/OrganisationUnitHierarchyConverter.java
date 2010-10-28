@@ -30,9 +30,10 @@ package org.hisp.dhis.importexport.pdf.converter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
@@ -68,7 +69,10 @@ public class OrganisationUnitHierarchyConverter
 
     public void write( Document document, ExportParams params )
     {
-        PDFPrintUtil.printOrganisationUnitHierarchyFrontPage( document, params );
+        I18n i18n = params.getI18n();
+        I18nFormat format = params.getFormat();
+
+        PDFUtils.printOrganisationUnitHierarchyFrontPage( document, params.getOrganisationUnits(), i18n, format );
 
         if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
         {

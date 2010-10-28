@@ -137,6 +137,13 @@ public class UpdateDataElementAction
         this.valueType = valueType;
     }
 
+    private String numberType;
+
+    public void setNumberType( String numberType )
+    {
+        this.numberType = numberType;
+    }
+
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
@@ -223,6 +230,7 @@ public class UpdateDataElementAction
         // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( id );
+        
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
 
@@ -234,6 +242,7 @@ public class UpdateDataElementAction
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
+        dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );
@@ -281,14 +290,14 @@ public class UpdateDataElementAction
             }
 
             expression.setExpression( expressionString );
-            
-            expression.setDataElementsInExpression( expressionDataElements );            
-            
-            calculatedDataElement.setSaved( saved != null );        
-        }       
+
+            expression.setDataElementsInExpression( expressionDataElements );
+
+            calculatedDataElement.setSaved( saved != null );
+        }
 
         dataElement.getGroupSets().clear();
-        
+
         for ( String id : dataElementGroupSets )
         {
             dataElement.getGroupSets().add( dataElementService.getDataElementGroupSet( Integer.parseInt( id ) ) );

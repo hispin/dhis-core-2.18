@@ -37,12 +37,13 @@ import static org.hisp.dhis.system.util.PDFUtils.getPdfPTable;
 import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
 import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
+import static org.hisp.dhis.system.util.PDFUtils.printDataElement;
+import static org.hisp.dhis.system.util.PDFUtils.printIndicator;
+import static org.hisp.dhis.system.util.PDFUtils.printOrganisationUnit;
 
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
@@ -132,37 +133,7 @@ public class ItextPdfService
 
         for ( DataElement element : dataElementService.getAllDataElements() )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( element.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getCode() ) );
-
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n
-                .getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printDataElement( element, i18n, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
         }
 
         PDFUtils.closeDocument( document );
@@ -175,91 +146,22 @@ public class ItextPdfService
 
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( indicator.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getCode() ) );
-
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getNumeratorDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getNumeratorAggregationOperator(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_formula" ), 1, ITALIC ) );
-            table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDenominatorAggregationOperator(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_formula" ), 1, ITALIC ) );
-            table
-                .addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ), TEXT ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printIndicator( indicator, i18n, expressionService, HEADER3, ITALIC, TEXT,
+                true, 0.40f, 0.60f ) );
         }
 
         PDFUtils.closeDocument( document );
     }
 
-    public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n )
+    public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n, I18nFormat format )
     {
         initFont();
         Document document = PDFUtils.openDocument( outputStream );
 
         for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( unit.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getCode() ) );
-
-            table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getOpeningDate() != null ? unit.getOpeningDate().toString() : "" ) );
-
-            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getClosedDate() != null ? unit.getClosedDate().toString() : "" ) );
-
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getComment(), TEXT ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true,
+                0.40f, 0.60f ) );
         }
 
         PDFUtils.closeDocument( document );
@@ -368,36 +270,9 @@ public class ItextPdfService
         closeDocument( document );
     }
 
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private Map<Boolean, String> getBoolean()
-    {
-        Map<Boolean, String> map = new HashMap<Boolean, String>();
-        map.put( true, "yes" );
-        map.put( false, "no" );
-        return map;
-    }
-
-    private Map<String, String> getType()
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.VALUE_TYPE_STRING, "text" );
-        map.put( DataElement.VALUE_TYPE_INT, "number" );
-        map.put( DataElement.VALUE_TYPE_BOOL, "yes_no" );
-        return map;
-    }
-
-    private Map<String, String> getAggregationOperator()
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.AGGREGATION_OPERATOR_SUM, "sum" );
-        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "average" );
-        map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
-        return map;
-    }
 
     private void initFont()
     {

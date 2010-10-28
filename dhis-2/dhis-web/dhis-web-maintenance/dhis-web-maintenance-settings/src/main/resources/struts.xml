@@ -51,6 +51,10 @@
     </action>
     
     <action name="getAvailableAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction">
+     <result name="success" type="chain">getAvailableStylesForm</result>
+    </action>
+    
+    <action name="getAvailableStylesForm" class="org.hisp.dhis.settings.action.user.GetAvailableStylesAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-settings/userSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
@@ -79,6 +83,10 @@
     <action name="setAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction">
       <result name="success" type="redirect">userSettings.action</result>
     </action>        
+    
+    <action name="setCurrentStyle" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction">
+      <result name="success" type="redirect">userSettings.action</result>
+    </action>    
     
   </package>
 </struts>

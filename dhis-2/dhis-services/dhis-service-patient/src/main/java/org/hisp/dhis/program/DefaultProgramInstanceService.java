@@ -28,6 +28,7 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -123,4 +124,10 @@ public class DefaultProgramInstanceService
     {
         return programInstanceStore.get( patient, program, completed );
     }
+
+    public Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit )
+    {
+        return programInstanceStore.get( program, organisationUnit );
+    }
+
 }

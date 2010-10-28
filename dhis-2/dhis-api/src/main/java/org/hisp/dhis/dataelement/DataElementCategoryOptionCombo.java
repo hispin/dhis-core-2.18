@@ -109,7 +109,7 @@ public class DataElementCategoryOptionCombo
             return false;
         }
 
-        if ( getClass() != object.getClass() )
+        if ( !( object instanceof DataElementCategoryOptionCombo ) )
         {
             return false;
         }

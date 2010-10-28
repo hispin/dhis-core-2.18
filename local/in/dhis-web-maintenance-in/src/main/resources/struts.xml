@@ -44,6 +44,26 @@
             <param name="bufferSize">1024</param>
         </result>
     </action>
+
+<!-- Maintenance -->             
+    <action name="maintenance" class="org.hisp.dhis.config.action.NoAction">
+        <result name="success" type="velocity">/main.vm</result>
+        <param name="page">/dhis-web-maintenance-in/maintenanceForm.vm</param>
+        <param name="menu">/dhis-web-maintenance-in/menu.vm</param>
+        <param name="stylesheets">css/StylesForTags.css</param>
+        <param name="javascripts">javascript/config.js</param>
+        <param name="requiredAuthorities">F_MAINTENANCE_FORM</param>
+    </action>
+
+    <action name="clearFolder" class="org.hisp.dhis.config.action.ClearFolderAction">
+      <result name="success" type="velocity-xml">/dhis-web-maintenance-in/responseStatus.vm</result>
+        <result name="download" type="stream">
+            <param name="contentType">application/zip</param>
+            <param name="inputName">inputStream</param>
+            <param name="contentDisposition">filename="${fileName}"</param>
+            <param name="bufferSize">1024</param>
+        </result>
+    </action>
 	  	  
   </package>
 </struts>

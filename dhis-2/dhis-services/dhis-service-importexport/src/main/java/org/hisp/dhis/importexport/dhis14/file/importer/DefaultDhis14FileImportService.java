@@ -315,7 +315,7 @@ public class DefaultDhis14FileImportService
         catch ( Exception ex )
         {
             log.info( ex );
-            throw new ImportException( "DHIS14 import failed" );
+            throw new ImportException( "DHIS14 import failed", ex );
         }
     }
 

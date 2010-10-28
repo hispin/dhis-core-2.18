@@ -61,7 +61,7 @@
 		</td>
 		
 		##type
-		<td>$dataElementValueTypeMap.get( $dataElement.type )<span id="value[$dataElement.id].type" style="display:none">$dataElement.type</span></td>
+		<td>$dataElementValueTypeMap.get( $dataElement.type )<span id="value[$dataElement.id].type" style="display:none">$dataElement.getDetailedNumberType()</span></td>
 		
 		##min value
 		<td>

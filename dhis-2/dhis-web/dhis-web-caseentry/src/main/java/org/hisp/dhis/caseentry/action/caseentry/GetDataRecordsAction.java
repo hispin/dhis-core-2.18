@@ -204,36 +204,16 @@ public class GetDataRecordsAction implements Action
         selectedStateManager.setSelectedProgram( program );
         
         // ---------------------------------------------------------------------
-        // Getting the list of Patients that are related to selected OrganisationUnit
-        // ---------------------------------------------------------------------
-        
-        patientListByOrgUnit = new ArrayList<Patient>();
-        
-        patientListByOrgUnit.addAll( patientService.getPatients( organisationUnit ) );
-        
-        if( sortPatientAttributeId != null )
-        {
-            sortingAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
-        }
-        
-        // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
         
-        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program );
+        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program, organisationUnit );
         
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( ProgramInstance programInstance : selectedProgramInstances )
         {
             Patient patient = programInstance.getPatient();
-            
-            //taking patient present in selected orgunit
-            if ( !patientListByOrgUnit.contains( patient ) || programInstance.getEndDate() != null )
-            {
-                patientListByOrgUnit.remove( patient );
-                continue;
-            }
             
             if ( !programInstance.isCompleted() )
             {
@@ -244,21 +224,21 @@ public class GetDataRecordsAction implements Action
                 PatientAttributeValue patientAttributeValue = patientAttributeValueService.getPatientAttributeValue( patient, sortingAttribute );
                 
                 patinetAttributeValueMap.put( patient, patientAttributeValue );
-                
-                System.out.println( patient.getFullName() );
-            }
-            else
-            {
-                patientListByOrgUnit.remove( patient );
             }
 
             programStageInstances.addAll( programInstance.getProgramStageInstances() );
         }
         
+        // ---------------------------------------------------------------------
         // Sorting PatientList by slected Patient Attribute
+        // ---------------------------------------------------------------------
+
+        patientListByOrgUnit = new ArrayList<Patient>();
         
         if( sortPatientAttributeId != null )
         {
+            sortingAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
+            
             patientListByOrgUnit = patientService.sortPatientsByAttribute( programInstanceMap.keySet(), sortingAttribute );
         }
         else
@@ -266,9 +246,7 @@ public class GetDataRecordsAction implements Action
             patientListByOrgUnit = programInstanceMap.keySet();
         }
 
-        System.out.println("sortPatientAttributeId : "+sortPatientAttributeId);
         colorMap = programStageInstanceService.colorProgramStageInstances( programStageInstances );
-
 
         return SUCCESS;
     }    

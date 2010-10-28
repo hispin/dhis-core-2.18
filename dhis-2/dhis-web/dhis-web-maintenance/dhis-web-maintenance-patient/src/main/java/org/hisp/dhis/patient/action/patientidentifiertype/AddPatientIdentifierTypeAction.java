@@ -58,6 +58,10 @@ public class AddPatientIdentifierTypeAction
     private Boolean mandatory;
     
     private Boolean related;
+    
+    private Integer noChars;
+
+    private String type;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -72,6 +76,8 @@ public class AddPatientIdentifierTypeAction
         patientIdentifierType.setFormat( formater );
         patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );
+        patientIdentifierType.setNoChars( noChars );
+        patientIdentifierType.setType( type );
         
         patientIdentifierTypeService.savePatientIdentifierType( patientIdentifierType );
 
@@ -91,7 +97,17 @@ public class AddPatientIdentifierTypeAction
     {
         this.name = name;
     }
+
+    public void setNoChars( Integer noChars )
+    {
+        this.noChars = noChars;
+    }
     
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     public void setDescription( String description )
     {
         this.description = description;

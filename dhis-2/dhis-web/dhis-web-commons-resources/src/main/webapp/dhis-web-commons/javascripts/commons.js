@@ -75,16 +75,6 @@ function filterValues( filter, columnIndex )
 }
 
 /**
- * Opens a help popup window.
- * 
- * @param id the key of the help property content.
- */
-function openHelpForm( id )
-{
-    window.open( "../dhis-web-commons-help/viewDynamicHelp.action?id=" + id, "_blank", "width=800,height=600,scrollbars=yes" );
-}   
-
-/**
  * Returns the value of the selected option in the list with the given identifier.
  * 
  * @param listId the list identifier.
@@ -131,7 +121,6 @@ function trim( string )
 {
 	return jQuery.trim( string );
 }
-
 
 /**
  * Returns true if the element with the given identifier is checked, false if not
@@ -388,6 +377,7 @@ function getFieldValue( fieldId )
 {
     return jQuery("#" + fieldId).val();
 }
+
 /**
  * get value of input radio with name
  * 
@@ -403,6 +393,7 @@ function getRadioValue( radioName )
 	
 	return result;
 }
+
 /**
  * set value for input radio with name 
  * @param radioName name of input radio 
@@ -801,8 +792,6 @@ function datePickerjQuery( jQueryString )
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
 
-
-
 /**
  * Create jQuery datepicker for input text with id * * 
  * @param id the id of input filed which you want enter date *
@@ -830,7 +819,6 @@ function datePickerValid( id, today )
 		if( s.val()=='' ) s.val( getCurrentDate() );		
 	}
 }
-
 
 /**
  * Create jQuery datepicker for start date and end ate text with id * * 
@@ -871,9 +859,6 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 		constrainInput: true
 		
 	});
-	
-	
-
 }
 
 function getCurrentDate()
@@ -948,9 +933,11 @@ function insertTextCommon( inputAreaName, inputText )
 
 	setCaretToPos( inputArea, inputArea.value.length );
 }
-//=================================================================================
+
+//==============================================================================
 //	FORM VALIDATION
-//=================================================================================
+//==============================================================================
+
 /**
  * Create validator for fileds in form  * 
  */
@@ -973,6 +960,7 @@ function validation( formId, submitHandler, beforeValidateHandler )
 	
 	return validator;
 }
+
 /**
  * Add validation rule remote for input field
 * @param inputId is id for input field
@@ -1027,6 +1015,7 @@ function addValidatorRules( input, rules )
 {
 	jQuery(input).rules("add",rules );
 }
+
 /**
 * Remove validator Rules for input
 * @param inputId is id for input field
@@ -1056,9 +1045,10 @@ function listValidator( validatorId, selectedListId )
 	});
 }
 
-//=================================================================================
+//==============================================================================
 //	MESSAGE
-//=================================================================================
+//==============================================================================
+
 /**
 * Show message at the top-right of screen, this message will hide automatic after 3 second if you don't set time
 * @param message is message
@@ -1068,6 +1058,7 @@ function showErrorMessage( message, time )
 {
 	jQuery.growlUI( i18n_error, message, 'error', time ); 	
 }
+
 /**
 * Show message at the top-right of screen, this message will hide automatic after 3 second if you don't set time
 * @param message is message
@@ -1077,6 +1068,7 @@ function showSuccessMessage( message, time )
 {
 	jQuery.growlUI( i18n_success, message, 'success', time ); 	
 }
+
 /**
 * Show message at the top-right of screen, this message will hide automatic after 3 second if you don't set time
 * @param message is message
@@ -1176,6 +1168,7 @@ function hidePopupWindow( id )
 	hideById( id );
 	unLockScreen();
 }
+
 /**
 * load All Data Element Groups into select combo box
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1185,6 +1178,7 @@ function loadDataElementGroups( selectorJQueryString )
 {
 	DataDictionary.loadDataElementGroups( jQuery( selectorJQueryString ) );
 }
+
 /**
 * load data elements by data element group
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1194,6 +1188,7 @@ function loadDataElementsByGroup( id, selectorJQueryString )
 {
 	DataDictionary.loadDataElementsByGroup( id, jQuery( selectorJQueryString ) );
 }
+
 /**
 * load All Data Elements into select combo box
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1202,6 +1197,7 @@ function loadAllDataElements( selectorJQueryString )
 {
 	DataDictionary.loadAllDataElements( jQuery( selectorJQueryString ) );
 }
+
 /**
 * load Category Option Combo of data element
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1211,6 +1207,7 @@ function loadCategoryOptionComboByDE( id, selectorJQueryString)
 {
 	DataDictionary.loadCategoryOptionComboByDE( id, jQuery( selectorJQueryString ) );
 }
+
 /**
 * load all indicator groups into select combo box
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1219,6 +1216,7 @@ function loadIndicatorGroups( selectorJQueryString )
 {
 	DataDictionary.loadIndicatorGroups( jQuery( selectorJQueryString ) );
 }
+
 /**
 * load indicators by group
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1228,6 +1226,7 @@ function loadIndicatorsByGroup( id, selectorJQueryString )
 {
 	DataDictionary.loadIndicatorsByGroup( id, jQuery( selectorJQueryString ));
 }
+
 /**
 * load all indicator into select combo box
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1236,6 +1235,7 @@ function loadAllIndicators( selectorJQueryString )
 {
 	DataDictionary.loadAllIndicators( jQuery( selectorJQueryString ) );
 }
+
 /**
 * load Operands
 * @param selectorJQueryString is String fo jQuery selector, this string is anything but it must valid with jQuery format. This component will contain list of result* 
@@ -1245,7 +1245,6 @@ function loadOperands( selectorJQueryString, params )
 {
 	DataDictionary.loadOperands( jQuery( selectorJQueryString ), params);
 }
-
 
 /**
  * Removes the opacity div from the document.
@@ -1285,4 +1284,44 @@ function exportPdfByType( type )
 {
 	var activeIds = getArrayIdOfActiveRows();
 	window.location.href = 'exportToPdf.action?type=' + type + activeIds;
+}
+
+
+function isNumber( value )
+{
+    var number = new Number( value );
+    
+    if ( isNaN(parseFloat(value) ) )
+    {
+        return false;
+    }
+    return true;
+}
+
+function isInt(value)
+{
+	if(((value) == parseInt(value)) && !isNaN(parseInt(value)))
+	{
+		return true;
+	} else {
+		  return false;
+	} 
+}
+
+function isPositiveNumber(value)
+{
+	if(parseFloat(value) > 0 ){
+		return true;
+	} else {
+		return false;
+	} 
+}
+
+function isNegativeNumber(value)
+{
+	if(parseFloat(value) < 0 ){
+		return true;
+	} else {
+		return false;
+	} 
 }

@@ -39,8 +39,8 @@
 					   <option value="">[$i18n.getString( "please_select" )]</option>
 					   <option value="gender" #if("$validationCriteria.property" == "gender") selected #end>$i18n.getString( "gender" )</option>
 					   <option value="birthDate" #if("$validationCriteria.property" == "birthDate") selected #end>$i18n.getString( "date_of_birth" )</option>
+					   <option value="dobType" #if("$validationCriteria.property" == "dobType") selected #end>$i18n.getString( "dob_type" )</option>
 					   <option value="integerValueOfAge" #if("$validationCriteria.property" == "integerValueOfAge") selected #end>$i18n.getString( "age" )</option>
-					   <option value="birthDateEstimated" #if("$validationCriteria.property" == "birthDateEstimated") selected #end>$i18n.getString( "estimated" )</option>
 					   <option value="bloodGroup" #if("$validationCriteria.property" == "bloodGroup") selected #end>$i18n.getString( "blood_group" )</option>
 					</select>
 					<select id='operator' name='operator' style='width: 7em'>
@@ -55,12 +55,22 @@
 					<div id="genderDiv" style="display:none">
 						<select id='genderValue' name='genderValue' onChange="fillValue(this.value);" style="width: 16em">
 							<option value="">[$i18n.getString( "please_select" )]</option>
-							<option value="M" >$i18n.getString( "male" )</option>
+							<option value="M">$i18n.getString( "male" )</option>
 							<option value="F">$i18n.getString( "female" )</option>
 							<option value="T">$i18n.getString( "transgender" )</option>
 						</select>
 					</div>
 		
+				<!-- dobType -->
+				<div id="dobTypeDiv" style="display:none ">
+					<select type="text" id='dobTypeValue' name='dobTypeValue' onChange="fillValue(this.value);" style="width: 16em">
+						<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+						<option value="V" >$i18n.getString( "verified" )</option>
+						<option value="D" >$i18n.getString( "declared" )</option>
+						<option value="A" >$i18n.getString( "approximated" )</option>
+					</select>
+				</div>
+				
 					<!-- age -->
 					<div id="integerValueOfAgeDiv" style="display:none ">
 						<input type="text" id='integerValueOfAgeValue' name='integerValueOfAgeValue' onChange="fillValue(this.value);" class="{validate:{digits:true,rangelength:[1,2]}}" style="width: 15.5em">
@@ -73,16 +83,7 @@
 							datePickerValid( 'birthDateValue' );
 						</script> 
 					</div>
-		
-					<!-- birthDateEstimated -->
-					<div id="birthDateEstimatedDiv" style="display:none ">
-						<select id='birthDateEstimatedValue' name='birthDateEstimatedValue' onChange="fillValue(this.value);" style="width: 16em">
-							<option value="">[$i18n.getString( "please_select" )]</option>
-							<option value="true">$i18n.getString( "yes" )</option>
-							<option value="false">$i18n.getString( "no" )</option>
-						</select>
-					</div>
-		
+					
 					<!-- bloodGroup -->
 					<div id="bloodGroupDiv" style="display:none ">
 						<select id="bloodGroupValue" name="bloodGroupValue" onChange="fillValue(this.value);" style="width: 16em">
@@ -97,7 +98,7 @@
 							<option value="O-">O-</option>
 						</select>
 					</div>
-					<input type='hidden' id='value' name='value' value="$validationCriteria.value" class="{validate:{required:true,rangelength:[1,160]}}">
+					<input type='hidden' id='value' name='value' value="$validationCriteria.value" class="{validate:{required:true}}">
 				</td>
 			</tr>
 		</table>
@@ -127,11 +128,10 @@
 		date = ( date < 10 ) ? ( '0' + date ) : date;
 		
 		byId(name + "Value").value = year + '-' + month + '-' + date;
-		byId('value').value = byId(name + "Value").value;
 	}else{
 		byId(name + "Value").value = '$validationCriteria.value';
 	}
-	
+	byId('value').value = byId(name + "Value").value;
 	showDivValue();
 	
 </script>

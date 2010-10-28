@@ -787,7 +787,8 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.interceptor.StyleInterceptor" class="org.hisp.dhis.interceptor.StyleInterceptor">
-		<property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+		<property name="systemStyleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+		<property name="userStyleManager" ref="org.hisp.dhis.options.style.UserStyleManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.interceptor.SystemSettingInterceptor"

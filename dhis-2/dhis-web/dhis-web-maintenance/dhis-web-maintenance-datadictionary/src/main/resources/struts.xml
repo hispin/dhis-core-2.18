@@ -28,11 +28,8 @@
 		
 		<action name="searchDataElement"
 			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction" method="searchDataElementByName">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElements.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
+			<result name="success" type="velocity">
+				/dhis-web-maintenance-datadictionary/dataElementSearch.vm</result>
 		</action>
 
 		<action name="showSortDataElementForm"

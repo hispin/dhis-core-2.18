@@ -110,7 +110,7 @@
     </action> 
     
     <action name="saveDateValueChain" class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction">
-      <result name="success" type="velocity">status.vm</result>
+      <result name="success" type="velocity-xml">status.vm</result>
       <param name="onExceptionReturn">plainTextError</param>      
     </action>
     

@@ -27,17 +27,19 @@ package org.hisp.dhis.workbook;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mock.MockI18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -48,13 +50,15 @@ public class WorkbookServiceTest
     extends DhisTest
 {
     private WorkbookService workbookService;
-    
+
     private DataElementService dataElementService;
-    
+
     private IndicatorService indicatorService;
-    
+
     private OrganisationUnitService organisationUnitService;
-    
+
+    private I18n i18n;
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -62,67 +66,77 @@ public class WorkbookServiceTest
     @Override
     public void setUpTest()
     {
+        i18n = new MockI18n();
         workbookService = (WorkbookService) getBean( WorkbookService.ID );
-        
+
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
+
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
+
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-        
+
         dataElementService.addDataElement( createDataElement( 'A' ) );
         dataElementService.addDataElement( createDataElement( 'B' ) );
         dataElementService.addDataElement( createDataElement( 'C' ) );
-        
+
         IndicatorType indicatorType = createIndicatorType( 'A' );
         indicatorService.addIndicatorType( indicatorType );
-        
+
         indicatorService.addIndicator( createIndicator( 'A', indicatorType ) );
         indicatorService.addIndicator( createIndicator( 'B', indicatorType ) );
         indicatorService.addIndicator( createIndicator( 'C', indicatorType ) );
-        
+
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'A' ) );
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'B' ) );
-        organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'C' ) );        
+        organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'C' ) );
+    }
+
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-    
-    @Ignore
+
     @Test
     public void testWriteAllDataElements()
         throws Exception
-    {    
-        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "dataElementsTest.xls" ) );
-        
-        workbookService.writeAllDataElements( outputStream );
-        
+    {
+        OutputStream outputStream = new ByteArrayOutputStream();
+
+        workbookService.writeAllDataElements( outputStream, i18n );
+
+        assertNotNull( outputStream );
+
         StreamUtils.closeOutputStream( outputStream );
     }
 
-    @Ignore
     @Test
     public void testWriteAllIndicators()
         throws Exception
-    {           
-        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "indicatorsTest.xls" ) );
-        
-        workbookService.writeAllIndicators( outputStream );
-        
+    {
+        OutputStream outputStream = new ByteArrayOutputStream();
+
+        workbookService.writeAllIndicators( outputStream, i18n );
+
+        assertNotNull( outputStream );
+
         StreamUtils.closeOutputStream( outputStream );
     }
 
-    @Ignore
     @Test
     public void testWriteAllOrganisationUnits()
         throws Exception
     {
-        OutputStream outputStream = new BufferedOutputStream( new FileOutputStream( "organisationUnitsTest.xls" ) );
-            
-        workbookService.writeAllOrganisationUnits( outputStream );
-            
+        OutputStream outputStream = new ByteArrayOutputStream();
+
+        workbookService.writeAllOrganisationUnits( outputStream, i18n );
+
+        assertNotNull( outputStream );
+
         StreamUtils.closeOutputStream( outputStream );
     }
 }

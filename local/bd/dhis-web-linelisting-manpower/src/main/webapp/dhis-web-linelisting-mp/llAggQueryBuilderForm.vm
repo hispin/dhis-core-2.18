@@ -19,14 +19,14 @@
             <table>             
                 <tr>
                     <td>                
-                        $i18n.getString( "dataelement_group_list" )<br>
+                        <strong>$i18n.getString( "dataelement_group_list" )</strong><br>
                         <select id="degroup" name="degroup" style="width:325px" onchange="getAggDataElements()">
                         #foreach( $deGroup in $dataElementGroups )
                             <option value="$deGroup.id">$encoder.htmlEncode( $deGroup.name )</option>
                         #end
                         </select>
                         <br/><br/>
-                        $i18n.getString( "dataelement_list" )<br>
+                        <strong>$i18n.getString( "dataelement_list" )</strong><br>
                         <select id="aggde" name="aggde" style="width:325px" onchange="getLinelistAggExpression()">
                         </select>
                     </td>           
@@ -36,14 +36,14 @@
                 </tr>
                 <tr>
                     <td>
-                        $i18n.getString( "linelist_group_list" )<br>
+                        <strong>$i18n.getString( "linelist_group_list" )</strong><br>
                         <select id="llgroup" name="llgroup" style="width:325px" onchange="getLinelistElements()">
                         #foreach( $lineListGroup in $lineListGroups )
                             <option value="$lineListGroup.id">$encoder.htmlEncode( $lineListGroup.name )</option>
                         #end
                         </select>
                         <br/><br/>
-                        $i18n.getString( "linelist_group_de_list" )<br>
+                       <strong> $i18n.getString( "linelist_group_de_list" )</strong><br>
                         <select id="linelistGroupDE" name="linelistGroupDE" size="8" style="width:325px" ondblclick="displayLLEInfo()">
                         </select>
                     </td>
@@ -55,7 +55,7 @@
         </td>
         <td>&nbsp;</td>
         <td>            
-            $i18n.getString( "expression" )<br>
+            <strong>$i18n.getString( "expression" )</strong><br>
             <textarea id="expression" name="expression" style="width:415px; height:5em"></textarea> 
             <br><br>
             <input type="radio" id="csRadio" name="csRadio" value="countRadio" onclick="" checked> $i18n.getString( "count" )

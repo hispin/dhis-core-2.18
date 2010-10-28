@@ -4,8 +4,8 @@
 		jQuery('name').focus();
 			
 		validation( 'updatePatientIdentifierTypeForm', function(form){
-				form.submit();
-			}); 
+			form.submit();
+		}); 
 		
 		checkValueIsExist( "name", "validatePatientIdentifierType.action", {id:getFieldValue('id')});
 	});		
@@ -30,8 +30,8 @@
 	</tr>	
 	
 	<tr>
-		<td><label>$i18n.getString( "identifier_format" ) </label></td>
-		<td><input type="text" id="formater" name="formater" value="$encoder.htmlEncode($!patientIdentifierType.format)" style="width:30em" ></td>
+		<td><label>$i18n.getString( "identifier_format" ) </label></td> 
+		<td><input type="checkbox" name="formater" id="formater" value="State Format" #if($!patientIdentifierType.format) checked="checked" #end >$i18n.getString('state_format')</td>
 		<td></td>
 	</tr>	
 	
@@ -57,7 +57,27 @@
 		</td>		
 		<td></td>				
 	</tr>
-  	  	
+  	
+	<tr>
+		<td width="30em"><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
+		<td>
+			<input type="text" name="noChars" id="noChars" value="$!patientIdentifierType.noChars" class="{validate:{required:false, number:true}}" style="min-width:30em" >
+		</td>		
+		<td></td>				
+	</tr> 	
+	
+	<tr>
+		<td width="30em"><label for="type">$i18n.getString( "type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td>
+			<select id="type" name="type" style="min-width:30.2em"  class="{validate:{required:true}}">
+				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+				<option value="text" #if( $patientIdentifierType.type=='text' ) selected="selected" #end>$i18n.getString( "string" )</option>
+				<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
+				<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "alphabet" )</option>
+			</select>
+		</td>		
+		<td></td>				
+	</tr>
 </table>
 
 <p>

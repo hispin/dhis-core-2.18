@@ -29,7 +29,6 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**

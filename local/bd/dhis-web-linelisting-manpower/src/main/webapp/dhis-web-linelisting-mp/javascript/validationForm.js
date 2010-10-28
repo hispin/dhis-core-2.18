@@ -25,7 +25,7 @@ function getLineListElementsReceived( xmlObject )
 
     var lineListElements = xmlObject.getElementsByTagName("lineListElement");
 
-    alert("lineListElements.length "+lineListElements.length);
+    alert("lineListElements.length " + lineListElements.length );
     for ( var i = 0; i < lineListElements.length; i++ )
     {
         var id = lineListElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;

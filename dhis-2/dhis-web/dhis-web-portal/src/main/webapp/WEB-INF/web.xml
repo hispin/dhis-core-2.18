@@ -61,20 +61,8 @@
   <listener>
     <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
   </listener>
-  
-  <!-- For the dhis-web-mapping module (pdf printing service) -->
-  
-  <servlet>
-    <servlet-name>mapfish.print</servlet-name>
-    <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
-    <init-param>
-      <param-name>config</param-name>
-      <param-value>config.yaml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
 
-<!-- For the dhis-web-api module -->
+  <!-- For the dhis-web-api module -->
 
   <servlet>
     <servlet-name>web-api</servlet-name>
@@ -91,15 +79,9 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>mapfish.print</servlet-name>
-    <url-pattern>/pdf/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
     <servlet-name>web-api</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
-
 
   <error-page>
    <exception-type>java.lang.Throwable</exception-type>

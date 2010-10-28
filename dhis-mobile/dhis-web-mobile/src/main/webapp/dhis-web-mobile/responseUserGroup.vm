@@ -2,5 +2,5 @@
 <userGroup>
   <name>$group.name</name>
   <id>$group.id</id>
-  <noOfGroup>$memberCount</noOfGroup>
+  <noOfUsers>$memberCount</noOfUsers>
 </userGroup>

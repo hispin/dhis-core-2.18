@@ -26,6 +26,11 @@
  */
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.Date;
+import java.util.Set;
+
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -33,10 +38,11 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Viet Nguyen
- *
+ * 
  * @version $Id$
  */
-public class CompleteDataEntryAction implements Action
+public class CompleteDataEntryAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -48,7 +54,13 @@ public class CompleteDataEntryAction implements Action
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-    
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
 
     // -------------------------------------------------------------------------
     // Input / Output
@@ -89,9 +101,9 @@ public class CompleteDataEntryAction implements Action
     {
         this.programStageId = programStageId;
     }
-    
+
     public Integer programStageInstanceId;
-    
+
     public Integer getProgramStageInstanceId()
     {
         return programStageInstanceId;
@@ -102,8 +114,6 @@ public class CompleteDataEntryAction implements Action
         this.programStageInstanceId = programStageInstanceId;
     }
     
-    public String data;
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -111,26 +121,39 @@ public class CompleteDataEntryAction implements Action
     public String execute()
         throws Exception
     {
-        ProgramStageInstance programStageInstance  = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        System.out.println("view after: "+programStageInstance.isCompleted());
-        if( programStageInstance == null )
+        ProgramStageInstance programStageInstance = programStageInstanceService
+            .getProgramStageInstance( programStageInstanceId );
+
+        if ( programStageInstance == null )
         {
             return SUCCESS;
         }
-        
+
         programStageInstance.setCompleted( true );
-        System.out.println("programId "+programId);
-        System.out.println("programStageId "+programStageId);
-        System.out.println("programStageInstanceId "+programStageInstanceId);
-        System.out.println(" updateProgramStageIntance");
-        
+
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        
-        
-        System.out.println("endupdateProgramStageIntance");
-        ProgramStageInstance programStageInstance1  = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
-        System.out.println("view after: "+programStageInstance1.isCompleted());
-        
+
+        // ----------------------------------------------------------------------
+        // Check Completed status for all of ProgramStageInstance of
+        // ProgramInstance
+        // ----------------------------------------------------------------------
+
+        ProgramInstance programInstance = programStageInstance.getProgramInstance();
+
+        Set<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
+
+        for ( ProgramStageInstance stageInstance : stageInstances )
+        {
+            if ( !stageInstance.isCompleted() )
+            {
+                return SUCCESS;
+            }
+        }
+
+        programInstance.setCompleted( true );
+        programInstance.setEndDate( new Date() );
+
+        programInstanceService.updateProgramInstance( programInstance );
         
         return SUCCESS;
     }

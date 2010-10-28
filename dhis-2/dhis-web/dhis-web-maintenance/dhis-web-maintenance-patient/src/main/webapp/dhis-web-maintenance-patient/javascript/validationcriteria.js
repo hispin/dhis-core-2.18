@@ -52,7 +52,7 @@ function showDivValue(){
 		 div.style.display = 'block';
 		 
 		 if(propertyName == 'gender' || 
-			propertyName == 'birthDateEstimated' || 
+			propertyName == 'dobType' || 
 			propertyName == 'bloodGroup'){
 				
 			byId('operator').selectedIndex = 1;
@@ -67,7 +67,7 @@ function hideDiv(){
 	hideById('genderDiv');
 	hideById('integerValueOfAgeDiv');
 	hideById('birthDateDiv');
-	hideById('birthDateEstimatedDiv');
+	hideById('dobType');
 	hideById('bloodGroupDiv');		
 }
 

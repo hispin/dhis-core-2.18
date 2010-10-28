@@ -24,9 +24,10 @@ public class DataSet extends AbstractModel {
 	
 	private String periodType;
 	
-	@XmlElementWrapper( name = "des" )
-	@XmlElement(name = "de")
-	private List<DataElement> dataElements;	
+//	@XmlElementWrapper( name = "des" )
+//	@XmlElement(name = "de")
+	private List<Section> sections;
+//	private List<DataElement> dataElements;	
 	
 	public void setPeriodType(String periodType) {
 		this.periodType = periodType;
@@ -36,55 +37,64 @@ public class DataSet extends AbstractModel {
 		return periodType;
 	}	
 	
-	public List<DataElement> getDataElements() {
-		return dataElements;
+	
+//	public List<DataElement> getDataElements() {
+//		return dataElements;
+//	}
+//
+//	public void setDataElements(List<DataElement> dataElements) {
+//		this.dataElements = dataElements;
+//	}
+
+	public List<Section> getSections() {
+		return sections;
 	}
 
-	public void setDataElements(List<DataElement> dataElements) {
-		this.dataElements = dataElements;
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
 	}
 
-	public byte[] serialize() throws IOException
-    {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);       
+//	public byte[] serialize() throws IOException
+//    {
+//        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+//        DataOutputStream dout = new DataOutputStream(bout);       
+//
+//        dout.writeInt(this.getId());
+//        dout.writeUTF(this.getName());
+//        dout.writeUTF(this.getPeriodType());
+//        dout.writeInt(dataElements.size());
+//
+//        for(int i=0; i<dataElements.size(); i++)
+//        {
+//            DataElement de = (DataElement)dataElements.get(i);
+//            dout.writeInt( de.getId() );
+//            dout.writeUTF( de.getName() );
+//            dout.writeUTF( de.getType() );
+//        }
+//
+//        return bout.toByteArray();
+//    }
 
-        dout.writeInt(this.getId());
-        dout.writeUTF(this.getName());
-        dout.writeUTF(this.getPeriodType());
-        dout.writeInt(dataElements.size());
-
-        for(int i=0; i<dataElements.size(); i++)
-        {
-            DataElement de = (DataElement)dataElements.get(i);
-            dout.writeInt( de.getId() );
-            dout.writeUTF( de.getName() );
-            dout.writeUTF( de.getType() );
-        }
-
-        return bout.toByteArray();
-    }
-
-    public void deSerialize(byte[] data) throws IOException
-    {
-        ByteArrayInputStream bin = new ByteArrayInputStream(data);
-        DataInputStream din = new DataInputStream(bin);
-
-        this.setId( din.readInt() ) ;
-        this.setName( din.readUTF() );
-        this.setPeriodType( din.readUTF() ) ;
-
-        int size = din.readInt();
-
-        for(int i=0; i<size; i++)
-        {
-            DataElement de = new DataElement();
-            de.setId( din.readInt() );
-            de.setName( din.readUTF() );
-            de.setType( din.readUTF() );
-            this.dataElements.add(de);
-        }
-    }
+//    public void deSerialize(byte[] data) throws IOException
+//    {
+//        ByteArrayInputStream bin = new ByteArrayInputStream(data);
+//        DataInputStream din = new DataInputStream(bin);
+//
+//        this.setId( din.readInt() ) ;
+//        this.setName( din.readUTF() );
+//        this.setPeriodType( din.readUTF() ) ;
+//
+//        int size = din.readInt();
+//
+//        for(int i=0; i<size; i++)
+//        {
+//            DataElement de = new DataElement();
+//            de.setId( din.readInt() );
+//            de.setName( din.readUTF() );
+//            de.setType( din.readUTF() );
+//            this.dataElements.add(de);
+//        }
+//    }
     
     public void serialize( OutputStream out ) throws IOException
     {
@@ -94,18 +104,30 @@ public class DataSet extends AbstractModel {
         dout.writeInt(this.getId());
         dout.writeUTF(this.getName());
         dout.writeUTF(this.getPeriodType());
-        dout.writeInt(dataElements.size());
-
-        for(int i=0; i<dataElements.size(); i++)
-        {
-            DataElement de = (DataElement)dataElements.get(i);
-            dout.writeInt( de.getId() );
-            dout.writeUTF( de.getName() );
-            dout.writeUTF( de.getType() );
-        }       
         
-        //bout.flush();
+        if(this.sections == null){
+        	dout.writeInt(0);
+        }else{
+        	dout.writeInt(this.sections.size());
+        	for(Section section : this.sections){
+            	section.serialize(dout);
+            }
+        }
+        bout.flush();
         bout.writeTo(out);
+        
+        
+//        dout.writeInt(dataElements.size());
+
+//        for(int i=0; i<dataElements.size(); i++)
+//        {
+//            DataElement de = (DataElement)dataElements.get(i);
+//            dout.writeInt( de.getId() );
+//            dout.writeUTF( de.getName() );
+//            dout.writeUTF( de.getType() );
+//        }       
+        
+        
     	
     }    
 }

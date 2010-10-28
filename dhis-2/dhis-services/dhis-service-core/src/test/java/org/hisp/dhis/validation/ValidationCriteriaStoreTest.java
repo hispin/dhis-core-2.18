@@ -70,11 +70,11 @@ public class ValidationCriteriaStoreTest
 
         propertyA = Patient.class.getDeclaredField( "birthDate" ).getName();
 
-        propertyB = Patient.class.getDeclaredField( "birthDateEstimated" ).getName();
+        propertyB = Patient.class.getDeclaredField( "dobType" ).getName();
 
         valueA = new Date();
 
-        valueB = true;
+        valueB = (char) 'A';
     }
 
     // -------------------------------------------------------------------------

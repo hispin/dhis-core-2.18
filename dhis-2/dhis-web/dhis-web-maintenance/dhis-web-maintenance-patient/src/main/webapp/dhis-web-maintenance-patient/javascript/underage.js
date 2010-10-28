@@ -12,6 +12,8 @@ function validateAddRepresentative()
 			gender: getFieldValue( 'gender' ) ,
 			birthDate: getFieldValue( 'birthDate' ), 	        
 			age: getFieldValue( 'age' ) ,
+			dobType: getFieldValue( 'dobType' ) ,
+			ageType: getFieldValue( 'ageType' ) ,
 			genre: getFieldValue('gender') 
 		},
 		function (data)
@@ -228,3 +230,4 @@ function isBlank(text)
 {
 	return !text ||  /^\s*$/.test(text);
 }
+

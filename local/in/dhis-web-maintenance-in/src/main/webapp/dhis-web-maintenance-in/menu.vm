@@ -28,6 +28,7 @@
     <ul>
         <li><a href="configForm.action">Configuration</a></li>
         <li><a href="takeMysqlBackupResult.action" onclick="showOverlay()">Take MySQL Backup</a></li>
+		<li><a href="maintenance.action">Maintenance</a></li>
     </ul>
 </ul>
 

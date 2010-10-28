@@ -73,11 +73,13 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-mobile/addUserGroupForm.vm</param>
 			<param name="menu">/dhis-web-mobile/menu.vm</param>
+			<param name="javascripts">javascript/user.js</param>
 			<param name="stylesheets">css/receiveImportPage.css</param>
 		</action>
 		
 		<action name="addUserGroup"
 			class="org.hisp.dhis.mobile.user.action.AddUserGroupAction">
+			<param name="javascripts">javascript/user.js</param>
 			<result name="success" type="redirect">
 				getAllUserGroups.action</result>
 		</action>

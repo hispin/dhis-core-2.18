@@ -32,15 +32,14 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
@@ -65,50 +64,21 @@ public class DataElementConverter
 
     public void write( Document document, ExportParams params )
     {
-        PDFPrintUtil.printDataElementFrontPage( document, params );
-
         I18n i18n = params.getI18n();
+        I18nFormat format = params.getFormat();
+
+        PDFUtils.printDataElementFrontPage( document, params.getDataElements(), i18n, format );
 
         Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
 
         BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
         Font TEXT = new Font( bf, 9, Font.NORMAL );
         Font ITALIC = new Font( bf, 9, Font.ITALIC );
         Font HEADER3 = new Font( bf, 12, Font.BOLD );
 
         for ( DataElement element : elements )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( element.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getCode(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( String.valueOf( element.isActive() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( element.getType() ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( element.getAggregationOperator() ), TEXT ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printDataElement( element, i18n, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
         }
     }
 }

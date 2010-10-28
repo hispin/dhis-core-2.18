@@ -1,4 +1,5 @@
 package org.hisp.dhis.patient.action.patient;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -46,7 +47,8 @@ import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 
 import com.opensymphony.xwork2.Action;
 
-public class AddRepresentativeAction implements Action
+public class AddRepresentativeAction
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -66,6 +68,7 @@ public class AddRepresentativeAction implements Action
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
+  
     private String firstName;
 
     private String middleName;
@@ -78,22 +81,24 @@ public class AddRepresentativeAction implements Action
 
     private String birthDate;
 
+    private char ageType;
+
     private Integer age;
 
-    private boolean birthDateEstimated;
+    private Character dobType;
 
     private String gender;
 
     private String bloodGroup;
-    
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
-    // Output 
+    // Output
     // -------------------------------------------------------------------------
 
     private Patient patient;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -114,32 +119,19 @@ public class AddRepresentativeAction implements Action
         patient.setLastName( lastName.trim() );
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
-        patient.setOrganisationUnit(organisationUnit);
+        patient.setOrganisationUnit( organisationUnit );
 
-        if ( birthDate != null )
+        if ( dobType == 'V' || dobType == 'D' )
         {
             birthDate = birthDate.trim();
-
-            if ( birthDate.length() != 0 )
-            {
-                patient.setBirthDate( format.parseDate( birthDate ) );
-                patient.setBirthDateEstimated( birthDateEstimated );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    patient.setBirthDateFromAge( age.intValue() );
-                }
-            }
+            patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-            if ( age != null )
-            {
-                patient.setBirthDateFromAge( age.intValue() );
-            }
+            patient.setBirthDateFromAge( age.intValue(), ageType );
         }
+
+        patient.setDobType( dobType );
 
         patient.setRegistrationDate( new Date() );
 
@@ -165,17 +157,17 @@ public class AddRepresentativeAction implements Action
         systemGenerateIdentifier.setPatient( patient );
 
         patientIdentifierService.savePatientIdentifier( systemGenerateIdentifier );
-        
+
         patientService.updatePatient( patient );
-        
+
         // -----------------------------------------------------------------------------
         // Save Patient Identifiers
         // -----------------------------------------------------------------------------
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
-        
+
         String value = null;
-        
+
         Collection<PatientIdentifierType> identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
 
         PatientIdentifier pIdentifier = null;
@@ -198,7 +190,7 @@ public class AddRepresentativeAction implements Action
             }
             patientService.updatePatient( patient );
         }
-        
+
         return SUCCESS;
 
     }
@@ -257,11 +249,6 @@ public class AddRepresentativeAction implements Action
         this.age = age;
     }
 
-    public void setBirthDateEstimated( boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
     public void setGender( String gender )
     {
         this.gender = gender;
@@ -286,5 +273,14 @@ public class AddRepresentativeAction implements Action
     {
         return patient;
     }
-    
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
+    }
 }

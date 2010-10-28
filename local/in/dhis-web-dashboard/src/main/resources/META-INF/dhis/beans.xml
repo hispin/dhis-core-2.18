@@ -25,6 +25,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="statementManager" ref="statementManager"/>
     </bean>
 	
+<!-- Graphical Analyser DataElements -->
+	 <bean id="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
+        class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
+        scope="prototype">
+		<property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+		<property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+		<property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+		
+    </bean>
+
+    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
+        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
+        scope="prototype">
+
+    </bean>
+    	
+	
+<!-- -->	
+	
+		
 	<!-- Graphical Analyser -->
 	
     <bean

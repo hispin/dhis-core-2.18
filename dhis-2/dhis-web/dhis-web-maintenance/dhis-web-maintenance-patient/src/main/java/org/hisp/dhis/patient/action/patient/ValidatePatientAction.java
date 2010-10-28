@@ -84,8 +84,12 @@ public class ValidatePatientAction
     private String middleName;
 
     private String lastName;
+    
+    private Character dobType;
 
     private String birthDate;
+
+    private char ageType;
 
     private Integer age;
 
@@ -94,11 +98,11 @@ public class ValidatePatientAction
     private Integer id;
 
     private boolean checkedDuplicate;
-    
+
     private boolean underAge;
-    
+
     private Integer representativeId;
-    
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
@@ -167,51 +171,40 @@ public class ValidatePatientAction
 
             return INPUT;
         }
-
-        if ( birthDate != null )
+        
+        if ( dobType == 'V' || dobType == 'D')
         {
             birthDate = birthDate.trim();
 
-            if ( birthDate.length() != 0 )
+            dateOfBirth = format.parseDate( birthDate );
+
+            if ( dateOfBirth == null || dateOfBirth.after( new Date() ) )
             {
-                dateOfBirth = format.parseDate( birthDate );
+                message = i18n.getString( "please_enter_a_valid_birth_date" );
 
-                if ( dateOfBirth == null || dateOfBirth.after( new Date() ) )
-                {
-                    message = i18n.getString( "please_enter_a_valid_birth_date" );
-
-                    return INPUT;
-                }
-            }
-            else
-            {
-                if ( age == null )
-                {
-                    message = i18n.getString( "specfiy_birth_date_or_age" );
-
-                    return INPUT;
-                }
+                return INPUT;
             }
         }
-        
+
         if ( !checkedDuplicate )
         {
             // Check duplication name, birthdate, gender
-            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), gender );
+            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ),
+                gender );
 
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );
-                
+
                 boolean flagDuplicate = false;
                 for ( Patient p : patients )
                 {
-                    if ( id == null || ( id != null && p.getId().intValue() != id.intValue() ) )
+                    if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
                     {
                         flagDuplicate = true;
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
                             .getPatientAttributeValues( p );
-                        
+
                         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
                         {
                             patientAttributeValueMap
@@ -220,52 +213,39 @@ public class ValidatePatientAction
                         }
                     }
                 }
-                if( flagDuplicate )
+                if ( flagDuplicate )
                     return PATIENT_DUPLICATE;
             }
         }
-        
+
         // Check Under age information
-        
-        if( underAge )
+
+        if ( underAge )
         {
-            if(  representativeId == null )
+            if ( representativeId == null )
             {
-                message = i18n.getString("please_choose_representative_for_this_under_age_patient");
+                message = i18n.getString( "please_choose_representative_for_this_under_age_patient" );
                 return INPUT;
             }
-            if(  relationshipTypeId == null )
+            if ( relationshipTypeId == null )
             {
-                message = i18n.getString("please_choose_relationshipType_for_this_under_age_patient");
+                message = i18n.getString( "please_choose_relationshipType_for_this_under_age_patient" );
                 return INPUT;
             }
         }
-        
-        // Check ID duplicate
 
+        // Check ID duplicate
         Patient p = new Patient();
+
         if ( birthDate != null )
         {
             birthDate = birthDate.trim();
+            p.setBirthDate( format.parseDate( birthDate ) );
 
-            if ( birthDate.length() != 0 )
-            {
-                p.setBirthDate( format.parseDate( birthDate ) );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    p.setBirthDateFromAge( age.intValue() );
-                }
-            }
         }
         else
         {
-            if ( age != null )
-            {
-                p.setBirthDateFromAge( age.intValue() );
-            }
+            p.setBirthDateFromAge( age.intValue(), ageType );
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -278,27 +258,24 @@ public class ValidatePatientAction
             String idDuplicate = "";
             for ( PatientIdentifierType idType : identifiers )
             {
-                // If underAge is TRUE : Only check duplicate on PatientIdentifierType which related is FALSE
-                /*if(idType.getFormat().equals("State Format"))
-                {
-                     String orgUnitCodeValue = request.getParameter( "orgunitcode" );
-                     if(orgUnitCodeValue!=null)
-                     {
-                     System.out.println("orgUnitCodeValue = "+orgUnitCodeValue );
-                     if(orgUnitCodeValue.length()<9)
-                     {
-                         message = i18n.getString( "oucode_must_be_valid" );
-                         return INPUT;
-                     }
-                    }
-                }*/
-                if(  !underAge ||  ( underAge && !idType.isRelated() )   )
+                // If underAge is TRUE : Only check duplicate on
+                // PatientIdentifierType which related is FALSE
+                /*
+                 * if(idType.getFormat().equals("State Format")) { String
+                 * orgUnitCodeValue = request.getParameter( "orgunitcode" );
+                 * if(orgUnitCodeValue!=null) {
+                 * System.out.println("orgUnitCodeValue = "+orgUnitCodeValue );
+                 * if(orgUnitCodeValue.length()<9) { message = i18n.getString(
+                 * "oucode_must_be_valid" ); return INPUT; } } }
+                 */
+                if ( !underAge || (underAge && !idType.isRelated()) )
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
                     if ( StringUtils.isNotBlank( value ) )
                     {
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
-                        if ( identifier != null && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
+                        if ( identifier != null
+                            && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
                         {
                             idDuplicate += idType.getName() + ", ";
                         }
@@ -440,5 +417,15 @@ public class ValidatePatientAction
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
+    }
+
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
     }
 }

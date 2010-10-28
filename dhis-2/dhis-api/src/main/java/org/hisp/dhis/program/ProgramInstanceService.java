@@ -28,6 +28,7 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 
 /**
@@ -66,4 +67,5 @@ public interface ProgramInstanceService
 
     Collection<ProgramInstance> getProgramInstances( Patient patient, Program program, boolean completed );
 
+    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit );
 }

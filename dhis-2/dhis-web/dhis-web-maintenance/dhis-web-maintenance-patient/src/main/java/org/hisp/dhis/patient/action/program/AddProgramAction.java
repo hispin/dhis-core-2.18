@@ -66,28 +66,42 @@ public class AddProgramAction
     public void setDescription( String description )
     {
         this.description = description;
-    }   
-    
+    }
+
     /**
-     * Description of Date of Enrollment
-     * This description is differ from each program
+     * Description of Date of Enrollment This description is differ from each
+     * program
      */
     private String dateOfEnrollmentDescription;
- 
+
     public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
     {
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
-    
+
     /**
-     * Description of Date of Incident
-     * This description is differ from each program
+     * Description of Date of Incident This description is differ from each
+     * program
      */
     private String dateOfIncidentDescription;
-    
+
     public void setDateOfIncidentDescription( String dateOfIncidentDescription )
     {
         this.dateOfIncidentDescription = dateOfIncidentDescription;
+    }
+
+    private Integer minDaysAllowedInputData;
+
+    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
+    {
+        this.minDaysAllowedInputData = minDaysAllowedInputData;
+    }
+
+    private Integer maxDaysAllowedInputData;
+
+    public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
+    {
+        this.maxDaysAllowedInputData = maxDaysAllowedInputData;
     }
 
     // -------------------------------------------------------------------------
@@ -97,15 +111,15 @@ public class AddProgramAction
     public String execute()
         throws Exception
     {
+        Program program = new Program();
 
-        Program program = new Program();             
-                
         program.setName( name );
         program.setDescription( description );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
+        program.setMinDaysAllowedInputData( minDaysAllowedInputData );
+        program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         
-
         programService.saveProgram( program );
 
         return SUCCESS;

@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -75,6 +76,7 @@ public abstract class StreamActionSupport
         if ( disallowCache() )
         {
             response.addHeader( "Cache-Control", "no-cache" );
+            response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
         }
         
         try

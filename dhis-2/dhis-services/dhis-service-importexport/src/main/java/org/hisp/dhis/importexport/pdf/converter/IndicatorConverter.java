@@ -31,9 +31,9 @@ import java.util.Collection;
 
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.system.util.PDFUtils;
@@ -41,7 +41,6 @@ import org.hisp.dhis.system.util.PDFUtils;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
@@ -69,63 +68,22 @@ public class IndicatorConverter
 
     public void write( Document document, ExportParams params )
     {
-        PDFPrintUtil.printIndicatorFrontPage( document, params );
-
         I18n i18n = params.getI18n();
+        I18nFormat format = params.getFormat();
+
+        PDFUtils.printIndicatorFrontPage( document, params.getIndicators(), i18n, format );
 
         Collection<Indicator> indicators = indicatorService.getIndicators( params.getIndicators() );
 
         BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
         Font TEXT = new Font( bf, 9, Font.NORMAL );
         Font ITALIC = new Font( bf, 9, Font.ITALIC );
         Font HEADER3 = new Font( bf, 12, Font.BOLD );
 
         for ( Indicator indicator : indicators )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( indicator.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getCode() ) );
-
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getNumeratorDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( indicator.getNumeratorAggregationOperator() ) ) );
-
-            table.addCell( getItalicCell( i18n.getString( "numerator_formula" ), 1, ITALIC ) );
-            table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( indicator.getDenominatorAggregationOperator() ) ) );
-
-            table.addCell( getItalicCell( i18n.getString( "denominator_formula" ), 1, ITALIC ) );
-            table
-                .addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ), TEXT ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printIndicator( indicator, i18n, expressionService, HEADER3, ITALIC, TEXT,
+                true, 0.40f, 0.60f ) );
         }
     }
 }

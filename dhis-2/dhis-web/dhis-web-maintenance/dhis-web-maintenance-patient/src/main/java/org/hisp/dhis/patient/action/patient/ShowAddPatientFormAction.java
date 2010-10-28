@@ -124,7 +124,7 @@ public class ShowAddPatientFormAction
 
         for(PatientIdentifierType identifierType :identifierTypes)
         {
-            if(identifierType.getFormat().equals("State Format") && identifierType.isMandatory()==true )
+            if(identifierType.getFormat() != null && identifierType.getFormat().equals("State Format") && identifierType.isMandatory()==true )
             {
                 if(organisationUnit.getCode()==null || organisationUnit.getCode().length() < 9)
                     showMsg = true;

@@ -183,7 +183,8 @@
 				../dhis-web-commons/ouwt/ouwt.js
 				,../dhis-web-commons/javascripts/date.js
 				,javascript/jquery/thickbox/thickbox-compressed.js
-				,javascript/relationshipPatient.js	
+				,javascript/relationshipPatient.js
+				,javascript/commons.js
 			</param>
 			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
@@ -408,7 +409,8 @@
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js
 				,../dhis-web-commons/javascripts/date.js				
-				,javascript/patient.js				
+				,javascript/patient.js
+				,javascript/commons.js				
 			</param>			
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
@@ -425,7 +427,8 @@
 				../dhis-web-commons/ouwt/ouwt.js
 				,../dhis-web-commons/javascripts/date.js				
 				,javascript/jquery/cluetip/jquery.cluetip.min.js
-				,javascript/patient.js						
+				,javascript/patient.js
+				,javascript/commons.js						
 			</param>
 			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css,javascript/jquery/cluetip/jquery.cluetip.css</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
@@ -463,6 +466,7 @@
 				../dhis-web-commons/calendar/calendar-setup.js,
 				../dhis-web-commons/javascripts/jQuery/jquery.metadata.js,
 				javascript/underage.js
+				,javascript/commons.js
 			</param>
 			<param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css, style/tabs.css</param>
 		</action>

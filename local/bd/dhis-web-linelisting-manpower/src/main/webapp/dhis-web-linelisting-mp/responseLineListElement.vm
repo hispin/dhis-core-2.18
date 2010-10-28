@@ -8,6 +8,7 @@
 		<id>$lineListElement.id</id>
 		<name>$encoder.xmlEncode( $lineListElement.name )</name>
 	</lineListElement>
+<!--	#set( $count1 = $count1 + 1 ) -->
 #end
 
 </lineListElements>

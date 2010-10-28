@@ -1,121 +1,108 @@
 package org.hisp.dhis.patient.action.caseaggregation;
 
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 
 import com.opensymphony.xwork2.Action;
 
-public class CaseAggregationMapping implements Action
+public class CaseAggregationMapping
+    implements Action
 {
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
     }
-    
+
     private PatientAttributeService patientAttributeService;
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-    
-    private ProgramStageDataElementService programStageDataElementService;
-    
-    public void setProgramStageDataElementService(
-        ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
-    }
-        
+
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Output
     // -------------------------------------------------------------------------
 
-    private List<PatientAttribute> patientAttributeList;
-    
-    public List<PatientAttribute> getPatientAttributeList()
+    private List<PatientAttribute> patientAttributes;
+
+    public List<PatientAttribute> getPatientAttributes()
     {
-        return patientAttributeList;
-    }
-    
-    private List<DataElementGroup> deGroupList;
-    
-    public List<DataElementGroup> getDeGroupList()
-    {
-        return deGroupList;
+        return patientAttributes;
     }
 
-    private List<DataElement> dataElementList;
-    
-    public List<DataElement> getDataElementList()
-    {
-        return dataElementList;
-    }
-    
-    private List<String> optionComboNames;
+    private List<DataElementGroup> dataElementGroups;
 
-    public List<String> getOptionComboNames()
+    public List<DataElementGroup> getDataElementGroups()
     {
-        return optionComboNames;
+        return dataElementGroups;
     }
 
-    private List<String> optionComboIds;
-    
-    public List<String> getOptionComboIds()
+    private List<DataElement> dataElements;
+
+    public List<DataElement> getDataElements()
     {
-        return optionComboIds;
-    }
-    
-    private List<Program> programList;
-    
-    public List<Program> getProgramList()
-    {
-        return programList;
-    }
-    
-    private List<ProgramStage> programStageList;
-    
-    public List<ProgramStage> getProgramStageList()
-    {
-        return programStageList;
+        return dataElements;
     }
 
-    private List<DataElement> programStageDEList;
-    
-    public List<DataElement> getProgramStageDEList()
+    private List<Program> programs;
+
+    public List<Program> getPrograms()
     {
-        return programStageDEList;
+        return programs;
     }
 
     private String intType;
-    
+
     public String getIntType()
     {
         return intType;
@@ -147,81 +134,30 @@ public class CaseAggregationMapping implements Action
     // -------------------------------------------------------------------------
 
     public String execute()
-    {    
+    {
+        // ---------------------------------------------------------------------
+        // Get Dataelement's types
+        // ---------------------------------------------------------------------
+
         intType = DataElement.VALUE_TYPE_INT;
-        
+
         stringType = DataElement.VALUE_TYPE_STRING;
-        
+
         dateType = DataElement.VALUE_TYPE_DATE;
-        
+
         boolType = DataElement.VALUE_TYPE_BOOL;
-        
-        optionComboNames = new ArrayList<String>();
-        
-        optionComboIds = new ArrayList<String>();
-        
-        patientAttributeList = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
-        
-        deGroupList = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        
-        programList = new ArrayList<Program>( programService.getAllPrograms() );
-        
-        if( programList != null && !programList.isEmpty() )
-        {
-            programStageList = new ArrayList<ProgramStage>( programList.get( 0 ).getProgramStages() );
-        }
-        if( programStageList != null && !programStageList.isEmpty() )
-        {
-            programStageDEList = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStageList.get( 0 ) )  );
-        }
-        
-        if( deGroupList != null && !deGroupList.isEmpty() )
-        {
-            dataElementList = new ArrayList<DataElement>( deGroupList.get( 0 ).getMembers() );
-            
-            Iterator<DataElement> deIterator = dataElementList.iterator();
-            
-            while( deIterator.hasNext() )
-            {
-                DataElement de = deIterator.next();
-                if( de.getDomainType() != null )
-                    if( de.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_PATIENT ) )
-                        deIterator.remove();
-            }
-        }
-        else
-        {
-            dataElementList = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
-        }
-            
-        if( dataElementList != null && !dataElementList.isEmpty() )
-        {
-            Iterator<DataElement> deIterator = dataElementList.iterator();
-            
-            while(deIterator.hasNext())
-            {
-                DataElement de = deIterator.next();
-                
-                DataElementCategoryCombo dataElementCategoryCombo = de.getCategoryCombo();
-                                
-                List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-                    dataElementCategoryCombo.getOptionCombos() );
-    
-                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                
-                while ( optionComboIterator.hasNext() )
-                {
-                    DataElementCategoryOptionCombo decoc = optionComboIterator.next();
-                    
-                    optionComboIds.add( de.getId()+":"+decoc.getId());
-                    
-                    optionComboNames.add( de.getName()+":"+decoc.getName() );                
-                }   
-            }
-                        
-        }
-        
+
+        // ---------------------------------------------------------------------
+        // Get attributes, dataElementGroup, programs
+        // ---------------------------------------------------------------------
+
+        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+
+        programs = new ArrayList<Program>( programService.getAllPrograms() );
+
         return SUCCESS;
     }
-    
+
 }

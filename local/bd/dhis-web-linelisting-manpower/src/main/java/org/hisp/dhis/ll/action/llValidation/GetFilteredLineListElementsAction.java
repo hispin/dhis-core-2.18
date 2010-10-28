@@ -150,7 +150,8 @@ public class GetFilteredLineListElementsAction
             String name = element.getName();
             System.out.println("elementname = "+name);
         }
-
+        
+        System.out.println( "lineListElements length "+ llElements.size() );
         return SUCCESS;
     }
 }

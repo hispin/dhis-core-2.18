@@ -19,7 +19,9 @@
     
     <property name="related" not-null="true"/>
     
+    <property name="noChars"/>
     
+    <property name="type"/>
 	
   </class>
 </hibernate-mapping>

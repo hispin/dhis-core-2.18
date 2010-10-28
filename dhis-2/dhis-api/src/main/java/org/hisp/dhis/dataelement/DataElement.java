@@ -66,9 +66,17 @@ public class DataElement
     implements DimensionOption, DimensionOptionElement
 {
     public static final String VALUE_TYPE_STRING = "string";
+    
 
     public static final String VALUE_TYPE_INT = "int";
 
+    public static final String VALUE_TYPE_NUMBER = "number";
+    
+    public static final String VALUE_TYPE_POSITIVE_NUMBER = "positiveNumber";
+    
+    public static final String VALUE_TYPE_NEGATIVE_NUMBER = "negativeNumber";
+    
+    
     public static final String VALUE_TYPE_BOOL = "bool";
 
     public static final String VALUE_TYPE_DATE = "date";
@@ -100,6 +108,11 @@ public class DataElement
      */
     private String type;
 
+    /**
+     * The number type. Is relevant when type is INT.
+     */
+    private String numberType;
+    
     /**
      * The aggregation operator of this DataElement; e.g. DataElement.SUM og
      * DataElement.AVERAGE.
@@ -300,7 +313,15 @@ public class DataElement
     // Logic
     // -------------------------------------------------------------------------
     
-    
+    /**
+     * Returns the value type. If value type is int and the number type exists,
+     * the number type is returned, if the type is int and the number type does
+     * not exist int is returned.
+     */
+    public String getDetailedNumberType()
+    {
+        return ( type != null && type.equals( VALUE_TYPE_INT ) && numberType != null )  ? numberType : type;
+    }
 
     /**
      * Null-safe check.
@@ -582,5 +603,15 @@ public class DataElement
     public void setZeroIsSignificant( Boolean zeroIsSignificant )
     {
         this.zeroIsSignificant = zeroIsSignificant;
+    }
+
+    public String getNumberType()
+    {
+        return numberType;
+    }
+
+    public void setNumberType( String numberType )
+    {
+        this.numberType = numberType;
     }
 }

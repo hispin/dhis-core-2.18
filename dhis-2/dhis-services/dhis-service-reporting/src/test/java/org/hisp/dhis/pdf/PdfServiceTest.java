@@ -32,12 +32,14 @@ import static org.junit.Assert.assertNotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
-import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mock.MockI18n;
+import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.junit.Test;
@@ -46,7 +48,7 @@ import org.junit.Test;
  * @author Hieu
  */
 public class PdfServiceTest
-    extends DhisSpringTest
+    extends DhisTest
 {
     private PdfService pdfService;
 
@@ -62,6 +64,8 @@ public class PdfServiceTest
 
     private I18n i18n;
 
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -69,7 +73,9 @@ public class PdfServiceTest
     @Override
     public void setUpTest()
     {
-        i18n = new MockI18n();
+        i18n = new MockI18n();        
+        
+        format = new MockI18nFormat();
 
         pdfService = (PdfService) getBean( PdfService.ID );
 
@@ -93,6 +99,12 @@ public class PdfServiceTest
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'A' ) );
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'B' ) );
         organisationUnitService.addOrganisationUnit( createOrganisationUnit( 'C' ) );
+    }
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -135,7 +147,7 @@ public class PdfServiceTest
     {
         OutputStream outputStreamC = new ByteArrayOutputStream();
 
-        pdfService.writeAllOrganisationUnits( outputStreamC, i18n );
+        pdfService.writeAllOrganisationUnits( outputStreamC, i18n, format );
 
         assertNotNull( outputStreamC );
         

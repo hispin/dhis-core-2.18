@@ -29,6 +29,8 @@ package org.hisp.dhis.mock;
 
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 
+import java.util.Date;
+
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.Period;
 
@@ -51,5 +53,11 @@ public class MockI18nFormat
             getMediumDateString( period.getEndDate() );
         
         return name.toLowerCase().trim();
+    }
+    
+    @Override
+    public String formatDate( Date date )
+    {
+        return getMediumDateString( date ).toLowerCase().trim();
     }
 }

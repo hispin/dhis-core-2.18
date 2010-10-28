@@ -11,7 +11,9 @@ function validateAddRelationshipPatient()
 				+'&middleName=' + getFieldValue( 'middleName' ) 
 				+'&lastName=' + getFieldValue( 'lastName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 	        
+				+'&dobType=' + getFieldValue( 'dobType' ) 
+				+'&birthDate=' + getFieldValue( 'birthDate' ) 
+				+'&ageType=' + getFieldValue( 'ageType' )
 				+'&age=' + getFieldValue( 'age' ) 
 				+'&genre=' + getFieldValue('gender') 
 				+'&underAge=' + jQuery("#underAge").is(":checked")
@@ -21,14 +23,14 @@ function validateAddRelationshipPatient()
 	
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addValidationCompleted ); 
+    request.setCallbackSuccess( addRelationshipPatientCompleted ); 
 	request.sendAsPost( params );	
     request.send( "validateAddRelationshipPatient.action" );        
 
     return false;
 }
 
-function addValidationCompleted( messageElement )
+function addRelationshipPatientCompleted( messageElement )
 {
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;

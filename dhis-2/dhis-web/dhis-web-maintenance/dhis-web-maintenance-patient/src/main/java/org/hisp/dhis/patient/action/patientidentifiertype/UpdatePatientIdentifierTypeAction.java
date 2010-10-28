@@ -61,6 +61,10 @@ public class UpdatePatientIdentifierTypeAction
     
     private Boolean related;
     
+    private Integer noChars;
+
+    private String type;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -72,12 +76,13 @@ public class UpdatePatientIdentifierTypeAction
         PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
         if( identifierType != null )
         {
-            
             identifierType.setName( name );
             identifierType.setDescription( description );
             identifierType.setFormat( formater );
             identifierType.setMandatory( mandatory.booleanValue() );
             identifierType.setRelated( related.booleanValue() );
+            identifierType.setNoChars( noChars );
+            identifierType.setType( type );
             patientIdentifierTypeService.updatePatientIdentifierType( identifierType );
         }
         
@@ -87,6 +92,16 @@ public class UpdatePatientIdentifierTypeAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+
+    public void setNoChars( Integer noChars )
+    {
+        this.noChars = noChars;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     public void setDescription( String description )
     {

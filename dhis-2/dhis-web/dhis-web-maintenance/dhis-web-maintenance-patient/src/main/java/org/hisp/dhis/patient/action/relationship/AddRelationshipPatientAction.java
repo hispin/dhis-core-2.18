@@ -80,9 +80,11 @@ public class AddRelationshipPatientAction
 
     private String birthDate;
 
-    private Integer age;
+    private char ageType;
 
-    private boolean birthDateEstimated;
+    private Integer age;
+    
+    private Character dobType;
 
     private String gender;
 
@@ -132,31 +134,18 @@ public class AddRelationshipPatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        if ( birthDate != null )
+        if ( dobType == 'V' || dobType == 'D')
         {
-            birthDate = birthDate.trim();
-
-            if ( birthDate.length() != 0 )
-            {
-                patient.setBirthDate( format.parseDate( birthDate ) );
-                patient.setBirthDateEstimated( birthDateEstimated );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    patient.setBirthDateFromAge( age.intValue() );
-                }
-            }
+           birthDate = birthDate.trim();
+           patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-            if ( age != null )
-            {
-                patient.setBirthDateFromAge( age.intValue() );
-            }
+           patient.setBirthDateFromAge( age.intValue(), ageType );
         }
 
+        patient.setDobType( dobType );
+        
         patient.setRegistrationDate( new Date() );
 
         // --------------------------------------------------------------------------------
@@ -356,12 +345,7 @@ public class AddRelationshipPatientAction
     {
         this.age = age;
     }
-
-    public void setBirthDateEstimated( boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
+    
     public void setGender( String gender )
     {
         this.gender = gender;
@@ -400,5 +384,15 @@ public class AddRelationshipPatientAction
     public void setRelationshipId( Integer relationshipId )
     {
         this.relationshipId = relationshipId;
+    }
+    
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+    
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
     }
 }
