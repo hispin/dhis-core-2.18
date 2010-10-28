@@ -35,5 +35,9 @@
       	class="org.hisp.dhis.validation.ValidationCriteria" />
     </set>    
     
+    <property name="minDaysAllowedInputData"/>  
+   
+    <property name="maxDaysAllowedInputData"/>  
+   
   </class>
 </hibernate-mapping>

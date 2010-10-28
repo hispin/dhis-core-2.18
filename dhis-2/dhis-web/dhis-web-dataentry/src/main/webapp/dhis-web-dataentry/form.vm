@@ -79,7 +79,7 @@
 		</td>
 		
 		##value type
-		<td style="display:none">$dataElementValueTypeMap.get( $dataElement.type )<span id="value[$dataElement.id].type" style="display:none">$dataElement.type</span></td>
+		<td style="display:none">$dataElementValueTypeMap.get( $dataElement.type )<span id="value[$dataElement.id].type" style="display:none">$dataElement.getDetailedNumberType()</span></td>
 		
 		##min value
 		<td>
@@ -178,13 +178,7 @@
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
 
 <script type="text/javascript">
-	var i18n_saving_zero_values_unnecessary = '$encoder.jsEscape( $i18n.getString( "saving_zero_values_unnecessary" ) , "'")';
-	var i18n_value_of_data_element_less = '$encoder.jsEscape( $i18n.getString( "value_of_data_element_less" ) , "'")';
-	var i18n_value_of_data_element_greater = '$encoder.jsEscape( $i18n.getString( "value_of_data_element_greater" ) , "'")';
-	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
-	var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
-	var i18n_saving_comment_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_comment_failed_status_code" ) , "'")';
-	var i18n_saving_minmax_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_minmax_failed_error_code" ) , "'")';
+	
 	var calculatedDataElementMap = {
 	#set( $count = 1 )
 	#foreach( $cde in $calculatedDataElementMap.keySet() )

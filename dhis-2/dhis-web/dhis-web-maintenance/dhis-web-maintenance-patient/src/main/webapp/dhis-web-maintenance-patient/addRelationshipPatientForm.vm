@@ -17,16 +17,34 @@ td.error {padding-left:1em}
 
 <script>
 	jQuery(document).ready(	function(){
-			validation( 'addRelationshipPatientForm', validateAddRelationshipPatient );		
-			datePickerValid( 'birthDate' );
-			jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});			
+
+		datePickerValid( 'birthDate' );
+		
+		jQuery("#addRelationshipPatientForm").validate({
+			 meta:"validate"
+			,errorElement:"span"
+			,submitHandler: function(form)
+				{
+					validateAddRelationshipPatient();
+				}
+			,beforeValidateHandler: function(form)
+				{
+					var birthDate = $('#birthDate').val();
+					var age = $('#age').val();
+					if(age !=''){
+						$( "#memberValidator").val(age);
+					}else{
+						$( "#memberValidator").val(birthDate);
+					}
+				}
+		});
 	});		
 </script>
 
 <h3>$i18n.getString("add_new_relationship_for"):  $patient.getFullName()</h3>
 
 																			
-<form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="post">
+<form  id="addRelationshipPatientForm" action="addRelationshipPatient.action" method="get">
 <input type="hidden" id="relationshipId"  name="relationshipId" value="$patient.id"/> 
 <table>	
 	<tr>
@@ -72,19 +90,46 @@ td.error {padding-left:1em}
 			</select>
 		</td>		
 	</tr>
+	
 	<tr>
-		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>
-			<input type="text" id="birthDate" name="birthDate" style="width:10em"  onchange="bdOnchange()" >
-			&nbsp;
-			<label for="age">$i18n.getString( "or" )  $i18n.getString( "age" ) </label>
-			<input type="text" id="age" name="age" style="width:4em"  onchange="ageOnchange()" class="{validate:{number:true}}">
-			&nbsp;&nbsp;&nbsp;
-			<label for="estimated">$i18n.getString( "estimated" )</label>
-            <input type="checkbox" id="birthDateEstimated" name="birthDateEstimated" value="true"> 
-	   </td>
+		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td class="input-column">
+			<select id='dobType' name="dobType" style="min-width:20em" onchange="dobTypeOnChange();" class="{validate:{required:false}}">
+				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
+				<option value="V" >$i18n.getString( "verified" )</option>
+				<option value="D" >$i18n.getString( "declared" )</option>
+				<option value="A" >$i18n.getString( "approximated" )</option>
+			</select>
+        </td>
 	   <td></td>
 	</tr>
+	
+	<tr id='birthdaySpan' style="display:none" >
+		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
+		<td>			
+			<input type="text" id="birthDate" name="birthDate" style="width:26.5em" onchange="bdOnchange()" >
+		</td>
+		<td></td>
+	</tr>
+	
+	<tr id='ageSpan' style="display:none" >
+		<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
+		<td>
+			<select id="ageType" name="ageType" style="width:18em" >
+				<option value="D"> $i18n.getString('day')</option>
+				<option value="M"> $i18n.getString('month')</option>
+				<option value="Y"> $i18n.getString('year')</option>
+			</select>
+			<input type="text" id="age" name="age"  style="width:10em"  style="width:4em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
+		</td>
+		<td></td>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
+	</tr>
+	
  	<tr>
 		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
 		<td class="input-column" >
@@ -123,7 +168,7 @@ td.error {padding-left:1em}
 		#set( $identifier = $identiferMap.get( $identifierType.id ) )
 		<tr>
 			<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-			<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related,id:'$identifier'}"  class='idfield  #validate( "default"  $identifierType.mandatory ) '/></td>	
+			<td class="input-column"><input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related,id:'$identifier'}"  class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}"/></td>	
 		</tr>
 	#end
 	

@@ -68,8 +68,7 @@
       <artifactId>dhis-web-maintenance-settings</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>	
-
+    </dependency>
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-patient</artifactId>
@@ -91,42 +90,36 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>
-	
+    </dependency>	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>	
-	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>
-	
+    </dependency>	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard-integration</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>	
-	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mapping</artifactId>
       <version>${project.version}</version>
       <type>war</type>
-    </dependency>
-	
+    </dependency>	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-excel-reporting</artifactId>
@@ -146,48 +139,15 @@
       <type>war</type>
     </dependency>
 	
-	
-    
-    <!-- India modules -->
-    
-<!--    
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-dashboard</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-reports-national</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>
--->
-<!--
-	<dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-dataentry-national</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency> 
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-web-validationrule-local-in</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency> -->
-   
-    
     <!-- Vietnam modules -->
-   <!--
+    <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-gis</artifactId>
       <version>${project.version}</version>
       <type>war</type>
     </dependency>  
-   -->
+    -->
     <!-- South Africa modules -->
     
     <!-- 

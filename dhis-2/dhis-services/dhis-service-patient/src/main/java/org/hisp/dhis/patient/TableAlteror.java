@@ -26,6 +26,19 @@ public class TableAlteror
     public void execute()
         throws Exception
     {
+        updatePatientOrgunitAssociation();
+        
+        updateDOBType();
+        
+        executeSql("UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT +"' WHERE type IS NULL");
+        
+        executeSql("UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL");
+        
+        executeSql("UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL");
+    }
+
+    private void updatePatientOrgunitAssociation(){
+        
         StatementHolder holder = statementManager.getHolder();
 
         try
@@ -57,9 +70,31 @@ public class TableAlteror
         {
             holder.close();
         }
-
     }
+    
+    private void updateDOBType(){
+        StatementHolder holder = statementManager.getHolder();
 
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true");
+            
+            executeSql("ALTER TABLE patient drop column birthdateestimated");
+            
+            executeSql("DELETE FROM validationcriteria where property='birthdateestimated'");
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+    
     private int executeSql( String sql )
     {
         try

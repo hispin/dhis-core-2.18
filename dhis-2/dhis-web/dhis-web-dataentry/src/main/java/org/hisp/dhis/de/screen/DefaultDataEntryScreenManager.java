@@ -352,7 +352,7 @@ public class DefaultDataEntryScreenManager
                 // Find type of data element
                 // -------------------------------------------------------------
 
-                String dataElementType = dataElement.getType();
+                String dataElementType = dataElement.getDetailedNumberType();
 
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set

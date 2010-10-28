@@ -264,13 +264,15 @@ function validateAddPatient()
 			return false;
 		}
 	}
-	
+
 	var params = '&checkedDuplicate='+checkedDuplicate 
 				+'&firstName=' + getFieldValue( 'firstName' ) 
 				+'&middleName=' + getFieldValue( 'middleName' ) 
 				+'&lastName=' + getFieldValue( 'lastName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
-				+'&birthDate=' + getFieldValue( 'birthDate' ) 	        
+				+'&dobType=' + getFieldValue( 'dobType' ) 
+				+'&birthDate=' + getFieldValue( 'birthDate' ) 
+				+'&ageType=' + getFieldValue( 'ageType' )
 				+'&age=' + getFieldValue( 'age' ) 
 				+'&genre=' + getFieldValue('gender') 
 				+'&underAge=' + jQuery("#underAge").is(":checked")

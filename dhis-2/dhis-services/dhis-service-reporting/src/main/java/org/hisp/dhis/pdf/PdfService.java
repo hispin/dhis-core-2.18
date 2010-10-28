@@ -50,7 +50,7 @@ public interface PdfService
 
     void writeAllIndicators( OutputStream outputStream, I18n i18n );
 
-    void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n );
+    void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n, I18nFormat format );
 
     void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n,
         OrganisationUnit unit, DataSet dataSet );

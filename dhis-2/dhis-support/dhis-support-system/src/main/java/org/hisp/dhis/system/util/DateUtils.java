@@ -56,8 +56,7 @@ public class DateUtils
      */
     public static String getAccessDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern( "yyyy/MM/dd HH:mm:ss" );
+        final SimpleDateFormat format = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
 
         return date != null ? format.format( date ) : null;
     }
@@ -70,8 +69,7 @@ public class DateUtils
      */
     public static String getLongDateString( Date date )
     {
-        final SimpleDateFormat format = new SimpleDateFormat();
-        format.applyPattern( "yyyy-MM-dd'T'HH:mm:ss" );
+        final SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
 
         return date != null ? format.format( date ) : null;
     }
@@ -125,6 +123,34 @@ public class DateUtils
         return getMediumDateString( Calendar.getInstance().getTime() );
     }
 
+    /**
+     * Formats a Date according to the HTTP specification standard date format.
+     * 
+     * @param date the Date to format.
+     * @return a formatted string.
+     */
+    public static String getHttpDateString( Date date )
+    {
+        final SimpleDateFormat format = new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss" );
+        
+        return format.format( date ) + " GMT" ;
+    }
+
+    /**
+     * Returns yesterday's date formatted according to the HTTP specification 
+     * standard date format.
+     * 
+     * @param date the Date to format.
+     * @return a formatted string.
+     */
+    public static String getExpiredHttpDateString()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.add( Calendar.DAY_OF_YEAR, -1 );
+        
+        return getHttpDateString( cal.getTime() );
+    }
+    
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
      * 

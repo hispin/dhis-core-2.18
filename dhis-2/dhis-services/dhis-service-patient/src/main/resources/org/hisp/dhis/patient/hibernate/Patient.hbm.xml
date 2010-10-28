@@ -17,9 +17,7 @@
 		<property name="lastName" column="lastname" length="50" />
 
 		<property name="birthDate" column="birthdate" not-null="true"/>
-
-		<property name="birthDateEstimated" column="birthdateestimated" />
-
+		
 		<property name="deathDate" column="deathdate" />
 
 		<property name="registrationDate" column="registrationdate" not-null="true"/>
@@ -31,7 +29,9 @@
 		<property name="gender" column="gender" length="5" not-null="true"/>
 		
 		<property name="underAge" column="underage" not-null="true"/>
-
+		
+		<property name="dobType" column="dobType"/>
+		
 		<set name="identifiers" inverse="true" cascade="all">
 			<key column="patientid" />
 			<one-to-many class="org.hisp.dhis.patient.PatientIdentifier" />

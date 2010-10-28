@@ -63,6 +63,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>irc.png</value>
         </entry>
         <entry>
+          <key><value>ivory_coast</value></key>
+          <value>ivory_coast.png</value>
+        </entry>
+        <entry>
           <key><value>kenya</value></key>
           <value>kenya.png</value>
         </entry>
@@ -187,6 +191,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </entry>
       </map>
     </property>
+  </bean>
+  
+  <bean id="org.hisp.dhis.options.style.UserStyleManager"
+    class="org.hisp.dhis.options.style.DefaultUserStyleManager">
+    <property name="userSettingService"
+      ref="org.hisp.dhis.user.UserSettingService"/>
   </bean>
   
   <bean id="org.hisp.dhis.options.help.HelpManager"

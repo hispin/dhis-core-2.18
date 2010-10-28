@@ -35,7 +35,6 @@ import java.util.Map;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -188,28 +187,16 @@ public class GenerateReportAction
 
         programs = programService.getPrograms( organisationUnit );
 
-        // Getting the list of Patients that are related to selected OrganisationUnit
-        
-        Collection<Patient> patientListByOrgUnit = new ArrayList<Patient>();
-        patientListByOrgUnit.addAll( patientService.getPatients( organisationUnit ) );
-        
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
-        
-        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program );
+
+        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program, organisationUnit );
 
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( ProgramInstance programInstance : selectedProgramInstances )
         {
-        	Patient patient = programInstance.getPatient();
-            //taking patient present in selected orgunit
-            if ( !patientListByOrgUnit.contains( patient ) || programInstance.getEndDate() != null )
-            {
-                continue;
-            }
-            
             if ( !programInstance.isCompleted() )
             {
                 programInstances.add( programInstance );

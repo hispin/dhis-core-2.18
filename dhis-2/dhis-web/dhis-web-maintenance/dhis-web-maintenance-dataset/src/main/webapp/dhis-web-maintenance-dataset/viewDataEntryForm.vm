@@ -9,7 +9,6 @@
   
 	var autoSave = '$!autoSave';
 	
-	var oFCKeditor;
 	
 	jQuery(document).ready(	function(){
 			validation( 'saveDataEntryForm', function(){
@@ -137,16 +136,16 @@
 
 <div id="dataElementSelection" class="ui-widget-content">
 <h3 class="ui-widget-header"><b>$i18n.getString( 'dataelement' )</b></h3>
+	<input type="text" style="width:440px" onkeyup="filterValues( this.value, 1 )"/>
 	<div id="dataElementList" style="height:150px;overflow:auto;border:1px solid #7AAED5">
 	<table width="100%">
+		<tbody id="list">
 		#foreach( $operand in $operands )
-			<tr id="tr$velocityCount" onclick="select($velocityCount)" ondblclick="insertDataElement()">
-				<td>
-					<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/>
-					$encoder.htmlEncode( $operand.operandName )
-				</td>
+			<tr id="tr$velocityCount" onclick="select($velocityCount)" ondblclick="insertDataElement()">				
+				<td>$encoder.htmlEncode( $operand.operandName )<input type="hidden" id="json_$velocityCount" value='$operand.toJSON()'/></td>
 			</tr>						
 		#end
+		</tbody>
 	</table>
 	</div>
 	<table>

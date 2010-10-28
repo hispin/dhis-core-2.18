@@ -3,15 +3,13 @@ package org.hisp.dhis.web.api.service;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-
-import org.hisp.dhis.web.api.model.AbstractModel;
-import org.hisp.dhis.web.api.model.AbstractModelList;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
+import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,14 +29,14 @@ public class DefaultDataSetService implements IDataSetService {
     // MobileDataSetService
     // -------------------------------------------------------------------------	
 	
-	public AbstractModelList getAllMobileDataSetsForLocale(String localeString) {
-		
-		Locale locale = LocaleUtil.getLocale(localeString);		
-		
-		AbstractModelList abstractModelList = new AbstractModelList();
-
-		List<AbstractModel> abstractModels = new ArrayList<AbstractModel>();
-
+	public List<DataSet> getAllMobileDataSetsForLocale(String localeString) {
+		 
+		List<DataSet> datasets = new ArrayList<DataSet>();
+		Locale locale = LocaleUtil.getLocale(localeString);			
+//		AbstractModelList abstractModelList = new AbstractModelList();
+//
+//		List<AbstractModel> abstractModels = new ArrayList<AbstractModel>();
+//
 		for (org.hisp.dhis.dataset.DataSet dataSet : dataSetService.getDataSetsForMobile()) 
 		{			
 			if( dataSet.getPeriodType().getName().equals( "Daily") ||
@@ -46,52 +44,62 @@ public class DefaultDataSetService implements IDataSetService {
 					dataSet.getPeriodType().getName().equals( "Monthly") ||
 					dataSet.getPeriodType().getName().equals( "Yearly") )
 			{
-				
-				dataSet = i18n( i18nService, locale, dataSet );		
-
-				AbstractModel abstractModel = new AbstractModel();
-
-				abstractModel.setId( dataSet.getId());				
-				abstractModel.setName(dataSet.getName());			
-
-				abstractModels.add(abstractModel);					
-			}								
+				datasets.add(getDataSetForLocale(dataSet.getId(),locale));
+			}
 		}
+//		
+//		abstractModelList.setAbstractModels(abstractModels);
 		
-		abstractModelList.setAbstractModels(abstractModels);
-		
-		return abstractModelList;
+		return datasets;
 	}
 	
-	public DataSet getDataSetForLocale(int dataSetId, String localeString) {
-		
-		Locale locale = LocaleUtil.getLocale(localeString);			
-		
+	public DataSet getDataSetForLocale(int dataSetId, Locale locale) {
+		System.out.println("DefaultDataSetService: transform dataset");
 		org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetId );
-		
 		dataSet = i18n( i18nService, locale, dataSet );
+		Set<org.hisp.dhis.dataset.Section> sections = dataSet.getSections();
 		
-		Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
-		
+//		Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
+
+		//Mobile
 		DataSet ds = new DataSet();
-		List<DataElement> des = new ArrayList<DataElement>();
+		
 		ds.setId( dataSet.getId() );			
-		
 		ds.setName( dataSet.getName() );
-		ds.setPeriodType( dataSet.getPeriodType().getName() );		
+		System.out.println("DefaultDataSetService: create DataSet "+ ds.getName());
+		ds.setPeriodType( dataSet.getPeriodType().getName() );
 		
-		for( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
-		{
-			dataElement = i18n( i18nService, locale, dataElement );
+		//Mobile
+		List<Section> sectionList = new ArrayList<Section>(); 
+		ds.setSections(sectionList);
+		
+		for(org.hisp.dhis.dataset.Section each : sections){
+			List<org.hisp.dhis.dataelement.DataElement> dataElements = each.getDataElements();
 			
-			DataElement de = new DataElement();
-			de.setId( dataElement.getId() );
-			de.setName( dataElement.getName() );
-			de.setType( dataElement.getType() );
-			des.add( de );
+			Section section = new Section();
+			section.setId(each.getId());
+			section.setName(each.getName());
+			//Mobile
+			List<DataElement> dataElementList = new ArrayList<DataElement>();
+			section.setDes(dataElementList);
+			
+			
+			for( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
+			{
+				dataElement = i18n( i18nService, locale, dataElement );
+				
+				DataElement de = new DataElement();
+				de.setId( dataElement.getId() );
+				de.setName( dataElement.getName() );
+				de.setType( dataElement.getType() );
+				dataElementList.add( de );
+				System.out.println("add dataelement:"+de.getName());
+			}
+			
+			sectionList.add(section);
+			System.out.println("add section:"+section.getName());
 		}
-		
-		ds.setDataElements(des);		
+//		ds.setDataElements(des);		
 		
 		return ds;
 	}	

@@ -70,6 +70,10 @@ public class Program
 
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
 
+    private Integer minDaysAllowedInputData;    
+    
+    private Integer maxDaysAllowedInputData;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -191,6 +195,26 @@ public class Program
         this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
     }
 
+    public Integer getMinDaysAllowedInputData()
+    {
+        return minDaysAllowedInputData;
+    }
+
+    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
+    {
+        this.minDaysAllowedInputData = minDaysAllowedInputData;
+    }
+
+    public Integer getMaxDaysAllowedInputData()
+    {
+        return maxDaysAllowedInputData;
+    }
+
+    public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
+    {
+        this.maxDaysAllowedInputData = maxDaysAllowedInputData;
+    }
+
     public String getDateOfIncidentDescription()
     {
         return dateOfIncidentDescription;
@@ -245,7 +269,7 @@ public class Program
                 Object propertyValue = getValueFromPatient(StringUtils.capitalize(criteria.getProperty()), patient);
                
                 // Compare property value with compare value
-
+                
                 int i = ((Comparable) propertyValue).compareTo( (Comparable) criteria.getValue() );
 
                 // Return validation criteria if criteria is not met

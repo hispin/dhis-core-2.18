@@ -200,8 +200,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" 
    class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction" scope="prototype">
-  	  <property name="programStageInstanceService"
+  	   <property name="programStageInstanceService"
       ref="org.hisp.dhis.program.ProgramStageInstanceService"/>
+       <property name="programInstanceService"
+      ref="org.hisp.dhis.program.ProgramInstanceService"/>
   </bean>
   
   <bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateValueAction" 

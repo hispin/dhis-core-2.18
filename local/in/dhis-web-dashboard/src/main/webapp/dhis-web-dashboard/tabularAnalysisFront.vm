@@ -15,7 +15,7 @@
 	var quarterNames = new Array("Q1","Q2","Q3","Q4");
 	var halfYearNames = new Array("HY1","HY2");
 
-        var orgUnitGroupIds = new Array();
+    var orgUnitGroupIds = new Array();
 	var orgUnitGroupNames = new Array();
 
 	#set( $count1 = 0 );

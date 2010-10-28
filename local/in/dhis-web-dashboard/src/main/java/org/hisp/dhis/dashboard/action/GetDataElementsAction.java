@@ -41,14 +41,14 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetDataElementsAction
-    extends ActionSupport
+    implements Action
 {
 
     private final static int ALL = 0;
@@ -165,7 +165,7 @@ public class GetDataElementsAction
         while ( alldeIterator.hasNext() )
         {
             DataElement de1 = alldeIterator.next();
-            if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) && !de1.getType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
             {
                 alldeIterator.remove();
             }

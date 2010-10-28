@@ -111,7 +111,7 @@ public class DataElementCategoryOption
             return false;
         }
         
-        if ( getClass() != object.getClass() )
+        if ( !( object instanceof DataElementCategoryOption ) )
         {
             return false;
         }

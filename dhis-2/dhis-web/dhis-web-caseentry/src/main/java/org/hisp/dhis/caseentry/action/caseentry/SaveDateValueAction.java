@@ -35,6 +35,7 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -146,6 +147,20 @@ public class SaveDateValueAction
         this.statusCode = statusCode;
     }
 
+    private String message;
+    
+    public String getMessage()
+    {
+        return message;
+    }
+    
+    private I18n i18n;
+    
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -153,7 +168,6 @@ public class SaveDateValueAction
     public String execute()
         throws Exception
     {
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         Patient patient = selectedStateManager.getSelectedPatient();
@@ -192,6 +206,55 @@ public class SaveDateValueAction
 
                 return SUCCESS;
             }
+            
+            // -----------------------------------------------------------------
+            // Check inputed value : 
+            //   value >= DueDate - program.minDaysAllowedInputData
+            //   value <= DueDate + program.maxDaysAllowedInputData
+            // -----------------------------------------------------------------
+            
+            Date dueDate = programStageInstance.getDueDate();
+            
+            if(dateValue.before(dueDate)){
+            
+                long diffMillis = dueDate.getTime()-dateValue.getTime();
+                
+                long diffMinDays = diffMillis/86400000;
+                
+                if(diffMinDays > program.getMinDaysAllowedInputData() )
+                {
+                    statusCode = 2;
+                    
+                    message = "- " + i18n.getString( "date_is_greater_then_or_equals_due_date_minus_no_min_days" ) + " " 
+                                   + " ( " + i18n.getString( "min_days") + " : ( " + program.getMinDaysAllowedInputData() + i18n.getString("days") + " )"
+                                   + "\n"
+                                   + "- " + i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) +  " "  
+                                   + " ( "+ i18n.getString( "max_days") + " : " + program.getMaxDaysAllowedInputData() + i18n.getString("days") + " )";
+        
+                    
+                    return SUCCESS;
+                }
+                
+            }else{
+            
+                long diffMillis = dateValue.getTime() - dueDate.getTime();
+                
+                long diffMaxDays = diffMillis/86400000;
+                
+                if(diffMaxDays > program.getMaxDaysAllowedInputData() )
+                {
+                    statusCode = 2;
+                    
+                    message = "- " + i18n.getString( "date_is_greater_then_or_equals_due_date_minus_no_min_days" ) + " " 
+                                + " ( " + i18n.getString( "min_days") + " : ( " + program.getMinDaysAllowedInputData() + i18n.getString("days") + " )"
+                                + "\n"
+                                + "- " + i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) +  " "  
+                                + " ( "+ i18n.getString( "max_days") + " : " + program.getMaxDaysAllowedInputData() + i18n.getString("days") + " )";
+                    
+                    return SUCCESS;
+                }
+            }
+            
         }
 
         if ( programStageInstance.getExecutionDate() == null )

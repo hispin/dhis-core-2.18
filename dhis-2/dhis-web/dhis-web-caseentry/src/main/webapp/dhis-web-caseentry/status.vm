@@ -5,4 +5,5 @@
 				<validation>$validation.description</validation>
 		#end
 	</validations>
+	<message>$message</message>
 </status>

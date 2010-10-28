@@ -119,6 +119,13 @@ public class AddDataElementAction
         this.domainType = domainType;
     }
 
+    private String numberType;
+
+    public void setNumberType( String numberType )
+    {
+        this.numberType = numberType;
+    }
+
     private String valueType;
 
     public void setValueType( String valueType )
@@ -146,7 +153,7 @@ public class AddDataElementAction
     {
         this.url = url;
     }
-    
+
     private Collection<String> dataElementGroupSets = new ArrayList<String>();
 
     public void setDataElementGroupSets( Collection<String> dataElementGroupSets )
@@ -274,7 +281,7 @@ public class AddDataElementAction
         {
             dataElement = new DataElement();
         }
-        
+
         for ( String id : dataElementGroupSets )
         {
             dataElement.getGroupSets().add( dataElementService.getDataElementGroupSet( Integer.parseInt( id ) ) );
@@ -288,6 +295,7 @@ public class AddDataElementAction
         dataElement.setActive( true );
         dataElement.setDomainType( domainType );
         dataElement.setType( valueType );
+        dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
         dataElement.setCategoryCombo( categoryCombo );

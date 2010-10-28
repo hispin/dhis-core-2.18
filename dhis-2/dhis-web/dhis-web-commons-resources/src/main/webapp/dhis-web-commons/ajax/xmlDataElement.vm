@@ -8,5 +8,6 @@
     <description>$!encoder.xmlEncode( $dataElement.description )</description>
     <active>$dataElement.active</active>
     <type>$!encoder.xmlEncode( $dataElement.type )</type>
+	<numberType>$!encoder.xmlEncode( $dataElement.numberType )</numberType>
     <aggregationOperator>$!encoder.xmlEncode( $dataElement.aggregationOperator )</aggregationOperator>
 </dataElement>

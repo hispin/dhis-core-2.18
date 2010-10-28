@@ -15,8 +15,6 @@ public class ActivityWrapper implements ISerializable
     private ActivityPlan activityPlan;
     private List<Program> programs;
     
-    
-    
     public ActivityPlan getActivityPlan()
     {
         return activityPlan;

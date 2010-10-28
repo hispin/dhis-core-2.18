@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.style.UserStyleManager;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -43,18 +44,25 @@ public class StyleInterceptor
     implements Interceptor
 {
     private static final String KEY_STYLE = "stylesheet";
+
     private static final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
-    
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StyleManager styleManager;
+    private StyleManager systemStyleManager;
 
-    public void setStyleManager( StyleManager styleManager )
+    public void setSystemStyleManager( StyleManager systemStyleManager )
     {
-        this.styleManager = styleManager;
+        this.systemStyleManager = systemStyleManager;
+    }
+
+    private UserStyleManager userStyleManager;
+
+    public void setUserStyleManager( UserStyleManager userStyleManager )
+    {
+        this.userStyleManager = userStyleManager;
     }
 
     // -------------------------------------------------------------------------
@@ -64,28 +72,38 @@ public class StyleInterceptor
     public void destroy()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void init()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     public String intercept( ActionInvocation invocation )
         throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>( 2 );
-        
-        String style = styleManager.getCurrentStyle();
-        String styleDirectory = styleManager.getCurrentStyleDirectory();
-        
+
+        String style = userStyleManager.getCurrentStyle();
+        String styleDirectory = "";
+
+        if ( style == null )
+        {
+            style = systemStyleManager.getCurrentStyle();
+            styleDirectory = systemStyleManager.getCurrentStyleDirectory();
+        }
+        else
+        {
+            styleDirectory = userStyleManager.getCurrentStyleDirectory();
+        }
+
         map.put( KEY_STYLE, style );
         map.put( KEY_STYLE_DIRECTORY, styleDirectory );
-        
+
         invocation.getStack().push( map );
-        
-        return invocation.invoke();        
+
+        return invocation.invoke();
     }
 }

@@ -38,8 +38,6 @@ public class PatientIdentifier
 {
     public static final int IDENTIFIER_INDEX_LENGTH = 5;
 
-    public static final String FIRST_INDEX = ".00000";
-
     private int id;
 
     private PatientIdentifierType identifierType;
@@ -153,5 +151,5 @@ public class PatientIdentifier
     {
         return identifierType;
     }
-
+    
 }

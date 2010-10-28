@@ -28,6 +28,17 @@ package org.hisp.dhis.system.util;
  */
 
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -49,33 +60,22 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PDFUtils
 {
     public static final int ALIGN_CENTER = PdfPCell.ALIGN_CENTER;
-
     public static final int ALIGN_LEFT = PdfPCell.ALIGN_LEFT;
-
     public static final int ALIGN_RIGHT = PdfPCell.ALIGN_RIGHT;
 
     private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
-
     private static final Font TEXT5 = new Font( Font.HELVETICA, 8, Font.NORMAL );
-
     private static final Font TEXT6 = new Font( Font.HELVETICA, 6, Font.NORMAL );
-
     private static final Font TEXT7 = new Font( Font.HELVETICA, 4, Font.NORMAL );
 
     private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );
 
     private static final Font HEADER1 = new Font( Font.HELVETICA, 20, Font.BOLD );
-
     private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
-
     private static final Font HEADER3 = new Font( Font.HELVETICA, 12, Font.BOLD );
-
     private static final Font HEADER4 = new Font( Font.HELVETICA, 9, Font.BOLD );
-
     private static final Font HEADER5 = new Font( Font.HELVETICA, 8, Font.BOLD );
-
     private static final Font HEADER6 = new Font( Font.HELVETICA, 6, Font.BOLD );
-
     private static final Font HEADER7 = new Font( Font.HELVETICA, 4, Font.BOLD );
 
     public static final String PDF_ARIAL_FONT = "arial.ttf";
@@ -570,5 +570,340 @@ public class PDFUtils
             throw new RuntimeException( "Error occurred in creating a BaseFont instance by the given dimension" );
         }
 
+    }
+
+    /**
+     * Writes a "Data Elements" title in front of page
+     * 
+     * @param dataElementIds the identifier list of Data
+     * @param i18n The i18n object
+     * @param format The i18nFormat object 
+     * 
+     */
+    public static void printDataElementFrontPage( Document document, Collection<Integer> dataElementIds, I18n i18n,
+        I18nFormat format )
+    {
+        if ( dataElementIds == null || dataElementIds.size() > 0 )
+        {
+            String title = i18n.getString( "data_elements" );
+
+            printFrontPage( document, title, i18n, format );
+        }
+    }
+
+    /**
+     * Writes a "Indicators" title in front of page
+     * 
+     * @param document The document
+     * @param indicatorIds the identifier list of Indicators
+     * @param i18n The i18n object
+     * @param format The i18nFormat object 
+     * 
+     */
+    public static void printIndicatorFrontPage( Document document, Collection<Integer> indicatorIds, I18n i18n,
+        I18nFormat format )
+    {
+        if ( indicatorIds == null || indicatorIds.size() > 0 )
+        {
+            String title = i18n.getString( "indicators" );
+
+            printFrontPage( document, title, i18n, format );
+        }
+    }
+
+    /**
+     * Writes a "Data element concepts" title in front of page
+     * 
+     * @param document The document
+     * @param indicatorIds the identifier list of Indicators
+     * @param i18n The i18n object
+     * @param format The i18nFormat object
+     * 
+     */
+    public static void printDataElementConceptFrontPage( Document document, Collection<Integer> indicatorIds,
+        I18n i18n, I18nFormat format )
+    {
+        if ( indicatorIds == null || indicatorIds.size() > 0 )
+        {
+            String title = i18n.getString( "data_element_concepts" );
+
+            printFrontPage( document, title, i18n, format );
+        }
+    }
+
+    /**
+     * Writes a "Organization unit hierarchy" title in front of page
+     * 
+     * @param document The document 
+     * @param unitIds the identifier list of organization units
+     * @param i18n The i18n object
+     * @param format The i18nFormat object
+     * 
+     */
+    public static void printOrganisationUnitHierarchyFrontPage( Document document, Collection<Integer> unitIds,
+        I18n i18n, I18nFormat format )
+    {
+        if ( unitIds == null || unitIds.size() > 0 )
+        {
+            String title = i18n.getString( "organisation_unit_hierarchy" );
+
+            printFrontPage( document, title, i18n, format );
+        }
+    }
+
+    /**
+     * Writes a "Organization units" title in front of page
+     * 
+     * @param document The document
+     * @param unitIds the identifier list of organization units
+     * @param i18n The i18n object
+     * @param format The i18nFormat object 
+     * 
+     */
+    public static void printOrganisationUnitFrontPage( Document document, Collection<Integer> unitIds, I18n i18n,
+        I18nFormat format )
+    {
+        if ( unitIds == null || unitIds.size() > 0 )
+        {
+            String title = i18n.getString( "organisation_units" );
+
+            printFrontPage( document, title, i18n, format );
+        }
+    }
+
+    /**
+     * Writes a "Data dictionary" title in front of page
+     * 
+     * @param document The document
+     * @param i18n The i18n object
+     * @param format The i18nFormat object 
+     * 
+     */
+    public static void printDocumentFrontPage( Document document, I18n i18n, I18nFormat format )
+    {
+        String title = i18n.getString( "data_dictionary" );
+
+        printFrontPage( document, title, i18n, format );
+    }
+
+    /**
+     * Writes a DHIS2.0 title in front of page
+     * 
+     * @param document The document
+     * @param exportParams the exporting params
+     * 
+     */
+    private static void printFrontPage( Document document, String title, I18n i18n, I18nFormat format )
+    {
+        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
+
+        Font TEXT = new Font( bf, 9, Font.NORMAL );
+        Font HEADER2 = new Font( bf, 16, Font.BOLD );
+
+        PdfPTable table = getPdfPTable( true, 1.00f );
+
+        table.addCell( getCell( i18n.getString( "district_health_information_software" ), 1, TEXT, ALIGN_CENTER ) );
+
+        table.addCell( getCell( 1, 40 ) );
+
+        table.addCell( getCell( title, 1, HEADER2, ALIGN_CENTER ) );
+
+        table.addCell( getCell( 1, 40 ) );
+
+        String date = format.formatDate( Calendar.getInstance().getTime() );
+
+        table.addCell( getCell( date, 1, TEXT, ALIGN_CENTER ) );
+
+        addTableToDocument( document, table );
+
+        moveToNewPage( document );
+    }
+
+    /**
+     * Creates a table with the given data element
+     * 
+     * @param element The data element
+     * @param i18n i18n object
+     * @param HEADER3 The header3 font
+     * @param ITALIC The italic font
+     * @param TEXT The text font
+     * @param keepTogether Indicates whether the table could be broken across
+     *        multiple pages or should be kept at one page.
+     * @param columnWidths The column widths.
+     */
+    public static PdfPTable printDataElement( DataElement element, I18n i18n, Font HEADER3, Font ITALIC, Font TEXT,
+        boolean keepTogether, float... columnWidths )
+    {
+        PdfPTable table = getPdfPTable( keepTogether, columnWidths );
+
+        table.addCell( getHeader3Cell( element.getName(), 2, HEADER3 ) );
+
+        table.addCell( getCell( 2, 15 ) );
+
+        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+        table.addCell( getTextCell( element.getShortName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+        table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+        table.addCell( getTextCell( element.getCode() ) );
+
+        table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( element.getDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ),
+            TEXT ) );
+
+        table.addCell( getCell( 2, 30 ) );
+
+        return table;
+    }
+
+    /**
+     * Creates a table with the given indicator
+     * 
+     * @param indicator The indicator
+     * @param i18n i18n object
+     * @param expressionService The expression service
+     * @param HEADER3 The header3 font
+     * @param ITALIC The italic font
+     * @param TEXT The text font
+     * @param keepTogether Indicates whether the table could be broken across
+     *        multiple pages or should be kept at one page.
+     * @param columnWidths The column widths.
+     */
+    public static PdfPTable printIndicator( Indicator indicator, I18n i18n, ExpressionService expressionService,
+        Font HEADER3, Font ITALIC, Font TEXT, boolean keepTogether, float... columnWidths )
+    {
+        PdfPTable table = getPdfPTable( keepTogether, columnWidths );
+
+        table.addCell( getHeader3Cell( indicator.getName(), 2, HEADER3 ) );
+
+        table.addCell( getCell( 2, 15 ) );
+
+        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getCode() ) );
+
+        table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getNumeratorDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
+            indicator.getNumeratorAggregationOperator() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "numerator_formula" ), 1, ITALIC ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
+            indicator.getDenominatorAggregationOperator() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "denominator_formula" ), 1, ITALIC ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ), TEXT ) );
+
+        table.addCell( getCell( 2, 30 ) );
+
+        return table;
+    }
+
+    /**
+     * Creates a table with the given unit
+     * 
+     * @param unit The organization unit
+     * @param i18n i18n object
+     * @param format
+     * @param HEADER3 The header3 font
+     * @param ITALIC The italic font
+     * @param TEXT The text font
+     * @param keepTogether Indicates whether the table could be broken across
+     *        multiple pages or should be kept at one page.
+     * @param columnWidths The column widths.
+     */
+    public static PdfPTable printOrganisationUnit( OrganisationUnit unit, I18n i18n, I18nFormat format, Font HEADER3,
+        Font ITALIC, Font TEXT, boolean keepTogether, float... columnWidths )
+    {
+        PdfPTable table = getPdfPTable( keepTogether, columnWidths );
+
+        table.addCell( getHeader3Cell( unit.getName(), 2, HEADER3 ) );
+
+        table.addCell( getCell( 2, 15 ) );
+
+        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
+        table.addCell( getTextCell( unit.getShortName(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+        table.addCell( getTextCell( unit.getCode() ) );
+
+        table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
+        table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : "" ) );
+
+        table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
+        table.addCell( getTextCell( unit.getClosedDate() != null ? format.formatDate( unit.getClosedDate() ) : "" ) );
+
+        table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
+        table.addCell( getTextCell( unit.getComment(), TEXT ) );
+
+        table.addCell( getCell( 2, 30 ) );
+
+        return table;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private static Map<Boolean, String> getBoolean()
+    {
+        Map<Boolean, String> map = new HashMap<Boolean, String>();
+        map.put( true, "yes" );
+        map.put( false, "no" );
+        return map;
+    }
+
+    private static Map<String, String> getType()
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put( DataElement.VALUE_TYPE_STRING, "text" );
+        map.put( DataElement.VALUE_TYPE_INT, "number" );
+        map.put( DataElement.VALUE_TYPE_BOOL, "yes_no" );
+        return map;
+    }
+
+    private static Map<String, String> getAggregationOperator()
+    {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put( DataElement.AGGREGATION_OPERATOR_SUM, "sum" );
+        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "average" );
+        map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
+        return map;
     }
 }

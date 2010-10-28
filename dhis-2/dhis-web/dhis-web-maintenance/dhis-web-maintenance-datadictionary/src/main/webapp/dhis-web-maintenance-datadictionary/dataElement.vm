@@ -45,6 +45,7 @@
 					</td>
 				</tr>
 			</table>
+			<div id="content">
 			<table class="listTable" id="dataElementList">
 				<col/>
                 <col/>
@@ -84,6 +85,7 @@
 			<p></p>
 	  		<div class="paging-container">
 				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
 			</div>
 			
 		</td>
@@ -144,4 +146,5 @@
 	jQuery(document).ready(function(){	
 		tableSorter( 'dataElementList' );	
 	});
+	
 </script>

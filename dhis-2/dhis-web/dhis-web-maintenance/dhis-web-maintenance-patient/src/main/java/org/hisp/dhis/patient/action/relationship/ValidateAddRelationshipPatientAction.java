@@ -55,8 +55,12 @@ implements Action
     private String middleName;
 
     private String lastName;
+    
+    private Character dobType;
 
     private String birthDate;
+
+    private char ageType;
 
     private Integer age;
 
@@ -139,13 +143,11 @@ implements Action
             return INPUT;
         }
 
-        if ( birthDate != null )
+        if ( dobType == 'V' || dobType == 'D')
         {
             birthDate = birthDate.trim();
 
-            if ( birthDate.length() != 0 )
-            {
-                dateOfBirth = format.parseDate( birthDate );
+               dateOfBirth = format.parseDate( birthDate );
 
                 if ( dateOfBirth == null || dateOfBirth.after( new Date() ) )
                 {
@@ -153,16 +155,6 @@ implements Action
 
                     return INPUT;
                 }
-            }
-            else
-            {
-                if ( age == null )
-                {
-                    message = i18n.getString( "specfiy_birth_date_or_age" );
-
-                    return INPUT;
-                }
-            }
         }
         
         if ( !checkedDuplicate )
@@ -200,28 +192,14 @@ implements Action
         // Check Identifiers duplicate
 
         Patient p = new Patient();
-        if ( birthDate != null )
+        if ( dobType == 'V' || dobType == 'D' )
         {
             birthDate = birthDate.trim();
-
-            if ( birthDate.length() != 0 )
-            {
-                p.setBirthDate( format.parseDate( birthDate ) );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    p.setBirthDateFromAge( age.intValue() );
-                }
-            }
+            p.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-            if ( age != null )
-            {
-                p.setBirthDateFromAge( age.intValue() );
-            }
+           p.setBirthDateFromAge( age.intValue(), ageType  );
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -383,5 +361,15 @@ implements Action
     public void setRelationshipId( Integer relationshipId )
     {
         this.relationshipId = relationshipId;
+    }
+    
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
     }
 }

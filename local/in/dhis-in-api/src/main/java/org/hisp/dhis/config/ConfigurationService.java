@@ -45,5 +45,14 @@ public interface ConfigurationService
     Configuration_IN getConfiguration( int id );
     
     Configuration_IN getConfigurationByKey( String ckey );
+    
+    // -------------------------------------------------------------------------
+    // 
+    // -------------------------------------------------------------------------
+
+    boolean clearXfolder( String folderPath );
+    
+    String backupFolder( String folderPath );
+
 
 }

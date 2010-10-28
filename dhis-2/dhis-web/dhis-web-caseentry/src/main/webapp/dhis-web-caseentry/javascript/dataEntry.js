@@ -1,16 +1,6 @@
 
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
-	/* var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
-	
-	var width = 800
-    var height = 500;
-    var left = parseInt( ( screen.availWidth/2 ) - ( width/2 ) );
-    var top = parseInt( ( screen.availHeight/2 ) - ( height/2 ) );
-    var windowFeatures = 'width=' + width + ',height=' + height + ',scrollbars=yes, resizable=yes,left=' + left + ',top=' + top + 'screenX=' + left + ',screenY=' + top;
-    
-    window.open( url, '_blank_', windowFeatures);  */
-	
 	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
 	$('#contentDataRecord').dialog('destroy').remove();
     $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
@@ -265,6 +255,11 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
                 markValue( resultColor );
             }
         }
+		else if(code == 2)
+        {
+			markValue( ERROR );
+            window.alert( i18n_invalid_date + ":\n" + rootElement.getElementsByTagName( 'message' )[0].firstChild.nodeValue );
+		}
         else
         {
             if(value != "")
@@ -490,14 +485,41 @@ function saveValue( dataElementId, dataElementName )
     
     if( field.value != '' )
     {
-        if( type == 'int' )
+        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
-            if ( !isInt( field.value ))
+            if (  type == 'int' && !isInt( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
 
                 window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
 
+                field.select();
+                field.focus();
+
+                return;
+            }
+			else if (  type == 'number' && !isNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+                window.alert( i18n_value_must_number + '\n\n' + dataElementName );
+                field.select();
+                field.focus();
+
+                return;
+            } 
+			else if (  type == 'positiveNumber' && !isPositiveNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+                window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
+                field.select();
+                field.focus();
+
+                return;
+            } 
+			else if (  type == 'negativeNumber' && !isNegativeNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+                window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
                 field.select();
                 field.focus();
 
@@ -762,18 +784,6 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
     }
 }
 
-
-function isInt( value )
-{
-    var number = new Number( value );
- 
-    if ( isNaN( number ) )
-    {
-        return false;
-    }
- 
-    return true;
-}
 function isDateFormat( value )
 {
     return 	/^\d{4}-\d{2}-\d{2}$/.test( value );

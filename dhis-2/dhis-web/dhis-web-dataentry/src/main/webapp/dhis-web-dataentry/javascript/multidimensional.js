@@ -77,7 +77,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
     
     if ( field.value != '' )
     {
-        if ( type == 'int' )
+        if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
             var value = new Number( field.value );       	
         	 
@@ -90,18 +90,46 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 				return;
         	}
             
-            if ( !isInt( field.value ))
+            if (  type == 'int' && !isInt( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
-
                 window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
-
                 field.select();
                 field.focus();
 
                 return;
             }  
-            
+            else if (  type == 'number' && !isNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+                window.alert( i18n_value_must_number + '\n\n' + dataElementName );
+                field.select();
+                field.focus();
+
+                return;
+            } 
+			else if (  type == 'positiveNumber' && !isPositiveNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+
+                window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
+
+                field.select();
+                field.focus();
+
+                return;
+            } 
+			else if (  type == 'negativeNumber' && !isNegativeNumber( field.value ))
+            {
+                field.style.backgroundColor = '#ffcc00';
+
+                window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
+
+                field.select();
+                field.focus();
+
+                return;
+            } 
             else
             {
                 var minString = byId( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
@@ -172,18 +200,6 @@ function saveComment( dataElementId, optionComboId, commentValue )
     
     var commentSaver = new CommentSaver( dataElementId, optionComboId, organisationUnitId, commentValue );
     commentSaver.save();
-}
-
-function isInt( value )
-{
-    var number = new Number( value );
-    
-    if ( isNaN( number ))
-    {
-        return false;
-    }
-    
-    return true;
 }
 
 // -----------------------------------------------------------------------------

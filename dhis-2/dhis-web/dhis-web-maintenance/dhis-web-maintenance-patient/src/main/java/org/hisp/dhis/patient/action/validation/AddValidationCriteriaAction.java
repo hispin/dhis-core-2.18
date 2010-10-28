@@ -150,6 +150,10 @@ public class AddValidationCriteriaAction
         {
             return format.parseDate( value.trim() );
         }
+        else if ( type.equals( Character.class ) || type == Character.TYPE )
+        {
+            return Character.valueOf ( value.charAt( 0 ) );
+        }
 
         return value;
     }

@@ -32,6 +32,16 @@ import java.io.Serializable;
 public class PatientIdentifierType
     implements Serializable
 {
+
+    public static final String FIRST_INDEX = ".00000";
+
+    public static final String VALUE_TYPE_TEXT = "text";
+
+    public static final String VALUE_TYPE_NUMBER = "number";
+
+    public static final String VALUE_TYPE_LETTER = "letter";
+
+    
     private int id;
 
     private String name;
@@ -39,10 +49,14 @@ public class PatientIdentifierType
     private String description;
 
     private String format;
-    
+
     private boolean mandatory;
-    
+
     private boolean related;
+
+    private Integer noChars;
+
+    private String type;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -136,13 +150,15 @@ public class PatientIdentifierType
         this.format = format;
     }
 
-	public boolean isMandatory() {
-		return mandatory;
-	}
+    public boolean isMandatory()
+    {
+        return mandatory;
+    }
 
-	public void setMandatory(boolean mandatory) {
-		this.mandatory = mandatory;
-	}
+    public void setMandatory( boolean mandatory )
+    {
+        this.mandatory = mandatory;
+    }
 
     public boolean isRelated()
     {
@@ -154,4 +170,24 @@ public class PatientIdentifierType
         this.related = related;
     }
 
+    public Integer getNoChars()
+    {
+        return noChars;
+    }
+
+    public void setNoChars( Integer noChars )
+    {
+        this.noChars = noChars;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+    
 }

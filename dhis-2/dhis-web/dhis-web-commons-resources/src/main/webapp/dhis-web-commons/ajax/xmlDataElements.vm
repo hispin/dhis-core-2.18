@@ -8,6 +8,7 @@
         <shortName>$!encoder.xmlEncode( $dataElement.shortName )</shortName>
         <code>$!encoder.xmlEncode( $dataElement.code )</code>
         <type>$!encoder.xmlEncode( $dataElement.type )</type>
+		<numberType>$!encoder.xmlEncode( $dataElement.numberType )</numberType>
         <aggregationOperator>$!encoder.xmlEncode( $dataElement.aggregationOperator )</aggregationOperator>
     </dataElement>
 #end

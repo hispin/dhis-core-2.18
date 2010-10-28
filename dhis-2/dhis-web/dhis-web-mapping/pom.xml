@@ -54,24 +54,6 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
-
-	<!-- Mapfish print module -->
-	  
-    <dependency>
-      <groupId>org.mapfish.print</groupId>
-      <artifactId>print-lib</artifactId>
-      <version>1.2-SNAPSHOT</version>
-	  <exclusions>
-        <exclusion>
-          <groupId>xalan</groupId>
-          <artifactId>xalan</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xerces</groupId>
-          <artifactId>xercesImpl</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
 	
 	<!-- JSON -->
 
@@ -94,15 +76,6 @@
     </dependency>
 	
   </dependencies>
-
-  <repositories>	  	      
-
-    <repository>
-      <id>org.mapfish</id>
-      <url>http://dev.mapfish.org/maven/repository</url>
-    </repository>	  
-
-  </repositories>
 
   <properties>
     <rootDir>../../</rootDir>

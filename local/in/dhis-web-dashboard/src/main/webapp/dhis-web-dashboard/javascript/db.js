@@ -53,6 +53,8 @@ function getOUDetailsForNRRecevied(xmlObject)
 
 function getOUDeatilsForGA(orgUnitIds)
 {
+	//document.getElementById( "ougGroupSetCB" ).disabled = false;
+	//document.getElementById( "orgUnitGroup" ).disabled = false;
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -99,7 +101,6 @@ function getOUDetailsForGARecevied(xmlObject)
     		
 }
 
-
 function getOUDetails(orgUnitIds)
 {
 	$.post("getOrgUnitDetails.action",
@@ -136,6 +137,8 @@ function getOUDetailsRecevied(xmlObject)
             }
             document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(orgUnitName,id,false,false);
         }
+       
+        
         else
         {
             index = document.ChartGenerationForm.orgUnitListCB.options.length;

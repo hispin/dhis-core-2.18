@@ -32,7 +32,6 @@ import java.io.OutputStream;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.system.process.OpenSessionThread;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.system.util.StreamUtils;
@@ -52,21 +51,21 @@ public class PDFPipeThread
     {
         this.outputStream = outputStream;
     }
-    
+
     private ExportParams exportParams;
 
     public void setExportParams( ExportParams exportParams )
     {
         this.exportParams = exportParams;
     }
-    
+
     private PDFConverter dataElementConverter;
 
     public void setDataElementConverter( PDFConverter dataElementConverter )
     {
         this.dataElementConverter = dataElementConverter;
     }
-    
+
     private PDFConverter indicatorConverter;
 
     public void setIndicatorConverter( PDFConverter indicatorConverter )
@@ -79,7 +78,7 @@ public class PDFPipeThread
     public void setExtendedDataElementConverter( PDFConverter extendedDataElementConverter )
     {
         this.extendedDataElementConverter = extendedDataElementConverter;
-    }    
+    }
 
     private PDFConverter organisationUnitHierarchyConverter;
 
@@ -98,42 +97,42 @@ public class PDFPipeThread
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    
+
     public PDFPipeThread( SessionFactory sessionFactory )
     {
         super( sessionFactory );
     }
-    
+
     // -------------------------------------------------------------------------
     // Thread implementation
     // -------------------------------------------------------------------------
-    
+
     public void doRun()
     {
         Document document = null;
-        
+
         try
         {
             document = PDFUtils.openDocument( outputStream );
-            
-            PDFPrintUtil.printDocumentFrontPage( document, exportParams );
-            
+
+            PDFUtils.printDocumentFrontPage( document, exportParams.getI18n(), exportParams.getFormat() );
+
             if ( exportParams.isExtendedMode() )
             {
                 extendedDataElementConverter.write( document, exportParams );
             }
             else
-            {            
+            {
                 dataElementConverter.write( document, exportParams );
             }
-            
+
             indicatorConverter.write( document, exportParams );
-            
+
             organisationUnitHierarchyConverter.write( document, exportParams );
-            
+
             organisationUnitConverter.write( document, exportParams );
-            
-            PDFUtils.closeDocument( document );            
+
+            PDFUtils.closeDocument( document );
         }
         finally
         {

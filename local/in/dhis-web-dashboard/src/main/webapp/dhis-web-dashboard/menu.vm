@@ -5,6 +5,7 @@
 			<ul>
 		    	<li><a href="graphicalAnalyser.action">Regular</a></li>
 		        <li><a href="annualAnalyser.action">Annual</a></li>
+		        <li><a href="graphicalAnalyserDataElement.action">$i18n.getString( "dataelements_wise" )</a></li>
 		       <!--  <li><a href="surveyAnalyser.action">Survey</a></li>
 		        <li><a href="motionChartForm.action">MotionChart</a></li> -->
 		   	</ul>

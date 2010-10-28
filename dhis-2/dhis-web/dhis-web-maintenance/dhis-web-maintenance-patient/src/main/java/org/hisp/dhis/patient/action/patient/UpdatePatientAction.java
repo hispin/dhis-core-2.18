@@ -101,7 +101,9 @@ public class UpdatePatientAction
 
     private Integer age;
 
-    private boolean birthDateEstimated;
+    private char ageType;
+
+    private Character dobType;
 
     private String gender;
 
@@ -142,29 +144,15 @@ public class UpdatePatientAction
 
         if ( birthDate != null )
         {
-
             birthDate = birthDate.trim();
-
-            if ( birthDate.length() != 0 )
-            {
-                patient.setBirthDate( format.parseDate( birthDate ) );
-                patient.setBirthDateEstimated( birthDateEstimated );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    patient.setBirthDateFromAge( age.intValue() );
-                }
-            }
+            patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-            if ( age != null )
-            {
-                patient.setBirthDateFromAge( age.intValue() );
-            }
+            patient.setBirthDateFromAge( age.intValue(), ageType );
         }
+        
+        patient.setDobType( dobType );
 
         // -------------------------------------------------------------------------------------
         // Save PatientIdentifier
@@ -181,7 +169,7 @@ public class UpdatePatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if ( identifierType.getFormat().equals( "State Format" ) )
+                if (  identifierType.getFormat()!= null && identifierType.getFormat().equals( "State Format" ) )
                 {
                     value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
                         + request.getParameter( "benicode" );
@@ -371,11 +359,6 @@ public class UpdatePatientAction
         this.birthDate = birthDate;
     }
 
-    public void setBirthDateEstimated( boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
     public void setGender( String gender )
     {
         this.gender = gender;
@@ -409,5 +392,15 @@ public class UpdatePatientAction
     public void setRelationshipTypeId( Integer relationshipTypeId )
     {
         this.relationshipTypeId = relationshipTypeId;
+    }
+    
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+    
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
     }
 }

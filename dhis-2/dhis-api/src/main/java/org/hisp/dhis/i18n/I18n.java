@@ -38,6 +38,7 @@ import java.util.ResourceBundle;
  */
 public class I18n
 {
+    String ID = I18n.class.getName();
     private ResourceBundle globalResourceBundle;
 
     private ResourceBundle specificResourceBundle;

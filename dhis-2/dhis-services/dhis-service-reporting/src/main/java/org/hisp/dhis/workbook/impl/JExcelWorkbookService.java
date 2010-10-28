@@ -178,7 +178,7 @@ public class JExcelWorkbookService
         return data.getName();
     }
 
-    public void writeAllDataElements( OutputStream outputStream )
+    public void writeAllDataElements( OutputStream outputStream, I18n i18n )
     {
         try
         {
@@ -194,25 +194,25 @@ public class JExcelWorkbookService
 
                 rowNumber++;
 
-                sheet.addCell( new Label( 0, rowNumber, "Alternative name", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "alternative_name" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, element.getAlternativeName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Short name", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, element.getShortName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Code", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, element.getCode(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Description", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "description" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, element.getDescription(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Active", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "active" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( element.isActive() ), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Type", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "type" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, getType().get( element.getType() ), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Aggregation operator", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "aggregation_operator" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, getAggregationOperator().get(
                     element.getAggregationOperator() ), FORMAT_TEXT ) );
 
@@ -229,7 +229,7 @@ public class JExcelWorkbookService
         }
     }
 
-    public void writeAllIndicators( OutputStream outputStream )
+    public void writeAllIndicators( OutputStream outputStream, I18n i18n )
     {
         try
         {
@@ -245,28 +245,28 @@ public class JExcelWorkbookService
 
                 rowNumber++;
 
-                sheet.addCell( new Label( 0, rowNumber, "Alternative name", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "alternative_name" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getAlternativeName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Short name", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getShortName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Code", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getCode(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Description", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "description" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getDescription(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Annualized", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "annualized" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( indicator.getAnnualized() ), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Indicator type", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "indicator_type" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getIndicatorType().getName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Numerator description", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "numerator_description" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getNumeratorDescription(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Denominator description", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "denominator_description" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, indicator.getDenominatorDescription(), FORMAT_TEXT ) );
 
                 rowNumber++;
@@ -282,7 +282,7 @@ public class JExcelWorkbookService
         }
     }
 
-    public void writeAllOrganisationUnits( OutputStream outputStream )
+    public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n )
     {
         try
         {
@@ -298,19 +298,19 @@ public class JExcelWorkbookService
 
                 rowNumber++;
 
-                sheet.addCell( new Label( 0, rowNumber, "Short name", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getShortName(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Code", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getCode(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Active", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "active" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( unit.isActive() ), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Comment", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "comment" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getComment(), FORMAT_TEXT ) );
 
-                sheet.addCell( new Label( 0, rowNumber, "Geo code", FORMAT_LABEL ) );
+                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "geo_code" ), FORMAT_LABEL ) );
                 sheet.addCell( new Label( 1, rowNumber++, unit.getGeoCode(), FORMAT_TEXT ) );
 
                 rowNumber++;

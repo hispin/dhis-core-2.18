@@ -71,10 +71,10 @@ public class ValidationCriteriaServiceTest
         validationCriteriaService = (ValidationCriteriaService) getBean( ValidationCriteriaService.ID );
 
         propertyA = Patient.class.getDeclaredField( "birthDate" ).getName();
-        propertyB = Patient.class.getDeclaredField( "birthDateEstimated" ).getName();
+        propertyB = Patient.class.getDeclaredField( "dobType" ).getName();
 
         valueA = new Date();
-        valueB = true;
+        valueB = (char)'A';
 
         validationCriteriaA = createValidationCriteria( 'A', propertyA, ValidationCriteria.OPERATOR_EQUAL_TO, valueA );
         validationCriteriaB = createValidationCriteria( 'B', propertyB, ValidationCriteria.OPERATOR_EQUAL_TO, valueB );

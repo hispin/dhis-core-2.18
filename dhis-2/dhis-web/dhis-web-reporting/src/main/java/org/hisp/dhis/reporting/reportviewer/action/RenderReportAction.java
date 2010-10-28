@@ -109,4 +109,10 @@ public class RenderReportAction
     {
         return "report.pdf";
     }
+    
+    @Override
+    protected boolean disallowCache()
+    {
+        return true;
+    }
 }

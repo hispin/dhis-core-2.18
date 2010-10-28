@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -98,4 +99,12 @@ public class HibernateProgramInstanceStore
         return getCriteria( Restrictions.eq( "patient", patient ), Restrictions.eq( "program", program ),
             Restrictions.eq( "completed", completed ) ).list();
     }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit )
+    {
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.isNull( "endDate" ) ).createAlias( "patient", "patient" )
+        .add( Restrictions.eq( "patient.organisationUnit", organisationUnit ) ).list();
+    }
+    
 }

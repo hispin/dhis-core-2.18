@@ -33,7 +33,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
-import org.hisp.dhis.importexport.pdf.util.PDFPrintUtil;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
@@ -41,7 +40,6 @@ import org.hisp.dhis.system.util.PDFUtils;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfPTable;
 
 /**
  * @author Lars Helge Overland
@@ -67,49 +65,22 @@ public class OrganisationUnitConverter
 
     public void write( Document document, ExportParams params )
     {
-        PDFPrintUtil.printOrganisationUnitFrontPage( document, params );
-
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params
-            .getOrganisationUnits() );
+        PDFUtils.printOrganisationUnitFrontPage( document, params.getOrganisationUnits(), i18n, format );
+
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
 
         BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
         Font ITALIC = new Font( bf, 9, Font.ITALIC );
         Font TEXT = new Font( bf, 9, Font.NORMAL );
         Font HEADER3 = new Font( bf, 12, Font.BOLD );
 
         for ( OrganisationUnit unit : units )
         {
-            PdfPTable table = getPdfPTable( true, 0.40f, 0.60f );
-
-            table.addCell( getHeader3Cell( unit.getName(), 2, HEADER3 ) );
-
-            table.addCell( getCell( 2, 15 ) );
-
-            table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getShortName(), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getCode() ) );
-
-            table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
-            table.addCell( getTextCell( format.formatDate( unit.getOpeningDate() ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
-            table.addCell( getTextCell( format.formatDate( unit.getClosedDate() ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-            table.addCell( getTextCell( i18n.getString( String.valueOf( unit.isActive() ) ), TEXT ) );
-
-            table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getComment(), TEXT ) );
-
-            table.addCell( getCell( 2, 30 ) );
-
-            addTableToDocument( document, table );
+            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true,
+                0.40f, 0.60f ) );
         }
     }
 }

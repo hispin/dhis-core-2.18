@@ -64,7 +64,7 @@ function categoryChangeFunction(evt)
 //Facility ListBox Change Function
 function facilityChangeFunction(evt)
 {
-        selFacility = $("select#facilityLB").val();
+    selFacility = $("select#facilityLB").val();
 	if(selFacility == "children")
 	{
 		var index = document.ChartGenerationForm.orgUnitListCB.options.length;
@@ -83,27 +83,27 @@ function riradioSelection(evt)
         var criteria = $( "input[name='riRadio']:checked" ).val();
   if(criteria == 'dataElementsRadio')
   {
-		document.ChartGenerationForm.indicatorGroupId.disabled = true;
+	  document.ChartGenerationForm.indicatorGroupId.disabled = true;
 	  document.ChartGenerationForm.availableIndicators.disabled = true;
 	  document.ChartGenerationForm.selectedIndicators.disabled = true;
 	    
 	  document.ChartGenerationForm.dataElementGroupId.disabled = false;
 	  document.ChartGenerationForm.availableDataElements.disabled = false;
 	  document.ChartGenerationForm.selectedDataElements.disabled = false;
-    document.ChartGenerationForm.deSelection.disabled = false;
+      document.ChartGenerationForm.deSelection.disabled = false;
 	    
 	  document.ChartGenerationForm.aggDataCB.disabled = false;
   }// if block end
 	else
 	{
-            document.ChartGenerationForm.indicatorGroupId.disabled = false;
+        document.ChartGenerationForm.indicatorGroupId.disabled = false;
 	    document.ChartGenerationForm.availableIndicators.disabled = false;
 	    document.ChartGenerationForm.selectedIndicators.disabled = false;
 	    
 	    document.ChartGenerationForm.dataElementGroupId.disabled = true;
 	    document.ChartGenerationForm.availableDataElements.disabled = true;
 	    document.ChartGenerationForm.selectedDataElements.disabled = true;
-            document.ChartGenerationForm.deSelection.disabled = true;
+        document.ChartGenerationForm.deSelection.disabled = true;
 	    
 	    document.ChartGenerationForm.aggDataCB.checked = true;
 	    document.ChartGenerationForm.aggDataCB.disabled = true;

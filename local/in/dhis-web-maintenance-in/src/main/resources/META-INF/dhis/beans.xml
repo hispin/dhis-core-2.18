@@ -39,5 +39,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       class="org.hisp.dhis.config.action.StreamMySqlBackupAction"
       scope="prototype">
   </bean>
+  
+<!-- Maintenance -->
+  <bean id="org.hisp.dhis.config.action.ClearFolderAction"
+      class="org.hisp.dhis.config.action.ClearFolderAction"
+      scope="prototype">
+      <property name="configurationService">
+        <ref bean="org.hisp.dhis.config.ConfigurationService"/>
+      </property>
+  </bean>
+  
 					
 </beans>

@@ -322,14 +322,13 @@ public class SectionFormAction
     {
         this.displayMode = displayMode;
     }
-    
-    private Integer defaultOptionComboId;
-    
-    public Integer getDefaultOptionComboId() 
-    {
-		return defaultOptionComboId;
-	}	
 
+    private Integer defaultOptionComboId;
+
+    public Integer getDefaultOptionComboId()
+    {
+        return defaultOptionComboId;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -407,7 +406,7 @@ public class SectionFormAction
                     true );
             }
         }
-        
+
         defaultOptionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
 
         for ( DataElementCategoryCombo categoryCombo : orderedCategoryCombos )
@@ -553,10 +552,13 @@ public class SectionFormAction
 
         dataElementValueTypeMap = new HashMap<String, String>();
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_BOOL, i18n.getString( "yes_no" ) );
-        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "number" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_INT, i18n.getString( "int" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_NUMBER, i18n.getString( "number" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_POSITIVE_NUMBER, i18n.getString( "positiveNumber" ) );
+        dataElementValueTypeMap.put( DataElement.VALUE_TYPE_NEGATIVE_NUMBER, i18n.getString( "negativeNumber" ) );
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_STRING, i18n.getString( "text" ) );
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_DATE, i18n.getString( "date" ) );
-        
+
         return SUCCESS;
 
     }

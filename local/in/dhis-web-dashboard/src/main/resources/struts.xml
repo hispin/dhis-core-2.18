@@ -15,6 +15,33 @@
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
 		</action>
 		
+<!-- GraphicalAnalyser  DataElements -->
+		 <action name="graphicalAnalyserDataElement"
+            class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementFront.vm</param>
+            <param name="menu">/dhis-web-dashboard/menuWithTreeForGADataElement.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
+				javascript/db.js,
+				javascript/ga.js,
+				javascript/hashtable.js,
+				javascript/date.js,
+				javascript/gadataelement.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+		
+		      
+		<action name="generateChartDataElement"
+            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction">
+            <result name="success" type="velocity">
+                /dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>
+            <param name="javascripts">
+                ../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+<!--	-->			
 		<!-- GraphicalAnalyser Module Stuff -->
 		
 		<action name="graphicalAnalyser"

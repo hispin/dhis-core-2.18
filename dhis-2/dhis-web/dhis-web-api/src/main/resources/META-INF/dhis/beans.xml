@@ -6,27 +6,34 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!--  Providers -->
 	
-	<bean id="org.hisp.dhis.web.api.provider.ActivityPlanProvider"
-		class="org.hisp.dhis.web.api.provider.ActivityPlanProvider" scope="singleton"/>
+	<!--<bean id="org.hisp.dhis.web.api.provider.ActivityPlanProvider"
+		class="org.hisp.dhis.web.api.provider.ActivityPlanProvider" scope="singleton"/>-->
 		
-	<bean id="org.hisp.dhis.web.api.provider.ProgramProvider"
-		class="org.hisp.dhis.web.api.provider.ProgramProvider" scope="singleton"/>
+	<!--<bean id="org.hisp.dhis.web.api.provider.ActivityWrapperProvider"
+		class="org.hisp.dhis.web.api.provider.ActivityWrapperProvider" scope="singleton"/>-->
+		
+	<!--<bean id="org.hisp.dhis.web.api.provider.ProgramProvider"
+		class="org.hisp.dhis.web.api.provider.ProgramProvider" scope="singleton"/>-->
 	
-	<bean id="org.hisp.dhis.web.api.provider.DataSetProvider"
-		class="org.hisp.dhis.web.api.provider.DataSetProvider" scope="singleton"/>
+	<!--<bean id="org.hisp.dhis.web.api.provider.DataSetProvider"
+		class="org.hisp.dhis.web.api.provider.DataSetProvider" scope="singleton"/>-->
 		
 	<bean id="org.hisp.dhis.web.api.provider.AbstractModelListProvider"
 		class="org.hisp.dhis.web.api.provider.AbstractModelListProvider" scope="singleton"/>
+	
+	<bean id="org.hisp.dhis.web.api.provider.MobileWrapperProvider"
+		class="org.hisp.dhis.web.api.provider.MobileWrapperProvider" scope="singleton"/>
+		
+		
 		
 	<!--  Consumers  -->	
 	<bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer"
 		class="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" scope="singleton"/>
 		
-	<bean id="org.hisp.dhis.web.api.provider.ActivityWrapperProvider"
-		class="org.hisp.dhis.web.api.provider.ActivityWrapperProvider" scope="singleton"/>	
-		
 	<bean id="org.hisp.dhis.web.api.consumer.ActivityValueConsumer"
 		class="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" scope="singleton"/>
+		
+		
 	<!-- Resources -->
 	
 	<bean id="org.hisp.dhis.web.api.resources.UserResource"
@@ -36,20 +43,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.web.api.resources.OrgUnitResource"
 		scope="prototype"/>
 	
-	<bean id="org.hisp.dhis.web.api.resources.FormResource"
-		class="org.hisp.dhis.web.api.resources.FormResource" scope="prototype"/>
+	<!--<bean id="org.hisp.dhis.web.api.resources.FormResource"
+		class="org.hisp.dhis.web.api.resources.FormResource" scope="prototype"/>-->
 		
-	<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
-      class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>   
+	<!--<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
+      class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>-->   
       
-    <bean id="org.hisp.dhis.web.api.resources.ProgramResource"
-      class="org.hisp.dhis.web.api.resources.ProgramResource" scope="prototype"/>
+    <!--<bean id="org.hisp.dhis.web.api.resources.ProgramResource"
+      class="org.hisp.dhis.web.api.resources.ProgramResource" scope="prototype"/>-->
       
-    <bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
-      class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>  
+    <!--<bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
+      class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>-->  
 	
-	<bean id="org.hisp.dhis.web.api.resources.ActivityWrapperResource"
-      class="org.hisp.dhis.web.api.resources.ActivityWrapperResource" scope="prototype"/>  
+	<!--<bean id="org.hisp.dhis.web.api.resources.ActivityWrapperResource"
+      class="org.hisp.dhis.web.api.resources.ActivityWrapperResource" scope="prototype"/>-->  
+     
+    <bean id="org.hisp.dhis.web.api.resources.MobileResouce"
+      class="org.hisp.dhis.web.api.resources.MobileResouce" scope="prototype"/>
+      
       
 	<!-- Services -->
 	

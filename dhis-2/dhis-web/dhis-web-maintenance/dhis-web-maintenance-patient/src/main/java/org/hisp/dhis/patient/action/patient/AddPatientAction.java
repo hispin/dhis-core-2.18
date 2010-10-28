@@ -53,7 +53,6 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.idgen.PatientIdentifierGenerator;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -103,10 +102,12 @@ public class AddPatientAction
 
     private String birthDate;
 
+    private char ageType;
+    
     private Integer age;
 
-    private boolean birthDateEstimated;
-
+    private Character dobType;
+    
     private String gender;
 
     private String bloodGroup;
@@ -166,30 +167,17 @@ public class AddPatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        if ( birthDate != null )
+        if ( dobType == 'V' || dobType == 'D' )
         {
             birthDate = birthDate.trim();
-
-            if ( birthDate.length() != 0 )
-            {
-                patient.setBirthDate( format.parseDate( birthDate ) );
-                patient.setBirthDateEstimated( birthDateEstimated );
-            }
-            else
-            {
-                if ( age != null )
-                {
-                    patient.setBirthDateFromAge( age.intValue() );
-                }
-            }
+            patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-            if ( age != null )
-            {
-                patient.setBirthDateFromAge( age.intValue() );
-            }
+           patient.setBirthDateFromAge( age.intValue(), ageType );
         }
+        
+        patient.setDobType( dobType );
 
         patient.setRegistrationDate( new Date() );
 
@@ -209,7 +197,7 @@ public class AddPatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if ( identifierType.getFormat().equals( "State Format" ) )
+                if (  identifierType.getFormat()!= null && identifierType.getFormat().equals( "State Format" ) )
                 {
                     value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
                         + request.getParameter( "benicode" );
@@ -377,11 +365,6 @@ public class AddPatientAction
         this.age = age;
     }
 
-    public void setBirthDateEstimated( boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
     public void setGender( String gender )
     {
         this.gender = gender;
@@ -410,5 +393,15 @@ public class AddPatientAction
     public void setUnderAge( boolean underAge )
     {
         this.underAge = underAge;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+
+    public void setAgeType( char ageType )
+    {
+        this.ageType = ageType;
     }
 }

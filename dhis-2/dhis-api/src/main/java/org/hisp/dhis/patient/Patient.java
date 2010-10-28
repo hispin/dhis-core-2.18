@@ -44,8 +44,13 @@ public class Patient
     implements Serializable
 {
     public static final String MALE = "M";
-
     public static final String FEMALE = "F";
+    
+
+    public static final char DOB_TYPE_VERIFIED = 'V';
+    public static final char DOB_TYPE_DECLARED = 'D';
+    public static final char DOB_TYPE_APPROXIATED = 'A';
+
 
     private Integer id;
 
@@ -60,8 +65,6 @@ public class Patient
     private Date birthDate;
 
     private String bloodGroup;
-
-    private boolean birthDateEstimated = false;
 
     private Date deathDate;
 
@@ -78,8 +81,10 @@ public class Patient
     private Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
 
     private Patient representative;
-    
+
     private boolean underAge;
+
+    private Character dobType;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -156,15 +161,17 @@ public class Patient
         return attributes;
     }
 
-    public OrganisationUnit getOrganisationUnit() {
-		return organisationUnit;
-	}
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
-	public void setOrganisationUnit(OrganisationUnit organisationUnit) {
-		this.organisationUnit = organisationUnit;
-	}
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
 
-	public void setAttributes( Set<PatientAttribute> attributes )
+    public void setAttributes( Set<PatientAttribute> attributes )
     {
         this.attributes = attributes;
     }
@@ -224,16 +231,6 @@ public class Patient
         this.birthDate = birthDate;
     }
 
-    public void setBirthDateEstimated( Boolean birthDateEstimated )
-    {
-        this.birthDateEstimated = birthDateEstimated;
-    }
-
-    public Boolean getBirthDateEstimated()
-    {
-        return birthDateEstimated;
-    }
-
     public Date getDeathDate()
     {
         return deathDate;
@@ -283,16 +280,6 @@ public class Patient
     {
         return registrationDate;
     }
-
-    // public Set<PatientAttribute> getAttributes()
-    // {
-    // return attributes;
-    // }
-    //
-    // public void setAttributes( Set<PatientAttribute> attributes )
-    // {
-    // this.attributes = attributes;
-    // }
 
     public void setRepresentative( Patient representative )
     {
@@ -372,17 +359,22 @@ public class Patient
 
     }
 
-    public void setBirthDateFromAge( int age )
+    public void setBirthDateFromAge( int age, char ageType )
     {
         Calendar todayCalendar = Calendar.getInstance();
 
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
         // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-        todayCalendar.add( Calendar.YEAR, -1 * age );
-
+        if(ageType == 'Y'){
+            todayCalendar.add( Calendar.YEAR, -1 * age );
+        }else if(ageType == 'M'){
+            todayCalendar.add( Calendar.MONTH, -1 * age );
+        }else if(ageType == 'D'){
+            todayCalendar.add( Calendar.DATE, -1 * age );
+        }
+        
         setBirthDate( todayCalendar.getTime() );
-        setBirthDateEstimated( true );
     }
 
     public String getFullName()
@@ -409,10 +401,32 @@ public class Patient
     {
         this.underAge = underAge;
     }
-    
+
     public String getTextGender()
     {
         return gender.equalsIgnoreCase( MALE ) ? "male" : "female";
     }
 
+    public Character getDobType()
+    {
+        return dobType;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
+    }
+
+    public String getTextDoBType()
+    {
+        switch ( dobType )
+        {
+            case 'V':
+                return "Verified";
+            case 'D':
+                return "Declared";
+            default:
+                return "Approxiated";
+        }
+    }
 }

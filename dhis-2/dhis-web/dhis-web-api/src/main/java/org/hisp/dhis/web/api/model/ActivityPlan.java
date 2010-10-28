@@ -49,32 +49,34 @@ public class ActivityPlan implements ISerializable
     	ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream dout = new DataOutputStream(bout);       
         
-        dout.writeInt(activitiesList.size());
-        
-
-        for(int i=0; i<activitiesList.size(); i++)
-        {
-        	Activity activity = (Activity)activitiesList.get(i);
-        	
-        	dout.writeLong(activity.getDueDate().getTime());
-        	
-        	System.out.println("add beneficiary");        	
-        	Beneficiary b = activity.getBeneficiary();
-        	dout.writeInt(b.getId()); 
-        	dout.writeUTF(b.getFirstName()); 
-        	dout.writeUTF(b.getMiddleName()); 
-        	dout.writeUTF(b.getLastName());
-        	dout.writeBoolean(activity.isLate());
-        	System.out.println("add beneficiary att");
-        	Set<String> atts = b.getPatientAttValues();
-                dout.writeInt( atts.size() );
-                for(String att : atts){
-                    dout.writeUTF( att );
-                }
-            System.out.println("add task");
-        	Task t = activity.getTask();
-        	dout.writeInt(t.getId()); dout.writeInt(t.getProgramStageId()); dout.writeBoolean(t.isCompleted());           
-        }      
+        if(activitiesList == null){
+        	dout.writeInt(0);
+        }else{
+        	dout.writeInt(activitiesList.size());
+	        for(int i=0; i<activitiesList.size(); i++)
+	        {
+	        	Activity activity = (Activity)activitiesList.get(i);
+	        	
+	        	dout.writeLong(activity.getDueDate().getTime());
+	        	
+	        	System.out.println("add beneficiary");        	
+	        	Beneficiary b = activity.getBeneficiary();
+	        	dout.writeInt(b.getId()); 
+	        	dout.writeUTF(b.getFirstName()); 
+	        	dout.writeUTF(b.getMiddleName()); 
+	        	dout.writeUTF(b.getLastName());
+	        	dout.writeBoolean(activity.isLate());
+	        	System.out.println("add beneficiary att");
+	        	Set<String> atts = b.getPatientAttValues();
+	                dout.writeInt( atts.size() );
+	                for(String att : atts){
+	                    dout.writeUTF( att );
+	                }
+	            System.out.println("add task");
+	        	Task t = activity.getTask();
+	        	dout.writeInt(t.getId()); dout.writeInt(t.getProgramStageId()); dout.writeBoolean(t.isCompleted());           
+	        }
+        }
         
         bout.flush();
         bout.writeTo(out);
