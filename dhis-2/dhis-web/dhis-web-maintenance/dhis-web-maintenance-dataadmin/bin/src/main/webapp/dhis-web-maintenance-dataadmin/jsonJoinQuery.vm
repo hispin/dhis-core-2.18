@@ -1,0 +1,3 @@
+{
+	"result": "$!encoder.jsEncode( ${fromJoinQuery} )"
+}
