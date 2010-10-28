@@ -312,10 +312,59 @@
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-mp/employeeList.vm</param>
             <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
-            <param name="javascripts">javascript/lineListOption.js,javascript/filterTable.js</param>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        
+        <action name="addEmployee"
+            class="org.hisp.dhis.ll.action.employee.AddEmployeeAction">
+            <result name="success" type="redirect">getEmployeeList.action</result>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
+        </action>
+        
+        <action name="showAddEmployeeForm"
+            class="org.hisp.dhis.ll.action.employee.ShowAddEmployeeFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/addEmployeeForm.vm</param>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
+        </action>
+        
+         <action name="showUpdateEmployeeForm"
+            class="org.hisp.dhis.ll.action.employee.ShowUpdateEmployeeFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/updateEmployeeForm.vm</param>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
         </action>	
+        
+        <action name="updateEmployee"
+            class="org.hisp.dhis.ll.action.employee.UpdateEmployeeAction">
+            <result name="success" type="redirect">getEmployeeList.action</result>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
+        </action>
+        
+        <action name="removeEmployee"
+            class="org.hisp.dhis.ll.action.employee.RemoveEmployeeAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+                /dhis-web-commons/ajax/jsonResponseError.vm</result>
+        </action>
+        
+        <action name="getEmployee"
+            class="org.hisp.dhis.ll.action.employee.GetEmployeeAction">
+            <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseEmployee.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+        
+        <action name="validateEmployee"
+			class="org.hisp.dhis.ll.action.employee.ValidateEmployeeAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm
+			</result>
+			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
+			</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 	
 <!-- LL EmployeeList 16/10/2010 end -->  				
 		

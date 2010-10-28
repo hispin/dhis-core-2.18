@@ -35,9 +35,11 @@ import java.util.Date;
  *
  * @version Employee.java Oct 15, 2010 1:42:16 PM
  */
-@SuppressWarnings("serial")
-public class Employee implements Serializable
+
+public class Employee
 {
+	
+	public static final Integer LPR_PERIOD = 40;
 
     /**
      * The unique identifier for Employee

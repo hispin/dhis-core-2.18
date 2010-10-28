@@ -1,0 +1,46 @@
+//------------------------------------------------------------------------------
+//Remove Employee
+//------------------------------------------------------------------------------
+
+function removeEmployee( pdsCode, name )
+{
+	removeItem( pdsCode, name, confirm_to_delete_employee, 'removeEmployee.action' );
+}
+
+function showEmployeeDetails( pdsCode )
+{
+	var request = new Request();
+    request.setResponseTypeXML( 'employee' );
+    request.setCallbackSuccess( employeeReceived );
+    request.send( 'getEmployee.action?pdsCode=' + pdsCode );
+}
+
+function employeeReceived( employeeElement )
+{
+	setInnerHTML( 'pdsCodeField', getElementValue( employeeElement, 'pdsCode' ) );
+    setInnerHTML( 'nameField', getElementValue( employeeElement, 'name' ) );
+    setInnerHTML( 'dateOfBirthField', getElementValue( employeeElement, 'dateOfBirth' ) );
+    setInnerHTML( 'lprDateField', getElementValue( employeeElement, 'lprDate' ) );
+    setInnerHTML( 'sexField', getElementValue( employeeElement, 'sex' ) );
+    setInnerHTML( 'joinDateToGovtServiceField', getElementValue( employeeElement, 'joinDateToGovtService' ) );
+    setInnerHTML( 'resAddressField', getElementValue( employeeElement, 'resAddress' ) );
+    setInnerHTML( 'contactNumberField', getElementValue( employeeElement, 'contactNumber' ) );
+    setInnerHTML( 'emergencyContactNumberField', getElementValue( employeeElement, 'emergencyContactNumber' ) );
+    
+    showDetails();
+}
+
+function lprChanged()
+{
+    var dobField = document.getElementById( 'dob' );
+    var lprDateField = document.getElementById( 'lprDate' );
+    
+    var dob = dobField.value;
+    var partsOfDob = dob.split("-");
+    
+    var dobYear = parseInt( partsOfDob[0] );
+    var lprYear = dobYear + lpr_Period;
+    lprDateField.value = lprYear + "-" + partsOfDob[1] + "-" +partsOfDob[2];
+    
+}
+
