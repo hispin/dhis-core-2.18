@@ -87,7 +87,7 @@ public class EditUserGroupFormAction
         
         groupMembers = new ArrayList<User>( group.getMembers() );
        
-        
+        availableUsers.removeAll( groupMembers );
         return SUCCESS;
     }
 
