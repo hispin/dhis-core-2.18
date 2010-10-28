@@ -1,0 +1,57 @@
+
+<h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>
+
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnit"/>
+    <label for="organisationUnit">$i18n.getString( "organisation_unit_structure" ) <span style="color:#606060">(_orgunitstructure)</span></label>
+</p>
+
+<p>
+	<input type="checkbox" name="resourceTableCheckBox" id="dataElementGroupSetStructure"/>
+	<label for="dataElementGroupSetStructure">$i18n.getString( "data_element_group_set_structure" ) <span style="color:#606060">(_dataelementgroupsetstructure)</span></label>
+</p>
+
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="indicatorGroupSetStructure"/>
+    <label for="indicatorGroupSetStructure">$i18n.getString( "indicator_group_set_structure" ) <span style="color:#606060">(_indicatorgroupsetstructure)</span></label>
+</p>
+
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="organisationUnitGroupSetStructure"/>
+    <label for="organisationUnitGroupSetStructure">$i18n.getString( "organisation_unit_group_set_structure" ) <span style="color:#606060">(_organisationunitgroupsetstructure)</span></label>
+</p>
+
+<p>
+	<input type="checkbox" name="resourceTableCheckBox" id="categoryStructure"/>
+	<label for="categoryStructure">$i18n.getString( "category_structure" ) <span style="color:#606060">(_categorystructure)</span></label>
+</p>
+
+<p>
+    <input type="checkbox" name="resourceTableCheckBox" id="categoryOptionComboName"/>
+    <label for="categoryOptionComboName">$i18n.getString( "data_element_category_option_combo_name" ) <span style="color:#606060">(_categoryoptioncomboname)</span></label>
+</p>
+
+
+<table>
+	<tr>
+		<td>
+			<input type="button" value='$i18n.getString( "select_all" )' id="selectAllButton" onclick="toggleAll()" style="width:100px"/>
+		    <input type="button" value='$i18n.getString( "generate_resource_tables" )' onclick="generateResourceTable()" style="width:150px"/> 
+		</td>
+	</tr>
+
+</table>
+
+<span id="message"></span>
+
+<script type="text/javascript">
+
+    var i18n_generating_resource_tables = '$encoder.jsEscape( $i18n.getString( "generating_resource_tables" ), "'" )';
+    var i18n_resource_tables_generated = '$encoder.jsEscape( $i18n.getString( "resource_tables_generated" ), "'" )';
+    var i18n_regenerating_resource_tables_and_views = '$encoder.jsEscape( $i18n.getString( "regenerating_resource_tables_and_views" ), "'" )';
+    var i18n_regenerating_failed = '$encoder.jsEscape( $i18n.getString( "regenerating_failed" ), "'" )';
+    var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
+    var i18n_select_all = '$encoder.jsEscape( $i18n.getString( "select_all" ), "'" )';
+    var i18n_unselect_all = '$encoder.jsEscape( $i18n.getString( "unselect_all" ), "'" )';
+	
+</script>
