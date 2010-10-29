@@ -33,7 +33,6 @@ import java.util.List;
 
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.mapping.MappingService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,8 +47,12 @@ public class GetGeoJsonFilesAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
 
     // -------------------------------------------------------------------------
     // Output
