@@ -33,6 +33,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -67,6 +68,7 @@ public class DataArchiveServiceTest
      * operation, DataEliminationStrategy strategy );
      */
     @Test
+    @Ignore
     public void testArchiveData()
     {
         // Archives all datavalues to datavaluearchive from earliest to latest
@@ -104,6 +106,7 @@ public class DataArchiveServiceTest
      * int getNumberOfOverlappingValues();
      */
     @Test
+    @Ignore
     public void testGetNumberOfOverlappingValues()
     {
         int archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.UNARCHIVE,
