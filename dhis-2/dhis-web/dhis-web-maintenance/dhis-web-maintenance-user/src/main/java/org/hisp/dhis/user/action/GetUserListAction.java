@@ -32,12 +32,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;

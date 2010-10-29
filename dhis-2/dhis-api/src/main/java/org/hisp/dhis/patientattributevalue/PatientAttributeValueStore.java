@@ -62,7 +62,9 @@ public interface PatientAttributeValueStore
     
     Collection<Patient> getPatient( PatientAttribute attribute, String value );
     
-    Collection<Patient> searchPatientAttributeValue( PatientAttribute patientAttribute, String searchText, int min, int max);
+    Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText, int min, int max);
     
+    Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText );
+
     int countSearchPatientAttributeValue(  PatientAttribute patientAttribute, String searchText );
 }

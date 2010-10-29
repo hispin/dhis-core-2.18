@@ -128,10 +128,17 @@ public class HibernatePatientAttributeValueStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> searchPatientAttributeValue( PatientAttribute patientAttribute,
+    public Collection<Patient> searchPatients( PatientAttribute patientAttribute,
         String searchText, int min, int max )
     {
         return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
             Restrictions.ilike( "value", "'%" + searchText + "%'" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText )
+    {
+        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
+            Restrictions.ilike( "value", "'%" + searchText + "%'" ) ).setProjection( Projections.property( "patient" ) ).list();
     }
 }

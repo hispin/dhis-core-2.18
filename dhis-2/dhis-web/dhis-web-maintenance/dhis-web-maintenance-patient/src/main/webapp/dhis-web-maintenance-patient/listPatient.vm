@@ -77,8 +77,8 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 		  
           #foreach( $patient in $patients )
           	<tr id="tr${patient.id}">
-          	<td>			
-                    #set( $nr = ( ( $pagingUtil.currentPage - 1  ) * $pagingUtil.pageSize ) + $velocityCount )
+          	<td>
+                    #set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
                     $nr
 		</td>
                 #if($mapPatientPatientAttr.size()!=0)
@@ -206,8 +206,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
   </tr>
   <tr>
   	<td colspan="6">
+		<p></p>
   		<div class="paging-container">
-			#parse( "/dhis-web-maintenance-patient/paging.vm" )
+				#parse( "/dhis-web-commons/paging/paging.vm" )
 		</div>
 	</td>
   	<td></td>
