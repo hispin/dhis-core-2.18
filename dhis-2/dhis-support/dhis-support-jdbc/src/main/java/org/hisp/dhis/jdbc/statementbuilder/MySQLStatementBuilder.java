@@ -41,7 +41,7 @@ public class MySQLStatementBuilder
 {
     public String getDoubleColumnType()
     {
-        return "DOUBLE";
+        return "DECIMAL";
     }
 
     public String encode( String value )
