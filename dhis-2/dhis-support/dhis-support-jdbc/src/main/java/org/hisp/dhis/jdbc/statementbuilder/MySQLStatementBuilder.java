@@ -220,67 +220,6 @@ public class MySQLStatementBuilder
             "AND ( dv.value < '" + lowerBound + "' " +
             "OR  dv.value > '" + upperBound + "' )";
    }
-    
-   public String archiveData( String startDate, String endDate )
-   {
-       return "DELETE d FROM datavalue AS d " +
-            "INNER JOIN period as p " +
-            "WHERE d.periodid=p.periodid " +
-            "AND p.startdate>='" + startDate + "' " +
-            "AND p.enddate<='" + endDate + "'";
-   }
-   
-   public String unArchiveData( String startDate, String endDate )
-   {    
-       return "DELETE a FROM datavaluearchive AS a " +
-           "INNER JOIN period AS p " +
-           "WHERE a.periodid=p.periodid " +
-           "AND p.startdate>='" + startDate + "' " +
-           "AND p.enddate<='" + endDate + "'";
-   }
-   
-   public String deleteRegularOverlappingData()
-   {    
-       return "DELETE d FROM datavalue AS d " +
-           "INNER JOIN datavaluearchive AS a " +
-           "WHERE d.dataelementid=a.dataelementid " +
-           "AND d.periodid=a.periodid " +
-           "AND d.sourceid=a.sourceid " +
-           "AND d.categoryoptioncomboid=a.categoryoptioncomboid";
-
-   }
-   
-   public String deleteArchivedOverlappingData()
-   {
-       return "DELETE a FROM datavaluearchive AS a " +
-           "INNER JOIN datavalue AS d " +
-           "WHERE a.dataelementid=d.dataelementid " +
-           "AND a.periodid=d.periodid " +
-           "AND a.sourceid=d.sourceid " +
-           "AND a.categoryoptioncomboid=d.categoryoptioncomboid";
-   }
-   
-   public String deleteOldestOverlappingDataValue()
-   {    
-       return "DELETE d FROM datavalue AS d " +
-           "INNER JOIN datavaluearchive AS a " +
-           "WHERE d.dataelementid=a.dataelementid " +
-           "AND d.periodid=a.periodid " +
-           "AND d.sourceid=a.sourceid " +
-           "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-           "AND d.lastupdated<a.lastupdated";
-   }
-   
-   public String deleteOldestOverlappingArchiveData()
-   {       
-       return "DELETE a FROM datavaluearchive AS a " +
-           "INNER JOIN datavalue AS d " +
-           "WHERE a.dataelementid=d.dataelementid " +
-           "AND a.periodid=d.periodid " +
-           "AND a.sourceid=d.sourceid " +
-           "AND a.categoryoptioncomboid=d.categoryoptioncomboid " +
-           "AND a.lastupdated<=d.lastupdated";
-   }
    
    public String archivePatientData ( String startDate, String endDate )
    {
