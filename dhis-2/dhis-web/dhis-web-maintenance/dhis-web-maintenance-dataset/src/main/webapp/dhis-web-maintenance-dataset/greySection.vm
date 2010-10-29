@@ -44,7 +44,7 @@
 <br/>
 	
 <p>
-	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'back' )"/>
+	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'done' )"/>
 </p>
 	
 <script type="text/javascript">

@@ -43,10 +43,10 @@
                 	   
                 	#if( $greyedField == "true" )               		          
                 		<input name="entryfieldTxt" id="[$dataElement.id]_[$optionCombo.id].txt" type="text" disabled="disabled"/>
-                        <input name="entryfieldBtn" id="[$dataElement.id]_[$optionCombo.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '$optionCombo.id' )" value="$i18n.getString( 'enable' )"/>
+                        <input name="entryfieldBtn" id="[$dataElement.id]_[$optionCombo.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '$optionCombo.id' )" value="$i18n.getString( 'enable' )" style="width:70px"/>
                     #else                                 
                         <input name="entryfieldTxt" id="[$dataElement.id]_[$optionCombo.id].txt" type="text"/>
-                        <input name="entryfieldBtn" id="[$dataElement.id]_[$optionCombo.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '$optionCombo.id' )" value="$i18n.getString( 'disable' )"/>
+                        <input name="entryfieldBtn" id="[$dataElement.id]_[$optionCombo.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '$optionCombo.id' )" value="$i18n.getString( 'disable' )" style="width:70px"/>
 	                #end                                       
                     
                 </td>

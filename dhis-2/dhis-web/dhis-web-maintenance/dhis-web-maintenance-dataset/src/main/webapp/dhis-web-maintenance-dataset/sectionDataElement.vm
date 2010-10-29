@@ -42,10 +42,10 @@
            	         	           	
            	#if( $greyedField == "true" )           		           	            	
            		<input name="entryfieldTxt" id="[$dataElement.id].txt" type="text" disabled="disabled"/>
-           	    <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'enable' )"/>
+           	    <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'enable' )" style="width:70px"/>
            	#else           	        
            	    <input name="entryfieldTxt" id="[$dataElement.id].txt" type="text"/>
-                <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'disable' )"/>
+                <input name="entryfieldBtn" id="[$dataElement.id].btn" type="button" onclick="saveGreyStatus( '$section.id', '$dataElement.id', '' )" value="$i18n.getString( 'disable' )" style="width:70px"/>
            	#end
            	    
            </td>   
