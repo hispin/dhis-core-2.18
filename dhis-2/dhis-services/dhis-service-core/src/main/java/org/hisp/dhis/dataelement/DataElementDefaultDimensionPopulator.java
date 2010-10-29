@@ -34,7 +34,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -60,12 +59,16 @@ public class DataElementDefaultDimensionPopulator
 
     private DataElementService dataElementService;
 
-    @Autowired
-    private ConceptService  conceptService;
-
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    private ConceptService conceptService;
+
+    public void setConceptService( ConceptService conceptService )
+    {
+        this.conceptService = conceptService;
     }
 
     private DataElementCategoryService categoryService;

@@ -32,7 +32,6 @@ import org.amplecode.quick.StatementDialect;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -58,9 +57,13 @@ public class JdbcConfigurationFactoryBean
     // Dependencies
     // -------------------------------------------------------------------------
     
-    @Autowired
-    private HibernateConfigurationProvider configurationProvider;
+    private HibernateConfigurationProvider hibernateConfigurationProvider;
     
+    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
+    {
+        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
+    }
+
     private JdbcConfiguration jdbcConfig;
 
     // -------------------------------------------------------------------------
@@ -69,7 +72,7 @@ public class JdbcConfigurationFactoryBean
     
     public void init()
     {
-        Configuration hibernateConfiguration = configurationProvider.getConfiguration();
+        Configuration hibernateConfiguration = hibernateConfigurationProvider.getConfiguration();
         
         JdbcConfiguration config = new JdbcConfiguration();
         

@@ -34,7 +34,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,15 +54,19 @@ public class SaveDocumentAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
+
     private DocumentService documentService;
 
     public void setDocumentService( DocumentService documentService )
     {
         this.documentService = documentService;
     }
-
-    @Autowired
-    private LocationManager locationManager;
 
     // -------------------------------------------------------------------------
     // Input

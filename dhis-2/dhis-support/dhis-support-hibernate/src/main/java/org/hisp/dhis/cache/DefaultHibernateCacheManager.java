@@ -29,7 +29,6 @@ package org.hisp.dhis.cache;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -42,8 +41,12 @@ public class DefaultHibernateCacheManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     // -------------------------------------------------------------------------
     // HibernateCacheManager implementation

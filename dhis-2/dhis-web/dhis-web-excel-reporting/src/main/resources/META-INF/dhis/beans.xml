@@ -12,6 +12,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportexcel.ReportLocationManager" class="org.hisp.dhis.reportexcel.DefaultReportLocationManager"
 		init-method="init">
+		<property name="locationManager" ref="locationManager"/>
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 

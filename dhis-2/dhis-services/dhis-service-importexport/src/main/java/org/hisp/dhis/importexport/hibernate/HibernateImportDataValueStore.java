@@ -37,7 +37,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportDataValueStore;
 import org.hisp.dhis.importexport.ImportObjectStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**

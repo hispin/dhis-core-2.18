@@ -54,7 +54,6 @@ import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
 import org.hisp.dhis.reporttable.statement.ReportTableStatement;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -69,8 +68,12 @@ public class JDBCReportTableManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     private StatementBuilder statementBuilder;
 

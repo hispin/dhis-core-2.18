@@ -43,7 +43,6 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.jdbc.StatementBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -56,11 +55,19 @@ public class JDBCCrossTabStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
     
-    @Autowired
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
 
     // -------------------------------------------------------------------------
     // CrossTabStore implementation

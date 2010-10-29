@@ -8,12 +8,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="processCoordinator" class="org.amplecode.cave.process.SpringProcessCoordinator" destroy-method="close"/>
 
-  <bean id="deletionInterceptor" class="org.hisp.dhis.system.deletion.DeletionInterceptor"/>
+  <bean id="deletionInterceptor" class="org.hisp.dhis.system.deletion.DeletionInterceptor">
+	<property name="deletionManager" ref="deletionManager"/>
+  </bean>
   
   <bean id="deletionManager" class="org.hisp.dhis.system.deletion.DefaultDeletionManager"/>
   
-  <bean id="databaseInfoProvider" class="org.hisp.dhis.system.database.HibernateDatabaseInfoProvider"/>
-  
-  
+  <bean id="databaseInfoProvider" class="org.hisp.dhis.system.database.HibernateDatabaseInfoProvider" init-method="init">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
+  </bean>
     
 </beans>

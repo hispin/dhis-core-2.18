@@ -49,7 +49,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -58,7 +57,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DataSetCompletenessServiceTest
     extends DhisTest
 {
-    @Autowired
     private LocationManager locationManager;
     
     private CompleteDataSetRegistrationService registrationService;
@@ -102,6 +100,8 @@ public class DataSetCompletenessServiceTest
     @Override
     public void setUpTest()
     {
+        locationManager = (LocationManager) getBean( "locationManager" );
+        
         setExternalTestDir( locationManager );
         
         periodService = (PeriodService) getBean( PeriodService.ID );

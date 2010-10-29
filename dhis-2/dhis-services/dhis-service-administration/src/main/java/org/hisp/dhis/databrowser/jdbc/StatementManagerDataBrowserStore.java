@@ -13,7 +13,6 @@ import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.system.util.TimeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
@@ -27,21 +26,25 @@ public class StatementManagerDataBrowserStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
 
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private SqlViewService sqlViewService;
 
     public void setSqlViewService( SqlViewService sqlViewService )
     {
         this.sqlViewService = sqlViewService;
-    }
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------

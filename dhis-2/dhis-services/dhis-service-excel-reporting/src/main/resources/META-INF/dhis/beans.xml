@@ -7,7 +7,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- ReportExcel -->
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelStore"
 		class="org.hisp.dhis.reportexcel.hibernate.HibernateReportExcelStore">
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.ReportExcelService" class="org.hisp.dhis.reportexcel.DefaultReportExcelService">
@@ -20,6 +21,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<bean id="org.hisp.dhis.reportexcel.excelitem.ExcelItemStore"
 		class="org.hisp.dhis.reportexcel.excelitem.hibernate.HibernateExcelItemStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

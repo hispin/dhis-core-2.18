@@ -35,7 +35,6 @@ import java.util.Map;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -65,13 +64,6 @@ public class GenerateReportAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }
-
-    private PatientService patientService;
-
-    public void setPatientService( PatientService patientService )
-    {
-        this.patientService = patientService;
     }
 
     private ProgramService programService;

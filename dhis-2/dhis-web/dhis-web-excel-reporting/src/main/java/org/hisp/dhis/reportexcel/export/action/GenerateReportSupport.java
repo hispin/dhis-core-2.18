@@ -73,7 +73,6 @@ import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService;
 import org.hisp.dhis.reportexcel.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportexcel.preview.manager.InitializePOIStylesManager;
 import org.hisp.dhis.reportexcel.state.SelectionManager;

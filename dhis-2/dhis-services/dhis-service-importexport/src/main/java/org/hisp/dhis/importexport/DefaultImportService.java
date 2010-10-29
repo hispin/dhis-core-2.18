@@ -52,7 +52,6 @@ import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.StreamUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author bobj

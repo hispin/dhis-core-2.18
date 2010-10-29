@@ -28,7 +28,6 @@ package org.hisp.dhis.dataadmin.action.cache;
  */
 
 import org.hisp.dhis.cache.HibernateCacheManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,8 +42,12 @@ public class ClearCacheAction
     // Dependencies
     // -------------------------------------------------------------------------
     
-    @Autowired
     private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation

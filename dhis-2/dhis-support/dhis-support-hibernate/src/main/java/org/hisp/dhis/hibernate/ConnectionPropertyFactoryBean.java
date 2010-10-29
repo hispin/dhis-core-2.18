@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -41,9 +40,13 @@ public class ConnectionPropertyFactoryBean
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private HibernateConfigurationProvider hibernateConfigurationProvider;
     
+    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
+    {
+        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
+    }
+
     private String hibernateProperty;
 
     public void setHibernateProperty( String hibernateProperty )

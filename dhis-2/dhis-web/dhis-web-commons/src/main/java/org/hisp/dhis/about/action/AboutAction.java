@@ -36,15 +36,14 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.database.DatabaseInfo;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -60,12 +59,20 @@ public class AboutAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private LocationManager locationManager;
 
-    @Autowired
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
+
     private DatabaseInfoProvider databaseInfoProvider;
-    
+
+    public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
+    {
+        this.databaseInfoProvider = databaseInfoProvider;
+    }
+
     private CurrentUserService currentUserService;
     
     public void setCurrentUserService( CurrentUserService currentUserService )

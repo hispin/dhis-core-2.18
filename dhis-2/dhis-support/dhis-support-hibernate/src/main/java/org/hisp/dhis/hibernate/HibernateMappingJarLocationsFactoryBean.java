@@ -28,7 +28,6 @@ package org.hisp.dhis.hibernate;
  */
 
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 
 /**
@@ -42,8 +41,12 @@ public class HibernateMappingJarLocationsFactoryBean
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private HibernateConfigurationProvider hibernateConfigurationProvider;
+
+    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
+    {
+        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
+    }
 
     // -------------------------------------------------------------------------
     // FactoryBean implementation

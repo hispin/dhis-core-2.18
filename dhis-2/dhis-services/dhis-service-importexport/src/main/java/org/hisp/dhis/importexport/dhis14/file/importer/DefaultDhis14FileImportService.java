@@ -119,7 +119,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.AppendingHashMap;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

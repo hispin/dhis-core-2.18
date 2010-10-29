@@ -27,6 +27,9 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_11;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_12;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -44,9 +47,6 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.DataElementCategoryImporter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter. MINOR_VERSION_11;
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter. MINOR_VERSION_12;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -60,7 +60,6 @@ public class DataElementCategoryConverter
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_CONCEPT_ID = "conceptid";
-    private static final String FIELD_CONCEPT_NAME = "conceptname"; //deprecated 1.2
 
     private ConceptService conceptService;
 

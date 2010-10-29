@@ -61,9 +61,9 @@ import org.hisp.dhis.importexport.dxf.converter.AggregatedDataValueConverter;
 import org.hisp.dhis.importexport.dxf.converter.CalculatedDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryCategoryOptionAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.CategoryComboCategoryAssociationConverter;
-import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
 import org.hisp.dhis.importexport.dxf.converter.ChartConverter;
 import org.hisp.dhis.importexport.dxf.converter.CompleteDataSetRegistrationConverter;
+import org.hisp.dhis.importexport.dxf.converter.ConceptConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryDataElementConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataDictionaryIndicatorConverter;
@@ -109,7 +109,6 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**

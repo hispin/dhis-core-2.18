@@ -19,17 +19,31 @@
 
   <!-- Configuration -->
 
-  <bean id="cacheManager" class="org.hisp.dhis.cache.DefaultHibernateCacheManager"/>
+  <bean id="cacheManager" class="org.hisp.dhis.cache.DefaultHibernateCacheManager">
+	<property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
   
-  <bean id="dbmsManager" class="org.hisp.dhis.dbms.HibernateDbmsManager"/>
+  <bean id="dbmsManager" class="org.hisp.dhis.dbms.HibernateDbmsManager">
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	<property name="sessionFactory" ref="sessionFactory"/>
+	<property name="cacheManager" ref="cacheManager"/>
+  </bean>
   
-  <bean id="hibernateConfigurationProvider" class="org.hisp.dhis.hibernate.DefaultHibernateConfigurationProvider"/>
+  <bean id="hibernateConfigurationProvider" class="org.hisp.dhis.hibernate.DefaultHibernateConfigurationProvider">
+	<property name="locationManager" ref="locationManager"/>
+  </bean>
   
-  <bean id="hibernateMappingDirectoryLocations" class="org.hisp.dhis.hibernate.HibernateMappingDirectoryLocationsFactoryBean"/>
+  <bean id="hibernateMappingDirectoryLocations" class="org.hisp.dhis.hibernate.HibernateMappingDirectoryLocationsFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
+  </bean>
   
-  <bean id="hibernateMappingJarLocations" class="org.hisp.dhis.hibernate.HibernateMappingJarLocationsFactoryBean"/>
+  <bean id="hibernateMappingJarLocations" class="org.hisp.dhis.hibernate.HibernateMappingJarLocationsFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
+  </bean>
   
-  <bean id="hibernateProperties" class="org.hisp.dhis.hibernate.HibernatePropertiesFactoryBean"/>
+  <bean id="hibernateProperties" class="org.hisp.dhis.hibernate.HibernatePropertiesFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
+  </bean>
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
@@ -50,18 +64,22 @@
   </bean>
     
   <bean id="driverClassName" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
     <property name="hibernateProperty" value="hibernate.connection.driver_class"/>
   </bean>
     
   <bean id="url" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
     <property name="hibernateProperty" value="hibernate.connection.url"/>
   </bean>
     
   <bean id="username" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
     <property name="hibernateProperty" value="hibernate.connection.username"/>
   </bean>
   
   <bean id="password" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
     <property name="hibernateProperty" value="hibernate.connection.password"/>
   </bean>
     

@@ -44,7 +44,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueNameMinMaxRowMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -56,13 +55,20 @@ public class JdbcDataAnalysisStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
 
-    @Autowired
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     private StatementBuilder statementBuilder;
-    
-    
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+
     // -------------------------------------------------------------------------
     // OutlierAnalysisStore implementation
     // -------------------------------------------------------------------------

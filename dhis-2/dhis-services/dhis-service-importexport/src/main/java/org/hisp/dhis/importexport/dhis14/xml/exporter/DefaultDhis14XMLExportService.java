@@ -64,7 +64,6 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserRoleXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserXSDConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland

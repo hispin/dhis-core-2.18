@@ -121,7 +121,6 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * DXFConverter class

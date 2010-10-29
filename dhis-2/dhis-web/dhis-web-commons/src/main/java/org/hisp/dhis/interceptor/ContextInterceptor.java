@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
@@ -44,8 +43,12 @@ public class ContextInterceptor
 {
     private static final String KEY_IN_MEMORY_DATABASE = "inMemoryDatabase";
     
-    @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
+
+    public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
+    {
+        this.databaseInfoProvider = databaseInfoProvider;
+    }
 
     @Override
     public void destroy()

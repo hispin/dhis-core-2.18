@@ -28,7 +28,6 @@ package org.hisp.dhis.importexport.importer;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.importexport.GroupMemberType;

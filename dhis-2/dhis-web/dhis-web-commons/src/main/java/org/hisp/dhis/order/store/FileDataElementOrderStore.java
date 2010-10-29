@@ -43,7 +43,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.order.DataElementOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -63,8 +62,12 @@ public class FileDataElementOrderStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
 
     // -------------------------------------------------------------------------
     // DataElementOrderStore implementation

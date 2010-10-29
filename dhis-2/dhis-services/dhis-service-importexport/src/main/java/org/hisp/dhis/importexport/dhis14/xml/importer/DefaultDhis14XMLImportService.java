@@ -75,7 +75,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.process.OutputHolderState;
 import org.hisp.dhis.system.util.AppendingHashMap;
 import org.hisp.dhis.system.util.StreamUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland

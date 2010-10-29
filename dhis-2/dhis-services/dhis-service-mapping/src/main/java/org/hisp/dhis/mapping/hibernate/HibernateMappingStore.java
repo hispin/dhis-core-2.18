@@ -43,7 +43,6 @@ import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Jan Henrik Overland
@@ -56,8 +55,12 @@ public class HibernateMappingStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     // -------------------------------------------------------------------------
     // Map

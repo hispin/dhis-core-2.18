@@ -31,7 +31,6 @@ import org.hisp.dhis.system.objectmapper.AggregatedIndicatorMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class JdbcAggregatedDataValueStore
     implements AggregatedDataValueStore
@@ -40,8 +39,12 @@ public class JdbcAggregatedDataValueStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     // -------------------------------------------------------------------------
     // AggregatedDataValue

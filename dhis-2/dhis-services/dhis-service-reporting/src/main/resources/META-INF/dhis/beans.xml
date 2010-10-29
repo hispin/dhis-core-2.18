@@ -32,6 +32,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     
   <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager"
     class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
+	<property name="statementManager" ref="statementManager"/>
 	<property name="statementBuilder" ref="statementBuilder"/>
   </bean>
 
@@ -82,6 +83,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       value="reports"/>
     <property name="reportConfigFile" 
       value="reportConfiguration.xml"/>
+	<property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+	<property name="locationManager" ref="locationManager"/>
+	<property name="configurationManager" ref="configurationManager"/>
   </bean>
   
   <!-- Chart -->
@@ -157,6 +161,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="completenessStore"
       ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
+	<property name="locationManager" ref="locationManager"/>
+	<property name="configurationManager" ref="configurationManager"/>
   </bean>
   
   <bean id="ratioDataCompletenessService"
@@ -171,7 +177,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
   
   <bean id="org.hisp.dhis.completeness.DataSetCompletenessStore"
-    class="org.hisp.dhis.completeness.jdbc.JDBCDataSetCompletenessStore"/>
+    class="org.hisp.dhis.completeness.jdbc.JDBCDataSetCompletenessStore">
+	<property name="statementManager" ref="statementManager"/>
+  </bean>
 
   <bean id="internal-process-DataSetCompleteness"
     class="org.hisp.dhis.completeness.DataSetCompletenessInternalProcess"
@@ -255,28 +263,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.tallysheet.TallySheetPdfService"
     class="org.hisp.dhis.tallysheet.DefaultTallySheetPdfService"/>
         
-  <!-- Startup routine definitions -->
-  
-  <bean id="org.hisp.dhis.startup.OpenHealthDataSourceWriter"
-    class="org.hisp.dhis.startup.OpenHealthDataSourceWriter">
-    <property name="environmentVariable" value="OPENHEALTH_HOME"/>
-    <property name="dataSourceFile" value="datasources.xml"/>
-	<property name="name" value="OpenHealthDataSourceWriter"/>
-    <property name="runlevel" value="6"/>
-    <property name="skipInTests" value="true"/>
-  </bean>
-    
-  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject"
-      ref="org.hisp.dhis.system.startup.StartupRoutineExecutor"/>
-    <property name="targetMethod" value="addStartupRoutines"/>
-    <property name="arguments">
-      <list>
-        <ref local="org.hisp.dhis.startup.OpenHealthDataSourceWriter"/>
-      </list>
-    </property>
-  </bean>
-
   <!-- DeletionHandler -->
   
   <bean id="org.hisp.dhis.report.ReportDeletionHandler"

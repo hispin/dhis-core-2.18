@@ -38,7 +38,6 @@ import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland

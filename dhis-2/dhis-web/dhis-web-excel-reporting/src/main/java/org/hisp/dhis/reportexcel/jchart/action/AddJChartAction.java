@@ -36,7 +36,6 @@ import org.hisp.dhis.jchart.JChartSeries;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 

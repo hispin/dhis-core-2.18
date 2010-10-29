@@ -31,7 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -48,14 +47,26 @@ public class HibernateDbmsManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private SessionFactory sessionFactory;
 
-    @Autowired
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+
     private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
 
     // -------------------------------------------------------------------------
     // DbmsManager implementation
