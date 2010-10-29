@@ -33,7 +33,6 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -74,7 +73,6 @@ import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.util.LoggingHashMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -88,9 +86,13 @@ public class DefaultObjectMappingGenerator
     // Dependencies
     // -------------------------------------------------------------------------
     
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
+
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
@@ -101,14 +103,7 @@ public class DefaultObjectMappingGenerator
     // -------------------------------------------------------------------------
     // Concept
     // -------------------------------------------------------------------------
-    @Autowired
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
-    }
-
+    
     public Map<Object, Integer> getConceptMapping( boolean skipMapping )
     {
         BatchHandler<Concept> batchHandler = batchHandlerFactory.createBatchHandler( ConceptBatchHandler.class );

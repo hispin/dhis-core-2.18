@@ -227,8 +227,12 @@ public class DefaultDhis14FileImportService
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
-    @Autowired
     private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
 
     private ImportAnalyser importAnalyser;
     

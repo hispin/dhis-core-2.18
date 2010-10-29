@@ -36,7 +36,6 @@ import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.IbatisConfiguration;
 import org.hisp.dhis.importexport.IbatisConfigurationManager;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -52,7 +51,6 @@ public class IbatisConfigurationManagerTest
     
     private IbatisConfigurationManager configurationManager;
 
-    @Autowired
     private LocationManager locationManager;
     
     // -------------------------------------------------------------------------
@@ -62,6 +60,8 @@ public class IbatisConfigurationManagerTest
     @Override
     public void setUpTest()
     {
+        locationManager = (LocationManager) getBean( "locationManager" );
+        
         setExternalTestDir( locationManager );
         
         configurationManager = (IbatisConfigurationManager) getBean( IbatisConfigurationManager.ID );

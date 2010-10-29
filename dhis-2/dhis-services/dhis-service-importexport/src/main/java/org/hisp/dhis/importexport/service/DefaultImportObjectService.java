@@ -200,9 +200,13 @@ public class DefaultImportObjectService<T>
         this.dataValueService = dataValueService;
     }
     
-    @Autowired
     private HibernateCacheManager cacheManager;
-    
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
+
     // -------------------------------------------------------------------------
     // ImportObjectService implementation
     // -------------------------------------------------------------------------

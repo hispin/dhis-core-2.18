@@ -76,12 +76,20 @@ public class DefaultIbatisConfigurationManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private LocationManager locationManager;
 
-    @Autowired
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
+
     private ConfigurationManager<IbatisConfiguration> configurationManager;
-    
+
+    public void setConfigurationManager( ConfigurationManager<IbatisConfiguration> configurationManager )
+    {
+        this.configurationManager = configurationManager;
+    }
+
     // -------------------------------------------------------------------------
     // IbatisConfigurationManager implementation
     // -------------------------------------------------------------------------

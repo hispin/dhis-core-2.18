@@ -51,11 +51,19 @@ public class HibernateImportDataValueStore
     // Dependencies
     // ----------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+
     private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     // ----------------------------------------------------------------------
     // ImportDataValueStore implementation

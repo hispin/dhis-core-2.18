@@ -38,9 +38,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.external.location.LocationManager;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -52,8 +52,13 @@ public class XsltUtils
     private static final String TEST_INPUT = "testinput.xml";
     private static final String TEST_OUTPUT = "testoutput.xml";
     
-    @Autowired
     private LocationManager locationManager;
+    
+    @Override
+    public void setUpTest()
+    {
+        locationManager = (LocationManager) getBean( "locationManager" );
+    }
     
     @Test
     @Ignore
