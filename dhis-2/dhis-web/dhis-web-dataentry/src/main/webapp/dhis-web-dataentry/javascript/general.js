@@ -79,16 +79,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
          if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )      
         {
         	var value = new Number( field.value );       	        	
-        	 
-        	if( value * 1 == 0 && !zeroValueSaveMode )
-        	{
-        		window.alert( i18n_saving_zero_values_unnecessary  );
-        		field.select();
-   	            field.focus(); 
-   	                   		
-				return;    
-				    		
-        	}
+        	
             if (  type == 'int' && !isInt( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
