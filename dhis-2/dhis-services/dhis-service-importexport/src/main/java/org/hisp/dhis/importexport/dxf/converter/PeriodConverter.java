@@ -134,6 +134,11 @@ public class PeriodConverter
             PeriodType periodType = new MonthlyPeriodType();
             period.setPeriodType( periodType );
             
+            if ( values.get( FIELD_PERIOD_TYPE ) != null && values.get( FIELD_PERIOD_TYPE ).equalsIgnoreCase( "relative" ) )
+            {
+                continue; // Backwards compatibility
+            }
+            
             period.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             period.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
             period.setStartDate( DateUtils.getMediumDate( values.get( FIELD_START_DATE ) ) );

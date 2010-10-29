@@ -243,7 +243,9 @@ public class ChartConverter
             chart.getRelatives().setIndividualMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
             
             reader.moveToStartElement( FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR );
-            chart.getRelatives().setIndividualQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );            
+            chart.getRelatives().setIndividualQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+            
+            importObject( chart, params );
         }
     }
 }
