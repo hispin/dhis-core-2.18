@@ -373,10 +373,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction" class="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction"
-		scope="prototype"/>
+		scope="prototype">
+		<property name="locationManager" ref="locationManager"/>
+	</bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction"
-		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype"/>
+		class="org.hisp.dhis.mapping.action.GetGeoJsonFilesAction" scope="prototype">
+		<property name="locationManager" ref="locationManager"/>
+	</bean>
 
 	<!-- Export Map -->
 
