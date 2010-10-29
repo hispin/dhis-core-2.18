@@ -155,12 +155,7 @@ public class SearchPatientAction
     }
 
     private Integer total;
-
-    public void setTotal( Integer total )
-    {
-        this.total = total;
-    }
-
+    
     public Integer getTotal()
     {
         return total;
@@ -231,10 +226,7 @@ public class SearchPatientAction
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSearchTest();
 
-            if ( total == null )
-            {
-                total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-            }
+            total = patientService.countGetPatientsByOrgUnit( organisationUnit );
 
             this.paging = createPaging( total );
             patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(),
