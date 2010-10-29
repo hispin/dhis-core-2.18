@@ -27,48 +27,54 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
+import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.mapping.MappingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetGeoJsonAction
+public class GetGeoJsonByParentAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
-    private LocationManager locationManager;
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Integer parentId;
 
-    public void setName( String name )
+    public void setParentId( Integer id )
     {
-        this.name = name;
+        this.parentId = id;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private InputStream inputStream;
+    private Collection<OrganisationUnit> object;
 
-    public InputStream getInputStream()
+    public Collection<OrganisationUnit> getObject()
     {
-        return inputStream;
+        return object;
     }
 
     // -------------------------------------------------------------------------
@@ -77,9 +83,13 @@ public class GetGeoJsonAction
 
     public String execute()
         throws Exception
-    {        
-        inputStream = locationManager.getInputStream( name, MappingService.GEOJSON_DIR );
+    {
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
-        return SUCCESS;
+        object = new HashSet<OrganisationUnit>( parent.getChildren() );
+        
+        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
+        
+        return parent.getChildrenFeatureType();
     }
 }

@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetDataMapValuesByParentOrganisationUnitAction
+public class GetIndicatorMapValuesByLevelAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class GetDataMapValuesByParentOrganisationUnitAction
     {
         this.mappingService = mappingService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -70,14 +70,7 @@ public class GetDataMapValuesByParentOrganisationUnitAction
     {
         this.periodId = periodId;
     }
-
-    private Integer parentId;    
-
-    public void setParentId( Integer parentId )
-    {
-        this.parentId = parentId;
-    }
-
+    
     private String startDate;
     
     public void setStartDate( String startDate )
@@ -90,6 +83,13 @@ public class GetDataMapValuesByParentOrganisationUnitAction
     public void setEndDate( String endDate )
     {
         this.endDate = endDate;
+    }
+
+    private Integer level;
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
     }
 
     // -------------------------------------------------------------------------
@@ -112,11 +112,11 @@ public class GetDataMapValuesByParentOrganisationUnitAction
     {
         if ( periodId != null ) // Period
         {
-            object = mappingService.getDataElementMapValues( id, periodId, parentId );
+            object = mappingService.getIndicatorMapValuesByLevel( id, periodId, level );
         }
         else // Start and end date
         {
-            object = mappingService.getDataElementMapValues( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), parentId );
+            object = mappingService.getIndicatorMapValuesByLevel( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), level );
         }
         
         return SUCCESS;

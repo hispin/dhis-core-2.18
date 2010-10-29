@@ -27,13 +27,11 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.mapping.MapView;
+import java.util.Collection;
+
+import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,29 +39,20 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetMapViewAction
+public class GetDataMapValuesByLevelAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( GetMapViewAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private MappingService mappingService;
 
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,13 +64,41 @@ public class GetMapViewAction
         this.id = id;
     }
 
+    private Integer periodId;
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private String startDate;
+    
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
+
+    private Integer level;
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }    
+
     // -------------------------------------------------------------------------
-    // Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private MapView object;
+    private Collection<AggregatedMapValue> object;
 
-    public MapView getObject()
+    public Collection<AggregatedMapValue> getObject()
     {
         return object;
     }
@@ -89,39 +106,19 @@ public class GetMapViewAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
+    
     public String execute()
         throws Exception
     {
-        object = mappingService.getMapView( id );
-
-        log.info( "Getting map view: " + object );
-
-        if ( object != null && object.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
+        if ( periodId != null ) // Period
         {
-            if ( object.getOrganisationUnitSelectionType() == null
-                || object.getOrganisationUnitSelectionType().trim().isEmpty()
-                || object.getOrganisationUnitSelectionType().equals(
-                    MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-            {
-                object.setOrganisationUnitSelectionType( MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT );
-                
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( organisationUnit.getName() );
-            }
-
-            else if ( object.getOrganisationUnitSelectionType().equals(
-                MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-            {
-                OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( level.getName() );
-            }
+            object = mappingService.getDataElementMapValues( id, periodId, level );
         }
-
+        else // Start and end date
+        {
+            object = mappingService.getDataElementMapValues( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), level );
+        }
+        
         return SUCCESS;
     }
 }

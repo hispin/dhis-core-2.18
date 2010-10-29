@@ -123,6 +123,13 @@ public class AddOrUpdateMapViewAction
         this.endDate = endDate;
     }
 
+    private String organisationUnitSelectionType;
+
+    public void setOrganisationUnitSelectionType( String organisationUnitSelectionType )
+    {
+        this.organisationUnitSelectionType = organisationUnitSelectionType;
+    }
+
     private String mapSource;
 
     public void setMapSource( String mapSource )
@@ -208,8 +215,8 @@ public class AddOrUpdateMapViewAction
         throws Exception
     {
         mappingService.addOrUpdateMapView( name, mapValueType, indicatorGroupId, indicatorId, dataElementGroupId,
-            dataElementId, periodTypeId, periodId, startDate, endDate, mapSource, mapLegendType, method,
-            classes, bounds, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
+            dataElementId, periodTypeId, periodId, startDate, endDate, organisationUnitSelectionType, mapSource,
+            mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
 
         return SUCCESS;
     }

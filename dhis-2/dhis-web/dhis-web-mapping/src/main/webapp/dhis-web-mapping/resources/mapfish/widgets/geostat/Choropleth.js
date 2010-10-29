@@ -62,8 +62,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
 	bounds: false,
 
-    parentId: false,
-
     mapView: false,
 
     mapData: false,
@@ -74,15 +72,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     selectFeatures: false,
     
+    organisationUnitSelectionType: false,
+    
     initComponent: function() {
     
-        this.legend = {
-            type: GLOBALS.conf.map_legend_type_automatic,
-            method: GLOBALS.conf.classify_by_equal_intervals,
-            classes: 5
-        };
-        
-        this.valueType = GLOBALS.conf.map_value_type_indicator;
+        this.initProperties();
         
         this.createItems();
         
@@ -146,6 +140,36 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         var colorB = new mapfish.ColorRgb();
         colorB.setFromHex(Ext.getCmp('colorB_cf').getValue());
         return [colorA, colorB];
+    },
+    
+    initProperties: function() {
+        this.legend = {
+            type: GLOBALS.conf.map_legend_type_automatic,
+            method: GLOBALS.conf.classify_by_equal_intervals,
+            classes: 5
+        };
+        
+        this.organisationUnitSelectionType = {
+            value: GLOBALS.conf.map_selection_type_parent,
+			parent: null,
+			level: null,
+            setParent: function(p) {
+                this.value = GLOBALS.conf.map_selection_type_parent;
+				this.parent = p;
+            },
+            setLevel: function(p) {
+                this.value = GLOBALS.conf.map_selection_type_level;
+				this.level = p;
+            },
+            isParent: function() {
+                return this.value == GLOBALS.conf.map_selection_type_parent;
+            },
+            isLevel: function() {
+                return this.value == GLOBALS.conf.map_selection_type_level;
+            }			
+        };
+        
+        this.valueType = GLOBALS.conf.map_value_type_indicator;
     },
     
     createItems: function() {
@@ -530,7 +554,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'textfield',
             id: 'map_tf',
-            fieldLabel: i18n_parent_orgunit,
+            fieldLabel: 'Org. units',
             typeAhead: true,
             editable: false,
             valueField: 'id',
@@ -542,6 +566,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBALS.conf.labelseparator,
             selectOnFocus: true,
             width: GLOBALS.conf.combo_width,
+            node: {attributes: {hasChildrenWithCoordinates: false}},
             listeners: {
                 'focus': {
                     scope: this,
@@ -550,76 +575,170 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                             var value, rawvalue;
                             var w = new Ext.Window({
                                 id: 'orgunit_w',
-                                title: 'Select parent organisation unit',
-                                closeAction: 'hide',
+                                title: 'Select organisation units',
+                                closeAction: 'close',
+                                layout: 'fit',
                                 autoScroll: true,
-                                width: 280,
-                                autoHeight: true,
-                                height: 'auto',
-                                boxMaxHeight: 500,
+                                width: 276,
+                                height: GLOBALS.util.getMultiSelectHeight() + 82,
+                                boxMaxHeight: GLOBALS.util.getMultiSelectHeight() + 82,
                                 items: [
                                     {
-                                        xtype: 'treepanel',
-                                        id: 'orgunit_tp',
-                                        bodyStyle: 'padding:7px',
-                                        height: GLOBALS.util.getMultiSelectHeight(),
-                                        autoScroll: true,
-                                        loader: new Ext.tree.TreeLoader({
-                                            dataUrl: GLOBALS.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBALS.conf.type
-                                        }),
-                                        root: {
-                                            id: TOPLEVELUNIT.id,
-                                            text: TOPLEVELUNIT.name,
-                                            hasChildrenWithCoordinates: TOPLEVELUNIT.hasChildrenWithCoordinates,
-                                            nodeType: 'async',
-                                            draggable: false,
-                                            expanded: true
-                                        },
+                                        xtype: 'tabpanel',
+                                        activeTab: 0,
+                                        layoutOnTabChange: false,
+                                        deferredRender: false,
+                                        plain: true,
                                         listeners: {
-                                            'click': {
-                                                fn: function(n) {
-                                                    if (n.hasChildNodes()) {
-                                                        tf.setValue(n.attributes.text);
-                                                        tf.value = n.attributes.id;
-                                                        tf.node = n;
-                                                    }
+                                            tabchange: function(panel, tab) {
+                                                if (tab.id == 'maptab0') {
+                                                    w.setHeight(GLOBALS.util.getMultiSelectHeight() + 82);
+                                                    w.syncSize();
                                                 }
-                                            },
-                                            'expandnode': {
-                                                fn: function(n) {
-                                                    Ext.getCmp('orgunit_w').syncSize();
-                                                }
-                                            },
-                                            'collapsenode': {
-                                                fn: function(n) {
-                                                    Ext.getCmp('orgunit_w').syncSize();
+                                                else if (tab.id == 'maptab1') {
+                                                    w.setHeight(152);
+                                                    w.syncSize();
                                                 }
                                             }
-                                        }
-                                    },
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'table',
+                                        },
                                         items: [
                                             {
-                                                xtype: 'button',
-                                                text: 'Select',
-                                                width: 133,
-                                                scope: this,
-                                                handler: function() {
-                                                    if (tf.getValue() && tf.getValue() != this.parentId) {
-                                                        this.loadFromDatabase(tf.value);
+                                                title: '<span class="panel-tab-title">Parent organisation unit</span>',
+                                                id: 'maptab0',
+                                                items: [
+                                                    {
+                                                        xtype: 'treepanel',
+                                                        id: 'orgunit_tp',
+                                                        bodyStyle: 'padding:7px',
+                                                        height: GLOBALS.util.getMultiSelectHeight(),
+                                                        autoScroll: true,
+                                                        loader: new Ext.tree.TreeLoader({
+                                                            dataUrl: GLOBALS.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBALS.conf.type
+                                                        }),
+                                                        root: {
+                                                            id: TOPLEVELUNIT.id,
+                                                            text: TOPLEVELUNIT.name,
+                                                            hasChildrenWithCoordinates: TOPLEVELUNIT.hasChildrenWithCoordinates,
+                                                            nodeType: 'async',
+                                                            draggable: false,
+                                                            expanded: true
+                                                        },
+                                                        listeners: {
+                                                            'click': {
+                                                                scope: this,
+                                                                fn: function(n) {
+                                                                    if (n.hasChildNodes()) {
+                                                                        tf.setValue(n.attributes.text);
+                                                                        tf.value = n.attributes.id;
+                                                                        tf.node = n;
+                                                                    }
+                                                                 }
+                                                            },
+                                                            'expandnode': {
+                                                                fn: function(n) {
+                                                                    Ext.getCmp('orgunit_w').syncSize();
+                                                                }
+                                                            },
+                                                            'collapsenode': {
+                                                                fn: function(n) {
+                                                                    Ext.getCmp('orgunit_w').syncSize();
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'panel',
+                                                        layout: 'table',
+                                                        items: [
+                                                            {
+                                                                xtype: 'button',
+                                                                text: 'Select',
+                                                                width: 130,
+                                                                scope: this,
+                                                                handler: function() {
+                                                                    if (tf.getValue()) {
+                                                                        this.organisationUnitSelectionType.setParent(tf.value);
+                                                                        this.loadFromDatabase(tf.value);
+                                                                    }
+                                                                    Ext.getCmp('orgunit_w').close();
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'button',
+                                                                text: 'Cancel',
+                                                                width: 130,
+                                                                handler: function() {
+                                                                    Ext.getCmp('orgunit_w').close();
+                                                                }
+                                                            }
+                                                        ]
                                                     }
-                                                    Ext.getCmp('orgunit_w').hide();
-                                                }
+                                                ]
                                             },
                                             {
-                                                xtype: 'button',
-                                                text: 'Cancel',
-                                                width: 133,
-                                                handler: function() {
-                                                    Ext.getCmp('orgunit_w').hide();
-                                                }
+                                                title: '<span class="panel-tab-title">Level</span>',
+                                                id: 'maptab1',
+                                                items: [
+                                                    {
+                                                        xtype: 'panel',
+                                                        bodyStyle: 'padding:8px',
+                                                        items: [
+                                                            { html: '<div class="window-field-label-first">Level</div>' },
+                                                            {
+                                                                xtype: 'combo',
+                                                                id: 'maporganisationunitlevel_cb',
+                                                                typeAhead: true,
+                                                                editable: false,
+                                                                valueField: 'level',
+                                                                displayField: 'name',
+                                                                mode: 'remote',
+                                                                forceSelection: true,
+                                                                triggerAction: 'all',
+                                                                emptyText: GLOBALS.conf.emptytext,
+                                                                labelSeparator: GLOBALS.conf.labelseparator,
+                                                                selectOnFocus: true,
+                                                                width: GLOBALS.conf.combo_width,
+                                                                store: GLOBALS.stores.organisationUnitLevel,
+                                                                listeners: {
+                                                                    'select': function(cb) {
+                                                                        tf.setValue(cb.getRawValue());
+                                                                        tf.value = cb.getValue();
+                                                                    }
+                                                                }                                                                        
+                                                            }
+                                                        ]
+                                                    },
+                                                    
+                                                    { html: '<br>' },
+                                                    
+                                                    {
+                                                        xtype: 'panel',
+                                                        layout: 'table',
+                                                        items: [
+                                                            {
+                                                                xtype: 'button',
+                                                                text: 'Select',
+                                                                width: 130,
+                                                                scope: this,
+                                                                handler: function() {
+                                                                    if (tf.value) {
+                                                                        this.organisationUnitSelectionType.setLevel(tf.value);
+                                                                        this.loadFromDatabase(tf.value);
+                                                                    }
+                                                                    Ext.getCmp('orgunit_w').close();
+                                                                }
+                                                            },
+                                                            {
+                                                                xtype: 'button',
+                                                                text: 'Cancel',
+                                                                width: 130,
+                                                                handler: function() {
+                                                                    Ext.getCmp('orgunit_w').close();
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
@@ -853,6 +972,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
     
     createSelectFeatures: function() {
+        var scope = this;
+        
         var onHoverSelect = function onHoverSelect(feature) {
             if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
                 Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + feature.attributes[choropleth.mapData.nameColumn] + '</div><div style="color:#555">' + feature.attributes.value + '</div>', false);
@@ -879,6 +1000,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     
                     Ext.getCmp('map_tf').setValue(feature.data.name);
                     Ext.getCmp('map_tf').value = feature.attributes.id;
+                    scope.organisationUnitSelectionType.setParent(feature.attributes.id);
                     choropleth.loadFromDatabase(feature.attributes.id, true);
                 }
                 else {
@@ -1043,6 +1165,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             Ext.getCmp('map_cb').showField();
             Ext.getCmp('map_tf').hideField();
         }
+		
+		if (this.mapView.organisationUnitSelectionType == GLOBALS.conf.map_selection_type_parent ||
+			this.mapView.organisationUnitSelectionType == null) {
+				this.organisationUnitSelectionType.setParent(this.mapView.mapSource);
+		}
+		else if (this.mapView.organisationUnitSelectionType == GLOBALS.conf.map_selection_type_level) {
+			this.organisationUnitSelectionType.setLevel(this.mapView.mapSource);
+		}
     },
     
     setMapView: function() {
@@ -1100,7 +1230,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.prepareMapViewLegend();
         
         function predefinedMapLegendSetStoreCallback() {
-            Ext.getCmp('maplegendset_cb').setValue(this  .mapView.mapLegendSetId);
+            Ext.getCmp('maplegendset_cb').setValue(this.mapView.mapLegendSetId);
             this.applyPredefinedLegend(true);
         }
         
@@ -1134,7 +1264,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.prepareMapViewMap();
 
         if (MAPSOURCE == GLOBALS.conf.map_source_type_database) {
-            Ext.getCmp('map_tf').setValue(this.mapView.parentOrganisationUnitName);
+            Ext.getCmp('map_tf').setValue(this.mapView.organisationUnitSelectionTypeName);
             Ext.getCmp('map_tf').value = this.mapView.mapSource;
             this.loadFromDatabase(this.mapView.mapSource);
         }
@@ -1181,48 +1311,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			}
 		});
 	},
-    
-    loadFromDatabase: function(id, isDrillDown) {
-        function load() {
-            MASK.msg = i18n_loading_geojson;
-            MASK.show();
-            
-            this.parentId = id;
-            this.setUrl(GLOBALS.conf.path_mapping + 'getGeoJson.action?parentId=' + this.parentId);
-        }
-        
-        if (isDrillDown) {
-            load.call(this);
-        }
-        else if (id != this.parentId || this.mapView) {
-            if (!this.mapView) {
-                if (!Ext.getCmp('map_tf').node.attributes.hasChildrenWithCoordinates) {
-                    Ext.message.msg(false, i18n_no_coordinates_found);
-                    Ext.getCmp('map_tf').setValue(Ext.getCmp('orgunit_tp').getNodeById(this.parentId).attributes.text);                    
-                    Ext.getCmp('map_tf').value = this.parentId;
-                    Ext.getCmp('map_tf').node = Ext.getCmp('orgunit_tp').getNodeById(this.parentId);
-                    return;
-                }
-            }
-            load.call(this);
-        }
-    },
-    
-    loadFromFile: function(url) {
-        if (url != this.newUrl) {
-            this.newUrl = url;
-
-            if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
-                this.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + url);
-            }
-			else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
-				this.setUrl(GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + url + GLOBALS.conf.output);
-			}
-        }
-        else {
-            this.classify(false, true);
-        }
-    },
     
     validateForm: function(exception) {
         if (Ext.getCmp('mapvaluetype_cb').getValue() == GLOBALS.conf.map_value_type_indicator) {
@@ -1284,7 +1372,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
                 return false;
             }
-        }            
+        }
         
         return true;
     },
@@ -1300,6 +1388,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             periodId: Ext.getCmp('period_cb').getValue() || '',
             startDate: Ext.getCmp('startdate_df').getValue() || '',
             endDate: Ext.getCmp('enddate_df').getValue() || '',
+            organisationUnitSelectionType: this.organisationUnitSelectionType.value,
             mapSource: MAPSOURCE == GLOBALS.conf.map_source_type_database ? Ext.getCmp('map_tf').value : Ext.getCmp('map_cb').getValue(),
             mapLegendType: Ext.getCmp('maplegendtype_cb').getValue(),
             method: this.legend.type == GLOBALS.conf.map_legend_type_automatic ? Ext.getCmp('method_cb').getValue() : '',
@@ -1314,19 +1403,48 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         };
     },
     
-    applyValues: function() {
-        var options = {};
-        this.indicator = 'value';
-        options.indicator = this.indicator;
-        options.method = Ext.getCmp('method_cb').getValue();
-        options.numClasses = Ext.getCmp('numClasses_cb').getValue();
-        options.colors = this.getColors();
+    loadFromDatabase: function(id, isDrillDown) {
+        function load() {
+            MASK.msg = i18n_loading_geojson;
+            MASK.show();
+			
+            if (this.organisationUnitSelectionType.isParent()) {
+                this.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonByParent.action?parentId=' + id);
+            }
+            else if (this.organisationUnitSelectionType.isLevel()) {
+                this.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonByLevel.action?level=' + id);
+            }
+        }
         
-        this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification();
-        this.classificationApplied = true;
-        
-        MASK.hide();
+        if (isDrillDown || this.mapView) {
+            load.call(this);
+        }
+        else {
+            if (this.organisationUnitSelectionType.isParent() && !Ext.getCmp('map_tf').node.attributes.hasChildrenWithCoordinates) {
+                Ext.message.msg(false, i18n_no_coordinates_found);
+                Ext.getCmp('map_tf').setValue(Ext.getCmp('orgunit_tp').getNodeById(this.organisationUnitSelectionType.parent).attributes.text);                    
+                Ext.getCmp('map_tf').value = this.organisationUnitSelectionType.parent;
+                Ext.getCmp('map_tf').node = Ext.getCmp('orgunit_tp').getNodeById(this.organisationUnitSelectionType.parent);
+                return;
+            }
+            load.call(this);
+        }
+    },
+    
+    loadFromFile: function(url) {
+        if (url != this.newUrl) {
+            this.newUrl = url;
+
+            if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+                this.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + url);
+            }
+			else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+				this.setUrl(GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + url + GLOBALS.conf.output);
+			}
+        }
+        else {
+            this.classify(false, true);
+        }
     },
 
     classify: function(exception, position) {
@@ -1362,14 +1480,16 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }
             
             var dataUrl = this.valueType == GLOBALS.conf.map_value_type_indicator ?
-                'getIndicatorMapValuesByParentOrganisationUnit' : 'getDataMapValuesByParentOrganisationUnit';
+                (this.organisationUnitSelectionType.isParent() ? 'getIndicatorMapValuesByParent' : 'getIndicatorMapValuesByLevel') :
+                    (this.organisationUnitSelectionType.isLevel() ? 'getDataMapValuesByParent' : 'getDataMapValuesByLevel');
             
             var params = {
                 id: this.valueType == GLOBALS.conf.map_value_type_indicator ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue(),
                 periodId: MAPDATETYPE == GLOBALS.conf.map_date_type_fixed ? Ext.getCmp('period_cb').getValue() : null,
                 startDate: MAPDATETYPE == GLOBALS.conf.map_date_type_start_end ? new Date(Ext.getCmp('startdate_df').getValue()).format('Y-m-d') : null,
                 endDate: MAPDATETYPE == GLOBALS.conf.map_date_type_start_end ? new Date(Ext.getCmp('enddate_df').getValue()).format('Y-m-d') : null,
-                parentId: this.parentId
+                parentId: this.organisationUnitSelectionType.parent,
+                level: this.organisationUnitSelectionType.level
             };
                 
             Ext.Ajax.request({
@@ -1502,6 +1622,21 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 }
             });
         }
+    },
+    
+    applyValues: function() {
+        var options = {};
+        this.indicator = 'value';
+        options.indicator = this.indicator;
+        options.method = Ext.getCmp('method_cb').getValue();
+        options.numClasses = Ext.getCmp('numClasses_cb').getValue();
+        options.colors = this.getColors();
+        
+        this.coreComp.updateOptions(options);
+        this.coreComp.applyClassification();
+        this.classificationApplied = true;
+        
+        MASK.hide();
     },
     
     onRender: function(ct, position) {
