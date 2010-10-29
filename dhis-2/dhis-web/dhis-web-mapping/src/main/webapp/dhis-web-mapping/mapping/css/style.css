@@ -229,6 +229,10 @@
 	color:#333;
     padding-bottom:2px;
 }
+.x-btn-noicon .x-btn-small .x-btn-text {
+    height:16px;
+    padding:0 5px;
+}
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
     padding-bottom:2px;
     padding-left:17px;
