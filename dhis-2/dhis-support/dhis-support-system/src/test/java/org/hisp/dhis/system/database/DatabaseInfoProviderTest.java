@@ -31,7 +31,6 @@ import static junit.framework.Assert.assertNotNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -40,9 +39,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DatabaseInfoProviderTest
     extends DhisSpringTest
 {
-    @Autowired
     private DatabaseInfoProvider databaseInfoProvider;
 
+    @Override
+    public void setUpTest()
+    {
+        databaseInfoProvider = (DatabaseInfoProvider) getBean( "databaseInfoProvider" );
+    }
+    
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------

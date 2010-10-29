@@ -571,7 +571,9 @@
 
 	<!-- DataElement Order -->
 
-	<bean id="org.hisp.dhis.order.store.DataElementOrderStore" class="org.hisp.dhis.order.store.FileDataElementOrderStore"/>
+	<bean id="org.hisp.dhis.order.store.DataElementOrderStore" class="org.hisp.dhis.order.store.FileDataElementOrderStore">
+		<property name="locationManager" ref="locationManager"/>
+	</bean>
 
 	<bean id="org.hisp.dhis.order.manager.DataElementOrderManager"
 		class="org.hisp.dhis.order.manager.DefaultDataElementOrderManager">
@@ -595,6 +597,8 @@
 	<!-- About -->
 
 	<bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">
+		<property name="locationManager" ref="locationManager"/>
+		<property name="databaseInfoProvider" ref="databaseInfoProvider"/>
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	</bean>
 
@@ -797,7 +801,9 @@
 	</bean>
 
 	<bean id="org.hisp.dhis.interceptor.ContextInterceptor"
-		class="org.hisp.dhis.interceptor.ContextInterceptor"/>
+		class="org.hisp.dhis.interceptor.ContextInterceptor">
+		<property name="databaseInfoProvider" ref="databaseInfoProvider"/>
+	</bean>
 
 	<bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction"
 		class="org.hisp.dhis.useraccount.action.GetCurrentUserAction" scope="prototype">

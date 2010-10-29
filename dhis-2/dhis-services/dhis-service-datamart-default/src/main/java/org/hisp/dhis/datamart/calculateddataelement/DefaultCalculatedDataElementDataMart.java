@@ -54,7 +54,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -132,8 +131,12 @@ public class DefaultCalculatedDataElementDataMart
         this.aggregationCache = aggregationCache;
     }    
 
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
 
     // -------------------------------------------------------------------------
     // CalculatedDataElementDataMart implementation

@@ -30,7 +30,6 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.IndicatorType;
 
 import com.opensymphony.xwork2.Action;
 

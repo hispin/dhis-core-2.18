@@ -27,11 +27,8 @@ package org.hisp.dhis.system.database;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.annotation.PostConstruct;
-
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -59,13 +56,16 @@ public class HibernateDatabaseInfoProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
-    private HibernateConfigurationProvider configurationProvider;
+    private HibernateConfigurationProvider hibernateConfigurationProvider;
     
-    @PostConstruct
+    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
+    {
+        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
+    }
+
     public void init()
     {
-        Configuration config = configurationProvider.getConfiguration();
+        Configuration config = hibernateConfigurationProvider.getConfiguration();
         
         String dialect = config.getProperty( KEY_DIALECT );
         String driverClass = config.getProperty( KEY_DRIVER_CLASS );

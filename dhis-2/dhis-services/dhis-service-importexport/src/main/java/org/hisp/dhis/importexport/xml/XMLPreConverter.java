@@ -48,7 +48,6 @@ import org.amplecode.staxwax.transformer.TransformerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.importexport.ImportException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * GenericXMLConvertor transforms imported foreign XML to dxf.
@@ -66,13 +65,16 @@ public class XMLPreConverter
     // -------------------------------------------------------------------------
     // Named XSLT parameters available to xslt stylesheets
     // -------------------------------------------------------------------------
-    
+
     // Current timestamp
     public static final String TIMESTAMP = "timestamp";
+
     // url base where dxf metadata snapshots are found
     public static final String METADATA_URL_BASE = "metadata_url_base";
+
     // current dhis2 user
     public static final String DHIS_USER = "username";
+
     // url of zip file containing stream (may be null)
     public static final String ZIP_URL = "zip_url";
 
@@ -96,7 +98,8 @@ public class XMLPreConverter
         this.dhisResolver = dhisResolver;
     }
 
-    public QName getDocumentRoot(BufferedInputStream xmlDataStream) throws ImportException
+    public QName getDocumentRoot( BufferedInputStream xmlDataStream )
+        throws ImportException
     {
         QName rootName = null;
 
@@ -111,8 +114,10 @@ public class XMLPreConverter
             rootName = reader.getElementQName();
 
             xmlDataStream.reset();
-        } catch (Exception ex) {
-            throw new ImportException("Couldn't locate document root element", ex);
+        }
+        catch ( Exception ex )
+        {
+            throw new ImportException( "Couldn't locate document root element", ex );
         }
 
         return rootName;
@@ -120,7 +125,7 @@ public class XMLPreConverter
 
     /**
      * Performs transform on stream
-     *
+     * 
      * @param source the input
      * @param result the result
      * @param xsltTag identifier used to look up xslt stylesheet
@@ -134,20 +139,24 @@ public class XMLPreConverter
         InputStream sheetStream = xsltLocator.getTransformerByTag( xsltTag );
         Source sheet = new StreamSource( sheetStream );
 
-        log.debug("Populating xslt parameters");
+        log.debug( "Populating xslt parameters" );
         Map<String, String> xsltParams = new HashMap<String, String>();
-        if (userName != null) {
-            xsltParams.put( DHIS_USER, userName);
-        }
-        if (zipFile != null) {
-            xsltParams.put( ZIP_URL, zipFile.getAbsolutePath());
-        }
-        xsltParams.put( METADATA_URL_BASE, defaultMetadataBase);
-        Date now = new Date();
-        DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd'T'hh-mm"); //iso8601 timestamp
-        xsltParams.put( TIMESTAMP, dfm.format( now ));
 
-        log.debug("Applying stylesheet");
+        if ( userName != null )
+        {
+            xsltParams.put( DHIS_USER, userName );
+        }
+        if ( zipFile != null )
+        {
+            xsltParams.put( ZIP_URL, zipFile.getAbsolutePath() );
+        }
+        
+        xsltParams.put( METADATA_URL_BASE, defaultMetadataBase );
+        Date now = new Date();
+        DateFormat dfm = new SimpleDateFormat( "yyyy-MM-dd'T'hh-mm" ); // iso8601 timestamp
+        xsltParams.put( TIMESTAMP, dfm.format( now ) );
+
+        log.debug( "Applying stylesheet" );
 
         try
         {
@@ -155,8 +164,8 @@ public class XMLPreConverter
 
             tt.transform( source, result, dhisResolver );
             log.debug( "Transform successful" );
-
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             throw new ImportException( "Failed to transform stream", ex );
         }

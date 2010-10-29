@@ -44,7 +44,7 @@ import org.hisp.dhis.user.comparator.UsernameComparator;
  * @version $Id: GetUserListAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetUserListAction
-    extends ActionPagingSupport
+    extends ActionPagingSupport<User>
 {
     // -------------------------------------------------------------------------
     // Dependencies

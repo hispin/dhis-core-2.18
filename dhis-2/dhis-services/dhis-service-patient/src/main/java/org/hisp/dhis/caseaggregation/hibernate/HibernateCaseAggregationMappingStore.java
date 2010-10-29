@@ -41,7 +41,6 @@ import org.hisp.dhis.caseaggregation.CaseAggregationMappingStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class HibernateCaseAggregationMappingStore
     implements CaseAggregationMappingStore
@@ -50,8 +49,12 @@ public class HibernateCaseAggregationMappingStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     // -------------------------------------------------------------------------
     // CaseAggregationMapping

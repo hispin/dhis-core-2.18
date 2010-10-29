@@ -42,7 +42,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Implements the PeriodStore interface.
@@ -57,9 +56,13 @@ public class HibernatePeriodStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
 
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+    
     // -------------------------------------------------------------------------
     // Period
     // -------------------------------------------------------------------------

@@ -55,7 +55,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -136,8 +135,12 @@ public class DefaultIndicatorDataMart
         this.systemSettingManager = systemSettingManager;
     }
 
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
+
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
 
     // -------------------------------------------------------------------------
     // IndicatorDataMart implementation

@@ -30,7 +30,6 @@ package org.hisp.dhis.system.deletion;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -39,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DeletionManagerTest
     extends DhisSpringTest
 {
-    @Autowired
     private DeletionManager deletionManager;
     
     private DataElement dataElement;
@@ -47,6 +45,8 @@ public class DeletionManagerTest
     @Override
     public void setUpTest()
     {
+        deletionManager = (DeletionManager) getBean( "deletionManager" );
+        
         dataElement = createDataElement( 'A' );
     }
     

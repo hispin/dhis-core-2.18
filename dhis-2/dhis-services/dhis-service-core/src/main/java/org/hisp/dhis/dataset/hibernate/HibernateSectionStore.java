@@ -32,7 +32,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Tri
@@ -45,8 +44,12 @@ public class HibernateSectionStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     // -------------------------------------------------------------------------
     // SectionStore implementation

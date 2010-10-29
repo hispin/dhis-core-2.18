@@ -77,8 +77,6 @@ public class TableAlteror
 
         try
         {
-            Statement statement = holder.getStatement();
-
             executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true");
             
             executeSql("ALTER TABLE patient drop column birthdateestimated");

@@ -29,13 +29,12 @@ package org.hisp.dhis.useraudit.hibernate;
 
 import java.util.Collection;
 import java.util.Date;
-import org.hibernate.Query;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.useraudit.LoginFailure;
 import org.hisp.dhis.useraudit.UserAuditStore;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -43,8 +42,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HibernateUserAuditStore
     implements UserAuditStore
 {
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void saveLoginFailure( LoginFailure login )

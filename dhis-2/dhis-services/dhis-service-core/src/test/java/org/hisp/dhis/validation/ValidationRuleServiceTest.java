@@ -65,7 +65,6 @@ import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.system.util.MathUtils;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -74,7 +73,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ValidationRuleServiceTest
     extends DhisTest
 {
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     private DataElement dataElementA;
@@ -141,6 +139,8 @@ public class ValidationRuleServiceTest
     public void setUpTest()
         throws Exception
     {
+        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
+        
         validationRuleService = (ValidationRuleService) getBean( ValidationRuleService.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );

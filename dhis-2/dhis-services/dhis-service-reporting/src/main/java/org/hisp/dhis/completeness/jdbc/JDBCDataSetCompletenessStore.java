@@ -40,7 +40,6 @@ import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -53,9 +52,13 @@ public class JDBCDataSetCompletenessStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private StatementManager statementManager;
-    
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     // -------------------------------------------------------------------------
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------

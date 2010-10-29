@@ -46,7 +46,7 @@ public class DefaultConceptService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    GenericIdentifiableObjectStore<Concept> conceptStore;
+    private GenericIdentifiableObjectStore<Concept> conceptStore;
 
     public void setConceptStore( GenericIdentifiableObjectStore<Concept> conceptStore )
     {
@@ -99,5 +99,4 @@ public class DefaultConceptService
         Concept defaultConcept = new Concept("default");
         conceptStore.save( defaultConcept );
     }
-
 }

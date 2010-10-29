@@ -35,14 +35,14 @@ import org.hisp.dhis.dataprune.DataPruneStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Quang Nguyen
  * @version Apr 6, 2010 5:48:15 PM
  */
-public class JdbcDataPruneStore implements DataPruneStore
+public class JdbcDataPruneStore 
+    implements DataPruneStore
 {
     private static final Log log = LogFactory.getLog( JdbcDataPruneStore.class );
     
@@ -50,9 +50,13 @@ public class JdbcDataPruneStore implements DataPruneStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     // -------------------------------------------------------------------------
     // DataPruneService implementation
     // -------------------------------------------------------------------------

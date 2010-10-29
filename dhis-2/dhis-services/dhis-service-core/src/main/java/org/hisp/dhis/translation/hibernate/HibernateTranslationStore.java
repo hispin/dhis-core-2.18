@@ -40,7 +40,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationStore;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Oyvind Brucker
@@ -52,8 +51,12 @@ public class HibernateTranslationStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
 
     // -------------------------------------------------------------------------
     // Translation

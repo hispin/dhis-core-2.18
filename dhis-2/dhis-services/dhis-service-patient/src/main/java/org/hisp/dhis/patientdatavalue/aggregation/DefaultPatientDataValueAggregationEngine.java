@@ -39,8 +39,12 @@ public class DefaultPatientDataValueAggregationEngine
         this.periodService = periodService;
     }
 
-    @Autowired
     private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     /*
      * interface: startDate, endDate, organisationUnit
