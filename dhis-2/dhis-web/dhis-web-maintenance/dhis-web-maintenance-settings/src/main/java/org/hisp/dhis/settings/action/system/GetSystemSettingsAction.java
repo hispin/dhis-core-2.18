@@ -32,8 +32,11 @@ import java.util.SortedMap;
 
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.webportal.module.Module;
 import org.hisp.dhis.webportal.module.ModuleManager;
+import org.hisp.dhis.webportal.module.StartableModuleFilter;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,6 +47,8 @@ import com.opensymphony.xwork2.Action;
 public class GetSystemSettingsAction
     implements Action
 {
+    private static final Filter<Module> startableFilter = new StartableModuleFilter();
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -69,7 +74,6 @@ public class GetSystemSettingsAction
         this.styleManager = styleManager;
     }
 
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -86,8 +90,7 @@ public class GetSystemSettingsAction
     public List<Module> getModules()
     {
         return modules;
-    }
-        
+    }        
 
     private SortedMap<String, String> styles;
 
@@ -112,6 +115,8 @@ public class GetSystemSettingsAction
     	flags = systemSettingManager.getFlags();
         
         modules = moduleManager.getMenuModules();
+        
+        FilterUtils.filter( modules, startableFilter );
         
         styles = styleManager.getStyles();
         
