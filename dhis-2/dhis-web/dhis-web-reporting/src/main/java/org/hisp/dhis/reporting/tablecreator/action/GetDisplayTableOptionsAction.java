@@ -79,13 +79,17 @@ public class GetDisplayTableOptionsAction
         return reportTable;
     }
 
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
     private List<ReportTableColumn> columns;
 
     public List<ReportTableColumn> getColumns()
     {
         return columns;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

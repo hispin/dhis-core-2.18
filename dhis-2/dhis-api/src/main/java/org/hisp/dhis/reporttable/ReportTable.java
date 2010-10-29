@@ -608,6 +608,25 @@ public class ReportTable
     // -------------------------------------------------------------------------
 
     /**
+     * Tests whether this report table has report parameters for dimensions which
+     * are on columns.
+     */
+    public boolean hasDynamicColumns()
+    {
+        if ( doUnits && reportParams != null && ( reportParams.isParamOrganisationUnit() || reportParams.isParamParentOrganisationUnit() ) )
+        {
+            return true;
+        }
+        
+        if ( doPeriods && reportParams != null && reportParams.isParamReportingMonth() )
+        {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
      * Sets the appropriate dimension related properties depending on the dimension 
      * set type.
      */
