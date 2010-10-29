@@ -66,7 +66,7 @@ public class DisplayReportTableStatement
             buffer.append( column.getName() + ( columns.hasNext() ? SEPARATOR : SPACE ) );
         }
         
-        buffer.append( "FROM " + reportTable.getTableName() );
+        buffer.append( "FROM " + reportTable.getExistingTableName() );
         
         statement = buffer.toString();
     }

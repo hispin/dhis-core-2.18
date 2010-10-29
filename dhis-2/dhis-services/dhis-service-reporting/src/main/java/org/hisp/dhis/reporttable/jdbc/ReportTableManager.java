@@ -87,12 +87,4 @@ public interface ReportTableManager
      * @return a ReportTableData object.
      */
     ReportTableData getDisplayReportTableData( ReportTable reportTable );
-    
-    /**
-     * Returns a ReportTableData object for the given ReportTable.
-     * 
-     * @param reportTable the ReportTable.
-     * @return a ReportTableData object.
-     */
-    ReportTableData getReportTableData( ReportTable reportTable );
 }

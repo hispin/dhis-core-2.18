@@ -253,7 +253,7 @@ public class DefaultReportTableService
         reportTableManager.createReportTable( reportTable );
 
         // ---------------------------------------------------------------------
-        // Updating existingt table name after deleting the database table
+        // Updating existing table name after deleting the database table
         // ---------------------------------------------------------------------
         
         reportTable.updateExistingTableName();
