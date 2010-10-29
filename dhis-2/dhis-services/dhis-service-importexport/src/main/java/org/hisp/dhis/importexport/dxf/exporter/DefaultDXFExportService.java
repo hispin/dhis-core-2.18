@@ -125,11 +125,19 @@ public class DefaultDXFExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+
     private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     private ConceptService conceptService;
 

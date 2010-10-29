@@ -83,9 +83,20 @@ public class DefaultDhis14XMLExportService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private SessionFactory sessionFactory;
     
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -112,13 +123,6 @@ public class DefaultDhis14XMLExportService
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------

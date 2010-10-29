@@ -56,8 +56,12 @@ public class LocManagerXSLTLocator
 
     private static final String TRANSFORMER_MAP = "transform/transforms.xml";
 
-    @Autowired
     private LocationManager locationManager;
+
+    public void setLocationManager( LocationManager locationManager )
+    {
+        this.locationManager = locationManager;
+    }
 
     @Override
     public InputStream getTransformerByTag( String identifier )

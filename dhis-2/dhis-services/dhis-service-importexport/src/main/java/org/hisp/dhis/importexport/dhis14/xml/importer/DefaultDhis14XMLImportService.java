@@ -163,8 +163,12 @@ public class DefaultDhis14XMLImportService
         this.expressionService = expressionService;
     }
 
-    @Autowired
     private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
 
     private ImportAnalyser importAnalyser;
 

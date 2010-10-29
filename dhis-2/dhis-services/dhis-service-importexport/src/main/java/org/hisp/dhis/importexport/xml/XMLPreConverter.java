@@ -82,11 +82,19 @@ public class XMLPreConverter
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private XSLTLocator xsltLocator;
 
-    @Autowired
-    URIResolver resolver;
+    public void setXsltLocator( XSLTLocator xsltLocator )
+    {
+        this.xsltLocator = xsltLocator;
+    }
+
+    private URIResolver dhisResolver;
+
+    public void setDhisResolver( URIResolver dhisResolver )
+    {
+        this.dhisResolver = dhisResolver;
+    }
 
     public QName getDocumentRoot(BufferedInputStream xmlDataStream) throws ImportException
     {
@@ -145,7 +153,7 @@ public class XMLPreConverter
         {
             TransformerTask tt = new TransformerTask( sheet, xsltParams );
 
-            tt.transform( source, result, resolver );
+            tt.transform( source, result, dhisResolver );
             log.debug( "Transform successful" );
 
         } catch ( Exception ex )

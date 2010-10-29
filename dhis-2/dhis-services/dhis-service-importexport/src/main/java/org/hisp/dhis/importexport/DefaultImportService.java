@@ -67,11 +67,19 @@ public class DefaultImportService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private XMLPreConverter preConverter;
 
-    @Autowired
+    public void setPreConverter( XMLPreConverter preConverter )
+    {
+        this.preConverter = preConverter;
+    }
+
     private DXFConverter converter;
+
+    public void setConverter( DXFConverter converter )
+    {
+        this.converter = converter;
+    }
 
     // -------------------------------------------------------------------------
     // ImportService implementation

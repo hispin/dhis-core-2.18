@@ -150,7 +150,6 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -168,9 +167,13 @@ public class DefaultImportObjectManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
+    public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
+    {
+        this.batchHandlerFactory = batchHandlerFactory;
+    }
+
     private ObjectMappingGenerator objectMappingGenerator;
 
     public void setObjectMappingGenerator( ObjectMappingGenerator objectMappingGenerator )

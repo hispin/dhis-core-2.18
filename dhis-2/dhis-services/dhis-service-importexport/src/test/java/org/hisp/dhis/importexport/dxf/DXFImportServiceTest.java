@@ -70,7 +70,6 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>dxfA.zip contains 3 objects of each meta-data type.</p>
@@ -145,7 +144,6 @@ public class DXFImportServiceTest
 
     private ImportDataValueService importDataValueService;
 
-    @Autowired
     private LocationManager locationManager;
     
     // -------------------------------------------------------------------------
@@ -201,6 +199,8 @@ public class DXFImportServiceTest
 
         importDataValueService = (ImportDataValueService) getBean( ImportDataValueService.ID );
 
+        locationManager = (LocationManager) getBean( "locationManager" );
+        
         setExternalTestDir( locationManager );
 
         // horrible hack to copy some files into external test dir

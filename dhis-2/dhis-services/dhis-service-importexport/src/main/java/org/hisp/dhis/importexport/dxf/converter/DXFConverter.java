@@ -280,8 +280,12 @@ public class DXFConverter
         this.objectMappingGenerator = objectMappingGenerator;
     }
 
-    @Autowired
     private HibernateCacheManager cacheManager;
+
+    public void setCacheManager( HibernateCacheManager cacheManager )
+    {
+        this.cacheManager = cacheManager;
+    }
 
     private ConverterInvoker converterInvoker;
 
