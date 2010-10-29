@@ -27,63 +27,48 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.mapping.MapView;
+import java.io.InputStream;
+
+import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Jan Henrik Overland
+ * @author Lars Helge Overland
  * @version $Id$
  */
-public class GetMapViewAction
+public class GetGeoJsonFromFileAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( GetMapViewAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
-
-    public void setMappingService( MappingService mappingService )
-    {
-        this.mappingService = mappingService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
+    @Autowired
+    private LocationManager locationManager;
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String name;
 
-    public void setId( Integer id )
+    public void setName( String name )
     {
-        this.id = id;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private MapView object;
+    private InputStream inputStream;
 
-    public MapView getObject()
+    public InputStream getInputStream()
     {
-        return object;
+        return inputStream;
     }
 
     // -------------------------------------------------------------------------
@@ -92,36 +77,9 @@ public class GetMapViewAction
 
     public String execute()
         throws Exception
-    {
-        object = mappingService.getMapView( id );
-
-        log.info( "Getting map view: " + object );
-
-        if ( object != null && object.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
-        {
-            if ( object.getOrganisationUnitSelectionType() == null
-                || object.getOrganisationUnitSelectionType().trim().isEmpty()
-                || object.getOrganisationUnitSelectionType().equals(
-                    MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-            {
-                object.setOrganisationUnitSelectionType( MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT );
-                
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( organisationUnit.getName() );
-            }
-
-            else if ( object.getOrganisationUnitSelectionType().equals(
-                MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-            {
-                OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( level.getName() );
-            }
-        }
-
+    {        
+        inputStream = locationManager.getInputStream( name, MappingService.GEOJSON_DIR );
+        
         return SUCCESS;
     }
 }

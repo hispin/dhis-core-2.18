@@ -28,12 +28,10 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,38 +39,66 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetOrganisationUnitsWithCoordinatesAction
+public class GetDataMapValuesByParentAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private MappingService mappingService;
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setMappingService( MappingService mappingService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.mappingService = mappingService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    private Integer periodId;
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private String startDate;
+    
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
+
+    private Integer parentId;    
+
+    public void setParentId( Integer parentId )
+    {
+        this.parentId = parentId;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private Collection<AggregatedMapValue> object;
 
-    public void setParentId( Integer id )
-    {
-        this.parentId = id;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Collection<OrganisationUnit> object;
-
-    public Collection<OrganisationUnit> getObject()
+    public Collection<AggregatedMapValue> getObject()
     {
         return object;
     }
@@ -80,16 +106,19 @@ public class GetOrganisationUnitsWithCoordinatesAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
+    
     public String execute()
         throws Exception
     {
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+        if ( periodId != null ) // Period
+        {
+            object = mappingService.getDataElementMapValues( id, periodId, parentId );
+        }
+        else // Start and end date
+        {
+            object = mappingService.getDataElementMapValues( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), parentId );
+        }
         
-        object = new HashSet<OrganisationUnit>( parent.getChildren() );
-        
-        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
-        
-        return parent.getChildrenFeatureType();
+        return SUCCESS;
     }
 }

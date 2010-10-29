@@ -103,7 +103,7 @@ Ext.onReady( function() {
         url: GLOBALS.conf.path_mapping + 'getAllMapViews' + GLOBALS.conf.type,
         root: 'mapViews',
         fields: ['id', 'name', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId', 'mapDateType', 'periodTypeId',
-            'periodId', 'startDate', 'endDate', 'mapSourceType', 'mapSource', 'parentOrganisationUnitName', 'mapLegendType', 'method', 'classes',
+            'periodId', 'startDate', 'endDate', 'mapSourceType', 'organisationUnitSelectionType', 'mapSource', 'organisationUnitSelectionTypeName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
@@ -454,6 +454,7 @@ Ext.onReady( function() {
                             periodId: formValues.periodId,
                             startDate: formValues.startDate,
                             endDate: formValues.endDate,
+                            organisationUnitSelectionType: formValues.organisationUnitSelectionType,
                             mapSource:formValues.mapSource,
                             mapLegendType: formValues.mapLegendType,
                             method: formValues.method,
@@ -481,7 +482,7 @@ Ext.onReady( function() {
         id: 'deleteview_p',
 		bodyStyle: 'border:0px solid #fff',
         items:
-        [   
+        [
             { html: '<div class="window-field-label-first">' + i18n_view + '</div>' },
 			deleteMapViewComboBox,
 			{
@@ -571,7 +572,10 @@ Ext.onReady( function() {
 				layoutOnTabChange: true,
                 deferredRender: false,
                 plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px; border:0px'},
+                defaults: {
+                    layout: 'fit',
+                    bodyStyle: 'padding:8px; border:0px'
+                },
                 listeners: {
                     tabchange: function(panel, tab)
                     {
@@ -586,8 +590,7 @@ Ext.onReady( function() {
                         }
                     }
                 },
-                items:
-                [
+                items: [
                     {
                         title: '<span class="panel-tab-title">' + i18n_new + '</span>',
                         id: 'view0',

@@ -66,10 +66,12 @@ public class MapView
 
     private String mapSourceType;
 
+    private String organisationUnitSelectionType;
+
     private String mapSource;
-    
-    private transient String parentOrganisationUnitName;
-    
+
+    private transient String organisationUnitSelectionTypeName;
+
     private String mapLegendType;
 
     private int method;
@@ -96,9 +98,9 @@ public class MapView
 
     public MapView( String name, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
         DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
-        Period period, String startDate, String endDate, String mapSourceType, String mapSource, String mapLegendType,
-        int method, int classes, String bounds, String colorLow, String colorHigh, MapLegendSet mapLegendSet,
-        String longitude, String latitude, int zoom )
+        Period period, String startDate, String endDate, String mapSourceType, String organisationUnitSelectionType,
+        String mapSource, String mapLegendType, int method, int classes, String bounds, String colorLow,
+        String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.mapValueType = mapValueType;
@@ -112,6 +114,7 @@ public class MapView
         this.startDate = startDate;
         this.endDate = endDate;
         this.mapSourceType = mapSourceType;
+        this.organisationUnitSelectionType = organisationUnitSelectionType;
         this.mapSource = mapSource;
         this.mapLegendType = mapLegendType;
         this.method = method;
@@ -301,6 +304,16 @@ public class MapView
         this.mapSourceType = mapSourceType;
     }
 
+    public String getOrganisationUnitSelectionType()
+    {
+        return organisationUnitSelectionType;
+    }
+
+    public void setOrganisationUnitSelectionType( String organisationUnitSelectionType )
+    {
+        this.organisationUnitSelectionType = organisationUnitSelectionType;
+    }
+
     public String getMapSource()
     {
         return mapSource;
@@ -311,14 +324,14 @@ public class MapView
         this.mapSource = mapSource;
     }
 
-    public String getParentOrganisationUnitName()
+    public String getOrganisationUnitSelectionTypeName()
     {
-        return parentOrganisationUnitName;
+        return organisationUnitSelectionTypeName;
     }
 
-    public void setParentOrganisationUnitName( String parentOrganisationUnitName )
+    public void setOrganisationUnitSelectionTypeName( String organisationUnitSelectionTypeName )
     {
-        this.parentOrganisationUnitName = parentOrganisationUnitName;
+        this.organisationUnitSelectionTypeName = organisationUnitSelectionTypeName;
     }
 
     public String getMapLegendType()

@@ -30,10 +30,13 @@ package org.hisp.dhis.mapping.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
@@ -75,7 +78,7 @@ public class GetAllMapViewsAction
     {
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -83,20 +86,38 @@ public class GetAllMapViewsAction
     public String execute()
     {
         object = new ArrayList<MapView>( mappingService.getMapViewsByMapSourceType() );
-        
+
         Collections.sort( object, new MapViewNameComparator() );
-        
+
         for ( MapView mapView : object )
         {
             if ( mapView != null && mapView.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
             {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit(
-                    Integer.parseInt( mapView.getMapSource() ) );
-                
-                mapView.setParentOrganisationUnitName( organisationUnit.getName() );
+                if ( mapView.getOrganisationUnitSelectionType() == null
+                    || mapView.getOrganisationUnitSelectionType().trim().isEmpty()
+                    || mapView.getOrganisationUnitSelectionType().equals(
+                        MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
+                {
+                    mapView.setOrganisationUnitSelectionType( MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT );
+                    
+                    OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer
+                        .parseInt( mapView.getMapSource() ) );
+
+                    mapView.setOrganisationUnitSelectionTypeName( organisationUnit.getName() );
+                }
+
+                else if ( mapView.getOrganisationUnitSelectionType().equals(
+                    MappingService.ORGANISATION_UNIT_SELECTION_TYPE_LEVEL ) )
+                {
+                    OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
+                        .parseInt( mapView.getMapSource() ) );
+
+                    mapView.setOrganisationUnitSelectionTypeName( level.getName() );
+
+                }
             }
         }
-        
+
         return SUCCESS;
     }
 }
