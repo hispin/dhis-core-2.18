@@ -35,6 +35,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Lars Helge Overland
@@ -244,5 +246,26 @@ public class ConversionUtils
         }
         
         return array;
+    }
+    
+    /**
+     * Strips the number of decimals to a maximum of 4. The string must be on the
+     * form <number>.<decimals>,<number>.<decimals>
+     * 
+     * @param coordinates the coordinates string.
+     * @return the stripped coordinates string.
+     */
+    public static String stripCoordinates( String coordinates )
+    {
+        final int decimals = 4;
+        
+        if ( coordinates != null )
+        {
+            Matcher matcher = Pattern.compile( "\\d+\\.\\d{0," + decimals + "}" ).matcher( coordinates );
+            matcher.find();
+            return matcher.group() + "," + matcher.group();
+        }
+        
+        return null;
     }
 }
