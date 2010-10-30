@@ -3,7 +3,6 @@
  */
 package org.hisp.dhis.reports.physical.action;
 
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +10,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date; 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +23,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
-import jxl.format.BorderLineStyle; 
+import jxl.format.BorderLineStyle;
 import jxl.write.Blank;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
@@ -77,7 +76,7 @@ public class GeneratePhysicalReportResultAction
     {
         this.statementManager = statementManager;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -126,25 +125,15 @@ public class GeneratePhysicalReportResultAction
     {
         this.aggregationService = aggregationService;
     }
-    
-  /*  
-    
+
     private DataElementCategoryService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
+
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryService dataElementCategoryOptionComboService )
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
- */  
-    private DataElementCategoryService dataElementCategoryOptionComboService;
-    
-    public void setDataElementCategoryOptionComboService( DataElementCategoryService dataElementCategoryOptionComboService )
-    {
-        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
-    }
-    
-    
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -215,7 +204,7 @@ public class GeneratePhysicalReportResultAction
         throws Exception
     {
         // Intialisation
-        
+
         statementManager.initialise();
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
@@ -283,7 +272,6 @@ public class GeneratePhysicalReportResultAction
             {
                 String tempStr;
                 String deType = (String) deCodeType.get( count1 );
-                // String sType = (String) serviceType.get( count1 );
 
                 Calendar tempStartDate = Calendar.getInstance();
                 Calendar tempEndDate = Calendar.getInstance();
@@ -352,7 +340,7 @@ public class GeneratePhysicalReportResultAction
 
         fileName = reportFileNameTB.replace( ".xls", "" );
         fileName += periodNameList + ".xls";
-        //fileName = reportFileNameTB;
+        // fileName = reportFileNameTB;
         File outputReportFile = new File( outputReportPath );
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -390,8 +378,6 @@ public class GeneratePhysicalReportResultAction
             Document doc = docBuilder.parse( new File( path ) );
             if ( doc == null )
             {
-                // System.out.println( "There is no DECodes related XML file in
-                // the user home" );
                 return null;
             }
 
@@ -464,9 +450,8 @@ public class GeneratePhysicalReportResultAction
                 int optionComboId = Integer.parseInt( optionComboIdStr );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-               // DataElementCategoryService optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-                //DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
-                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService
+                    .getDataElementCategoryOptionCombo( optionComboId );
                 if ( dataElement == null || optionCombo == null )
                 {
                     replaceString = "";
@@ -580,10 +565,6 @@ public class GeneratePhysicalReportResultAction
                         resultValue = "" + (int) d;
                     }
 
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
                 }
 
             }
@@ -621,23 +602,31 @@ public class GeneratePhysicalReportResultAction
 
         if ( deType.equalsIgnoreCase( "q1" ) )
         {
-            tempStartDate.set( Integer.parseInt( years[0] ), Calendar.APRIL, 1 );
-            tempEndDate.set( Integer.parseInt( years[0] ), Calendar.JUNE, 30 );
+            Date startDate = format.parseDate( years[0] + "-04-01" );
+            Date endDate = format.parseDate( years[0] + "-06-30" );
+            tempStartDate.setTime( startDate );
+            tempEndDate.setTime( endDate );
         }
         else if ( deType.equalsIgnoreCase( "q2" ) )
         {
-            tempStartDate.set( Integer.parseInt( years[0] ), Calendar.JULY, 1 );
-            tempEndDate.set( Integer.parseInt( years[0] ), Calendar.SEPTEMBER, 30 );
+            Date startDate = format.parseDate( years[0] + "-07-01" );
+            Date endDate = format.parseDate( years[0] + "-09-30" );
+            tempStartDate.setTime( startDate );
+            tempEndDate.setTime( endDate );
         }
         else if ( deType.equalsIgnoreCase( "q3" ) )
         {
-            tempStartDate.set( Integer.parseInt( years[0] ), Calendar.OCTOBER, 1 );
-            tempEndDate.set( Integer.parseInt( years[0] ), Calendar.DECEMBER, 31 );
+            Date startDate = format.parseDate( years[0] + "-10-01" );
+            Date endDate = format.parseDate( years[0] + "-12-31" );
+            tempStartDate.setTime( startDate );
+            tempEndDate.setTime( endDate );
         }
         else if ( deType.equalsIgnoreCase( "q4" ) )
         {
-            tempStartDate.set( Integer.parseInt( years[1] ), Calendar.JANUARY, 1 );
-            tempEndDate.set( Integer.parseInt( years[1] ), Calendar.MARCH, 31 );
+            Date startDate = format.parseDate( years[1] + "-01-01" );
+            Date endDate = format.parseDate( years[1] + "-03-31" );
+            tempStartDate.setTime( startDate );
+            tempEndDate.setTime( endDate );
         }
         else
         {
@@ -659,7 +648,6 @@ public class GeneratePhysicalReportResultAction
     {
         List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         Iterator<DataSet> it = dataSetList.iterator();
-        // Iterator it = dataSetList.iterator();
         while ( it.hasNext() )
         {
             DataSet ds = (DataSet) it.next();
