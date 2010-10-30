@@ -68,4 +68,8 @@ public interface ProgramInstanceService
     Collection<ProgramInstance> getProgramInstances( Patient patient, Program program, boolean completed );
 
     Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit );
+    
+    Collection<ProgramInstance> getProgramInstances( Program program, OrganisationUnit organisationUnit, int min, int max );
+    
+    int countProgramInstances( Program program, OrganisationUnit organisationUnit );
 }

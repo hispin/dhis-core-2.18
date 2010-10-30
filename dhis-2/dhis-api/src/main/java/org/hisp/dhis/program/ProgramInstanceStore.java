@@ -60,4 +60,8 @@ public interface ProgramInstanceStore
     Collection<ProgramInstance> get( Patient patient, Program program, boolean completed );
     
     Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit );
+    
+    Collection<ProgramInstance> get( Program program, OrganisationUnit organisationUnit, int min, int max );
+    
+    int count(Program program, OrganisationUnit organisationUnit );
 }

@@ -216,7 +216,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/report.vm</param>
       <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/report.js</param>      
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/report.js</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>         
     </action>
     
     <action name="viewRecords" class="org.hisp.dhis.caseentry.action.report.ViewRecordsAction">      
