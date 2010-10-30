@@ -70,178 +70,85 @@ public class JdbcDataArchiveStore
     public void archiveData( Date startDate, Date endDate )
     {
         // Move data from datavalue to datavaluearchive
-        
-        String sql =
-            "INSERT INTO datavaluearchive ( " +
-                "SELECT d.* FROM datavalue AS d " +
-                "JOIN period as p ON ( d.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
+        String sql = "INSERT INTO datavaluearchive ( " + "SELECT d.* FROM datavalue AS d "
+            + "JOIN period AS p ON d.periodid=p.periodid " + "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " + 
+            "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
 
-        log.info( sql );        
+        log.info( sql );
         jdbcTemplate.execute( sql );
-        
-        // Delete data from datavalue_audit
 
-        sql = 
-            "DELETE FROM datavalue_audit WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue_audit AS d " +
-                "JOIN period AS p ON ( d.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' )";
-
-        log.info( sql );        
-        jdbcTemplate.execute( sql ); 
-        
         // Delete data from datavalue
-        
-        sql = 
-            "DELETE FROM datavalue WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue AS d " +
-                "JOIN period AS p ON ( d.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' )";
-        
-        log.info( sql );        
-        jdbcTemplate.execute( sql ); 
+        sql = statementBuilder.archiveData( getMediumDateString( startDate ), getMediumDateString( endDate ) );
+
+        log.info( sql );
+        jdbcTemplate.execute( sql );
     }
 
     public void unArchiveData( Date startDate, Date endDate )
     {
-        // Move data from datavaluearchive to datavalue
-        
-        String sql =
-            "INSERT INTO datavalue ( " +
-                "SELECT a.* FROM datavaluearchive AS a " +
-                "JOIN period as p ON ( a.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
+        // Move data from datavalue to datavaluearchive
+        String sql = "INSERT INTO datavalue ( " + "SELECT a.* FROM datavaluearchive AS a "
+            + "JOIN period AS p ON a.periodid=p.periodid " + "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " + 
+            "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
 
-        log.info( sql );        
-        jdbcTemplate.execute( sql ); 
-        
-        // Delete data from datavaluearchive
+        log.info( sql );
+        jdbcTemplate.execute( sql );
 
-        sql = 
-            "DELETE FROM datavaluearchive WHERE EXISTS ( " +
-                "SELECT 1 FROM datavaluearchive AS a " +
-                "JOIN period AS p ON ( a.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' )";
-        
-        log.info( sql );        
-        jdbcTemplate.execute( sql ); 
+        // Delete data from datavalue
+
+        sql = statementBuilder.unArchiveData( getMediumDateString( startDate ), getMediumDateString( endDate ) );
+
+        log.info( sql );
+        jdbcTemplate.execute( sql );
     }
-    
+
     public int getNumberOfOverlappingValues()
     {
-        String sql =
-            "SELECT COUNT(*) FROM datavaluearchive a " +
-            "JOIN datavalue d ON (a.dataelementid=d.dataelementid AND a.periodid=d.periodid AND a.sourceid=d.sourceid AND a.categoryoptioncomboid=d.categoryoptioncomboid);";
+        String sql = "SELECT COUNT(*) FROM datavaluearchive AS a "
+            + "JOIN datavalue AS d ON a.dataelementid=d.dataelementid " + "AND a.periodid=d.periodid "
+            + "AND a.sourceid=d.sourceid " + "AND a.categoryoptioncomboid=d.categoryoptioncomboid;";
 
-        log.info( sql );        
+        log.info( sql );
+
         return jdbcTemplate.queryForInt( sql );
     }
-    
+
     public int getNumberOfArchivedValues()
     {
-        String sql = "SELECT COUNT(*) FROM datavaluearchive;";
-        
-        log.info( sql );        
+        String sql = "SELECT COUNT(*) as dem FROM datavaluearchive;";
+
+        log.info( sql );
         return jdbcTemplate.queryForInt( sql );
     }
-    
+
     public void deleteRegularOverlappingData()
     {
-        // Delete from datavalue_audit
-        
-        String sql =
-            "DELETE FROM datavalue_audit WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue_audit AS d " +
-                "JOIN datavaluearchive AS a " +
-                "ON ( d.dataelementid=a.dataelementid " +
-                "AND d.periodid=a.periodid " +
-                "AND d.sourceid=a.sourceid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ) )";
+        String sql = statementBuilder.deleteRegularOverlappingData();
 
-        log.info( sql );        
-        jdbcTemplate.execute( sql );
-        
-        // Delete from datavelue
-        
-        sql =
-            "DELETE FROM datavalue WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue AS d " +
-                "JOIN datavaluearchive AS a " +
-                "ON ( d.dataelementid=a.dataelementid " +
-                "AND d.periodid=a.periodid " +
-                "AND d.sourceid=a.sourceid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ) )";
-        
-        log.info( sql );        
+        log.info( sql );
         jdbcTemplate.execute( sql );
     }
-    
+
     public void deleteArchivedOverlappingData()
     {
-        String sql =
-            "DELETE FROM datavaluearchive WHERE EXISTS ( " +
-                "SELECT 1 FROM datavaluearchive AS a " +
-                "JOIN datavalue AS d " +
-                "ON ( a.dataelementid=d.dataelementid " +
-                "AND a.periodid=d.periodid " +
-                "AND a.sourceid=d.sourceid " +
-                "AND a.categoryoptioncomboid=d.categoryoptioncomboid ) )";
+        String sql = statementBuilder.deleteArchivedOverlappingData();
 
-        log.info( sql );        
+        log.info( sql );
         jdbcTemplate.execute( sql );
-    }    
+    }
 
     public void deleteOldestOverlappingData()
     {
-        // Delete overlaps from datavalue_audit which are older than datavaluearchive
-        
-        String sql =
-            "DELETE FROM datavalue_audit WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue_audit AS d " +
-                "JOIN datavaluearchive AS a " +
-                "ON ( d.dataelementid=a.dataelementid " +
-                "AND d.periodid=a.periodid " +
-                "AND d.sourceid=a.sourceid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-                "AND d.lastupdated<a.lastupdated ) )";
-
-        log.info( sql );        
-        jdbcTemplate.execute( sql );
-        
         // Delete overlaps from datavalue which are older than datavaluearchive
-        
-        sql =
-            "DELETE FROM datavalue WHERE EXISTS ( " +
-                "SELECT 1 FROM datavalue AS d " +
-                "JOIN datavaluearchive AS a " +
-                "ON ( d.dataelementid=a.dataelementid " +
-                "AND d.periodid=a.periodid " +
-                "AND d.sourceid=a.sourceid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
-                "AND d.lastupdated<a.lastupdated ) )";
-        
-        log.info( sql );        
+        String sql = statementBuilder.deleteOldestOverlappingDataValue();
+
+        log.info( sql );
         jdbcTemplate.execute( sql );
-        
+
         // Delete overlaps from datavaluearchive which are older than datavalue
-        
-        sql =
-            "DELETE FROM datavaluearchive WHERE EXISTS ( " +
-                "SELECT 1 FROM datavaluearchive AS a " +
-                "JOIN datavalue AS d " +
-                "ON ( a.dataelementid=d.dataelementid " +
-                "AND a.periodid=d.periodid " +
-                "AND a.sourceid=d.sourceid " +
-                "AND a.categoryoptioncomboid=d.categoryoptioncomboid " + 
-                "AND a.lastupdated<=d.lastupdated ) )";
-        
-        log.info( sql );        
+        sql = statementBuilder.deleteOldestOverlappingArchiveData();
+
+        log.info( sql );
         jdbcTemplate.execute( sql );
     }
     
@@ -252,7 +159,6 @@ public class JdbcDataArchiveStore
     public void archivePatientData( Date startDate, Date endDate )
     {
         // Move data from patientdatavalue to patientdatavaluearchive
-        
         String sql ="INSERT INTO patientdatavaluearchive ( " + "SELECT pdv.* FROM patientdatavalue AS pdv "
             + "INNER JOIN programstageinstance AS psi "
             +    "ON pdv.programstageinstanceid = psi.programstageinstanceid "
@@ -265,7 +171,6 @@ public class JdbcDataArchiveStore
         jdbcTemplate.execute( sql );
 
         // Delete data from patientdatavalue
-
         sql = statementBuilder.archivePatientData( getMediumDateString( startDate ), getMediumDateString( endDate ) );
 
         log.info( sql );
@@ -275,8 +180,7 @@ public class JdbcDataArchiveStore
     public void unArchivePatientData( Date startDate, Date endDate )
     {
         // Move data from patientdatavalue to patientdatavaluearchive
-
-        String sql ="INSERT INTO patientdatavalue ( " + "SELECT * FROM patientdatavaluearchive AS pdv "
+        String sql ="INSERT INTO patientdatavalue ( " + "SELECT pdv.* FROM patientdatavaluearchive AS pdv "
         + "INNER JOIN programstageinstance AS psi "
         +    "ON pdv.programstageinstanceid = psi.programstageinstanceid "
         + "INNER JOIN programinstance AS pi "
@@ -288,7 +192,6 @@ public class JdbcDataArchiveStore
         jdbcTemplate.execute( sql );
 
         // Delete data from patientdatavalue
-
         sql = statementBuilder.unArchivePatientData( getMediumDateString( startDate ), getMediumDateString( endDate ) );
 
         log.info( sql );
@@ -334,17 +237,16 @@ public class JdbcDataArchiveStore
     public void deleteOldestOverlappingPatientData()
     {
         // Delete overlaps from patientdatavalue which are older than patientdatavaluearchive
-
         String sql = statementBuilder.deleteOldestOverlappingPatientDataValue();
 
         log.info( sql );
         jdbcTemplate.execute( sql );
 
         // Delete overlaps from patientdatavaluearchive which are older than patientdatavalue
-
         sql = statementBuilder.deleteOldestOverlappingPatientArchiveData();
 
         log.info( sql );
         jdbcTemplate.execute( sql );
     }
+
 }
