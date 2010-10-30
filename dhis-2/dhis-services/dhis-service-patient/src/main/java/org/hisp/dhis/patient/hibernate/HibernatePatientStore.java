@@ -41,6 +41,7 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
+import org.hisp.dhis.program.Program;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -49,20 +50,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class HibernatePatientStore
-    extends HibernateGenericStore<Patient> implements PatientStore
-{    
+    extends HibernateGenericStore<Patient>
+    implements PatientStore
+{
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> get( Boolean isDead )
-    {        
+    {
         return getCriteria( Restrictions.eq( "isDead", isDead ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByGender( String gender )
     {
         return getCriteria( Restrictions.eq( "gender", gender ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByBirthDate( Date birthDate )
     {
@@ -72,68 +74,80 @@ public class HibernatePatientStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name )
     {
-        return getCriteria( 
+        return getCriteria(
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
-            Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-            Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).list();        
+                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name, int min, int max )
     {
-        return getCriteria( 
+        return getCriteria(
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).setFirstResult( min ).setMaxResults( max ).list(); 
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) )
+            .setFirstResult( min ).setMaxResults( max ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
-    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate , String gender)
+    public Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate,
+        String gender )
     {
-        Criteria crit = getCriteria( );
+        Criteria crit = getCriteria();
         Conjunction con = Restrictions.conjunction();
-        
-        if( StringUtils.isNotBlank( firstName ))
+
+        if ( StringUtils.isNotBlank( firstName ) )
             con.add( Restrictions.eq( "firstName", firstName ) );
-        
-        if( StringUtils.isNotBlank( middleName ))
-            con.add(Restrictions.eq( "middleName", middleName ) );
-        
-        if( StringUtils.isNotBlank( lastName ))
-            con.add(Restrictions.eq( "lastName",  lastName ) );
-        
-        con.add( Restrictions.eq( "gender",  gender ) ) ;
-        con.add( Restrictions.eq( "birthDate",  birthdate ) );
-        
+
+        if ( StringUtils.isNotBlank( middleName ) )
+            con.add( Restrictions.eq( "middleName", middleName ) );
+
+        if ( StringUtils.isNotBlank( lastName ) )
+            con.add( Restrictions.eq( "lastName", lastName ) );
+
+        con.add( Restrictions.eq( "gender", gender ) );
+        con.add( Restrictions.eq( "birthDate", birthdate ) );
+
         crit.add( con );
-        
-        crit.addOrder( Order.asc( "firstName" ) );   
-        
+
+        crit.addOrder( Order.asc( "firstName" ) );
+
         return crit.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit )
     {
         String hql = "select distinct p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
-    
+
         return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max )
     {
         String hql = "select p from Patient p where p.organisationUnit = :organisationUnit order by p.id";
-       
-        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults( max ).list(); 
+
+        return getQuery( hql ).setEntity( "organisationUnit", organisationUnit ).setFirstResult( min ).setMaxResults(
+            max ).list();
     }
-    
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max )
+    {
+        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
+            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder(Order.asc("id")).setFirstResult( min ).setMaxResults(
+            max ).list();
+    }
+
     public int countGetPatientsByNames( String name )
     {
-        Number rs =  (Number)getCriteria( 
+        Number rs = (Number) getCriteria(
             Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
                 Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).setProjection( Projections.rowCount() ).uniqueResult();
+                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).setProjection( Projections.rowCount() )
+            .uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
@@ -141,13 +155,23 @@ public class HibernatePatientStore
     @Override
     public int countListPatientByOrgunit( OrganisationUnit organisationUnit )
     {
-        Query query = getQuery("select count(p.id) from Patient p where p.organisationUnit.id=:orgUnitId ");
+        Query query = getQuery( "select count(p.id) from Patient p where p.organisationUnit.id=:orgUnitId " );
 
-        query.setParameter("orgUnitId", organisationUnit.getId());
-        
+        query.setParameter( "orgUnitId", organisationUnit.getId() );
+
         Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
+
+    @Override
+    public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
+    {
+        Number rs = (Number) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
+            "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).setProjection(
+            Projections.rowCount() ).uniqueResult();
         
         return rs != null ? rs.intValue() : 0;
     }
-    
+
 }

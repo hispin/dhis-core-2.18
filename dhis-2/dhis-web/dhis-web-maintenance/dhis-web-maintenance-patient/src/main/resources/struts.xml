@@ -359,7 +359,7 @@
 			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
-			<param name="stylesheets">style/paging.css</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="listAllPatients"

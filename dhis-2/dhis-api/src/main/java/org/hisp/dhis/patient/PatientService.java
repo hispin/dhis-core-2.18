@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -52,26 +53,107 @@ public interface PatientService
 
     Collection<Patient> getAllPatients();
 
+    /**
+     * Get Patients base on isDead property
+     * 
+     * @param isDead
+     * @return Patient List
+     */
     Collection<Patient> getAllPatients( Boolean isDead );
 
+    /**
+     * Search Patient base on firstname/middlename/lastname/birthDate/gender
+     * 
+     * @param firstName
+     * @param middleName
+     * @param lastName
+     * @param birthdate
+     * @param gender
+     * @return Patient List
+     */
     Collection<Patient> getPatient( String firstName, String middleName, String lastName, Date birthdate, String gender );
     
+    /**
+     * Search Patient base on gender
+     * 
+     * @param gender
+     * @return Patient List
+     */
     Collection<Patient> getPatiensByGender( String gender );
 
+    /**
+     * Search Patient base on birthDate
+     * 
+     * @param birthdate
+     * @return Patient List
+     */
     Collection<Patient> getPatientsByBirthDate( Date birthDate );
 
+    /**
+     * Search Patient base on firstname/middlename/lastname/
+     * 
+     * @param name firstName/middleName/lastName/
+     * @return Patient List
+     */
     Collection<Patient> getPatientsByNames( String name );
     
+    /**
+     * Search Patient base on firstname/middlename/lastname/
+     * 
+     * @param name firstName/middleName/lastName/
+     * @return Patient List
+     */
     Collection<Patient> getPatients( String searchText );
     
+    /**
+     * Search Patient base on identifier value with result limited
+     * 
+     * @param searchText value
+     * @param min
+     * @param max
+     * @return Patient List
+     */
     Collection<Patient> getPatients( String searchText, int min, int max );
     
+    /**
+     * Search Patient base on organisation unit  with result limited
+     * 
+     * @param organisationUnit organisationUnit
+     * @return Patient List
+     */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit );
     
+    /**
+     * Search Patient base on organisation unit with result limited
+     * 
+     * @param organisationUnit organisationUnit
+     * @param min
+     * @param max
+     * @return Patient List
+     */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max );
 
+    /**
+     * Search Patient base on organisation unit and sort the result by PatientAttribute
+     * 
+     * @param organisationUnit organisationUnit
+     * @param min
+     * @param max
+     * @param patientAttribute
+     * @return Patient List
+     */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max, PatientAttribute patientAttribute );
-
+    
+    /**
+     * Search Patient base on organisationUnit and identifier value
+     * name
+     * 
+     * @param organisationUnit
+     * @param searchText identifier value
+     * @param min 
+     * @param max 
+     * @return
+     */
     Collection<Patient> getPatients( OrganisationUnit organisationUnit, String searchText, int min, int max );
     
     /**
@@ -85,12 +167,51 @@ public interface PatientService
      */
     Collection<Patient> getPatient( Integer identifierTypeId, Integer attributeId, String value );
 
+    /**
+     * Search Patient base on OrganisationUnit and Program with result limited
+     * name
+     * 
+     * @param organisationUnit
+     * @param program
+     * @param min 
+     * @param max 
+     * @return
+     */
+    Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max );
+
+    /**
+     * Sort the result by PatientAttribute
+     * 
+     * @param patients
+     * @param patientAttribute
+     * @return Patient List
+     */
     Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute );
 
+    /**
+     * Search Patient base on firstname/middlename/lastname with result limited
+     * 
+     * @param name firstName/middleName/lastName
+     * @param min 
+     * @param max 
+     * @return Patient List
+     */
     Collection<Patient> getPatientsByNames( String name, int min, int max );
     
+    /**
+     * Search Patient base on identifier value and get number of result
+     * 
+     * @param searchText
+     * @return number of patients
+     */
     int countGetPatients( String searchText );
 
+    /**
+     * Search Patient base on firstname/middlename/lastname and get number of result
+     * 
+     * @param name
+     * @return number of patients
+     */
     int countnGetPatientsByNames( String name );
 
     int createPatient( Patient patient,Integer representativeId,
@@ -101,5 +222,7 @@ public interface PatientService
         List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete );
     
     int countGetPatientsByOrgUnit( OrganisationUnit organisationUnit );
+    
+    int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
     
 }

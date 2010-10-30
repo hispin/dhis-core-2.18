@@ -32,6 +32,7 @@ import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -58,7 +59,11 @@ public interface PatientStore
     
     Collection<Patient> getByOrgUnit( OrganisationUnit organisationUnit, int min, int max );
     
+    Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max );
+    
     int countListPatientByOrgunit(OrganisationUnit organisationUnit);
     
     int countGetPatientsByNames( String name );
+    
+    int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 }

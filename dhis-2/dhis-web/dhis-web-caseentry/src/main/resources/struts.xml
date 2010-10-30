@@ -159,9 +159,10 @@
 	      javascript/customcheckbox/prettyCheckboxes.js
       </param> 
       <param name="stylesheets">
-	      ../dhis-web-commons/jQuery/ui/css/redmond/jquery-ui.css,
-	      style/patient.css,
-	      javascript/customcheckbox/prettyCheckboxes.css
+	      ../dhis-web-commons/jQuery/ui/css/redmond/jquery-ui.css
+	      ,style/patient.css
+	      ,javascript/customcheckbox/prettyCheckboxes.css
+	      ,../dhis-web-commons/paging/paging.css
       </param>     
     </action>
 	

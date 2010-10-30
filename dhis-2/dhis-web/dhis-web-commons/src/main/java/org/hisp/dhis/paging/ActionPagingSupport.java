@@ -27,7 +27,10 @@ package org.hisp.dhis.paging;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Enumeration;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.paging.Paging;
@@ -37,47 +40,65 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Quang Nguyen
  */
-public abstract class ActionPagingSupport<T> extends ActionSupport
+public abstract class ActionPagingSupport<T>
+    extends ActionSupport
 {
     protected static final Integer DEFAULT_PAGE_SIZE = 50;
-    
+
     protected Integer currentPage;
-    
+
     public void setCurrentPage( Integer currentPage )
     {
         this.currentPage = currentPage;
     }
 
     protected Integer pageSize;
-    
+
     public void setPageSize( Integer pageSize )
     {
         this.pageSize = pageSize;
     }
-    
+
     protected Paging paging;
-    
+
     public Paging getPaging()
     {
         return paging;
     }
-
+    
+    @SuppressWarnings("unchecked")
     private String getCurrentLink()
     {
-        return ServletActionContext.getRequest().getRequestURI();
+        HttpServletRequest request = ServletActionContext.getRequest();
+        
+        String baseLink = request.getRequestURI() + "?";
+
+        Enumeration<String> paramNames = request.getParameterNames();
+        
+        while ( paramNames.hasMoreElements() )
+        {
+            String paramName = paramNames.nextElement();
+            if ( !paramName.equalsIgnoreCase( "pageSize" ) && !paramName.equalsIgnoreCase( "currentPage" ) )
+            {
+                String value = request.getParameter( paramName );
+                baseLink += paramName + "=" + value + "&";
+            }
+        }
+
+        return baseLink.substring( 0, baseLink.length()-1 );
     }
 
     protected Paging createPaging( Integer totalRecord )
     {
         Paging resultPaging = new Paging( getCurrentLink(), pageSize == null ? DEFAULT_PAGE_SIZE : pageSize );
-        
+
         resultPaging.setCurrentPage( currentPage == null ? 0 : currentPage );
-           
+
         resultPaging.setTotal( totalRecord );
-        
+
         return resultPaging;
     }
-    
+
     protected List<T> getBlockElement( List<T> elementList, int startPos, int pageSize )
     {
         List<T> returnList;
