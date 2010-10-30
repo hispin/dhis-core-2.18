@@ -36,6 +36,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogLevel;
@@ -188,6 +189,16 @@ public class HibernateUserStore
             user.getName()) );
     }
 
+    public int countAllUsers()
+    {
+        Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from User" );
+        
+        Number rs = (Number) query.uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
+    }
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------
@@ -371,7 +382,18 @@ public class HibernateUserStore
         return criteria.list();
     }
     
-    public int countNumberOfSearchUsersByName( String key ){
-        return searchUsersByName( key ).size();
+    public int countNumberOfSearchUsersByName( String key )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+      
+        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        
+        criteria.setProjection( Projections.rowCount() ).uniqueResult();
+
+        Number rs = (Number) criteria.uniqueResult();
+        
+        return rs != null ? rs.intValue() : 0;
     }
 }

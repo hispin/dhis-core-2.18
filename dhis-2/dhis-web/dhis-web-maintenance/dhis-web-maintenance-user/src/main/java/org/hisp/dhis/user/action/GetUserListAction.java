@@ -101,7 +101,7 @@ public class GetUserListAction
     public String execute()
         throws Exception
     {
-        this.paging = createPaging( userStore.getAllUsers().size() );
+        this.paging = createPaging( userStore.countAllUsers() );
 
         Collection<User> users = userStore.getAllUsers( paging.getStartPos(), paging.getPageSize() );
 
@@ -133,7 +133,7 @@ public class GetUserListAction
       
         this.paging = createPaging( userStore.countNumberOfSearchUsersByName(key) );
         
-        userCredentialsList = new ArrayList<UserCredentials>(userStore.searchUsersByName( key,  paging.getStartPos(), paging.getPageSize() ));
+        userCredentialsList = new ArrayList<UserCredentials>(userStore.searchUsersByName( key, paging.getStartPos(), paging.getPageSize() ));
         
         Collections.sort( userCredentialsList, new UsernameComparator() );
         User currentUser = userStore.getUser( currentUserService.getCurrentUser().getId() );
