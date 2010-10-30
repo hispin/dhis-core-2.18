@@ -102,6 +102,16 @@ public interface UserStore
      * @param user the User to delete.
      */
     void deleteUser( User user );
+    
+    Collection<User> getAllUsers( int from, int to );
+  
+    Collection<UserCredentials> searchUsersByName( String key );
+  
+    Collection<UserCredentials> searchUsersByName( String key, int from, int to );
+    
+    int countNumberOfSearchUsersByName( String key );
+    
+    int countAllUsers();
 
     // -------------------------------------------------------------------------
     // UserCredentials
@@ -244,11 +254,4 @@ public interface UserStore
      */
     void deleteUserSetting( UserSetting userSetting );
     
-    Collection<User> getAllUsers( int from, int to );
-  
-    Collection<UserCredentials> searchUsersByName( String key );
-  
-    Collection<UserCredentials> searchUsersByName( String key, int from, int to );
-    
-    int countNumberOfSearchUsersByName( String key );
 }
