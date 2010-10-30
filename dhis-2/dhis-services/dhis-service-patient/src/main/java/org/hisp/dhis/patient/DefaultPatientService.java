@@ -39,6 +39,7 @@ import java.util.TreeMap;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -480,6 +481,14 @@ public class DefaultPatientService
                 }
             }
         }
+    }
+    
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max ){
+        return patientStore.getByOrgUnitProgram( organisationUnit, program, min, max );
+    }
+
+    public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program ){
+        return patientStore.countGetPatientsByOrgUnitProgram( organisationUnit, program );
     }
 
 }

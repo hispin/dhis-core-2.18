@@ -28,9 +28,9 @@
                     <tr #alternate( $mark )>
 						#if( $sortPatientAttributeId )
 							#set( $patientAttributeValue = $patinetAttributeValueMap.get( $patient ) )
-							<td>$encoder.htmlEncode( $!patientAttributeValue.value )</td>
+							<td>$!patientAttributeValue.value</td>
 						#end
-                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( "show_details" )">$encoder.htmlEncode( $programInstance.patient.getFullName() )</a></td>                    
+                        <td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title="$i18n.getString( "show_details" )">$patient.getFullName()</a></td>                    
                         #foreach( $programStageInstance in $programInstance.programStageInstances )
                             #if( $programStageInstance.executionDate )
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -50,11 +50,14 @@
                     #end 
                 #end    
             </tbody>
-    
         </table>
         </td>
     </tr>
 </table>
+
+<div class="paging-container">
+	#parse( "/dhis-web-commons/paging/paging.vm" )
+</div>
 
 <div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px" ondblclick="javascript:hideDetails()">
     <div style="float:right;" onclick="javascript:hideDetails()">
