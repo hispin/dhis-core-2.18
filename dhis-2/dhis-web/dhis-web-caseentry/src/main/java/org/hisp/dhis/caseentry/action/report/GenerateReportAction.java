@@ -35,6 +35,8 @@ import java.util.Map;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -42,14 +44,12 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
 public class GenerateReportAction
-    implements Action
+    extends ActionPagingSupport<ProgramInstance>
 {
     public static final String RED = "#ff0000";
 
@@ -182,9 +182,14 @@ public class GenerateReportAction
         // ---------------------------------------------------------------------
         // Program instances for the selected program
         // ---------------------------------------------------------------------
-
-        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program, organisationUnit );
-
+  System.out.println("\n\n =============== \n 1.. ");      
+        int total = programInstanceService.countProgramInstances( program, organisationUnit );
+System.out.println("\n total 2 : " + total);     
+        this.paging = createPaging( total );
+System.out.println("\n 3.. ");       
+        Collection<ProgramInstance> selectedProgramInstances = programInstanceService.getProgramInstances( program,
+            organisationUnit, paging.getStartPos(), paging.getPageSize());
+System.out.println("\n 4 selectedProgramInstances : " + selectedProgramInstances );
         Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
 
         for ( ProgramInstance programInstance : selectedProgramInstances )
