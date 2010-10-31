@@ -3,8 +3,6 @@
 
 <script>
     var rowCount = 0;
-
-
 </script>
 
 <form id="LineListDataEntryForm" action="saveValueAction.action" method="post" onsubmit="return calMaxRecords()">
@@ -16,118 +14,115 @@
         <th width="40%">DataElement</th>
         <th width="20%">Entry</th>
     </tr>
-#set( $dataValueMapKeys = $dataelementMap.keySet() )
-#foreach( $dataValueMapKey in $dataValueMapKeys )
-    #set( $dataElementName = $dataelementMap.get( $dataValueMapKey ) )
-    #set( $dataValue = $dataValueMap.get( $dataValueMapKey ) )
-	<tr>
-	    <td align="center">$count1</td>
-	    <td>$dataElementName</td>
-	    <td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" />
-        #if( $sactionedPostdataelement == $dataValueMapKey)
-            <input type="button" value="Add" onclick="return addLLNewRow( '$dataValueMapKey' )">
-            
-        #end
-        </td>
-	<tr>
-    
-	#set( $count1 = $count1 + 1 )
-#end
+	#set( $dataValueMapKeys = $dataelementMap.keySet() )
+	#foreach( $dataValueMapKey in $dataValueMapKeys )
+		#set( $dataElementName = $dataelementMap.get( $dataValueMapKey ) )
+		#set( $dataValue = $dataValueMap.get( $dataValueMapKey ) )
+		<tr>
+			<td align="center">$count1</td>
+			<td>$dataElementName</td>
+			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" />
+			#if( $sactionedPostdataelement == $dataValueMapKey)
+				<input type="button" value="Add" onclick="return addLLNewRow( '$dataValueMapKey' )">
+			#end
+			</td>
+		<tr>		
+		#set( $count1 = $count1 + 1 )
+	#end
 </table>
 
 <table id="tblGrid" width="100%">
+
     <tr>
         <th width="20">Sr.No.</th>
         #foreach( $lineListElement in $lineListElements )
-	    <th>$lineListElement.name</th>
+			<th>$lineListElement.name</th>
         #end
         <th width="20">Delete</th>
     </tr>
 
-#set($maxRecord = 0)
-#set($recordNumberList = "")
-#set($calInfo = "")
-#set($srno = 0)
-#if($llDataValuesList.size()!=0)
+	#set($maxRecord = 0)
+	#set($recordNumberList = "")
+	#set($calInfo = "")
+	#set($srno = 0)
+	
+	#if($llDataValuesList.size()!=0)
 
-    #foreach($llDataValue in $llDataValuesList)
-        #set($srno = $srno + 1)
-        #set($recordNumber = $llDataValue.recordNumber)
-        #set($recordNumberList = $recordNumberList + $recordNumber +":")
-        #set($llElementValuesMap = $llDataValue.lineListValues)
-
-        <tr>
-            <td><label id="sr.no">$srno</label></td>
-            #foreach( $lineListElement in $lineListElements )
-                #set($element = $lineListElement.shortName+':'+$recordNumber)
-                #set($getDate = 'getDate:'+$element)
-                #if($lineListElement.PresentationType == 'text')
-                    <td>
-                        <input type="text" name="$element" id = "$element" style="width:10em" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')" value=$!llElementValuesMap.get($element)>
-                    </td>
-                #elseif($lineListElement.PresentationType == 'combobox')
-                    <td>
-                        <select name="$element" id="$element" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
-                        <option name="SelectOption" value="" selected>--Select--</option>
-                            #set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
-                            #foreach( $lineListOption in $lineListOptions )
-                                <option name="$lineListOption.name" value="$lineListOption.name" #if($lineListOption.name == $llElementValuesMap.get($element)) selected #end>$lineListOption.name</option>
-                            #end
-                        </select>
-                    </td>
-                #elseif($lineListElement.PresentationType == 'calender')
-                    <td>
-		              <input type="text" id="$element" name="$element" style="width:10em" value="$!llElementValuesMap.get($element)" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
-		              <img src="../images/calendar_icon.gif" width="16" height="16" id="$getDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background='green'" alt="Date">
-                    </td>
-                    <script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "$element",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "$getDate"   // trigger for the calendar (button ID)
-        });
-  	</script>
-                #end
-            #end
-            <td>
-                <a href="javascript:removeLLRecord( '$recordNumber' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-            </td>
-            <td>
-                <input type="hidden" name="recordNumber:$recordNumber" id="recordNumber:$recordNumber" value="$recordNumber" style="width:10px;">
-            </td>
-            <td>
-                <input type="hidden" name="changedValue:$recordNumber" id="changedValue:$recordNumber">
-            </td>
-        </tr>
-        #set($maxRecord = $maxRecord + 1)
-    #end
-#end
+		#foreach($llDataValue in $llDataValuesList)
+			#set($srno = $srno + 1)
+			#set($recordNumber = $llDataValue.recordNumber)
+			#set($recordNumberList = $recordNumberList + $recordNumber +":")
+			#set($llElementValuesMap = $llDataValue.lineListValues)
+	
+			<tr>
+				<td><label id="sr.no">$srno</label></td>
+				#set( $colCount = 0 )
+				#foreach( $lineListElement in $lineListElements )
+					#set($element = $lineListElement.shortName+':'+$recordNumber)
+					#set($getDate = 'getDate:'+$element)
+					#if($lineListElement.PresentationType == 'text')
+						<td>
+							<input type="text" name="$element" id = "$element" style="width:10em" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')" value=$!llElementValuesMap.get($element)>
+						</td>
+					#elseif($lineListElement.PresentationType == 'combobox')
+						<td>
+							<select name="$element" id="$element" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
+							<option name="SelectOption" value="" selected>--Select--</option>
+								#set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
+								#foreach( $lineListOption in $lineListOptions )
+									<option name="$lineListOption.name" value="$lineListOption.name" #if($lineListOption.name == $llElementValuesMap.get($element)) selected #end>$lineListOption.name</option>
+								#end
+							</select>
+						</td>
+					#elseif($lineListElement.PresentationType == 'calender')
+						<td>
+						  <input type="text" id="$element" name="$element" style="width:10em" value="$!llElementValuesMap.get($element)" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
+						  <img src="../images/calendar_icon.gif" width="16" height="16" id="$getDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background='green'" alt="Date">
+						</td>
+						<script type="text/javascript">
+							Calendar.setup({
+								inputField     :    "$element",      // id of the input field
+								ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
+								button         :    "$getDate"   // trigger for the calendar (button ID)
+							});
+						</script>
+					#end
+				#end
+				<td>
+					<a href="javascript:removeLLRecord( '$recordNumber' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+				</td>
+				<td>
+					<input type="hidden" name="recordNumber:$recordNumber" id="recordNumber:$recordNumber" value="$recordNumber" style="width:10px;">
+				</td>
+				<td>
+					<input type="hidden" name="changedValue:$recordNumber" id="changedValue:$recordNumber">
+				</td>
+			</tr>
+			#set($maxRecord = $maxRecord + 1)
+		#end
+	#end
 
 </table>
 
-<br/>
-<br/>
-<br>
+<br/><br/><br/>
+
 <table>
     <tr>
-
-    <td>
-        <center><input type="submit" value="Save"> 
-        <input type="hidden" id="reportedDate" name="reportedDate">
-    </td>
-    <td>
-        <input type="text" name="recordsFromDb" id="recordsFromDb" value="$maxRecord">recordsFromDb
-        <input type="hidden" name="delRecordNo" id="delRecordNo" >
-    </td>
-    <td>
-        <input type="text" name="totalRecords" id="totalRecords">totalRecords
-    </td>
-    <td>
-        <input type="hidden" name="recordNumbersList" id="recordNumbersList" value="$recordNumberList">
-    </td>
-
-</tr>
-
+		<td>
+			<center><input type="submit" value="Save"> 
+			<input type="hidden" id="reportedDate" name="reportedDate">
+		</td>
+		<td>
+			<input type="text" name="recordsFromDb" id="recordsFromDb" value="$maxRecord">recordsFromDb
+			<input type="hidden" name="delRecordNo" id="delRecordNo" >
+		</td>
+		<td>
+			<input type="text" name="totalRecords" id="totalRecords">totalRecords
+		</td>
+		<td>
+			<input type="hidden" name="recordNumbersList" id="recordNumbersList" value="$recordNumberList">
+		</td>
+	</tr>
 </table>
 
 <script type="text/javascript">
@@ -143,7 +138,6 @@
 
         var i =0;
         #foreach( $recordNo in $recordNumbers )
-
             recordNos[$i] = $recordNo;
             i++;
         #end
@@ -154,37 +148,33 @@
             #if($lineListElement.PresentationType == 'combobox')
                jsllElementPtype['$lineListElement.shortName'] = 'combobox';
                 #set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
-
-                    #foreach( $lineListOption in $lineListOptions )
-                        jsllOptions[$counter] = '$encoder.jsEscape( $lineListOption.name, "'" )';
-                        #set($counter = $counter + 1)
-                    #end
+				#foreach( $lineListOption in $lineListOptions )
+					jsllOptions[$counter] = '$encoder.jsEscape( $lineListOption.name, "'" )';
+					#set($counter = $counter + 1)
+				#end
             #elseif($lineListElement.PresentationType == 'text')
                jsllElementPtype['$lineListElement.shortName'] = 'text';
             #elseif($lineListElement.PresentationType == 'calender')
                jsllElementPtype['$lineListElement.shortName'] = 'calender';
-
             #end
             jsllElementOptions['$lineListElement.shortName'] = jsllOptions;
-
         #end
 
         function addLLNewRow(element)
         {
             rowCount = document.getElementById(element).value;
-            
 
-                if(rowCount>0)
-                {
-                    if(lastRow>0)
-                       var count = lastRow;
-                    else
-                        var count = $srno;
-                    for(var c = count; c < rowCount; c++)
-                    {
-                        addLLBNewRow();
-                    }
-                }
+			if(rowCount>0)
+			{
+				if(lastRow>0)
+				   var count = lastRow;
+				else
+					var count = $srno;
+				for(var c = count; c < rowCount; c++)
+				{
+					addLLBNewRow();
+				}
+			}
 
         }
 
@@ -192,7 +182,8 @@
         {
             document.getElementById('reportedDate').value = document.getElementById('reportingDate').value;
         }
-        function calMaxRecords()
+        
+		function calMaxRecords()
         {
             document.getElementById('totalRecords').value = lastRow;
 
@@ -203,7 +194,6 @@
 
         function valueChanged( recordNumber , element )
         {
-
             var flag = 0;
             var tempStr = element + ":"+recordNumber ;
             var resVal = document.getElementById(tempStr).value;
@@ -211,14 +201,13 @@
             {
                 document.getElementById(tempStr).focus();
                 alert(element + " cannot be null, Please enter some value");
-
             }
             else
             {
                 var tempVal = document.getElementById('changedValue:'+recordNumber).value;
 
                 var temparray = tempVal.split(" ");
-                for(var k=0;k<temparray.length;k++)
+                for(var k=0; k < temparray.length; k++)
                 {
                     if (element==temparray[k])
                     {
@@ -227,11 +216,12 @@
                     }
                 }
 
-                if(flag==0)
+                if( flag == 0 )
+				{
                     document.getElementById('changedValue:'+recordNumber).value = tempVal + element + " ";
+				}
             }
             return true;
-
-    }
+		}
 
 </script>

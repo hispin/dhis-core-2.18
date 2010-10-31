@@ -165,13 +165,12 @@ function getDataElementsReceived( xmlObject )
     }    
 }// getDataElementsReceived end
 
-//---------------------------------------------------------------
+//------------------------------------------------------------------------------
 // Get Periods 
-//---------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 function getPeriods()
 {
-    //document.reportForm.generate.disabled=false;
     var periodTypeList = document.getElementById( "periodTypeId" );
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
     var availablePeriods = document.getElementById( "availablePeriods" );
@@ -179,18 +178,6 @@ function getPeriods()
   
     if ( periodTypeId != "NA" )
     {
-        /* //var url = "getPeriods.action?id=" + periodTypeId;
-    
-        var request = new Request();
-        request.setResponseTypeXML( 'period' );
-        request.setCallbackSuccess( getPeriodsReceived );
-        //request.send( url );
-
-        var requestString = "getPeriods.action";
-        var params = "id=" + periodTypeId;
-        request.sendAsPost( params );
-        request.send( requestString ); */
-		
 		$.post("getPeriods.action",
 		{
 			id : periodTypeId
@@ -207,14 +194,11 @@ function getPeriods()
         getReports( ouId, reportTypeName );
     }
     else
-    {
-    
+    {    
         document.reportForm.generate.disabled=true;
         clearList( availablePeriods );
         clearList( reportsList );
-
     }
-  
 }
 
 function getPeriodsForCumulative()
@@ -338,37 +322,22 @@ function getReportsReceived( xmlObject )
 function getPeriodsReceived( xmlObject )
 {	
     var availablePeriods = document.getElementById( "availablePeriods" );
-    var selectedPeriods = document.getElementById( "selectedPeriods" );
 	
     clearList( availablePeriods );
 	
     var periods = xmlObject.getElementsByTagName( "period" );
-    //document.reportForm.generate.disabled=false;
-    if(periods.length <= 0)
+    if( periods.length <= 0 )
+    {
         document.reportForm.generate.disabled=true;
-	
+    }
     for ( var i = 0; i < periods.length; i++)
     {
         var id = periods[ i ].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-        //var startDate = periods[ i ].getElementsByTagName( "startDate" )[0].firstChild.nodeValue;
-        //var endDate = periods[ i ].getElementsByTagName( "endDate" )[0].firstChild.nodeValue;
         var periodName = periods[ i ].getElementsByTagName( "periodname" )[0].firstChild.nodeValue;
 		
-        if ( listContains( selectedPeriods, id ) == false )
-        {
-            /* var option = document.createElement( "option" );
-            option.value = id;
-            option.text = periodName;
-            availablePeriods.add( option, null ); */
-			
-			$("#availablePeriods").append("<option value='"+ id +"'>" + periodName + "</option>");
-        }
-    }
-	
-    // If the list of available periods is empty, an empty placeholder will be added
-//    addOptionPlaceHolder( availablePeriods );
+		$("#availablePeriods").append("<option value='"+ id +"'>" + periodName + "</option>");
+    }	
 }
-
 
 
 // -----------------------------------------------------------------------------

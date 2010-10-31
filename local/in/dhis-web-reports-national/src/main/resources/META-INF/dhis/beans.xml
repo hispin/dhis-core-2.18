@@ -8,13 +8,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reports.action.ReportsHomePageAction"
 		class="org.hisp.dhis.reports.action.ReportsHomePageAction"
 		scope="prototype">
-		<!-- added report service 20/08/2010-->
 		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
 		</property>
-		<!--	<property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		
 	</bean>
 	<!-- Reports Management start 07/08/2010 Global-->
 	<bean id="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction"
@@ -430,25 +425,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 	</bean>
 	
-	<!-- Upward Reports -->
+	<!-- Upward Reports/ GOI Reports -->
 	<bean
 		id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
 		scope="prototype">
 		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<!-- added report service 24/08/2010-->
-		<!--    <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 	
 	<bean
@@ -463,15 +446,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		</property>
-		
-		<!-- added report service 24/08/2010-->
 		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
 		</property>
-		
-		<!--	<property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		
 	</bean>
 	
 	<!-- DataSet Lock Reports -->
