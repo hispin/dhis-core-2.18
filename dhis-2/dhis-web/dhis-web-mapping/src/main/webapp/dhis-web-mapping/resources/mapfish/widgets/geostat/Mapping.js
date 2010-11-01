@@ -293,7 +293,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 												success: function() {
 													Ext.message.msg(true, '<span class="x-msg-hl">' + mapping.relation + '</span> (' + i18n_in_the_map + ') ' + i18n_assigned_to + ' <span class="x-msg-hl">' + name + '</span> (' + i18n_database + ').');
 													Ext.getCmp('grid_gp').getStore().load();
-													selectFeaturePopup.hide();
+													GLOBALS.vars.selectFeatureWindow.hide();
 													mapping.relation = false;
 													Ext.getCmp('filter_tf').setValue('');
 													mapping.classify(true, true);
@@ -372,10 +372,10 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         if (url != mapping.newUrl) {
             mapping.newUrl = url;
             
-            if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+            if (GLOBALS.vars.mapSourceType.isGeojson()) {
                 mapping.setUrl(GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + url);
             }
-			else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+			else if (GLOBALS.vars.mapSourceType.isShapefile()) {
 				mapping.setUrl(GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + url + GLOBALS.conf.output);
 			}
         }
@@ -399,12 +399,12 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
         mapping.coreComp.applyClassification();
         mapping.classificationApplied = true;
         
-        MASK.hide();
+        GLOBALS.vars.mask.hide();
     },
     
     autoAssign: function(position) {
-        MASK.msg = i18n_loading ;
-        MASK.show();
+        GLOBALS.vars.mask.msg = i18n_loading ;
+        GLOBALS.vars.mask.show();
 
         var level = this.mapData.organisationUnitLevel;
 
@@ -438,8 +438,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     }
                 }
                 
-                MASK.msg = count_match == 0 ? i18n_no + ' ' + i18n_organisation_units + ' ' +  i18n_assigned + '...' : + i18n_assigning +' ' + count_match + ' '+ i18n_organisation_units + '...';
-                MASK.show();
+                GLOBALS.vars.mask.msg = count_match == 0 ? i18n_no + ' ' + i18n_organisation_units + ' ' +  i18n_assigned + '...' : + i18n_assigning +' ' + count_match + ' '+ i18n_organisation_units + '...';
+                GLOBALS.vars.mask.show();
 
                 Ext.Ajax.request({
                     url: GLOBALS.conf.path_mapping + 'addOrUpdateMapOrganisationUnitRelations' + GLOBALS.conf.type,
@@ -447,8 +447,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     params: {mapLayerPath:mlp, relations:relations},
                     scope: this,
                     success: function(r) {
-                        MASK.msg = i18n_applying_organisation_units_relations ;
-                        MASK.show();
+                        GLOBALS.vars.mask.msg = i18n_applying_organisation_units_relations ;
+                        GLOBALS.vars.mask.show();
                         
                         Ext.message.msg(true, '<span class="x-msg-hl">' + count_match + '</span> '+ i18n_organisation_units_assigned + ' (map <span class="x-msg-hl">' + this.layer.features.length + '</span>, db <span class="x-msg-hl">' + organisationUnits.length + '</span>)');
                        
@@ -462,8 +462,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
 
     classify: function(exception, position) {
         if (mapping.validateForm(exception)) {
-            MASK.msg = i18n_creating_map;
-            MASK.show();
+            GLOBALS.vars.mask.msg = i18n_creating_map;
+            GLOBALS.vars.mask.show();
             
             Ext.Ajax.request({
                 url: GLOBALS.conf.path_mapping + 'getMapByMapLayerPath' + GLOBALS.conf.type,
@@ -479,7 +479,7 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
                     this.mapData.zoom = parseFloat(this.mapData.zoom);
             
                     if (!position) {
-                        MAP.zoomToExtent(this.layer.getDataExtent());
+                        GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
                     }
 
                     var mlp = this.mapData.mapLayerPath;

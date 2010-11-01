@@ -61,7 +61,7 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
     createColorInterpolation: function() {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
-		var mapLegendType = ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment ?
+		var mapLegendType = GLOBALS.vars.activePanel.isAssignment() ?
             GLOBALS.conf.map_legend_type_automatic : Ext.getCmp('maplegendtype_cb2').getValue();
 		
 		if (mapLegendType == GLOBALS.conf.map_legend_type_automatic) {
