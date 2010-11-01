@@ -41,6 +41,7 @@ import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Kristian Nordal
@@ -178,14 +179,14 @@ public class HibernateDataSetStore
     }
     
     @SuppressWarnings( "unchecked" )
-	public Collection<DataSet> getDataSetsForMobile() {   	
+	public Collection<DataSet> getDataSetsForMobile(Source source) {   	
+        System.out.println("received Source: "+source.getName());
+        String hql = "from DataSet d where :source in elements(d.sources) and d.mobile = true";
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        query.setEntity( "source", source );
         
-        Session session = sessionFactory.getCurrentSession();
-        
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "mobile", true ) );
-        
-        return criteria.list();
+        return query.list();
+    	
 	}
     
     // -------------------------------------------------------------------------

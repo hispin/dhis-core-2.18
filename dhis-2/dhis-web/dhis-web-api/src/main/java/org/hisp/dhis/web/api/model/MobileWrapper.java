@@ -60,7 +60,6 @@ public class MobileWrapper implements ISerializable{
         }else{
         	this.activityPlan.serialize( dout );
         }
-        System.out.println("finish serialize ActivityPlan");
         
         //Write Programs   
         if(programs != null || programs.size() > 0){
@@ -68,7 +67,6 @@ public class MobileWrapper implements ISerializable{
 	        	prog.serialize( dout );
 	        }
         } 
-        System.out.println("finish serialize Programs");
         
         //Write DataSets
         if(datasets == null){
@@ -80,7 +78,6 @@ public class MobileWrapper implements ISerializable{
             }        	
         }
         
-        System.out.println("finish serialize Datasets");
         bout.flush();
         bout.writeTo(out);
         
