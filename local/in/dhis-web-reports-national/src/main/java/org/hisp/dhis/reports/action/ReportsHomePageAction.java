@@ -24,7 +24,7 @@ public class ReportsHomePageAction
     {
         raFolderName = reportService.getRAFolderName();
 
-        clearCache();
+        //clearCache();
 
         return SUCCESS;
     }
