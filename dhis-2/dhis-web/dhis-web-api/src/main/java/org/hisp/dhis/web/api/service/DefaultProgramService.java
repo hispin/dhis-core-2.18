@@ -106,13 +106,9 @@ public class DefaultProgramService implements IProgramService
 	
 	public Program getProgramForLocale(int programId, String localeString) 
 	{
-		
-		System.out.println("The id is:  " + programId + " and locale is:  " + localeString);
 		Locale locale = LocaleUtil.getLocale(localeString);			
 		
 		org.hisp.dhis.program.Program program = programService.getProgram( programId );
-		
-		System.out.println("Fetched .... " + program.getId() );
 		
 		program = i18n( i18nService, locale, program );
 		
