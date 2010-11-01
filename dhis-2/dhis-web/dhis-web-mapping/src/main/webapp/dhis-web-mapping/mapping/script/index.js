@@ -1,40 +1,15 @@
-﻿/* OpenLayers map */
-var MAP;
-/* Geojson, shapefile or database */
-var MAPSOURCE;
-/* Fixed periods or from-to dates */
-var MAPDATETYPE;
-/* Active mapview id parameter from URL */
-var PARAMETER;
-/* Current expanded accordion panel */
-var ACTIVEPANEL;
-/* Mask */
-var MASK;
-/* Legend colors for export */
-var COLORINTERPOLATION;
-/* Export values */
-var EXPORTVALUES;
-/* Global chart for show/hide */
-var CHART;
-/* Top level organisation unit */
-var TOPLEVELUNIT;
-/* Locate feature window */
-var lfw;
-/* Feature popup */
-var selectFeaturePopup;
-
-Ext.onReady( function() {
+﻿Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
-	/* Ext 3.2.0 override */
+	/* Ext 3.2.0 overrides */
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
     /* Disallow right clicks */
 	document.body.oncontextmenu = function(){return false;};
 	/* Activate tooltip */
 	Ext.QuickTips.init();
 
-	MAP = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
-	MASK = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
-    PARAMETER = GLOBALS.util.getUrlParam('view') !== '' ? {id: GLOBALS.util.getUrlParam('view')} : false;
+	GLOBALS.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	GLOBALS.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
+    GLOBALS.vars.parameter = GLOBALS.util.getUrlParam('view') !== '' ? {id: GLOBALS.util.getUrlParam('view')} : false;
     
 	/* Base layers */
 	function addBaseLayersToMap() {
@@ -51,17 +26,17 @@ Ext.onReady( function() {
                     {layers: 'basic'}
                 );
                 
-                MAP.addLayers([baseLayer]);
-                MAP.layers[0].setVisibility(false);
+                GLOBALS.vars.map.addLayers([baseLayer]);
+                GLOBALS.vars.map.layers[0].setVisibility(false);
                 
 				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
 					
 				if (mapLayers.length > 0) {
 					for (var i = 0; i < mapLayers.length; i++) {
-						MAP.addLayers([
+						GLOBALS.vars.map.addLayers([
 							new OpenLayers.Layer.WMS(mapLayers[i].name, mapLayers[i].mapSource, {layers: mapLayers[i].layer})
 						]);
-						MAP.layers[MAP.layers.length-1].setVisibility(false);
+						GLOBALS.vars.map.layers[GLOBALS.vars.map.layers.length-1].setVisibility(false);
 					}
 				}
 			}
@@ -72,15 +47,15 @@ Ext.onReady( function() {
     Ext.Ajax.request({
         url: GLOBALS.conf.path_mapping + 'getMapView' + GLOBALS.conf.type,
         method: 'GET',
-        params: {id: PARAMETER.id || 0},
+        params: {id: GLOBALS.vars.parameter.id || 0},
         success: function(r) {
             var mv = Ext.util.JSON.decode(r.responseText).mapView[0];
-            if (PARAMETER) {
+            if (GLOBALS.vars.parameter) {
                 if (!mv.id) {
-                    PARAMETER = false;
+                    GLOBALS.vars.parameter = false;
                 }
                 else {
-                    PARAMETER.mapView = mv;
+                    GLOBALS.vars.parameter.mapView = mv;
                 }
             }
             
@@ -89,13 +64,13 @@ Ext.onReady( function() {
                 method: 'GET',
                 success: function(r) {
                     var us = Ext.util.JSON.decode(r.responseText);
-                    MAPSOURCE = PARAMETER ? PARAMETER.mapView.mapSourceType : us.mapSource;
-                    MAPDATETYPE = PARAMETER ? PARAMETER.mapView.mapDateType : us.mapDateType;
+                    GLOBALS.vars.mapSourceType.value = GLOBALS.vars.parameter ? GLOBALS.vars.parameter.mapView.mapSourceType : us.mapSource;
+                    GLOBALS.vars.mapDateType.value = GLOBALS.vars.parameter ? GLOBALS.vars.parameter.mapView.mapDateType : us.mapDateType;
                     
                     Ext.Ajax.request({
                         url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
                         method: 'POST',
-                        params: {mapSourceType: MAPSOURCE, mapDateType: MAPDATETYPE},
+                        params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
                         success: function() {
                         
     /* Section: stores */
@@ -422,13 +397,13 @@ Ext.onReady( function() {
                     
                     var formValues;
                     
-                    if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
+                    if (GLOBALS.vars.activePanel.isPolygon()) {
                         if (!choropleth.validateForm(true)) {
                             return;
                         }
                         formValues = choropleth.getFormValues();
                     }
-                    else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
+                    else if (GLOBALS.vars.activePanel.isPoint()) {
                         if (!proportionalSymbol.validateForm(true)) {
                             return;
                         }
@@ -667,14 +642,14 @@ Ext.onReady( function() {
 				text: i18n_export_image,
 				handler: function() {
                     var vcb, dcb, mcb, lcb, period;
-                    if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
+                    if (GLOBALS.vars.activePanel.isPolygon()) {
                         vcb = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBALS.conf.map_value_type_indicator ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
-                        dcb = MAPDATETYPE == GLOBALS.conf.map_date_type_fixed ? Ext.getCmp('period_cb').getValue() : Ext.getCmp('startdate_df').getValue() && Ext.getCmp('startdate_df').getValue() ? true : false;
-                        period = MAPDATETYPE == GLOBALS.conf.map_date_type_fixed ? Ext.getCmp('period_cb').getRawValue() : new Date(Ext.getCmp('startdate_df').getRawValue()).format('Y M j') + ' - ' + new Date(Ext.getCmp('enddate_df').getRawValue()).format('Y M j');
-                        mcb = MAPSOURCE == GLOBALS.conf.map_source_type_database ? Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
+                        dcb = GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getValue() : Ext.getCmp('startdate_df').getValue() && Ext.getCmp('startdate_df').getValue() ? true : false;
+                        period = GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getRawValue() : new Date(Ext.getCmp('startdate_df').getRawValue()).format('Y M j') + ' - ' + new Date(Ext.getCmp('enddate_df').getRawValue()).format('Y M j');
+                        mcb = GLOBALS.vars.mapSourceType.isDatabase() ? Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
                         lcb = Ext.getCmp('maplegendtype_cb').getValue() == GLOBALS.conf.map_legend_type_automatic ? true : Ext.getCmp('maplegendset_cb').getValue() ? true : false;
                     }
-                    else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
+                    else if (GLOBALS.vars.activePanel.isPoint()) {
                         Ext.message.msg(false, 'Please use <span class="x-msg-hl">polygon layer</span> for printing');
                         return;
                     }
@@ -772,18 +747,18 @@ Ext.onReady( function() {
 				text: i18n_export_excel,
 				handler: function() {
                     var indicatorOrDataElement, period, mapOrOrganisationUnit;
-					if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
+					if (GLOBALS.vars.activePanel.isPolygon()) {
                         indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBALS.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
                         period = Ext.getCmp('period_cb').getValue();
-                        mapOrOrganisationUnit = MAPSOURCE == GLOBALS.conf.map_source_type_database ?
+                        mapOrOrganisationUnit = GLOBALS.vars.mapSourceType.isDatabase() ?
                             Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
                     }
-                    else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
+                    else if (GLOBALS.vars.activePanel.isPoint()) {
                         indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == GLOBALS.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
                         period = Ext.getCmp('period_cb2').getValue();
-                        mapOrOrganisationUnit = MAPSOURCE == GLOBALS.conf.map_source_type_database ?
+                        mapOrOrganisationUnit = GLOBALS.vars.mapSourceType.isDatabase() ?
                             Ext.getCmp('map_tf2').getValue() : Ext.getCmp('map_cb2').getValue();
                     }
                     
@@ -809,7 +784,7 @@ Ext.onReady( function() {
                         document.getElementById('periodField').value = period;  
                         document.getElementById('indicatorField').value = indicator;   
                         document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
-                        document.getElementById('dataValuesField').value = EXPORTVALUES;
+                        document.getElementById('dataValuesField').value = GLOBALS.vars.exportValues;
 
                         exportForm.submit();
                     }
@@ -1560,7 +1535,7 @@ Ext.onReady( function() {
 				fn: function() {
 					var mlp = Ext.getCmp('maplayerpathwms_tf').getValue();
 					
-					if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile && mlp) {
+					if (GLOBALS.vars.mapSourceType.isShapefile() && mlp) {
 						Ext.Ajax.request({
 							url: GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlp + GLOBALS.conf.output,
 							method: 'POST',
@@ -1747,11 +1722,11 @@ Ext.onReady( function() {
                     var url;
                     var params = {};
                     
-					if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+					if (GLOBALS.vars.mapSourceType.isGeojson()) {
                         url = GLOBALS.conf.path_mapping + 'getGeoJsonFromFile' + GLOBALS.conf.type;
                         params.name = cb.getValue();
                     }
-                    else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+                    else if (GLOBALS.vars.mapSourceType.isShapefile()) {
                         url = GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlp + GLOBALS.conf.output;
                     }
                     
@@ -1891,7 +1866,7 @@ Ext.onReady( function() {
 		listeners: {
 			expand: {
 				fn: function() {
-					if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+					if (GLOBALS.vars.mapSourceType.isShapefile()) {
 						mapLayerPathComboBox.hide();
 						mapLayerPathWMSTextField.show();						
 					}
@@ -1900,12 +1875,12 @@ Ext.onReady( function() {
 						mapLayerPathWMSTextField.hide();						
 					}
 					
-					ACTIVEPANEL = GLOBALS.conf.mapRegistration;
+					GLOBALS.vars.activePanel.value = GLOBALS.conf.mapRegistration;
 				}
 			},
 			collapse: {
 				fn: function() {
-					ACTIVEPANEL = false;
+					GLOBALS.vars.activePanel.value = null;
 				}
 			}
 		}
@@ -2040,7 +2015,7 @@ Ext.onReady( function() {
                 }
             });
             
-            MAP.getLayersByName(mln)[0].destroy();
+            GLOBALS.vars.map.getLayersByName(mln)[0].destroy();
         }
     });
 	
@@ -2087,7 +2062,7 @@ Ext.onReady( function() {
                         return;
                     }
                         
-                    var ms = MAPSOURCE == GLOBALS.conf.map_source_type_shapefile ? mlwmso : mlmsf;
+                    var ms = GLOBALS.vars.mapSourceType.isShapefile() ? mlwmso : mlmsf;
 							
                     Ext.Ajax.request({
                         url: GLOBALS.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBALS.conf.type,
@@ -2097,10 +2072,10 @@ Ext.onReady( function() {
                             Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> '+i18n_was_registered);
                             GLOBALS.stores.overlay.load();
                     
-                            var mapurl = MAPSOURCE == GLOBALS.conf.map_source_type_shapefile ?
+                            var mapurl = GLOBALS.vars.mapSourceType.isShapefile() ?
                                 GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlwmso + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf;
                             
-                            MAP.addLayer(
+                            GLOBALS.vars.map.addLayer(
                                 new OpenLayers.Layer.Vector(mln, {
                                     'visibility': false,
                                     'styleMap': new OpenLayers.StyleMap({
@@ -2181,11 +2156,11 @@ Ext.onReady( function() {
 		listeners: {
 			show: {
 				fn: function() {
-					if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson || MAPSOURCE == GLOBALS.conf.map_source_type_database) {
+					if (GLOBALS.vars.mapSourceType.isGeojson() || GLOBALS.vars.mapSourceType.isDatabase()) {
 						mapLayerMapSourceFileComboBox.show();
 						mapLayerPathWMSOverlayTextField.hide();
 					}
-					else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+					else if (GLOBALS.vars.mapSourceType.isShapefile()) {
 						mapLayerMapSourceFileComboBox.hide();
 						mapLayerPathWMSOverlayTextField.show();
 					}
@@ -2225,10 +2200,10 @@ Ext.onReady( function() {
                         var names = GLOBALS.stores.baseLayer.collect('name');
                         
                         for (var i = 0; i < names.length; i++) {
-                            MAP.getLayersByName(names[i])[0].setVisibility(false);
+                            GLOBALS.vars.map.getLayersByName(names[i])[0].setVisibility(false);
                         }
                         
-                        MAP.getLayersByName(mln)[0].destroy(false);
+                        GLOBALS.vars.map.getLayersByName(mln)[0].destroy(false);
                     }});
                 }
             });
@@ -2275,7 +2250,7 @@ Ext.onReady( function() {
                         success: function(r) {
                             Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_was_registered);
                             GLOBALS.stores.baseLayer.load();
-                            MAP.addLayers([
+                            GLOBALS.vars.map.addLayers([
                                 new OpenLayers.Layer.WMS(
                                     mlbn,
                                     mlbu,
@@ -2373,7 +2348,7 @@ Ext.onReady( function() {
 						minListWidth: GLOBALS.conf.combo_width_fieldset,
 						mode: 'local',
 						triggerAction: 'all',
-						value: MAPSOURCE,
+						value: GLOBALS.vars.mapSourceType.value,
 						store: new Ext.data.ArrayStore({
 							fields: ['id', 'text'],
 							data: [
@@ -2385,13 +2360,13 @@ Ext.onReady( function() {
 						listeners: {
 							'select': {
 								fn: function(cb) {
-                                    if (MAPSOURCE != cb.getValue()) {
-                                        MAPSOURCE = cb.getValue();
+                                    if (GLOBALS.vars.mapSourceType.value != cb.getValue()) {
+                                        GLOBALS.vars.mapSourceType.value = cb.getValue();
                                         
                                         Ext.Ajax.request({
                                             url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
 											method: 'POST',
-											params: {mapSourceType: MAPSOURCE, mapDateType: MAPDATETYPE},
+											params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
 											success: function(r) {
                                                 GLOBALS.stores.map.load();
                                                 GLOBALS.stores.mapView.load();
@@ -2401,7 +2376,7 @@ Ext.onReady( function() {
                                                 Ext.getCmp('map_cb2').clearValue();
 												Ext.getCmp('mapview_cb').clearValue();
                                                 
-                                                if (MAPSOURCE == GLOBALS.conf.map_source_type_database) {
+                                                if (GLOBALS.vars.mapSourceType.isDatabase()) {
 													Ext.getCmp('register_chb').disable();													
 													mapping.hide();
 													shapefilePanel.hide();
@@ -2414,18 +2389,18 @@ Ext.onReady( function() {
 														shapefilePanel.show();
 													}
                                                     
-                                                    if (MAPDATETYPE == GLOBALS.conf.map_date_type_start_end) {
-                                                        MAPDATETYPE = GLOBALS.conf.map_date_type_fixed;
-                                                        Ext.getCmp('mapdatetype_cb').setValue(MAPDATETYPE);
+                                                    if (GLOBALS.vars.mapDateType.isStartEnd()) {
+                                                        GLOBALS.vars.mapDateType.setFixed();
+                                                        Ext.getCmp('mapdatetype_cb').setValue(GLOBALS.vars.mapDateType.value);
                                                         choropleth.prepareMapViewDateType();
                                                         proportionalSymbol.prepareMapViewDateType();
                                                     }
 										
-                                                    if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+                                                    if (GLOBALS.vars.mapSourceType.isGeojson()) {
                                                         mapLayerMapSourceFileComboBox.show();
                                                         mapLayerPathWMSOverlayTextField.hide();
                                                     }
-                                                    else if (MAPSOURCE == GLOBALS.conf.map_source_type_shapefile) {
+                                                    else if (GLOBALS.vars.mapSourceType.isShapefile()) {
                                                         mapLayerMapSourceFileComboBox.hide();
                                                         mapLayerPathWMSOverlayTextField.show();
                                                     }
@@ -2434,10 +2409,10 @@ Ext.onReady( function() {
                                                 choropleth.prepareMapViewMap();
                                                 proportionalSymbol.prepareMapViewMap();
                                                 
-												if (MAP.layers.length > 2) {
-													for (var i = 0; i < MAP.layers.length; i++) {
-                                                        if (MAP.layers[i].isOverlay) {
-                                                            MAP.removeLayer(MAP.layers[i]);
+												if (GLOBALS.vars.map.layers.length > 2) {
+													for (var i = 0; i < GLOBALS.vars.map.layers.length; i++) {
+                                                        if (GLOBALS.vars.map.layers[i].isOverlay) {
+                                                            GLOBALS.vars.map.removeLayer(GLOBALS.vars.map.layers[i]);
                                                         }
 													}
 												}
@@ -2508,18 +2483,18 @@ Ext.onReady( function() {
                         listeners: {
                             'select': {
                                 fn: function(cb) {
-                                    if (cb.getValue() != MAPDATETYPE) {
-                                        if (cb.getValue() == GLOBALS.conf.map_date_type_start_end && MAPSOURCE != GLOBALS.conf.map_source_type_database) {
+                                    if (cb.getValue() != GLOBALS.vars.mapDateType.value) {
+                                        if (cb.getValue() == GLOBALS.conf.map_date_type_start_end && GLOBALS.vars.mapSourceType.value != GLOBALS.conf.map_source_type_database) {
                                             cb.setValue(GLOBALS.conf.map_date_type_fixed);
                                             Ext.message.msg(false, 'Start-end dates require map source <span class="x-msg-hl">' + GLOBALS.conf.map_source_type_database + '</span>');
                                             return;
                                         }
 
-                                        MAPDATETYPE = cb.getValue();
+                                        GLOBALS.vars.mapDateType.value = cb.getValue();
                                         Ext.Ajax.request({
                                             url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
                                             method: 'POST',
-                                            params: {mapSourceType: MAPSOURCE, mapDateType: MAPDATETYPE},
+                                            params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
                                             success: function() {
                                                 Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
                                                 choropleth.prepareMapViewDateType();
@@ -2537,19 +2512,19 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    if (MAPSOURCE == GLOBALS.conf.map_source_type_geojson) {
+                    if (GLOBALS.vars.mapSourceType.isGeojson()) {
                         Ext.getCmp('register_chb').enable();
                     }
-                    else if (MAPSOURCE == GLOBALS.conf.map_source_type_database) {
+                    else if (GLOBALS.vars.mapSourceType.isDatabase()) {
                         Ext.getCmp('register_chb').disable();
                     }
 					
-					ACTIVEPANEL = GLOBALS.conf.administration;
+					GLOBALS.vars.activePanel.value = GLOBALS.conf.administration;
                 }
             },
 			collapse: {
 				fn: function() {
-					ACTIVEPANEL = false;
+					GLOBALS.vars.activePanel.value = null;
 				}
 			}
         }
@@ -2588,7 +2563,7 @@ Ext.onReady( function() {
         })
     });
     
-    MAP.addLayers([choroplethLayer, proportionalSymbolLayer]);
+    GLOBALS.vars.map.addLayers([choroplethLayer, proportionalSymbolLayer]);
     
 	function addOverlaysToMap() {
 		Ext.Ajax.request({
@@ -2599,7 +2574,7 @@ Ext.onReady( function() {
 				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
 				
 				for (var i = 0; i < mapLayers.length; i++) {
-					var mapurl = MAPSOURCE == GLOBALS.conf.map_source_type_shapefile ? GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mapLayers[i].mapSource + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mapLayers[i].mapSource;
+					var mapurl = GLOBALS.vars.mapSourceType.isShapefile() ? GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mapLayers[i].mapSource + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mapLayers[i].mapSource;
 					var fillColor = mapLayers[i].fillColor;
 					var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
 					var strokeColor = mapLayers[i].strokeColor;
@@ -2623,17 +2598,17 @@ Ext.onReady( function() {
 					});
 					
 					treeLayer.events.register('loadstart', null, function() {
-						MASK.msg = i18n_loading;
-						MASK.show();
+						GLOBALS.vars.mask.msg = i18n_loading;
+						GLOBALS.vars.mask.show();
 					});
 					
 					treeLayer.events.register('loadend', null, function() {
-						MASK.hide();
+						GLOBALS.vars.mask.hide();
 					});
                     
                     treeLayer.isOverlay = true;
 						
-					MAP.addLayer(treeLayer);
+					GLOBALS.vars.map.addLayer(treeLayer);
 				}
 			}
 		});
@@ -2859,14 +2834,14 @@ Ext.onReady( function() {
             listeners: {
                 'close': {
                     fn: function() {
-                        lfw = false;
+                        GLOBALS.vars.locateFeatureWindow = false;
                         layer.redraw();
                     }
                 }
             }
         });
         
-        lfw = locateFeatureWindow;
+        GLOBALS.vars.locateFeatureWindow = locateFeatureWindow;
         
         var vectorLayerOptionsWindow = new Ext.Window({
             id: 'vectorlayeroptions_w',
@@ -2906,10 +2881,10 @@ Ext.onReady( function() {
                                     fn: function() {
                                         if (layer.features.length > 0) {
                                             if (layer.name == 'Polygon layer') {
-                                                if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
+                                                if (GLOBALS.vars.activePanel.isPolygon()) {
                                                     GLOBALS.util.toggleFeatureLabels(choropleth);
                                                 }
-                                                else if (ACTIVEPANEL == GLOBALS.conf.organisationUnitAssignment) {
+                                                else if (GLOBALS.vars.activePanel.isAssignment()) {
                                                     GLOBALS.util.toggleFeatureLabelsAssignment();
                                                 }
                                                 else {
@@ -2917,7 +2892,7 @@ Ext.onReady( function() {
                                                 }
                                             }
                                             else if (layer.name == 'Point layer') {
-                                                if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
+                                                if (GLOBALS.vars.activePanel.isPoint()) {
                                                     GLOBALS.util.toggleFeatureLabels(proportionalSymbol);
                                                 }
                                                 else {
@@ -3029,13 +3004,13 @@ Ext.onReady( function() {
 			'click': {
 				fn: function(n) {
 					if (n.parentNode.attributes.text == 'Base layers') {
-						showWMSLayerOptions(MAP.getLayersByName(n.attributes.layer.name)[0]);
+						showWMSLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer.name)[0]);
 					}
                     else if (n.parentNode.attributes.text == 'Overlays') {
-                        showVectorLayerOptions(MAP.getLayersByName(n.attributes.layer.name)[0]);
+                        showVectorLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer.name)[0]);
                     }
 					else if (n.isLeaf()) {
-                        showVectorLayerOptions(MAP.getLayersByName(n.attributes.layer)[0]);
+                        showVectorLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer)[0]);
 					}
 				}
 			}
@@ -3075,7 +3050,7 @@ Ext.onReady( function() {
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
-        map: MAP,
+        map: GLOBALS.vars.map,
         layer: choroplethLayer,
 		title: '<span class="panel-title">' + i18n_polygon_layer + '</span>',
         url: 'init',
@@ -3085,9 +3060,9 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    if (ACTIVEPANEL != GLOBALS.conf.thematicMap) {
-                        ACTIVEPANEL = GLOBALS.conf.thematicMap;
-                        this.layer.setVisibility(false);
+                    if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap) {
+                        GLOBALS.vars.activePanel.setPolygon();
+                        this.layer.setVisibility(true);
                         
                         if (this.legend.type == GLOBALS.conf.map_legend_type_predefined) {
                             this.applyPredefinedLegend();
@@ -3103,7 +3078,7 @@ Ext.onReady( function() {
     
     proportionalSymbol = new mapfish.widgets.geostat.Symbol({
         id: 'proportionalsymbol',
-        map: MAP,
+        map: GLOBALS.vars.map,
         layer: proportionalSymbolLayer,
 		title: '<span class="panel-title">' + i18n_point_layer + '</span>',
         url: 'init',
@@ -3113,8 +3088,8 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    if (ACTIVEPANEL != GLOBALS.conf.thematicMap2) {
-                        ACTIVEPANEL = GLOBALS.conf.thematicMap2;
+                    if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap2) {
+                        GLOBALS.vars.activePanel.setPoint();
                         this.layer.setVisibility(false);
                         
                         if (this.legend.type == GLOBALS.conf.map_legend_type_predefined) {
@@ -3131,7 +3106,7 @@ Ext.onReady( function() {
 	
     mapping = new mapfish.widgets.geostat.Mapping({
         id: 'mapping',
-        map: MAP,
+        map: GLOBALS.vars.map,
         layer: choroplethLayer,
         title: '<span class="panel-title">' + i18n_assign_organisation_units_to_map + '</span>',
         url: 'init',
@@ -3141,7 +3116,7 @@ Ext.onReady( function() {
         listeners: {
             expand: {
                 fn: function() {
-                    ACTIVEPANEL = GLOBALS.conf.organisationUnitAssignment;
+                    GLOBALS.vars.activePanel.setAssignment();
                     this.layer.setVisibility(false);
                     proportionalSymbol.layer.setVisibility(false);
                     this.classify(false, true);
@@ -3160,7 +3135,7 @@ Ext.onReady( function() {
 		iconCls: 'icon-zoomin',
 		tooltip: i18n_zoom_in,
 		handler:function() {
-			MAP.zoomIn();
+			GLOBALS.vars.map.zoomIn();
 		}
 	});
 	
@@ -3168,7 +3143,7 @@ Ext.onReady( function() {
 		iconCls: 'icon-zoomout',
 		tooltip: i18n_zoom_out,
 		handler:function() {
-			MAP.zoomOut();
+			GLOBALS.vars.map.zoomOut();
 		}
 	});
 	
@@ -3176,17 +3151,17 @@ Ext.onReady( function() {
 		iconCls: 'icon-zoommin',
 		tooltip: i18n_zoom_to_visible_extent,
 		handler: function() {
-            if (ACTIVEPANEL == GLOBALS.conf.thematicMap) {
+            if (GLOBALS.vars.activePanel.isPolygon()) {
                 if (choropleth.layer.getDataExtent()) {
-                    MAP.zoomToExtent(choropleth.layer.getDataExtent());
+                    GLOBALS.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
                 }
                 else {
                     Ext.message.msg(false, 'Vector layer is empty');
                 }
             }
-            else if (ACTIVEPANEL == GLOBALS.conf.thematicMap2) {
+            else if (GLOBALS.vars.activePanel.isPoint()) {
                 if (proportionalSymbol.layer.getDataExtent()) {
-                    MAP.zoomToExtent(proportionalSymbol.layer.getDataExtent());
+                    GLOBALS.vars.map.zoomToExtent(proportionalSymbol.layer.getDataExtent());
                 }
                 else {
                     Ext.message.msg(false, 'Vector layer is empty');
@@ -3245,29 +3220,6 @@ Ext.onReady( function() {
 			else {
 				exportExcelWindow.show();
 			}
-		}
-	});
-	
-	var pdfButton = new Ext.Button({
-		iconCls: 'icon-pdf',
-		tooltip: 'Export map as PDF',
-		handler: function() {
-			var active = ACTIVEPANEL;
-			var printMultiPagePanel = Ext.getCmp('printMultiPage_p');
-			if (printMultiPagePanel.hidden) {
-				printMultiPagePanel.show();
-				printMultiPagePanel.expand();
-			}
-			else {
-				printMultiPagePanel.collapse();
-				printMultiPagePanel.hide();
-				if (active == GLOBALS.conf.thematicMap) {
-					choropleth.expand();
-				}
-				else if (active == GLOBALS.conf.organisationUnitAssignment) {
-					mapping.expand();
-				}
-			}			
 		}
 	});
 	
@@ -3448,7 +3400,7 @@ Ext.onReady( function() {
                 id: 'center',
                 height: 1000,
                 width: 800,
-                map: MAP,
+                map: GLOBALS.vars.map,
                 title: '',
                 zoom: 3,
 				tbar: mapToolbar
@@ -3459,16 +3411,16 @@ Ext.onReady( function() {
     shapefilePanel.hide();
 	mapping.hide();
 	// Ext.getCmp('printMultiPage_p').hide();
-	ACTIVEPANEL = GLOBALS.conf.thematicMap;
+	GLOBALS.vars.activePanel.setPolygon();
 
-	MAP.addControl(new OpenLayers.Control.MousePosition({
+	GLOBALS.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
         prefix: '<span style="color:#666;">x: &nbsp;</span>',
         separator: '<br/><span style="color:#666;">y: &nbsp;</span>'
     }));
     
-    MAP.addControl(new OpenLayers.Control.OverviewMap({
+    GLOBALS.vars.map.addControl(new OpenLayers.Control.OverviewMap({
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
@@ -3481,7 +3433,7 @@ Ext.onReady( function() {
         ]
     }));
     
-    MAP.addControl(new OpenLayers.Control.ZoomBox());
+    GLOBALS.vars.map.addControl(new OpenLayers.Control.ZoomBox());
     
     function toggleSelectFeatures(e) {
         if (GLOBALS.stores.overlay.find('name', e.layer.name) !== -1) {
@@ -3489,12 +3441,12 @@ Ext.onReady( function() {
             var visibleOverlays = false;
             
             for (var i = 0; i < names.length; i++) {
-                if (MAP.getLayersByName(names[i])[0].visibility) {
+                if (GLOBALS.vars.map.getLayersByName(names[i])[0].visibility) {
                     visibleOverlays = true;
                 }
             }
             
-            var widget = ACTIVEPANEL == GLOBALS.conf.thematicMap ? choropleth : proportionalSymbol;
+            var widget = GLOBALS.vars.activePanel.isPolygon() ? choropleth : proportionalSymbol;
             
             if (visibleOverlays) {
                 widget.selectFeatures.deactivate();
@@ -3505,7 +3457,7 @@ Ext.onReady( function() {
         }
     }
 	
-	MAP.events.on({
+	GLOBALS.vars.map.events.on({
         changelayer: function(e) {
             if (e.layer.name != 'Polygon layer' && e.layer.name != 'Point layer') {
                 if (e.property == 'visibility') {
@@ -3522,8 +3474,8 @@ Ext.onReady( function() {
         }
     });
             
-    Ext.getCmp('mapsource_cb').setValue(MAPSOURCE);
-    Ext.getCmp('mapdatetype_cb').setValue(MAPDATETYPE);
+    Ext.getCmp('mapsource_cb').setValue(GLOBALS.vars.mapSourceType.value);
+    Ext.getCmp('mapdatetype_cb').setValue(GLOBALS.vars.mapDateType.value);
     
     choropleth.prepareMapViewValueType();
     proportionalSymbol.prepareMapViewValueType();
