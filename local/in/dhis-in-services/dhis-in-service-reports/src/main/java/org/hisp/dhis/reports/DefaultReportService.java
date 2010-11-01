@@ -385,7 +385,7 @@ public class DefaultReportService
             cal.set( year, Calendar.DECEMBER, 31 );
         }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        System.out.println( lastDay.toString() );
+        //System.out.println( lastDay.toString() );
         Period newPeriod = new Period();
         newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
@@ -542,16 +542,18 @@ public class DefaultReportService
         return null;
 
     } // getDataElementPeriodType end
+
     
+    // -------------------------------------------------------------------------
+    // Get Aggregated Result for dataelement expression 
+    // -------------------------------------------------------------------------
     public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
-        //int deFlag2 = 0;
         int isAggregated = 0;
 
         try
         {
-            // 6b1b7b5b7b5b7
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
             Matcher matcher = pattern.matcher( formula );
@@ -588,13 +590,10 @@ public class DefaultReportService
                     if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
-                        //deFlag2 = 0;
                     }
                     else
                     {
                         replaceString = String.valueOf( aggregatedValue );
-
-                        //deFlag2 = 1;
 
                         isAggregated = 1;
                     }
@@ -603,7 +602,6 @@ public class DefaultReportService
                 else
                 {
                     deFlag1 = 1;
-                    //deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
                     List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
                         dePeriodType, startDate, endDate ) );
@@ -622,10 +620,8 @@ public class DefaultReportService
                     DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
                         optionCombo );
 
-                    if ( dataValue != null )
+                    if ( dataValue != null && dataValue.getValue() != null )
                     {
-                        // Works for both text and boolean data types
-
                         replaceString = dataValue.getValue();
                     }
                     else
@@ -665,14 +661,12 @@ public class DefaultReportService
                 }
                 else
                 {
-
                     // This is to display financial data as it is like 2.1476838
                     resultValue = "" + d;
 
                     // These lines are to display financial data that do not
                     // have decimals
                     d = d * 10;
-
                     if ( d % 10 == 0 )
                     {
                         resultValue = "" + (int) d / 10;
@@ -686,17 +680,11 @@ public class DefaultReportService
                     {
                         resultValue = "" + (int) d;
                     }
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
                 }
 
             }
             else
             {
-                //deFlag2 = 0;
                 resultValue = buffer.toString();
             }
 
@@ -717,15 +705,14 @@ public class DefaultReportService
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
     }
-    // functoin getResultDataValue start end
-    
-    // functoin getIndividualResultDataValue start
-    
+
+
+    // -------------------------------------------------------------------------
+    // Get Individual Result for dataelement expression 
+    // -------------------------------------------------------------------------
     public String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
-        //int deFlag2 = 0;
-    //    int isAggregated = 0;
        
         try
         {
@@ -739,7 +726,6 @@ public class DefaultReportService
 
             while ( matcher.find() )
             {
-
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
@@ -786,16 +772,12 @@ public class DefaultReportService
                                 valueDoesNotExist = false;
                             }
                         }
-
                         replaceString = String.valueOf( aggregatedValue );
-
-                        //deFlag2 = 1;
                     }
                 }
                 else
                 {
                     deFlag1 = 1;
-                    //deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
                     List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
@@ -814,8 +796,6 @@ public class DefaultReportService
 
                     if ( dataValue != null )
                     {
-                        // Works for both text and boolean data types
-
                         replaceString = dataValue.getValue();
                         valueDoesNotExist = false;
                     }
@@ -877,16 +857,10 @@ public class DefaultReportService
                     {
                         resultValue = "" + (int) d;
                     }
-
-                    // if ( resultValue.equalsIgnoreCase( "0" ) )
-                    // {
-                    // resultValue = "";
-                    // }
                 }
             }
             else
             {
-                //deFlag2 = 0;
                 resultValue = buffer.toString();
             }
 
@@ -907,7 +881,6 @@ public class DefaultReportService
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
     }
-    // functoin getIndividualResultDataValue end
     
      // functoin getBooleanDataValue stsrt
     
@@ -1290,7 +1263,8 @@ public class DefaultReportService
                     try
                     {
                         aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
-                    } catch ( Exception e )
+                    } 
+                    catch ( Exception e )
                     {
                         System.out.println( "Exception while calculating Indicator value for Indicaotr " + indicator.getName() );
                         aggregatedValue = 0.0;

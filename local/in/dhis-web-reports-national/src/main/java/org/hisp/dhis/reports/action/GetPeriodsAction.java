@@ -181,7 +181,7 @@ public class GetPeriodsAction
                 }
             }
         }
-        System.out.println("Periods Size = "+periods.size());
+
         return SUCCESS;
     }
 

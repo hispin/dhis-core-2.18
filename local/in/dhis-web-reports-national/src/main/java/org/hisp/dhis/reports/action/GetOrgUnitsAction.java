@@ -51,13 +51,10 @@ public class GetOrgUnitsAction
     public String execute()
         throws Exception
     {
-        /* OrganisationUnit */
         if ( orgUnitId != null )
         {
             orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
             ouLevel = "" + organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-
-            System.out.println( orgUnit.getId() + " ---- " + orgUnit.getShortName() );
         }
 
         return SUCCESS;
