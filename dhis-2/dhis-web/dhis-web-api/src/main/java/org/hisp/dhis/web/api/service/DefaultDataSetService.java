@@ -4,11 +4,12 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.hisp.dhis.order.manager.DataElementOrderManagerException;
+import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.DataElement;
@@ -22,6 +23,7 @@ public class DefaultDataSetService implements IDataSetService {
 	// -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+	private DataElementSortOrderComparator dataElementComparator = new DataElementSortOrderComparator();
 	
 	@Autowired
 	private org.hisp.dhis.dataset.DataSetService dataSetService;
@@ -34,10 +36,18 @@ public class DefaultDataSetService implements IDataSetService {
 	
 	@Autowired
     private CurrentUserService currentUserService;
+	
+	
 	// -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------	
 	
+	
+	public void setDataElementOrderManager(
+			org.hisp.dhis.order.manager.DataElementOrderManager dataElementOrderManager) {
+		this.dataElementOrderManager = dataElementOrderManager;
+	}
+
 	public List<DataSet> getAllMobileDataSetsForLocale(String localeString) {
 		Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
         OrganisationUnit unit = null;
@@ -74,7 +84,7 @@ public class DefaultDataSetService implements IDataSetService {
 		
 		return datasets;
 	}
-	
+
 	public DataSet getDataSetForLocale(int dataSetId, Locale locale) {
 		org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetId );
 		dataSet = i18n( i18nService, locale, dataSet );
@@ -94,12 +104,11 @@ public class DefaultDataSetService implements IDataSetService {
 		ds.setSections(sectionList);
 		
 			if(sections.size() == 0 || sections == null){
-				Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
-				try {
-					dataElements = dataElementOrderManager.getOrderedDataElements(dataSet);
-				} catch (DataElementOrderManagerException e) {
-					e.printStackTrace();
-				}
+//				Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
+				List<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>(dataSet.getDataElements());
+									
+				Collections.sort(dataElements, dataElementComparator);
+				
 				//Fake Section to store Data Elements
 				Section section = new Section();
 				
