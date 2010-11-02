@@ -16,14 +16,15 @@
 			<param name="page">/dhis-web-reports/welcome.vm</param>
 			<param name="menu">/dhis-web-reports/menu.vm</param>
 		</action>
-		<!-- Reports Management start 07/08/2010 Global-->
+		
+		<!-- Reports Management -->
 		<action name="reportManagement"
 			class="org.hisp.dhis.reports.reportmanagement.action.ReportsListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-reports/reportsList.vm</param>
 			<param name="menu">/dhis-web-reports/menu.vm</param>
-			<param name="javascripts">
-				javascript/reportManagement.js,javascript/filterTable.js</param>
+			<param name="javascripts">javascript/reportManagement.js,javascript/filterTable.js</param>
+			<param name="requiredAuthorities">F_REPORT_MANAGEMENT_LIST</param>
 		</action>
 		
 		<!-- Report Management Addition Start-->
@@ -36,8 +37,7 @@
 		</action>
 		<action name="addReport"
 			class="org.hisp.dhis.reports.reportmanagement.action.AddReportAction">
-			<result name="success" type="redirect">
-				reportManagement.action</result>
+			<result name="success" type="redirect">reportManagement.action</result>
 		</action>
 		<!-- Report Management Addition End-->
 		
