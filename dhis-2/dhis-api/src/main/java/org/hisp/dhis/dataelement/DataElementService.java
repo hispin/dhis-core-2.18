@@ -526,4 +526,11 @@ public interface DataElementService
 
     int countNumberOfSearchDataElementByName( String key );
 
+    Collection<DataElementGroup> getAllDataElementGroups( int from, int to );
+    
+    int getNumberOfDataElementGroups();
+    
+    Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to );
+    
+    int countNumberOfSearchDataElementGroupByName( String key );
 }

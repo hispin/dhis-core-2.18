@@ -298,4 +298,13 @@ public interface DataElementStore
     Collection<DataElement> searchDataElementByName( String key, int from, int to );
 
     int countNumberOfSearchDataElementByName( String key );
+    
+    Collection<DataElementGroup> getAllDataElementGroups( int from, int to );
+    
+    int getNumberOfDataElementGroups();
+    
+    Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to );
+    
+    int countNumberOfSearchDataElementGroupByName( String key );
+
 }

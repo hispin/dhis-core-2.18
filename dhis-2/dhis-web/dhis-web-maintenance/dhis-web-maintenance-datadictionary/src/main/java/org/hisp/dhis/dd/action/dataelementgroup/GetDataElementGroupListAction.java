@@ -28,21 +28,18 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-
-import com.opensymphony.xwork2.ActionSupport;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetDataElementGroupListAction.java 2869 2007-02-20 14:26:09Z andegje $
  */
 public class GetDataElementGroupListAction
-    extends ActionSupport
+    extends ActionPagingSupport<DataElementGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +53,7 @@ public class GetDataElementGroupListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input and Output
     // -------------------------------------------------------------------------
 
     private List<DataElementGroup> dataElementGroups;
@@ -65,6 +62,18 @@ public class GetDataElementGroupListAction
     {
         return dataElementGroups;
     }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+    
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -72,10 +81,25 @@ public class GetDataElementGroupListAction
 
     public String execute()
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        this.paging = createPaging( dataElementService.getNumberOfDataElementGroups() );
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups( paging.getStartPos(), paging.getPageSize() ) );
 
         return SUCCESS;
+    }
+    
+    public String searchByName()
+    {
+        if(key != null && !key.trim().equals( "" )) {
+            
+            this.paging = createPaging( dataElementService.countNumberOfSearchDataElementGroupByName( key ) );
+            
+            dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.searchDataElementGroupByName( key, paging.getStartPos(), paging.getPageSize() ));
+            
+            return SUCCESS;
+        }
+        else {
+            return execute();
+        }
     }
 }

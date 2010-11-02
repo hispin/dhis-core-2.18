@@ -665,4 +665,27 @@ public class DefaultDataElementService
         return dataElementStore.countNumberOfSearchDataElementByName( key );
     }
 
+    @Override
+    public Collection<DataElementGroup> getAllDataElementGroups( int from, int to )
+    {
+        return dataElementStore.getAllDataElementGroups( from, to );
+    }
+
+    @Override
+    public int getNumberOfDataElementGroups()
+    {
+        return dataElementStore.getNumberOfDataElementGroups();
+    }
+
+    @Override
+    public Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to )
+    {
+        return dataElementStore.searchDataElementGroupByName( key, from, to );
+    }
+
+    @Override
+    public int countNumberOfSearchDataElementGroupByName( String key )
+    {
+        return dataElementStore.countNumberOfSearchDataElementGroupByName( key );
+    }
 }

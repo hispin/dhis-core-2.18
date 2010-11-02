@@ -6,10 +6,18 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-					<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"/></div></form></td>
+					<td>$i18n.getString( "filter_by_name" ): 
+					<form style="display:inline" action="none" onsubmit="return false">
+						<div style="inline">
+							<input type="text" id="key" name="id"/>
+							<input type="button" value="$i18n.getString( 'go' )" id="searchButton" onclick="searchDataElementGroup()" />
+						</div>
+					</form>
+					</td>
 					<td style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementGroupForm.action'" style="width:80px"/></td>
 				</tr>
 			</table>
+			<div id="content">
 			<table class="listTable" id="dataElementGroupList">
 				<col/>
 				<col width="20"/>
@@ -34,7 +42,11 @@
 				#end
 				</tbody>
 			</table>
-
+			<p></p>
+	  		<div class="paging-container">
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
+			</div>
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 
