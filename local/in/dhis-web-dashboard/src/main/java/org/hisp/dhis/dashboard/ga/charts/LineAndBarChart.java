@@ -27,7 +27,6 @@ package org.hisp.dhis.dashboard.ga.charts;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.Color;
 import java.awt.Font;
 
 import org.jfree.chart.JFreeChart;
@@ -126,5 +125,64 @@ public class LineAndBarChart
 
         return chart;
     }// getChartViewer end
+    
+    @SuppressWarnings("deprecation")
+    public JFreeChart getChartViewergetChartViewerDataElement( double[][] data1, String[] series1, String[] categories1, String chartTitle, String xAxis_Title, String yAxis_Title )
+    {
+        System.out.println("\n inside Line and bar chart");
+        final CategoryDataset dataset1 = getDataset( data1, series1, categories1 );
+        final NumberAxis rangeAxis1 = new NumberAxis( yAxis_Title );
+        rangeAxis1.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
+        rangeAxis1.setUpperMargin( 0.15 );
+        rangeAxis1.setLowerMargin( 0.15 );
+
+        final LineAndShapeRenderer renderer1 = new LineAndShapeRenderer();
+        renderer1.setBaseToolTipGenerator( new StandardCategoryToolTipGenerator() );
+        renderer1.setItemLabelGenerator( new StandardCategoryItemLabelGenerator() );
+        renderer1.setItemLabelsVisible( true );
+        final CategoryPlot subplot1 = new CategoryPlot( dataset1, null, rangeAxis1, renderer1 );
+        subplot1.setDomainGridlinesVisible( true );
+
+        final CategoryDataset dataset2 = getDataset( data1, series1, categories1 );
+        final NumberAxis rangeAxis2 = new NumberAxis( yAxis_Title );
+        rangeAxis2.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
+        rangeAxis2.setUpperMargin( 0.30 );
+        rangeAxis1.setLowerMargin( 0.30 );
+
+        final BarRenderer renderer2 = new BarRenderer();
+        renderer2.setBaseToolTipGenerator( new StandardCategoryToolTipGenerator() );
+        renderer2.setItemLabelGenerator( new StandardCategoryItemLabelGenerator() );
+        renderer2.setItemLabelFont (new Font ("Bold", Font.BOLD, 10));
+        renderer2.setPositiveItemLabelPosition( new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.TOP_CENTER) );
+        renderer2.setItemLabelsVisible( true );
+        final CategoryPlot subplot2 = new CategoryPlot( dataset2, null, rangeAxis2, renderer2 );
+        subplot2.setDomainGridlinesVisible( true );
+
+        final CategoryAxis domainAxis = new CategoryAxis( xAxis_Title );
+        domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
+
+        final CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot( domainAxis );
+        plot.setNoDataMessage( "No data to display" );
+        plot.add( subplot1, 2 );
+        plot.add( subplot2, 1 );
+
+        final JFreeChart chart = new JFreeChart( "", new Font( "SansSerif", Font.BOLD, 12 ), plot, true );
+
+        /* TITLE */
+        final TextTitle mainTitle = new TextTitle( "Combined (Line and Bar) Chart" );
+        mainTitle.setFont( new Font( "times", Font.BOLD, 13 ) );
+        mainTitle.setPosition( RectangleEdge.TOP );
+        mainTitle.setVerticalAlignment( VerticalAlignment.BOTTOM );
+        chart.addSubtitle( mainTitle );
+
+        /* SUB TITLE */
+        final TextTitle subtitle = new TextTitle( chartTitle );
+        subtitle.setFont( new Font( "times", Font.BOLD, 13 ) );
+        subtitle.setPosition( RectangleEdge.TOP );
+        subtitle.setVerticalAlignment( VerticalAlignment.BOTTOM );
+        chart.addSubtitle( subtitle );
+        
+        return chart;
+    }// getChartViewer DataElement wise end
 
 }

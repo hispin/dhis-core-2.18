@@ -2,7 +2,7 @@
 function getOUDeatilsForGADataElements(orgUnitIds)
 {
 	document.getElementById( "ougGroupSetCB" ).disabled = false;
-	document.getElementById( "orgUnitGroup" ).disabled = false;
+	document.getElementById( "orgUnitGroupList" ).disabled = false;
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -115,14 +115,14 @@ function orgUnitGroupSetCB1() {
 function getOrgUnitGroupsDataElements() 
 {
 	var checked = byId('ougGroupSetCB').checked;
-	clearListById('orgUnitGroup');
+	clearListById('orgUnitGroupList');
 	clearListById('orgUnitListCB');
 	
 	document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(currentOrgUnitName,currentOrgUnitId,false,false);
 
 	if (checked)
 	{
-		var ouGroupId = document.getElementById("orgUnitGroup");
+		var ouGroupId = document.getElementById("orgUnitGroupList");
 
 		for ( var i = 0; i < orgUnitGroupIds.length; i++) 
 		{
@@ -178,7 +178,7 @@ function selectSingleOptionOrgUnitGroup()
 	var categoryObj = document.getElementById( 'categoryLB' );// view by
     var categoryVal = categoryObj.options[ categoryObj.selectedIndex ].value;
 	
-    var orgGroupObj = document.getElementById( 'orgUnitGroup' ); // org unit group
+    var orgGroupObj = document.getElementById( 'orgUnitGroupList' ); // org unit group
     var orgGroupVal = orgGroupObj.options[ orgGroupObj.selectedIndex ].value;
     
 //    var categoryObj = document.getElementById( 'categoryLB' );
@@ -186,7 +186,7 @@ function selectSingleOptionOrgUnitGroup()
 	
     if( document.getElementById( 'ougGroupSetCB' ).checked &&  categoryVal == "period"  )
     {
-        var orgUnitGroupListObj = document.getElementById('orgUnitGroup');
+        var orgUnitGroupListObj = document.getElementById('orgUnitGroupList');
 	
         for( var i = 0; i < orgUnitGroupListObj.length; i++ )
         {
@@ -219,11 +219,20 @@ function selectSingleOrgUnitOption()
     }
 }
 */
+
+// Selected Button (ie ViewSummary or ViewChart) Function
+function selButtonFunction1(selButton)
+{
+	document.ChartGenerationForm.selectedButton.value = selButton;
+}
+ // selButtonFunction end
+
+
 //Graphical Analysis Form Validations
 function formValidationsDataElement()
 {
 		
-	var selectedServices = document.getElementById("selectedServices");
+	//var selectedServices = document.getElementById("selectedServices");
 
 	var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
 	var selDEListSize  = document.ChartGenerationForm.selectedDataElements.options.length;//alert(selDEListSize);
@@ -231,9 +240,9 @@ function formValidationsDataElement()
 	var orgUnitListCB = document.getElementById("orgUnitListCB");
 	var selectedDataElements = document.getElementById("selectedDataElements");
 	
-	var orgUnitGroupCB = document.getElementById("orgUnitGroup");
+	var orgUnitGroupCB = document.getElementById("orgUnitGroupList");
 	
-	var selOUGroupListLength = document.ChartGenerationForm.orgUnitGroup.options.length;
+	var selOUGroupListLength = document.ChartGenerationForm.orgUnitGroupList.options.length;
 	
 	var selyearLB = document.getElementById("yearLB");
     var selperiodLB = document.getElementById("periodLB");
@@ -243,7 +252,7 @@ function formValidationsDataElement()
 	
     var k = 0;
 
-    if(  selectedDataElements.selectedIndex < 0 ) 
+    if(  selDEListSize <= 0 ) 
 		{
 	        alert( "Please Select DataElement(s)" );
 	        return false;
@@ -255,22 +264,16 @@ function formValidationsDataElement()
 	        return false;
 		}
    
-    else if(document.getElementById( 'ougGroupSetCB' ).checked ) 
+    else if(document.getElementById( 'ougGroupSetCB' ).checked && orgUnitGroupCB.selectedIndex < 0 ) 
     	{
-	    	if( orgUnitGroupCB.selectedIndex < 0 ) 
+    		alert( "Please select OrgUnitGroup" );
+    		return false;
+    	/*if( orgUnitGroupCB.selectedIndex < 0 ) 
 	    	{
 	            alert( "Please select OrgUnitGroup" );
-	            return false;
-	        }
-	    	else
-	        {
-	        	for( k=0;k<selOUListLength;k++ )
-	        	{
-	        		document.ChartGenerationForm.orgUnitListCB.options[k].selected = true;
-	        	}
-	        }
+	            
+	        }*/
     	}	
-  
     else if( periodTypeId == yearlyPeriodTypeName )
 	   {
 	       if( selyearLB.selectedIndex < 0 ) 
@@ -309,8 +312,8 @@ function formValidationsDataElement()
         }
     }
   
-    var sWidth = 850;
-	var sHeight = 650;
+    var sWidth = 1000;
+	var sHeight = 1000;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
     var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
 

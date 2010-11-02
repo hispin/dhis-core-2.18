@@ -34,13 +34,34 @@
 		      
 		<action name="generateChartDataElement"
             class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction">
-            <result name="success" type="velocity">
-                /dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>
-            <param name="javascripts">
-                ../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+			<result name="success" type="velocity">/popup.vm</result>      
+			 <param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>    
+           <!--<result name="success" type="velocity">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>-->
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
+		<!-- for Chart data -->
+	   <action name="generateChart1"
+            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1">
+            <result name="success" type="chart">
+                <param name="width">700</param>
+                <param name="height">500</param>
+            </result>
+        </action>
+		
+		<!-- Export Data Elements to Excel -->
+        <action name="exportDataElementsToExcel"
+            class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+		
+		
 <!--	-->			
 		<!-- GraphicalAnalyser Module Stuff -->
 		

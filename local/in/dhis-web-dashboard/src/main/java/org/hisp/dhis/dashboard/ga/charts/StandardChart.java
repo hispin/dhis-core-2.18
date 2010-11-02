@@ -33,4 +33,6 @@ public interface StandardChart
 {
     JFreeChart getChartViewer( double[][] data1, String[] series1, String[] categories1, double[][] data2, String[] series2,
         String[] categories2, String chartTitle, String xAxis_Title, String yAxis_Title );
+    
+    JFreeChart getChartViewergetChartViewerDataElement( double[][] data1, String[] series1, String[] categories1, String chartTitle, String xAxis_Title, String yAxis_Title );
 }

@@ -4,9 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class ExportToExcelAction extends ActionSupport
+public class ExportToExcelAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies

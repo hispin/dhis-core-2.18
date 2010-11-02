@@ -46,24 +46,26 @@ implements Action
 
         HttpSession session = req.getSession();
         Double[][] objData1 = (Double[][]) session.getAttribute( "data1" );
-        Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
+      //  Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
                 
 
         String[] series1S = (String[]) session.getAttribute( "series1" );
-        String[] series2S = (String[]) session.getAttribute( "series2" );
+      //  String[] series2S = (String[]) session.getAttribute( "series2" );
         String[] categories1S = (String[]) session.getAttribute( "categories1" );
-        String[] categories2S = (String[]) session.getAttribute( "categories2" );
+       // String[] categories2S = (String[]) session.getAttribute( "categories2" );
                         
 
-        initialzeAllLists(series1S, series2S, categories1S, categories2S);
+       // initialzeAllLists(series1S, series2S, categories1S, categories2S);
+        initialzeAllLists(series1S,  categories1S);
         
-        if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
+//        if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
+        if(objData1 == null || series1 == null ||  categories1 == null  )    
                 System.out.println("Session Objects are null");
         else
                 System.out.println("Session Objects are not null");
         
         data1 = convertDoubleTodouble( objData1 );
-        data2 = convertDoubleTodouble( objData2 );
+      //  data2 = convertDoubleTodouble( objData2 );
         
         if(chartDisplayOption == null || chartDisplayOption.equalsIgnoreCase("none")) { }
         else if(chartDisplayOption.equalsIgnoreCase("ascend")) { sortByAscending(); }
@@ -102,34 +104,35 @@ implements Action
         headingInfo.add( "</table>" );
     }
     
-    public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
+//    public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
+    public void initialzeAllLists(String[]series1S,  String[] categories1S )
     {
         int i;
         series1 = new String[series1S.length];
-        series2 = new String[series2S.length];
+       // series2 = new String[series2S.length];
         categories1 = new String[categories1S.length];
-        categories2 = new String[categories2S.length];
+       // categories2 = new String[categories2S.length];
         
         for(i = 0; i < series1S.length; i++)
         {
                 series1[i] = series1S[i];
         }
-
+/*
         for(i = 0; i < series2S.length; i++)
         {
                 series2[i] = series2S[i];
         }
-        
+*/        
         for(i = 0; i < categories1S.length; i++)
         {
                 categories1[i] = categories1S[i];
         }
-        
+/*        
         for(i = 0; i < categories2S.length; i++)
         {
                 categories2[i] = categories2S[i];
         }
-        
+*/        
     }
     
     public double[][] convertDoubleTodouble( Double[][] objData )
@@ -170,7 +173,7 @@ implements Action
                         }
                 }
         }
-        
+/*        
         for(int i=0; i < categories2.length-1 ; i++)
         {
                 for(int j=0; j < categories2.length-1-i; j++)
@@ -190,8 +193,8 @@ implements Action
                         }
                 }
         }
-        
-    }
+*/        
+    }  
 
     public void sortByDesscending()
     {
@@ -214,7 +217,7 @@ implements Action
                         }
                 }
         }
-        
+ /*       
         for(int i=0; i < categories2.length-1 ; i++)
         {
                 for(int j=0; j < categories2.length-1-i; j++)
@@ -234,7 +237,7 @@ implements Action
                         }
                 }
         }
-
+*/
     }   
     
     public void sortByAlphabet()
@@ -258,7 +261,7 @@ implements Action
                                 }
                         }
                 }
-                
+ /*               
                 for(int i=0; i < categories2.length-1 ; i++)
                 {
                         for(int j=0; j < categories2.length-1-i; j++)
@@ -278,7 +281,7 @@ implements Action
                                 }
                         }
                 }
-        
+*/        
     }
     
 }// class end

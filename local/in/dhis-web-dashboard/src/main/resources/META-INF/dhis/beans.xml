@@ -40,14 +40,42 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
 		
     </bean>
-
+<!-- Graphical Analyser DataElements Result -->
     <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
         class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
         scope="prototype">
-
+		
+		<property name="statementManager" ref="statementManager"/>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
+		</property>
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+		</property>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+		</property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>		
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
+		</property>
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+		</property>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+		</property>
     </bean>
-    	
+    
+	<!-- for Chart Display -->	
+	<bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1"
+        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1"
+        scope="prototype">
+    </bean>
 	
+	<!-- Export Data Elements to Excel -->
+    <bean id="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
+        class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
+        scope="prototype">
+
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+    </bean>
 <!-- -->	
 	
 		
@@ -742,7 +770,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-
+	<!-- DashBoard Utilities DataElementChartResult-->
+	
+	<bean id="org.hisp.dhis.dashboard.util.DataElementChartResult"
+		class="org.hisp.dhis.dashboard.util.DataElementChartResult" scope="prototype">
+	</bean>
   
 	<!-- TopTen Disease Analysis -->
     <bean

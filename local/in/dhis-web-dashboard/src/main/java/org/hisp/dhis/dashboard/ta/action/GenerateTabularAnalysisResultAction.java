@@ -305,6 +305,7 @@ public class GenerateTabularAnalysisResultAction
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
+       
         periodNames = new ArrayList<String>();
 
         for ( String year : yearLB )
