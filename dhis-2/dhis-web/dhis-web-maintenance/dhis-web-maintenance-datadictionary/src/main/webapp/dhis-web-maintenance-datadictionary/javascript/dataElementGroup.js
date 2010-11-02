@@ -36,3 +36,57 @@ function removeDataElementGroup( dataElementGroupId, dataElementGroupName )
 {
     removeItem( dataElementGroupId, dataElementGroupName, i18n_confirm_delete, "removeDataElementGroup.action" );
 }
+
+// -----------------------------------------------------------------------------
+// Search data element group
+// -----------------------------------------------------------------------------
+
+function searchDataElementGroup(){
+	
+	var params = 'key=' + getFieldValue( 'key' );
+    
+    var url = 'searchDataElementGroup.action?' + params;
+    
+    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
+    {
+    	$( '#content' ).load( url, null, unLockScreen );
+    	lockScreen();
+    }
+    else 
+    {
+    	window.location.href='dataElementGroup.action?' + params;
+    }
+}
+
+function searchDataElementGroupPaging(currentPage, pageSize) 
+{
+	
+	var params = 'key=' + getFieldValue( 'key' );
+		params += '&currentPage=' + currentPage;
+		params += '&pageSize=' + pageSize;
+
+    var url = 'searchDataElementGroup.action?' + params;
+    
+    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
+    {
+    	$( '#content' ).load( url, null, unLockScreen );
+    	lockScreen();
+    }
+    else 
+    {
+    	window.location.href='dataElementGroup.action?' + params;
+    }
+}
+
+function changePageSizeSearch()
+{
+    var pageSize = jQuery("#sizeOfPage").val();
+    searchDataElementGroupPaging(1, pageSize);
+}
+
+function jumpToPageSearch()
+{
+    var pageSize = jQuery("#sizeOfPage").val();
+    var currentPage = jQuery("#jumpToPage").val();
+    searchDataElementGroupPaging(currentPage, pageSize);
+}

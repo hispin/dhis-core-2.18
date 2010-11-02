@@ -546,4 +546,53 @@ public class HibernateDataElementStore
 
         return criteria.list();
     }
+
+    @Override
+    public Collection<DataElementGroup> getAllDataElementGroups( int from, int to )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElementGroup.class );
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( from );
+        criteria.setMaxResults( to );
+        criteria.setCacheable( true );
+
+        return criteria.list();
+    }
+
+    @Override
+    public int getNumberOfDataElementGroups()
+    {
+        String sql = "select count(*) from DataElementGroup";
+        Query query = sessionFactory.getCurrentSession().createQuery( sql );
+        Number countResult = (Number) query.uniqueResult();
+
+        return countResult.intValue();
+    }
+
+    @Override
+    public Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElementGroup.class );
+        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( from );
+        criteria.setMaxResults( to );
+
+        return criteria.list();
+    }
+
+    @Override
+    public int countNumberOfSearchDataElementGroupByName( String key )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataElementGroup.class );
+        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
+
+        return criteria.list().size();
+    }
 }
