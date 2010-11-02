@@ -21,10 +21,22 @@ public class DataSetValue extends AbstractModel {
    
     private String pName;
     
+    private boolean completed;
+    
     @XmlElement(name = "dv")
 	private List<DataValue> dataValues = new ArrayList<DataValue>();
 
     public DataSetValue(){}	
+    
+    public boolean isCompleted()
+    {
+        return completed;
+    }
+
+    public void setCompleted( boolean completed )
+    {
+        this.completed = completed;
+    }
 
 	public String getpName() {
 		return pName;
@@ -50,6 +62,7 @@ public class DataSetValue extends AbstractModel {
         dout.writeInt(this.getId());
         dout.writeUTF(this.getName());
         dout.writeUTF(this.getpName());
+        dout.writeBoolean( this.isCompleted() );
         dout.writeInt(dataValues.size());
 
         for(int i=0; i<dataValues.size(); i++)
@@ -70,7 +83,7 @@ public class DataSetValue extends AbstractModel {
         this.setId( din.readInt() ) ;
         this.setName( din.readUTF() );
         this.setpName( din.readUTF() ) ;
-
+        this.setCompleted( din.readBoolean() );
         int size = din.readInt();
 
         for(int i=0; i<size; i++)
@@ -89,7 +102,7 @@ public class DataSetValue extends AbstractModel {
         this.setId( din.readInt() ) ;
         this.setName( din.readUTF() );
         this.setpName( din.readUTF() ) ;
-
+        this.setCompleted( din.readBoolean() );
         int size = din.readInt();
 
         for(int i=0; i<size; i++)

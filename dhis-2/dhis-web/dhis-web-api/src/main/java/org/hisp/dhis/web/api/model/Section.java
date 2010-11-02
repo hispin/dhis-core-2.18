@@ -29,6 +29,9 @@ public class Section extends AbstractModel{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream dout = new DataOutputStream(bout); 
       
+      dout.writeInt(this.getId());
+      dout.writeUTF(getName());
+      
       if(dataElements == null){
     	  dout.writeInt(0);
       }else{
