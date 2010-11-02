@@ -28,12 +28,10 @@ package org.hisp.dhis.dataarchive;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -68,56 +66,69 @@ public class DataArchiveServiceTest
      * operation, DataEliminationStrategy strategy );
      */
     @Test
-    @Ignore
     public void testArchiveData()
     {
-        // Archives all datavalues to datavaluearchive from earliest to latest
-        // date
-        int archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.UNARCHIVE,
-            DataEliminationStrategy.REGULAR );
-
-        //assertEquals( "Number of archived values equals 54", 54, archivedValuesNo );
-        assertEquals( "Number of archived values equals 0", 0, archivedValuesNo );
-
-        archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.ARCHIVE,
+        /*
+         * STEP 1:
+         * 
+         * Archives all datavalues to datavaluearchive follows from earliest to
+         * latest date
+         */
+        int archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.ARCHIVE,
             DataEliminationStrategy.ARCHIVE );
+        
+        assertEquals( "There will have 54 records in datavaluearchive table from STARTDATE to ENDDATE", 54,
+            archivedValuesNo );
 
-        //assertEquals( "Number of archived values more than 0", 6, archivedValuesNo );
-        assertEquals( "Number of archived values equals 0", 0, archivedValuesNo );
-
-        // Archives all datavalues to datavaluearchive from "2005-05-01" to
-        // "2005-05-31" of periodD by weekly
+        /*
+         * STEP 2:
+         * 
+         * Archives all datavalues to datavaluearchive from "2005-05-01" to
+         * "2005-05-31" of periodD by weekly
+         */
         archivedValuesNo = dataArchiveService.archiveData( periodD.getStartDate(), periodD.getEndDate(),
             DataArchiveOperation.ARCHIVE, DataEliminationStrategy.ARCHIVE );
 
-        //assertEquals( "Number of archived values equals 6", 6, archivedValuesNo );
-        assertNotSame( "Number of archived values more than 0", 6, archivedValuesNo );
+        assertEquals( "54 records still in datavaluearchive table because of "
+            + "periodD is also in range from STARTDATE to ENDDATE", 54, archivedValuesNo );
 
-        // Archives all datavalues to datavaluearchive from "2005-05-01" to
-        // "2005-05-31" of periodD by weekly
+        /*
+         * STEP 3: Un-archives all datavaluearchive to datavalues from
+         * "2005-05-01" to "2005-05-31" of periodD by weekly
+         */
         archivedValuesNo = dataArchiveService.archiveData( periodD.getStartDate(), periodD.getEndDate(),
             DataArchiveOperation.UNARCHIVE, DataEliminationStrategy.REGULAR );
 
-        assertSame( "Number of unarchived values more than 0", 0, archivedValuesNo );
+        assertSame( "6 records from 2005-05-01 to 2005-05-31 have been removed back into datavalue table."
+            + " So now, datavaluearchive contains 48 records only", 48, archivedValuesNo );
 
+        /*
+         * STEP 4: Un-archives all datavaluearchive to datavalues from earliest
+         * to latest date. This is the final step to do empty datavaluearchive
+         * table to avoid the referential integrity constraint violation.
+         * 
+         * Because the emptyDatabaseAfterTest() method doesn't work properly
+         */
+        archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.UNARCHIVE,
+            DataEliminationStrategy.REGULAR );
+
+        assertEquals( "Empty datavaluearchive table", 0, archivedValuesNo );
     }
 
     /**
      * int getNumberOfOverlappingValues();
      */
     @Test
-    @Ignore
     public void testGetNumberOfOverlappingValues()
     {
         int archivedValuesNo = dataArchiveService.archiveData( STARTDATE, ENDDATE, DataArchiveOperation.UNARCHIVE,
             DataEliminationStrategy.REGULAR );
 
-        //assertEquals( "Number of archived values equals 54", 54, archivedValuesNo );
-        assertEquals( "Number of archived values equals 0", 0, archivedValuesNo );
+        assertEquals( "5Number of archived values equals 0", 0, archivedValuesNo );
 
         archivedValuesNo = dataArchiveService.getNumberOfOverlappingValues();
 
-        assertEquals( "Number of archived values equals 0", 0, archivedValuesNo );
+        assertEquals( "6Number of archived values equals 0", 0, archivedValuesNo );
 
     }
 }

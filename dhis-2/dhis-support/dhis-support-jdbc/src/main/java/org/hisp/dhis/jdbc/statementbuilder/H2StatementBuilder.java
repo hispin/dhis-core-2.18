@@ -221,7 +221,7 @@ public class H2StatementBuilder
     
     public String archiveData( String startDate, String endDate )
     {
-       return "DELETE FROM datavaluearchive AS a " +
+       return "DELETE FROM datavalue AS a " +
             "WHERE EXISTS (" +
             "SELECT 1 FROM period AS p " +
             "WHERE a.periodid=p.periodid " +
