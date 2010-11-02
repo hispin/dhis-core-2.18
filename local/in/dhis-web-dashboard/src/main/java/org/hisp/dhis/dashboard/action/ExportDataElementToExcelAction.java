@@ -1,3 +1,29 @@
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.hisp.dhis.dashboard.action;
 
 import java.awt.image.BufferedImage;
@@ -32,8 +58,12 @@ import org.hisp.dhis.config.Configuration_IN;
 import com.keypoint.PngEncoder;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
-
-public class ExportToExcelAction implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ *
+ * @version ExportDataElementToExcelAction.java Oct 29, 2010 1:59:14 PM
+ */
+public class ExportDataElementToExcelAction implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -59,15 +89,15 @@ public class ExportToExcelAction implements Action
     
     double[][] data1;
 
-    double[][] data2;
+  //  double[][] data2;
 
     String[] series1;
 
-    String[] series2;
+   // String[] series2;
 
     String[] categories1;
 
-    String[] categories2;
+  //  String[] categories2;
 
     
     private InputStream inputStream;
@@ -134,23 +164,25 @@ public class ExportToExcelAction implements Action
         
         byte[] encoderBytes = encoder.pngEncode();
         Double[][] objData1 = (Double[][]) session.getAttribute( "data1" );
-        Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
+        //Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
         
         String[] series1S = (String[]) session.getAttribute( "series1" );
-        String[] series2S = (String[]) session.getAttribute( "series2" );
+        //String[] series2S = (String[]) session.getAttribute( "series2" );
         String[] categories1S = (String[]) session.getAttribute( "categories1" );
-        String[] categories2S = (String[]) session.getAttribute( "categories2" );
+       // String[] categories2S = (String[]) session.getAttribute( "categories2" );
                         
 
-        initialzeAllLists(series1S, series2S, categories1S, categories2S);
+      //  initialzeAllLists(series1S, series2S, categories1S, categories2S);
+        initialzeAllLists(series1S, categories1S );
         
-        if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
+        //if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
+        if(objData1 == null || series1 == null ||  categories1 == null )
                 System.out.println("Session Objects are null");
         else
                 System.out.println("Session Objects are not null");
         
         data1 = convertDoubleTodouble( objData1 );
-        data2 = convertDoubleTodouble( objData2 );
+      //  data2 = convertDoubleTodouble( objData2 );
         
         if(chartDisplayOption == null || chartDisplayOption.equalsIgnoreCase("none")) { }
         else if(chartDisplayOption.equalsIgnoreCase("ascend")) { sortByAscending(); }
@@ -169,7 +201,7 @@ public class ExportToExcelAction implements Action
        // System.out.println("Complete path is :" + outputReportFile );
         
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File(outputReportFile) );
-        WritableSheet sheet0 = outputReportWorkbook.createSheet( "ChartOutput", 0 );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "DataElementChartOutput", 0 );
         
         if(viewSummary.equals( "no" ))
         {
@@ -297,7 +329,7 @@ public class ExportToExcelAction implements Action
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
-        fileName = "chartOutput.xls";
+        fileName = "DataElement Chart Output.xls";
                 
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -306,34 +338,35 @@ public class ExportToExcelAction implements Action
     }
     
     
-    public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
+//    public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
+    public void initialzeAllLists(String[]series1S, String[] categories1S)
     {
         int i;
         series1 = new String[series1S.length];
-        series2 = new String[series2S.length];
+       // series2 = new String[series2S.length];
         categories1 = new String[categories1S.length];
-        categories2 = new String[categories2S.length];
+       // categories2 = new String[categories2S.length];
         
         for(i = 0; i < series1S.length; i++)
         {
                 series1[i] = series1S[i];
         }
-
+/*
         for(i = 0; i < series2S.length; i++)
         {
                 series2[i] = series2S[i];
         }
-        
+*/        
         for(i = 0; i < categories1S.length; i++)
         {
                 categories1[i] = categories1S[i];
         }
-        
+/*        
         for(i = 0; i < categories2S.length; i++)
         {
                 categories2[i] = categories2S[i];
         }
-        
+*/        
     }
     
     public double[][] convertDoubleTodouble( Double[][] objData )

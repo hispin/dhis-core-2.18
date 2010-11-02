@@ -1,7 +1,5 @@
-package org.hisp.dhis.dashboard.ga.action.charts;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +24,7 @@ package org.hisp.dhis.dashboard.ga.action.charts;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.dashboard.ga.action.charts;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -36,13 +35,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dashboard.ga.charts.AreaChart;
-import org.hisp.dhis.dashboard.ga.charts.DualAxisChart;
 import org.hisp.dhis.dashboard.ga.charts.Horizontal3DBarChart;
 import org.hisp.dhis.dashboard.ga.charts.LineAndBarChart;
 import org.hisp.dhis.dashboard.ga.charts.LineChart;
-import org.hisp.dhis.dashboard.ga.charts.PieChart3D;
 import org.hisp.dhis.dashboard.ga.charts.StandardChart;
-import org.hisp.dhis.dashboard.ga.charts.SurveyChart;
 import org.hisp.dhis.dashboard.ga.charts.Vertical3DBarChart;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
@@ -50,21 +46,27 @@ import org.jfree.chart.entity.StandardEntityCollection;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
+/**
+ * @author Mithilesh Kumar Thakur
+ *
+ * @version GenerateChartAction1.java Oct 27, 2010 1:17:24 PM
+ */
 
-public class GenerateChartAction
+
+public class GenerateChartAction1
     implements Action
 {
     double[][] data1;
 
-    double[][] data2;
+   // double[][] data2;
 
     String[] series1;
 
-    String[] series2;
+   // String[] series2;
 
     String[] categories1;
 
-    String[] categories2;
+   // String[] categories2;
 
     String chartTitle;
 
@@ -73,6 +75,8 @@ public class GenerateChartAction
     String yAxis_Title;
 
     private StandardChart selChart;
+    
+   // private Vertical3DBarChart selChart;
     
     private HttpSession session;
     
@@ -132,13 +136,13 @@ public class GenerateChartAction
         //System.out.println("chartDisplayOption : "+chartDisplayOption);
         session = req.getSession();
         Double[][] objData1 = (Double[][]) session.getAttribute( "data1" );
-        Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
+       // Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
                 
 
         String[] series1S = (String[]) session.getAttribute( "series1" );
-        String[] series2S = (String[]) session.getAttribute( "series2" );
+      //  String[] series2S = (String[]) session.getAttribute( "series2" );
         String[] categories1S = (String[]) session.getAttribute( "categories1" );
-        String[] categories2S = (String[]) session.getAttribute( "categories2" );
+       // String[] categories2S = (String[]) session.getAttribute( "categories2" );
                         
        // series2 = (String[]) session.getAttribute( "series2" );
         
@@ -146,15 +150,23 @@ public class GenerateChartAction
         xAxis_Title = (String) session.getAttribute( "xAxisTitle" );
         yAxis_Title = (String) session.getAttribute( "yAxisTitle" );
 
-        initialzeAllLists(series1S, series2S, categories1S, categories2S);
+        initialzeAllLists( series1S,  categories1S );
+       /* 
+        System.out.println( "\n data1 : " + objData1 );
+        System.out.println( "\n series1 : " + series1S );
+        System.out.println( "\n categories1 : " + categories1S );
+        System.out.println( "\n chartTitle : " + chartTitle );
+        System.out.println( "\n xAxisTitle : " + xAxis_Title );
+        System.out.println( "\n yAxisTitle : " + yAxis_Title );
+        */
         
-        if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null || chartTitle == null || xAxis_Title == null || yAxis_Title == null)
+        if( objData1 == null || series1 == null ||  categories1 == null ||  chartTitle == null || xAxis_Title == null || yAxis_Title == null )
                 System.out.println("Session Objects are null");
         else
                 System.out.println("Session Objects are not null");
         
         data1 = convertDoubleTodouble( objData1 );
-        data2 = convertDoubleTodouble( objData2 );
+       // data2 = convertDoubleTodouble( objData2 );
         
         if(chartDisplayOption == null || chartDisplayOption.equalsIgnoreCase("none")) { }
         else if(chartDisplayOption.equalsIgnoreCase("ascend")) { sortByAscending(); }
@@ -163,41 +175,47 @@ public class GenerateChartAction
         
         initializeDataLists();
         
+        System.out.println( "current chart Type is : " + currentChart + "And Chart Display Option is : " + chartDisplayOption );
+        
         if ( currentChart == null )
         {
-            //System.out.println( "current chart is null" );
+            System.out.println( "current chart is null" );
             currentChart = "Vertical3DBarChart";
         }
+
         else if ( currentChart.equals( "Vertical3DBarChart" ) )
         {
-            //System.out.println( "Vertical3DBarChart" );
+            System.out.println( "Vertical3DBarChart" );
             selChart = new Vertical3DBarChart();
         }
-        else if ( currentChart.equals( "Horizontal3DBarChart" ) )
+       else if ( currentChart.equals( "Horizontal3DBarChart" ) )
         {
-            //System.out.println( "Horizontal3DBarChart" );
+            System.out.println( "\n\n Horizontal3DBarChart" );
             selChart = new Horizontal3DBarChart();
         }
         else if ( currentChart.equals( "LineChart" ) )
         {
-            //System.out.println( "LineChart" );
+            System.out.println( "\n\n LineChart" );
             selChart = new LineChart();
         }
         else if ( currentChart.equals( "LineAndBarChart" ) )
         {
-            //System.out.println( "LineAndBarChart" );
+            System.out.println( "\n\n LineAndBarChart" );
             selChart = new LineAndBarChart();
         }
-        else if ( currentChart.equals( "DualAxisChart" ) )
+        
+        else if ( currentChart.equals( "AreaChart" ) )
+        {
+            System.out.println( "\n\n AreaChart" );
+            selChart = new AreaChart();
+        }
+/*        else if ( currentChart.equals( "DualAxisChart" ) )
         {
             //System.out.println( "DualAxisChart" );
             selChart = new DualAxisChart();
         }
-        else if ( currentChart.equals( "AreaChart" ) )
-        {
-            //System.out.println( "AreaChart" );
-            selChart = new AreaChart();
-        }
+     
+
         else if ( currentChart.equals( "PieChart3D" ) )
         {
             //System.out.println( "PieChart3D" );
@@ -208,9 +226,9 @@ public class GenerateChartAction
             //System.out.println( "SurveyChart" );
             selChart = new SurveyChart();
         }
-
-        chart = selChart.getChartViewer( data1, series1, categories1, data2, series2, categories2, chartTitle, xAxis_Title,
-            yAxis_Title );
+*/ 
+       // chart = selChart.getChartViewer( data1, series1, categories1, chartTitle, xAxis_Title, yAxis_Title );
+        chart = selChart.getChartViewergetChartViewerDataElement( data1, series1, categories1, chartTitle, xAxis_Title, yAxis_Title );
 
         
         // Saving chart into Session        
@@ -256,35 +274,35 @@ public class GenerateChartAction
         headingInfo += "</table>";
     }
     
-    public void initialzeAllLists(String[]series1S, String[] series2S, String[] categories1S, String[] categories2S)
+    public void initialzeAllLists(String[]series1S,  String[] categories1S )
     
     {
         int i;
         series1 = new String[series1S.length];
-        series2 = new String[series2S.length];
+       // series2 = new String[series2S.length];
         categories1 = new String[categories1S.length];
-        categories2 = new String[categories2S.length];
+       // categories2 = new String[categories2S.length];
         
         for(i = 0; i < series1S.length; i++)
         {
                 series1[i] = series1S[i];
         }
-
+/*
         for(i = 0; i < series2S.length; i++)
         {
                 series2[i] = series2S[i];
         }
-        
+*/        
         for(i = 0; i < categories1S.length; i++)
         {
                 categories1[i] = categories1S[i];
         }
-       
+/*       
         for(i = 0; i < categories2S.length; i++)
         {
                 categories2[i] = categories2S[i];
         }
-      
+*/      
     }
     
     public double[][] convertDoubleTodouble( Double[][] objData )
@@ -296,8 +314,9 @@ public class GenerateChartAction
         {
             for ( int j = 0; j < objData[0].length; j++ )
             {
+               // System.out.println(objData[i][j]);
                 data[i][j] = objData[i][j].doubleValue();
-                //System.out.print(categories1[j]+": "+data[i][j]+", ");                
+               // System.out.print(categories1[j]+": "+data[i][j]+", ");                
             }
             //System.out.println("");
         }
@@ -326,7 +345,7 @@ public class GenerateChartAction
                         }
                 }
         }
-        
+/*        
         for(int i=0; i < categories2.length-1 ; i++)
         {
                 for(int j=0; j < categories2.length-1-i; j++)
@@ -346,7 +365,7 @@ public class GenerateChartAction
                         }
                 }
         }
-        
+*/        
     }
 
     public void sortByDesscending()
@@ -370,7 +389,7 @@ public class GenerateChartAction
                         }
                 }
         }
-        
+ /*       
         for(int i=0; i < categories2.length-1 ; i++)
         {
                 for(int j=0; j < categories2.length-1-i; j++)
@@ -390,7 +409,7 @@ public class GenerateChartAction
                         }
                 }
         }
-
+*/
     }   
         public void sortByAlphabet()
         {
@@ -414,7 +433,7 @@ public class GenerateChartAction
                         }
                 }
                 
-                for(int i=0; i < categories2.length-1 ; i++)
+/*                for(int i=0; i < categories2.length-1 ; i++)
                 {
                         for(int j=0; j < categories2.length-1-i; j++)
                         {
@@ -433,7 +452,7 @@ public class GenerateChartAction
                                 }
                         }
                 }
-        
+ */       
     }
 
 

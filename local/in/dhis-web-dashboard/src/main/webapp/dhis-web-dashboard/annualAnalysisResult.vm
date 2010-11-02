@@ -1,7 +1,7 @@
 
 <html>
 <head>
-<title>Anual Analysis Result Screen</title>
+<title>Annual Analysis Result Screen</title>
 <link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">
 <script>
   var indexForChart = 0;

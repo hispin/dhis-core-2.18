@@ -126,5 +126,71 @@ public class LineChart
 
         return chart;
     }// getChartViewer end
+    
+    @SuppressWarnings("deprecation")
+    public JFreeChart getChartViewergetChartViewerDataElement( double[][] data1, String[] series1, String[] categories1, String chartTitle, String xAxis_Title, String yAxis_Title )
+    {
+       System.out.println("\n inside Line chart");
+       DefaultCategoryDataset dataset1 = getDataset( data1, series1, categories1 );
+
+       // create the first plot...
+       final CategoryItemRenderer renderer = new LineAndShapeRenderer();        
+       renderer.setToolTipGenerator( new StandardCategoryToolTipGenerator() );
+       renderer.setItemLabelGenerator( new StandardCategoryItemLabelGenerator() );
+       renderer.setItemLabelsVisible( true );
+       
+
+       final CategoryPlot plot = new CategoryPlot();
+       plot.setNoDataMessage( "No data to display" );
+       plot.setDataset( dataset1 );
+       plot.setRenderer( renderer );
+
+       plot.setDomainAxis( new CategoryAxis( xAxis_Title ) );
+       plot.setRangeAxis( new NumberAxis( yAxis_Title ) );
+
+       plot.setOrientation( PlotOrientation.VERTICAL );
+       plot.setRangeGridlinesVisible( true );
+       plot.setDomainGridlinesVisible( true );
+       
+
+       // customise the range axis...
+       final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+       rangeAxis.setStandardTickUnits( NumberAxis.createIntegerTickUnits() );
+       rangeAxis.setAutoRangeIncludesZero( true );
+       rangeAxis.setUpperMargin( 0.15 );
+       rangeAxis.setLowerMargin( 0.15 );
+
+       /*
+       final CategoryDataset dataset2 = getDataset( data2, series2, categories2 );
+
+       final CategoryItemRenderer renderer2 = new LineAndShapeRenderer();
+       renderer2.setSeriesStroke( 0, new BasicStroke( 2.0f ) );
+       renderer2.setSeriesStroke( 1, new BasicStroke( 2.0f ) );
+       plot.setDataset( 1, dataset2 );
+       plot.setRenderer( 1, renderer2 );
+       plot.setDatasetRenderingOrder( DatasetRenderingOrder.FORWARD );
+       */
+
+       final JFreeChart chart = new JFreeChart( plot );
+
+       /* TITLE */
+       final TextTitle mainTitle = new TextTitle( "Line Chart" );
+       mainTitle.setFont( new Font( "times", Font.BOLD, 13 ) );
+       mainTitle.setPosition( RectangleEdge.TOP );
+       mainTitle.setVerticalAlignment( VerticalAlignment.BOTTOM );
+       chart.addSubtitle( mainTitle );
+
+       /* SUB TITLE */
+       final TextTitle subtitle = new TextTitle( chartTitle );
+       subtitle.setFont( new Font( "times", Font.BOLD, 13 ) );
+       subtitle.setPosition( RectangleEdge.TOP );
+       subtitle.setVerticalAlignment( VerticalAlignment.BOTTOM );
+       chart.addSubtitle( subtitle );
+
+       final CategoryAxis domainAxis = plot.getDomainAxis();
+       domainAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
+
+       return chart;
+    }// getChartViewer DataElement wise end
 
 }

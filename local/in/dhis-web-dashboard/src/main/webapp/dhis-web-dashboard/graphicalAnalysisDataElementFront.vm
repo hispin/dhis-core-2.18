@@ -90,7 +90,7 @@
       &nbsp;&nbsp;<input type="button" value="&lt;&lt;" style="width:40px" onClick="moveAllById( 'selectedDataElements', 'availableDataElements' )">&nbsp;&nbsp;
       </td>
       <td class="NormalB"> $i18n.getString( "ga_selected_delist" )<br />
-        <select multiple size="7" id="selectedDataElements" name="selectedDataElements" disabled style="width:325px; height:100px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
+        <select multiple size="7" id="selectedDataElements" name="selectedDataElements" style="width:325px; height:100px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
         </select>
       </td>
     </tr>
@@ -101,7 +101,7 @@
     </tr>
 
     <tr>
-      <td class="NormalB"><br><input type="checkbox" id="aggDataCB" name="aggDataCB" >$i18n.getString( "ga_aggregated_data" )</td>
+      <td class="NormalB"><br><input type="checkbox"  id="aggDataCB" name="aggDataCB" checked="true" >$i18n.getString( "ga_aggregated_data" )</td>
       <td class="NormalB">&nbsp;</td>
       <td class="NormalB"><br>
 	      <table>
@@ -138,7 +138,7 @@
 	            </select>                       
 	        </td>
 	        <td class="NormalB"><input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
-	            <select name="orgUnitGroup" id="orgUnitGroup" multiple size="7"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 150px;" disabled="true">
+	            <select name="orgUnitGroupList" id="orgUnitGroupList" multiple size="7"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 150px;" disabled="true">
 	            </select>
 	        </td>
 	    </tr>
@@ -166,10 +166,10 @@
             </td>
           </tr>
           <tr>
-            <td><input type="submit" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction('ViewChart')">
+            <td><input type="submit" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewChart')">
             </td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td align="right"><input type="submit" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction('ViewSummary')">
+            <td align="right"><input type="submit" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewSummary')">
             </td>
           </tr>
           <input type="hidden" name="selectedButton" id="selectedButton">
