@@ -35,6 +35,7 @@ import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -199,35 +200,16 @@ public class UpdateLineListGroupAction
 
         lineListGroup.getLineListElements().addAll( updatedDataElementList );
 
-       // if ( !( removeElementList.isEmpty()) && !( newElements.isEmpty() ) )
-        
-        
-    //    if ( !( removeElementList.isEmpty()) || !( newElements.isEmpty() ) )    
-      //  {
-           
-         //   boolean dataUpdated = dataBaseManagerInterface.updateTable( lineListGroup.getShortName(), removeElementList, newElements );
-          //  if ( dataUpdated )
-           // {
-                
-              //  if ( lineListGroup != null )
-               // {
-                   
-                    lineListGroup.setName( name );
-                    lineListGroup.setShortName( shortName );
-                    lineListGroup.setDescription( description );
+        lineListGroup.setName( name );
+        lineListGroup.setShortName( shortName );
+        lineListGroup.setDescription( description );
 
-                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeSelect );
-                    lineListGroup.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
+        PeriodType periodType = new OnChangePeriodType();
+        
+        lineListGroup.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
 
-                    lineListService.updateLineListGroup( lineListGroup );
-                   /* 
-                    System.out.println("Line List Group name is : " + lineListGroup.getName() );
-                    System.out.println("Line List Group Short name is : " + lineListGroup.getShortName() );
-                    System.out.println("Line List Group Desc is : " + lineListGroup.getDescription() );
-                    */
-               // }
-            //}
-       // }
+        lineListService.updateLineListGroup( lineListGroup );
+                 
 
         return SUCCESS;
     }

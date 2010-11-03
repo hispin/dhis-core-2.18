@@ -39,6 +39,7 @@ import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -154,7 +155,10 @@ public class AddLineListGroupAction
         // ---------------------------------------------------------------------
         // Create Line List Group
         // ---------------------------------------------------------------------
-        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeSelect );
+        PeriodType periodType = new OnChangePeriodType();
+        
+        System.out.println("Period Type is :" + periodType + "PeriodType Select is:" + periodTypeSelect);
+        
         LineListGroup lineListGroup = new LineListGroup( name, shortName, description, periodType );
 
         List<String> columnNames = new ArrayList<String>();

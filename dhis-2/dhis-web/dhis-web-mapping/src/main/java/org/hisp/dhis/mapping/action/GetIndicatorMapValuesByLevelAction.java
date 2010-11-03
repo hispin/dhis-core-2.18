@@ -106,7 +106,7 @@ public class GetIndicatorMapValuesByLevelAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
