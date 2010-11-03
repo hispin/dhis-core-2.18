@@ -1,48 +1,12 @@
 ﻿Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
-	/* Ext 3.2.0 overrides */
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
-    /* Disallow right clicks */
-	document.body.oncontextmenu = function(){return false;};
-	/* Activate tooltip */
 	Ext.QuickTips.init();
-
+	document.body.oncontextmenu = function(){return false;};
+	
 	GLOBALS.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
 	GLOBALS.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
-    GLOBALS.vars.parameter = GLOBALS.util.getUrlParam('view') !== '' ? {id: GLOBALS.util.getUrlParam('view')} : false;
-    
-	/* Base layers */
-	function addBaseLayersToMap() {
-		Ext.Ajax.request({
-			url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
-			params: {type: GLOBALS.conf.map_layer_type_baselayer},
-			method: 'POST',
-			success: function(r) {
-                var baseLayer = new OpenLayers.Layer.WMS(
-                    'World',
-                    // 'http://iridl.ldeo.columbia.edu/cgi-bin/wms_dev/wms.pl',
-                    // {layers: 'Health Regional Africa Meningitis Meningitis Observed'}
-                    'http://labs.metacarta.com/wms/vmap0',
-                    {layers: 'basic'}
-                );
-                
-                GLOBALS.vars.map.addLayers([baseLayer]);
-                GLOBALS.vars.map.layers[0].setVisibility(false);
-                
-				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
-					
-				if (mapLayers.length > 0) {
-					for (var i = 0; i < mapLayers.length; i++) {
-						GLOBALS.vars.map.addLayers([
-							new OpenLayers.Layer.WMS(mapLayers[i].name, mapLayers[i].mapSource, {layers: mapLayers[i].layer})
-						]);
-						GLOBALS.vars.map.layers[GLOBALS.vars.map.layers.length-1].setVisibility(false);
-					}
-				}
-			}
-        });
-    }
-    addBaseLayersToMap();
+    GLOBALS.vars.parameter = GLOBALS.util.getUrlParam('view') ? {id: GLOBALS.util.getUrlParam('view')} : false;
     
     Ext.Ajax.request({
         url: GLOBALS.conf.path_mapping + 'getMapView' + GLOBALS.conf.type,
@@ -78,8 +42,8 @@
         url: GLOBALS.conf.path_mapping + 'getAllMapViews' + GLOBALS.conf.type,
         root: 'mapViews',
         fields: ['id', 'name', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId', 'mapDateType', 'periodTypeId',
-            'periodId', 'startDate', 'endDate', 'mapSourceType', 'organisationUnitSelectionType', 'mapSource', 'organisationUnitSelectionTypeName', 'mapLegendType', 'method', 'classes',
-            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'],
+            'periodId', 'startDate', 'endDate', 'mapSourceType', 'organisationUnitSelectionType', 'mapSource', 'organisationUnitSelectionTypeName', 'mapLegendType',
+			'method', 'classes', 'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -319,7 +283,7 @@
         url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
         baseParams: {type: GLOBALS.conf.map_layer_type_baselayer},
         root: 'mapLayers',
-        fields: ['id', 'name'],
+        fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -334,7 +298,7 @@
         url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
         baseParams: {type: GLOBALS.conf.map_layer_type_overlay},
         root: 'mapLayers',
-        fields: ['id', 'name'],
+        fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -344,6 +308,18 @@
             }
         }
     });
+    
+    var userSettingStore = new Ext.data.JsonStore({
+        url: GLOBALS.conf.path_mapping + 'getMapUserSettings' + GLOBALS.conf.type,
+        fields: ['mapSource', 'mapDateType'],
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': function(store) {
+                store.isLoaded = true;
+            }
+        }
+    });	
     
     GLOBALS.stores = {
         mapView: mapViewStore,
@@ -366,6 +342,67 @@
         baseLayer: baseLayerStore,
         overlay: overlayStore
     };
+	
+	/* Add base layers */	
+	function addBaseLayersToMap() {
+		GLOBALS.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
+		GLOBALS.vars.map.layers[0].setVisibility(false);
+		
+		GLOBALS.stores.baseLayer.load({callback: function(r) {
+			if (r.length) {
+				for (var i = 0; i < r.length; i++) {
+					GLOBALS.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
+					GLOBALS.vars.map.layers[GLOBALS.vars.map.layers.length-1].setVisibility(false);
+				}
+			}
+		}});
+	}	
+	addBaseLayersToMap();	
+    
+	function addOverlaysToMap() {
+		GLOBALS.stores.overlay.load({callback: function(r) {
+			if (r.length) {
+				for (var i = 0; i < r.length; i++) {
+					var url = GLOBALS.vars.mapSourceType.isShapefile() ? GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + r[i].data.mapSource + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource;
+					var fillColor = r[i].data.fillColor;
+					var fillOpacity = parseFloat(r[i].data.fillOpacity);
+					var strokeColor = r[i].data.strokeColor;
+					var strokeWidth = parseFloat(r[i].data.strokeWidth);
+					
+					var overlay = new OpenLayers.Layer.Vector(r[i].data.name, {
+						'visibility': false,
+						'styleMap': new OpenLayers.StyleMap({
+							'default': new OpenLayers.Style(
+								OpenLayers.Util.applyDefaults(
+									{'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
+									OpenLayers.Feature.Vector.style['default']
+								)
+							)
+						}),
+						'strategies': [new OpenLayers.Strategy.Fixed()],
+						'protocol': new OpenLayers.Protocol.HTTP({
+							'url': url,
+							'format': new OpenLayers.Format.GeoJSON()
+						})
+					});
+					
+					overlay.events.register('loadstart', null, function() {
+						GLOBALS.vars.mask.msg = i18n_loading;
+						GLOBALS.vars.mask.show();
+					});
+					
+					overlay.events.register('loadend', null, function() {
+						GLOBALS.vars.mask.hide();
+					});
+                    
+                    overlay.isOverlay = true;
+						
+					GLOBALS.vars.map.addLayer(overlay);
+				}
+			}
+		}});
+	}
+	addOverlaysToMap();
 			
 	/* Section: mapview */
 	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptytext:'',width:GLOBALS.conf.combo_width,hideLabel:true,autoCreate:{tag:'input',type:'text',size:'20',autocomplete:'off', maxlength:'35'}});
@@ -2564,57 +2601,6 @@
     });
     
     GLOBALS.vars.map.addLayers([choroplethLayer, proportionalSymbolLayer]);
-    
-	function addOverlaysToMap() {
-		Ext.Ajax.request({
-			url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
-            params: {type: GLOBALS.conf.map_layer_type_overlay},
-			method: 'POST',
-			success: function(r) {
-				var mapLayers = Ext.util.JSON.decode(r.responseText).mapLayers;
-				
-				for (var i = 0; i < mapLayers.length; i++) {
-					var mapurl = GLOBALS.vars.mapSourceType.isShapefile() ? GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mapLayers[i].mapSource + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mapLayers[i].mapSource;
-					var fillColor = mapLayers[i].fillColor;
-					var fillOpacity = parseFloat(mapLayers[i].fillOpacity);
-					var strokeColor = mapLayers[i].strokeColor;
-					var strokeWidth = parseFloat(mapLayers[i].strokeWidth);
-					
-					var treeLayer = new OpenLayers.Layer.Vector(mapLayers[i].name, {
-						'visibility': false,
-						'styleMap': new OpenLayers.StyleMap({
-							'default': new OpenLayers.Style(
-								OpenLayers.Util.applyDefaults(
-									{'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
-									OpenLayers.Feature.Vector.style['default']
-								)
-							)
-						}),
-						'strategies': [new OpenLayers.Strategy.Fixed()],
-						'protocol': new OpenLayers.Protocol.HTTP({
-							'url': mapurl,
-							'format': new OpenLayers.Format.GeoJSON()
-						})
-					});
-					
-					treeLayer.events.register('loadstart', null, function() {
-						GLOBALS.vars.mask.msg = i18n_loading;
-						GLOBALS.vars.mask.show();
-					});
-					
-					treeLayer.events.register('loadend', null, function() {
-						GLOBALS.vars.mask.hide();
-					});
-                    
-                    treeLayer.isOverlay = true;
-						
-					GLOBALS.vars.map.addLayer(treeLayer);
-				}
-			}
-		});
-	}
-	
-	addOverlaysToMap();
         
     /* Section: layer options */
     function showWMSLayerOptions(layer) {

@@ -16,16 +16,6 @@
         <td><input type="text" id="shortName" name="shortName" style="width:20em"></td>
     </tr>
     <tr>
-        <td><label for="periodType">$i18n.getString( "periodType" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td>
-          <select id="periodTypeSelect" name="periodTypeSelect" style="min-width:20em">
-            #foreach ( $periodType in $periodTypes )
-              <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
-            #end
-          </select>
-        </td>
-    </tr>
-    <tr>
         <td><label for="description">$i18n.getString( "description" )</label></td>
         <td><textarea id="description" name="description" style="width:20em; height:8em"></textarea></td>
     </tr>
