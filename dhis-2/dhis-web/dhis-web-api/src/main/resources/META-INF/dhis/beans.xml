@@ -46,14 +46,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!--<bean id="org.hisp.dhis.web.api.resources.FormResource"
 		class="org.hisp.dhis.web.api.resources.FormResource" scope="prototype"/>-->
 		
-	<!--<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
-      class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>-->   
+	<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
+      class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>   
       
     <!--<bean id="org.hisp.dhis.web.api.resources.ProgramResource"
       class="org.hisp.dhis.web.api.resources.ProgramResource" scope="prototype"/>-->
       
-    <!--<bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
-      class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>-->  
+    <bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
+      class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>  
 	
 	<!--<bean id="org.hisp.dhis.web.api.resources.ActivityWrapperResource"
       class="org.hisp.dhis.web.api.resources.ActivityWrapperResource" scope="prototype"/>-->  
