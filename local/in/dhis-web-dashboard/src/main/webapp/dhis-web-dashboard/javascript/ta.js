@@ -441,7 +441,7 @@ function getPeriodsReceived( xmlObject )
 
 function getOUDeatilsForTA( orgUnitIds )
 {
-	
+	showOverlay();
     /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
 	
     var request = new Request();
@@ -522,7 +522,9 @@ function getOUDetailsForTARecevied(xmlObject)
                 getorgUnitLevels( ouLevel, maxOULevel );
             }            
         }
-    }    		
+    }   
+    
+    hideOverlay();
 }
 
 function getorgUnitLevels( ouLevel, maxOULevel )
@@ -661,3 +663,19 @@ function formValidations()
     return true;
 } // formValidations Function End
 
+function showOverlay() 
+{
+    var o = document.getElementById('overlay');
+    o.style.visibility = 'visible';
+    jQuery("#overlay").css({
+        "height": jQuery(document).height()
+    });
+    jQuery("#overlayImg").css({
+        "top":jQuery(window).height()/2
+    });
+}
+function hideOverlay() 
+{
+    var o = document.getElementById('overlay');
+    o.style.visibility = 'hidden';
+}

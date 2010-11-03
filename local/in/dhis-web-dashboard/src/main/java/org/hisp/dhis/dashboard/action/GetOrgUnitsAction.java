@@ -1,7 +1,6 @@
 package org.hisp.dhis.dashboard.action;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -67,7 +66,6 @@ public class GetOrgUnitsAction implements Action
     public String execute()
         throws Exception
     {
-        System.out.println( "StartTime: "+ new Date() );
         /* OrganisationUnit */
         if ( orgUnitId != null )
         {
@@ -75,45 +73,22 @@ public class GetOrgUnitsAction implements Action
         }
 
         orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-        maxOrgUnitLevel = orgUnitLevel;
-        int maxNumberofLevels = organisationUnitService.getNumberOfOrganisationalLevels();
+        maxOrgUnitLevel = organisationUnitService.getNumberOfOrganisationalLevels();
         
         // Hardcoded : if it is Tabular Analysis, Null Reporter
         if( type != null && type.equalsIgnoreCase( "ta" ) )
         {
-            for( int i = orgUnitLevel+1; i <= maxNumberofLevels; i++ )
+            for( int i = orgUnitLevel+1; i <= maxOrgUnitLevel; i++ )
             {
                 Collection<OrganisationUnit> tempOrgUnitList = organisationUnitService.getOrganisationUnitsAtLevel( i, orgUnit );
                 if( tempOrgUnitList == null || tempOrgUnitList.size() == 0 )
                 {
-                    maxOrgUnitLevel = i;
+                    maxOrgUnitLevel = i-1;
                     break;
                 }
             }
         }
         
-        System.out.println( "EndTime: "+ new Date() );
-        
-        /*
-        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-        maxOrgUnitLevel = orgUnitLevel;
-        
-        // Hardcoded : if it is Tabular Analysis, Null Reporter
-        if( type != null && type.equalsIgnoreCase( "ta" ) )
-        {
-            List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnitId ) );
-            
-            
-            for( OrganisationUnit ou : orgUnitTree )
-            {
-                if( organisationUnitService.getLevelOfOrganisationUnit( ou ) > maxOrgUnitLevel )
-                {
-                    maxOrgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
-                }
-            }
-        }
-        */
-
         return SUCCESS;
     }
 
