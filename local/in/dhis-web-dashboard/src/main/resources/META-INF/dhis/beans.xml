@@ -76,7 +76,50 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
         </property>
     </bean>
-<!-- -->	
+	
+	<!-- Graphical Analyser Indicator Result -->
+    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
+        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+		<property name="dashBoardService" ref="org.hisp.dhis.dashboard.util.DashBoardService">
+		</property>
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>     
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
+        </property>
+<!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+        </property>-->
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+        </property>
+    </bean>
+	
+	
+<!-- Graphical Analyser DataElements End -->
+		
+<!-- Graphical Analyser Indicators Start-->
+    
+     <bean id="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction"
+        class="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction"
+        scope="prototype">
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitGroupService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        </property>
+        
+    </bean>
+	
+<!-- Graphical Analyser Indicators End-->	
 	
 		
 	<!-- Graphical Analyser -->
@@ -768,6 +811,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
+		<property name="reportservice" ref="org.hisp.dhis.reports.ReportService">
+		</property>
     </bean>
 	
 	<!-- DashBoard Utilities DataElementChartResult-->

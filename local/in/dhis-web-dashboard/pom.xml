@@ -83,7 +83,11 @@
       <artifactId>dhis-in-service-configuration</artifactId>
       <version>${version}</version>
     </dependency>
-	  
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-in-service-reports</artifactId>
+      <version>${version}</version>
+    </dependency>	  
 	  	      
     <!-- Other -->
 <!--	     
