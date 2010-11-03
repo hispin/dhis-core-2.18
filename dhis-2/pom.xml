@@ -664,8 +664,8 @@
   <properties>
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.0.4.RELEASE</spring.version>
-    <spring.security.version>3.0.3.RELEASE</spring.security.version>
+    <spring.version>3.0.5.RELEASE</spring.version>
+    <spring.security.version>3.0.4.RELEASE</spring.security.version>
     <hibernate.version>3.5.6-Final</hibernate.version>
   </properties>
 </project>
