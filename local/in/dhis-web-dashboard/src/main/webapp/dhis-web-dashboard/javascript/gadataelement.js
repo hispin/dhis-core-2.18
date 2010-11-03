@@ -320,5 +320,100 @@ function formValidationsDataElement()
     window.open('','chartWindowDataElement','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
   	return true;
 } 
-// formValidations Function End
+// formValidations Function DataElements End 
 
+
+//Graphical Analysis Form Indicators
+function formValidationsIndicator()
+{
+		
+	//var selectedServices = document.getElementById("selectedServices");
+
+	var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
+	var selIndicatorsListSize  = document.ChartGenerationForm.selectedIndicators.options.length;//alert(selDEListSize);
+	
+	var orgUnitListCB = document.getElementById("orgUnitListCB");
+	var selectedIndicators = document.getElementById("selectedIndicators");
+	
+	var orgUnitGroupCB = document.getElementById("orgUnitGroupList");
+	
+	var selOUGroupListLength = document.ChartGenerationForm.orgUnitGroupList.options.length;
+	
+	var selyearLB = document.getElementById("yearLB");
+    var selperiodLB = document.getElementById("periodLB");
+  
+    var periodTypeList = document.getElementById( "periodTypeLB" );
+    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;//alert(periodTypeId);
+	
+    var k = 0;
+
+    if(  selIndicatorsListSize <= 0 ) 
+		{
+	        alert( "Please Select Indicator(s)" );
+	        return false;
+		}
+    
+    else if(  selOUListLength <= 0 ) 
+		{
+	        alert( "Please Select OrganisationUnit" );
+	        return false;
+		}
+   
+    else if(document.getElementById( 'ougGroupSetCB' ).checked && orgUnitGroupCB.selectedIndex < 0 ) 
+    	{
+    		alert( "Please select OrgUnitGroup" );
+    		return false;
+    	/*if( orgUnitGroupCB.selectedIndex < 0 ) 
+	    	{
+	            alert( "Please select OrgUnitGroup" );
+	            
+	        }*/
+    	}	
+    else if( periodTypeId == yearlyPeriodTypeName )
+	   {
+	       if( selyearLB.selectedIndex < 0 ) 
+	       {
+	           alert("Please select Year(s)");
+	           return false;
+	       }
+	   }
+   else
+   {
+       if( selyearLB.selectedIndex < 0 ) 
+       {
+           alert("Please select Year(s)");
+           return false;
+       }
+       if( selperiodLB.selectedIndex < 0 ) 
+       {
+           alert("Please select Period(s)");
+           return false;
+       }
+   }
+  
+	if( selIndicatorsListSize > 0 )
+	{
+		for(k=0;k<document.ChartGenerationForm.selectedIndicators.options.length;k++)
+    	{
+    		document.ChartGenerationForm.selectedIndicators.options[k].selected = true;
+        } 
+	}
+
+    if( selOUListLength > 0 )
+    {
+    	for(k = 0; k < orgUnitListCB.options.length; k++)
+        {
+    		orgUnitListCB.options[k].selected = true;
+        }
+    }
+/*  
+    var sWidth = 1000;
+	var sHeight = 1000;
+    var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
+    var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
+
+    window.open('','chartWindowDataElement','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
+*/  	
+  	return true;
+} 
+// formValidations Function Indicators End

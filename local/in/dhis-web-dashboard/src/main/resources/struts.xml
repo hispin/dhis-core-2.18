@@ -60,9 +60,33 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
+<!-- GraphicalAnalyser  DataElements end   --> 	
+			
+<!-- GraphicalAnalyser  Indicators -->
+         <action name="graphicalAnalyserIndicator"
+            class="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-dashboard/graphicalAnalysisIndicatorFront.vm</param>
+            <param name="menu">/dhis-web-dashboard/menuWithTreeForGAIndicator.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/db.js,javascript/ga.js,javascript/hashtable.js,javascript/date.js,javascript/gadataelement.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+         </action> 
+		
+		 <action name="generateChartIndicator"
+            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction">
+            <result name="success" type="velocity">/popup.vm</result>      
+             <param name="page">/dhis-web-dashboard/graphicalAnalysisIndicatorResult.vm</param>    
+           <!--<result name="success" type="velocity">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>-->
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
 		
 		
-<!--	-->			
+		
+<!-- GraphicalAnalyser  Indicators end	-->	
+				
 		<!-- GraphicalAnalyser Module Stuff -->
 		
 		<action name="graphicalAnalyser"

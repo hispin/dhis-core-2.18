@@ -39,9 +39,11 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reports.ReportService;
 
 public class DashBoardService
 {
@@ -55,6 +57,13 @@ public class DashBoardService
     {
         this.periodService = periodService;
     }
+    
+    private ReportService reportservice ;
+    
+    public void setReportservice( ReportService reportservice )
+      {
+          this.reportservice = reportservice;
+      }
 
     /*
     private DBConnection dbConnection;
@@ -712,6 +721,50 @@ public class DashBoardService
         }
 
         return periodNameList;
+    }
+    
+    public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Period period ) 
+    {
+
+        String numeratorExp = indicator.getNumerator();
+        String denominatorExp = indicator.getDenominator();
+        int indicatorFactor = indicator.getIndicatorType().getFactor();
+        String reportModelTB = null;
+        String numeratorVal = reportservice.getIndividualResultDataValue( numeratorExp, period.getStartDate(), period.getEndDate(), orgunit, reportModelTB  );
+        String denominatorVal = reportservice.getIndividualResultDataValue( denominatorExp, period.getStartDate(), period.getEndDate(), orgunit, reportModelTB );
+
+        double numeratorValue;
+        try
+        {
+            numeratorValue = Double.parseDouble( numeratorVal );
+        } 
+        catch ( Exception e )
+        {
+            numeratorValue = 0.0;
+        }
+
+        double denominatorValue;
+        try
+        {
+            denominatorValue = Double.parseDouble( denominatorVal );
+        } 
+        catch ( Exception e )
+        {
+            denominatorValue = 1.0;
+        }
+
+        double aggregatedValue;
+        try
+        {
+            aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+        } 
+        catch ( Exception e )
+        {
+            System.out.println( "Exception while calculating Indicator value for Indicaotr " + indicator.getName() );
+            aggregatedValue = 0.0;
+        }
+        
+        return aggregatedValue;
     }
 
 } // class end
