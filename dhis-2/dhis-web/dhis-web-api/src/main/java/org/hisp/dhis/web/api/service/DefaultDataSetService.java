@@ -74,7 +74,8 @@ public class DefaultDataSetService implements IDataSetService {
 			if( dataSet.getPeriodType().getName().equals( "Daily") ||
 					dataSet.getPeriodType().getName().equals( "Weekly") ||
 					dataSet.getPeriodType().getName().equals( "Monthly") ||
-					dataSet.getPeriodType().getName().equals( "Yearly") )
+					dataSet.getPeriodType().getName().equals( "Yearly") || 
+					dataSet.getPeriodType().getName().equals("Quarterly") )
 			{
 				datasets.add(getDataSetForLocale(dataSet.getId(),locale));
 			}
