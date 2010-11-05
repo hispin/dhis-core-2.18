@@ -163,12 +163,22 @@ public class ShowUpdateDataElementFormAction
         return aggregationLevels;
     }
 
+    private DataElementCategoryCombo defaultCategoryCombo;
+
+    public DataElementCategoryCombo getDefaultCategoryCombo()
+    {
+        return defaultCategoryCombo;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        defaultCategoryCombo = dataElementCategoryService
+            .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+
         dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
             .getAllDataElementCategoryCombos() );
 

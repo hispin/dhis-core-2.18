@@ -117,7 +117,7 @@
 		<td>
 			<select id="selectedCategoryComboId" style="min-width:20em" onchange="changeCategory(this.value)">				
 			#foreach( $dataElementCategoryCombo in $dataElementCategoryCombos )
-				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $defaultCategoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
+				<option value="$dataElementCategoryCombo.id" #if( $dataElementCategoryCombo.id == $dataElement.categoryCombo.id ) selected="selected" #end>$encoder.htmlEncode( $dataElementCategoryCombo.name )</option>
 			#end
 			</select>
 			<input type="hidden" id="submitCategoryComboId" name="selectedCategoryComboId"/>
