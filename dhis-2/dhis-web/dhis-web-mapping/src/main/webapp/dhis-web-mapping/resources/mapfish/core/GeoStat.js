@@ -240,7 +240,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 
         binCount[nbBins - 1] = this.nbVal - mapfish.Util.sum(binCount);
 		
-		var imageLegend = new Array();
+		var imageLegend = [];
         var maxDec = 0;
         
         for (var i = 0; i < bounds.length; i++) {
@@ -254,7 +254,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
             bins[i] = new mapfish.GeoStat.Bin(binCount[i], bounds[i], bounds[i + 1], i == (nbBins - 1));
             var labelGenerator = this.labelGenerator || this.defaultLabelGenerator;
             bins[i].label = labelGenerator(bins[i], i, nbBins, maxDec);
-			imageLegend[i] = new Object();
+			imageLegend[i] = {};
 			imageLegend[i].label = bins[i].label.replace('&nbsp;&nbsp;', ' ');
         }
         

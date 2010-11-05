@@ -656,7 +656,7 @@
 				mode: 'local',
 				triggerAction: 'all',
 				value: 1,
-				store: new Ext.data.SimpleStore({
+				store: new Ext.data.ArrayStore({
 					fields: ['id', 'text'],
 					data: [[1, i18n_medium], [2, i18n_large]]
 				})					
@@ -705,7 +705,7 @@
                         var title = Ext.getCmp('exportimagetitle_tf').getValue();
                     	
                         if (!title) {
-                            Ext.message.msg(false, i18n_please_enter_map_title );
+                            Ext.message.msg(false, i18n_please_enter_map_title);
                         }
                         else {
                             var q = Ext.getCmp('exportimagequality_cb').getValue();
@@ -726,7 +726,7 @@
                             document.getElementById('heightField').value = h;  
                             document.getElementById('includeLegendsField').value = includeLegend;  
                             document.getElementById('periodField').value = period;  
-                            document.getElementById('indicatorField').value = vcb; 
+                            document.getElementById('indicatorField').value = vcb;
                             document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
 
                             exportForm.submit();
