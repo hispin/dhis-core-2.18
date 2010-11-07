@@ -347,7 +347,7 @@ function searchDataElementName(){
     }
 }
 
-function searchDataElementNamePaging(currentPage, pageSize) 
+function searchDataElementNamePagination(currentPage, pageSize) 
 {
 	
 	var params = 'key=' + getFieldValue( 'key' );
@@ -372,13 +372,13 @@ function searchDataElementNamePaging(currentPage, pageSize)
 function changePageSizeSearch()
 {
     var pageSize = jQuery("#sizeOfPage").val();
-    searchDataElementNamePaging(1, pageSize);
+    searchDataElementNamePagination(1, pageSize);
 }
 
 function jumpToPageSearch()
 {
     var pageSize = jQuery("#sizeOfPage").val();
     var currentPage = jQuery("#jumpToPage").val();
-    searchDataElementNamePaging(currentPage, pageSize);
+    searchDataElementNamePagination(currentPage, pageSize);
 }
 
