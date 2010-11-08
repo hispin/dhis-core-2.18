@@ -1022,81 +1022,78 @@ public class DefaultReportService
     
  // functoin getBooleanDataValue end
     
-    //function getStartingEndingPeriods starts
     
-    public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod)
+//function getStartingEndingPeriods starts
+    
+public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod)
+{
+    List<Calendar> calendarList = new ArrayList<Calendar>();
+
+    Calendar tempStartDate = Calendar.getInstance();
+    Calendar tempEndDate = Calendar.getInstance();
+
+    Period previousPeriod = new Period();
+    previousPeriod = getPreviousPeriod( selectedPeriod );
+
+    if ( deType.equalsIgnoreCase( "ccmcy" ) )
     {
-
-        List<Calendar> calendarList = new ArrayList<Calendar>();
-
-        Calendar tempStartDate = Calendar.getInstance();
-        Calendar tempEndDate = Calendar.getInstance();
-
-        Period previousPeriod = new Period();
-        previousPeriod = getPreviousPeriod( selectedPeriod );
-
-        if ( deType.equalsIgnoreCase( "ccmcy" ) )
+        tempStartDate.setTime( selectedPeriod.getStartDate() );
+        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
         {
-            tempStartDate.setTime( selectedPeriod.getStartDate() );
-            if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-            {
-                tempStartDate.roll( Calendar.YEAR, -1 );
-            }
-            tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-            tempEndDate.setTime( selectedPeriod.getEndDate() );
-            // System.out.println("CCMCY : "+ String.valueOf(
-            // tempStartDate.getTime()) +" ------ "+String.valueOf(
-            // tempEndDate.getTime()));
-        } 
-        else if ( deType.equalsIgnoreCase( "cpmcy" ) )
-            {
-                tempStartDate.setTime( previousPeriod.getStartDate() );
-                if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-                {
-                    tempStartDate.roll( Calendar.YEAR, -1 );
-                }
-                tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-                tempEndDate.setTime( previousPeriod.getEndDate() );
-            } 
-        else if ( deType.equalsIgnoreCase( "cmpy" ) )
-                {
-                    tempStartDate.setTime( selectedPeriod.getStartDate() );
-                    tempEndDate.setTime( selectedPeriod.getEndDate() );
+            tempStartDate.roll( Calendar.YEAR, -1 );
+        }
+        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+        tempEndDate.setTime( selectedPeriod.getEndDate() );
+    } 
+    else if ( deType.equalsIgnoreCase( "cpmcy" ) )
+    {
+        tempStartDate.setTime( previousPeriod.getStartDate() );
+        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
+        {
+            tempStartDate.roll( Calendar.YEAR, -1 );
+        }
+        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+        tempEndDate.setTime( previousPeriod.getEndDate() );
+    } 
+    else if ( deType.equalsIgnoreCase( "cmpy" ) )
+    {
+        tempStartDate.setTime( selectedPeriod.getStartDate() );
+        tempEndDate.setTime( selectedPeriod.getEndDate() );
+    
+        tempStartDate.roll( Calendar.YEAR, -1 );
+        tempEndDate.roll( Calendar.YEAR, -1 );
+    } 
+    else if ( deType.equalsIgnoreCase( "ccmpy" ) )
+    {
+        tempStartDate.setTime( selectedPeriod.getStartDate() );
+        tempEndDate.setTime( selectedPeriod.getEndDate() );
 
-                    tempStartDate.roll( Calendar.YEAR, -1 );
-                    tempEndDate.roll( Calendar.YEAR, -1 );
-                } 
-        else if ( deType.equalsIgnoreCase( "ccmpy" ) )
-                    {
-                        tempStartDate.setTime( selectedPeriod.getStartDate() );
-                        tempEndDate.setTime( selectedPeriod.getEndDate() );
+        tempStartDate.roll( Calendar.YEAR, -1 );
+        tempEndDate.roll( Calendar.YEAR, -1 );
 
-                        tempStartDate.roll( Calendar.YEAR, -1 );
-                        tempEndDate.roll( Calendar.YEAR, -1 );
-
-                        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
-                        {
-                            tempStartDate.roll( Calendar.YEAR, -1 );
-                        }
-                        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
-
-                    } else if ( deType.equalsIgnoreCase( "pmcy" ) )
-                        {
-                            tempStartDate.setTime( previousPeriod.getStartDate() );
-                            tempEndDate.setTime( previousPeriod.getEndDate() );
-                        } else
-                        {
-                            tempStartDate.setTime( selectedPeriod.getStartDate() );
-                            tempEndDate.setTime( selectedPeriod.getEndDate() );
-                        }
-
-        // System.out.print(deType+" -- ");
-        calendarList.add( tempStartDate );
-        calendarList.add( tempEndDate );
-
-        return calendarList;
+        if ( tempStartDate.get( Calendar.MONTH ) < Calendar.APRIL )
+        {
+            tempStartDate.roll( Calendar.YEAR, -1 );
+        }
+        tempStartDate.set( Calendar.MONTH, Calendar.APRIL );
+    } 
+    else if ( deType.equalsIgnoreCase( "pmcy" ) )
+    {
+        tempStartDate.setTime( previousPeriod.getStartDate() );
+        tempEndDate.setTime( previousPeriod.getEndDate() );
+    } 
+    else
+    {
+        tempStartDate.setTime( selectedPeriod.getStartDate() );
+        tempEndDate.setTime( selectedPeriod.getEndDate() );
     }
-  //function getStartingEndingPeriods end
+
+    calendarList.add( tempStartDate );
+    calendarList.add( tempEndDate );
+
+    return calendarList;
+}
+//function getStartingEndingPeriods end
     
     //function getPreviousPeriod starts
     
