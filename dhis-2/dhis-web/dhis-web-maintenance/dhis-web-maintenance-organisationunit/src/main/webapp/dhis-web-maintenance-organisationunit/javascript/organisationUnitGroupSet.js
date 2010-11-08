@@ -60,6 +60,7 @@ function validateAddOrganisationGroupSet( form )
 		function( json ){
 			if( json.response == 'success' ){
 				markValid( 'selectedGroups' );
+				selectAllById( 'selectedGroups' );
 				form.submit();
 			}else{
 				markInvalid( 'selectedGroups', json.message );				
