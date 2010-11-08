@@ -96,10 +96,6 @@
 	</tr>
 	
 	<tr>
-		<td></td>
-		<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
-	</tr>
-	<tr>
 		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
 		<td>
 			<select type="text" id="bloodGroup" name="bloodGroup" style="width:30em" >
