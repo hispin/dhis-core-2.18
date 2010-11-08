@@ -34,5 +34,3 @@ where sd.dataelementid not in (
   select dm.dataelementid from datasetmembers dm
   join dataset ds on(dm.datasetid=ds.datasetid)
   where sc.datasetid=ds.datasetid);
-
-

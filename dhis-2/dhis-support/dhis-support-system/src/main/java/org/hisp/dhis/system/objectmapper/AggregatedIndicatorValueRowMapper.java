@@ -48,7 +48,7 @@ public class AggregatedIndicatorValueRowMapper
         value.setIndicatorId( resultSet.getInt( 1 ) );
         value.setPeriodId( resultSet.getInt( 2 ) );
         value.setOrganisationUnitId( resultSet.getInt( 3 ) );
-        value.setPeriodTypeId( resultSet.getInt( resultSet.getInt( 4 ) ) );
+        value.setPeriodTypeId( resultSet.getInt( 4 ) );
         value.setLevel( resultSet.getInt( 5 ) );
         value.setAnnualized( resultSet.getString( 6 ) );
         value.setFactor( resultSet.getDouble( 7 ) );
