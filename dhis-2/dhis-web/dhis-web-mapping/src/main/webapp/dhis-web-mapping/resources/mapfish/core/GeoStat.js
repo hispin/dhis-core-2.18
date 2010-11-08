@@ -308,9 +308,8 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 	
     classify: function(method, nbBins, bounds) {
         var mlt = GLOBALS.vars.activePanel.isPolygon() ?
-            choropleth.legend.type : GLOBALS.vars.activePanel.isPoint() ?
-                proportionalSymbol.legend.type : GLOBALS.vars.activePanel.isAssignment() ?
-                    GLOBALS.conf.map_legend_type_automatic : GLOBALS.conf.map_legend_type_automatic;
+            choropleth.legend.value : GLOBALS.vars.activePanel.isPoint() ?
+                proportionalSymbol.legend.value : GLOBALS.conf.map_legend_type_automatic;
     
 		if (mlt == GLOBALS.conf.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {

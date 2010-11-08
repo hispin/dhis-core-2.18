@@ -1465,7 +1465,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     (this.organisationUnitSelectionType.isLevel() ? 'getDataMapValuesByParent' : 'getDataMapValuesByLevel');
             
             var params = {
-                id: this.valueType == GLOBALS.conf.map_value_type_indicator ? Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue(),
+                id: this.valueType.isIndicator ? Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue(),
                 periodId: GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb2').getValue() : null,
                 startDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('startdate_df2').getValue()).format('Y-m-d') : null,
                 endDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('enddate_df2').getValue()).format('Y-m-d') : null,
