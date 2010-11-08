@@ -7,6 +7,8 @@ public class DataElement extends AbstractModel {
 
 	private String type;
 
+	private AbstractModelList categoryOptionCombos;
+	
 	public DataElement() {
 
 	}	
@@ -18,5 +20,17 @@ public class DataElement extends AbstractModel {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+        public AbstractModelList getCategoryOptionCombos()
+        {
+            return categoryOptionCombos;
+        }
+    
+        public void setCategoryOptionCombos( AbstractModelList categoryOptionCombos )
+        {
+            this.categoryOptionCombos = categoryOptionCombos;
+        }
+	
+	
 		
 }
