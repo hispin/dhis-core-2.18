@@ -80,7 +80,7 @@ public class Report_inDesign implements Serializable
         
     }
     
-    public Report_inDesign(String stype, String ptype, int sheetno, int rowno, int colno, int rowmerge, int colmerge, String expression)
+    public Report_inDesign( String stype, String ptype, int sheetno, int rowno, int colno, int rowmerge, int colmerge, String expression )
     {
         this.stype = stype;
         this.ptype = ptype;
@@ -92,6 +92,16 @@ public class Report_inDesign implements Serializable
         this.expression = expression;        
     }
     
+    public Report_inDesign( String stype, String ptype, int sheetno, int rowno, int colno, String expression )
+    {
+        this.stype = stype;
+        this.ptype = ptype;
+        this.sheetno = sheetno;
+        this.rowno = rowno;
+        this.colno = colno;
+        this.expression = expression;        
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

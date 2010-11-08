@@ -19,7 +19,7 @@
 			alert("Please Select OrganisationUnit"); 
 			return false;
 		}		
-		else if( reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null ) 
+		else if( reportListIndex < 0 || reportList.options[reportListIndex].text == null ) 
 		{
 			alert("Please Select Report"); 
 			return false;

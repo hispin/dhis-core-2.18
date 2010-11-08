@@ -5,13 +5,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportType;
@@ -21,7 +18,6 @@ import com.opensymphony.xwork2.Action;
 public class GenerateRoutineReportAnalyserFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -33,25 +29,6 @@ public class GenerateRoutineReportAnalyserFormAction
         this.periodService = periodService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-/*
-    private ReportService reportService;
-
-    public void setReportService( ReportService reportService )
-    {
-        this.reportService = reportService;
-    }
-*/    
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -60,35 +37,8 @@ public class GenerateRoutineReportAnalyserFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Constants
-    // -------------------------------------------------------------------------
-
-    private final int ALL = 0;
-
-    public int getALL()
-    {
-        return ALL;
-    }
-
-//    private String raFolderName;
-
-    // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-
-    private Collection<OrganisationUnit> organisationUnits;
-
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    private Collection<Period> periods = new ArrayList<Period>();
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
 
     private Collection<PeriodType> periodTypes;
 
@@ -118,36 +68,31 @@ public class GenerateRoutineReportAnalyserFormAction
     public String execute()
         throws Exception
     {
-       // raFolderName = reportService.getRAFolderName();
-        
-        /* Report Info */
         reportTypeName = ReportType.RT_ROUTINE;
 
-        /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();
 
-        Iterator<PeriodType> alldeIterator = periodTypes.iterator();
-        while ( alldeIterator.hasNext() )
+        Iterator<PeriodType> periodTypeIterator = periodTypes.iterator();
+        while ( periodTypeIterator.hasNext() )
         {
-            PeriodType type = alldeIterator.next();
-            if (type.getName().equalsIgnoreCase("Monthly") || type.getName().equalsIgnoreCase("quarterly") || type.getName().equalsIgnoreCase("yearly"))
+            PeriodType type = periodTypeIterator.next();
+            
+            if( type.getName().equalsIgnoreCase("Monthly") || type.getName().equalsIgnoreCase("quarterly") || type.getName().equalsIgnoreCase("yearly") )
             {
-                periods.addAll(periodService.getPeriodsByPeriodType(type));
             }
             else
             {
-               alldeIterator.remove();
+                periodTypeIterator.remove();
             }
         }
         
         OrganisationUnitGroupSet organisationUnitGroupSet1 = organisationUnitGroupService.getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
         
-        orgUnitGroupMembers = new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet1.getOrganisationUnitGroups());
+        orgUnitGroupMembers = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet1.getOrganisationUnitGroups() );
         
         OrganisationUnitGroupSet organisationUnitGroupSet2 = organisationUnitGroupService.getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_OWNERSHIP );
         
-        orgUnitGroupMembers.addAll( new ArrayList<OrganisationUnitGroup>(organisationUnitGroupSet2.getOrganisationUnitGroups() ) );
-        
+        orgUnitGroupMembers.addAll( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet2.getOrganisationUnitGroups() ) );
         
         return SUCCESS;
     }

@@ -102,13 +102,20 @@ public interface ReportService
     // ReportService for Report Result Action
     // -------------------------------------------------------------------------
     
-   // public List<String> getDECodes( String fileName );
+    List<Report_inDesign> getReportDesign( String fileName );
+    
     String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    
     String getIndividualResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit, String reportModelTB );
+    
     String getResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    
     String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    
     String getBooleanDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB );
+    
     List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod );
+    
     Period getPreviousPeriod( Period selectedPeriod );
 
 }
