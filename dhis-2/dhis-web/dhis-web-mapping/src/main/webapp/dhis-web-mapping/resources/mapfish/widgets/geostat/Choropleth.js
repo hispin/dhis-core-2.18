@@ -986,7 +986,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
     
     createSelectFeatures: function() {
-        var scope = this;
         
         var onHoverSelect = function onHoverSelect(feature) {
             if (GLOBALS.vars.activePanel.isPolygon()) {
