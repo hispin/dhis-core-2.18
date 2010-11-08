@@ -175,25 +175,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Report Deletion end -->
 	<!-- Reports Management end 07/08/2010 Global-->
 	
-	<!-- Routine Reports  25/08/2010 Start-->
+	<!-- Routine Reports -->
 	<bean
 		id="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserFormAction"
 		scope="prototype">
 		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<!--	<property name="reportService"> 
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 	
 	<bean
@@ -201,26 +190,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reports.routine.action.GenerateRoutineReportAnalyserResultAction"
 		scope="prototype">
 		
-		<property name="statementManager" ref="statementManager"/>
-		
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<!--	<property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		<!-- added report service 25/08/2010-->
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref
-				bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
+		<property name="statementManager" ref="statementManager"/>		
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-	<!-- Routine Reports  25/08/2010 end-->
 	
 	<!-- ED Report -->
 	<bean id="org.hisp.dhis.reports.ed.action.EDReportFormAction"
@@ -425,7 +400,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 	</bean>
 	
-	<!-- Upward Reports/ GOI Reports -->
+	<!-- Upward / GOI Reports -->
 	<bean
 		id="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.upward.action.GenerateUpwardReportAnalyserFormAction"
@@ -440,14 +415,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		
 		<property name="statementManager" ref="statementManager"/>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
 	</bean>
 	
 	<!-- DataSet Lock Reports -->

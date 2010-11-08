@@ -40,6 +40,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
+import org.hisp.dhis.reports.Report_inDesign;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -109,20 +110,6 @@ public class GenerateUpwardReportAnalyserResultAction
         return fileName;
     }
 
-    private String reportFileNameTB;
-
-    public void setReportFileNameTB( String reportFileNameTB )
-    {
-        this.reportFileNameTB = reportFileNameTB;
-    }
-
-    private String reportModelTB;
-
-    public void setReportModelTB( String reportModelTB )
-    {
-        this.reportModelTB = reportModelTB;
-    }
-
     private String reportList;
 
     public void setReportList( String reportList )
@@ -151,6 +138,10 @@ public class GenerateUpwardReportAnalyserResultAction
         this.aggCB = aggCB;
     }
 
+    private String reportFileNameTB;
+
+    private String reportModelTB;
+
     private List<OrganisationUnit> orgUnitList;
 
     private Period selectedPeriod;
@@ -160,16 +151,6 @@ public class GenerateUpwardReportAnalyserResultAction
     private SimpleDateFormat monthFormat;
 
     private SimpleDateFormat simpleMonthFormat;
-
-    private List<String> deCodeType;
-
-    private List<String> serviceType;
-
-    private List<Integer> sheetList;
-
-    private List<Integer> rowList;
-
-    private List<Integer> colList;
 
     private Date sDate;
 
@@ -187,16 +168,11 @@ public class GenerateUpwardReportAnalyserResultAction
 
         // Initialization
         raFolderName = reportService.getRAFolderName();
-        deCodeType = new ArrayList<String>();
-        serviceType = new ArrayList<String>();
         String deCodesXMLFileName = "";
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
         simpleMonthFormat = new SimpleDateFormat( "MMM" );
         String parentUnit = "";
-        sheetList = new ArrayList<Integer>();
-        rowList = new ArrayList<Integer>();
-        colList = new ArrayList<Integer>();
         
         Report_in selReportObj =  reportService.getReport( Integer.parseInt( reportList ) );
         
@@ -208,9 +184,6 @@ public class GenerateUpwardReportAnalyserResultAction
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
-
-        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
 
         if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
         {
@@ -242,10 +215,12 @@ public class GenerateUpwardReportAnalyserResultAction
 
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
 
-        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+        Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
 
         // Getting DataValues
-        List<String> deCodesList = getDECodes( deCodesXMLFileName );
+        List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
         int orgUnitCount = 0;
 
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
@@ -253,14 +228,15 @@ public class GenerateUpwardReportAnalyserResultAction
         {
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
-            Iterator<String> it1 = deCodesList.iterator();
             int count1 = 0;
-            while ( it1.hasNext() )
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+            while ( reportDesignIterator.hasNext() )
             {
-                String deCodeString = (String) it1.next();
+                Report_inDesign report_inDesign = (Report_inDesign) reportDesignIterator.next();
 
-                String deType = (String) deCodeType.get( count1 );
-                String sType = (String) serviceType.get( count1 );
+                String deType = report_inDesign.getPtype();
+                String sType = report_inDesign.getStype();
+                String deCodeString = report_inDesign.getExpression();
                 String tempStr = "";
 
                 Calendar tempStartDate = Calendar.getInstance();
@@ -371,9 +347,9 @@ public class GenerateUpwardReportAnalyserResultAction
                     }
                 }
         
-                int tempRowNo = rowList.get( count1 );
-                int tempColNo = colList.get( count1 );
-                int sheetNo = sheetList.get( count1 );
+                int tempRowNo = report_inDesign.getRowno();
+                int tempColNo = report_inDesign.getColno();
+                int sheetNo = report_inDesign.getSheetno();
                 WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
                 
                 if ( tempStr == null || tempStr.equals( " " ) )
@@ -465,67 +441,4 @@ public class GenerateUpwardReportAnalyserResultAction
 
         return SUCCESS;
     }
-
-    public List<String> getDECodes( String fileName )
-    {
-        List<String> deCodes = new ArrayList<String>();
-        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName + File.separator + fileName;
-        
-        try
-        {
-            String newpath = System.getenv( "DHIS2_HOME" );
-            if ( newpath != null )
-            {
-                path = newpath + File.separator + raFolderName + File.separator + fileName;
-            }
-        } 
-        catch ( NullPointerException npe )
-        {
-            System.out.println("DHIS2_HOME not set");
-        }
-
-        try
-        {
-            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse( new File( path ) );
-            if ( doc == null )
-            {
-                System.out.println( "There is no DECodes related XML file in the ra folder" );
-                return null;
-            }
-
-            NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
-            int totalDEcodes = listOfDECodes.getLength();
-
-            for ( int s = 0; s < totalDEcodes; s++ )
-            {
-                Element deCodeElement = (Element) listOfDECodes.item( s );
-                NodeList textDECodeList = deCodeElement.getChildNodes();
-                deCodes.add( ( (Node) textDECodeList.item( 0 ) ).getNodeValue().trim() );
-                serviceType.add( deCodeElement.getAttribute( "stype" ) );
-                deCodeType.add( deCodeElement.getAttribute( "type" ) );
-                sheetList.add( new Integer( deCodeElement.getAttribute( "sheetno" ) ) );
-                rowList.add( new Integer( deCodeElement.getAttribute( "rowno" ) ) );
-                colList.add( new Integer( deCodeElement.getAttribute( "colno" ) ) );
-
-            }// end of for loop with s var
-        }// try block end
-        catch ( SAXParseException err )
-        {
-            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
-            System.out.println( " " + err.getMessage() );
-        } 
-        catch ( SAXException e )
-        {
-            Exception x = e.getException();
-            ( ( x == null ) ? e : x ).printStackTrace();
-        } 
-        catch ( Throwable t )
-        {
-            t.printStackTrace();
-        }
-        return deCodes;
-    }// getDECodes end
-
 }

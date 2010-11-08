@@ -1314,4 +1314,74 @@ public class DefaultReportService
             }
         }
     
+    // -------------------------------------------------------------------------
+    // Get Aggregated Result for dataelement expression 
+    // -------------------------------------------------------------------------
+
+    public List<Report_inDesign> getReportDesign( String fileName )
+    {
+        List<Report_inDesign> reportDesignList = new ArrayList<Report_inDesign>();
+        
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue()
+            + File.separator + fileName;
+        try
+        {
+            String newpath = System.getenv( "DHIS2_HOME" );
+            if ( newpath != null )
+            {
+                path = newpath + File.separator + configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue() + File.separator + fileName;
+            }
+        }
+        catch ( NullPointerException npe )
+        {
+            System.out.println("DHIS2_HOME not set");
+        }
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+            if ( doc == null )
+            {
+                System.out.println( "There is no DECodes related XML file in the ra folder" );
+                return null;
+            }
+
+            NodeList listOfDECodes = doc.getElementsByTagName( "de-code" );
+            int totalDEcodes = listOfDECodes.getLength();
+
+            for ( int s = 0; s < totalDEcodes; s++ )
+            {
+                Element deCodeElement = (Element) listOfDECodes.item( s );
+                NodeList textDECodeList = deCodeElement.getChildNodes();
+                
+                String expression = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+                String stype = deCodeElement.getAttribute( "stype" );
+                String ptype = deCodeElement.getAttribute( "type" );
+                int sheetno = new Integer( deCodeElement.getAttribute( "sheetno" ) );
+                int rowno = new Integer( deCodeElement.getAttribute( "rowno" ) );
+                int colno = new Integer( deCodeElement.getAttribute( "colno" ) );
+                
+                Report_inDesign report_inDesign = new Report_inDesign( stype, ptype, sheetno, rowno, colno, expression );
+                reportDesignList.add( report_inDesign );
+            }// end of for loop with s var
+        }// try block end
+        catch ( SAXParseException err )
+        {
+            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
+            System.out.println( " " + err.getMessage() );
+        }
+        catch ( SAXException e )
+        {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+        }
+        catch ( Throwable t )
+        {
+            t.printStackTrace();
+        }
+        return reportDesignList;
+    }
+    
 }
