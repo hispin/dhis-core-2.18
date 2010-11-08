@@ -26,8 +26,6 @@ public class PhysicalReportFormAction
     implements Action
 
 {
-   // private final String ALL = "null";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -46,13 +44,6 @@ public class PhysicalReportFormAction
         this.reportService = reportService;
     }
 
-    private String reportTypeName;
-
-    public String getReportTypeName()
-    {
-        return reportTypeName;
-    }
-
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -64,34 +55,11 @@ public class PhysicalReportFormAction
         return periodNameList;
     }
 
-    private SimpleDateFormat simpleDateFormat1;
+    private String reportTypeName;
 
-   // private String id;
-
-   // public void setId( String id )
-   // {
-  //      this.id = id;
-   // }
-
-    private List<Period> periods;
-
-    public List<Period> getPeriods()
+    public String getReportTypeName()
     {
-        return periods;
-    }
-
-    private List<String> reportIds;
-
-    public List<String> getReportIds()
-    {
-        return reportIds;
-    }
-
-    private List<String> reportNames;
-
-    public List<String> getReportNames()
-    {
-        return reportNames;
+        return reportTypeName;
     }
 
     private List<Report_in> reportList;
@@ -101,10 +69,6 @@ public class PhysicalReportFormAction
         return reportList;
     }
 
-  //  private String raFolderName;
-
-    int count;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -112,12 +76,11 @@ public class PhysicalReportFormAction
     public String execute()
         throws Exception
     {
-
-        // reportTypeName = ReportType.RT_PHYSICAL_OUTPUT;
+        reportTypeName = ReportType.RT_PHYSICAL_OUTPUT;
 
         periodNameList = new ArrayList<String>();
 
-        periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new YearlyPeriodType() ) );
+        List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new YearlyPeriodType() ) );
 
         Iterator<Period> periodIterator = periods.iterator();
         while ( periodIterator.hasNext() )
@@ -131,18 +94,17 @@ public class PhysicalReportFormAction
         }
         Collections.sort( periods, new PeriodComparator() );
 
-        simpleDateFormat1 = new SimpleDateFormat( "yyyy" );
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat( "yyyy" );
 
         for ( Period p1 : periods )
         {
             int year = Integer.parseInt( simpleDateFormat1.format( p1.getStartDate() ) ) + 1;
             periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) + "-" + year );
         }
-        System.out.println( periods );
+
         reportList = new ArrayList<Report_in>( reportService.getReportsByReportType( ReportType.RT_PHYSICAL_OUTPUT ) );
 
         return SUCCESS;
-
     }
 
 }

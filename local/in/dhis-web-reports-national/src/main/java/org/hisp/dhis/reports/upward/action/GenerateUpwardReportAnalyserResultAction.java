@@ -14,9 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import jxl.CellType;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -41,12 +38,6 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
