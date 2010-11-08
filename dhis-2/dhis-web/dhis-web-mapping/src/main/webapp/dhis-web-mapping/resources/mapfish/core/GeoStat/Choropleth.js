@@ -54,8 +54,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         var initialColors = this.colors;
         var numColors = this.classification.bins.length;
 		var mapLegendType = GLOBALS.vars.activePanel.isAssignment() ?
-            GLOBALS.conf.map_legend_type_automatic : GLOBALS.vars.activePanel.isPolygon() ?
-                Ext.getCmp('maplegendtype_cb').getValue() : Ext.getCmp('maplegendtype_cb2').getValue();
+            GLOBALS.conf.map_legend_type_automatic : Ext.getCmp('maplegendtype_cb').getValue();
         
         if (mapLegendType == GLOBALS.conf.map_legend_type_automatic) {
 			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
