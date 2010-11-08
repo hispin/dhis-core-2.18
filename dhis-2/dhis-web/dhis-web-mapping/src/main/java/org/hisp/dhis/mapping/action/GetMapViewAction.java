@@ -113,7 +113,7 @@ public class GetMapViewAction
             }
 
             else if ( object.getOrganisationUnitSelectionType().equals(
-                MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
+                MappingService.ORGANISATION_UNIT_SELECTION_TYPE_LEVEL ) )
             {
                 OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
                     .parseInt( object.getMapSource() ) );

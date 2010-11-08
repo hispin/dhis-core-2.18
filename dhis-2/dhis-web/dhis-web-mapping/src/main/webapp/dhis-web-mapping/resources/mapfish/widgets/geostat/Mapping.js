@@ -63,8 +63,8 @@ mapfish.widgets.geostat.Mapping = Ext.extend(Ext.FormPanel, {
     stores: false,
 	
     initComponent : function() {
-        
-        var mapStore = new Ext.data.JsonStore({
+
+    var mapStore = new Ext.data.JsonStore({
             url: GLOBALS.conf.path_mapping + 'getAllMaps' + GLOBALS.conf.type,
             baseParams: { format: 'jsonmin' },
             root: 'maps',

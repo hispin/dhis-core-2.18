@@ -3044,7 +3044,7 @@
         legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
-            expand: {
+            'expand': {
                 fn: function() {
                     if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap) {
                         GLOBALS.vars.activePanel.setPolygon();
@@ -3061,7 +3061,7 @@
             }
         }
     });
-    
+
     proportionalSymbol = new mapfish.widgets.geostat.Symbol({
         id: 'proportionalsymbol',
         map: GLOBALS.vars.map,
@@ -3072,7 +3072,7 @@
         legendDiv: 'pointlegend',
         defaults: {width: 130},
         listeners: {
-            expand: {
+            'expand': {
                 fn: function() {
                     if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap2) {
                         GLOBALS.vars.activePanel.setPoint();
@@ -3089,7 +3089,7 @@
             }
         }
     });
-	
+    
     mapping = new mapfish.widgets.geostat.Mapping({
         id: 'mapping',
         map: GLOBALS.vars.map,
@@ -3100,7 +3100,7 @@
         legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
-            expand: {
+            'expand': {
                 fn: function() {
                     GLOBALS.vars.activePanel.setAssignment();
                     this.layer.setVisibility(false);
