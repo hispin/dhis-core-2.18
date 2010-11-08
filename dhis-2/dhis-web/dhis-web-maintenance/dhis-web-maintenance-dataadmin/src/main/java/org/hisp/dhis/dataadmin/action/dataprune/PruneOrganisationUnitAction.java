@@ -31,7 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataprune.DataPruneService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -56,32 +56,29 @@ public class PruneOrganisationUnitAction
         this.dataPruneService = dataPruneService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer organisationUnitSelected;
-
-    public void setOrganisationUnitSelected( Integer organisationUnitSelected )
-    {
-        this.organisationUnitSelected = organisationUnitSelected;
-    }
-
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        OrganisationUnit kept = organisationUnitService.getOrganisationUnit( organisationUnitSelected );
+        OrganisationUnit kept = selectionTreeManager.getSelectedOrganisationUnit();
 
         log.info( "Pruning Organisation Unit, " + kept + " is kept" );
+
+        if ( kept.getParent() == null )
+        {
+            log.info( "Pruning is interrupted" );
+            
+            return ERROR;
+        }
 
         dataPruneService.pruneOrganisationUnit( kept );
 
@@ -89,4 +86,5 @@ public class PruneOrganisationUnitAction
 
         return SUCCESS;
     }
+
 }
