@@ -24,9 +24,9 @@
 
 <h3>$i18n.getString( "edit_data_element" )</h3>
 
-<form id="updateDataElementForm" action="updateDataElement.action" method="get" >
-	<input type="hidden" id="id" name="id" value="$dataElement.id">
-	<input type="hidden" id="defaultCategoryCombo" value="$defaultCategoryCombo.id">
+<form id="updateDataElementForm" action="updateDataElement.action" method="POST" >
+	<input type="hidden" id="id" name="id" value="$dataElement.id"/>
+	<input type="hidden" id="defaultCategoryCombo" value="$defaultCategoryCombo.id"/>
 	<select name="factors" id="factorsSubmit" multiple="multiple" style="display:none"></select>
 <table>
 	<tr>
