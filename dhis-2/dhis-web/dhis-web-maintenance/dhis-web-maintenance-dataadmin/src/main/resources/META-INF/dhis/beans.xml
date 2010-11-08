@@ -168,8 +168,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction"
 		scope="prototype">
 		<property name="dataPruneService" ref="org.hisp.dhis.dataprune.DataPruneService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 	</bean>
 
 	<!-- Duplicate data elimination -->

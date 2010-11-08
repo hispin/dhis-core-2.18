@@ -14,11 +14,16 @@ function treeSelected( unitIds )
 	        },
 	        function( json )
 	        {
-	            document.getElementById( "keepNameField" ).innerHTML = json.organisationUnit.name;
-	            document.getElementById( "pruneButton" ).disabled = false; 
-				hideById('message');
+	            setInnerHTML( 'keepNameField', json.organisationUnit.name );
+	            enable( 'pruneButton' );
+				hideHeaderMessage( 'message' );
 	        }
 	    );
+	}
+	else
+	{
+		setInnerHTML( 'keepNameField', i18n_not_selected );
+	    disable( 'pruneButton' );
 	}
 }
 
@@ -26,17 +31,26 @@ function pruneOrganisationUnit()
 {
 	var result = window.confirm(i18n_confirmation);
 
-	if (result) {
-		setWaitMessage(i18n_pruning + "...");
+	if ( result ) {
+	
+		setHeaderWaitMessage( i18n_pruning + "..." );
 
-		$.ajax( {
-			"url" : "pruneOrganisationUnit.action",
-			"data" : {
-				"organisationUnitSelected" : organisationUnitSelected
-			},
-			"success" : function() {
-				setMessage(i18n_pruning_done);
+		$.getJSON(
+			"pruneOrganisationUnit.action", {},
+			function( json )
+			{
+				hideHeaderMessage( 'message' );
+				
+				if ( json.response == "success" )
+				{	
+					showSuccessMessage( i18n_pruning_done );
+					setTimeout( "window.location.href='displayPruneOrganisationUnitForm.action'", 2500);
+				}
+				else
+				{
+					showErrorMessage( i18n_pruning_interrupted );
+				}
 			}
-		});
+		);
 	}
 }

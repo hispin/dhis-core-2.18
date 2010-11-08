@@ -145,8 +145,10 @@
 		
 		<action name="pruneOrganisationUnit"
 			class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction">
-			<result name="success" type="redirect">
-				displayPruneOrganisationUnitForm.action</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 		
 		<!-- Statistics -->
