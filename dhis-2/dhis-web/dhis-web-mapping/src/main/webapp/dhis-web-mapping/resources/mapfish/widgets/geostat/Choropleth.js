@@ -85,7 +85,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         this.createSelectFeatures();
         
         if (GLOBALS.vars.parameter) {
-            this.mapView = GLOBALS.vars.parameter.mapView;
+            this.mapView = GLOBALS.util.mapViewNullSafe(GLOBALS.vars.parameter.mapView);
             this.updateValues = true;
             this.legend = {
                 value: this.mapView.mapLegendType,
@@ -211,7 +211,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        this.mapView = GLOBALS.stores.mapView.getAt(GLOBALS.stores.mapView.find('id', cb.getValue())).data;
+                        this.mapView = GLOBALS.util.mapViewNullSafe(GLOBALS.stores.mapView.getAt(GLOBALS.stores.mapView.find('id', cb.getValue())).data);
                         this.updateValues = true;
                         
                         this.legend.value = this.mapView.mapLegendType;
@@ -853,7 +853,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             valueField: 'id',
             displayField: 'name',
             mode: 'remote',
-            fieldLabel: i18n_legend_set,
+            fieldLabel: i18n_legendset,
             emptyText: GLOBALS.conf.emptytext,
 			labelSeparator: GLOBALS.conf.labelseparator,
             triggerAction: 'all',
@@ -1253,24 +1253,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     setMapViewLegend: function() {
         this.prepareMapViewLegend();
-        
+
         function predefinedMapLegendSetStoreCallback() {
             Ext.getCmp('maplegendset_cb').setValue(this.mapView.mapLegendSetId);
             this.applyPredefinedLegend(true);
         }
-        
+
         if (this.legend.value == GLOBALS.conf.map_legend_type_automatic) {
             Ext.getCmp('method_cb').setValue(this.mapView.method);
             Ext.getCmp('colorA_cf').setValue(this.mapView.colorLow);
             Ext.getCmp('colorB_cf').setValue(this.mapView.colorHigh);
-            
+
             if (this.legend.method == GLOBALS.conf.classify_with_bounds) {
                 Ext.getCmp('bounds_tf').setValue(this.mapView.bounds);
             }
             else {
                 Ext.getCmp('numClasses_cb').setValue(this.mapView.classes);
             }
-            
+
             this.setMapViewMap();
         }
         else if (this.legend.value == GLOBALS.conf.map_legend_type_predefined) {
@@ -1282,7 +1282,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     predefinedMapLegendSetStoreCallback.call(this);
                 }});
             }
-        }            
+        }
     },
     
     setMapViewMap: function() {

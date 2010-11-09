@@ -258,11 +258,18 @@ GLOBALS.util = {
         json += ']';
         json += '}';
         return json;
-    }
+    },
+    
+    /* Backwards mapview compatibility */
+    mapViewNullSafe: function(mapView) {
+        mapView.mapValueType = GLOBALS.conf.map_value_type_indicator;
+        mapView.organisationUnitSelectionType = GLOBALS.conf.map_selection_type_parent;
+        mapView.mapLegendType = GLOBALS.conf.map_legend_type_automatic;
+        return mapView;
+    }    
 };
 
-GLOBALS.vars = {
-    
+GLOBALS.vars = {    
     map: null,
     
     mapSourceType: {

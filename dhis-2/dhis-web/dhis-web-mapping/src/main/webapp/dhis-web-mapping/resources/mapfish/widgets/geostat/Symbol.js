@@ -820,7 +820,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             valueField: 'id',
             displayField: 'name',
             mode: 'remote',
-            fieldLabel: i18n_legend_set,
+            fieldLabel: i18n_legendset,
             emptyText: GLOBALS.conf.emptytext,
 			labelSeparator: GLOBALS.conf.labelseparator,
             triggerAction: 'all',
