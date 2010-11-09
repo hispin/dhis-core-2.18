@@ -59,16 +59,16 @@ td.error {padding-left:1em}
 		<th colspan="2" class="heading-column">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30], letterswithbasicpunc: true}}" ></td>
+		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
+		<td class="input-column" ><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}" ></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td class="input-column"> <input type="text" id="middleName" name="middleName" maxlength="30" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
+		<td class="input-column"> <input type="text" id="middleName" name="middleName" maxlength="30" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td class="input-column"><input type="text" id="lastName" name="lastName" maxlength="30" class="{validate:{required:false, letterswithbasicpunc: true}}"></td>
+		<td class="input-column"><input type="text" id="lastName" name="lastName" maxlength="30" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
 	</tr>	
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
