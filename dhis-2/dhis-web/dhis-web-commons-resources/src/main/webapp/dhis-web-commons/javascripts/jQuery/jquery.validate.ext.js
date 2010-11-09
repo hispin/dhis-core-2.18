@@ -140,6 +140,20 @@ jQuery.validator
         || /^[\w-.,()\/%'\"\s]+$/i.test(value);
     },
     "Please Letters, numbers, spaces or some special chars like .,-,%,(,) only ");
+	
+	jQuery.validator
+    .addMethod("letterswithbasicspecialchars", function(value, element) {
+        return this.optional(element)
+        || /^[\w-.,()\/%'\"\s]+$/i.test(value);
+    },
+    "Please Letters, numbers, spaces or some special chars like .,-,%,(,) only ");
+
+jQuery.validator
+    .addMethod("unicodechars", function(value, element) {
+        return this.optional(element)
+        || /^([a-zA-Z_\u00A1-\uFFFF ])*$/i.test(value);
+    },
+    "Please unicode chars like .,-,%,(,) only ");
 
  jQuery.validator.addMethod("greaterDate",function(value, element, params) {
         
