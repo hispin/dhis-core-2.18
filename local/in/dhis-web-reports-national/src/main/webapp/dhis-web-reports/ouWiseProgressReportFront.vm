@@ -131,8 +131,7 @@
             </table>
 		</form>
 
-<script type="text/javascript">
-	
+<script type="text/javascript">	
 	Calendar.setup({
         inputField     :    "startDate",      // id of the input field
         ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
@@ -145,4 +144,3 @@
         button         :    "getEndDate"   // trigger for the calendar (button ID)
     });
 </script>
-
