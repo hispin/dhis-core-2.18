@@ -597,7 +597,6 @@ public class DefaultReportService
 
                         isAggregated = 1;
                     }
-
                 }
                 else
                 {
@@ -643,7 +642,6 @@ public class DefaultReportService
 
             if ( deFlag1 == 0 )
             {
-
                 double d = 0.0;
                 try
                 {
@@ -1025,7 +1023,7 @@ public class DefaultReportService
     
 //function getStartingEndingPeriods starts
     
-public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod)
+public List<Calendar> getStartingEndingPeriods( String deType , Period selectedPeriod )
 {
     List<Calendar> calendarList = new ArrayList<Calendar>();
 
