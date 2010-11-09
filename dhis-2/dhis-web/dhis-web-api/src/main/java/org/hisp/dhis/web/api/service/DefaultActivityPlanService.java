@@ -25,42 +25,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author abyotag_adm
- *
+ * 
  */
-public class DefaultActivityPlanService implements IActivityPlanService {
+public class DefaultActivityPlanService
+    implements IActivityPlanService
+{
 
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-	
-	@Autowired
-	private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
-	
-	@Autowired
-        private PatientAttributeValueService patientAttValueService ;
-	
-	@Autowired
+
+    @Autowired
+    private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
+
+    @Autowired
+    private PatientAttributeValueService patientAttValueService;
+
+    @Autowired
     private CurrentUserService currentUserService;
-	
-	// -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // MobileDataSetService
-    // -------------------------------------------------------------------------	
-	
-	public ActivityPlan getCurrentActivityPlan(String localeString) 
-	{
-		Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+    // -------------------------------------------------------------------------
+
+    public ActivityPlan getCurrentActivityPlan( String localeString )
+    {
+        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
         OrganisationUnit unit = null;
-        
-        if( units.size() > 0 )
+
+        if ( units.size() > 0 )
         {
-        	unit = units.iterator().next();       	
+            unit = units.iterator().next();
         }
         else
         {
-        	return null;
-        }		
-		
-		DateTime dt = new DateTime();
+            return null;
+        }
+
+        DateTime dt = new DateTime();
         DateMidnight from = dt.withDayOfMonth( 1 ).toDateMidnight();
         DateMidnight to = from.plusMonths( 1 );
 
@@ -73,69 +75,71 @@ public class DefaultActivityPlanService implements IActivityPlanService {
         int i = 0;
         for ( Activity activity : allActivities )
         {
-            //there are error on db with patientattributeid 14, so I limit the patient to be downloaded
-            if(i++>10){
-            	break;
+            // there are error on db with patientattributeid 14, so I limit the
+            // patient to be downloaded
+            if ( i++ > 10 )
+            {
+                break;
             }
 
-        	long dueTime = activity.getDueDate().getTime();
+            long dueTime = activity.getDueDate().getTime();
             if ( to.isBefore( dueTime ) )
             {
                 continue;
             }
-            
-            if (from.isBefore( dueTime )) {
-                items.add( getActivityModel( activity) );
-            } else if (!activity.getTask().isCompleted()) {
-            	org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity);
-            	items.add( a );
-            	a.setLate(true);
-            }
-        }
-        if (!items.isEmpty()) {
-        	plan.setActivitiesList( items );
-        }
-        
-        return plan;
-	}
-	
 
-		private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
-        {
-            if ( activity == null )
+            if ( from.isBefore( dueTime ) )
             {
-                return null;
+                items.add( getActivityModel( activity ) );
             }
-            org.hisp.dhis.web.api.model.Activity item = new org.hisp.dhis.web.api.model.Activity();
-            Patient patient = activity.getBeneficiary();
-            
-            item.setBeneficiary( getBeneficiaryModel(patient) );
-            item.setDueDate( activity.getDueDate() );
-            item.setTask( new TaskMapper().getModel( activity.getTask()) );
-            return item;
+            else if ( !activity.getTask().isCompleted() )
+            {
+                org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity );
+                items.add( a );
+                a.setLate( true );
+            }
         }
-        
-        
-        
-        private org.hisp.dhis.web.api.model.Beneficiary getBeneficiaryModel( Patient patient )
+        if ( !items.isEmpty() )
         {
-            
-
-            Beneficiary beneficiary = new Beneficiary();
-
-            Set<String> patientAttValues = new HashSet<String>();
-            
-            
-            beneficiary.setId( patient.getId() );
-            beneficiary.setFirstName( patient.getFirstName() );
-            beneficiary.setLastName( patient.getLastName() );
-            beneficiary.setMiddleName( patient.getMiddleName() );
-            
-            for(PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient )){
-                patientAttValues.add( value.getPatientAttribute().getName() +" : "+ value.getValue());
-            }
-            beneficiary.setPatientAttValues( patientAttValues );
-            
-            return beneficiary;
+            plan.setActivitiesList( items );
         }
+
+        return plan;
+    }
+
+    private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
+    {
+        if ( activity == null )
+        {
+            return null;
+        }
+        org.hisp.dhis.web.api.model.Activity item = new org.hisp.dhis.web.api.model.Activity();
+        Patient patient = activity.getBeneficiary();
+
+        item.setBeneficiary( getBeneficiaryModel( patient ) );
+        item.setDueDate( activity.getDueDate() );
+        item.setTask( new TaskMapper().getModel( activity.getTask() ) );
+        return item;
+    }
+
+    private org.hisp.dhis.web.api.model.Beneficiary getBeneficiaryModel( Patient patient )
+    {
+
+        Beneficiary beneficiary = new Beneficiary();
+
+        Set<String> patientAttValues = new HashSet<String>();
+
+        beneficiary.setId( patient.getId() );
+        beneficiary.setFirstName( patient.getFirstName() );
+        beneficiary.setLastName( patient.getLastName() );
+        beneficiary.setMiddleName( patient.getMiddleName() );
+
+        for ( PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient ) )
+        {
+            patientAttValues.add( value.getPatientAttribute().getName() + " : " + value.getValue() );
+        }
+        beneficiary.setPatientAttValues( patientAttValues );
+
+        return beneficiary;
+    }
 }

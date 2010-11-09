@@ -6,39 +6,61 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlType(name = "dv")
-@XmlAccessorType(XmlAccessType.FIELD) 
-public class DataValue implements ISerializable {
-	
-	private int id;
-	
-	private String val;
+@XmlType( name = "dv" )
+@XmlAccessorType( XmlAccessType.FIELD )
+public class DataValue
+    implements ISerializable
+{
 
-	public int getId() {
-		return id;
-	}
+    private int id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    private int categoryOptComboID;
 
-	public String getVal() {
-		return val;
-	}
+    private String val;
 
-	public void setVal(String val) {
-		this.val = val;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	@Override
-	public byte[] serialize() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
-	@Override
-	public void deSerialize(byte[] data) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}	
+    public String getVal()
+    {
+        return val;
+    }
+
+    public void setVal( String val )
+    {
+        this.val = val;
+    }
+
+    public int getCategoryOptComboID()
+    {
+        return categoryOptComboID;
+    }
+
+    public void setCategoryOptComboID( int categoryOptComboID )
+    {
+        this.categoryOptComboID = categoryOptComboID;
+    }
+
+    @Override
+    public byte[] serialize()
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void deSerialize( byte[] data )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+
+    }
 }
