@@ -38,6 +38,9 @@ import java.util.Set;
 public class ProgramAttribute
     implements Serializable
 {
+    // -------------------------------------------------------------------------
+    // Define ValueType
+    // -------------------------------------------------------------------------
     public static final String TYPE_DATE = "DATE";
 
     public static final String TYPE_STRING = "TEXT";
@@ -48,7 +51,17 @@ public class ProgramAttribute
 
     public static final String TYPE_COMBO = "COMBO";
 
-    public final char REASON_IS_DEAD = 'd';
+    // -------------------------------------------------------------------------
+    // Default Program Attributes
+    // -------------------------------------------------------------------------
+
+    public static final String DEAD_NAME = "Dead";
+
+    public static final String CLOSED_DATE = "Closed Date";
+
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
 
     private Integer id;
 
@@ -59,8 +72,6 @@ public class ProgramAttribute
     private String valueType;
 
     private Set<ProgramAttributeOption> attributeOptions;
-
-    // private String causeDeath;
 
     // -------------------------------------------------------------------------
     // Constructors
