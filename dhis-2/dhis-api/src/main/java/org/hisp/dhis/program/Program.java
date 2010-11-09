@@ -36,7 +36,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.validation.ValidationCriteria;
 
-
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -70,8 +69,8 @@ public class Program
 
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
 
-    private Integer minDaysAllowedInputData;    
-    
+    private Integer minDaysAllowedInputData;
+
     private Integer maxDaysAllowedInputData;
     
     // -------------------------------------------------------------------------
@@ -266,10 +265,10 @@ public class Program
         {
             for ( ValidationCriteria criteria : patientValidationCriteria )
             {
-                Object propertyValue = getValueFromPatient(StringUtils.capitalize(criteria.getProperty()), patient);
-               
+                Object propertyValue = getValueFromPatient( StringUtils.capitalize( criteria.getProperty() ), patient );
+
                 // Compare property value with compare value
-                
+
                 int i = ((Comparable) propertyValue).compareTo( (Comparable) criteria.getValue() );
 
                 // Return validation criteria if criteria is not met
@@ -289,9 +288,10 @@ public class Program
             throw new RuntimeException( ex );
         }
     }
-    
-    
-    private Object getValueFromPatient( String property, Patient patient ) throws Exception {
-    	return Patient.class.getMethod( "get" + property ).invoke( patient ); 
+
+    private Object getValueFromPatient( String property, Patient patient )
+        throws Exception
+    {
+        return Patient.class.getMethod( "get" + property ).invoke( patient );
     }
 }

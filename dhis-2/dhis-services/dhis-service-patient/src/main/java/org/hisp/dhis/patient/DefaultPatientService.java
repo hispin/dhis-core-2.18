@@ -121,7 +121,6 @@ public class DefaultPatientService
     public int createPatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
         List<PatientAttributeValue> patientAttributeValues )
     {
-
         int patientid = savePatient( patient );
 
         for ( PatientAttributeValue pav : patientAttributeValues )

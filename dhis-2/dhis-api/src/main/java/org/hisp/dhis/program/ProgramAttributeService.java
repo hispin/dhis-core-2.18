@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program;
 
 import java.util.Collection;
 
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $Id ProgramAttributeService.java 2010-10-30 19:50:04Z $
  */
-public interface PatientAttributeService
+public interface ProgramAttributeService
 {
-    String ID = PatientAttributeService.class.getName();
+    String ID = ProgramAttributeService.class.getName();
 
-    int savePatientAttribute( PatientAttribute patientAttribute );
+    int saveProgramAttribute( ProgramAttribute programAttribute );
 
-    void deletePatientAttribute( PatientAttribute patientAttribute );
+    void deleteProgramAttribute( ProgramAttribute programAttribute );
 
-    void updatePatientAttribute( PatientAttribute patientAttribute );
+    void updateProgramAttribute( ProgramAttribute programAttribute );
 
-    PatientAttribute getPatientAttribute( int id );
+    ProgramAttribute getProgramAttribute( int id );
 
-    PatientAttribute getPatientAttributeByName( String name );
+    ProgramAttribute getProgramAttributeByName( String name );
 
-    Collection<PatientAttribute> getAllPatientAttributes();
+    Collection<ProgramAttribute> getAllProgramAttributes();
 
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
-    
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
-    
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    Collection<ProgramAttribute> getProgramAttributeByValueType( String valueType );
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,103 +24,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
 
-import java.io.Serializable;
+package org.hisp.dhis.program;
+
+import java.util.Collection;
+
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author Viet
- *
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version DefaultProgramAttributeService.java Oct 30, 2010 11:18:15 PM
  */
-public class PatientAttributeOption implements Serializable
+
+@Transactional
+public class DefaultProgramAttributeService
+    implements ProgramAttributeService
 {
-    private int id;
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private ProgramAttributeStore programAttributeStore;
+
+    public void setProgramAttributeStore( ProgramAttributeStore programAttributeStore )
+    {
+        this.programAttributeStore = programAttributeStore;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
+    public int saveProgramAttribute( ProgramAttribute programAttribute )
+    {
+        return programAttributeStore.save( programAttribute );
+    }
+
+    public void deleteProgramAttribute( ProgramAttribute programAttribute )
+    {
+        programAttributeStore.delete( programAttribute );
+    }
+
+    public void updateProgramAttribute( ProgramAttribute programAttribute )
+    {
+        programAttributeStore.update( programAttribute );
+    }
+
+    public ProgramAttribute getProgramAttribute( int id )
+    {
+        return programAttributeStore.get( id );
+    }
+
+    public ProgramAttribute getProgramAttributeByName( String name )
+    {
+        return programAttributeStore.getByName( name );
+    }
+
+    public Collection<ProgramAttribute> getAllProgramAttributes()
+    {
+        return programAttributeStore.getAll();
+    }
+
+    public Collection<ProgramAttribute> getProgramAttributeByValueType( String valueType )
+    {
+        return programAttributeStore.getByValueType( valueType );
+    }
     
-    private String name;
-    
-    private PatientAttribute patientAttribute;
-    
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public PatientAttributeOption()
-    {
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-    
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof PatientAttributeOption) )
-        {
-            return false;
-        }
-
-        final PatientAttributeOption other = (PatientAttributeOption) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public PatientAttribute getPatientAttribute()
-    {
-        return patientAttribute;
-    }
-
-    public void setPatientAttribute( PatientAttribute patientAttribute )
-    {
-        this.patientAttribute = patientAttribute;
-    }
 }

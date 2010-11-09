@@ -9,7 +9,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<!-- Store definitions -->
 	
 	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingStore"
-    class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationMappingStore"/>
+    class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationMappingStore">
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 	
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
 		class="org.hisp.dhis.relationship.hibernate.HibernateRelationshipStore">
@@ -102,7 +104,25 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	 <property name="clazz" value="org.hisp.dhis.program.ProgramStageDataElementValidation" />
 	 <property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   
+   <bean id="org.hisp.dhis.program.ProgramAttributeStore"
+		class="org.hisp.dhis.program.hibernate.HibernateProgramAttributeStore">
+		<property name="clazz" value="org.hisp.dhis.program.ProgramAttribute" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
+	<bean id="org.hisp.dhis.programattributevalue.ProgramAttributeValueStore"
+		class="org.hisp.dhis.programattributevalue.hibernate.HibernateProgramAttributeValueStore">
+		<property name="clazz" value="org.hisp.dhis.programattributevalue.ProgramAttributeValue" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+  	<bean id="org.hisp.dhis.program.ProgramAttributeOptionStore"
+    class="org.hisp.dhis.program.hibernate.HibernateProgramAttributeOptionStore">
+     <property name="clazz" value="org.hisp.dhis.program.ProgramAttributeOption"/>
+     <property name="sessionFactory" ref="sessionFactory"/>
+   </bean>
+   
 	<!-- Service definitions -->
 	
 	<bean id="org.hisp.dhis.activityplan.ActivityPlanService"
@@ -225,6 +245,23 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="validationStore"
 	  		ref="org.hisp.dhis.program.ProgramStageDataElementValidationStore" />
   	</bean>
+  
+  	<bean id="org.hisp.dhis.program.ProgramAttributeService" class="org.hisp.dhis.program.DefaultProgramAttributeService">
+		<property name="programAttributeStore" ref="org.hisp.dhis.program.ProgramAttributeStore" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"
+		class="org.hisp.dhis.programattributevalue.DefaultProgramAttributeValueService">
+		<property name="programAttributeValueStore"
+			ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueStore" />
+	</bean>
+  
+    <bean id="org.hisp.dhis.program.ProgramAttributeOptionService"
+     class="org.hisp.dhis.program.DefaultProgramAttributeOptionService">
+     <property name="programAttributeOptionStore"
+      ref="org.hisp.dhis.program.ProgramAttributeOptionStore"/>
+   </bean>
   
 	<!-- Aggregation engine -->
 

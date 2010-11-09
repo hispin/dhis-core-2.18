@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.programattributevalue;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramInstance;
+
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version ProgramAttributeValueStore.java Oct 30, 2010 11:06:16 PM
  */
-public interface PatientAttributeService
+public interface ProgramAttributeValueStore
+    extends GenericStore<ProgramAttributeValue>
 {
-    String ID = PatientAttributeService.class.getName();
 
-    int savePatientAttribute( PatientAttribute patientAttribute );
+    void saveVoid( ProgramAttributeValue programAttributeValue );
 
-    void deletePatientAttribute( PatientAttribute patientAttribute );
-
-    void updatePatientAttribute( PatientAttribute patientAttribute );
-
-    PatientAttribute getPatientAttribute( int id );
-
-    PatientAttribute getPatientAttributeByName( String name );
-
-    Collection<PatientAttribute> getAllPatientAttributes();
-
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
+    int delete( ProgramAttribute programAttribute );
     
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
+    int delete( ProgramInstance programInstance );
     
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    ProgramAttributeValue get( ProgramInstance programInstance, ProgramAttribute programAttribute );
+    
+    Collection<ProgramAttributeValue> get( ProgramInstance progranInstance );
 
+    Collection<ProgramAttributeValue> get( ProgramAttribute programAttribute );
+    
+    Collection<ProgramAttributeValue> search( ProgramAttribute programAttribute, String searchText );   
+    
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.patient.PatientAttributeOption;
+
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version ProgramAttributeOptionStore.java Nov 1, 2010 3:03:28 PM
  */
-public interface PatientAttributeService
+public interface ProgramAttributeOptionStore extends GenericIdentifiableObjectStore<ProgramAttributeOption>
 {
-    String ID = PatientAttributeService.class.getName();
+    String ID = ProgramAttributeOption.class.getName();
 
-    int savePatientAttribute( PatientAttribute patientAttribute );
+    ProgramAttributeOption get( ProgramAttribute patientAttribute, String name );
 
-    void deletePatientAttribute( PatientAttribute patientAttribute );
-
-    void updatePatientAttribute( PatientAttribute patientAttribute );
-
-    PatientAttribute getPatientAttribute( int id );
-
-    PatientAttribute getPatientAttributeByName( String name );
-
-    Collection<PatientAttribute> getAllPatientAttributes();
-
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
-    
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
-    
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    Collection<ProgramAttributeOption> get( ProgramAttribute programAttribute );
 
 }
