@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "program_stage_sort_order" )</h3>
 																		
-<form id="sortProgramStageForm" name "sortProgramStageForm" action="saveProgramStageSortOder.action" method="post">
+<form id="sortProgramStageForm" name "sortProgramStageForm" action="saveProgramStageSortOder.action" method="get" onsubmit="selectAllById('programStageList');">
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$program.id">
@@ -13,7 +13,7 @@
     </tr>        
     <tr>
         <td>
-            <select size="15" id="sortedList" name="sortedList" multiple="multiple" style="min-width:20em;height:20em">
+            <select size="15" id="programStageList" name="programStageList" multiple="multiple" style="min-width:20em;height:20em">
                 #foreach ( $programStage in $programStages )
                     <option value="$programStage.id">$encoder.htmlEncode( $programStage.name )</option>
                 #end                
