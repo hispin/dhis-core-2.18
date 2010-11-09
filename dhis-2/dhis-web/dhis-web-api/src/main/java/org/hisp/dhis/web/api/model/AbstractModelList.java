@@ -14,71 +14,77 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
- *
+ * 
  * @author abyotag_adm
  */
-public class AbstractModelList implements ISerializable {
+public class AbstractModelList
+    implements ISerializable
+{
 
-    private List<AbstractModel> abstractModels;    
-    
+    private List<AbstractModel> abstractModels;
 
-    public List<AbstractModel> getAbstractModels() {
-		return abstractModels;
-	}
+    public List<AbstractModel> getAbstractModels()
+    {
+        return abstractModels;
+    }
 
-	public void setAbstractModels(List<AbstractModel> abstractModels) {
-		this.abstractModels = abstractModels;
-	}
+    public void setAbstractModels( List<AbstractModel> abstractModels )
+    {
+        this.abstractModels = abstractModels;
+    }
 
-	public byte[] serialize() throws IOException
+    public byte[] serialize()
+        throws IOException
     {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        
-        dout.writeInt(abstractModels.size());
+        DataOutputStream dout = new DataOutputStream( bout );
 
-        for(int i=0; i<abstractModels.size(); i++)
+        dout.writeInt( abstractModels.size() );
+
+        for ( int i = 0; i < abstractModels.size(); i++ )
         {
-        	AbstractModel abstractModel = (AbstractModel)abstractModels.get(i);
+            AbstractModel abstractModel = (AbstractModel) abstractModels.get( i );
             dout.writeInt( abstractModel.getId() );
-            dout.writeUTF( abstractModel.getName() );            
+            dout.writeUTF( abstractModel.getName() );
         }
 
         return bout.toByteArray();
     }
 
-    public void deSerialize(byte[] data) throws IOException
+    public void deSerialize( byte[] data )
+        throws IOException
     {
-        ByteArrayInputStream bin = new ByteArrayInputStream(data);
-        DataInputStream din = new DataInputStream(bin);       
+        ByteArrayInputStream bin = new ByteArrayInputStream( data );
+        DataInputStream din = new DataInputStream( bin );
 
         int size = din.readInt();
 
-        for(int i=0; i<size; i++)
+        for ( int i = 0; i < size; i++ )
         {
-        	AbstractModel abstractModel = new AbstractModel();
-        	abstractModel.setId( din.readInt() );
-        	abstractModel.setName( din.readUTF() );            
-            this.abstractModels.add(abstractModel);
+            AbstractModel abstractModel = new AbstractModel();
+            abstractModel.setId( din.readInt() );
+            abstractModel.setName( din.readUTF() );
+            this.abstractModels.add( abstractModel );
         }
     }
-    
-    public void serialize( OutputStream out ) throws IOException
+
+    public void serialize( OutputStream out )
+        throws IOException
     {
-    	ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);       
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
 
-        dout.writeInt(abstractModels.size());
+        dout.writeInt( abstractModels.size() );
 
-        for(int i=0; i<abstractModels.size(); i++)
+        for ( int i = 0; i < abstractModels.size(); i++ )
         {
-        	AbstractModel abstractModel = (AbstractModel)abstractModels.get(i);
+            AbstractModel abstractModel = (AbstractModel) abstractModels.get( i );
             dout.writeInt( abstractModel.getId() );
-            dout.writeUTF( abstractModel.getName() );            
-        }       
-        
-        //bout.flush();
-        bout.writeTo(out);
-    	
-    }	
+            dout.writeUTF( abstractModel.getName() );
+        }
+
+        // bout.flush();
+        bout.writeTo( out );
+
+    }
 }

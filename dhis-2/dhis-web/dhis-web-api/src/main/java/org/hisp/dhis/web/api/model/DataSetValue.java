@@ -69,6 +69,7 @@ public class DataSetValue extends AbstractModel {
         {
             DataValue dv = (DataValue)dataValues.get(i);
             dout.writeInt( dv.getId() );
+            dout.writeInt( dv.getCategoryOptComboID() );
             dout.writeUTF( dv.getVal() );            
         }
 
@@ -90,6 +91,7 @@ public class DataSetValue extends AbstractModel {
         {
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
+            dv.setCategoryOptComboID( din.readInt() );
             dv.setVal( din.readUTF() );            
             this.dataValues.add(dv);
         }
@@ -109,6 +111,7 @@ public class DataSetValue extends AbstractModel {
         {
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
+            dv.setCategoryOptComboID( din.readInt() );
             dv.setVal( din.readUTF() );            
             this.dataValues.add(dv);
         }
