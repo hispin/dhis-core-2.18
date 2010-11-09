@@ -32,18 +32,11 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.dimension.BasicDimensionSet;
 import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 import org.junit.Test;
 
 /**
@@ -54,9 +47,6 @@ public class DimensionTest
     @Test
     public void testGroupSetDimensions()
     {
-        OrganisationUnit source = new OrganisationUnit( "Bobs Clinic" );
-        Period period = new MonthlyPeriodType().createPeriod();
-        
         DataElement hivAids = new DataElement( "HivAids" );
         DataElement malaria = new DataElement( "Malaria" );
         DataElement diabetes = new DataElement( "Diabetes" );
@@ -81,40 +71,6 @@ public class DimensionTest
         diseaseType.getMembers().add( communicable );
         diseaseType.getMembers().add( nonCommunicable );
         
-        DataValue dataValue = new DataValue( hivAids, period, source );
-        
-        Map<Dimension, DimensionOption> dimensions = dataValue.getDimensions( diseaseByType );
-        
-        // Test Measure.getDimensions
-        
-        assertEquals( 4, dimensions.size() );
-        
-        assertTrue( dimensions.keySet().contains( diseaseType ) );
-        assertTrue( dimensions.keySet().contains( DataElement.DIMENSION ) );
-        assertTrue( dimensions.keySet().contains( Period.DIMENSION ) );
-        assertTrue( dimensions.keySet().contains( Source.DIMENSION ) );
-        
-        assertTrue( dimensions.values().contains( communicable ) );
-        assertTrue( dimensions.values().contains( hivAids ) );
-        assertTrue( dimensions.values().contains( period ) );
-        assertTrue( dimensions.values().contains( source ) );
-
-        dataValue = new DataValue( diabetes, period, source );
-        
-        dimensions = dataValue.getDimensions( diseaseByType );
-        
-        assertEquals( 4, dimensions.size() );
-        
-        assertTrue( dimensions.keySet().contains( diseaseType ) );
-        assertTrue( dimensions.keySet().contains( DataElement.DIMENSION ) );
-        assertTrue( dimensions.keySet().contains( Period.DIMENSION ) );
-        assertTrue( dimensions.keySet().contains( Source.DIMENSION ) );
-        
-        assertTrue( dimensions.values().contains( nonCommunicable ) );
-        assertTrue( dimensions.values().contains( diabetes ) );
-        assertTrue( dimensions.values().contains( period ) );
-        assertTrue( dimensions.values().contains( source ) );
-        
         // Test Dimension.getDimensionOption
         
         assertEquals( communicable, diseaseType.getDimensionOption( hivAids ) );
@@ -131,6 +87,6 @@ public class DimensionTest
         assertTrue( dimensionOptionElements.contains( hivAids ) );
         assertTrue( dimensionOptionElements.contains( malaria ) );
         assertTrue( dimensionOptionElements.contains( diabetes ) );
-        assertTrue( dimensionOptionElements.contains( cancer ) );
+        assertTrue( dimensionOptionElements.contains( cancer ) );        
     }
 }

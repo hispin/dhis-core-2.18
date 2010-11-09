@@ -34,12 +34,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -145,13 +142,6 @@ public class DataValueDimensionTest
         DataValue dataValue = dataValueService.getDataValue( sourceA, dataElementA, periodA, categoryOptionCombo );
         
         assertNotNull( dataValue );
-        
-        Map<Dimension, DimensionOption> dimensions = dataValue.getDimensions();
-        
-        assertEquals( dimensions.keySet().size(), 4 );
-        assertEquals( dataElementA, dimensions.get( DataElement.DIMENSION ) );
-        assertEquals( periodA, dimensions.get( Period.DIMENSION ) );
-        assertEquals( sourceA, dimensions.get( Source.DIMENSION ) );
     }
     
     @Test

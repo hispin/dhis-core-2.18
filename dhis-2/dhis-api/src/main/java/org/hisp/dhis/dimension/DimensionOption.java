@@ -39,6 +39,4 @@ public interface DimensionOption
     DimensionType getDimensionType();
     
     Set<? extends DimensionOptionElement> getDimensionOptionElements();
-    
-    Dimension getDimension();
 }
