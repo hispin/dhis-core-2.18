@@ -423,7 +423,7 @@
 				isFormField: true,
 				hideLabel: true,
 				cls: 'window-button',
-				text: i18n_save,
+				text: i18n_register,
 				handler: function() {
 					var vn = Ext.getCmp('viewname_tf').getValue();
                     
@@ -480,7 +480,7 @@
                             zoom: formValues.zoom
                         },
                         success: function(r) {
-                            Ext.message.msg(true, 'The view <span class="x-msg-hl">' + vn + '</span> ' + i18n_was_registered);
+                            Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + i18n_registered);
                             GLOBALS.stores.mapView.load();
                             Ext.getCmp('viewname_tf').reset();
                         }
@@ -519,7 +519,7 @@
 						method: 'POST',
 						params: {id:v},
 						success: function(r) {
-							Ext.message.msg(true, 'The map view <span class="x-msg-hl">' + name + '</span> '+ i18n_was_deleted);
+							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + name + '</span> ' + i18n_deleted);
                             GLOBALS.stores.mapView.load();
                             if (v == Ext.getCmp('mapview_cb').getValue()) {
                                 Ext.getCmp('mapview_cb').clearValue();
@@ -546,7 +546,7 @@
                 id: 'dashboardview_b',
 				isFormField: true,
 				hideLabel: true,
-				text: 'Add to DHIS dashboard',
+				text: i18n_add,
 				cls: 'window-button',
 				handler: function() {
 					var v = Ext.getCmp('view2_cb').getValue();
@@ -562,7 +562,7 @@
 						method: 'POST',
 						params: {id:v},
 						success: function(r) {
-							Ext.message.msg(true, i18n_the_view + ' <span class="x-msg-hl">' + rv + '</span> ' + i18n_was_added_to_dashboard);
+							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + i18n_added_to_dashboard);
 						}
 					});
 				}
@@ -614,7 +614,7 @@
                         items: [deleteViewPanel]
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_add_to_dashboard + '</span>',
+                        title: '<span class="panel-tab-title">' + i18n_dhis_dashboard + '</span>',
                         id: 'view2',
                         items: [dashboardViewPanel]
                     }
@@ -676,7 +676,7 @@
 				labelSeparator: GLOBALS.conf.labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
-				text: i18n_export_image,
+				text: i18n_export,
 				handler: function() {
                     var vcb, dcb, mcb, lcb, period;
                     if (GLOBALS.vars.activePanel.isPolygon()) {
@@ -705,7 +705,7 @@
                         var title = Ext.getCmp('exportimagetitle_tf').getValue();
                     	
                         if (!title) {
-                            Ext.message.msg(false, i18n_please_enter_map_title);
+                            Ext.message.msg(false, i18n_form_is_not_complete);
                         }
                         else {
                             var q = Ext.getCmp('exportimagequality_cb').getValue();
@@ -733,7 +733,7 @@
                         }
                     }
                     else {
-                        Ext.message.msg(false, i18n_please_render_map_fist);
+                        Ext.message.msg(false, i18n_please_render_map_first);
                     }
 				}
 			}	
@@ -826,7 +826,7 @@
                         exportForm.submit();
                     }
                     else {
-                        Ext.message.msg(false, i18n_please_render_map_fist );
+                        Ext.message.msg(false, i18n_please_render_map_first);
                     }
 				}
 			}	
@@ -855,7 +855,7 @@
                 id: 'newpredefinedmaplegend_b',
 				isFormField: true,
 				hideLabel: true,
-                text: i18n_save,
+                text: i18n_register,
 				cls: 'window-button',
                 handler: function() {
                     var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
@@ -961,7 +961,7 @@
             {
                 xtype: 'button',
                 id: 'newpredefinedmaplegendset_b',
-                text: i18n_save,
+                text: i18n_register,
 				cls: 'window-button',
                 handler: function() {
                     var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
@@ -1029,7 +1029,7 @@
 		bodyStyle: 'border:0px solid #fff',
         items:
         [   
-            { html: '<div class="window-field-label-first">' + i18n_legend_set + '</p>' },
+            { html: '<div class="window-field-label-first">' + i18n_legendset + '</p>' },
             new Ext.form.ComboBox({id:'predefinedmaplegendsetindicator_cb',hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.predefinedMapLegendSet}),
             {
                 xtype: 'button',
@@ -1050,7 +1050,7 @@
                         method: 'POST',
                         params: {id: mlsv},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_legend_set + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
+                            Ext.message.msg(true, i18n_legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
                             GLOBALS.stores.predefinedMapLegendSet.load();
                             Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
                             if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
@@ -1071,7 +1071,7 @@
 		bodyStyle: 'border:0px',
         items:
         [
-            { html: '<div class="window-field-label-first">' + i18n_legend_set + '</div>' },
+            { html: '<div class="window-field-label-first">' + i18n_legendset + '</div>' },
             new Ext.form.ComboBox({
                 id: 'predefinedmaplegendsetindicator2_cb',
                 hideLabel: true,
@@ -1105,12 +1105,12 @@
                     }
                 }					
             }),
-            { html: '<div class="window-field-label">' + i18n_indicator + '</div>' },
+            { html: '<div class="window-field-label">' + i18n_indicators + '</div>' },
 			new Ext.ux.Multiselect({id:'predefinedmaplegendsetindicator_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBALS.conf.multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:GLOBALS.stores.indicator}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetindicator_b',
-                text: i18n_assign_to_indicator,
+                text: i18n_assign,
 				cls: 'window-button',
                 handler: function() {
                     var ls = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue();
@@ -1157,7 +1157,7 @@
 		bodyStyle: 'border:0px',
         items:
         [
-            { html: '<div class="window-field-label-first">'+i18n_legend_set+'</div>' },
+            { html: '<div class="window-field-label-first">'+i18n_legendset+'</div>' },
             new Ext.form.ComboBox({
                 id: 'predefinedmaplegendsetdataelement_cb',
                 isFormField: true,
@@ -1192,12 +1192,12 @@
                     }
                 }					
             }),
-            { html: '<div class="window-field-label">' + i18n_dataelement + '</div>' },
+            { html: '<div class="window-field-label">' + i18n_dataelements + '</div>' },
 			new Ext.ux.Multiselect({id:'predefinedmaplegendsetdataelement_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBALS.conf.multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:GLOBALS.stores.dataElement}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetdataelement_b',
-                text: i18n_assign_to_dataelement,
+                text: i18n_assign,
 				cls: 'window-button',
                 handler: function() {
                     var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
@@ -1244,7 +1244,7 @@
         title: '<span id="window-predefinedlegendset-title">'+i18n_predefined_legend_sets+'</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 592,
+		width: 485,
         items:
         [
 			{
@@ -1266,16 +1266,16 @@
 							w.setHeight(151);
 						}
 						else if (tab.id == 'predefinedmaplegendset2') {
-							w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
+							w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
 						}
 						else if (tab.id == 'predefinedmaplegendset3') {
 							w.setHeight(151);
 						}
                         else if (tab.id == 'predefinedmaplegendset4') {
-                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
+                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
                         }
                         else if (tab.id == 'predefinedmaplegendset5') {
-                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 180);
+                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
                         }
 					}
 				},
@@ -1302,12 +1302,12 @@
 						items: [deletePredefinedMapLegendSetPanel]
 					},
 					{
-                        title: '<span class="panel-tab-title">'+i18n_assign_to_indicator+'</span>',
+                        title: '<span class="panel-tab-title">'+i18n_indicators+'</span>',
 						id: 'predefinedmaplegendset4',
 						items: [assignPredefinedMapLegendSetIndicatorPanel]
 					},
 					{
-                        title: '<span class="panel-tab-title">'+i18n_assign_to_dataelement+'</span>',
+                        title: '<span class="panel-tab-title">'+i18n_dataelements+'</span>',
 						id: 'predefinedmaplegendset5',
 						items: [assignPredefinedMapLegendSetDataElementPanel]
 					}
@@ -1400,7 +1400,7 @@
                         id: 'help5'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_legend_set + '</span>',
+                        title: '<span class="panel-tab-title">' + i18n_legendset + '</span>',
                         id: 'help6'
                     },
                     {
@@ -1598,7 +1598,7 @@
     
     var newMapButton = new Ext.Button({
         id: 'newmap_b',
-        text: i18n_register_map,
+        text: i18n_register,
 		cls: 'aa_med',
         handler: function()
         {
@@ -1644,7 +1644,7 @@
                     nameColumn: nc
                 },
                 success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) ' + i18n_was_registered);
+                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) ' + i18n_registered);
                     
                     GLOBALS.stores.map.load();
                     Ext.getCmp('organisationunitlevel_cb').clearValue();
@@ -1658,7 +1658,7 @@
     
     var editMapButton = new Ext.Button({
         id: 'editmap_b',
-        text: i18n_save,
+        text: i18n_update,
 		cls: 'aa_med',
         handler: function() {
             var en = Ext.getCmp('editname_tf').getValue();
@@ -1680,7 +1680,7 @@
                 method: 'POST',
                 params: {name: en, mapLayerPath: em, nameColumn: nc},
                 success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>)' + i18n_was_updated);
+                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>) ' + i18n_updated);
                     
                     GLOBALS.stores.map.load();
                     Ext.getCmp('editmap_cb').clearValue();
@@ -1695,7 +1695,7 @@
     
     var deleteMapButton = new Ext.Button({
         id: 'deletemap_b',
-        text: i18n_delete_map,
+        text: i18n_delete,
 		cls: 'aa_med',
         handler: function() {
             var mlp = Ext.getCmp('deletemap_cb').getValue();
@@ -1711,7 +1711,7 @@
                 method: 'POST',
                 params: {mapLayerPath: mlp},
                 success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) ' + i18n_was_deleted);
+                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) ' + i18n_deleted);
                     
 					if (mlp == Ext.getCmp('map_cb').getValue()) {
 						Ext.getCmp('map_cb').clearValue();
@@ -2375,7 +2375,7 @@
 					{
 						xtype: 'combo',
 						id: 'mapsource_cb',
-						fieldLabel: i18n_map_source,
+						fieldLabel: i18n_type,
 						labelSeparator: GLOBALS.conf.labelseparator,
 						editable: false,
 						valueField: 'id',
