@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
+import org.hisp.dhis.program.ProgramAttributeOptionStore;
+
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version HibernateProgramAttributeOptionStore.java Nov 1, 2010 3:07:17 PM
  */
-public interface PatientAttributeService
+public class HibernateProgramAttributeOptionStore
+    extends HibernateGenericStore<ProgramAttributeOption>
+    implements ProgramAttributeOptionStore
 {
-    String ID = PatientAttributeService.class.getName();
 
-    int savePatientAttribute( PatientAttribute patientAttribute );
+    public ProgramAttributeOption get( ProgramAttribute programAttribute, String name )
+    {
+        return (ProgramAttributeOption) getCriteria( Restrictions.eq( "name", name ),
+            Restrictions.eq( "programAttribute", programAttribute ) ).uniqueResult();
+    }
 
-    void deletePatientAttribute( PatientAttribute patientAttribute );
-
-    void updatePatientAttribute( PatientAttribute patientAttribute );
-
-    PatientAttribute getPatientAttribute( int id );
-
-    PatientAttribute getPatientAttributeByName( String name );
-
-    Collection<PatientAttribute> getAllPatientAttributes();
-
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
-    
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
-    
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramAttributeOption> get( ProgramAttribute programAttribute )
+    {
+        return getCriteria( Restrictions.eq( "programAttribute", programAttribute ) ).list();
+    }
 
 }

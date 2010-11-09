@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeStore;
+
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version HibernateProgramAttributeStore.java Oct 30, 2010 11:41:58 PM
  */
-public interface PatientAttributeService
+public class HibernateProgramAttributeStore
+    extends HibernateGenericStore<ProgramAttribute>
+    implements ProgramAttributeStore
 {
-    String ID = PatientAttributeService.class.getName();
-
-    int savePatientAttribute( PatientAttribute patientAttribute );
-
-    void deletePatientAttribute( PatientAttribute patientAttribute );
-
-    void updatePatientAttribute( PatientAttribute patientAttribute );
-
-    PatientAttribute getPatientAttribute( int id );
-
-    PatientAttribute getPatientAttributeByName( String name );
-
-    Collection<PatientAttribute> getAllPatientAttributes();
-
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
-    
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
-    
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
-
+    @SuppressWarnings("unchecked")
+    public Collection<ProgramAttribute> getByValueType( String valueType )
+    {
+        return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
+    }
 }

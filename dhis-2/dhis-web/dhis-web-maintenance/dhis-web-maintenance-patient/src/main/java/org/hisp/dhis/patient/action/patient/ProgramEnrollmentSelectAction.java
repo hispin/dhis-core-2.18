@@ -33,6 +33,8 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 
@@ -70,6 +72,13 @@ public class ProgramEnrollmentSelectAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    private ProgramAttributeService programAttributeService;
+
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
+    {
+        this.programAttributeService = programAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -117,7 +126,7 @@ public class ProgramEnrollmentSelectAction
     public Collection<Program> getPrograms()
     {
         return programs;
-    }   
+    }
 
     private ProgramInstance programInstance;
 
@@ -129,6 +138,13 @@ public class ProgramEnrollmentSelectAction
     public void setProgramInstance( ProgramInstance programInstance )
     {
         this.programInstance = programInstance;
+    }
+
+    private Collection<ProgramAttribute> attributes;
+
+    public Collection<ProgramAttribute> getAttributes()
+    {
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
@@ -200,6 +216,12 @@ public class ProgramEnrollmentSelectAction
 
             return SUCCESS;
         }
+
+        // ---------------------------------------------------------------------
+        // Load Program Attribute
+        // ---------------------------------------------------------------------
+
+        attributes = programAttributeService.getAllProgramAttributes();
 
         return PROGRAM_ENROLLMENT_FORM;
     }

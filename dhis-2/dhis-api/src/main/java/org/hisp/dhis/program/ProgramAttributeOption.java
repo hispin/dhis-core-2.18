@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,75 +24,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program;
 
 import java.io.Serializable;
 
+
 /**
- * @author Viet
- *
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version ProgramAttributeOption.java Nov 1, 2010 2:57:37 PM
  */
-public class PatientAttributeOption implements Serializable
+public class ProgramAttributeOption implements Serializable
 {
     private int id;
-    
+
     private String name;
-    
-    private PatientAttribute patientAttribute;
-    
+
+    private ProgramAttribute programAttribute;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttributeOption()
+    public ProgramAttributeOption()
     {
     }
 
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
-        return name.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object obj )
     {
-        if ( this == o )
-        {
+        if ( this == obj )
             return true;
-        }
-
-        if ( o == null )
-        {
+        if ( obj == null )
             return false;
-        }
-
-        if ( !(o instanceof PatientAttributeOption) )
-        {
+        if ( getClass() != obj.getClass() )
             return false;
+        ProgramAttributeOption other = (ProgramAttributeOption) obj;
+        if ( name == null )
+        {
+            if ( other.name != null )
+                return false;
         }
-
-        final PatientAttributeOption other = (PatientAttributeOption) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
+        else if ( !name.equals( other.name ) )
+            return false;
+        return true;
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    
 
     public int getId()
     {
@@ -114,13 +108,14 @@ public class PatientAttributeOption implements Serializable
         this.name = name;
     }
 
-    public PatientAttribute getPatientAttribute()
+    public ProgramAttribute getProgramAttribute()
     {
-        return patientAttribute;
+        return programAttribute;
     }
 
-    public void setPatientAttribute( PatientAttribute patientAttribute )
+    public void setProgramAttribute( ProgramAttribute programAttribute )
     {
-        this.patientAttribute = patientAttribute;
+        this.programAttribute = programAttribute;
     }
+
 }

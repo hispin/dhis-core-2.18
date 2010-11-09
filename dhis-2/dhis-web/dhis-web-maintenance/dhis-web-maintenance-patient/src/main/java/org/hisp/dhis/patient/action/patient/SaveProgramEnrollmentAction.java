@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
@@ -90,6 +91,13 @@ public class SaveProgramEnrollmentAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private ProgramAttributeService programAttributeService;
+
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
+    {
+        this.programAttributeService = programAttributeService;
     }
 
     private I18nFormat format;
@@ -188,11 +196,11 @@ public class SaveProgramEnrollmentAction
         return message;
     }
 
-    private I18n i18n;
+    private Collection<ProgramAttribute> attributes;
 
-    public void setI18n( I18n i18n )
+    public Collection<ProgramAttribute> getAttributes()
     {
-        this.i18n = i18n;
+        return attributes;
     }
 
     // -------------------------------------------------------------------------
@@ -260,7 +268,6 @@ public class SaveProgramEnrollmentAction
 
             for ( ProgramStageInstance programStageInstance : programInstance.getProgramStageInstances() )
             {
-
                 Date dueDate = DateUtils.getDateAfterAddition( format.parseDate( dateOfIncident ), programStageInstance
                     .getProgramStage().getMinDaysFromStart() );
 
@@ -271,7 +278,9 @@ public class SaveProgramEnrollmentAction
                 programStageInstances.add( programStageInstance );
             }
         }
-
+        
+        attributes = programAttributeService.getAllProgramAttributes();
+        
         return SUCCESS;
     }
 }

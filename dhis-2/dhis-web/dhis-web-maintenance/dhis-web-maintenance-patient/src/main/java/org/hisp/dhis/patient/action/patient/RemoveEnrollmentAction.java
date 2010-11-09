@@ -29,14 +29,32 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
+import org.hisp.dhis.program.ProgramAttributeOptionService;
+import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
+import org.hisp.dhis.programattributevalue.ProgramAttributeValueService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.log4j.Level;
+import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,10 +65,12 @@ import com.opensymphony.xwork2.Action;
 public class RemoveEnrollmentAction
     implements Action
 {
+    public static final String PREFIX_ATTRIBUTE = "attr";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PatientService patientService;
 
     public void setPatientService( PatientService patientService )
@@ -77,7 +97,28 @@ public class RemoveEnrollmentAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }   
+    }
+
+    private ProgramAttributeService programAttributeService;
+
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
+    {
+        this.programAttributeService = programAttributeService;
+    }
+
+    private ProgramAttributeOptionService programAttributeOptionService;
+
+    public void setProgramAttributeOptionService( ProgramAttributeOptionService programAttributeOptionService )
+    {
+        this.programAttributeOptionService = programAttributeOptionService;
+    }
+
+    private ProgramAttributeValueService programAttributeValueService;
+
+    public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
+    {
+        this.programAttributeValueService = programAttributeValueService;
+    }
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -100,15 +141,15 @@ public class RemoveEnrollmentAction
     public Patient getPatient()
     {
         return patient;
-    }   
-   
+    }
+
     public void setPatient( Patient patient )
     {
         this.patient = patient;
     }
 
     private ProgramInstance programInstance;
-    
+
     public ProgramInstance getProgramInstance()
     {
         return programInstance;
@@ -136,14 +177,14 @@ public class RemoveEnrollmentAction
     public void setProgramInstanceId( Integer programInstanceId )
     {
         this.programInstanceId = programInstanceId;
-    }    
+    }
 
     private Collection<Program> programs = new ArrayList<Program>();
 
     public Collection<Program> getPrograms()
     {
         return programs;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -152,32 +193,116 @@ public class RemoveEnrollmentAction
     public String execute()
         throws Exception
     {
-
         patient = selectedStateManager.getSelectedPatient();
 
-        Program program = selectedStateManager.getSelectedProgram();       
+        Program program = selectedStateManager.getSelectedProgram();
 
         programs = programService.getAllPrograms();
-        
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program, false );
-        
-        if( programInstances.iterator().hasNext() )
+
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
+            false );
+
+        if ( programInstances.iterator().hasNext() )
         {
             programInstance = programInstances.iterator().next();
         }
-        
+
         if ( programInstance != null )
-        {           
-            programInstance.setEndDate( new Date() );            
+        {
+            programInstance.setEndDate( new Date() );
             programInstance.setCompleted( true );
 
-            programInstanceService.updateProgramInstance( programInstance );            
-            
+            programInstanceService.updateProgramInstance( programInstance );
+
             patient.getPrograms().remove( program );
             patientService.updatePatient( patient );
-            
+
             selectedStateManager.clearSelectedProgram();
-        }      
+        }
+
+        // --------------------------------------------------------------------------------------------------------
+        // Save Program Attributes
+        // -----------------------------------------------------------------------------------------------------
+
+        HttpServletRequest request = ServletActionContext.getRequest();
+        System.out.println( "\n\n ++++++++++++ request : " + request );
+
+        Collection<ProgramAttribute> attributes = programAttributeService.getAllProgramAttributes();
+
+        Set<ProgramAttribute> programAttributes = new HashSet<ProgramAttribute>();
+
+        if ( attributes != null && attributes.size() > 0 )
+        {
+            programInstance.getAttributes().clear();
+
+            // Save other attributes
+            for ( ProgramAttribute attribute : attributes )
+            {
+                String value = request.getParameter( RemoveEnrollmentAction.PREFIX_ATTRIBUTE + attribute.getId() );
+                System.out.println( "\n\n ++++++++++++ attr : " + RemoveEnrollmentAction.PREFIX_ATTRIBUTE
+                    + attribute.getId() );
+                System.out.println( "\n\n value : " + value );
+
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    programAttributes.add( attribute );
+
+                    ProgramAttributeValue attributeValue = programAttributeValueService.getProgramAttributeValue(
+                        programInstance, attribute );
+
+                    // attributeValue is not exist
+                    if ( attributeValue == null )
+                    {
+                        attributeValue = new ProgramAttributeValue();
+                        attributeValue.setProgramInstance( programInstance );
+                        attributeValue.setProgramAttribute( attribute );
+                        
+                        if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                        {
+                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt( value, 0 ) );
+                            if ( option != null )
+                            {
+                                attributeValue.setProgramAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }
+                        }
+                        else
+                        {
+                            attributeValue.setValue( value.trim() );
+                        }
+
+                        // save values
+                        programAttributeValueService.saveProgramAttributeValue( attributeValue );
+                        
+                    }
+                    // attributeValue is exist
+                    else
+                    {
+                        if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                        {
+                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt(
+                                value, 0 ) );
+                            if ( option != null )
+                            {
+                                attributeValue.setProgramAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }
+                        }
+                        else
+                        {
+                            attributeValue.setValue( value.trim() );
+                        }
+                    }
+
+                    // update values
+                    programAttributeValueService.updateProgramAttributeValue( attributeValue );
+                }
+            }
+        }
+
+        programInstance.setAttributes( programAttributes );
+
+        programInstanceService.updateProgramInstance( programInstance );
 
         return SUCCESS;
     }

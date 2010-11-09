@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,115 +24,112 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patientattributevalue;
+
+package org.hisp.dhis.programattributevalue;
 
 import java.io.Serializable;
 
-import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
+import org.hisp.dhis.program.ProgramInstance;
 
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $Id ProgramAttributeValue.java 2010-10-30 19:32:09Z $
  */
-public class PatientAttributeValue
+public class ProgramAttributeValue
     implements Serializable
 {
+    private ProgramAttribute programAttribute;
 
-    public static final String UNKNOWN = " ";
-
-    private PatientAttribute patientAttribute;
-
-    private Patient patient;
+    private ProgramInstance programInstance;
 
     private String value;
 
-    private PatientAttributeOption patientAttributeOption;
+    private ProgramAttributeOption programAttributeOption;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public PatientAttributeValue()
+    public ProgramAttributeValue()
     {
-    }
 
-    public PatientAttributeValue( PatientAttribute patientAttribute, Patient patient )
-    {
-        this.patientAttribute = patientAttribute;
-        this.patient = patient;
-    }
-
-    public PatientAttributeValue( PatientAttribute patientAttribute, Patient patient, String value )
-    {
-        this.patientAttribute = patientAttribute;
-        this.patient = patient;
-        this.value = value;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode and equals
+    // Logic
     // -------------------------------------------------------------------------
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof PatientAttributeValue) )
-        {
-            return false;
-        }
-
-        final PatientAttributeValue other = (PatientAttributeValue) o;
-
-        return patientAttribute.equals( other.getPatientAttribute() ) && patient.equals( other.getPatient() );
-
-    }
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
-
-        result = result * prime + patientAttribute.hashCode();
-        result = result * prime + patient.hashCode();
-
+        result = prime * result + ((programAttribute == null) ? 0 : programAttribute.hashCode());
+        result = prime * result + ((programInstance == null) ? 0 : programInstance.hashCode());
         return result;
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        ProgramAttributeValue other = (ProgramAttributeValue) obj;
+        if ( programAttribute == null )
+        {
+            if ( other.programAttribute != null )
+                return false;
+        }
+        else if ( !programAttribute.equals( other.programAttribute ) )
+            return false;
+        if ( programInstance == null )
+        {
+            if ( other.programInstance != null )
+                return false;
+        }
+        else if ( !programInstance.equals( other.programInstance ) )
+            return false;
+        return true;
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public PatientAttribute getPatientAttribute()
+    public ProgramAttribute getProgramAttribute()
     {
-        return patientAttribute;
+        return programAttribute;
     }
 
-    public void setPatientAttribute( PatientAttribute patientAttribute )
+    public ProgramAttributeOption getProgramAttributeOption()
     {
-        this.patientAttribute = patientAttribute;
+        return programAttributeOption;
     }
 
-    public Patient getPatient()
+    public void setProgramAttributeOption( ProgramAttributeOption programAttributeOption )
     {
-        return patient;
+        this.programAttributeOption = programAttributeOption;
     }
 
-    public void setPatient( Patient patient )
+    public void setProgramAttribute( ProgramAttribute programAttribute )
     {
-        this.patient = patient;
+        this.programAttribute = programAttribute;
+    }
+
+    public ProgramInstance getProgramInstance()
+    {
+        return programInstance;
+    }
+
+    public void setProgramInstance( ProgramInstance programInstance )
+    {
+        this.programInstance = programInstance;
     }
 
     public String getValue()
@@ -145,13 +142,4 @@ public class PatientAttributeValue
         this.value = value;
     }
 
-    public PatientAttributeOption getPatientAttributeOption()
-    {
-        return patientAttributeOption;
-    }
-
-    public void setPatientAttributeOption( PatientAttributeOption patientAttributeOption )
-    {
-        this.patientAttributeOption = patientAttributeOption;
-    }
 }

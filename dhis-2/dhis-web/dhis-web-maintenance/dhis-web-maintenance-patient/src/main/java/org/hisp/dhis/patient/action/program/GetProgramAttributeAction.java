@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,103 +24,68 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
 
-import java.io.Serializable;
+package org.hisp.dhis.patient.action.program;
+
+import java.util.Date;
+
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Viet
- *
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version AddProgramAttributeAction.java Oct 31, 2010 11:48:29 PM
  */
-public class PatientAttributeOption implements Serializable
+public class GetProgramAttributeAction
+    implements Action
 {
-    private int id;
-    
-    private String name;
-    
-    private PatientAttribute patientAttribute;
-    
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependency
     // -------------------------------------------------------------------------
 
-    public PatientAttributeOption()
+    private ProgramAttributeService programAttributeService;
+
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
     {
+        this.programAttributeService = programAttributeService;
     }
 
     // -------------------------------------------------------------------------
-    // hashCode, equals and toString
-    // -------------------------------------------------------------------------
-    
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof PatientAttributeOption) )
-        {
-            return false;
-        }
-
-        final PatientAttributeOption other = (PatientAttributeOption) o;
-
-        return name.equals( other.getName() );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + name + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    
+    private Integer id;
 
-    public int getId()
-    {
-        return id;
-    }
+    private ProgramAttribute programAttribute;
 
-    public void setId( int id )
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setId( Integer id )
     {
         this.id = id;
     }
 
-    public String getName()
+    // -------------------------------------------------------------------------
+    // Implementation Action
+    // -------------------------------------------------------------------------
+
+    public ProgramAttribute getProgramAttribute()
     {
-        return name;
+        return programAttribute;
     }
 
-    public void setName( String name )
+    @Override
+    public String execute()
+        throws Exception
     {
-        this.name = name;
-    }
-
-    public PatientAttribute getPatientAttribute()
-    {
-        return patientAttribute;
-    }
-
-    public void setPatientAttribute( PatientAttribute patientAttribute )
-    {
-        this.patientAttribute = patientAttribute;
+        programAttribute = programAttributeService.getProgramAttribute( id );
+        
+        return SUCCESS;
     }
 }

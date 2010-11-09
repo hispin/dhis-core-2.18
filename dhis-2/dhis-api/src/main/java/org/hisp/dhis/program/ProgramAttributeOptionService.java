@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,36 +24,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
+
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ *
+ * @version ProgramAttributeOptionService.java Nov 1, 2010 3:02:01 PM 
  */
-public interface PatientAttributeService
+public interface ProgramAttributeOptionService
 {
-    String ID = PatientAttributeService.class.getName();
+    int addProgramAttributeOption( ProgramAttributeOption option );
 
-    int savePatientAttribute( PatientAttribute patientAttribute );
+    void updateProgramAttributeOption( ProgramAttributeOption option );
 
-    void deletePatientAttribute( PatientAttribute patientAttribute );
+    void deleteProgramAttributeOption( ProgramAttributeOption option );
 
-    void updatePatientAttribute( PatientAttribute patientAttribute );
-
-    PatientAttribute getPatientAttribute( int id );
-
-    PatientAttribute getPatientAttributeByName( String name );
-
-    Collection<PatientAttribute> getAllPatientAttributes();
-
-    Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
+    ProgramAttributeOption get( ProgramAttribute programAttribute, String name );
     
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
-    Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
+    ProgramAttributeOption get( int id );
     
-    Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    Collection<ProgramAttributeOption> get( ProgramAttribute programAttribute );
 
 }

@@ -56,6 +56,8 @@ public class ProgramInstance
 
     private Set<ProgramStageInstance> programStageInstances = new HashSet<ProgramStageInstance>();
 
+    private Set<ProgramAttribute> attributes = new HashSet<ProgramAttribute>();
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -246,6 +248,16 @@ public class ProgramInstance
         this.programStageInstances = programStageInstances;
     }
 
+    public Set<ProgramAttribute> getAttributes()
+    {
+        return attributes;
+    }
+
+    public void setAttributes( Set<ProgramAttribute> attributes )
+    {
+        this.attributes = attributes;
+    }
+    
     // -------------------------------------------------------------------------
     // Convenience method
     // -------------------------------------------------------------------------
