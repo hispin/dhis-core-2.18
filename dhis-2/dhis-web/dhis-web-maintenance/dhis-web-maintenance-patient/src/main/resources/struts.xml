@@ -799,7 +799,7 @@
 
 		<action name="saveProgramStageSortOder"
 			class="org.hisp.dhis.patient.action.programstage.SaveProgramStageSortOrderAction">
-			<result name="success" type="redirect">programStage.action
+			<result name="success" type="redirect">programStage.action?id=${id}
 			</result>
 		</action>
 

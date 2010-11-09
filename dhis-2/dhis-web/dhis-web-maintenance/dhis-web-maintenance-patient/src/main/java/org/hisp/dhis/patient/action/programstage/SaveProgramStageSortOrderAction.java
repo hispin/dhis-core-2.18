@@ -52,19 +52,19 @@ public class SaveProgramStageSortOrderAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }   
-    
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
     private List<Integer> programStageList;
 
-    public void setprogramStageList( List<Integer> programStageList )
+    public void setProgramStageList( List<Integer> programStageList )
     {
         this.programStageList = programStageList;
     }
-    
+
     private Integer id;
 
     public Integer getId()
@@ -82,22 +82,21 @@ public class SaveProgramStageSortOrderAction
     // -------------------------------------------------------------------------
     public String execute()
     {
-
         int stageInProgram = 1;
-        
-        List<ProgramStage> programStages = new ArrayList<ProgramStage>( programStageList.size() );        
+
+        List<ProgramStage> programStages = new ArrayList<ProgramStage>( programStageList.size() );
 
         for ( Integer programStageId : programStageList )
         {
             ProgramStage programStage = programStageService.getProgramStage( programStageId );
-            
+
             programStages.add( programStage );
 
             programStage.setStageInProgram( stageInProgram++ );
 
             programStageService.updateProgramStage( programStage );
-        }        
-                
+        }
+
         return SUCCESS;
     }
 }

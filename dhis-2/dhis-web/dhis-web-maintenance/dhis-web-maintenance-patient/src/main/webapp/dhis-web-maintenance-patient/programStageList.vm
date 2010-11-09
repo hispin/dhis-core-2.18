@@ -33,11 +33,10 @@
 		  </tr>
 
 		  <tbody id="list">
-			#set( $mark = false )
 			#foreach( $association in $associations )
 			  <tr id="tr${association.id}">			  
-				<td#alternate( $mark )>$encoder.htmlEncode( $association.name )</td>                
-				<td#alternate( $mark )>$encoder.htmlEncode( $association.description )</td>
+				<td>$encoder.htmlEncode( $association.name )</td>                
+				<td>$encoder.htmlEncode( $association.description )</td>
 				
 				<td style="text-align:center"#alternate( $mark )>
 				  <a href="showUpdateProgramStageForm.action?id=$association.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
@@ -56,11 +55,6 @@
 				</td>
 				
 			  </tr>
-			  #if( $mark )
-				#set( $mark = false )
-			  #else
-				#set( $mark = true )
-			  #end
 			#end
 
 		  </tbody>
