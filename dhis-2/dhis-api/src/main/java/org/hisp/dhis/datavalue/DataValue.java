@@ -29,16 +29,10 @@ package org.hisp.dhis.datavalue;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionSet;
-import org.hisp.dhis.dimension.Measure;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
@@ -47,13 +41,10 @@ import org.hisp.dhis.source.Source;
  * @version $Id: DataValue.java 4638 2008-02-25 10:06:47Z larshelg $
  */
 public class DataValue
-    implements Serializable, Measure, ImportableObject
+    implements Serializable, ImportableObject
 {
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-    
-    
-    
     
     /**
      * Part of the DataValue's composite ID
@@ -153,37 +144,6 @@ public class DataValue
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
-
-    public Map<Dimension, DimensionOption> getDimensions()
-    {
-        Map<Dimension, DimensionOption> dimensions = new HashMap<Dimension, DimensionOption>();
-        
-        dimensions.put( DataElement.DIMENSION, dataElement );
-        dimensions.put( Period.DIMENSION, period );
-        dimensions.put( Source.DIMENSION, source );
-        
-        if ( optionCombo != null && !optionCombo.isDefault() )
-        {
-            for ( DimensionOption dimensionOption : optionCombo.getDimensionOptions() )
-            {
-                dimensions.put( dimensionOption.getDimension(), dimensionOption );
-            }
-        }
-        
-        return dimensions;
-    }
-    
-    public Map<Dimension, DimensionOption> getDimensions( DimensionSet dimensionSet )
-    {
-        Map<Dimension, DimensionOption> dimensions = getDimensions();
-                
-        for ( Dimension dimension : dimensionSet.getDimensions() )
-        {
-            dimensions.put( dimension, dimension.getDimensionOption( dataElement ) );
-        }
-        
-        return dimensions;
-    }
     
     public String getMeasure()
     {

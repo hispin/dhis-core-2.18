@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.dimension.DimensionType;
@@ -81,11 +80,6 @@ public class DataElementCategoryOption
     public DimensionType getDimensionType()
     {
         return DimensionType.CATEGORY;
-    }
-    
-    public Dimension getDimension()
-    {
-        return category;
     }
     
     // -------------------------------------------------------------------------
