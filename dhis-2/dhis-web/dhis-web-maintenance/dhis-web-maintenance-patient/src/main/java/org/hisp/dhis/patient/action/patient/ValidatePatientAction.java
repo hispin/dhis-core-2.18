@@ -84,7 +84,7 @@ public class ValidatePatientAction
     private String middleName;
 
     private String lastName;
-    
+
     private Character dobType;
 
     private String birthDate;
@@ -171,8 +171,8 @@ public class ValidatePatientAction
 
             return INPUT;
         }
-        
-        if ( dobType == 'V' || dobType == 'D')
+
+        if ( dobType != null && (dobType == 'V' || dobType == 'D') )
         {
             birthDate = birthDate.trim();
 

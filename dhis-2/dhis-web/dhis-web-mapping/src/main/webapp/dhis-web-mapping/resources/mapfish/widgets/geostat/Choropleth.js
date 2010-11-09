@@ -74,6 +74,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     organisationUnitSelectionType: false,
     
+    updateValues: false,
+    
     initComponent: function() {
     
         this.initProperties();
@@ -84,6 +86,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         if (GLOBALS.vars.parameter) {
             this.mapView = GLOBALS.vars.parameter.mapView;
+            this.updateValues = true;
             this.legend = {
                 value: this.mapView.mapLegendType,
                 method: this.mapView.method || this.legend.method,
@@ -209,6 +212,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         this.mapView = GLOBALS.stores.mapView.getAt(GLOBALS.stores.mapView.find('id', cb.getValue())).data;
+                        this.updateValues = true;
                         
                         this.legend.value = this.mapView.mapLegendType;
                         this.legend.method = this.mapView.method || this.legend.method;
@@ -311,6 +315,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
  
                         Ext.Ajax.request({
                             url: GLOBALS.conf.path_mapping + 'getMapLegendSetByIndicator' + GLOBALS.conf.type,
@@ -399,6 +404,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
  
                         Ext.Ajax.request({
                             url: GLOBALS.conf.path_mapping + 'getMapLegendSetByDataElement' + GLOBALS.conf.type,
@@ -487,6 +493,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function() {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
                         this.classify(false, true);
                     }
                 }
@@ -507,6 +514,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(df, date) {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
                         Ext.getCmp('enddate_df').setMinValue(date);
                         this.classify(false, true);
                     }
@@ -528,6 +536,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(df, date) {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
                         Ext.getCmp('startdate_df').setMaxValue(date);
                         this.classify(false, true);
                     }
@@ -556,6 +565,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         Ext.getCmp('mapview_cb').clearValue();
+                        this.updateValues = true;
                         
                         if (cb.getValue() != this.newUrl) {
                             this.loadFromFile(cb.getValue());
@@ -670,6 +680,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                                                 width: 130,
                                                                 scope: this,
                                                                 handler: function() {
+                                                                    this.updateValues = true;
                                                                     if (tf.getValue()) {
                                                                         this.organisationUnitSelectionType.setParent(tf.value);
                                                                         this.loadFromDatabase(tf.value);
@@ -735,6 +746,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                                                 width: 130,
                                                                 scope: this,
                                                                 handler: function() {
+                                                                    this.updateValues = true;
                                                                     if (tf.value) {
                                                                         this.organisationUnitSelectionType.setLevel(tf.value);
                                                                         this.loadFromDatabase(tf.value);
@@ -1473,66 +1485,72 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         if (this.validateForm(exception)) {
             GLOBALS.vars.mask.msg = i18n_aggregating_map_values;
             GLOBALS.vars.mask.show();
+            
+            if (this.updateValues) {
+                this.mapData = {
+                    nameColumn: 'name'
+                };
 
-            if (!position) {
-                GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
-            }
-            
-            this.mapData = {
-                nameColumn: 'name'
-            };
-            
-            if (this.mapView) {
-                if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
-                    GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-                }
-                else {
+                if (!position) {
                     GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
                 }
-                this.mapView = false;
-            }
-            
-            var dataUrl = this.valueType.isIndicator() ?
-                (this.organisationUnitSelectionType.isParent() ? 'getIndicatorMapValuesByParent' : 'getIndicatorMapValuesByLevel') :
-                    (this.organisationUnitSelectionType.isLevel() ? 'getDataMapValuesByParent' : 'getDataMapValuesByLevel');
-            
-            var params = {
-                id: this.valueType.isIndicator() ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue(),
-                periodId: GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getValue() : null,
-                startDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('startdate_df').getValue()).format('Y-m-d') : null,
-                endDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('enddate_df').getValue()).format('Y-m-d') : null,
-                parentId: this.organisationUnitSelectionType.parent,
-                level: this.organisationUnitSelectionType.level
-            };
                 
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + dataUrl + GLOBALS.conf.type,
-                method: 'POST',
-                params: params,
-                scope: this,
-                success: function(r) {
-                    var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-                    GLOBALS.vars.exportValues = GLOBALS.util.getExportDataValueJSON(mapvalues);
-                    
-                    if (mapvalues.length == 0) {
-                        Ext.message.msg(false, i18n_current_selection_no_data);
-                        GLOBALS.vars.mask.hide();
-                        return;
+                if (this.mapView) {
+                    if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
+                        GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
                     }
+                    else {
+                        GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
+                    }
+                    this.mapView = false;
+                }
+                
+                var dataUrl = this.valueType.isIndicator() ?
+                    (this.organisationUnitSelectionType.isParent() ? 'getIndicatorMapValuesByParent' : 'getIndicatorMapValuesByLevel') :
+                        (this.organisationUnitSelectionType.isLevel() ? 'getDataMapValuesByParent' : 'getDataMapValuesByLevel');
+                
+                var params = {
+                    id: this.valueType.isIndicator() ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue(),
+                    periodId: GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getValue() : null,
+                    startDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('startdate_df').getValue()).format('Y-m-d') : null,
+                    endDate: GLOBALS.vars.mapDateType.isStartEnd() ? new Date(Ext.getCmp('enddate_df').getValue()).format('Y-m-d') : null,
+                    parentId: this.organisationUnitSelectionType.parent,
+                    level: this.organisationUnitSelectionType.level
+                };
+                    
+                Ext.Ajax.request({
+                    url: GLOBALS.conf.path_mapping + dataUrl + GLOBALS.conf.type,
+                    method: 'POST',
+                    params: params,
+                    scope: this,
+                    success: function(r) {
+                        var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+                        GLOBALS.vars.exportValues = GLOBALS.util.getExportDataValueJSON(mapvalues);
+                        
+                        if (mapvalues.length == 0) {
+                            Ext.message.msg(false, i18n_current_selection_no_data);
+                            GLOBALS.vars.mask.hide();
+                            return;
+                        }
 
-                    for (var i = 0; i < mapvalues.length; i++) {
-                        for (var j = 0; j < this.layer.features.length; j++) {
-                            if (mapvalues[i].orgUnitName == this.layer.features[j].attributes.name) {
-                                this.layer.features[j].attributes.value = parseFloat(mapvalues[i].value);
-                                this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
-                                break;
+                        for (var i = 0; i < mapvalues.length; i++) {
+                            for (var j = 0; j < this.layer.features.length; j++) {
+                                if (mapvalues[i].orgUnitName == this.layer.features[j].attributes.name) {
+                                    this.layer.features[j].attributes.value = parseFloat(mapvalues[i].value);
+                                    this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
+                                    break;
+                                }
                             }
                         }
+                        
+                        this.updateValues = false;
+                        this.applyValues();
                     }
-                    
-                    this.applyValues();
-                }
-            });
+                });
+            }
+            else {
+                this.applyValues();
+            }
         }
     },
     
@@ -1542,98 +1560,100 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             GLOBALS.vars.mask.msg = i18n_aggregating_map_values;
             GLOBALS.vars.mask.show();
             
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'getMapByMapLayerPath' + GLOBALS.conf.type,
-                method: 'POST',
-                params: {mapLayerPath: this.newUrl},
-                scope: this,
-                success: function(r) {
-                    this.mapData = Ext.util.JSON.decode(r.responseText).map[0];
-                    
-                    this.mapData.organisationUnitLevel = parseFloat(this.mapData.organisationUnitLevel);
-                    this.mapData.longitude = parseFloat(this.mapData.longitude);
-                    this.mapData.latitude = parseFloat(this.mapData.latitude);
-                    this.mapData.zoom = parseFloat(this.mapData.zoom);
-                    
-                    if (!position) {
-                        if (this.mapData.zoom != GLOBALS.vars.map.getZoom()) {
-                            GLOBALS.vars.map.zoomTo(this.mapData.zoom);
-                        }
-                        GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapData.longitude, this.mapData.latitude));
-                    }
-                    
-                    if (this.mapView) {
-                        if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
-                            GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-                        }
-                        else {
-                            GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapData.longitude, this.mapData.latitude), this.mapData.zoom);
-                        }
-                        this.mapView = false;
-                    }
-                    
-                    var params = {
-                        id: this.valueType.isIndicator() ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue()
-                    };
+            if (this.updateValues) {
+                Ext.Ajax.request({
+                    url: GLOBALS.conf.path_mapping + 'getMapByMapLayerPath' + GLOBALS.conf.type,
+                    method: 'POST',
+                    params: {mapLayerPath: this.newUrl},
+                    scope: this,
+                    success: function(r) {
+                        this.mapData = Ext.util.JSON.decode(r.responseText).map[0];
+                        this.mapData.organisationUnitLevel = parseFloat(this.mapData.organisationUnitLevel);
+                        this.mapData.longitude = parseFloat(this.mapData.longitude);
+                        this.mapData.latitude = parseFloat(this.mapData.latitude);
+                        this.mapData.zoom = parseFloat(this.mapData.zoom);
                         
-            
-                    var indicatorOrDataElementId = this.valueType.isIndicator() ?
-                        Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
-                    var dataUrl = this.valueType.isIndicator() ?
-                        'getIndicatorMapValuesByMap' : 'getDataMapValuesByMap';
-                    var periodId = Ext.getCmp('period_cb').getValue();
-                    var mapLayerPath = this.newUrl;
-                    
-                    Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + dataUrl + GLOBALS.conf.type,
-                        method: 'POST',
-                        params: {id:indicatorOrDataElementId, periodId:periodId, mapLayerPath:mapLayerPath},
-                        scope: this,
-                        success: function(r) {
-                            var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
-                            GLOBALS.vars.exportValues = GLOBALS.util.getExportDataValueJSON(mapvalues);
-                            var mv = new Array();
-                            var mour = new Array();
-                            var nameColumn = this.mapData.nameColumn;
-                            var options = {};
-                            
-                            if (mapvalues.length == 0) {
-                                Ext.message.msg(false, i18n_current_selection_no_data );
-                                GLOBALS.vars.mask.hide();
-                                return;
-                            }
-                            
-                            for (var i = 0; i < mapvalues.length; i++) {
-                                mv[mapvalues[i].orgUnitName] = mapvalues[i].orgUnitName ? mapvalues[i].value : '';
-                            }
-                            
-                            Ext.Ajax.request({
-                                url: GLOBALS.conf.path_mapping + 'getAvailableMapOrganisationUnitRelations' + GLOBALS.conf.type,
-                                method: 'POST',
-                                params: {mapLayerPath: mapLayerPath},
-                                scope: this,
-                                success: function(r) {
-                                    var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
-                                   
-                                    for (var i = 0; i < relations.length; i++) {
-                                        mour[relations[i].featureId] = relations[i].organisationUnit;
-                                    }
-
-                                    for (var j = 0; j < this.layer.features.length; j++) {
-                                        var value = mv[mour[this.layer.features[j].attributes[nameColumn]]];
-                                        this.layer.features[j].attributes.value = value ? parseFloat(value) : '';
-                                        this.layer.features[j].data.id = this.layer.features[j].attributes[nameColumn];
-                                        this.layer.features[j].data.name = this.layer.features[j].attributes[nameColumn];
-                                        this.layer.features[j].attributes.labelString = this.layer.features[j].attributes[nameColumn] + ' (' + this.layer.features[j].attributes.value + ')';
-                                    }
-                                    
-                                    this.applyValues();
-                                }
-                            });
+                        if (!position) {
+                            GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
                         }
-                    });
-                }
-            });
+                        
+                        if (this.mapView) {
+                            if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
+                                GLOBALS.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+                            }
+                            else {
+                                GLOBALS.vars.map.zoomToExtent(this.layer.getDataExtent());
+                            }
+                            this.mapView = false;
+                        }
+                        
+                        var params = {
+                            id: this.valueType.isIndicator() ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue()
+                        };
+                            
+                
+                        var indicatorOrDataElementId = this.valueType.isIndicator() ?
+                            Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
+                        var dataUrl = this.valueType.isIndicator() ?
+                            'getIndicatorMapValuesByMap' : 'getDataMapValuesByMap';
+                        var periodId = Ext.getCmp('period_cb').getValue();
+                        var mapLayerPath = this.newUrl;
+                        
+                        Ext.Ajax.request({
+                            url: GLOBALS.conf.path_mapping + dataUrl + GLOBALS.conf.type,
+                            method: 'POST',
+                            params: {id:indicatorOrDataElementId, periodId:periodId, mapLayerPath:mapLayerPath},
+                            scope: this,
+                            success: function(r) {
+                                var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
+                                GLOBALS.vars.exportValues = GLOBALS.util.getExportDataValueJSON(mapvalues);
+                                var mv = new Array();
+                                var mour = new Array();
+                                var nameColumn = this.mapData.nameColumn;
+                                var options = {};
+                                
+                                if (mapvalues.length == 0) {
+                                    Ext.message.msg(false, i18n_current_selection_no_data );
+                                    GLOBALS.vars.mask.hide();
+                                    return;
+                                }
+                                
+                                for (var i = 0; i < mapvalues.length; i++) {
+                                    mv[mapvalues[i].orgUnitName] = mapvalues[i].orgUnitName ? mapvalues[i].value : '';
+                                }
+                                
+                                Ext.Ajax.request({
+                                    url: GLOBALS.conf.path_mapping + 'getAvailableMapOrganisationUnitRelations' + GLOBALS.conf.type,
+                                    method: 'POST',
+                                    params: {mapLayerPath: mapLayerPath},
+                                    scope: this,
+                                    success: function(r) {
+                                        var relations = Ext.util.JSON.decode(r.responseText).mapOrganisationUnitRelations;
+                                       
+                                        for (var i = 0; i < relations.length; i++) {
+                                            mour[relations[i].featureId] = relations[i].organisationUnit;
+                                        }
+
+                                        for (var j = 0; j < this.layer.features.length; j++) {
+                                            var value = mv[mour[this.layer.features[j].attributes[nameColumn]]];
+                                            this.layer.features[j].attributes.value = value ? parseFloat(value) : '';
+                                            this.layer.features[j].data.id = this.layer.features[j].attributes[nameColumn];
+                                            this.layer.features[j].data.name = this.layer.features[j].attributes[nameColumn];
+                                            this.layer.features[j].attributes.labelString = this.layer.features[j].attributes[nameColumn] + ' (' + this.layer.features[j].attributes.value + ')';
+                                        }
+                                       
+                                        this.updateValues = false;
+                                        this.applyValues();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                this.applyValues();
+            }
         }
     },
     

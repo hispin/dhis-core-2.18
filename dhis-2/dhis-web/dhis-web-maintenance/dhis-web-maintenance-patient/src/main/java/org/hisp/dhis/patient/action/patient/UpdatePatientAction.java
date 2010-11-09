@@ -141,8 +141,8 @@ public class UpdatePatientAction
         patient.setGender( gender );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-
-        if ( birthDate != null )
+        
+        if ( birthDate != null && !birthDate.isEmpty() )
         {
             birthDate = birthDate.trim();
             patient.setBirthDate( format.parseDate( birthDate ) );
@@ -178,10 +178,7 @@ public class UpdatePatientAction
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
                 }
-                // value = request.getParameter(
-                // AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId()
-                // );
-
+                
                 if ( StringUtils.isNotBlank( value ) )
                 {
                     value = value.trim();
