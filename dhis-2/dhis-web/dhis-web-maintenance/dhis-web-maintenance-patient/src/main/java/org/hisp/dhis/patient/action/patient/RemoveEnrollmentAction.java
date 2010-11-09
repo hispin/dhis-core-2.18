@@ -35,6 +35,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
@@ -118,6 +119,13 @@ public class RemoveEnrollmentAction
     public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
     {
         this.programAttributeValueService = programAttributeValueService;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -225,11 +233,13 @@ public class RemoveEnrollmentAction
         // -----------------------------------------------------------------------------------------------------
 
         HttpServletRequest request = ServletActionContext.getRequest();
-        System.out.println( "\n\n ++++++++++++ request : " + request );
 
         Collection<ProgramAttribute> attributes = programAttributeService.getAllProgramAttributes();
 
         Set<ProgramAttribute> programAttributes = new HashSet<ProgramAttribute>();
+
+        // End-user inputs attribute value for DEAD-attribute
+        boolean flag = false;
 
         if ( attributes != null && attributes.size() > 0 )
         {
@@ -239,9 +249,6 @@ public class RemoveEnrollmentAction
             for ( ProgramAttribute attribute : attributes )
             {
                 String value = request.getParameter( RemoveEnrollmentAction.PREFIX_ATTRIBUTE + attribute.getId() );
-                System.out.println( "\n\n ++++++++++++ attr : " + RemoveEnrollmentAction.PREFIX_ATTRIBUTE
-                    + attribute.getId() );
-                System.out.println( "\n\n value : " + value );
 
                 if ( StringUtils.isNotBlank( value ) )
                 {
@@ -256,10 +263,20 @@ public class RemoveEnrollmentAction
                         attributeValue = new ProgramAttributeValue();
                         attributeValue.setProgramInstance( programInstance );
                         attributeValue.setProgramAttribute( attribute );
-                        
-                        if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+
+                        // DEAD program-attribute
+                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.DEAD_NAME )
+                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_BOOL ) )
                         {
-                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt( value, 0 ) );
+                            attributeValue.setValue( value.trim() );
+                            patient.setIsDead( Boolean.parseBoolean( value.trim() ) );
+                            patientService.updatePatient( patient );
+                            flag = true;
+                        }
+                        else if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                        {
+                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt(
+                                value, 0 ) );
                             if ( option != null )
                             {
                                 attributeValue.setProgramAttributeOption( option );
@@ -271,9 +288,17 @@ public class RemoveEnrollmentAction
                             attributeValue.setValue( value.trim() );
                         }
 
+                        // CLOSED-DATE program-attribute
+                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.CLOSED_DATE )
+                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_DATE ) && flag )
+                        {
+                            patient.setDeathDate( format.parseDate( value.trim() ) );
+                            patientService.updatePatient( patient );
+                        }
+
                         // save values
                         programAttributeValueService.saveProgramAttributeValue( attributeValue );
-                        
+
                     }
                     // attributeValue is exist
                     else
