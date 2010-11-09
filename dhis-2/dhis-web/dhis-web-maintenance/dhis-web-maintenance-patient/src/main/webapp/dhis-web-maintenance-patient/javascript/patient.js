@@ -472,6 +472,7 @@ function checkDuplicate()
 				'&firstName=' + getFieldValue( 'firstName' ) +
 				'&middleName=' + getFieldValue( 'middleName' ) +
 				'&lastName=' + getFieldValue( 'lastName' ) +
+				'&dobType=' + getFieldValue( 'dobType' ) +
 				'&gender=' + getFieldValue( 'gender' ) +
 				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
 				'&age=' + getFieldValue( 'age' ) ;
@@ -492,12 +493,11 @@ function checkDuplicateCompleted( messageElement )
     
     if( type == 'success')
     {
-    	alert(i18n_no_duplicate_found);
+    	showSuccessMessage(i18n_no_duplicate_found);
     }
     if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        showWarningMessage(message);
     }
     else if( type == 'duplicate' )
     {
