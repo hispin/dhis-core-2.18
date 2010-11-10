@@ -51,37 +51,44 @@ public class HibernateProgramAttributeValueStore
         sessionFactory.getCurrentSession().save( programAttributeValue );
     }
 
-    public int delete( ProgramAttribute programAttribute ){
-        
+    public int delete( ProgramAttribute programAttribute )
+    {
         Query query = getQuery( "delete from ProgramAttributeValue where programAttribute = :programAttribute" );
         query.setEntity( "programAttribute", programAttribute );
-        
+
         return query.executeUpdate();
     }
 
-    public int delete( ProgramInstance programInstance ){
+    public int delete( ProgramInstance programInstance )
+    {
         Query query = getQuery( "delete from ProgramAttributeValue where programInstance = :programInstance" );
         query.setEntity( "programInstance", programInstance );
-        
+
         return query.executeUpdate();
     }
 
-    public ProgramAttributeValue get( ProgramInstance programInstance, ProgramAttribute programAttribute ){
+    public ProgramAttributeValue get( ProgramInstance programInstance, ProgramAttribute programAttribute )
+    {
         return (ProgramAttributeValue) getCriteria( Restrictions.eq( "programInstance", programInstance ),
             Restrictions.eq( "programAttribute", programAttribute ) ).uniqueResult();
     }
-    
-    public Collection<ProgramAttributeValue> get( ProgramInstance progranInstance ){
+
+    @SuppressWarnings("unchecked")
+    public Collection<ProgramAttributeValue> get( ProgramInstance progranInstance )
+    {
         return getCriteria( Restrictions.eq( "progranInstance", progranInstance ) ).list();
     }
 
-    public Collection<ProgramAttributeValue> get( ProgramAttribute programAttribute ){
+    @SuppressWarnings("unchecked")
+    public Collection<ProgramAttributeValue> get( ProgramAttribute programAttribute )
+    {
         return getCriteria( Restrictions.eq( "programAttribute", programAttribute ) ).list();
     }
 
-    public Collection<ProgramAttributeValue> search( ProgramAttribute programAttribute, String searchText ){
+    @SuppressWarnings("unchecked")
+    public Collection<ProgramAttributeValue> search( ProgramAttribute programAttribute, String searchText )
+    {
         return getCriteria( Restrictions.eq( "programAttribute", programAttribute ),
             Restrictions.ilike( "value", "%" + searchText + "%" ) ).list();
     }
-
 }

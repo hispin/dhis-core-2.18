@@ -33,7 +33,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -56,8 +55,6 @@ public class ViewCustomDataSetReportAction
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
-
-    private DataEntryFormService dataEntryFormService;
 
     private PeriodService periodService;
 
@@ -88,11 +85,6 @@ public class ViewCustomDataSetReportAction
     // -------------------------------------------
     // Getter & Setter
     // -------------------------------------------
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
 
     public DataSet getDataSet()
     {

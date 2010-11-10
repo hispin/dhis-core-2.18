@@ -548,6 +548,7 @@ public class HibernateDataElementStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<DataElementGroup> getAllDataElementGroups( int from, int to )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -572,6 +573,7 @@ public class HibernateDataElementStore
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to )
     {
         Session session = sessionFactory.getCurrentSession();
