@@ -1,11 +1,9 @@
 <div>
     <input type="button" value="$i18n.getString( "back_to_search" )" onclick="window.location.href='searchPatient.action'" style="width:10em">
 </div>
-           
-<form id="selectRecordingForm" name="selectRecordingForm" method="post" action="selectDataRecording.action">
-
-<input type="hidden" id="id" name="id" value="$patient.id">
-    
+   
+<input type="hidden" id="id" name="id" value="$patient.id">        
+<form id="selectRecordingForm" name="selectRecordingForm" method="post" action="selectDataRecording.action?id=$patient.id">
 
 <table class="mainPageTable"> 
     <tr>            

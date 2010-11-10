@@ -222,32 +222,32 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
+        // ---------------------------------------------------------------------
+        // Validate selected OrganisationUnit && Patient
+        // ---------------------------------------------------------------------
+    
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        // ---------------------------------------------------------------------
-        // Validate selected Patient
-        // ---------------------------------------------------------------------
-
-        patient = patientService.getPatient( id );
-
-        if ( patient == null )
+        
+        if ( organisationUnit == null || id == null )
         {
             programId = null;
             programStageId = null;
-
+            
             selectedStateManager.clearSelectedPatient();
             selectedStateManager.clearSelectedProgram();
             selectedStateManager.clearSelectedProgramStage();
-
+            
             return SUCCESS;
         }
-
+        
+        patient = patientService.getPatient( id );
+        
         selectedStateManager.setSelectedPatient( patient );
-
+        
         // ---------------------------------------------------------------------
         // Load Enrolled Programs
         // ---------------------------------------------------------------------
-
+        
         for ( Program program : patient.getPrograms() )
         {
             if ( program.getOrganisationUnits().contains( organisationUnit ) )
@@ -255,13 +255,13 @@ public class DataRecordingSelectAction
                 programs.add( program );
             }
         }
-
+        
         // ---------------------------------------------------------------------
         // Validate selected Program
         // ---------------------------------------------------------------------
 
         Program selectedProgram;
-
+        
         if ( programId != null )
         {
             selectedProgram = programService.getProgram( programId );
@@ -276,7 +276,6 @@ public class DataRecordingSelectAction
             programId = selectedProgram.getId();
             selectedStateManager.setSelectedProgram( selectedProgram );
         }
-
         else
         {
             programId = null;
@@ -287,7 +286,7 @@ public class DataRecordingSelectAction
 
             return SUCCESS;
         }
-
+        
         // ---------------------------------------------------------------------
         // Load the active program instance completed = false we need the
         // corresponding stage execution date
@@ -295,20 +294,20 @@ public class DataRecordingSelectAction
 
         Collection<ProgramInstance> progamInstances = programInstanceService.getProgramInstances( patient,
             selectedProgram, false );
-
+        
         if ( progamInstances == null || progamInstances.iterator() == null || !progamInstances.iterator().hasNext() )
             return SUCCESS;
-
+        
         programInstance = progamInstances.iterator().next();
-
+        
         colorMap = programStageInstanceService.colorProgramStageInstances( programInstance.getProgramStageInstances() );
-
+        
         // ---------------------------------------------------------------------
         // Load ProgramStages
         // ---------------------------------------------------------------------
 
         programStages = selectedProgram.getProgramStages();
-
+        
         // ---------------------------------------------------------------------
         // Validate selected ProgramStage
         // ---------------------------------------------------------------------
@@ -337,17 +336,17 @@ public class DataRecordingSelectAction
 
             return SUCCESS;
         }
-
+        
         // ---------------------------------------------------------------------
         // Load the programStageInstance we need the corresponding execution
         // date
         // ---------------------------------------------------------------------
 
         ProgramInstance programInstance = progamInstances.iterator().next();
-
+        
         programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance,
             selectedProgramStage );
-
+        
         // ---------------------------------------------------------------------
         // Check if there is custom DataEntryForm
         // ---------------------------------------------------------------------
@@ -361,6 +360,7 @@ public class DataRecordingSelectAction
         {
             return CUSTOM_DATAENTRY_FORM;
         }
+        
         return DATAENTRY_FORM;
 
     }
