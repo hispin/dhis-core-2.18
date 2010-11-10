@@ -992,6 +992,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     
                     Ext.getCmp('map_tf2').setValue(feature.data.name);
                     Ext.getCmp('map_tf2').value = feature.attributes.id;
+                    proportionalSymbol.updateValues = true;
                     proportionalSymbol.organisationUnitSelectionType.setParent(feature.attributes.id);
                     proportionalSymbol.loadFromDatabase(feature.attributes.id, true);
                 }
@@ -1625,15 +1626,14 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
     
     applyValues: function() {
-        var options = {};
-        this.indicator = 'value';
-        options.indicator = this.indicator;
-        options.method = Ext.getCmp('method_cb2').getValue();
-        options.numClasses = Ext.getCmp('numClasses_cb2').getValue();
-        options.colors = this.getColors();
+        var options = {
+            indicator: 'value',
+            method: Ext.getCmp('method_cb2').getValue(),
+            numClasses: Ext.getCmp('numClasses_cb2').getValue(),
+            colors: this.getColors()
+        };
         
-        this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification();
+        this.coreComp.applyClassification(options);
         this.classificationApplied = true;
         
         GLOBALS.vars.mask.hide();

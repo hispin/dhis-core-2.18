@@ -1016,7 +1016,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             var east_panel = Ext.getCmp('east');
             var x = east_panel.x - 210;
             var y = east_panel.y + 41;
-            
+
             if (GLOBALS.vars.activePanel.isPolygon() && GLOBALS.vars.mapSourceType.isDatabase()) {
                 if (feature.attributes.hasChildrenWithCoordinates) {
                     if (GLOBALS.vars.locateFeatureWindow) {
@@ -1025,6 +1025,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                     
                     Ext.getCmp('map_tf').setValue(feature.data.name);
                     Ext.getCmp('map_tf').value = feature.attributes.id;
+                    choropleth.updateValues = true;
                     choropleth.organisationUnitSelectionType.setParent(feature.attributes.id);
                     choropleth.loadFromDatabase(feature.attributes.id, true);
                 }
@@ -1658,15 +1659,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
     
     applyValues: function() {
-        var options = {};
-        this.indicator = 'value';
-        options.indicator = this.indicator;
-        options.method = Ext.getCmp('method_cb').getValue();
-        options.numClasses = Ext.getCmp('numClasses_cb').getValue();
-        options.colors = this.getColors();
+        var options = {
+            indicator: 'value',
+            method: Ext.getCmp('method_cb').getValue(),
+            numClasses: Ext.getCmp('numClasses_cb').getValue(),
+            colors: this.getColors()
+        };
         
-        this.coreComp.updateOptions(options);
-        this.coreComp.applyClassification();
+        this.coreComp.applyClassification(options);
         this.classificationApplied = true;
         
         GLOBALS.vars.mask.hide();
