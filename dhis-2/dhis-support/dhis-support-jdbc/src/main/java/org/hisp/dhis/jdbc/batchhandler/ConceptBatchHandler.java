@@ -27,7 +27,9 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.quick.JdbcConfiguration;
+import javax.sql.DataSource;
+
+import org.amplecode.quick.StatementDialect;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.concept.Concept;
 
@@ -42,9 +44,9 @@ public class ConceptBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
 
-    public ConceptBatchHandler( JdbcConfiguration configuration )
+    public ConceptBatchHandler( DataSource dataSource, StatementDialect dialect )
     {
-        super( configuration, false, false );
+        super( dataSource, dialect, false, false );
     }
 
     // -------------------------------------------------------------------------

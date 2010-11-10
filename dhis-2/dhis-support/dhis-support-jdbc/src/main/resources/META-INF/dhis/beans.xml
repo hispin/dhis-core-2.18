@@ -7,13 +7,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- StatementManager -->
     
   <bean id="statementManager" class="org.amplecode.quick.statement.JdbcStatementManager">
-    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+    <property name="dataSource" ref="dataSource"/>
   </bean>
   
   <!-- BatchHandlerFactory -->
     
   <bean id="batchHandlerFactory" class="org.amplecode.quick.factory.DefaultBatchHandlerFactory">
-    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+    <property name="dataSource" ref="dataSource"/>
+	<property name="statementDialect" ref="statementDialect"/>
   </bean>
   
   <!-- Interceptor -->
@@ -22,16 +23,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="statementManager" ref="statementManager"/>
   </bean>
     
-  <!-- JdbcConfiguration -->
+  <!-- StatementDialect -->
     
-  <bean id="jdbcConfiguration" class="org.hisp.dhis.jdbc.configuration.JdbcConfigurationFactoryBean" init-method="init">
+  <bean id="statementDialect" class="org.hisp.dhis.jdbc.dialect.StatementDialectFactoryBean" init-method="init">
 	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
   </bean>
     
   <!-- StatementBuilder -->
     
   <bean id="statementBuilder" class="org.hisp.dhis.jdbc.statementbuilder.StatementBuilderFactoryBean" init-method="init">
-    <property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+    <property name="statementDialect" ref="statementDialect"/>
   </bean>
     
 </beans>

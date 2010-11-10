@@ -1,4 +1,4 @@
-package org.hisp.dhis.jdbc.configuration;
+package org.hisp.dhis.jdbc.dialect;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,7 +27,9 @@ package org.hisp.dhis.jdbc.configuration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.quick.JdbcConfiguration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.amplecode.quick.StatementDialect;
 import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
@@ -35,24 +37,25 @@ import org.springframework.beans.factory.FactoryBean;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultJDBCConfigurationProvider.java 5714 2008-09-17 13:05:36Z larshelg $
  */
-public class JdbcConfigurationFactoryBean
-    implements FactoryBean<JdbcConfiguration>
+public class StatementDialectFactoryBean
+    implements FactoryBean<StatementDialect>
 {
     private static final String KEY_DIALECT = "hibernate.dialect";
-    private static final String KEY_DRIVER = "hibernate.connection.driver_class";
-    private static final String KEY_CONNECTION_URL = "hibernate.connection.url";
-    private static final String KEY_USERNAME = "hibernate.connection.username";
-    private static final String KEY_PASSWORD = "hibernate.connection.password";
     
-    private static final String DIALECT_MYSQL = "org.hibernate.dialect.MySQLDialect";
-    private static final String DIALECT_POSTGRESQL = "org.hibernate.dialect.PostgreSQLDialect";
-    private static final String DIALECT_H2 = "org.hibernate.dialect.H2Dialect";
-    private static final String DIALECT_H2_PATCHED = "org.hisp.dhis.dialect.H2Dialect";
-    private static final String DIALECT_DERBY = "org.hibernate.dialect.DerbyDialect";
-    private static final String DIALECT_DERBY_PATCHED = "org.hisp.dhis.dialect.IdentityDerbyDialect";
-        
+    private static Map<String, StatementDialect> dialectMap;
+    
+    static
+    {
+        dialectMap = new HashMap<String, StatementDialect>();
+        dialectMap.put( "org.hibernate.dialect.MySQLDialect", StatementDialect.MYSQL );
+        dialectMap.put( "org.hibernate.dialect.PostgreSQLDialect", StatementDialect.POSTGRESQL );
+        dialectMap.put( "org.hibernate.dialect.H2Dialect", StatementDialect.H2 );
+        dialectMap.put( "org.hisp.dhis.dialect.H2Dialect", StatementDialect.H2 );
+        dialectMap.put( "org.hibernate.dialect.DerbyDialect", StatementDialect.DERBY );
+        dialectMap.put( "org.hisp.dhis.dialect.IdentityDerbyDialect", StatementDialect.DERBY );
+    }
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -64,8 +67,8 @@ public class JdbcConfigurationFactoryBean
         this.hibernateConfigurationProvider = hibernateConfigurationProvider;
     }
 
-    private JdbcConfiguration jdbcConfig;
-
+    private StatementDialect statementDialect;
+    
     // -------------------------------------------------------------------------
     // Initialisation
     // -------------------------------------------------------------------------
@@ -74,54 +77,34 @@ public class JdbcConfigurationFactoryBean
     {
         Configuration hibernateConfiguration = hibernateConfigurationProvider.getConfiguration();
         
-        JdbcConfiguration config = new JdbcConfiguration();
-        
         String dialect = hibernateConfiguration.getProperty( KEY_DIALECT );
         
-        if ( dialect.equals( DIALECT_MYSQL ) )
-        {
-            config.setDialect( StatementDialect.MYSQL );
-        }
-        else if ( dialect.equals( DIALECT_POSTGRESQL ) )
-        {
-            config.setDialect( StatementDialect.POSTGRESQL );
-        }
-        else if ( dialect.equals( DIALECT_H2 ) || dialect.equals( DIALECT_H2_PATCHED ) )
-        {
-            config.setDialect( StatementDialect.H2 );
-        }
-        else if ( dialect.equals( DIALECT_DERBY ) || dialect.equals( DIALECT_DERBY_PATCHED ) )
-        {
-            config.setDialect( StatementDialect.DERBY );
-        }
-        else
-        {
-            throw new RuntimeException( "Unsupported dialect: " + hibernateConfiguration.getProperty( KEY_DIALECT ) );
-        }
+        this.statementDialect = dialectMap.get( dialect );
         
-        config.setDriverClass( hibernateConfiguration.getProperty( KEY_DRIVER ) );            
-        config.setConnectionUrl( hibernateConfiguration.getProperty( KEY_CONNECTION_URL ) );
-        config.setUsername( hibernateConfiguration.getProperty( KEY_USERNAME ) );
-        config.setPassword( hibernateConfiguration.getProperty( KEY_PASSWORD ) );
-        
-        this.jdbcConfig = config;
+        if ( this.statementDialect == null )
+        {
+            throw new RuntimeException( "Unsupported dialect: " + dialect );
+        }
     }
 
     // -------------------------------------------------------------------------
     // FactoryBean implementation
     // -------------------------------------------------------------------------
-    
-    public JdbcConfiguration getObject()
+        
+    @Override
+    public StatementDialect getObject()
         throws Exception
     {
-        return jdbcConfig;
+        return this.statementDialect;
     }
 
-    public Class<JdbcConfiguration> getObjectType()
+    @Override
+    public Class<?> getObjectType()
     {
-        return JdbcConfiguration.class;
+        return StatementDialect.class;
     }
 
+    @Override
     public boolean isSingleton()
     {
         return true;

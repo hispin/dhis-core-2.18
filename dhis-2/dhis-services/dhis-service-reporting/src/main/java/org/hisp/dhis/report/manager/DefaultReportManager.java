@@ -32,11 +32,12 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.amplecode.quick.JdbcConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hisp.dhis.external.configuration.ConfigurationManager;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.hisp.dhis.hibernate.HibernateConfigurationProvider;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.system.util.CodecUtils;
 
@@ -81,11 +82,11 @@ public class DefaultReportManager
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private JdbcConfiguration jdbcConfiguration;
+    private HibernateConfigurationProvider hibernateConfigurationProvider;
 
-    public void setJdbcConfiguration( JdbcConfiguration jdbcConfiguration )
+    public void setHibernateConfigurationProvider( HibernateConfigurationProvider hibernateConfigurationProvider )
     {
-        this.jdbcConfiguration = jdbcConfiguration;
+        this.hibernateConfigurationProvider = hibernateConfigurationProvider;
     }
 
     private LocationManager locationManager;
@@ -153,13 +154,15 @@ public class DefaultReportManager
     
     public Map<String[], String> getReportConnectionMap()
     {
-        String encryptedPassword = CodecUtils.encryptBase64( jdbcConfiguration.getPassword() );
+        Configuration config = hibernateConfigurationProvider.getConfiguration();
+                
+        String encryptedPassword = CodecUtils.encryptBase64( config.getProperty( "hibernate.connection.password" ) );
         
         Map<String[], String> map = new HashMap<String[], String>();
 
-        map.put( new String[] { START_TAG_DRIVER, END_TAG_DRIVER }, START_TAG_DRIVER + jdbcConfiguration.getDriverClass() + END_TAG_DRIVER );
-        map.put( new String[] { START_TAG_URL, END_TAG_URL }, START_TAG_URL + jdbcConfiguration.getConnectionUrl() + END_TAG_URL );
-        map.put( new String[] { START_TAG_USER_NAME, END_TAG_USER_NAME }, START_TAG_USER_NAME + jdbcConfiguration.getUsername() + END_TAG_USER_NAME );
+        map.put( new String[] { START_TAG_DRIVER, END_TAG_DRIVER }, START_TAG_DRIVER + config.getProperty( "hibernate.connection.driver_class" ) + END_TAG_DRIVER );
+        map.put( new String[] { START_TAG_URL, END_TAG_URL }, START_TAG_URL + config.getProperty( "hibernate.connection.url" ) + END_TAG_URL );
+        map.put( new String[] { START_TAG_USER_NAME, END_TAG_USER_NAME }, START_TAG_USER_NAME + config.getProperty( "hibernate.connection.username" ) + END_TAG_USER_NAME );
         map.put( new String[] { START_TAG_PASSWORD, END_TAG_PASSWORD }, START_TAG_PASSWORD + encryptedPassword + END_TAG_PASSWORD );
         
         return map;
