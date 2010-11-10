@@ -27,7 +27,6 @@ package org.hisp.dhis.jdbc.statementbuilder;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.StatementDialect;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.springframework.beans.factory.FactoryBean;
@@ -43,13 +42,13 @@ public class StatementBuilderFactoryBean
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private JdbcConfiguration jdbcConfiguration;
-
-    public void setJdbcConfiguration( JdbcConfiguration jdbcConfiguration )
-    {
-        this.jdbcConfiguration = jdbcConfiguration;
-    }
+    private StatementDialect statementDialect;
     
+    public void setStatementDialect( StatementDialect statementDialect )
+    {
+        this.statementDialect = statementDialect;
+    }
+
     private StatementBuilder statementBuilder;
 
     // -------------------------------------------------------------------------
@@ -58,27 +57,25 @@ public class StatementBuilderFactoryBean
     
     public void init()
     {
-        StatementDialect dialect = jdbcConfiguration.getDialect();
-        
-        if ( dialect.equals( StatementDialect.MYSQL ) )
+        if ( statementDialect.equals( StatementDialect.MYSQL ) )
         {
             this.statementBuilder = new MySQLStatementBuilder();
         }
-        else if ( dialect.equals( StatementDialect.POSTGRESQL ) )
+        else if ( statementDialect.equals( StatementDialect.POSTGRESQL ) )
         {
             this.statementBuilder = new PostgreSQLStatementBuilder();
         }
-        else if ( dialect.equals( StatementDialect.H2 ) )
+        else if ( statementDialect.equals( StatementDialect.H2 ) )
         {
             this.statementBuilder = new H2StatementBuilder();
         }
-        else if ( dialect.equals( StatementDialect.DERBY ) )
+        else if ( statementDialect.equals( StatementDialect.DERBY ) )
         {
             this.statementBuilder = new DerbyStatementBuilder();
         }
         else
         {
-            throw new RuntimeException( "Unsupported dialect: " + dialect.toString() );
+            throw new RuntimeException( "Unsupported dialect: " + statementDialect.toString() );
         }
     }
 

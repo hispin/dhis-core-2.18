@@ -83,7 +83,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       value="reports"/>
     <property name="reportConfigFile" 
       value="reportConfiguration.xml"/>
-	<property name="jdbcConfiguration" ref="jdbcConfiguration"/>
+	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
 	<property name="locationManager" ref="locationManager"/>
 	<property name="configurationManager" ref="configurationManager"/>
   </bean>
