@@ -38,6 +38,7 @@ import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.ExtendedDataElement;
@@ -679,6 +680,31 @@ public abstract class DhisConvenienceTest
     }
 
     /**
+     * @param dataElement The data element.
+     * @param period The period.
+     * @param source The source.
+     * @param value The value.
+     * @param lastupdated The date.
+     * @param categoryOptionCombo The data element category option combo.
+     */
+    public static DataValue createDataValue( DataElement dataElement, Period period, Source source, String value,
+        Date lastupdated, DataElementCategoryOptionCombo categoryOptionCombo )
+    {
+        DataValue dataValue = new DataValue();
+
+        dataValue.setDataElement( dataElement );
+        dataValue.setPeriod( period );
+        dataValue.setSource( source );
+        dataValue.setValue( value );
+        dataValue.setComment( "Comment" );
+        dataValue.setStoredBy( "StoredBy" );
+        dataValue.setTimestamp( lastupdated );
+        dataValue.setOptionCombo( categoryOptionCombo );
+
+        return dataValue;
+    }
+
+    /**
      * @param uniqueCharacter A unique character to identify the object.
      * @param operator The operator.
      * @param leftSide The left side expression.
@@ -939,8 +965,8 @@ public abstract class DhisConvenienceTest
      * 
      * @return a dataSetLock instance
      */
-    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period,
-        Set<Source> sources, String storedBy, Date timestamp )
+    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period, Set<Source> sources,
+        String storedBy, Date timestamp )
     {
         DataSetLock dataSetLock = new DataSetLock();
 
@@ -951,6 +977,20 @@ public abstract class DhisConvenienceTest
         dataSetLock.setTimestamp( timestamp );
 
         return dataSetLock;
+    }
+
+    /**
+     * @param uniqueCharacter A unique character to identify the object.
+     * 
+     * @return a concept instance
+     */
+    protected static Concept createConcept( char uniqueCharacter )
+    {
+        Concept concept = new Concept();
+
+        concept.setName( "Concept" + uniqueCharacter );
+
+        return concept;
     }
 
     // -------------------------------------------------------------------------
