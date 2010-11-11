@@ -136,55 +136,6 @@
 			<param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
 		</action>
 
-		<action name="getDataElementOrder"
-			class="org.hisp.dhis.de.action.order.GetDataElementOrderAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-dataentry/order.vm</param>
-			<param name="javascripts">javascript/order.js</param>
-		</action>
-
-		<action name="moveDataElementUp"
-			class="org.hisp.dhis.de.action.order.MoveDataElementUpAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
-		<action name="moveDataElementDown"
-			class="org.hisp.dhis.de.action.order.MoveDataElementDownAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
-		<action name="orderDataElementsByCode"
-			class="org.hisp.dhis.de.action.order.OrderDataElementsByCodeAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
-		<action name="orderDataElementsByEntry"
-			class="org.hisp.dhis.de.action.order.OrderDataElementsByEntryAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
-		<action name="orderDataElementsByName"
-			class="org.hisp.dhis.de.action.order.OrderDataElementsByNameAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
-		<action name="resetDataElementOrder"
-			class="org.hisp.dhis.de.action.order.ResetDataElementOrderAction">
-			<result name="success" type="chain">getDataElementOrder
-			</result>
-			<param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-		</action>
-
 		<action name="viewHistory" class="org.hisp.dhis.de.action.HistoryAction">
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-dataentry/history.vm</param>
