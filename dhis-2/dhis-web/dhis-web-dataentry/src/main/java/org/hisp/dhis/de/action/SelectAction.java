@@ -65,6 +65,8 @@ public class SelectAction
     private static final String SECTION_FORM = "sectionform";
 
     private static final String DEFAULT_FORM = "defaultform";
+    
+    private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";   
 
     private static final Log log = LogFactory.getLog( SelectAction.class );
 
@@ -392,6 +394,6 @@ public class SelectAction
             return SECTION_FORM;
         }
 
-        return dataEntryScreenManager.getScreenType( selectedDataSet );
+        return MULTI_DIMENSIONAL_FORM;
     }
 }

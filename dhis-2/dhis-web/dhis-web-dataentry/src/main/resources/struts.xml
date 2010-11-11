@@ -16,12 +16,8 @@
 
 		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="defaultform" type="chain">defaultform
-			</result>
-			<result name="sectionform" type="chain">sectionform
-			</result>
-			<result name="multidimensionalform" type="chain">multidimensionalform
-			</result>
+			<result name="sectionform" type="chain">sectionform</result>
+			<result name="multidimensionalform" type="chain">multidimensionalform</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dataentry/select.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
@@ -42,22 +38,6 @@
 		<action name="previousPeriods" class="org.hisp.dhis.de.action.PreviousPeriodsAction">
 			<result name="success" type="redirect">select.action
 			</result>
-		</action>
-
-		<action name="defaultform" class="org.hisp.dhis.de.action.FormAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dataentry/form.vm</param>
-			<param name="menu">/dhis-web-dataentry/menu.vm</param>
-			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/general.js,javascript/form.js,
-				../dhis-web-commons/calendar/calendar.js,
-				../dhis-web-commons/calendar/calendar-lang.js,
-				../dhis-web-commons/calendar/calendar-setup.js
-			</param>
-			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
 		</action>
 
 		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
