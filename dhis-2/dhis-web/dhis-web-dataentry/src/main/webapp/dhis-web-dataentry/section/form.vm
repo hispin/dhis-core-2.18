@@ -25,13 +25,7 @@
        			<td>        	
            			<div id="$section.id" style="display:block">        				
 
-            			#set( $isMultiDimensional = $sectionIsMultiDimensional.get( $section.id ) )
-               				
-            			#if($isMultiDimensional == true )
-               				#parse( "/dhis-web-dataentry/section/multiDimensionalDataElement.vm" )
-           				#else
-                			#parse( "/dhis-web-dataentry/section/dataElement.vm" )
-               			#end
+            		#parse( "/dhis-web-dataentry/section/multiDimensionalDataElement.vm" )
 
            			</div>
        			</td>
