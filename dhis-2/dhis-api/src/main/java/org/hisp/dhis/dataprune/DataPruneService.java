@@ -36,5 +36,5 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface DataPruneService
 {
-    void pruneOrganisationUnit( OrganisationUnit organisationUnit );
+    int pruneOrganisationUnit( OrganisationUnit organisationUnit );
 }

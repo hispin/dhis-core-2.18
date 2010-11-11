@@ -38,5 +38,5 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 public interface DataPruneStore
 {
-    void deleteMultiOrganisationUnit(List<OrganisationUnit> orgUnits);
+    int deleteMultiOrganisationUnit(List<OrganisationUnit> orgUnits);
 }
