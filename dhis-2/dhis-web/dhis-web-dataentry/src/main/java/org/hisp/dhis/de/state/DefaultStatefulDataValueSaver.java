@@ -2,15 +2,13 @@ package org.hisp.dhis.de.state;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.de.action.SaveValueAction;
+import org.hisp.dhis.de.action.multidimensional.SaveValueAction;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
@@ -27,8 +25,6 @@ import org.hisp.dhis.user.CurrentUserService;
 public class DefaultStatefulDataValueSaver
     implements StatefulDataValueSaver
 {
-    private static final Log LOG = LogFactory.getLog( SaveValueAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -104,8 +100,6 @@ public class DefaultStatefulDataValueSaver
         {
             if ( value != null )
             {
-                LOG.debug( "Adding DataValue, value added" );
-
                 dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null, optionCombo );
 
                 dataValueService.addDataValue( dataValue );
@@ -113,8 +107,6 @@ public class DefaultStatefulDataValueSaver
         }
         else
         {
-            LOG.debug( "Updating DataValue, value added/changed" );
-
             dataValue.setValue( value );
             dataValue.setTimestamp( new Date() );
             dataValue.setStoredBy( storedBy );
