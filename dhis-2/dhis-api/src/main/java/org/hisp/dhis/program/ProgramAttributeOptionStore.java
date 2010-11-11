@@ -30,7 +30,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.patient.PatientAttributeOption;
 
 /**
  * @author Chau Thu Tran
@@ -44,5 +43,4 @@ public interface ProgramAttributeOptionStore extends GenericIdentifiableObjectSt
     ProgramAttributeOption get( ProgramAttribute patientAttribute, String name );
 
     Collection<ProgramAttributeOption> get( ProgramAttribute programAttribute );
-
 }

@@ -29,9 +29,6 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeOption;
-
 /**
  * @author Chau Thu Tran
  *
@@ -50,5 +47,4 @@ public interface ProgramAttributeOptionService
     ProgramAttributeOption get( int id );
     
     Collection<ProgramAttributeOption> get( ProgramAttribute programAttribute );
-
 }
