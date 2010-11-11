@@ -569,31 +569,6 @@
 		</property>
 	</bean>
 
-	<!-- DataElement Order -->
-
-	<bean id="org.hisp.dhis.order.store.DataElementOrderStore" class="org.hisp.dhis.order.store.FileDataElementOrderStore">
-		<property name="locationManager" ref="locationManager"/>
-	</bean>
-
-	<bean id="org.hisp.dhis.order.manager.DataElementOrderManager"
-		class="org.hisp.dhis.order.manager.DefaultDataElementOrderManager">
-		<property name="dataElementOrderStore">
-			<ref local="org.hisp.dhis.order.store.DataElementOrderStore" />
-		</property>
-		<property name="defaultComparator">
-			<bean class="org.hisp.dhis.util.comparator.DataElementIdComparator" />
-		</property>
-		<property name="availableComparators">
-			<set>
-				<bean class="org.hisp.dhis.util.comparator.DataElementIdComparator" />
-				<bean
-					class="org.hisp.dhis.dataelement.comparator.DataElementNameComparator" />
-				<bean
-					class="org.hisp.dhis.dataelement.comparator.DataElementCodeComparator" />
-			</set>
-		</property>
-	</bean>
-
 	<!-- About -->
 
 	<bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">
