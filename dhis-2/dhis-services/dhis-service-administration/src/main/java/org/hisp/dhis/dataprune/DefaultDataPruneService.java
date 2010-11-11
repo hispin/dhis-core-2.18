@@ -67,7 +67,7 @@ public class DefaultDataPruneService
     // -------------------------------------------------------------------------
 
     @Transactional
-    public void pruneOrganisationUnit( OrganisationUnit organisationUnit )
+    public int pruneOrganisationUnit( OrganisationUnit organisationUnit )
     {
         deleteLevels( organisationUnit );
 
@@ -79,7 +79,7 @@ public class DefaultDataPruneService
 
         List<OrganisationUnit> deletedOrgUnits = pruneOrganisationUnitLocal( organisationUnit );
         
-        dataPruneStore.deleteMultiOrganisationUnit( deletedOrgUnits );
+        return dataPruneStore.deleteMultiOrganisationUnit( deletedOrgUnits );
     }
 
     private void deleteLevels( OrganisationUnit organisationUnit )

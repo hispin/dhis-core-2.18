@@ -76,15 +76,21 @@ public class PruneOrganisationUnitAction
         if ( kept.getParent() == null )
         {
             log.info( "Pruning is interrupted" );
-            
+
             return ERROR;
         }
 
-        dataPruneService.pruneOrganisationUnit( kept );
+        int codeError = dataPruneService.pruneOrganisationUnit( kept );
 
-        log.info( "Pruning complete" );
+        if ( codeError == 0 )
+        {
 
-        return SUCCESS;
+            log.info( "Pruning complete" );
+
+            return SUCCESS;
+        }
+        else
+            return ERROR;
     }
 
 }
