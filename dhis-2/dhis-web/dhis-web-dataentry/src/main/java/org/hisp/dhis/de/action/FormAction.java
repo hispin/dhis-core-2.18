@@ -55,7 +55,6 @@ import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -89,13 +88,6 @@ public class FormAction
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private DataElementOrderManager dataElementOrderManager;
-
-    public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
-    {
-        this.dataElementOrderManager = dataElementOrderManager;
     }
 
     private DataValueService dataValueService;
@@ -395,12 +387,6 @@ public class FormAction
                 dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode,
                 i18n, dataSet );
         }
-
-        // ---------------------------------------------------------------------
-        // Working on the display of dataelements
-        // ---------------------------------------------------------------------
-
-        orderedDataElements = dataElementOrderManager.getOrderedDataElements( dataSet );
 
         displayPropertyHandler.handle( orderedDataElements );
 
