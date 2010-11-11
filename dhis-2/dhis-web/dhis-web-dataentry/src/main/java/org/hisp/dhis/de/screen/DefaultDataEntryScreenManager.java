@@ -71,10 +71,6 @@ public class DefaultDataEntryScreenManager
 {
     private static final Log log = LogFactory.getLog( DefaultDataEntryScreenManager.class );
     
-    private static final String DEFAULT_FORM = "defaultform";
-
-    private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";    
-
     private static final String EMPTY = "";
 
     // -------------------------------------------------------------------------
@@ -112,39 +108,6 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
-
-    public boolean hasMixOfDimensions( DataSet dataSet )
-    {
-        if ( dataSet.getDataElements().size() > 0 )
-        {
-            Iterator<DataElement> dataElementIterator = dataSet.getDataElements().iterator();
-
-            DataElementCategoryCombo catCombo = dataElementIterator.next().getCategoryCombo();
-
-            for ( DataElement de : dataSet.getDataElements() )
-            {
-                if ( catCombo != de.getCategoryCombo() )
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public boolean hasMultiDimensionalDataElement( DataSet dataSet )
-    {
-        for ( DataElement element : dataSet.getDataElements() )
-        {
-            if ( element.isMultiDimensional() )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
     
     public boolean hasMultiDimensionalDataElement( Section section )
     {
@@ -157,11 +120,6 @@ public class DefaultDataEntryScreenManager
         }
 
         return false;
-    }
-
-    public String getScreenType( DataSet dataSet )
-    {
-        return hasMultiDimensionalDataElement( dataSet ) ? MULTI_DIMENSIONAL_FORM : DEFAULT_FORM;
     }
 
     public Collection<Integer> getAllCalculatedDataElements( DataSet dataSet )
