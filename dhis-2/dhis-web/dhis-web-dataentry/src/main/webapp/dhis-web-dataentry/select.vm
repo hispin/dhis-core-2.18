@@ -13,7 +13,6 @@
 <input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
 <div id="actions" style="width:200px text-align:right">
 	
-    <input type="button" value="$i18n.getString( 'change_order' )" onclick="changeOrder()" style="width:150px" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry", "getDataElementOrder" ) || $displayMode !="defaultform") disabled="disabled" #end/><br/>
     <input type="button" value="$i18n.getString( 'generate_min_max' )" onclick="javascript:generateMinMaxValues();" style="width:150px" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" )) disabled="disabled" #end/><br/>
     <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>
     <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>

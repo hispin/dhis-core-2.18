@@ -382,7 +382,7 @@ public class SelectAction
             }            
         }
         
-        if( !customDataEntryFormExists && !haveSection )
+        if ( !customDataEntryFormExists && !haveSection )
         {
             displayMode = DEFAULT_FORM;
         }

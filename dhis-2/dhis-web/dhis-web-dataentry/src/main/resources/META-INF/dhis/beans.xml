@@ -195,66 +195,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.de.action.order.GetDataElementOrderAction"
-		class="org.hisp.dhis.de.action.order.GetDataElementOrderAction" scope="prototype">
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.MoveDataElementUpAction"
-		class="org.hisp.dhis.de.action.order.MoveDataElementUpAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.MoveDataElementDownAction"
-		class="org.hisp.dhis.de.action.order.MoveDataElementDownAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.ResetDataElementOrderAction"
-		class="org.hisp.dhis.de.action.order.ResetDataElementOrderAction"
-		scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.OrderDataElementsByEntryAction"
-		class="org.hisp.dhis.de.action.order.OrderDataElementsByEntryAction"
-		scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.OrderDataElementsByNameAction"
-		class="org.hisp.dhis.de.action.order.OrderDataElementsByNameAction"
-		scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.order.OrderDataElementsByCodeAction"
-		class="org.hisp.dhis.de.action.order.OrderDataElementsByCodeAction"
-		scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementOrderManager">
-			<ref bean="org.hisp.dhis.order.manager.DataElementOrderManager" />
-		</property>
-	</bean>
-
 	<bean id="org.hisp.dhis.de.action.HistoryAction" class="org.hisp.dhis.de.action.HistoryAction"
 		scope="prototype">
 		<property name="historyRetriever" ref="org.hisp.dhis.de.history.HistoryRetriever" />
