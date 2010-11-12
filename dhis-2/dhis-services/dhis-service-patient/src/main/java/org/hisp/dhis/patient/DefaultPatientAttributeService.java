@@ -87,6 +87,11 @@ public class DefaultPatientAttributeService
     {
         return patientAttributeStore.getByName( name );
     }
+    
+    public PatientAttribute getPatientAttributeByGroupBy( boolean groupBy )
+    {
+        return patientAttributeStore.getByGroupBy( groupBy );
+    }
 
     public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
     {

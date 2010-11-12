@@ -10,7 +10,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Beneficiary implements ISerializable
+public class Beneficiary
+    implements ISerializable
 {
     private int id;
 
@@ -19,13 +20,21 @@ public class Beneficiary implements ISerializable
     private String middleName;
 
     private String lastName;
-    
-    private Set<String> patientAttValues;
-    
-    
 
-    
-    
+    private Set<String> patientAttValues;
+
+    private PatientAttribute groupAttribute;
+
+    public PatientAttribute getGroupAttribute()
+    {
+        return groupAttribute;
+    }
+
+    public void setGroupAttribute( PatientAttribute groupAttribute )
+    {
+        this.groupAttribute = groupAttribute;
+    }
+
     public Set<String> getPatientAttValues()
     {
         return patientAttValues;
@@ -80,40 +89,52 @@ public class Beneficiary implements ISerializable
         this.lastName = lastName;
     }
 
-	public byte[] serialize() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void serialize( DataOutputStream dout ) throws IOException
-    {		
-		dout.writeInt(this.getId());
-        dout.writeUTF(this.getFirstName());        
-        dout.writeUTF(this.getMiddleName());
-        dout.writeUTF(this.getLastName());
-                
-        dout.flush();            	
-    }
-	
-	public void serialize( OutputStream out ) throws IOException
+    public byte[] serialize()
+        throws IOException
     {
-    	ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        
-        dout.writeInt(this.getId());
-        dout.writeUTF(this.getFirstName());        
-        dout.writeUTF(this.getMiddleName());
-        dout.writeUTF(this.getLastName());     
-        
-        bout.flush();
-        bout.writeTo(out);
-    	
-    } 
-	
-	public void deSerialize(byte[] data) throws IOException {
-		// TODO Auto-generated method stub		
-	}
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-    
+    public void serialize( DataOutputStream out )
+        throws IOException
+    {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getFirstName() );
+        dout.writeUTF( this.getMiddleName() );
+        dout.writeUTF( this.getLastName() );
+        //Write attribute which is used as group factor of beneficiary.
+        /* False: no group factor
+         * True: with group factor
+         * */
+        if ( this.getGroupAttribute() != null )
+        {
+            dout.writeBoolean( true );
+            this.getGroupAttribute().serialize( dout );
+        }
+        else
+        {
+            dout.writeBoolean( false );
+        }
+
+        Set<String> atts = this.getPatientAttValues();
+        dout.writeInt( atts.size() );
+        for ( String att : atts )
+        {
+            dout.writeUTF( att );
+        }
+
+        bout.flush();
+        bout.writeTo( out );
+    }
+
+    public void deSerialize( byte[] data )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+    }
 
 }

@@ -77,6 +77,7 @@ public class GetPatientAttributeAction
     {
         patientAttribute = patientAttributeService.getPatientAttribute( id );
 
+
         return SUCCESS;
     }
 }

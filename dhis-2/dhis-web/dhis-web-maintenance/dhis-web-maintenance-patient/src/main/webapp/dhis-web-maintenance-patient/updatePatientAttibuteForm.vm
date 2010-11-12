@@ -85,6 +85,10 @@
             </select>
         </td>
       </tr>
+      <tr>
+    	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
+    	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
+      </tr>
       <tr id="attributeComboRow"> 
     	<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
     	<td >

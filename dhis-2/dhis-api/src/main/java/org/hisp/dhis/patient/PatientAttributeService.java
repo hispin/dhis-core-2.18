@@ -55,5 +55,7 @@ public interface PatientAttributeService
     Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
     
     Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
+    
+    PatientAttribute getPatientAttributeByGroupBy(boolean groupBy);
 
 }

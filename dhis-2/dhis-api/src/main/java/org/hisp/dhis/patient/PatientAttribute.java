@@ -44,7 +44,7 @@ public class PatientAttribute
     public static final String TYPE_INT = "NUMBER";
 
     public static final String TYPE_BOOL = "YES/NO";
-    
+
     public static final String TYPE_COMBO = "COMBO";
 
     private int id;
@@ -54,13 +54,15 @@ public class PatientAttribute
     private String description;
 
     private String valueType;
-    
+
     private boolean mandatory;
-    
+
     private boolean inheritable;
-    
+
+    private Boolean groupBy;
+
     private PatientAttributeGroup patientAttributeGroup;
-    
+
     private Set<PatientAttributeOption> attributeOptions;
 
     // -------------------------------------------------------------------------
@@ -113,7 +115,7 @@ public class PatientAttribute
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-    
+
     public Set<PatientAttributeOption> getAttributeOptions()
     {
         return attributeOptions == null ? new HashSet<PatientAttributeOption>() : attributeOptions;
@@ -123,12 +125,27 @@ public class PatientAttribute
     {
         this.attributeOptions = attributeOptions;
     }
-    
+
     public void addAttributeOptions( PatientAttributeOption option )
     {
-        if( attributeOptions == null )
+        if ( attributeOptions == null )
             attributeOptions = new HashSet<PatientAttributeOption>();
         attributeOptions.add( option );
+    }
+
+    public Boolean isGroupBy()
+    {
+        return groupBy;
+    }
+
+    public void setGroupBy( Boolean groupBy )
+    {
+        this.groupBy = groupBy;
+    }
+
+    public Boolean getGroupBy()
+    {
+        return groupBy;
     }
     
     public int getId()
@@ -191,12 +208,14 @@ public class PatientAttribute
         this.patientAttributeGroup = patientAttributeGroup;
     }
 
-	public boolean isInheritable() {
-		return inheritable;
-	}
+    public boolean isInheritable()
+    {
+        return inheritable;
+    }
 
-	public void setInheritable(boolean inheritable) {
-		this.inheritable = inheritable;
-	}
+    public void setInheritable( boolean inheritable )
+    {
+        this.inheritable = inheritable;
+    }
 
 }

@@ -84,6 +84,10 @@
         </td>
         <td></td>
     </tr>  
+    <tr>
+    	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
+    	<td><input type="checkbox" name="groupBy" value="true"></td>
+    </tr>
     <tr id="attributeComboRow"> 
     	<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
     	<td ><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
