@@ -32,7 +32,7 @@
 	   #if( $displayMode == "sectionform" ) 
 	       checked="checked" 
 	   #end  
-	   #if( !$haveSection ) 
+	   #if( !$hasSection ) 
 	       disabled="disabled" 
 	   #end 
 	   onclick="document.getElementById( 'selectForm' ).submit();"/>
@@ -40,8 +40,7 @@
 
 	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform"
        #if( $displayMode == "defaultform" ) 
-           checked="checked" 
-           
+           checked="checked"           
        #end       
        onclick="document.getElementById( 'selectForm' ).submit();"/>    
     <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br/><br/>
