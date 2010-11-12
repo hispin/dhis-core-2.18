@@ -61,11 +61,8 @@ public class SelectAction
     extends ActionSupport
 {
     private static final String CUSTOM_FORM = "customform";
-
     private static final String SECTION_FORM = "sectionform";
-
-    private static final String DEFAULT_FORM = "defaultform";
-    
+    private static final String DEFAULT_FORM = "defaultform";    
     private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";   
 
     private static final Log log = LogFactory.getLog( SelectAction.class );
@@ -152,11 +149,11 @@ public class SelectAction
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Boolean haveSection;
+    private Boolean hasSection;
 
-    public Boolean getHaveSection()
+    public Boolean getHasSection()
     {
-        return haveSection;
+        return hasSection;
     }
 
     private Boolean customDataEntryFormExists;
@@ -350,7 +347,7 @@ public class SelectAction
         // Get Section Information
         // ---------------------------------------------------------------------
 
-        haveSection = dataEntryScreenManager.hasSection( selectedDataSet );
+        hasSection = dataEntryScreenManager.hasSection( selectedDataSet );
 
         // ---------------------------------------------------------------------
         // Get the custom data entry form if any
@@ -378,18 +375,17 @@ public class SelectAction
             {
                 displayMode = CUSTOM_FORM;
             }
-            else if ( haveSection )
+            else if ( hasSection )
             {
                 displayMode = SECTION_FORM;
-            }            
+            }
+            else
+            {
+                displayMode = DEFAULT_FORM;
+            }
         }
         
-        if ( !customDataEntryFormExists && !haveSection )
-        {
-            displayMode = DEFAULT_FORM;
-        }
-
-        if ( displayMode.equals( SECTION_FORM ) && haveSection )
+        if ( displayMode.equals( SECTION_FORM ) && hasSection )
         {
             return SECTION_FORM;
         }
