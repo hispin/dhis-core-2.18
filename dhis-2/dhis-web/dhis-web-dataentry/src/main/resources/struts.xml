@@ -27,7 +27,7 @@
 				javascript/general.js,
 				javascript/form.js
 			</param>
-			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
+			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
 		<action name="nextPeriods" class="org.hisp.dhis.de.action.NextPeriodsAction">
@@ -71,7 +71,7 @@
 				../dhis-web-commons/calendar/calendar-lang.js,
 				../dhis-web-commons/calendar/calendar-setup.js
 			</param>
-			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
+			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
 		<action name="saveMultiDimensionalValue"
