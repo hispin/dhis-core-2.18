@@ -126,7 +126,6 @@ public class DataElementCategoryConverter
 
     public void read( XMLReader reader, ImportParams params )
     {
-        System.out.println( "\nREAD\n" );
         Map<Object, String> conceptMap = NameMappingUtil.getConceptMap();
 
         Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
