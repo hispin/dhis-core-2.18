@@ -67,12 +67,12 @@ public class SectionFormAction
 
     private SectionService sectionService;
 
-    private DataValueService dataValueService;
-
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;
     }
+
+    private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
     {

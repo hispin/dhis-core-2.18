@@ -34,7 +34,6 @@ visibility:hidden;
 <form id="selectForm" name="selectForm" method="post" action="select.action">
 <!--
 <div id="actions" style="width:200px text-align:right">
-	<input type="button" value="$i18n.getString( "change_order" )" onclick="changeOrder()" style="width:100% text-align:right" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry-national", "getDataElementOrder" ) ) disabled="disabled" #end>
 	<input type="button" value="$i18n.getString( "generate_min_max" )" onclick="javascript:generateMinMaxValues();" style="width:100% text-align:right" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry-national", "minMaxGeneration" )) disabled="disabled" #end >
 	<input type="button" value="$i18n.getString( "run_validation" )" onclick="javascript:validate();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>
 	<input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>

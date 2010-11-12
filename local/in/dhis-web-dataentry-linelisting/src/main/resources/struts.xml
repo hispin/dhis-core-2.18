@@ -126,57 +126,7 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
     </action>
-    
-    <action name="getDataElementOrder"
-      class="org.hisp.dhis.den.action.order.GetDataElementOrderAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="velocity">/popup.vm</result>
-      <param name="page">/dhis-web-dataentry-national/order.vm</param>
-      <param name="javascripts">javascript/order.js</param>
-    </action>
-    
-    <action name="moveDataElementUp"
-      class="org.hisp.dhis.den.action.order.MoveDataElementUpAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
-    <action name="moveDataElementDown"
-      class="org.hisp.dhis.den.action.order.MoveDataElementDownAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
-    <action name="orderDataElementsByCode"
-      class="org.hisp.dhis.den.action.order.OrderDataElementsByCodeAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
-    <action name="orderDataElementsByEntry"
-      class="org.hisp.dhis.den.action.order.OrderDataElementsByEntryAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
-    <action name="orderDataElementsByName"
-      class="org.hisp.dhis.den.action.order.OrderDataElementsByNameAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
-    <action name="resetDataElementOrder"
-      class="org.hisp.dhis.den.action.order.ResetDataElementOrderAction">
-      <!--<interceptor-ref name="transactionStack"/>-->
-      <result name="success" type="chain">getDataElementOrder</result>
-      <param name="requiredAuthorities">F_DATASET_ORDER_CHANGE</param>
-    </action>
-    
+        
     <action name="viewHistory" class="org.hisp.dhis.den.action.HistoryAction">
       <!--<interceptor-ref name="transactionStack"/>-->
       <result name="success" type="velocity">/popup.vm</result>

@@ -29,19 +29,9 @@ package org.hisp.dhis.den.action;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.den.state.SelectedStateManager;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -51,8 +41,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 public class SaveCommentAction
     implements Action
 {
-    private static final Log LOG = LogFactory.getLog( SaveCommentAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -62,27 +50,6 @@ public class SaveCommentAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataValueService dataValueService;
-
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
-    }
-
-    private SelectedStateManager selectedStateManager;
-
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
     }
 
     // -------------------------------------------------------------------------
@@ -135,12 +102,6 @@ public class SaveCommentAction
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        Period period = selectedStateManager.getSelectedPeriod();
-
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
         storedBy = currentUserService.getCurrentUsername();
 
         if ( storedBy == null )
