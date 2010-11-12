@@ -7,53 +7,162 @@
 
 #foreach( $section in $sections)	
 	
-	#if( $marker == 1 )
-		#set( $marker = 0 )
-		
-	#else
-		#set( $marker = 1 )
-	#end
-		
-	<div style="border:thin solid; ">            
-    	<table class="mainPageTable">    		
-   			<tr>		   
-       			<td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#ebf0f6';" onmouseout="style.backgroundColor='#FFFFFF'">
-       				<div id="$section.id:name" style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
-       			</td>       				   			        		  
-    		</tr>    	
-    		<tr>
-       			<td>        	
-           			<div id="$section.id" style="display:block">        				
-
-            		#parse( "/dhis-web-dataentry/section/multiDimensionalDataElement.vm" )
-
-           			</div>
-       			</td>
-    		</tr>    		    		    	    	
-		</table>
-	</div>
+#if( $marker == 1 )
+	#set( $marker = 0 )
 	
-	<br>		
+#else
+	#set( $marker = 1 )
+#end
+	
+<div style="border:thin solid; ">            
+	<table class="mainPageTable">    		
+   			<tr>		   
+   			<td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#ebf0f6';" onmouseout="style.backgroundColor='#FFFFFF'">
+   				<div id="$section.id:name" style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
+   			</td>       				   			        		  
+		</tr>    	
+		<tr>
+   			<td>        	
+       			<div id="$section.id" style="display:block">        				
+				
+				<table class="mainPageTable" cellpadding="0">
+					
+				    #set( $categoryComboId = $sectionCombos.get( $section.id ) )   
+				
+				    #set( $colCount = $numberOfTotalColumns.get( $categoryComboId )  ) 
+				    #set( $categories = $orderedCategories.get( $categoryComboId )  )
+				    #set( $optionsMap = $orderedOptionsMap.get( $categoryComboId )  )
+				    #set( $colRepeat = $catColRepeat.get( $categoryComboId )  )
+				                
+				    #foreach( $category in $categories )
+				            
+				        #set( $categoryOptions = $optionsMap.get( $category.id ) )
+				        #set( $colCount = $colCount / $categoryOptions.size() )     
+				        <tr colspan="$colCount">
+				            <td></td>
+				            #set( $cols = $colRepeat.get( $category.id ) )
+				            #foreach( $col in $cols )
+				                #foreach( $categoryOption in $categoryOptions )
+				                	#set( $optionName = $categoryOption.name )                    
+				                    <th colspan="$colCount"> <div align="center"> #if( $optionName != "default" ) $optionName #end </div> </th>
+				                #end
+				            #end                            
+				        </tr>
+				    #end
+				    
+				    #set( $count = 0 )            
+				    #set( $mark = 0 )
+				    #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )    
+				    
+				    #foreach( $dataElement in $section.dataElements )
+				    	#if( $mark == 1 )
+				            #set( $mark = 0 )
+				        #else
+				            #set( $mark = 1 )
+				        #end    
+				        
+				        #set( $count = $count + 1 )
+				        #set( $calculatedValue = false )
+				        #set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )
+				                        
+				        #set( $calculated = false )
+				        #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
+				        <tr>        
+				            ##data element name
+				            <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
+				                <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
+				                    #if( $useShortName )
+				                        $encoder.htmlEncode( $dataElement.shortName )
+				                    #else
+				                        $encoder.htmlEncode( $dataElement.name )
+				                    #end        
+				                </span>
+				            </td>    
+				                            
+				            ##type      
+				            <td style="display:none">
+				                $dataElementTypeMap.get( $dataElement.type )
+				                <span id="value[$dataElement.id].type" style="display:none">$dataElement.getDetailedNumberType()</span>
+				            </td>                                  
+				                                            
+				            #foreach( $optionCombo in $optionCombos )                       
+				                #set( $minMax = false )
+				                #set( $minMax = $minMaxMap.get( "$dataElement.id:$optionCombo.id" ) )
+				                        
+				                #set( $dataValue = false )
+				                #set( $dataValue = $dataValueMap.get( "$dataElement.id:$optionCombo.id" ) )
+				            
+				                #set( $dataEntryId = "value[$dataElement.id].value:value[$optionCombo.id].value" )
+				                        
+				                ##Data Entry
+				                <td>                	
+				                
+				                    #set( $greyedField = false )
+				                    #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
+				                    
+				                    #if( $dataElement.type == "bool" )
+				                        <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
+				                        <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%  #if( $greyedField ) ;background-color:#000000 #end " tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+				                            <option value="">[$i18n.getString( "no_value" )]</option>
+				                            <option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
+				                            <option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
+				                        </select>
+				                    #else                                
+				                        #if( $dataElement.type == "string" )
+				                            #set( $coun = 0 ) 
+				                            #foreach($customValue in $customValues)
+				                                #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)                                    
+				                                    #set( $coun = $coun +1 )
+				                                #end
+				                            #end  
+				                            #if($coun>0)   
+				                                <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100% #if( $greyedField ) ;background-color:#000000 #end " tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+				                                    <option value="">[$i18n.getString( "please_select" )] </option>                
+				                                    #foreach($customValue in $customValues)
+				                                        #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)
+				                                            <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>   
+				                                        #end
+				                                    #end 
+				                                </select>
+				                            #else
+				                                <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end  #if( $greyedField ) ;background-color:#000000 #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>                                 
+				                            #end    
+				                        #end    
+				                    #end
+				                                
+				                    #set( $minMaxError = false )
+				                    #if( $dataElement.type == "int" && $dataValue && $minMax )          
+				                        #if( $integer.parseInt( $dataValue.value ) < $minMax.min || $integer.parseInt( $dataValue.value ) > $minMax.max )
+				                            #set( $minMaxError = true )
+				                        #end
+				                    #end
+				                                                
+				                    <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
+				                    <span id="value[$dataElement.id].name" style="display:none">$encoder.htmlEncode( $dataElement.shortName )</span>
+				                    <div id="value[$dataElement.id:$optionCombo.id].min" style="display:none">$!minMax.min</div>
+				                    <div id="value[$dataElement.id:$optionCombo.id].max" style="display:none">$!minMax.max</div>    
+				                    
+				                    #if( $dataElement.aggregationOperator == "sum" && $dataElement.type != "string")
+				                    	<input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end  #if( $greyedField ) ;background-color:#000000 #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end  #if( $greyedField ) disabled="disabled" #end>	                        	
+				                    #elseif( $dataElement.type != "string")
+				                        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end  #if( $greyedField ) ;background-color:#000000 #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+				                    #end
+				                </td>
+				                #set( $tabIndex = $tabIndex + 1 )
+				            #end
+				        </tr>
+				        <tr></tr>                                                
+				    #end    
+				</table>
+				
+       			</div>
+   			</td>
+		</tr>    		    		    	    	
+	</table>
+</div>
+
+<br>		
 	
 #end
 
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
-
-<script type="text/javascript">
-	
-	var calculatedDataElementMap = {
-	    #set( $count = 1 )
-	    #foreach( $cde in $calculatedDataElementMap.keySet() )
-	       #set( $innerCount = 1 )
-	       #set( $factorMap = $calculatedDataElementMap.get($cde) )
-	       $cde.id : {
-	           #foreach ( $de in $factorMap.keySet() )
-                    $de.id : $factorMap.get($de) #if ( $innerCount < $factorMap.size() ),#end
-                    #set( $innerCount = $innerCount + 1 )
-	           #end
-            } #if ( $count < $calculatedDataElementMap.size() ),#end
-            #set( $count = $count + 1 )
-	    #end
-    }
-    
-</script>
