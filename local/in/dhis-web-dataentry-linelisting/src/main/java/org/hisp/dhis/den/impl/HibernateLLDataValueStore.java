@@ -2198,7 +2198,6 @@ public class HibernateLLDataValueStore
         return deValueMap;
     }
 
-    @SuppressWarnings( "deprecation" )
     public Map<String, String> processLineListMaternalDeaths( OrganisationUnit organisationUnit, Period periodL )
     {
         Map<String, String> deValueMap = new HashMap<String, String>();

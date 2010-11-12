@@ -37,13 +37,10 @@ import org.hisp.dhis.den.history.HistoryRetriever;
 import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 
 /**
  * @author Margrethe Store
@@ -73,13 +70,6 @@ public class MinMaxGeneratingAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
     
-    private DataElementOrderManager dataElementOrderManager;
-
-    public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
-    {
-        this.dataElementOrderManager = dataElementOrderManager;
-    }
-
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -114,8 +104,7 @@ public class MinMaxGeneratingAction
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
 
         // get a list of dataelements
-        List<DataElement> dataElements = new ArrayList<DataElement>( dataElementOrderManager
-            .getOrderedDataElements( dataSet ) );
+        List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         // set min/max values for each dataelement
         for ( DataElement dataelement : dataElements )

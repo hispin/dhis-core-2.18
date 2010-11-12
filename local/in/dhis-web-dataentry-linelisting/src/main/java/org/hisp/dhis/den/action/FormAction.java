@@ -42,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
@@ -54,7 +53,6 @@ import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.order.manager.DataElementOrderManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -71,13 +69,6 @@ public class FormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private DataElementOrderManager dataElementOrderManager;
-
-    public void setDataElementOrderManager( DataElementOrderManager dataElementOrderManager )
-    {
-        this.dataElementOrderManager = dataElementOrderManager;
-    }
 
     private LLDataValueService dataValueService;
 
@@ -99,13 +90,6 @@ public class FormAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
     
     private StandardCommentsManager standardCommentsManager;
@@ -418,11 +402,6 @@ public class FormAction
         // ---------------------------------------------------------------------
         // Order the DataElements
         // ---------------------------------------------------------------------
-
-        //orderedDataElements = dataElementOrderManager.getOrderedDataElements( dataSet );
-        
-       
-        orderedDataElements = dataElementOrderManager.getOrderedDataElements(dataSet);
 
         // ---------------------------------------------------------------------
         // Get the DataValues and create a map
