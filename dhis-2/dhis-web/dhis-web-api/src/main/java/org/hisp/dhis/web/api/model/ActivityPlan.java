@@ -11,7 +11,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ActivityPlan implements ISerializable
+public class ActivityPlan
+    implements ISerializable
 {
 
     private List<Activity> activitiesList;
@@ -27,60 +28,64 @@ public class ActivityPlan implements ISerializable
         this.activitiesList = activitiesList;
     }
 
-	@Override
-	public byte[] serialize() throws IOException {
-		
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        
-        dout.writeInt(this.getActivitiesList().size());
+    @Override
+    public byte[] serialize()
+        throws IOException
+    {
 
-        for(int i=0; i<activitiesList.size(); i++)
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        dout.writeInt( this.getActivitiesList().size() );
+
+        for ( int i = 0; i < activitiesList.size(); i++ )
         {
-            Activity activity = (Activity)activitiesList.get(i);
-            activity.serialize(dout);            
+            Activity activity = (Activity) activitiesList.get( i );
+            activity.serialize( dout );
         }
 
         return bout.toByteArray();
-	}
-	
-	public void serialize( OutputStream out ) throws IOException
+    }
+
+    public void serialize( OutputStream out )
+        throws IOException
     {
-    	ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);       
-        
-        if(activitiesList == null){
-        	dout.writeInt(0);
-        }else{
-        	dout.writeInt(activitiesList.size());
-	        for(int i=0; i<activitiesList.size(); i++)
-	        {
-	        	Activity activity = (Activity)activitiesList.get(i);
-	        	dout.writeLong(activity.getDueDate().getTime());
-	        	Beneficiary b = activity.getBeneficiary();
-	        	dout.writeInt(b.getId()); 
-	        	dout.writeUTF(b.getFirstName()); 
-	        	dout.writeUTF(b.getMiddleName()); 
-	        	dout.writeUTF(b.getLastName());
-	        	dout.writeBoolean(activity.isLate());
-	        	Set<String> atts = b.getPatientAttValues();
-	                dout.writeInt( atts.size() );
-	                for(String att : atts){
-	                    dout.writeUTF( att );
-	                }
-	        	Task t = activity.getTask();
-	        	dout.writeInt(t.getId()); dout.writeInt(t.getProgramStageId()); dout.writeBoolean(t.isCompleted());           
-	        }
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        if ( activitiesList == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( activitiesList.size() );
+            for ( int i = 0; i < activitiesList.size(); i++ )
+            {
+                Activity activity = (Activity) activitiesList.get( i );
+                dout.writeLong( activity.getDueDate().getTime() );
+                dout.writeBoolean( activity.isLate() );
+
+                Beneficiary b = activity.getBeneficiary();
+                b.serialize( dout );
+                
+                Task t = activity.getTask();
+                dout.writeInt( t.getId() );
+                dout.writeInt( t.getProgramStageId() );
+                dout.writeBoolean( t.isCompleted() );
+            }
         }
         bout.flush();
-        bout.writeTo(out);
-    	
-    } 
+        bout.writeTo( out );
 
-	@Override
-	public void deSerialize(byte[] data) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    @Override
+    public void deSerialize( byte[] data )
+        throws IOException
+    {
+        // TODO Auto-generated method stub
+
+    }
 
 }

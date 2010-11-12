@@ -162,7 +162,11 @@ public class TableAlteror
         {
             executeSql( "UPDATE patientattribute SET mandatory=false" );
         }
-
+        
+        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0){
+            executeSql( "UPDATE patientattribute SET groupby=false" );
+        }
+        
         // update periodType field to ValidationRule
         executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
 

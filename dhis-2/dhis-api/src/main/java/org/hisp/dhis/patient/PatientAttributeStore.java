@@ -47,4 +47,6 @@ public interface PatientAttributeStore
     Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
     
     Collection<PatientAttribute> getPatientAttributesNotGroup();
+
+    PatientAttribute getByGroupBy( boolean groupBy );
 }

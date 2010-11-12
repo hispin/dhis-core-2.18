@@ -24,51 +24,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.web.api.model;
 
-package org.hisp.dhis.patient.hibernate;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
-import java.util.Collection;
-
-import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeStore;
-
-/**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
- */
-public class HibernatePatientAttributeStore
-    extends HibernateGenericStore<PatientAttribute>
-    implements PatientAttributeStore
+public class PatientAttribute
 {
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getByValueType( String valueType )
+
+    private String name;
+
+    private String value;
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+    public PatientAttribute()
     {
-        return getCriteria( Restrictions.eq( "valueType", valueType ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getPatientAttributesByMandatory( boolean mandatory )
+    // -------------------------------------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------------------------------------
+    public String getName()
     {
-        return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
+        return name;
     }
 
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup()
+    public void setName( String name )
     {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).add(
-            Restrictions.eq( "mandatory", false ) ).list();
+        this.name = name;
     }
-    
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientAttribute> getPatientAttributesNotGroup()
+
+    public String getValue()
     {
-        return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
+        return value;
     }
-    
-    public PatientAttribute getByGroupBy( boolean groupBy ){
-        return (PatientAttribute)getCriteria( Restrictions.eq( "groupBy", groupBy ) ).uniqueResult();
+
+    public void setValue( String value )
+    {
+        this.value = value;
     }
-    
+
+    public void serialize( DataOutputStream out )
+        throws IOException
+    {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+        
+        dout.writeUTF( this.name );
+        dout.writeUTF( this.value );
+        
+        bout.flush();
+        bout.writeTo( out );
+    }
+
 }

@@ -12,11 +12,13 @@ import java.util.Set;
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.Beneficiary;
+import org.hisp.dhis.web.api.model.PatientAttribute;
 import org.hisp.dhis.web.api.service.mapping.ActivitiesMapper;
 import org.hisp.dhis.web.api.service.mapping.TaskMapper;
 import org.joda.time.DateMidnight;
@@ -40,6 +42,9 @@ public class DefaultActivityPlanService
 
     @Autowired
     private PatientAttributeValueService patientAttValueService;
+
+    @Autowired
+    private PatientAttributeService patientAttService;
 
     @Autowired
     private CurrentUserService currentUserService;
@@ -105,6 +110,7 @@ public class DefaultActivityPlanService
         }
 
         return plan;
+
     }
 
     private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
@@ -134,6 +140,21 @@ public class DefaultActivityPlanService
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
 
+        // Set attribute which is used to group beneficiary on mobile (only if there is attribute which is set to be group factor)
+        PatientAttribute beneficiaryAttribute = null;
+        org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttService.getPatientAttributeByGroupBy( true );
+
+        if ( patientAttribute != null )
+        {
+            beneficiaryAttribute = new PatientAttribute();
+            beneficiaryAttribute.setName( patientAttribute.getName() );
+            beneficiaryAttribute.setValue( patientAttValueService.getPatientAttributeValue( patient, patientAttribute )
+                .getValue() );
+            beneficiary.setGroupAttribute( beneficiaryAttribute );
+        }
+        patientAttribute = null;        
+
+        // Set all attributes
         for ( PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient ) )
         {
             patientAttValues.add( value.getPatientAttribute().getName() + " : " + value.getValue() );

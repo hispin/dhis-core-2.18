@@ -43,7 +43,7 @@ import com.opensymphony.xwork2.Action;
 public class AddPatientAttributeAction
     implements Action
 {
-	 // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -52,10 +52,10 @@ public class AddPatientAttributeAction
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
-    }   
-    
+    }
+
     private PatientAttributeOptionService patientAttributeOptionService;
-    
+
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
@@ -85,26 +85,33 @@ public class AddPatientAttributeAction
     {
         this.valueType = valueType;
     }
-    
+
     private boolean mandatory;
-    
+
     public void setMandatory( boolean mandatory )
     {
         this.mandatory = mandatory;
     }
-    
+
     private boolean inheritable;
-    
+
     public void setInheritable( boolean inheritable )
     {
         this.inheritable = inheritable;
     }
-    
+
     private List<String> attrOptions;
-    
+
     public void setAttrOptions( List<String> attrOptions )
     {
         this.attrOptions = attrOptions;
+    }
+
+    private boolean groupBy;
+
+    public void setGroupBy( boolean groupBy )
+    {
+        this.groupBy = groupBy;
     }
 
     // -------------------------------------------------------------------------
@@ -121,13 +128,22 @@ public class AddPatientAttributeAction
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );
         patientAttribute.setInheritable( inheritable );
-        
-        patientAttributeService.savePatientAttribute( patientAttribute );
-        
-        if( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        patientAttribute.setGroupBy( groupBy );
+        if ( groupBy == true )
         {
-            PatientAttributeOption opt  = null;
-            for( String optionName : attrOptions )
+            PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
+            if ( patientAtt != null )
+            {
+                patientAtt.setGroupBy( false );
+                patientAttributeService.updatePatientAttribute( patientAtt );
+            }
+        }
+        patientAttributeService.savePatientAttribute( patientAttribute );
+
+        if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        {
+            PatientAttributeOption opt = null;
+            for ( String optionName : attrOptions )
             {
                 opt = new PatientAttributeOption();
                 opt.setName( optionName );
@@ -136,8 +152,7 @@ public class AddPatientAttributeAction
                 patientAttributeOptionService.addPatientAttributeOption( opt );
             }
         }
-        
-        
+
         return SUCCESS;
     }
 }

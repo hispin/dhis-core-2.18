@@ -48,7 +48,8 @@ import com.opensymphony.xwork2.Action;
 public class UpdatePatientAttributeAction
     implements Action
 {
-	public static final String PREFIX_ATTRIBUTE_OPTION = "attrOption";
+    public static final String PREFIX_ATTRIBUTE_OPTION = "attrOption";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -59,9 +60,9 @@ public class UpdatePatientAttributeAction
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private PatientAttributeOptionService patientAttributeOptionService;
-    
+
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
@@ -105,19 +106,26 @@ public class UpdatePatientAttributeAction
     {
         this.mandatory = mandatory;
     }
-    
+
     private boolean inheritable;
-    
+
     public void setInheritable( boolean inheritable )
     {
         this.inheritable = inheritable;
     }
-    
+
     private List<String> attrOptions;
-    
+
     public void setAttrOptions( List<String> attrOptions )
     {
         this.attrOptions = attrOptions;
+    }
+
+    private boolean groupBy;
+
+    public void setGroupBy( boolean groupBy )
+    {
+        this.groupBy = groupBy;
     }
 
     // -------------------------------------------------------------------------
@@ -127,51 +135,61 @@ public class UpdatePatientAttributeAction
     public String execute()
         throws Exception
     {
-    	 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
+        PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
-         patientAttribute.setName( name );
-         patientAttribute.setDescription( description );
-         patientAttribute.setValueType( valueType );
-         patientAttribute.setMandatory( mandatory );
-         patientAttribute.setInheritable( inheritable );
+        patientAttribute.setName( name );
+        patientAttribute.setDescription( description );
+        patientAttribute.setValueType( valueType );
+        patientAttribute.setMandatory( mandatory );
+        patientAttribute.setInheritable( inheritable );
 
-         HttpServletRequest request = ServletActionContext.getRequest();
-         
-         Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );
-         
-         if ( attributeOptions != null && attributeOptions.size() > 0 )
-         {
-             String value = null;
-             for( PatientAttributeOption option : attributeOptions )
-             {
-                 value = request.getParameter( PREFIX_ATTRIBUTE_OPTION + option.getId() );
-                 if ( StringUtils.isNotBlank( value ) )
-                 {
-                     option.setName( value.trim() );
-                     patientAttributeOptionService.updatePatientAttributeOption( option );
-                 }
-             }
-         }
-         
-         if( attrOptions != null )
-         {
-             PatientAttributeOption opt  = null;
-             for( String optionName : attrOptions )
-             {
-                 opt = patientAttributeOptionService.get( patientAttribute, optionName );
-                 if( opt == null )
-                 {
-                     opt = new PatientAttributeOption();
-                     opt.setName( optionName );
-                     opt.setPatientAttribute( patientAttribute );
-                     patientAttribute.addAttributeOptions( opt );
-                     patientAttributeOptionService.addPatientAttributeOption( opt );
-                 }
-             }
-         }
-         
-         patientAttributeService.updatePatientAttribute( patientAttribute );
-         
-         return SUCCESS; 
+        if ( groupBy == true )
+        {
+            PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
+            if ( patientAtt != null )
+            {
+                patientAtt.setGroupBy( false );
+                patientAttributeService.updatePatientAttribute( patientAtt );
+            }
+        }
+        patientAttribute.setGroupBy( groupBy );
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );
+
+        if ( attributeOptions != null && attributeOptions.size() > 0 )
+        {
+            String value = null;
+            for ( PatientAttributeOption option : attributeOptions )
+            {
+                value = request.getParameter( PREFIX_ATTRIBUTE_OPTION + option.getId() );
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    option.setName( value.trim() );
+                    patientAttributeOptionService.updatePatientAttributeOption( option );
+                }
+            }
+        }
+
+        if ( attrOptions != null )
+        {
+            PatientAttributeOption opt = null;
+            for ( String optionName : attrOptions )
+            {
+                opt = patientAttributeOptionService.get( patientAttribute, optionName );
+                if ( opt == null )
+                {
+                    opt = new PatientAttributeOption();
+                    opt.setName( optionName );
+                    opt.setPatientAttribute( patientAttribute );
+                    patientAttribute.addAttributeOptions( opt );
+                    patientAttributeOptionService.addPatientAttributeOption( opt );
+                }
+            }
+        }
+
+        patientAttributeService.updatePatientAttribute( patientAttribute );
+
+        return SUCCESS;
     }
 }
