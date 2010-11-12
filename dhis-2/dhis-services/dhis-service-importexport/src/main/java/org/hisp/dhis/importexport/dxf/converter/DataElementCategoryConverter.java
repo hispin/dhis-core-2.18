@@ -52,14 +52,17 @@ import org.hisp.dhis.importexport.mapping.NameMappingUtil;
  * @version $Id$
  */
 public class DataElementCategoryConverter
-    extends DataElementCategoryImporter implements XMLConverter
+    extends DataElementCategoryImporter
+    implements XMLConverter
 {
     public static final String COLLECTION_NAME = "categories";
     public static final String ELEMENT_NAME = "category";
-    
+
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_CONCEPT_ID = "conceptid";
+    
+    private static final String BLANK = "";
 
     private ConceptService conceptService;
 
@@ -74,7 +77,7 @@ public class DataElementCategoryConverter
     {
         this.categoryService = categoryService;
     }
-    
+
     /**
      * Constructor for read operations.
      * 
@@ -83,10 +86,9 @@ public class DataElementCategoryConverter
      * @param categoryService the dataElementCategoryService to use.
      * @param conceptService the ConceptService to use.
      */
-    public DataElementCategoryConverter( BatchHandler<DataElementCategory> batchHandler, 
-        ImportObjectService importObjectService, 
-        DataElementCategoryService categoryService,
-        ConceptService conceptService)
+    public DataElementCategoryConverter( BatchHandler<DataElementCategory> batchHandler,
+        ImportObjectService importObjectService, DataElementCategoryService categoryService,
+        ConceptService conceptService )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
@@ -101,57 +103,61 @@ public class DataElementCategoryConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<DataElementCategory> categories = categoryService.getDataElementCategories( params.getCategories() );
-        
+
         if ( categories != null && categories.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
-            
+
             for ( DataElementCategory category : categories )
             {
                 writer.openElement( ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_ID, String.valueOf( category.getId() ) );
                 writer.writeElement( FIELD_NAME, category.getName() );
-                writer.writeElement( FIELD_CONCEPT_ID , String.valueOf(category.getConcept().getId()));
+                writer.writeElement( FIELD_CONCEPT_ID, String.valueOf( category.getConcept() == null ? BLANK : category
+                    .getConcept().getId() ) );
 
                 writer.closeElement();
             }
-            
+
             writer.closeElement();
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
+        System.out.println( "\nREAD\n" );
         Map<Object, String> conceptMap = NameMappingUtil.getConceptMap();
 
-        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME);
+        Concept defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
 
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
-            
+
             final DataElementCategory category = new DataElementCategory();
-            
+
             category.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             category.setName( values.get( FIELD_NAME ) );
 
             if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) )
             {
-                log.debug("reading category dxf version >1.2");
-                int conceptid = Integer.parseInt(values.get(FIELD_CONCEPT_ID ));
+                log.debug( "reading category dxf version >1.2" );
+                int conceptid = Integer.parseInt( values.get( FIELD_CONCEPT_ID ) );
                 String conceptName = conceptMap.get( conceptid );
                 category.setConcept( conceptService.getConceptByName( conceptName ) );
 
-            } else if (params.getMinorVersion().equals( MINOR_VERSION_11))
+            }
+            else if ( params.getMinorVersion().equals( MINOR_VERSION_11 ) )
             {
-                log.debug("reading category dxf version 1.1");
+                log.debug( "reading category dxf version 1.1" );
                 // TODO: read concept from conceptname
-                category.setConcept(defaultConcept);
-            } else
+                category.setConcept( defaultConcept );
+            }
+            else
             {
-                log.debug("reading category dxf version 1.0");
-                category.setConcept(defaultConcept);
+                log.debug( "reading category dxf version 1.0" );
+                category.setConcept( defaultConcept );
             }
 
             importObject( category, params );
