@@ -1,6 +1,52 @@
 
+var currentPDSCode;
+function getEmployeeName( pdsCodeField, pdsCode )
+	{
+	 
+		currentPDSCode = pdsCodeField;
+		var request = new Request();
+		request.setResponseTypeXML( 'employee' );
+		request.setCallbackSuccess( employeeReceived );
+		request.send( 'getEmployeeName.action?pdsCode=' + pdsCode );
+	}
 
-
+function employeeReceived( employeeElement )
+{
+	//messageElement = employeeElement.getElementsByTagName( "message" )[0];
+	var type = employeeElement.getAttribute( "type" );
+	
+	if (type == 'success') 
+	{
+		if( confirm( employeeElement.firstChild.nodeValue ) )
+		{
+		}
+		else
+		{
+			var field = document.getElementById( currentPDSCode );
+			field.value = "";
+			setTimeout(function(){
+                field.focus();field.select();
+            },2);
+		}
+	} 
+	else if(type == 'input') 
+	{
+		if( confirm( employeeElement.firstChild.nodeValue ) )
+		{
+			var url = 'showAddEmployeeForm.action';
+			document.location.href = url;
+		}
+		else
+		{
+			var field = document.getElementById( currentPDSCode );
+			field.value = "";
+			setTimeout(function(){
+                field.focus();field.select();
+            },2);
+		}
+	}
+	
+}
 
 function addLLBNewRow()
 {

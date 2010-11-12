@@ -13,6 +13,7 @@
         <th width="10%">Sr.No.</th>
         <th width="40%">DataElement</th>
         <th width="20%">Entry</th>
+        
     </tr>
 	#set( $dataValueMapKeys = $dataelementMap.keySet() )
 	#foreach( $dataValueMapKey in $dataValueMapKeys )
@@ -23,14 +24,15 @@
 			<td>$dataElementName</td>
 			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" />
 			#if( $sactionedPostdataelement == $dataValueMapKey)
-				<input type="button" value="Add" onclick="return addLLNewRow( '$dataValueMapKey' )">
+				<input type="button" value="Add" onclick="return addEmployeePostDetail( '$dataValueMapKey' )">
 			#end
 			</td>
 		<tr>		
 		#set( $count1 = $count1 + 1 )
 	#end
+	
 </table>
-
+<!--
 <table id="tblGrid" width="100%">
 
     <tr>
@@ -124,7 +126,7 @@
 		</td>
 	</tr>
 </table>
-
+-->
 <script type="text/javascript">
 
         $calInfo
@@ -223,5 +225,21 @@
             }
             return true;
 		}
+		
+		function addEmployeePostDetail( dataValueMapKey ) 
+		{
+			 var reportingDate = document.getElementById( "reportingDate" ).value;
+			var url = 'showEmployeePostForm.action?reportingDate=' + reportingDate;
+			$('#contentDataRecord').dialog('destroy').remove();
+		    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
+	        title: 'Employee Post Detail',
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 420,
+  	        height: 380
+  		});
+}
 
 </script>
