@@ -82,11 +82,11 @@ public class AddSqlViewAction
 
     public String execute()
     {
-        if ( (name == null) || (name.trim() == "") )
+        if ( (name == null) || (name.trim().isEmpty()) )
         {
             return ERROR;
         }
-        if ( (sqlquery == null) || (sqlquery.trim() == "") )
+        if ( (sqlquery == null) || (sqlquery.trim().isEmpty()) )
         {
             return ERROR;
         }
