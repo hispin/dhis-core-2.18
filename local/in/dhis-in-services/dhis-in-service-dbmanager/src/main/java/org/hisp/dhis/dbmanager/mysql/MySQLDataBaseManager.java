@@ -207,6 +207,28 @@ public class MySQLDataBaseManager
         return doNotDelete;
     }
     
+    
+ // function to get max row number
+    public int getMaxRecordNumber( String tableName )
+    {
+        int maxRecordNumber = 0;
+        try
+        {
+            String query = "SELECT MAX(recordNumber) FROM " + tableName;
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+           
+            if( rs.next() )
+            {
+                maxRecordNumber = rs.getInt( 1 );
+            }
+        } 
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        return maxRecordNumber;
+    }
+    
 // function for row count
     public int rowCount( String tableName )
     {
@@ -741,6 +763,86 @@ public class MySQLDataBaseManager
         return llDataValues;
     }
 
+    
+    public boolean insertSingleLLValueIntoDb( LineListDataValue llDataValue, String tableName )
+    {
+        boolean updateLLValue = false;
+
+        String columnDefinition = "";
+        
+        columnDefinition = "INSERT INTO " + tableName + " (periodid,sourceid,storedby,lastupdated,";
+        
+        Period period = llDataValue.getPeriod();
+
+        Source source = llDataValue.getSource();
+
+        Map<String, String> elementValues = llDataValue.getLineListValues();
+        Set<String> elements = elementValues.keySet();
+
+        int size = elements.size();
+        int i = 1;
+        java.util.Date today = llDataValue.getTimestamp();
+        long t;
+        if ( today == null )
+        {
+            Date d = new Date();
+            t = d.getTime();
+        } 
+        else
+        {
+            t = today.getTime();
+        }
+
+        java.sql.Date date = new java.sql.Date( t );
+        String values = " values (" + period.getId() + "," + source.getId() + ",'" + llDataValue.getStoredBy() + "','" + date + "',";
+        for ( String elementName : elements )
+        {
+            LineListElement lineListElement = lineListService.getLineListElementByShortName( elementName );
+            if ( i == size )
+            {
+                columnDefinition += elementName + ")";
+
+                if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
+                {
+                    values += Integer.parseInt( elementValues.get( elementName ) );
+                } 
+                else
+                {
+                    values += "'" + elementValues.get( elementName ) + "'";
+                }
+            } 
+            else
+            {
+                columnDefinition += elementName + ",";
+                if( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
+                {
+                    values += Integer.parseInt( elementValues.get( elementName ) ) + ",";
+                } 
+                else
+                {
+                    values += "'" + elementValues.get( elementName ) + "'" + ",";
+                }
+                i++;
+            }
+
+        }
+        columnDefinition += values + ")";
+
+        try
+        {
+            int sqlResult = jdbcTemplate.update( columnDefinition );
+            updateLLValue = true;
+            columnDefinition = "";
+        } 
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            updateLLValue = false;
+        }        
+        return updateLLValue;
+    }
+
+    
     public boolean insertLLValueIntoDb( List<LineListDataValue> llDataValuesList, String tableName )
     {
         boolean updateLLValue = false;

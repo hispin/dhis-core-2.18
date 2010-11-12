@@ -398,9 +398,19 @@
             <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
             <param name="stylesheets">css/dhis-web-dataentry-national.css</param>
         </action>
+        
+        <action name="showEmployeePostForm" class="org.hisp.dhis.ll.action.lldataentry.ShowEmployeePostFormAction">
+      		<result name="success" type="velocity">/dhis-web-linelisting-mp/employeePost.vm</result>
+        </action>
 
         <action name="saveValueAction" class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction">
-            <result name="success" type="redirect">select.action</result>
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/select.vm</param>
+        </action>
+        
+        <action name="saveEmployeePost" class="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-linelisting-mp/select.vm</param>
         </action>
 
         <action name="updateLineListEntry"
@@ -408,6 +418,14 @@
             <result name="success" type="redirect">select.action</result>
             <param name="requiredAuthorities">F_LINELISTEntry_UPDATE</param>
         </action>
+        
+        <action name="getEmployeeName"
+            class="org.hisp.dhis.ll.action.employee.GetEmployeeAction">
+            <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
+            <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+        
     <!-- Org unit -->
         <action name="getOrgUnitDetails"
 			class="org.hisp.dhis.ll.action.lldataentry.GetOrgUnitsAction">
