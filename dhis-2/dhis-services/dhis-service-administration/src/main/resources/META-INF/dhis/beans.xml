@@ -139,6 +139,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.dataprune.DataPruneStore"
     class="org.hisp.dhis.dataprune.jdbc.JdbcDataPruneStore">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	<property name="statementManager" ref="statementManager"/>
   </bean> 
   
   <!-- Data archive -->

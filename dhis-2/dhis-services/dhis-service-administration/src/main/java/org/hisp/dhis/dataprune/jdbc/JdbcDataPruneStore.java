@@ -62,7 +62,6 @@ public class JdbcDataPruneStore
         this.jdbcTemplate = jdbcTemplate;
     }
     
-    @Autowired
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
