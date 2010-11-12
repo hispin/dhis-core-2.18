@@ -43,7 +43,7 @@
 		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dataentry/section/form.vm</param>
+			<param name="page">/dhis-web-dataentry/sectionForm.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
 			<param name="javascripts">
@@ -61,7 +61,7 @@
 			class="org.hisp.dhis.de.action.FormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dataentry/multidimensional/form.vm</param>
+			<param name="page">/dhis-web-dataentry/form.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
 			<param name="javascripts">
