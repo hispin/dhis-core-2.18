@@ -45,7 +45,8 @@ import org.hisp.dhis.system.util.StreamUtils;
 import org.junit.Test;
 
 /**
- * @author Hieu
+ * @author Lars Helge Overland
+ * @version $Id$
  */
 public class PdfServiceTest
     extends DhisTest

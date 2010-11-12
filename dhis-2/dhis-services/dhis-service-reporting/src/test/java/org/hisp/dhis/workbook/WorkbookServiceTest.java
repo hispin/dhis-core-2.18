@@ -67,6 +67,7 @@ public class WorkbookServiceTest
     public void setUpTest()
     {
         i18n = new MockI18n();
+        
         workbookService = (WorkbookService) getBean( WorkbookService.ID );
 
         dataElementService = (DataElementService) getBean( DataElementService.ID );
