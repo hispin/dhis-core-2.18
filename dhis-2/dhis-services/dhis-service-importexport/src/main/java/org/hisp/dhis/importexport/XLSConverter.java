@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.process;
+package org.hisp.dhis.importexport;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,46 +27,13 @@ package org.hisp.dhis.system.process;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.SessionFactory;
-import org.hisp.dhis.dbms.DbmsUtils;
+import jxl.write.WritableWorkbook;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public abstract class OpenSessionThread
-    extends Thread
+public interface XLSConverter
 {
-    private SessionFactory sessionFactory;
-
-    public OpenSessionThread( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    // --------------------------------------------------------------------------
-    // Thread implementation
-    // --------------------------------------------------------------------------
-
-    @Override
-    public final void run()
-    {
-        DbmsUtils.bindSessionToThread( sessionFactory );
-
-        try
-        {
-            doRun();
-        }
-        finally
-        {
-            DbmsUtils.unbindSessionFromThread( sessionFactory );
-        }
-    }
-
-    /**
-     * Method to override by subclasses.
-     */
-    protected void doRun()
-    {
-    }
+    void write( WritableWorkbook workbook, ExportParams params, int sheetIndex );
 }
