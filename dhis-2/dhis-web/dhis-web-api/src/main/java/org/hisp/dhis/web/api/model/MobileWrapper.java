@@ -1,4 +1,5 @@
 package org.hisp.dhis.web.api.model;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,80 +8,103 @@ import java.util.List;
 
 /**
  * @author Tran Ng Minh Luan
- *
+ * 
  */
-public class MobileWrapper implements ISerializable{
-	private ActivityPlan activityPlan;
+public class MobileWrapper
+    implements ISerializable
+{
+    private ActivityPlan activityPlan;
+
     private List<Program> programs;
+
     private List<DataSet> datasets;
-    
-	public MobileWrapper() {
-	}
 
-	public ActivityPlan getActivityPlan() {
-		return activityPlan;
-	}
-
-	public void setActivityPlan(ActivityPlan activityPlan) {
-		this.activityPlan = activityPlan;
-	}
-
-	public List<Program> getPrograms() {
-		return programs;
-	}
-
-	public void setPrograms(List<Program> programs) {
-		this.programs = programs;
-	}
-
-	public List<DataSet> getDatasets() {
-		return datasets;
-	}
-
-	public void setDatasets(List<DataSet> datasets) {
-		this.datasets = datasets;
-	}
-
-	public void serialize(OutputStream out) throws IOException
+    public MobileWrapper()
     {
-		
-		
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        
-        if(programs != null){
-        	dout.writeInt(programs.size());
-        }else{
-        	dout.writeInt(0);
+    }
+
+    public ActivityPlan getActivityPlan()
+    {
+        return activityPlan;
+    }
+
+    public void setActivityPlan( ActivityPlan activityPlan )
+    {
+        this.activityPlan = activityPlan;
+    }
+
+    public List<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public void setPrograms( List<Program> programs )
+    {
+        this.programs = programs;
+    }
+
+    public List<DataSet> getDatasets()
+    {
+        return datasets;
+    }
+
+    public void setDatasets( List<DataSet> datasets )
+    {
+        this.datasets = datasets;
+    }
+
+    public void serialize( OutputStream out )
+        throws IOException
+    {
+
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream dout = new DataOutputStream( bout );
+
+        if ( programs != null )
+        {
+            dout.writeInt( programs.size() );
         }
-        
-        //Write ActivityPlans
-        if(this.activityPlan == null){
-        	dout.writeInt(0);
-        }else{
-        	this.activityPlan.serialize( dout );
+        else
+        {
+            dout.writeInt( 0 );
         }
-        
-        //Write Programs   
-        if(programs != null || programs.size() > 0){
-        	for(Program prog : programs){
-	        	prog.serialize( dout );
-	        }
-        } 
-        
-        //Write DataSets
-        if(datasets == null){
-        	dout.writeInt(0);
-        }else{
-        	dout.writeInt(datasets.size());
-        	for(DataSet ds : datasets){
-            	ds.serialize(dout);
-            }        	
+
+        // Write ActivityPlans
+        if ( this.activityPlan == null )
+        {
+            dout.writeInt( 0 );
         }
-        
+        else
+        {
+            this.activityPlan.serialize( dout );
+        }
+
+        // Write Programs
+        if ( programs != null || programs.size() > 0 )
+        {
+            for ( Program prog : programs )
+            {
+                prog.serialize( dout );
+            }
+        }
+
+        // Write DataSets
+        if ( datasets == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( datasets.size() );
+            for ( DataSet ds : datasets )
+            {
+                ds.serialize( dout );
+            }
+        }
+
         bout.flush();
-        bout.writeTo(out);
-        
+        bout.writeTo( out );
+
     }
 
     @Override
@@ -96,14 +120,7 @@ public class MobileWrapper implements ISerializable{
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
-	
-	
-	
-    
-    
-    
-    
 }

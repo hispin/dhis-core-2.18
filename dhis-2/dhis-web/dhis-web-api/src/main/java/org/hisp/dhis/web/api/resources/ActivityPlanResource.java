@@ -13,39 +13,38 @@ import org.hisp.dhis.web.api.service.IActivityPlanService;
 import org.hisp.dhis.web.api.service.IActivityValueService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/activityplan")
-public class ActivityPlanResource {
+@Path( "/activityplan" )
+public class ActivityPlanResource
+{
 
-	
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-	
-	@Autowired
-	private IActivityPlanService activityPlanService;
-	
-	@Autowired
-	private IActivityValueService iactivityValueService;
 
-	
-	// -------------------------------------------------------------------------
+    @Autowired
+    private IActivityPlanService activityPlanService;
+
+    @Autowired
+    private IActivityValueService iactivityValueService;
+
+    // -------------------------------------------------------------------------
     // Resources
-    // -------------------------------------------------------------------------		
-	
-	@GET
-    @Path( "current" )    
-    @Produces( "application/vnd.org.dhis2.activityplan+serialized" ) 
-    public ActivityPlan getCurrentActivityPlan(@HeaderParam("accept-language") String locale)
+    // -------------------------------------------------------------------------
+
+    @GET
+    @Path( "current" )
+    @Produces( "application/vnd.org.dhis2.activityplan+serialized" )
+    public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
     {
         return activityPlanService.getCurrentActivityPlan( locale );
     }
-	
-	@POST
-	@Path( "values" )
-	@Consumes( "application/vnd.org.dhis2.activityvaluelist+serialized" )
-	@Produces("application/xml")	
-	public String  getValues(ActivityValue activityValue) 
-	{		
-		return iactivityValueService.saveValues(activityValue);		
-	}	
+
+    @POST
+    @Path( "values" )
+    @Consumes( "application/vnd.org.dhis2.activityvaluelist+serialized" )
+    @Produces( "application/xml" )
+    public String getValues( ActivityValue activityValue )
+    {
+        return iactivityValueService.saveValues( activityValue );
+    }
 }

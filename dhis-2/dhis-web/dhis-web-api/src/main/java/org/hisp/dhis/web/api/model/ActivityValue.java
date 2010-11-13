@@ -53,6 +53,7 @@ public class ActivityValue implements ISerializable {
         {
             DataValue dv = (DataValue)dataValues.get(i);
             dout.writeInt( dv.getId() );
+            dout.writeInt( dv.getCategoryOptComboID() );
             dout.writeUTF( dv.getVal() );            
         }
 
@@ -72,7 +73,8 @@ public class ActivityValue implements ISerializable {
         {
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
-            dv.setVal( din.readUTF() );            
+            dv.setCategoryOptComboID( din.readInt() );
+            dv.setVal( din.readUTF() );
             this.dataValues.add(dv);
         }
     }
@@ -89,6 +91,7 @@ public class ActivityValue implements ISerializable {
         {
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
+            dv.setCategoryOptComboID( din.readInt() );
             dv.setVal( din.readUTF() );            
             this.dataValues.add(dv);
         }
