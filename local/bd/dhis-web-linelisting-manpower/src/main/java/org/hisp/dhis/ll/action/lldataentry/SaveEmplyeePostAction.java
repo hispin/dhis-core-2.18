@@ -126,8 +126,6 @@ public class SaveEmplyeePostAction
         
         int recordNo = dbManagerInterface.getMaxRecordNumber( department ) + 1;
         
-        System.out.println("Record No is :::::" + recordNo );
-        
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
         LineListDataValue llDataValue = new LineListDataValue();
         for ( LineListElement linelistElement : linelistElements )

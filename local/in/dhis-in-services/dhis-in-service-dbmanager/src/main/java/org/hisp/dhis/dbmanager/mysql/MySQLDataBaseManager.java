@@ -665,6 +665,62 @@ public class MySQLDataBaseManager
 
     }
 
+    public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, Source source, Period period )
+    {
+        String columnDefinition = "";
+        int noOfRows = 0;
+        if ( source != null )
+        {
+            //columnDefinition += "SELECT COUNT(*) FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId();
+            columnDefinition += "SELECT COUNT(*) FROM " + tableName + " WHERE sourceid = " + source.getId();
+
+            List<String> llElementNames = new ArrayList<String>( llElementValueMap.keySet() );
+            Iterator<String> llENamesIterator = llElementNames.iterator();
+            while ( llENamesIterator.hasNext() )
+            {
+                String lleName = llENamesIterator.next();
+
+                String lleValue = llElementValueMap.get( lleName );
+
+                if ( lleValue.equalsIgnoreCase( "notnull" ) )
+                {
+                    columnDefinition += " AND " + lleName + " IS NOT NULL";
+                } else
+                {
+                    if ( lleValue.equalsIgnoreCase( "null" ) )
+                    {
+                        columnDefinition += " AND " + lleName + " IS NULL";
+                    } else
+                    {
+                        columnDefinition += " AND " + lleName + " LIKE '" + lleValue + "'";
+                    }
+                }
+            }
+        
+
+            columnDefinition += " order by recordnumber";
+            System.out.println( columnDefinition );
+
+            try
+            {
+                SqlRowSet rs = jdbcTemplate.queryForRowSet( columnDefinition );
+               
+                if( rs.next() )
+                {
+                    noOfRows = rs.getInt( 1 );
+                }
+            } 
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+            }
+        }
+        return noOfRows;
+    }
+
+    
+    
+    
     public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, Source source, Period period )
     {
         String columnDefinition = "";

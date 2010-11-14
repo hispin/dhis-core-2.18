@@ -425,6 +425,15 @@
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
+		
+		<action name="getValidatePostVacant"
+            class="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction">
+			<!--<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-linelisting-mp/responseSuccess.vm</param>-->
+            <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
+            <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
         
     <!-- Org unit -->
         <action name="getOrgUnitDetails"

@@ -18,7 +18,7 @@
 			</td>
 			<td>
 				<input type="hidden" name="groupid" id="groupid" value="$linelistGroupId">
-				<input type="text" name="reportingDate" id="reportingDate" value="$reportingDate">
+				<input type="hidden" name="reportingDate" id="reportingDate" value="$reportingDate">
 			</td>
 		</tr>
 		
