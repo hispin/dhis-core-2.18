@@ -457,7 +457,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction" scope="prototype">
         <property name="currentUserService"
             ref="org.hisp.dhis.user.CurrentUserService"/>
-
+	
         <property name="dataBaseManagerInterface">
             <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
         </property>
@@ -474,8 +474,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
 
     </bean>
-
-
+	
+	<bean id="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction"
+    class="org.hisp.dhis.ll.action.lldataentry.GetValidatePostVacantAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+        <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+		<property name="optionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</bean>
+	
+	
     <bean id="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction"
     class="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction">
         <property name="validationRuleService">

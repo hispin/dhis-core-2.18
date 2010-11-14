@@ -3,6 +3,12 @@
 
 <script>
     var rowCount = 0;
+    var sancPos = 0;
+    
+    function setSancPost( curSancPos )
+    {
+    	sancPos = curSancPos;
+    }
 </script>
 
 <form id="LineListDataEntryForm" action="saveValueAction.action" method="post" onsubmit="return calMaxRecords()">
@@ -22,9 +28,10 @@
 		<tr>
 			<td align="center">$count1</td>
 			<td>$dataElementName</td>
-			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" />
+			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" onchange="setSancPost(this.value)"/>
+			<script>sancPos='$!dataValue.value';</script>
 			#if( $sactionedPostdataelement == $dataValueMapKey)
-				<input type="button" value="Add" onclick="return addEmployeePostDetail( '$dataValueMapKey' )">
+				<input type="button" value="Add" onclick="validatePostVacant( '$dataValueMapKey' )">
 			#end
 			</td>
 		<tr>		
@@ -214,7 +221,6 @@
                     if (element==temparray[k])
                     {
                         flag=1;
-
                     }
                 }
 
@@ -225,21 +231,6 @@
             }
             return true;
 		}
-		
-		function addEmployeePostDetail( dataValueMapKey ) 
-		{
-			 var reportingDate = document.getElementById( "reportingDate" ).value;
-			var url = 'showEmployeePostForm.action?reportingDate=' + reportingDate;
-			$('#contentDataRecord').dialog('destroy').remove();
-		    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
-	        title: 'Employee Post Detail',
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 420,
-  	        height: 380
-  		});
 }
 
 </script>
