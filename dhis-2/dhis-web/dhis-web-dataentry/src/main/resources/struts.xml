@@ -24,7 +24,7 @@
 			<param name="menuTreeHeight">420</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/general.js,
+				javascript/multidimensional.js,
 				javascript/form.js
 			</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
@@ -48,8 +48,9 @@
 			<param name="menuTreeHeight">420</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,				
-				javascript/general.js,javascript/form.js,
-				javascript/section.js,javascript/multidimensional.js,
+				javascript/form.js,
+				javascript/section.js,
+				javascript/multidimensional.js,
 				../dhis-web-commons/calendar/calendar.js,
 				../dhis-web-commons/calendar/calendar-lang.js,
 				../dhis-web-commons/calendar/calendar-setup.js
@@ -66,7 +67,8 @@
 			<param name="menuTreeHeight">420</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/general.js,javascript/form.js,javascript/multidimensional.js,
+				javascript/form.js,
+				javascript/multidimensional.js,
 				../dhis-web-commons/calendar/calendar.js,
 				../dhis-web-commons/calendar/calendar-lang.js,
 				../dhis-web-commons/calendar/calendar-setup.js

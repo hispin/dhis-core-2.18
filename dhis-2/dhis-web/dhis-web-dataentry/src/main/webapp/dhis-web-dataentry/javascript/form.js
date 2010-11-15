@@ -337,3 +337,12 @@ function undoReceived( messageElement )
 	setMessage( i18n_undo_register_complete_dataset_success );
 	changeInputTextStatus( false );
 }
+
+// -----------------------------------------------------------------------------
+// Validation
+// -----------------------------------------------------------------------------
+
+function validate()
+{
+    window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+}
