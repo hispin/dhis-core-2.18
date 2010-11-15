@@ -696,8 +696,6 @@ public class MySQLDataBaseManager
                     }
                 }
             }
-        
-
             columnDefinition += " order by recordnumber";
             System.out.println( columnDefinition );
 
