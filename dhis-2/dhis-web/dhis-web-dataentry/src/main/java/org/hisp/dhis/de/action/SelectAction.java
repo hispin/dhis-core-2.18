@@ -242,9 +242,6 @@ public class SelectAction
 
         if ( organisationUnit == null )
         {
-            selectedDataSetId = null;
-            selectedPeriodIndex = null;
-
             selectedStateManager.clearSelectedDataSet();
             selectedStateManager.clearSelectedPeriod();
 
@@ -255,7 +252,7 @@ public class SelectAction
         // Load and sort DataSets
         // ---------------------------------------------------------------------
 
-        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit( organisationUnit );
+        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
 
         Collections.sort( dataSets, new DataSetNameComparator() );
 

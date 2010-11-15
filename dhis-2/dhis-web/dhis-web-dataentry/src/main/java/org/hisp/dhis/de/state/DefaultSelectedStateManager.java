@@ -115,12 +115,18 @@ public class DefaultSelectedStateManager
     // OrganisationUnit
     // -------------------------------------------------------------------------
     
-
     public OrganisationUnit getSelectedOrganisationUnit()
     {
         return selectionManager.getSelectedOrganisationUnit();
     }
 
+    public void clear()
+    {
+        clearSelectedDataSet();
+        clearSelectedPeriod();
+        selectionManager.clearSelectedOrganisationUnits();
+    }
+    
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -142,9 +148,9 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_SELECTED_DATASET_ID );
     }
 
-    public List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit )
+    public List<DataSet> loadDataSetsForSelectedOrgUnit()
     {
-        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+        List<DataSet> dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( getSelectedOrganisationUnit() ) );
 
         // ---------------------------------------------------------------------
         // Retain only DataSets from current user's authority groups
