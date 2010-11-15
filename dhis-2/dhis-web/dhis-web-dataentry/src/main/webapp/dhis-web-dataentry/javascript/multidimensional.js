@@ -16,8 +16,8 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
 {
-    var field = byId( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
-    var type = byId( 'value[' + dataElementId + '].type' ).innerHTML;   
+    var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
+    var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = '#ffffcc';
@@ -49,9 +49,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 			else if (  type == 'positiveNumber' && !isPositiveNumber( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
-
                 window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
-
                 field.select();
                 field.focus();
 
@@ -60,9 +58,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 			else if (  type == 'negativeNumber' && !isNegativeNumber( field.value ))
             {
                 field.style.backgroundColor = '#ffcc00';
-
                 window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
-
                 field.select();
                 field.focus();
 
@@ -70,8 +66,8 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
             } 
             else
             {
-                var minString = byId( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
-                var maxString = byId( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
+                var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
+                var maxString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].max' ).innerHTML;
 
                 if ( minString.length != 0 && maxString.length != 0 )
                 {
@@ -114,23 +110,32 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 }
 
 function saveBoolean( dataElementId, optionComboId, selectedOption  )
-{
+{	
+	var select = selectedOption.options[selectedOption.selectedIndex].value 
+	var organisationUnitId = getFieldValue( 'organisationUnitId' );
 	
-	 var select = selectedOption.options[selectedOption.selectedIndex].value 
-	 var organisationUnitId = getFieldValue( 'organisationUnitId' );
-	
-     selectedOption.style.backgroundColor = '#ffffcc';     
+   	selectedOption.style.backgroundColor = '#ffffcc';     
     
-     var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, select, '#ccffcc', selectedOption );
-     valueSaver.save(); 
-   
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, select, '#ccffcc', selectedOption );
+    valueSaver.save();
+}
 
+function saveDate( dataElementId, dataElementName )
+{
+	var field = document.getElementById( 'value[' + dataElementId + '].date' );
+    var type = document.getElementById( 'value[' + dataElementId + '].valueType' ).innerHTML;
+	var organisationUnitId = getFieldValue( 'organisationUnitId' );
+    
+    field.style.backgroundColor = '#ffffcc';
+    
+    var valueSaver = new ValueSaver( dataElementId, '', organisationUnitId, field.value, '#ccffcc', '' );
+    valueSaver.save();
 }
 
 function saveComment( dataElementId, optionComboId, commentValue )
 {
-    var field = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-    var select = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+    var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = '#ffffcc';
@@ -155,20 +160,15 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
     var resultColor = resultColor_;
     var selectedOption = selectedOption_;
     var organisationUnitId = organisationUnitId_;
-    var inputId = dataElementId + ':' +  optionComboId;
     
     this.save = function()
     {
         var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        
+        request.setResponseTypeXML( 'status' );        
         request.send( 'saveMultiDimensionalValue.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
                 dataElementId + '&optionComboId=' + optionComboId + '&value=' + value );
-        
-        /*request.send( 'saveMultiDimensionalValue.action?inputId=' +
-                inputId + '&value=' + value );*/
     };
     
     function handleResponse( rootElement )
@@ -178,8 +178,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         
         if ( code == 0 )
         {
-            markValue( resultColor );            
-            
+            markValue( resultColor );
         }
         else
         {
@@ -196,12 +195,16 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
     
     function markValue( color )
     {
-        var type = byId( 'value[' + dataElementId + '].type' ).innerText;
+        var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerText;
         var element;
         
         if ( type == 'bool' )
         {
-            element = byId( 'value[' + dataElementId + '].boolean' );
+            element = document.getElementById( 'value[' + dataElementId + '].boolean' );
+        }
+        else if( type == 'date' )
+        {
+        	element = document.getElementById( 'value[' + dataElementId + '].date' );
         }
         else if( selectedOption )
         {
@@ -209,7 +212,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         }
         else
         {            
-            element = byId( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');            
+            element = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');            
         }
 
         element.style.backgroundColor = color;
@@ -222,7 +225,7 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_,  val
     var ERROR = '#ccccff';
 
     var dataElementId = dataElementId_;
-    var optionComboId = optionComboId_
+    var optionComboId = optionComboId_;
     var organisationUnitId = organisationUnitId_;
     var value = value_;
     
@@ -260,20 +263,12 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_,  val
     
     function markComment( color )
     {
-        var field = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-        var select = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
+        var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
+        var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
 
         field.style.backgroundColor = color;
         select.style.backgroundColor = color;
     }
-}
-
-// -----------------------------------------------------------------------------
-// Validation
-// -----------------------------------------------------------------------------
-function validate()
-{
-    window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
 }
 
 // -----------------------------------------------------------------------------
@@ -299,11 +294,11 @@ function calculateCDE( dataElementId )
     
     for ( dataElementId in factorMap )
     {
-    	dataElementValue = byId( 'value[' + dataElementId + '].value' ).value;
+    	dataElementValue = document.getElementById( 'value[' + dataElementId + '].value' ).value;
     	value += ( dataElementValue * factorMap[dataElementId] );
     }
     
-    byId( 'value[' + cdeId + '].value' ).value = value;
+    document.getElementById( 'value[' + cdeId + '].value' ).value = value;
 }
 
 /**
@@ -347,74 +342,10 @@ function dataValuesReceived( node )
 	{
 		dataElementId = value.getAttribute('dataElementId');
 		value = value.firstChild.nodeValue;		
-		byId( 'value[' + dataElementId + '].value' ).value = value;
+		document.getElementById( 'value[' + dataElementId + '].value' ).value = value;
 	}
 	
 	unLockScreen();
 	
 	setMessage(i18n_save_calculated_data_element_success);
-}
-
-// -----------------------------------------------------------------------------
-// View history
-// -----------------------------------------------------------------------------
-
-/**
- * Set min/max limits for dataelements that has one or more values, and no 
- * manually entred min/max limits.
- */
-function SetGeneratedMinMaxValues()
-{
-    this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'minmax' );
-        request.send( 'minMaxGeneration.action' );
-    };
-    
-    function handleResponse( rootElement )
-    {
-        var dataElements = rootElement.getElementsByTagName( 'dataelement' );
-        
-        for( i = 0; i < dataElements.length; i++ )
-        {
-            var deId = getElementValue( dataElements[i], 'dataelementId' );
-            var ocId = getElementValue( dataElements[i], 'optionComboId' );
-            
-            setInnerHTML('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
-            setInnerHTML('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
-        }
-    }
-    
-    function handleHttpError( errorCode )
-    {
-        window.alert( i18n_saving_minmax_failed_error_code + '\n\n' + errorCode );
-    }   
-   
-    function getElementValue( parentElement, childElementName )
-    {
-        var textNode = parentElement.getElementsByTagName( childElementName )[0].firstChild;
-        
-        if ( textNode )
-        {
-            return textNode.nodeValue;
-        }
-        else
-        {
-            return null;
-        }
-    }    
-}
-
-function generateMinMaxValues()
-{    
-	lockScreen();
-    var setGeneratedMinMaxValues = new SetGeneratedMinMaxValues();
-    setGeneratedMinMaxValues.save();
-	
-	unLockScreen();
-	
-	setMessage(i18n_generate_min_max_success);
 }
