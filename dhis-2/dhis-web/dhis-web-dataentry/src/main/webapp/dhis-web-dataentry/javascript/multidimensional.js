@@ -1,7 +1,5 @@
 
 // -----------------------------------------------------------------------------
-// $Id: general.js 3420 2007-06-29 16:28:29Z hanssto $
-// -----------------------------------------------------------------------------
 // Selection
 // -----------------------------------------------------------------------------
 
@@ -11,57 +9,6 @@ function organisationUnitSelected( orgUnits )
 }
 
 selection.setListenerFunction( organisationUnitSelected );
-
-function changeOrder()
-{
-    window.open( 'getDataElementOrder.action', '_blank', 'width=700,height=500,scrollbars=yes' );
-}
-
-// -----------------------------------------------------------------------------
-// Comments
-// -----------------------------------------------------------------------------
-
-function commentSelected( dataElementId, optionComboId )
-{
-    var commentSelector = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
-    var commentField = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
-    var value = commentSelector.options[commentSelector.selectedIndex].value;
-    
-    if ( value == 'custom' )
-    {
-        commentSelector.style.display = 'none';
-        commentField.style.css = 'text';
-        commentField.style.display = 'inline';
-        
-        commentField.select();
-        commentField.focus();
-    }
-    else
-    {
-        commentField.value = value;
-        
-        saveComment( dataElementId, optionComboId, value );
-    }
-}
-
-function commentLeft( dataElementId, optionComboId )
-{
-    var commentField = byId( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
-    var commentSelector = byId( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
-
-    saveComment( dataElementId, optionComboId, commentField.value );
-
-    var value = commentField.value;
-    
-    if ( value == '' )
-    {
-        commentField.style.display = 'none';
-		commentSelector.style.css = 'combobox';
-        commentSelector.style.display = 'inline';
-
-        commentSelector.selectedIndex = 0;
-    }
-}
 
 // -----------------------------------------------------------------------------
 // Save

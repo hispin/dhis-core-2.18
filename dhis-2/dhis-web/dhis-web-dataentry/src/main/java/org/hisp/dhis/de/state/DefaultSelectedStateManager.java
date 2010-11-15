@@ -119,13 +119,6 @@ public class DefaultSelectedStateManager
     {
         return selectionManager.getSelectedOrganisationUnit();
     }
-
-    public void clear()
-    {
-        clearSelectedDataSet();
-        clearSelectedPeriod();
-        selectionManager.clearSelectedOrganisationUnits();
-    }
     
     // -------------------------------------------------------------------------
     // DataSet
