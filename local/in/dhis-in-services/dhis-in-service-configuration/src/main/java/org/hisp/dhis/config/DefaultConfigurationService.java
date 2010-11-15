@@ -10,12 +10,17 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class DefaultConfigurationService
     implements ConfigurationService
 {
+    private static final Log log = LogFactory.getLog( DefaultConfigurationService.class );
+
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -78,7 +83,7 @@ public class DefaultConfigurationService
         }
         catch(Exception e)
         {
-            System.out.println(e.getMessage());
+            log.error(e);
             return false;
         }        
     }
@@ -105,7 +110,7 @@ public class DefaultConfigurationService
 
         zipFilePath += "/mi.zip";
         
-        System.out.println("zipFilePath: "+ zipFilePath );
+        log.debug( "zipFilePath: "+ zipFilePath );
 
         ZipOutputStream out = null;
 
@@ -138,7 +143,7 @@ public class DefaultConfigurationService
          }
          catch(Exception e)
          {
-           System.out.println( e.getMessage() );
+           log.error( e );
            
            return "INPUT";
          }
@@ -151,7 +156,7 @@ public class DefaultConfigurationService
              }
              catch( Exception e )
              {
-                 System.out.println( e.getMessage() );
+                 log.error( "Exception trying to close output stream", e );
              }
          }
     }
@@ -184,7 +189,7 @@ public class DefaultConfigurationService
         }
         catch(Exception e)
         {
-          System.out.println( e.getMessage() );
+          log.error( "Should handle these file stream better", e );
         } 
     }
 

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,22 +17,26 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
 import org.hisp.dhis.source.Source;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import java.util.Collections;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 public class MySQLDataBaseManager
     implements DataBaseManagerInterface
 {
+
+    private static final Log log = LogFactory.getLog( MySQLDataBaseManager.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -156,7 +161,6 @@ public class MySQLDataBaseManager
             String columnDefinition = "select " + lineListElement.getShortName() + " from " + tableName;
             //ResultSet rs = statement.executeQuery( query );
             SqlRowSet rs = jdbcTemplate.queryForRowSet( columnDefinition );
-            System.out.println( "query = " + columnDefinition );
             if ( rs != null )
             {
                 int i = 0;
@@ -196,12 +200,11 @@ public class MySQLDataBaseManager
                     }
                 }
             }
-            System.out.println( "dataIsThere " + doNotDelete );
+            log.debug( tableName + ", " + lineListElement.getShortName() + (doNotDelete ? " has data" : " can be deleted") );
         } catch ( Exception e )
         {
-            e.printStackTrace();
+            log.error( "Caught exception while checking " + tableName + ", " + lineListElement.getShortName() + ". Won't delete.", e );
             doNotDelete = false;
-            System.out.println( "dataIsThere " + doNotDelete );
         }
 
         return doNotDelete;
