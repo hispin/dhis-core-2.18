@@ -12,15 +12,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.web.api.provider.MobileWrapperProvider"
 		class="org.hisp.dhis.web.api.provider.MobileWrapperProvider" scope="singleton"/>
 		
+	<!--  Consumers  -->
 		
-		
-	<!--  Consumers  -->	
 	<bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer"
 		class="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" scope="singleton"/>
 		
 	<bean id="org.hisp.dhis.web.api.consumer.ActivityValueConsumer"
 		class="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" scope="singleton"/>
-		
 		
 	<!-- Resources -->
 	
@@ -60,8 +58,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.web.api.resources.ActivityPlanResource"
       class="org.hisp.dhis.web.api.resources.ActivityPlanResource" scope="prototype"/>  
 	
-      
-      
 	<!-- Services -->
 	
 	<bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
@@ -165,6 +161,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Response writers -->
 	
 	<!-- ImportDataValue beans -->
+	
 	<bean id="org.hisp.dhis.web.api.action.ImportDataValueAction"
 		class="org.hisp.dhis.web.api.action.ImportDataValueAction">
 		

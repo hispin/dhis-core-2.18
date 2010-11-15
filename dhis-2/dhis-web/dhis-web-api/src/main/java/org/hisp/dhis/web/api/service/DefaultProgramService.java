@@ -20,7 +20,6 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Program;
 import org.hisp.dhis.web.api.model.ProgramStage;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author abyotag_adm
@@ -29,10 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DefaultProgramService
     implements IProgramService
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private org.hisp.dhis.program.ProgramService programService;
 
     public org.hisp.dhis.program.ProgramService getProgramService()
@@ -58,6 +57,11 @@ public class DefaultProgramService
     }
 
     private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // ProgramService
