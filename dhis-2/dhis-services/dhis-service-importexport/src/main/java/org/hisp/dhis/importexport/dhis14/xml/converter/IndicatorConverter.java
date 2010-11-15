@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -98,6 +99,8 @@ public class IndicatorConverter
     private Map<Object, Integer> dataElementMapping;
     private Map<Object, String> dataElementAggregationOperatorMap;
     
+    private DataElementCategoryOptionCombo categoryOptionCombo;
+    
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -118,7 +121,8 @@ public class IndicatorConverter
      */
     public IndicatorConverter( ImportObjectService importObjectService,
         IndicatorService indicatorService,
-        ImportAnalyser importAnalyser )
+        ImportAnalyser importAnalyser,
+        DataElementCategoryOptionCombo categoryOptionCombo )
     {
         this.importObjectService = importObjectService;
         this.indicatorTypeMapping = new MimicingHashMap<Object, Integer>();
@@ -126,6 +130,7 @@ public class IndicatorConverter
         this.dataElementAggregationOperatorMap = NameMappingUtil.getDataElementAggregationOperatorMap();
         this.indicatorService = indicatorService;
         this.importAnalyser = importAnalyser;
+        this.categoryOptionCombo = categoryOptionCombo;
     }
 
     // -------------------------------------------------------------------------
@@ -196,8 +201,8 @@ public class IndicatorConverter
         indicator.setNumeratorAggregationOperator( numeratorAggregationOperator != null ? numeratorAggregationOperator : AGGREGATION_OPERATOR_SUM );
         indicator.setDenominatorAggregationOperator( denominatorAggregationOperator != null ? denominatorAggregationOperator : AGGREGATION_OPERATOR_SUM );
         
-        indicator.setNumerator( convertExpressionFromDhis14( values.get( FIELD_NUMERATOR ), dataElementMapping, 1, indicator.getName() ) );
-        indicator.setDenominator( convertExpressionFromDhis14( values.get( FIELD_DENOMINATOR ), dataElementMapping, 1, indicator.getName() ) );
+        indicator.setNumerator( convertExpressionFromDhis14( values.get( FIELD_NUMERATOR ), dataElementMapping, categoryOptionCombo.getId(), indicator.getName() ) );
+        indicator.setDenominator( convertExpressionFromDhis14( values.get( FIELD_DENOMINATOR ), dataElementMapping, categoryOptionCombo.getId(), indicator.getName() ) );
 
         indicator.setSortOrder( parseInt( values.get( FIELD_SORT_ORDER ) ) );
         indicator.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
