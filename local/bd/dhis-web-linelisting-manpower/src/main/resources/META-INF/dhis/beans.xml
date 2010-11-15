@@ -4,6 +4,13 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+
+	<bean id="org.hisp.dhis.ll.action.NoAction"
+		class="org.hisp.dhis.ll.action.NoAction"
+		scope="prototype">
+		<property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService" />
+	</bean> 
+
   <!-- Line List Option -->
 
     <bean id="org.hisp.dhis.ll.action.llOption.GetLineListOptionListAction"

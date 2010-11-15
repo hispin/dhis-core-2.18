@@ -52,5 +52,7 @@ public interface EmployeeService
     Employee getEmployeeByPDSCode( String pdsCode );
 
     Collection<Employee> getAllEmployee();
+    
+    Collection<Employee> getEmployeeByisTransferred( Boolean isTransferred );
 }
 

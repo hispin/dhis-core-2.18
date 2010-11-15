@@ -29,72 +29,77 @@ package org.hisp.dhis.linelisting;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  * @author Mithilesh Kumar Thakur
- *
+ * 
  * @version Employee.java Oct 15, 2010 1:42:16 PM
  */
 
 public class Employee
 {
-	
-	public static final Integer LPR_PERIOD = 40;
+
+    public static final Integer LPR_PERIOD = 40;
 
     /**
      * The unique identifier for Employee
      */
     private String pdsCode;
-    
+
     /**
      * Name of the employee, required
      */
     private String name;
-    
+
     /**
      * Date of Birth
      */
     private Date dateOfBirth;
-    
+
     /**
      * LPR Date
      */
     private Date lprDate;
-    
+
     /**
      * Gender
      */
     private String sex;
-    
+
     /**
      * Date of Join to Government Service.
      */
     private Date joinDateToGovtService;
- 
+
     /**
      * Residential Address
      */
     private String resAddress;
-    
+
     /**
      * Mobile Number
      */
     private String contactNumber;
-    
+
     /**
      * Emergency Contact Number
      */
     private String emergencyContactNumber;
-    
+
+    /**
+     * isTransferred
+     */
+    private boolean isTransferred = false;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
     public Employee()
-    {       
+    {
     }
-    
-    public Employee( String pdsCode, String name, Date dateOfBirth, Date lprDate, String sex, Date joinDateToGovtService, String resAddress, String contactNumber, String emergencyContactNumber)
+
+    public Employee( String pdsCode, String name, Date dateOfBirth, Date lprDate, String sex,
+        Date joinDateToGovtService, String resAddress, String contactNumber, String emergencyContactNumber )
     {
         this.pdsCode = pdsCode;
         this.name = name;
@@ -106,7 +111,23 @@ public class Employee
         this.contactNumber = contactNumber;
         this.emergencyContactNumber = emergencyContactNumber;
     }
-    
+
+    public Employee( String pdsCode, String name, Date dateOfBirth, Date lprDate, String sex,
+        Date joinDateToGovtService, String resAddress, String contactNumber, String emergencyContactNumber,
+        boolean isTransferred )
+    {
+        this.pdsCode = pdsCode;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.lprDate = lprDate;
+        this.sex = sex;
+        this.joinDateToGovtService = joinDateToGovtService;
+        this.resAddress = resAddress;
+        this.contactNumber = contactNumber;
+        this.emergencyContactNumber = emergencyContactNumber;
+        this.isTransferred = isTransferred;
+    }
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -233,5 +254,15 @@ public class Employee
     {
         this.emergencyContactNumber = emergencyContactNumber;
     }
-}
 
+    public boolean getIsTransferred()
+    {
+        return isTransferred;
+    }
+
+    public void setIsTransferred( Boolean isTransferred )
+    {
+        this.isTransferred = isTransferred;
+    }
+
+}

@@ -58,7 +58,6 @@ public class HiberateEmployeeStore implements EmployeeStore
     // Employee
     // -------------------------------------------------------------------------
     
-    
     public void addEmployee( Employee employee )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -96,6 +95,16 @@ public class HiberateEmployeeStore implements EmployeeStore
         Session session = sessionFactory.getCurrentSession();
         
         return session.createCriteria( Employee.class ).list();
+    }
+    
+    public Collection<Employee> getEmployeeByisTransferred( Boolean isTransferred )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( Employee.class );
+        criteria.add( Restrictions.eq( "isTransferred", isTransferred ) );
+
+        return criteria.list();        
     }
 }
 

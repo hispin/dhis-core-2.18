@@ -8,12 +8,13 @@
 
     <package name="dhis-web-linelisting-mp" extends="dhis-web-commons" namespace="/dhis-web-linelisting-mp">
 
-        <action name="index"
-      class="">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-linelisting-mp/welcome.vm</param>
-            <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
-        </action>
+		<action name="index"
+			class="org.hisp.dhis.ll.action.NoAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-linelisting-mp/welcome.vm</param>
+			<param name="menu">/dhis-web-linelisting-mp/menu.vm</param>
+            <param name="javascripts">javascript/employee.js,javascript/filterTable.js</param>
+		</action>
     
     <!-- LineListOption -->
     

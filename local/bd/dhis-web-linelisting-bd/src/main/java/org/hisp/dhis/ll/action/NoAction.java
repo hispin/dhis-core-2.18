@@ -27,11 +27,11 @@ package org.hisp.dhis.ll.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class NoAction
-    extends ActionSupport
+public class NoAction implements Action
 {
+
     public String execute()
     {
         return SUCCESS;
