@@ -38,7 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -278,9 +277,6 @@ public class SelectAction
         }
         else
         {
-            selectedDataSetId = null;
-            selectedPeriodIndex = null;
-
             selectedStateManager.clearSelectedDataSet();
             selectedStateManager.clearSelectedPeriod();
 
@@ -325,7 +321,6 @@ public class SelectAction
         }
         else
         {
-            selectedPeriodIndex = null;
             selectedStateManager.clearSelectedPeriod();
 
             return SUCCESS;
@@ -350,9 +345,7 @@ public class SelectAction
         // Get the custom data entry form if any
         // ---------------------------------------------------------------------
 
-        DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
-
-        customDataEntryFormExists = (dataEntryForm != null);
+        customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
 
         // ---------------------------------------------------------------------
         // Make available information about dataSet completeness
