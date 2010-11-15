@@ -23,6 +23,8 @@
     <property name="contactNumber" column="contactno" not-null="true" length="25" />
     
     <property name="emergencyContactNumber" column="emergencycontactno" not-null="true" length="25" />
+
+    <property name="isTransferred" column="istransferred" />
     
   </class>
 </hibernate-mapping>

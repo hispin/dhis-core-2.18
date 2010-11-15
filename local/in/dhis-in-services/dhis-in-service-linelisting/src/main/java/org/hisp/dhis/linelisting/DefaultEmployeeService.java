@@ -28,6 +28,9 @@ package org.hisp.dhis.linelisting;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -76,6 +79,11 @@ public class DefaultEmployeeService implements EmployeeService
     public Collection<Employee> getAllEmployee()
     {
         return employeeStore.getAllEmployee();
+    }
+    
+    public Collection<Employee> getEmployeeByisTransferred( Boolean isTransferred )
+    {
+        return employeeStore.getEmployeeByisTransferred( isTransferred );
     }
 }
 

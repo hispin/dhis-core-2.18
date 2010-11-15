@@ -53,4 +53,6 @@ public interface EmployeeStore
     Employee getEmployeeByPDSCode( String pdsCode );
     
     Collection<Employee> getAllEmployee();
+    
+    Collection<Employee> getEmployeeByisTransferred( Boolean isTransferred );
 }
