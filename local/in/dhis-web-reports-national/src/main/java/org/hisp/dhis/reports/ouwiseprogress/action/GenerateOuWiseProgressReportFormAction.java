@@ -66,7 +66,7 @@ public class GenerateOuWiseProgressReportFormAction
         
         periodTypeName = MonthlyPeriodType.NAME;
         
-        System.out.println( "PeriodTypeName: "+ periodTypeName);
+//        System.out.println( "PeriodTypeName: "+ periodTypeName);
         
 //        reportList = new ArrayList<Report_in>();
 
