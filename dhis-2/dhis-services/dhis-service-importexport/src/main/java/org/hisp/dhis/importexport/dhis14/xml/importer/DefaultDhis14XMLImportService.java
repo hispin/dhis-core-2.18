@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.ProcessState;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.expression.ExpressionService;
@@ -190,7 +191,9 @@ public class DefaultDhis14XMLImportService
     }
     
     public void importData( ImportParams params, InputStream inputStream, ProcessState state )
-    {        
+    {   
+        DataElementCategoryOptionCombo defaultCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        
         NameMappingUtil.clearMapping();
         
         importAnalyser = new DefaultImportAnalyser( expressionService );
@@ -237,7 +240,7 @@ public class DefaultDhis14XMLImportService
                 XMLConverter dataElementConverter = new DataElementConverter( 
                     importObjectService, dataElementService, categoryService, expressionMap, importAnalyser );
                 XMLConverter indicatorTypeConverter = new IndicatorTypeConverter( importObjectService, indicatorService );
-                XMLConverter indicatorConverter = new IndicatorConverter( importObjectService, indicatorService, importAnalyser );
+                XMLConverter indicatorConverter = new IndicatorConverter( importObjectService, indicatorService, importAnalyser, defaultCategoryOptionCombo );
                 XMLConverter organisationUnitConverter = new OrganisationUnitConverter( importObjectService, organisationUnitService, importAnalyser );
                 XMLConverter hierarchyConverter = new OrganisationUnitHierarchyConverter( importObjectService, organisationUnitService );
                 XMLConverter periodConverter = new PeriodConverter( importObjectService, periodService, objectMappingGenerator.getPeriodTypeMapping() );

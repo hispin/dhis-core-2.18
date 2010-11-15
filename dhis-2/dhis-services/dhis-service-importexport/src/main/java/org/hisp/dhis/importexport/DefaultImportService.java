@@ -186,6 +186,8 @@ public class DefaultImportService
         }
         catch ( IOException ex )
         {
+            log.error( ex );
+            
             throw new ImportException( "Failed to import stream", ex );
         }
         finally

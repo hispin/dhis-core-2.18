@@ -74,6 +74,8 @@ public class IbatisQueryManager
         }        
         catch ( SQLException ex )
         {
+            ex.printStackTrace();
+            
             throw new RuntimeException( "Query for Object failed", ex );
         }
         finally
@@ -105,6 +107,8 @@ public class IbatisQueryManager
         }
         catch ( SQLException ex )
         {
+            ex.printStackTrace();
+            
             throw new RuntimeException( "Query for List failed", ex );
         }
         finally
@@ -141,6 +145,8 @@ public class IbatisQueryManager
         }        
         catch ( SQLException ex )
         {
+            ex.printStackTrace();
+            
             throw new RuntimeException( "Query with RowHandler failed", ex );
         }
         finally
