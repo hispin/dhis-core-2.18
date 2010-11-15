@@ -15,7 +15,6 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.DataValue;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultActivityValueService
     implements IActivityValueService
@@ -24,18 +23,54 @@ public class DefaultActivityValueService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
     private org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService;
 
-    @Autowired
+    public org.hisp.dhis.program.ProgramStageInstanceService getProgramStageInstanceService()
+    {
+        return programStageInstanceService;
+    }
+
+    public void setProgramStageInstanceService(
+        org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     private org.hisp.dhis.dataelement.DataElementCategoryService categoryService;
 
-    @Autowired
+    public org.hisp.dhis.dataelement.DataElementCategoryService getCategoryService()
+    {
+        return categoryService;
+    }
+
+    public void setCategoryService( org.hisp.dhis.dataelement.DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService;
 
-    @Autowired
+    public org.hisp.dhis.patientdatavalue.PatientDataValueService getDataValueService()
+    {
+        return dataValueService;
+    }
+
+    public void setDataValueService( org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
     private CurrentUserService currentUserService;
+
+    public CurrentUserService getCurrentUserService()
+    {
+        return currentUserService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // DataValueService
@@ -46,6 +81,7 @@ public class DefaultActivityValueService
     {
 
         Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+
         OrganisationUnit unit = null;
 
         if ( units.size() > 0 )
@@ -118,10 +154,8 @@ public class DefaultActivityValueService
         for ( DataValue dv : activityValue.getDataValues() )
         {
             value = dv.getVal();
-            System.out.println("COC ID: " + dv.getCategoryOptComboID());
             DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
                 .getCategoryOptComboID() );
-            System.out.println(cateOptCombo);
             if ( value != null && value.trim().length() == 0 )
             {
                 value = null;

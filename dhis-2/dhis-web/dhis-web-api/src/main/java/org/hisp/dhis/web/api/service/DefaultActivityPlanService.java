@@ -19,7 +19,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.Beneficiary;
 import org.hisp.dhis.web.api.model.PatientAttribute;
-import org.hisp.dhis.web.api.service.mapping.ActivitiesMapper;
 import org.hisp.dhis.web.api.service.mapping.TaskMapper;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -37,17 +36,53 @@ public class DefaultActivityPlanService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
 
-    @Autowired
+    public org.hisp.dhis.activityplan.ActivityPlanService getActivityPlanService()
+    {
+        return activityPlanService;
+    }
+
+    public void setActivityPlanService( org.hisp.dhis.activityplan.ActivityPlanService activityPlanService )
+    {
+        this.activityPlanService = activityPlanService;
+    }
+
     private PatientAttributeValueService patientAttValueService;
 
-    @Autowired
+    public PatientAttributeValueService getPatientAttValueService()
+    {
+        return patientAttValueService;
+    }
+
+    public void setPatientAttValueService( PatientAttributeValueService patientAttValueService )
+    {
+        this.patientAttValueService = patientAttValueService;
+    }
+
     private PatientAttributeService patientAttService;
 
-    @Autowired
+    public PatientAttributeService getPatientAttService()
+    {
+        return patientAttService;
+    }
+
+    public void setPatientAttService( PatientAttributeService patientAttService )
+    {
+        this.patientAttService = patientAttService;
+    }
+
     private CurrentUserService currentUserService;
+
+    public CurrentUserService getCurrentUserService()
+    {
+        return currentUserService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
@@ -140,7 +175,8 @@ public class DefaultActivityPlanService
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
 
-        // Set attribute which is used to group beneficiary on mobile (only if there is attribute which is set to be group factor)
+        // Set attribute which is used to group beneficiary on mobile (only if
+        // there is attribute which is set to be group factor)
         PatientAttribute beneficiaryAttribute = null;
         org.hisp.dhis.patient.PatientAttribute patientAttribute = patientAttService.getPatientAttributeByGroupBy( true );
 
@@ -148,11 +184,11 @@ public class DefaultActivityPlanService
         {
             beneficiaryAttribute = new PatientAttribute();
             beneficiaryAttribute.setName( patientAttribute.getName() );
-            beneficiaryAttribute.setValue( patientAttValueService.getPatientAttributeValue( patient, patientAttribute )
-                .getValue() );
+            PatientAttributeValue value = patientAttValueService.getPatientAttributeValue( patient, patientAttribute );
+            beneficiaryAttribute.setValue( value == null ? "Unknown" : value.getValue() );
             beneficiary.setGroupAttribute( beneficiaryAttribute );
         }
-        patientAttribute = null;        
+        patientAttribute = null;
 
         // Set all attributes
         for ( PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient ) )

@@ -15,7 +15,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author abyotag_adm
@@ -29,12 +28,22 @@ public class DefaultPeriodService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private org.hisp.dhis.period.PeriodService periodService;
+    
+    public org.hisp.dhis.period.PeriodService getPeriodService()
+    {
+        return periodService;
+    }
 
+    public void setPeriodService( org.hisp.dhis.period.PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
     // -------------------------------------------------------------------------
     // PeriodService
     // -------------------------------------------------------------------------
+
+    
 
     public Period getPeriod( String periodName, DataSet dataSet )
     {

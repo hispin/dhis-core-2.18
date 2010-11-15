@@ -23,20 +23,65 @@ public class DefaultDataValueService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired
     private org.hisp.dhis.dataset.DataSetService dataSetService;
 
-    @Autowired
+    public org.hisp.dhis.dataset.DataSetService getDataSetService()
+    {
+        return dataSetService;
+    }
+
+    public void setDataSetService( org.hisp.dhis.dataset.DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private IPeriodService periodService;
 
-    @Autowired
+    public IPeriodService getPeriodService()
+    {
+        return periodService;
+    }
+
+    public void setPeriodService( IPeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
     private org.hisp.dhis.dataelement.DataElementCategoryService categoryService;
 
-    @Autowired
+    public org.hisp.dhis.dataelement.DataElementCategoryService getCategoryService()
+    {
+        return categoryService;
+    }
+
+    public void setCategoryService( org.hisp.dhis.dataelement.DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private org.hisp.dhis.datavalue.DataValueService dataValueService;
 
-    @Autowired
+    public org.hisp.dhis.datavalue.DataValueService getDataValueService()
+    {
+        return dataValueService;
+    }
+
+    public void setDataValueService( org.hisp.dhis.datavalue.DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
+    }
+
     private CurrentUserService currentUserService;
+
+    public CurrentUserService getCurrentUserService()
+    {
+        return currentUserService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // DataValueService
@@ -80,10 +125,10 @@ public class DefaultDataValueService
             dataElementIds.add( dv.getId() );
         }
 
-//        if ( dataElements.size() != dataElementIds.size() )
-//        {
-//            return "INVALID_DATASET";
-//        }
+        // if ( dataElements.size() != dataElementIds.size() )
+        // {
+        // return "INVALID_DATASET";
+        // }
 
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
         for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )

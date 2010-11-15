@@ -33,59 +33,35 @@ public class DefaultProgramService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    @Autowired
     private org.hisp.dhis.program.ProgramService programService;
 
-    @Autowired
+    public org.hisp.dhis.program.ProgramService getProgramService()
+    {
+        return programService;
+    }
+
+    public void setProgramService( org.hisp.dhis.program.ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     private org.hisp.dhis.i18n.I18nService i18nService;
 
-    @Autowired
+    public org.hisp.dhis.i18n.I18nService getI18nService()
+    {
+        return i18nService;
+    }
+
+    public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
+    {
+        this.i18nService = i18nService;
+    }
+
     private CurrentUserService currentUserService;
 
     // -------------------------------------------------------------------------
     // ProgramService
     // -------------------------------------------------------------------------
-
-    // public AbstractModelList getAllProgramsForLocale(String localeString)
-    // {
-    // Collection<OrganisationUnit> units =
-    // currentUserService.getCurrentUser().getOrganisationUnits();
-    // OrganisationUnit unit = null;
-    //
-    // if( units.size() > 0 )
-    // {
-    // unit = units.iterator().next();
-    // }
-    // else
-    // {
-    // return null;
-    // }
-    //
-    // Locale locale = LocaleUtil.getLocale(localeString);
-    //
-    // AbstractModelList abstractModelList = new AbstractModelList();
-    //
-    // List<AbstractModel> abstractModels = new ArrayList<AbstractModel>();
-    //
-    // for (org.hisp.dhis.program.Program program :
-    // programService.getPrograms(unit))
-    // {
-    // program = i18n( i18nService, locale, program );
-    //
-    // AbstractModel abstractModel = new AbstractModel();
-    //
-    // abstractModel.setId( program.getId());
-    // abstractModel.setName(program.getName());
-    //
-    // abstractModels.add(abstractModel);
-    // }
-    //
-    // abstractModelList.setAbstractModels(abstractModels);
-    //
-    // return abstractModelList;
-    // }
-
     public List<Program> getAllProgramsForLocale( String localeString )
     {
         List<Program> programs = new ArrayList<Program>();
@@ -170,5 +146,6 @@ public class DefaultProgramService
 
         return pr;
     }
+
 
 }

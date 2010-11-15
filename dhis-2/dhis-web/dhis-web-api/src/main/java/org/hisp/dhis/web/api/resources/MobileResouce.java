@@ -1,6 +1,5 @@
 package org.hisp.dhis.web.api.resources;
 
-import java.net.URI;
 import java.util.Collection;
 
 import javax.ws.rs.GET;
@@ -24,19 +23,57 @@ import org.hisp.dhis.web.api.service.IDataSetService;
 import org.hisp.dhis.web.api.service.IProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/mobile")
-public class MobileResouce {
-	@Autowired
-    private IProgramService programService;
-    
-    @Autowired
-    private IActivityPlanService activityPlanService;
-    
-    @Autowired
-	private IDataSetService idataSetService;
+@Path( "/mobile" )
+public class MobileResouce
+{
 
-    @Autowired
+    private IProgramService programService;
+
+    public IProgramService getProgramService()
+    {
+        return programService;
+    }
+
+    public void setProgramService( IProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    private IActivityPlanService activityPlanService;
+
+    public IActivityPlanService getActivityPlanService()
+    {
+        return activityPlanService;
+    }
+
+    public void setActivityPlanService( IActivityPlanService activityPlanService )
+    {
+        this.activityPlanService = activityPlanService;
+    }
+
+    private IDataSetService idataSetService;
+
+    public IDataSetService getIdataSetService()
+    {
+        return idataSetService;
+    }
+
+    public void setIdataSetService( IDataSetService idataSetService )
+    {
+        this.idataSetService = idataSetService;
+    }
+
     private CurrentUserService currentUserService;
+
+    public CurrentUserService getCurrentUserService()
+    {
+        return currentUserService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     @Context
     private UriInfo uriInfo;
@@ -55,45 +92,44 @@ public class MobileResouce {
         }
         else if ( units.size() > 1 )
         {
-            StringBuilder sb = new StringBuilder("User is registered to more than one unit: ");
-            
+            StringBuilder sb = new StringBuilder( "User is registered to more than one unit: " );
+
             int i = units.size();
             for ( OrganisationUnit unit : units )
             {
                 sb.append( unit.getName() );
-                if (i-- > 1)
+                if ( i-- > 1 )
                     sb.append( ", " );
             }
-            
+
             return Response.status( Status.CONFLICT ).entity( sb.toString() ).build();
         }
-        
+
         OrganisationUnit unit = units.iterator().next();
-        return Response.ok(getOrgUnit(unit)).build();
+        return Response.ok( getOrgUnit( unit ) ).build();
     }
 
-    
-    
-    @GET   
-    @Path("all")
+    @GET
+    @Path( "all" )
     @Produces( "application/vnd.org.dhis2.mobileresource+serialized" )
-    public MobileWrapper getAllDataForUser(@HeaderParam("accept-language") String locale)
+    public MobileWrapper getAllDataForUser( @HeaderParam( "accept-language" ) String locale )
     {
         MobileWrapper mobileWrapper = new MobileWrapper();
-        mobileWrapper.setActivityPlan(activityPlanService.getCurrentActivityPlan( locale ));
-             
+        mobileWrapper.setActivityPlan( activityPlanService.getCurrentActivityPlan( locale ) );
+
         mobileWrapper.setPrograms( programService.getAllProgramsForLocale( locale ) );
-        
-        
-        mobileWrapper.setDatasets(idataSetService.getAllMobileDataSetsForLocale(locale));
-        
-//    	ActivityWrapper activityWrapper = new ActivityWrapper(); 
-//        activityWrapper.setActivityPlan( activityPlanService.getCurrentActivityPlan( locale ) );
-//        activityWrapper.setPrograms( programService.getAllProgramsForLocale( locale ) );
+
+        mobileWrapper.setDatasets( idataSetService.getAllMobileDataSetsForLocale( locale ) );
+
+        // ActivityWrapper activityWrapper = new ActivityWrapper();
+        // activityWrapper.setActivityPlan(
+        // activityPlanService.getCurrentActivityPlan( locale ) );
+        // activityWrapper.setPrograms( programService.getAllProgramsForLocale(
+        // locale ) );
         return mobileWrapper;
     }
-    
-    private OrgUnit getOrgUnit(OrganisationUnit unit)
+
+    private OrgUnit getOrgUnit( OrganisationUnit unit )
     {
         OrgUnit m = new OrgUnit();
 
