@@ -21,10 +21,9 @@ import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.service.IActivityPlanService;
 import org.hisp.dhis.web.api.service.IDataSetService;
 import org.hisp.dhis.web.api.service.IProgramService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Path( "/mobile" )
-public class MobileResouce
+public class MobileResource
 {
 
     private IProgramService programService;
@@ -121,11 +120,6 @@ public class MobileResouce
 
         mobileWrapper.setDatasets( idataSetService.getAllMobileDataSetsForLocale( locale ) );
 
-        // ActivityWrapper activityWrapper = new ActivityWrapper();
-        // activityWrapper.setActivityPlan(
-        // activityPlanService.getCurrentActivityPlan( locale ) );
-        // activityWrapper.setPrograms( programService.getAllProgramsForLocale(
-        // locale ) );
         return mobileWrapper;
     }
 

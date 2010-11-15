@@ -22,8 +22,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 	<!-- Resources -->
 	
-    <bean id="org.hisp.dhis.web.api.resources.MobileResouce"
-      class="org.hisp.dhis.web.api.resources.MobileResouce" scope="prototype">
+    <bean id="org.hisp.dhis.web.api.resources.MobileResource"
+      class="org.hisp.dhis.web.api.resources.MobileResource" scope="prototype">
       	<property name="programService">
 			<ref bean="org.hisp.dhis.web.api.service.IProgramService"/>
 		</property>
