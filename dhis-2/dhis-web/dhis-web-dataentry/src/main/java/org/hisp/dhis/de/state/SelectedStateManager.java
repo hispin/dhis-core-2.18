@@ -39,8 +39,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface SelectedStateManager
 {
-    void clear();
-    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
