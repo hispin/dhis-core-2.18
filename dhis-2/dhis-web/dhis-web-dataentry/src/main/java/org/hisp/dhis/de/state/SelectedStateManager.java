@@ -39,6 +39,8 @@ import org.hisp.dhis.period.Period;
  */
 public interface SelectedStateManager
 {
+    void clear();
+    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -55,7 +57,7 @@ public interface SelectedStateManager
 
     void clearSelectedDataSet();
     
-    List<DataSet> loadDataSetsForSelectedOrgUnit( OrganisationUnit organisationUnit );    
+    List<DataSet> loadDataSetsForSelectedOrgUnit();    
 
     // -------------------------------------------------------------------------
     // Period
