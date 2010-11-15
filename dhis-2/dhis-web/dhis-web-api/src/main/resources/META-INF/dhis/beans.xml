@@ -25,11 +25,34 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Resources -->
 	
     <bean id="org.hisp.dhis.web.api.resources.MobileResouce"
-      class="org.hisp.dhis.web.api.resources.MobileResouce" scope="prototype"/>
+      class="org.hisp.dhis.web.api.resources.MobileResouce" scope="prototype">
+      	<property name="programService">
+			<ref bean="org.hisp.dhis.web.api.service.IProgramService"/>
+		</property>
+		<property name="activityPlanService">
+			<ref bean="org.hisp.dhis.web.api.service.IActivityPlanService"/>
+		</property>
+		<property name="idataSetService">
+			<ref bean="org.hisp.dhis.web.api.service.IDataSetService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+    </bean>
 
 	<bean id="org.hisp.dhis.web.api.resources.OrgUnitResource"
 		class="org.hisp.dhis.web.api.resources.OrgUnitResource"
-		scope="prototype"/>
+		scope="prototype">
+		<property name="service">
+			<ref bean="org.hisp.dhis.web.api.service.ActivityPlanModelService"/>
+		</property>
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.web.api.service.ProgramStageService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+	</bean>
 	
 	<bean id="org.hisp.dhis.web.api.resources.DataSetResource"
       class="org.hisp.dhis.web.api.resources.DataSetResource" scope="prototype"/>   
@@ -42,28 +65,102 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Services -->
 	
 	<bean id="org.hisp.dhis.web.api.service.ActivityPlanModelService"
-		class="org.hisp.dhis.web.api.service.ActivityPlanModelService"/>
+		class="org.hisp.dhis.web.api.service.ActivityPlanModelService">
+		<property name="activityPlanService">
+			<ref bean="org.hisp.dhis.activityplan.ActivityPlanService"/>
+		</property>
+	</bean>
 	
 	<bean id="org.hisp.dhis.web.api.service.IActivityPlanService"
-		class="org.hisp.dhis.web.api.service.DefaultActivityPlanService"/>
+		class="org.hisp.dhis.web.api.service.DefaultActivityPlanService">
+		<property name="activityPlanService">
+			<ref bean="org.hisp.dhis.activityplan.ActivityPlanService"/>
+		</property>
+		<property name="patientAttValueService">
+			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+		</property>
+		<property name="patientAttService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+	</bean>
 		
 	<bean id="org.hisp.dhis.web.api.service.ProgramStageService"
-		class="org.hisp.dhis.web.api.service.ProgramStageService"/>
+		class="org.hisp.dhis.web.api.service.ProgramStageService">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService"/>
+		</property>
+	</bean>
 		
  	<bean id="org.hisp.dhis.web.api.service.IProgramService"
-		class="org.hisp.dhis.web.api.service.DefaultProgramService"/>
+		class="org.hisp.dhis.web.api.service.DefaultProgramService">
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService"/>
+		</property>
+		<property name="i18nService">
+			<ref bean="org.hisp.dhis.i18n.I18nService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+	</bean>
 	
 	<bean id="org.hisp.dhis.web.api.service.IDataSetService"
-      class="org.hisp.dhis.web.api.service.DefaultDataSetService" />	
+      class="org.hisp.dhis.web.api.service.DefaultDataSetService">
+      	<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="i18nService">
+			<ref bean="org.hisp.dhis.i18n.I18nService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+    </bean>	
       
     <bean id="org.hisp.dhis.web.api.service.IDataValueService"
-      class="org.hisp.dhis.web.api.service.DefaultDataValueService" />
+      class="org.hisp.dhis.web.api.service.DefaultDataValueService">
+      	<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="periodService">
+			<ref bean="org.hisp.dhis.web.api.service.IPeriodService"/>
+		</property>
+		<property name="categoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>
+		<property name="dataValueService">
+			<ref bean="org.hisp.dhis.datavalue.DataValueService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+   	</bean>
       
     <bean id="org.hisp.dhis.web.api.service.IActivityValueService"
-      class="org.hisp.dhis.web.api.service.DefaultActivityValueService" />  
+      class="org.hisp.dhis.web.api.service.DefaultActivityValueService">
+      	<property name="programStageInstanceService">
+			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService"/>
+		</property>
+		<property name="categoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>
+		<property name="dataValueService">
+			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
+		</property>
+		<property name="currentUserService">
+			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
+		</property>
+    </bean>  
       
     <bean id="org.hisp.dhis.web.api.service.IPeriodService"
-      class="org.hisp.dhis.web.api.service.DefaultPeriodService" />
+      class="org.hisp.dhis.web.api.service.DefaultPeriodService">
+      <property name="periodService">
+			<ref bean="org.hisp.dhis.period.PeriodService"/>
+		</property>
+     </bean>
 	
 	<!-- Response writers -->
 	

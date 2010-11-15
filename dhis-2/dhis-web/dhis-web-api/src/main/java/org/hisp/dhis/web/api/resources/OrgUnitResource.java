@@ -18,19 +18,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path( "/orgUnits/{id}" )
 public class OrgUnitResource
 {
-
-    @Autowired
     private OrganisationUnitService organisationUnitService;
 
-    @Autowired
+    public OrganisationUnitService getOrganisationUnitService()
+    {
+        return organisationUnitService;
+    }
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private ActivityPlanModelService service;
 
-    @Autowired
+    public ActivityPlanModelService getService()
+    {
+        return service;
+    }
+
+    public void setService( ActivityPlanModelService service )
+    {
+        this.service = service;
+    }
+
     private ProgramStageService programStageService;
+
+    public ProgramStageService getProgramStageService()
+    {
+        return programStageService;
+    }
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
 
     @PathParam( "id" )
     private int unitId;
-    
+
     @GET
     @Path( "activityplan/current" )
     @Produces( MediaType.APPLICATION_XML )
@@ -39,11 +65,12 @@ public class OrgUnitResource
         return service.getCurrentActivityPlan( organisationUnitService.getOrganisationUnit( unitId ) );
     }
 
-    @GET    
-    @Path("programforms")
-    @Produces(MediaType.APPLICATION_XML)    
-    public List<Form> getAllForms() {
+    @GET
+    @Path( "programforms" )
+    @Produces( MediaType.APPLICATION_XML )
+    public List<Form> getAllForms()
+    {
         return programStageService.getAllForms();
-    }       
+    }
 
 }

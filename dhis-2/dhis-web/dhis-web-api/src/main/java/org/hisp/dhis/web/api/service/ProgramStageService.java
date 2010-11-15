@@ -9,51 +9,63 @@ import org.hisp.dhis.web.api.model.Form;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ProgramStageService {
+public class ProgramStageService
+{
 
-	@Autowired
-	private org.hisp.dhis.program.ProgramStageService programStageService;
+    private org.hisp.dhis.program.ProgramStageService programStageService;
 
-	public List<Form> getAllForms() {
+    public org.hisp.dhis.program.ProgramStageService getProgramStageService()
+    {
+        return programStageService;
+    }
 
-		List<Form> forms = new ArrayList<Form>();
+    public void setProgramStageService( org.hisp.dhis.program.ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
 
-		for (org.hisp.dhis.program.ProgramStage programStage : programStageService.getAllProgramStages()) {
+    public List<Form> getAllForms()
+    {
 
-			Form modelProgramStage = new Form();
+        List<Form> forms = new ArrayList<Form>();
 
-			modelProgramStage.setId( programStage.getId());
-			modelProgramStage.setName( programStage.getName());
+        for ( org.hisp.dhis.program.ProgramStage programStage : programStageService.getAllProgramStages() )
+        {
 
-			forms.add(modelProgramStage);
+            Form modelProgramStage = new Form();
 
-		}
+            modelProgramStage.setId( programStage.getId() );
+            modelProgramStage.setName( programStage.getName() );
 
-		return forms;
-	}
-	
-	public Form getForm(int programStageId)
-	{		
-		org.hisp.dhis.program.ProgramStage programStage = programStageService.getProgramStage( programStageId );
-		
-		Collection<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
-		
-		Form modelProgramStage = new Form();
-		List<DataElement> des = new ArrayList<DataElement>();
-		modelProgramStage.setId( programStage.getId() );
-		modelProgramStage.setName( programStage.getName() );
-		
-		for( ProgramStageDataElement programStageDataElement : dataElements )
-		{
-			DataElement de = new DataElement();
-			de.setId( programStageDataElement.getDataElement().getId() );
-			de.setName( programStageDataElement.getDataElement().getName() );
-			de.setType( programStageDataElement.getDataElement().getType() );
-			des.add( de );
-		}
-		
-		modelProgramStage.setDataElements(des);	
-		
-		return modelProgramStage;
-	}
+            forms.add( modelProgramStage );
+
+        }
+
+        return forms;
+    }
+
+    public Form getForm( int programStageId )
+    {
+        org.hisp.dhis.program.ProgramStage programStage = programStageService.getProgramStage( programStageId );
+
+        Collection<ProgramStageDataElement> dataElements = programStage.getProgramStageDataElements();
+
+        Form modelProgramStage = new Form();
+        List<DataElement> des = new ArrayList<DataElement>();
+        modelProgramStage.setId( programStage.getId() );
+        modelProgramStage.setName( programStage.getName() );
+
+        for ( ProgramStageDataElement programStageDataElement : dataElements )
+        {
+            DataElement de = new DataElement();
+            de.setId( programStageDataElement.getDataElement().getId() );
+            de.setName( programStageDataElement.getDataElement().getName() );
+            de.setType( programStageDataElement.getDataElement().getType() );
+            des.add( de );
+        }
+
+        modelProgramStage.setDataElements( des );
+
+        return modelProgramStage;
+    }
 }

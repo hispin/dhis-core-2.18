@@ -15,8 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ActivityPlanModelService
 {
-    @Autowired
+    
     private ActivityPlanService activityPlanService;
+    
+    public ActivityPlanService getActivityPlanService()
+    {
+        return activityPlanService;
+    }
 
     /**
      * Gets the current activity plan for an org unit.

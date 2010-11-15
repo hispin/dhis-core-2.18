@@ -151,6 +151,7 @@ public class UpdatePatientAttributeAction
                 patientAtt.setGroupBy( false );
                 patientAttributeService.updatePatientAttribute( patientAtt );
             }
+            patientAttribute.setMandatory( true );
         }
         patientAttribute.setGroupBy( groupBy );
         HttpServletRequest request = ServletActionContext.getRequest();

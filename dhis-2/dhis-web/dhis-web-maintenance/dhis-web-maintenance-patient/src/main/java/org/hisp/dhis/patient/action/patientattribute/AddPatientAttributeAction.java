@@ -137,6 +137,7 @@ public class AddPatientAttributeAction
                 patientAtt.setGroupBy( false );
                 patientAttributeService.updatePatientAttribute( patientAtt );
             }
+            patientAttribute.setMandatory( true );
         }
         patientAttributeService.savePatientAttribute( patientAttribute );
 

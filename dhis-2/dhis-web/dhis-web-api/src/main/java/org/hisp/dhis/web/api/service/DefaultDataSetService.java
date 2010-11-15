@@ -20,7 +20,6 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultDataSetService
     implements IDataSetService
@@ -31,19 +30,47 @@ public class DefaultDataSetService
     // -------------------------------------------------------------------------
     private DataElementSortOrderComparator dataElementComparator = new DataElementSortOrderComparator();
 
-    @Autowired
+    
     private org.hisp.dhis.dataset.DataSetService dataSetService;
+    
+    public org.hisp.dhis.dataset.DataSetService getDataSetService()
+    {
+        return dataSetService;
+    }
 
-    @Autowired
+    public void setDataSetService( org.hisp.dhis.dataset.DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private org.hisp.dhis.i18n.I18nService i18nService;
+    
+    public org.hisp.dhis.i18n.I18nService getI18nService()
+    {
+        return i18nService;
+    }
 
-    @Autowired
+    public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
+    {
+        this.i18nService = i18nService;
+    }
+
     private CurrentUserService currentUserService;
+    public CurrentUserService getCurrentUserService()
+    {
+        return currentUserService;
+    }
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
     // -------------------------------------------------------------------------
 
+    
     public List<DataSet> getAllMobileDataSetsForLocale( String localeString )
     {
         Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
