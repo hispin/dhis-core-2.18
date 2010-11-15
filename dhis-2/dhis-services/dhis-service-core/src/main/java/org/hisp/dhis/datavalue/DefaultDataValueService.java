@@ -76,19 +76,9 @@ public class DefaultDataValueService
 
     public void addDataValue( DataValue dataValue )
     {
-        if ( !dataValue.isNullValue() )
+        if ( !dataValue.isNullValue() && isSignificant( dataValue ) )
         {
-            if ( dataValue.isZero() && !dataValue.getDataElement().isZeroIsSignificant()
-                && !dataValue.getDataElement().getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
-            {
-                log.info( "DataValue was ignored as zero values are insignificant for this data element: "
-                    + dataValue.getDataElement() );
-                
-            }
-            else
-            {
-                dataValueStore.addDataValue( dataValue );
-            }
+            dataValueStore.addDataValue( dataValue );
         }
     }
 
@@ -98,18 +88,9 @@ public class DefaultDataValueService
         {
             this.deleteDataValue( dataValue );
         }
-        else
+        else if ( isSignificant( dataValue ) )
         {
-            if ( dataValue.isZero() && !dataValue.getDataElement().isZeroIsSignificant()
-                && !dataValue.getDataElement().getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
-            {
-                log.info( "DataValue was ignored as zero values are insignificant for this data element: "
-                    + dataValue.getDataElement() );
-            }
-            else
-            {
-                dataValueStore.updateDataValue( dataValue );
-            }
+            dataValueStore.updateDataValue( dataValue );
         }
     }
 
@@ -210,13 +191,25 @@ public class DefaultDataValueService
     {
         return dataValueStore.getDataValues( dataElement );
     }
-   
+
     @Override
     public DataValue getLatestDataValues( DataElement dataElement, PeriodType periodType,
         OrganisationUnit organisationUnit )
-    {        
+    {
         return dataValueStore.getLatestDataValues( dataElement, periodType, organisationUnit );
     }
 
-   
+    private boolean isSignificant( DataValue dataValue )
+    {
+        if ( dataValue.isZero() && !dataValue.getDataElement().isZeroIsSignificant()
+            && !dataValue.getDataElement().getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
+        {
+            log.debug( "DataValue was ignored as zero values are insignificant for this data element: "
+                + dataValue.getDataElement() );
+            return false;
+        }
+        return true;
+    }
+
+    
 }
