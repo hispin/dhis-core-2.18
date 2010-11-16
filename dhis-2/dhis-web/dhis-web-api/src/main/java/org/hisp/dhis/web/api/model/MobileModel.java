@@ -30,40 +30,93 @@ package org.hisp.dhis.web.api.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
-public class PatientAttribute implements MobileSerializable
+public class MobileModel
+    implements MobileSerializable
 {
+    private ActivityPlan activityPlan;
 
-    private String name;
+    private List<Program> programs;
 
-    private String value;
+    private List<DataSet> datasets;
 
-    public String getName()
+    public ActivityPlan getActivityPlan()
     {
-        return name;
+        return activityPlan;
     }
 
-    public void setName( String name )
+    public void setActivityPlan( ActivityPlan activityPlan )
     {
-        this.name = name;
+        this.activityPlan = activityPlan;
     }
 
-    public String getValue()
+    public List<Program> getPrograms()
     {
-        return value;
+        return programs;
     }
 
-    public void setValue( String value )
+    public void setPrograms( List<Program> programs )
     {
-        this.value = value;
+        this.programs = programs;
+    }
+
+    public List<DataSet> getDatasets()
+    {
+        return datasets;
+    }
+
+    public void setDatasets( List<DataSet> datasets )
+    {
+        this.datasets = datasets;
     }
 
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
-        dout.writeUTF( this.name );
-        dout.writeUTF( this.value );
+
+        if ( programs != null )
+        {
+            dout.writeInt( programs.size() );
+        }
+        else
+        {
+            dout.writeInt( 0 );
+        }
+
+        // Write ActivityPlans
+        if ( this.activityPlan == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            this.activityPlan.serialize( dout );
+        }
+
+        // Write Programs
+        if ( programs != null || programs.size() > 0 )
+        {
+            for ( Program prog : programs )
+            {
+                prog.serialize( dout );
+            }
+        }
+
+        // Write DataSets
+        if ( datasets == null )
+        {
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            dout.writeInt( datasets.size() );
+            for ( DataSet ds : datasets )
+            {
+                ds.serialize( dout );
+            }
+        }
     }
 
     @Override
@@ -71,7 +124,7 @@ public class PatientAttribute implements MobileSerializable
         throws IOException
     {
         // FIXME: Get implementation from client
-        
+
     }
 
 }

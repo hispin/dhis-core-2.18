@@ -31,12 +31,23 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PatientAttribute implements MobileSerializable
+public class Model
+    implements MobileSerializable
 {
+
+    private int id;
 
     private String name;
 
-    private String value;
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
 
     public String getName()
     {
@@ -48,30 +59,20 @@ public class PatientAttribute implements MobileSerializable
         this.name = name;
     }
 
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
     @Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
+        dout.writeInt( this.id );
         dout.writeUTF( this.name );
-        dout.writeUTF( this.value );
     }
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
-        
+        this.id = dataInputStream.readInt();
+        this.name = dataInputStream.readUTF();
     }
 
 }

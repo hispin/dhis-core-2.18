@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.model;
+package org.hisp.dhis.web.api.provider;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -28,50 +28,43 @@ package org.hisp.dhis.web.api.model;
  */
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
-public class PatientAttribute implements MobileSerializable
+import javax.ws.rs.Consumes;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.MessageBodyReader;
+import javax.ws.rs.ext.Provider;
+
+import org.hisp.dhis.web.api.model.DataSetValue;
+
+import com.sun.jersey.spi.resource.Singleton;
+
+@Provider
+@Singleton
+@Consumes( "application/vnd.org.dhis2.datasetvalue+serialized" )
+public class DataSetValueConsumer
+    implements MessageBodyReader<DataSetValue>
 {
 
-    private String name;
-
-    private String value;
-
-    public String getName()
+    @Override
+    public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
     {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
+        return true;
     }
 
     @Override
-    public void serialize( DataOutputStream dout )
-        throws IOException
+    public DataSetValue readFrom( Class<DataSetValue> type, Type genericType, Annotation[] annotations,
+        MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream )
+        throws IOException, WebApplicationException
     {
-        dout.writeUTF( this.name );
-        dout.writeUTF( this.value );
-    }
-
-    @Override
-    public void deSerialize( DataInputStream dataInputStream )
-        throws IOException
-    {
-        // FIXME: Get implementation from client
-        
+        DataSetValue dsValue = new DataSetValue();
+        dsValue.deSerialize( new DataInputStream( entityStream ) );
+        return dsValue;
     }
 
 }

@@ -1,33 +1,52 @@
 package org.hisp.dhis.web.api.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+public class DataSetValue
+    extends Model
+{
 
-
-@XmlRootElement(name = "DSV")
-@XmlAccessorType(XmlAccessType.FIELD) 
-public class DataSetValue extends AbstractModel {
-   
     private String pName;
-    
-    private boolean completed;
-    
-    @XmlElement(name = "dv")
-	private List<DataValue> dataValues = new ArrayList<DataValue>();
 
-    public DataSetValue(){}	
-    
+    private boolean completed;
+
+    private List<DataValue> dataValues = new ArrayList<DataValue>();
+
+    public DataSetValue()
+    {
+    }
+
     public boolean isCompleted()
     {
         return completed;
@@ -38,85 +57,53 @@ public class DataSetValue extends AbstractModel {
         this.completed = completed;
     }
 
-	public String getpName() {
-		return pName;
-	}
-
-	public void setpName(String pName) {
-		this.pName = pName;
-	}
-	
-	public void setDataValues(List<DataValue> dataValues) {
-		this.dataValues = dataValues;
-	}
-	
-	public List<DataValue> getDataValues() {
-		return dataValues;
-	}   	
-
-	public byte[] serialize() throws IOException
+    public String getpName()
     {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);       
-
-        dout.writeInt(this.getId());
-        dout.writeUTF(this.getName());
-        dout.writeUTF(this.getpName());
-        dout.writeBoolean( this.isCompleted() );
-        dout.writeInt(dataValues.size());
-
-        for(int i=0; i<dataValues.size(); i++)
-        {
-            DataValue dv = (DataValue)dataValues.get(i);
-            dout.writeInt( dv.getId() );
-            dout.writeInt( dv.getCategoryOptComboID() );
-            dout.writeUTF( dv.getVal() );            
-        }
-
-        return bout.toByteArray();
+        return pName;
     }
 
-    public void deSerialize(byte[] data) throws IOException
+    public void setpName( String pName )
     {
-        ByteArrayInputStream bin = new ByteArrayInputStream(data);
-        DataInputStream din = new DataInputStream(bin);
+        this.pName = pName;
+    }
 
-        this.setId( din.readInt() ) ;
+    public void setDataValues( List<DataValue> dataValues )
+    {
+        this.dataValues = dataValues;
+    }
+
+    public List<DataValue> getDataValues()
+    {
+        return dataValues;
+    }
+
+    @Override
+    public void serialize( DataOutputStream dataOutputStream )
+        throws IOException
+    {
+        // FIXME: Get implementation from client
+    }
+
+    @Override
+    public void deSerialize( DataInputStream din )
+        throws IOException
+    {
+
+        this.setId( din.readInt() );
         this.setName( din.readUTF() );
-        this.setpName( din.readUTF() ) ;
+        this.setpName( din.readUTF() );
         this.setCompleted( din.readBoolean() );
         int size = din.readInt();
 
-        for(int i=0; i<size; i++)
+        for ( int i = 0; i < size; i++ )
         {
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
             dv.setCategoryOptComboID( din.readInt() );
-            dv.setVal( din.readUTF() );            
-            this.dataValues.add(dv);
+            dv.setVal( din.readUTF() );
+            this.dataValues.add( dv );
         }
+
     }
-    
-    public DataSetValue deSerialize(InputStream stream) throws IOException
-    {       
-        DataInputStream din = new DataInputStream(stream);
 
-        this.setId( din.readInt() ) ;
-        this.setName( din.readUTF() );
-        this.setpName( din.readUTF() ) ;
-        this.setCompleted( din.readBoolean() );
-        int size = din.readInt();
-
-        for(int i=0; i<size; i++)
-        {
-            DataValue dv = new DataValue();
-            dv.setId( din.readInt() );
-            dv.setCategoryOptComboID( din.readInt() );
-            dv.setVal( din.readUTF() );            
-            this.dataValues.add(dv);
-        }
-        
-        return this;
-    }   
-	
 }

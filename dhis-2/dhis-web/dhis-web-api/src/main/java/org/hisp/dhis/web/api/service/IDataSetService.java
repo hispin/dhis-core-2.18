@@ -3,7 +3,7 @@ package org.hisp.dhis.web.api.service;
 import java.util.List;
 import java.util.Locale;
 
-import org.hisp.dhis.web.api.model.AbstractModelList;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.DataSet;
 
 public interface IDataSetService {
