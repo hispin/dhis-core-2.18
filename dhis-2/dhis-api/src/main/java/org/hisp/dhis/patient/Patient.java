@@ -44,13 +44,14 @@ public class Patient
     implements Serializable
 {
     public static final String MALE = "M";
+
     public static final String FEMALE = "F";
-    
 
     public static final char DOB_TYPE_VERIFIED = 'V';
-    public static final char DOB_TYPE_DECLARED = 'D';
-    public static final char DOB_TYPE_APPROXIATED = 'A';
 
+    public static final char DOB_TYPE_DECLARED = 'D';
+
+    public static final char DOB_TYPE_APPROXIATED = 'A';
 
     private Integer id;
 
@@ -121,30 +122,62 @@ public class Patient
     @Override
     public int hashCode()
     {
-        return id.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+        result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
+        return result;
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object obj )
     {
-        if ( this == o )
-        {
+        if ( this == obj )
             return true;
-        }
-
-        if ( o == null )
-        {
+        if ( obj == null )
             return false;
-        }
-
-        if ( !(o instanceof Patient) )
-        {
+        if ( getClass() != obj.getClass() )
             return false;
+        Patient other = (Patient) obj;
+        if ( birthDate == null )
+        {
+            if ( other.birthDate != null )
+                return false;
         }
-
-        final Patient other = (Patient) o;
-
-        return id.equals( other.getId() );
+        else if ( !birthDate.equals( other.birthDate ) )
+            return false;
+        if ( firstName == null )
+        {
+            if ( other.firstName != null )
+                return false;
+        }
+        else if ( !firstName.equals( other.firstName ) )
+            return false;
+        if ( gender == null )
+        {
+            if ( other.gender != null )
+                return false;
+        }
+        else if ( !gender.equals( other.gender ) )
+            return false;
+        if ( lastName == null )
+        {
+            if ( other.lastName != null )
+                return false;
+        }
+        else if ( !lastName.equals( other.lastName ) )
+            return false;
+        if ( middleName == null )
+        {
+            if ( other.middleName != null )
+                return false;
+        }
+        else if ( !middleName.equals( other.middleName ) )
+            return false;
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -366,14 +399,19 @@ public class Patient
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
         // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-        if(ageType == 'Y'){
+        if ( ageType == 'Y' )
+        {
             todayCalendar.add( Calendar.YEAR, -1 * age );
-        }else if(ageType == 'M'){
+        }
+        else if ( ageType == 'M' )
+        {
             todayCalendar.add( Calendar.MONTH, -1 * age );
-        }else if(ageType == 'D'){
+        }
+        else if ( ageType == 'D' )
+        {
             todayCalendar.add( Calendar.DATE, -1 * age );
         }
-        
+
         setBirthDate( todayCalendar.getTime() );
     }
 
@@ -421,12 +459,12 @@ public class Patient
     {
         switch ( dobType )
         {
-            case 'V':
-                return "Verified";
-            case 'D':
-                return "Declared";
-            default:
-                return "Approxiated";
+        case 'V':
+            return "Verified";
+        case 'D':
+            return "Declared";
+        default:
+            return "Approxiated";
         }
     }
 }

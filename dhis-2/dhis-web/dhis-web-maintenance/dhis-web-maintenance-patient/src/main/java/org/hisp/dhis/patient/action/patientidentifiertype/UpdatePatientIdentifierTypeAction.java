@@ -71,8 +71,6 @@ public class UpdatePatientIdentifierTypeAction
     public String execute()
         throws Exception
     {
-        
-        
         PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
         if( identifierType != null )
         {
