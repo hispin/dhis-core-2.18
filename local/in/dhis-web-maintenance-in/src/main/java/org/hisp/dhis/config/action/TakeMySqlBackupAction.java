@@ -9,6 +9,7 @@ import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.opensymphony.xwork2.Action;
 
@@ -21,17 +22,24 @@ public class TakeMySqlBackupAction
 
     private ConfigurationService configurationService;
 
+    private DatabaseInfoProvider provider;
+ 
+    @Required
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
     }
 
-    @Autowired
-    private DatabaseInfoProvider provider;
-        
+    @Required
+    public void setProvider( DatabaseInfoProvider provider )
+    {
+        this.provider = provider;
+    }
+    
     // -------------------------------------------------------------------------
     // Input and Output Parameters
     // -------------------------------------------------------------------------
+
 
     private String statusMessage;
     
