@@ -31,47 +31,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PatientAttribute implements MobileSerializable
+/**
+ * Interface for entities that needs to be serialized/deserialized for
+ * communication with low-bandwith mobile phones
+ */
+public interface MobileSerializable
 {
 
-    private String name;
+    public void serialize( DataOutputStream dataOutputStream )
+        throws IOException;
 
-    private String value;
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    @Override
-    public void serialize( DataOutputStream dout )
-        throws IOException
-    {
-        dout.writeUTF( this.name );
-        dout.writeUTF( this.value );
-    }
-
-    @Override
     public void deSerialize( DataInputStream dataInputStream )
-        throws IOException
-    {
-        // FIXME: Get implementation from client
-        
-    }
+        throws IOException;
 
 }

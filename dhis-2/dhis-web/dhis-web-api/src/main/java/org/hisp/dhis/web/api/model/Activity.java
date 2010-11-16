@@ -1,15 +1,39 @@
 package org.hisp.dhis.web.api.model;
 
-import java.io.ByteArrayOutputStream;
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
-public class Activity implements ISerializable
+public class Activity
+    implements MobileSerializable
 {
 
     private Beneficiary beneficiary;
@@ -18,7 +42,7 @@ public class Activity implements ISerializable
 
     private Task task;
 
-    private Date dueDate;   
+    private Date dueDate;
 
     public Beneficiary getBeneficiary()
     {
@@ -50,51 +74,33 @@ public class Activity implements ISerializable
         this.dueDate = dueDate;
     }
 
-    
-    
-	public boolean isLate() {
-		return late;
-	}
-
-	public void setLate(boolean late) {
-		this.late = late;
-	}
-
-	@Override
-	public byte[] serialize() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void serialize( DataOutputStream dout ) throws IOException
+    public boolean isLate()
     {
-        this.getBeneficiary().serialize(dout);
-        this.getTask().serialize(dout);
-        
-        dout.writeLong(this.getDueDate().getTime());	      
-        
-        dout.flush();            	
-    }
-	
-	public void serialize( OutputStream out ) throws IOException
-    {
-    	ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream dout = new DataOutputStream(bout);
-        
-        this.getBeneficiary().serialize(dout);
-        dout.writeBoolean(late);
-        this.getTask().serialize(dout);        
-        dout.writeLong(this.getDueDate().getTime());       
-        
-        bout.flush();
-        bout.writeTo(out);
-    	
+        return late;
     }
 
-	@Override
-	public void deSerialize(byte[] data) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+    public void setLate( boolean late )
+    {
+        this.late = late;
+    }
+
+    @Override
+    public void serialize( DataOutputStream dout )
+        throws IOException
+    {
+        this.getBeneficiary().serialize( dout );
+        dout.writeBoolean( late );
+        this.getTask().serialize( dout );
+        dout.writeLong( this.getDueDate().getTime() );
+
+    }
+
+    @Override
+    public void deSerialize( DataInputStream dataInputStream )
+        throws IOException
+    {
+        // FIXME: Get implementation from client
+
+    }
 
 }

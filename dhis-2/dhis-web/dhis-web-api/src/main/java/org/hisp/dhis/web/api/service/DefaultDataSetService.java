@@ -5,7 +5,6 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -14,10 +13,10 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.web.api.model.AbstractModel;
-import org.hisp.dhis.web.api.model.AbstractModelList;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
+import org.hisp.dhis.web.api.model.Model;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
 
@@ -146,7 +145,7 @@ public class DefaultDataSetService
             section.setName( "" );
 
             List<DataElement> dataElementList = new ArrayList<DataElement>();
-            section.setDes( dataElementList );
+            section.setDataElements( dataElementList );
 
             for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
             {
@@ -154,13 +153,13 @@ public class DefaultDataSetService
                 dataElement = i18n( i18nService, locale, dataElement );
                 Set<DataElementCategoryOptionCombo> deCatOptCombs = dataElement.getCategoryCombo().getOptionCombos();
                 // Client DataElement
-                AbstractModelList deCateOptCombo = new AbstractModelList();
-                List<AbstractModel> listCateOptCombo = new ArrayList<AbstractModel>();
-                deCateOptCombo.setAbstractModels( listCateOptCombo );
+                ModelList deCateOptCombo = new ModelList();
+                List<Model> listCateOptCombo = new ArrayList<Model>();
+                deCateOptCombo.setModels( listCateOptCombo );
 
                 for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
                 {
-                    AbstractModel oneCateOptCombo = new AbstractModel();
+                    Model oneCateOptCombo = new Model();
                     oneCateOptCombo.setId( oneCatOptCombo.getId() );
                     oneCateOptCombo.setName( oneCatOptCombo.getName() );
                     listCateOptCombo.add( oneCateOptCombo );
@@ -185,7 +184,7 @@ public class DefaultDataSetService
                 section.setName( each.getName() );
                 // Mobile
                 List<DataElement> dataElementList = new ArrayList<DataElement>();
-                section.setDes( dataElementList );
+                section.setDataElements( dataElementList );
 
                 for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
                 {
@@ -195,13 +194,13 @@ public class DefaultDataSetService
                         .getOptionCombos();
 
                     // Client DataElement
-                    AbstractModelList deCateOptCombo = new AbstractModelList();
-                    List<AbstractModel> listCateOptCombo = new ArrayList<AbstractModel>();
-                    deCateOptCombo.setAbstractModels( listCateOptCombo );
+                    ModelList deCateOptCombo = new ModelList();
+                    List<Model> listCateOptCombo = new ArrayList<Model>();
+                    deCateOptCombo.setModels( listCateOptCombo );
 
                     for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
                     {
-                        AbstractModel oneCateOptCombo = new AbstractModel();
+                        Model oneCateOptCombo = new Model();
                         oneCateOptCombo.setId( oneCatOptCombo.getId() );
                         oneCateOptCombo.setName( oneCatOptCombo.getName() );
                         listCateOptCombo.add( oneCateOptCombo );

@@ -30,48 +30,52 @@ package org.hisp.dhis.web.api.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PatientAttribute implements MobileSerializable
+public class ModelList
+    implements MobileSerializable
 {
 
-    private String name;
+    private List<Model> models;
 
-    private String value;
-
-    public String getName()
+    public List<Model> getAbstractModels()
     {
-        return name;
+        return models;
     }
 
-    public void setName( String name )
+    public void setModels( List<Model> models )
     {
-        this.name = name;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
+        this.models = models;
     }
 
     @Override
-    public void serialize( DataOutputStream dout )
+    public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
-        dout.writeUTF( this.name );
-        dout.writeUTF( this.value );
+        dataOutputStream.writeInt( models.size() );
+
+        for ( int i = 0; i < models.size(); i++ )
+        {
+            models.get( i ).serialize( dataOutputStream );
+        }
+
     }
 
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
-        
+        int size = dataInputStream.readInt();
+        models = new ArrayList<Model>( size );
+
+        for ( int i = 0; i < size; i++ )
+        {
+            Model m = new Model();
+            m.deSerialize( dataInputStream );
+            models.add( m );
+        }
+
     }
 
 }

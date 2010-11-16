@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.hisp.dhis.web.api.service;
 
 import java.util.ArrayList;
@@ -24,10 +21,6 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author abyotag_adm
- * 
- */
 public class DefaultActivityPlanService
     implements IActivityPlanService
 {

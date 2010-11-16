@@ -14,8 +14,8 @@ import java.util.Set;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.web.api.model.AbstractModel;
-import org.hisp.dhis.web.api.model.AbstractModelList;
+import org.hisp.dhis.web.api.model.Model;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Program;
 import org.hisp.dhis.web.api.model.ProgramStage;
@@ -117,15 +117,15 @@ public class DefaultProgramService
             for ( org.hisp.dhis.program.ProgramStageDataElement programStagedataElement : programStage
                 .getProgramStageDataElements() )
             {
-                AbstractModelList mobileCategpryOptCombos = new AbstractModelList();
-                mobileCategpryOptCombos.setAbstractModels( new ArrayList<AbstractModel>() );
+                ModelList mobileCategpryOptCombos = new ModelList();
+                mobileCategpryOptCombos.setModels( new ArrayList<Model>() );
                 programStagedataElement = i18n( i18nService, locale, programStagedataElement );
                 Set<DataElementCategoryOptionCombo> deCatOptCombs = programStagedataElement.getDataElement()
                     .getCategoryCombo().getOptionCombos();
 
                 for ( DataElementCategoryOptionCombo categoryOptCombo : deCatOptCombs )
                 {
-                    AbstractModel mobileCategpryOptCombo = new AbstractModel();
+                    Model mobileCategpryOptCombo = new Model();
                     mobileCategpryOptCombo.setId( categoryOptCombo.getId() );
                     mobileCategpryOptCombo.setName( categoryOptCombo.getName() );
                     mobileCategpryOptCombos.getAbstractModels().add( mobileCategpryOptCombo );
