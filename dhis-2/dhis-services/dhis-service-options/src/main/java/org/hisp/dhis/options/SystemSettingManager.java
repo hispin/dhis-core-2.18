@@ -53,7 +53,8 @@ public interface SystemSettingManager
     final String KEY_GIS_LATITUDE = "latitude";
     final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
-
+    final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
+    
     final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
     final String KEY_CHR_NUMBER_OF_RECORDS = "chrNumberOfRecords";
     
