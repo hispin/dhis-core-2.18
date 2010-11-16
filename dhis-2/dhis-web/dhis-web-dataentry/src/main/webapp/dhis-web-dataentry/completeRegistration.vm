@@ -1,18 +1,4 @@
-<script>
-	/*
-	jQuery(document).ready(function(){
-		jQuery("#completeForm").validate({
-		meta:"validate"
-		,errorElement:"td"
-		,submitHandler: function(form)
-		{
-			//validateCompleteDataSet();
-		}
-		});
-		jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
-	});
-	*/
-</script>
+
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <form id="completeForm">
