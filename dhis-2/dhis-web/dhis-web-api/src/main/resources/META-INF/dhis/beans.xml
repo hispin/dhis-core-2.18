@@ -7,11 +7,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
     <bean id="org.hisp.dhis.web.api.resources.MobileResource" class="org.hisp.dhis.web.api.resources.MobileResource"
         scope="prototype">
-        <property name="idataValueService" ref="org.hisp.dhis.web.api.service.IDataValueService" />
+        <property name="facilityReportingService" ref="org.hisp.dhis.web.api.service.FacilityReportingService" />
         <property name="iactivityValueService" ref="org.hisp.dhis.web.api.service.IActivityValueService" />
         <property name="programService" ref="org.hisp.dhis.web.api.service.IProgramService" />
         <property name="activityPlanService" ref="org.hisp.dhis.web.api.service.IActivityPlanService" />
-        <property name="idataSetService" ref="org.hisp.dhis.web.api.service.IDataSetService" />
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     </bean>
 
@@ -34,28 +33,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     </bean>
 
-    <bean id="org.hisp.dhis.web.api.service.IDataSetService" class="org.hisp.dhis.web.api.service.DefaultDataSetService">
+    <bean id="org.hisp.dhis.web.api.service.FacilityReportingService" class="org.hisp.dhis.web.api.service.FacilityReportingServiceImpl">
         <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
         <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    </bean>
-
-    <bean id="org.hisp.dhis.web.api.service.IDataValueService" class="org.hisp.dhis.web.api.service.DefaultDataValueService">
-        <property name="dataSetService">
-            <ref bean="org.hisp.dhis.dataset.DataSetService" />
-        </property>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.web.api.service.IPeriodService" />
-        </property>
-        <property name="categoryService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-        </property>
-        <property name="dataValueService">
-            <ref bean="org.hisp.dhis.datavalue.DataValueService" />
-        </property>
-        <property name="currentUserService">
-            <ref bean="org.hisp.dhis.user.CurrentUserService" />
-        </property>
+        <property name="periodService" ref="org.hisp.dhis.web.api.service.IPeriodService" />
+        <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     </bean>
 
     <bean id="org.hisp.dhis.web.api.service.IActivityValueService" class="org.hisp.dhis.web.api.service.DefaultActivityValueService">

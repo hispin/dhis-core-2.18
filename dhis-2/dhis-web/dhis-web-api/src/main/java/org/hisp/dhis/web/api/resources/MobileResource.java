@@ -35,11 +35,8 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
@@ -49,10 +46,9 @@ import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
 import org.hisp.dhis.web.api.model.OrgUnit;
+import org.hisp.dhis.web.api.service.FacilityReportingService;
 import org.hisp.dhis.web.api.service.IActivityPlanService;
 import org.hisp.dhis.web.api.service.IActivityValueService;
-import org.hisp.dhis.web.api.service.IDataSetService;
-import org.hisp.dhis.web.api.service.IDataValueService;
 import org.hisp.dhis.web.api.service.IProgramService;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -60,11 +56,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class MobileResource
 {
 
-    private static final String MEDIA_TYPE_MOBILE_SERIALIZED = "application/vnd.org.dhis2.mobile+serialized";
-
     // Dependencies
-
-    private IDataValueService idataValueService;
 
     private IActivityValueService iactivityValueService;
 
@@ -72,15 +64,9 @@ public class MobileResource
 
     private IActivityPlanService activityPlanService;
 
-    private IDataSetService idataSetService;
+    private FacilityReportingService facilityReportingService;
 
     private CurrentUserService currentUserService;
-
-    @Required
-    public void setIdataValueService( IDataValueService idataValueService )
-    {
-        this.idataValueService = idataValueService;
-    }
 
     @Required
     public void setProgramService( IProgramService programService )
@@ -101,9 +87,9 @@ public class MobileResource
     }
 
     @Required
-    public void setIdataSetService( IDataSetService idataSetService )
+    public void setFacilityReportingService( FacilityReportingService facilityReportingService )
     {
-        this.idataSetService = idataSetService;
+        this.facilityReportingService = facilityReportingService;
     }
 
     @Required
@@ -114,11 +100,8 @@ public class MobileResource
 
     // Resource methods
 
-    @Context
-    private UriInfo uriInfo;
-
     @GET
-    @Produces( MEDIA_TYPE_MOBILE_SERIALIZED )
+    @Produces( MediaType.MOBILE_SERIALIZED )
     public Response getOrgUnitForUser()
     {
         User user = currentUserService.getCurrentUser();
@@ -150,41 +133,63 @@ public class MobileResource
 
     @GET
     @Path( "all" )
-    @Produces( MEDIA_TYPE_MOBILE_SERIALIZED )
+    @Produces( MediaType.MOBILE_SERIALIZED )
     public MobileModel getAllDataForUser( @HeaderParam( "accept-language" ) String locale )
     {
+        
+        
         MobileModel mobileWrapper = new MobileModel();
         mobileWrapper.setActivityPlan( activityPlanService.getCurrentActivityPlan( locale ) );
 
         mobileWrapper.setPrograms( programService.getAllProgramsForLocale( locale ) );
 
-        mobileWrapper.setDatasets( idataSetService.getAllMobileDataSetsForLocale( locale ) );
+        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+
+        if ( units.size() == 1 )
+        {
+            OrganisationUnit unit = units.iterator().next();
+            mobileWrapper.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale )  );
+        }
+        else
+        {
+            // FIXME: Should handle multiple explicitly;
+        }
+
 
         return mobileWrapper;
     }
 
-    @POST
-    @Path( "dataSets" )
-    @Consumes( "application/vnd.org.dhis2.datasetvalue+serialized" )
-    @Produces( "application/xml" )
-    public String getValues( DataSetValue dataSetValue )
-    {
-        return idataValueService.saveValues( dataSetValue );
-    }
-
     @GET
     @Path( "activities/currentplan" )
-    @Produces( "application/vnd.org.dhis2.activityplan+serialized" )
+    @Produces( MediaType.ACTIVITYPLAN_SERIALIZED )
     public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
     {
         return activityPlanService.getCurrentActivityPlan( locale );
     }
 
     @POST
-    @Path( "activities" )
-    @Consumes( "application/vnd.org.dhis2.activityvaluelist+serialized" )
+    @Path( "dataSets" )
+    @Consumes( MediaType.DATASETVALUE_SERIALIZED )
     @Produces( "application/xml" )
-    public String getValues( ActivityValue activityValue )
+    public String saveDataSetValues( DataSetValue dataSetValue )
+    {
+        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+
+        if ( units.size() != 1 )
+        {
+            return "INVALID_REPORTING_UNIT";
+        }
+
+        OrganisationUnit unit = units.iterator().next();
+        
+        return facilityReportingService.saveDataSetValues( unit, dataSetValue );
+    }
+
+    @POST
+    @Path( "activities" )
+    @Consumes( MediaType.ACTIVITYVALUELIST_SERIALIZED )
+    @Produces( "application/xml" )
+    public String saveActivityReport( ActivityValue activityValue )
     {
         return iactivityValueService.saveValues( activityValue );
     }
@@ -195,8 +200,6 @@ public class MobileResource
 
         m.setId( unit.getId() );
         m.setName( unit.getShortName() );
-        m.setProgramFormsLink( uriInfo.getRequestUriBuilder().path( "programforms" ).build().toString() );
-        m.setActivitiesLink( uriInfo.getRequestUriBuilder().path( "activityplan/current" ).build().toString() );
 
         return m;
     }
