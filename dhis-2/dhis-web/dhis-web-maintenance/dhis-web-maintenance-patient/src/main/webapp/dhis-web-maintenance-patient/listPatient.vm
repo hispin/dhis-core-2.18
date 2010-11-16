@@ -88,23 +88,23 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
                 #end
                 
 		<td>			
-                    $encoder.htmlEncode( $patient.firstName )
+                    $!patient.firstName
 		</td>
 		<td>			
-                    $encoder.htmlEncode( $patient.middleName )
+                    $!patient.middleName
 		</td>
 		<td>			
-                    $encoder.htmlEncode( $patient.lastName )
+                    $!patient.lastName
 		</td>				
 		<td>			
-                    $encoder.htmlEncode( $patient.gender )
+                    $!patient.gender
 		</td>
 		<td>			
-                    $format.formatDate( $patient.birthDate )
+                    $format.formatDate( $!patient.birthDate)
 		</td>
 		<td>            
-                    $encoder.htmlEncode( $patient.getAge() )
-                </td>
+                    $!patient.getAge()
+        </td>
 				
 		<td style="text-align:center"#alternate( $mark )>
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
