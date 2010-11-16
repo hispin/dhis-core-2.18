@@ -106,7 +106,6 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
     {
     	calculateCDE(dataElementId);
     }
-
 }
 
 function saveBoolean( dataElementId, optionComboId, selectedOption  )
@@ -219,56 +218,25 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
     }
 }
 
-function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_,  value_ )
+// -----------------------------------------------------------------------------
+// Section
+// -----------------------------------------------------------------------------
+
+function openCloseSection( sectionId )
 {
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ccccff';
-
-    var dataElementId = dataElementId_;
-    var optionComboId = optionComboId_;
-    var organisationUnitId = organisationUnitId_;
-    var value = value_;
-    
-    this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'saveComment.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
-                dataElementId + '&optionComboId=' + optionComboId + '&comment=' + value );
-    };
-    
-    function handleResponse( rootElement )
-    {
-        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-        var code = parseInt( codeElement.firstChild.nodeValue );
-        
-        if ( code == 0 )
-        {
-            markComment( SUCCESS );           
-        }
-        else
-        {
-            markComment( ERROR );
-            window.alert( i18n_saving_comment_failed_status_code + '\n\n' + code );
-        }
-    }
-    
-    function handleHttpError( errorCode )
-    {
-        markComment( ERROR );
-        window.alert( i18n_saving_comment_failed_error_code + '\n\n' + errorCode );
-    }
-    
-    function markComment( color )
-    {
-        var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-        var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );        
-
-        field.style.backgroundColor = color;
-        select.style.backgroundColor = color;
-    }
+	var divSection = document.getElementById( sectionId );
+	var sectionLabel = document.getElementById( sectionId + ":name" );	
+	
+	if( divSection.style.display == 'none' )
+	{			
+		divSection.style.display = ('block');
+		sectionLabel.style.textAlign = 'center';
+	}
+	else
+	{			
+		divSection.style.display = ('none');
+		sectionLabel.style.textAlign = 'left';
+	}
 }
 
 // -----------------------------------------------------------------------------
