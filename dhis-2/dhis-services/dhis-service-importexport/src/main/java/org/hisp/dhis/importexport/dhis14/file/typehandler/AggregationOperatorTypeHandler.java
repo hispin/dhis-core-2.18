@@ -29,6 +29,8 @@ package org.hisp.dhis.importexport.dhis14.file.typehandler;
 
 import java.sql.SQLException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 
 import com.ibatis.sqlmap.client.extensions.ParameterSetter;
@@ -46,7 +48,9 @@ public class AggregationOperatorTypeHandler
     private static final String JDBC_AVERAGE = "Avg";
     private static final String JDBC_COUNT = "Count";
     
-    static final Integer NON_EXISTING = -1;
+    private static final Integer NON_EXISTING = -1;
+    
+    private static final Log log = LogFactory.getLog( AggregationOperatorTypeHandler.class );
     
     // -------------------------------------------------------------------------
     // TypeHandlerCallback implementation
@@ -73,12 +77,16 @@ public class AggregationOperatorTypeHandler
             }
             else
             {
-                throw new RuntimeException( "Illegal aggregation operator: " + result );
+                log.warn( "Unknow aggregation operator, returning sum " + result );
+                
+                return DataElement.AGGREGATION_OPERATOR_SUM;
             }
         }
         else
         {
-            throw new RuntimeException( "Aggregation operator is not present" );
+            log.warn( "Aggregation operator is null, returning sum " + result );
+            
+            return DataElement.AGGREGATION_OPERATOR_SUM;
         }
     }
     
