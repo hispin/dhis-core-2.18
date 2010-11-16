@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.model;
+package org.hisp.dhis.web.api.service;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,51 +27,20 @@ package org.hisp.dhis.web.api.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.web.api.model.DataSet;
+import org.hisp.dhis.web.api.model.DataSetValue;
 
-public class OrgUnit implements MobileSerializable {
+public interface FacilityReportingService
+{
 
-    private int id;
+    public List<DataSet> getMobileDataSetsForUnit( OrganisationUnit unit, String localeString );
 
-    private String name;
+    public DataSet getDataSetForLocale( int dataSetId, Locale locale );
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    @Override
-    public void serialize( DataOutputStream dataOutputStream )
-        throws IOException
-    {
-        dataOutputStream.write( this.id );
-        dataOutputStream.writeUTF( this.name );
-    }
-
-    @Override
-    public void deSerialize( DataInputStream dataInputStream )
-        throws IOException
-    {
-        this.id = dataInputStream.readInt();
-        this.name = dataInputStream.readUTF();
-    }
+    public String saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue );
 
 }
