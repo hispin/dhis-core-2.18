@@ -289,7 +289,6 @@ function registerCompleteDataSet( messageElement )
     }
     else
     {
-		setMessage(i18n_register_complete_dataset_failed);
         window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
     }
 }
@@ -301,7 +300,6 @@ function registerReceived( messageElement )
     if ( type=='input' )
     {
 		setHeaderDelayMessage( messageElement.firstChild.nodeValue );
-		setMessage(i18n_register_complete_dataset_failed);
 		return;
 	}
 	
@@ -309,9 +307,6 @@ function registerReceived( messageElement )
 	document.getElementById( "undoButton" ).disabled = false;
     document.getElementById( "dateField" ).disabled = true;
     document.getElementById( "dateDiv" ).style.display = "none";
-    
-	setMessage(i18n_register_complete_dataset_success);
-	changeInputTextStatus( true );
 }
 
 function undoCompleteDataSet()
@@ -334,8 +329,6 @@ function undoReceived( messageElement )
     document.getElementById( "undoButton" ).disabled = true;
     document.getElementById( "dateField" ).disabled = false;
     document.getElementById( "dateDiv" ).style.display = "inline";
-	setMessage( i18n_undo_register_complete_dataset_success );
-	changeInputTextStatus( false );
 }
 
 // -----------------------------------------------------------------------------
