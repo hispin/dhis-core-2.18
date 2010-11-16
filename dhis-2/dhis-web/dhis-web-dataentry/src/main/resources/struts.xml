@@ -26,13 +26,11 @@
 		</action>
 
 		<action name="nextPeriods" class="org.hisp.dhis.de.action.NextPeriodsAction">
-			<result name="success" type="redirect">select.action
-			</result>
+			<result name="success" type="redirect">select.action</result>
 		</action>
 
 		<action name="previousPeriods" class="org.hisp.dhis.de.action.PreviousPeriodsAction">
-			<result name="success" type="redirect">select.action
-			</result>
+			<result name="success" type="redirect">select.action</result>
 		</action>
 
 		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
@@ -45,8 +43,7 @@
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
-		<action name="multidimensionalform"
-			class="org.hisp.dhis.de.action.FormAction">
+		<action name="multidimensionalform"	class="org.hisp.dhis.de.action.FormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dataentry/form.vm</param>
@@ -56,8 +53,7 @@
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
-		<action name="saveMultiDimensionalValue"
-			class="org.hisp.dhis.de.action.SaveValueAction">
+		<action name="saveMultiDimensionalValue" class="org.hisp.dhis.de.action.SaveValueAction">
 			<result name="success" type="velocity">status.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
@@ -99,24 +95,18 @@
 		</action>
 
 		<action name="minMaxGeneration" class="org.hisp.dhis.de.action.MinMaxGeneratingAction">
-			<result name="success" type="velocity-xml">responseMinMaxGeneration.vm
-			</result>
+			<result name="success" type="velocity-xml">responseMinMaxGeneration.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_DATAELEMENT_MINMAX_ADD,F_DATAELEMENT_MINMAX_UPDATE</param>
 		</action>
 
-		<action name="registerCompleteDataSet"
-			class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">
-			<result name="success" type="velocity">
-				/dhis-web-dataentry/responseVoid.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-dataentry/responseInput.vm</result>
+		<action name="registerCompleteDataSet" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">
+			<result name="success" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
+			<result name="input" type="velocity-xml">/dhis-web-dataentry/responseInput.vm</result>
 		</action>
 
-		<action name="undoCompleteDataSet"
-			class="org.hisp.dhis.de.action.UndoCompleteDataSetAction">
-			<result name="success" type="velocity">
-				/dhis-web-dataentry/responseVoid.vm</result>
+		<action name="undoCompleteDataSet" class="org.hisp.dhis.de.action.UndoCompleteDataSetAction">
+			<result name="success" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
 		</action>
 
 		<action name="validate" class="org.hisp.dhis.de.action.ValidationAction">
@@ -126,15 +116,13 @@
 		</action>
 
 		<action name="getValidationViolations" class="org.hisp.dhis.de.action.ValidationAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-dataentry/responseSuccess.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-dataentry/responseSuccess.vm</result>
 			<result name="none" type="velocity-xml">/dhis-web-dataentry/responseNone.vm
 			</result>
 		</action>
 
 		<action name="markValueForFollowup" class="org.hisp.dhis.de.action.MarkForFollowupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-dataentry/responseSuccess.vm</result>
+			<result name="success" type="velocity-xml">/dhis-web-dataentry/responseSuccess.vm</result>
 		</action>
 
 		<action name="getHistoryChart" class="org.hisp.dhis.de.action.GetHistoryChartAction">
