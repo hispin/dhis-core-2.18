@@ -86,10 +86,10 @@
 </form>   
 
 <script>
-	if ( jQuery("valueType	").val() == "COMBO" )
+	if ( jQuery("#valueType").val() == "COMBO" )
 	{
-		jQuery("#attributeComboRow").hide();
-	}else{
 		jQuery("#attributeComboRow").show();
+	}else{
+		jQuery("#attributeComboRow").hide();
 	}
 </script>
