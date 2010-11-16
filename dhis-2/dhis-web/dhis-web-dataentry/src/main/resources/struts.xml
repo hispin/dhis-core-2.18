@@ -10,8 +10,7 @@
 		namespace="/dhis-web-dataentry">
 
 		<action name="index" class="org.hisp.dhis.de.action.EmptyAction">
-			<result name="success" type="redirect">select.action
-			</result>
+			<result name="success" type="redirect">select.action</result>
 		</action>
 
 		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
@@ -22,11 +21,7 @@
 			<param name="page">/dhis-web-dataentry/select.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/entry.js,
-				javascript/form.js
-			</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
@@ -46,14 +41,7 @@
 			<param name="page">/dhis-web-dataentry/sectionForm.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,				
-				javascript/form.js,
-				javascript/entry.js,
-				../dhis-web-commons/calendar/calendar.js,
-				../dhis-web-commons/calendar/calendar-lang.js,
-				../dhis-web-commons/calendar/calendar-setup.js
-			</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
@@ -64,14 +52,7 @@
 			<param name="page">/dhis-web-dataentry/form.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
 			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,
-				javascript/form.js,
-				javascript/entry.js,
-				../dhis-web-commons/calendar/calendar.js,
-				../dhis-web-commons/calendar/calendar-lang.js,
-				../dhis-web-commons/calendar/calendar-setup.js
-			</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
