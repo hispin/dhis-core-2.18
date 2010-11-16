@@ -248,7 +248,7 @@ public class ImportPatientAction
     {
         return errPatients;
     }
-    
+
     public HashMap<Integer, String> getErrMessage()
     {
         return errMessage;
@@ -277,6 +277,11 @@ public class ImportPatientAction
     public String execute()
         throws Exception
     {
+        if ( output == null )
+        {
+            return ERROR;
+        }
+
         try
         {
             // -----------------------------------------------------------------

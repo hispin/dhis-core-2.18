@@ -29,27 +29,43 @@ package org.hisp.dhis.patient.action.patientimport;
 
 import java.io.File;
 
-import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version UploadExcelFileAction.java Nov 12, 2010 4:09:10 PM
+ * @version ValidateUploadExcelFileAction.java Nov 16, 2010 1:19:57 PM
  */
-public class UploadExcelFileAction
+public class ValidateUploadExcelFileAction
     implements Action
 {
+    private static final String CONTENT_TYPE = "application/vnd.ms-excel";
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private File output;
+    private String uploadContentType;
 
-    public File getOutput()
+    public void setUploadContentType( String uploadContentType )
     {
-        return output;
+        this.uploadContentType = uploadContentType;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     private File upload;
@@ -69,28 +85,20 @@ public class UploadExcelFileAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get template-file
-        // ---------------------------------------------------------------------
-
-        String path = System.getenv( "DHIS2_HOME" );
-
-        if ( path != null )
+        if ( upload == null || !upload.exists() )
         {
-            path += File.separator + "temp" + File.separator 
-                    + upload.getName() + (Math.random() * 1000) + ".xls";
-        }
-        else
-        {
-            path = System.getenv( "user.home" ) + File.separator + "dhis" + "temp" + File.separator 
-                    + upload.getName() + (Math.random() * 1000) + ".xls";
+            message = i18n.getString( "upload_file_null" );
+
+            return ERROR;
         }
 
-        output = new File( path );
+        if ( !CONTENT_TYPE.contains( uploadContentType ) )
+        {
+            message = i18n.getString( "file_type_not_supported" );
 
-        StreamUtils.write( upload, output );
+            return ERROR;
+        }
 
         return SUCCESS;
     }
