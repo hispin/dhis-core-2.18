@@ -272,7 +272,7 @@ public class DefaultMobileImportService
         String tempDeid;
         String tempDataValue;
 
-        Map<String, Integer> dataValues = new HashMap<String, Integer>();
+        Map<String, String> dataValues = new HashMap<String, String>();
 
         MobileImportParameters mobileImportParameters = new MobileImportParameters();
 
@@ -338,9 +338,9 @@ public class DefaultMobileImportService
                     tempDataValue = textValueElementList.item( 0 ).getNodeValue();
 
                     String tempDeID = tempDeid;
-                    Integer tempDV = Integer.parseInt( tempDataValue );
+                    //Integer tempDV = Integer.parseInt( tempDataValue );
 
-                    dataValues.put( tempDeID, tempDV );
+                    dataValues.put( tempDeID, tempDataValue );
                 }
             }// end of for loop with s var
 
@@ -588,7 +588,7 @@ public class DefaultMobileImportService
 
                     Date timeStamp = dateFormat.parse( mobImportParameters.getSmsTime() );
 
-                    Map<String, Integer> dataValueMap = new HashMap<String, Integer>( mobImportParameters
+                    Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters
                         .getDataValues() );
 
                     if ( dataValueMap == null || dataValueMap.size() <= 0 )
@@ -857,7 +857,7 @@ public class DefaultMobileImportService
 
                 java.sql.Date lastUpdatedDate = new java.sql.Date( t );
 
-                Map<String, Integer> dataValueMap = new HashMap<String, Integer>( mobImportParameters.getDataValues() );
+                Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters.getDataValues() );
 
                 if( dataValueMap == null || dataValueMap.size() <= 0 )
                 {
@@ -1070,7 +1070,7 @@ public class DefaultMobileImportService
 
                 java.sql.Date lastUpdatedDate = new java.sql.Date( t );
 
-                Map<String, Integer> dataValueMap = new HashMap<String, Integer>( mobImportParameters.getDataValues() );
+                Map<String, String> dataValueMap = new HashMap<String, String>( mobImportParameters.getDataValues() );
 
                 if ( dataValueMap == null || dataValueMap.size() <= 0 )
                 {
