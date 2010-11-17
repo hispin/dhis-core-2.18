@@ -19,6 +19,10 @@
 			<td>
 				<input type="hidden" name="groupid" id="groupid" value="$linelistGroupId">
 				<input type="hidden" name="reportingDate" id="reportingDate" value="$reportingDate">
+				<input type="text" name="dataValue" id="dataValue" value="$dataValue">
+			</td>
+			<td>
+				<input type="text" name="dataValueMapKey" id="dataValueMapKey" value="$dataValueMapKey">
 			</td>
 		</tr>
 		

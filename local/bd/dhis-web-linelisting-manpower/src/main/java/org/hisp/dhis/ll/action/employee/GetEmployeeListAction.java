@@ -41,7 +41,7 @@ public class GetEmployeeListAction implements Action
     {
     	
     	employeeList = new ArrayList<Employee>( employeeService.getAllEmployee() );
-        
+    	
         return SUCCESS;
     }
 }

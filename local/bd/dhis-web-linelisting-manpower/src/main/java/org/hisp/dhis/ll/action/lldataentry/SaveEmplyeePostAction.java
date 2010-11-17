@@ -26,46 +26,46 @@ import com.opensymphony.xwork2.Action;
 public class SaveEmplyeePostAction
     implements Action
 {
-    
-   //---------------------------------------------------------------------------
-   // Dependencies
-   //---------------------------------------------------------------------------
-    
+
+    // ---------------------------------------------------------------------------
+    // Dependencies
+    // ---------------------------------------------------------------------------
+
     private LineListService lineListService;
 
     public void setLineListService( LineListService lineListService )
     {
         this.lineListService = lineListService;
     }
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
     private DataBaseManagerInterface dbManagerInterface;
 
     public void setDbManagerInterface( DataBaseManagerInterface dbManagerInterface )
     {
         this.dbManagerInterface = dbManagerInterface;
     }
-    
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -73,16 +73,23 @@ public class SaveEmplyeePostAction
         this.periodService = periodService;
     }
 
-   //---------------------------------------------------------------------------
-   //Input/Output
-   //---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    // Input/Output
+    // ---------------------------------------------------------------------------
     private String department;
-    
+
     public void setDepartment( String department )
     {
         this.department = department;
     }
     
+    private String post;
+    
+    public void setPost( String post )
+    {
+        this.post = post;
+    }
+
     private Integer groupid;
 
     public void setGroupid( Integer groupid )
@@ -96,58 +103,94 @@ public class SaveEmplyeePostAction
     {
         return storedBy;
     }
-    
+
     public String reportingDate;
 
     public void setReportingDate( String reportingDate )
     {
         this.reportingDate = reportingDate;
     }
+    
+    public String getReportingDate()
+    {
+        return reportingDate;
+    }
+    
+    private String dataValueMapKey;
+    
+    public String getDataValueMapKey()
+    {
+        return dataValueMapKey;
+    }
+
+    public void setDataValueMapKey( String dataValueMapKey )
+    {
+        this.dataValueMapKey = dataValueMapKey;
+    }
+
+    private String dataValue;
+
+    public String getDataValue()
+    {
+        return dataValue;
+    }
+
+    public void setDataValue( String dataValue )
+    {
+        this.dataValue = dataValue;
+    }
+
 
     private LineListGroup lineListGroup;
 
-    //--------------------------------------------------------------------------
-    //Action Implementation
-    //--------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------
+    // Action Implementation
+    // --------------------------------------------------------------------------
+
     public String execute()
     {
         HttpServletRequest request = ServletActionContext.getRequest();
-        
-        System.out.println("GroupId id :::::" + groupid );
-        
-        Collection<LineListElement> linelistElements = lineListService.getLineListGroup( groupid ).getLineListElements();
-        
+
+        System.out.println( "GroupId id :::::" + groupid );
+
+        Collection<LineListElement> linelistElements = lineListService.getLineListGroup( groupid )
+            .getLineListElements();
+
         lineListGroup = selectedStateManager.getSelectedLineListGroup();
-        
+
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-        
+
         Period historyPeriod = getHistoryPeriod();
-        
+
         int recordNo = dbManagerInterface.getMaxRecordNumber( department ) + 1;
-        
+
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
         LineListDataValue llDataValue = new LineListDataValue();
         for ( LineListElement linelistElement : linelistElements )
         {
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
-            
+
             if ( linelistElementValue != null && linelistElementValue.trim().equals( "" ) )
             {
                 linelistElementValue = "";
             }
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
         }
-            
-         // add map in linelist data value
+
+        String postColumnId = linelistElements.iterator().next().getShortName();
+        llElementValuesMap.put( postColumnId, post );
+        System.out.println("*********"+postColumnId + " ------ " + post + "**********");
+        
+        // add map in linelist data value
         llDataValue.setLineListValues( llElementValuesMap );
 
-        //add period and source to row
+        // add period and source to row
         llDataValue.setPeriod( historyPeriod );
         llDataValue.setSource( organisationUnit );
 
         // add recordNumber to pass to the update query
         llDataValue.setRecordNumber( recordNo );
+        
 
         // add stored by, timestamp in linelist data value
         storedBy = currentUserService.getCurrentUsername();
@@ -158,31 +201,30 @@ public class SaveEmplyeePostAction
         }
 
         llDataValue.setStoredBy( storedBy );
-            
+
         boolean valueInserted = dbManagerInterface.insertSingleLLValueIntoDb( llDataValue, department );
-        if( valueInserted )
+        if ( valueInserted )
         {
-            System.out.println("Values Successfully Inserted in DB");
+            System.out.println( "Values Successfully Inserted in DB" );
         }
 
         return SUCCESS;
     }
 
-    private Period getHistoryPeriod( )
+    private Period getHistoryPeriod()
     {
         Date historyDate = format.parseDate( reportingDate );
-        System.out.println("Report Date is :::::::" + reportingDate );
-        
+        System.out.println( "Report Date is :::::::" + reportingDate );
+
         Period period;
         period = periodService.getPeriod( 0 );
         Period historyPeriod;
-        
 
         if ( lineListGroup != null && lineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) )
         {
             PeriodType dailyPeriodType = new DailyPeriodType();
             historyPeriod = dailyPeriodType.createPeriod( historyDate );
-            
+
             System.out.println( reportingDate + " : " + historyPeriod );
             if ( historyPeriod == null )
             {
@@ -198,10 +240,10 @@ public class SaveEmplyeePostAction
 
             historyPeriod = period;
         }
-        
+
         return historyPeriod;
     }
-    
+
     private final Period reloadPeriod( Period period )
     {
         return periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
@@ -220,5 +262,5 @@ public class SaveEmplyeePostAction
 
         return storedPeriod;
     }
-  
+
 }

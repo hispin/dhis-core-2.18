@@ -458,6 +458,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
         </property>
+		<property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.lldataentry.SaveValueAction"
@@ -493,7 +496,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="optionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 	
-	
+	<bean id="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction"
+    class="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+        <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
+		<property name="employeeService" ref="org.hisp.dhis.linelisting.EmployeeService"/>
+	</bean>
+		
     <bean id="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction"
     class="org.hisp.dhis.ll.action.llValidation.GetLineListValidationRuleListAction">
         <property name="validationRuleService">

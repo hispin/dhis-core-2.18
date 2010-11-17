@@ -552,7 +552,7 @@ public class MySQLDataBaseManager
         //Statement statement = null;
 
         // creating map of element and its values
-        Map<String, String> llElementValuesMap = new HashMap<String, String>();
+        //Map<String, String> llElementValuesMap = new HashMap<String, String>();
 
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
         // LineListDataValue llDataValue = new LineListDataValue();
@@ -610,12 +610,14 @@ public class MySQLDataBaseManager
                     while ( result.next() )
                     {
                         LineListDataValue llDataValue = new LineListDataValue();
+                        Map<String, String> llElementValuesMap = new HashMap<String, String>();
                         llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
                         Iterator it1 = elementsCollection.iterator();
                         while ( it1.hasNext() )
                         {
                             element = (LineListElement) it1.next();
-                            name = element.getShortName() + ":" + result.getInt( "recordnumber" );
+                            //name = element.getShortName() + ":" + result.getInt( "recordnumber" );
+                            name = element.getShortName();
                             if ( element.getDataType().equalsIgnoreCase( "string" ) )
                             {
                                 String tempString = result.getString( element.getShortName() );
@@ -668,7 +670,7 @@ public class MySQLDataBaseManager
 
     }
 
-    public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, Source source, Period period )
+    public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, Source source )
     {
         String columnDefinition = "";
         int noOfRows = 0;
