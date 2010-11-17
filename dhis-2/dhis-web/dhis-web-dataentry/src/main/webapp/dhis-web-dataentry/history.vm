@@ -115,7 +115,7 @@
 
 </table>
 
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="window.opener.location.reload();window.close()"/></p>
+<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )"/></p>
 
 <script type="text/javascript">
 

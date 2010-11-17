@@ -1,100 +1,56 @@
-<span id='message' style="position:fixed;top:80px;right:5px;z-index: 1001" onclick="hideMessage();"></span>
 
 <h3>$i18n.getString( "data_entry" ) #openHelp( "dataEntry" )</h3>
 
 <div id="currentSelection">
-	#if ( $organisationUnit ) $encoder.htmlEncode( $organisationUnit.name )#else $i18n.getString( "no_organisationunit_selected" ) #end - 
-	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString( "no_period_selected" ) #end <br/>				
+	<span id="currentOrganisationUnit">$i18n.getString( "no_organisationunit_selected" )</span> -
+	<span id="currentPeriod">$i18n.getString( "no_period_selected" )</span/><br>
 	<span id="currentDataElement">$i18n.getString( "no_dataelement_selected" )</span> -
 	<span id="currentOptionCombo">$i18n.getString( "no_option_selected" )</span>	
 </div>
 
-<form id="selectForm" name="selectForm" method="post" action="select.action">
-<input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
-<div id="actions" style="width:200px text-align:right">
-	
-    <input type="button" value="$i18n.getString( 'generate_min_max' )" onclick="javascript:generateMinMaxValues();" style="width:150px" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" )) disabled="disabled" #end/><br/>
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>
-    <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:150px" #if( !$selectedPeriodIndex ) disabled="disabled" #end/><br/>
+<div id="actions" style="width:200px text-align:right">	
+    <input type="button" value="$i18n.getString( 'generate_min_max' )" onclick="javascript:generateMinMaxValues()" style="width:150px" #if( !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" ) ) disabled="disabled" #end/><br/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/>
+    <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs()" style="width:150px"/><br/><br/>
 
-    <br/>
-	<input type="radio" id="displayModeCustom" name="displayMode" value="customform"
-       #if( $displayMode == "customform" ) 
-           checked="checked" 
-       #end
-       #if( !$customDataEntryFormExists ) 
-           disabled="disabled" 
-       #end         
-       onclick="document.getElementById( 'selectForm' ).submit();"/>    
+	<input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayEntryForm()">
     <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br/>
-
-	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform"
-	   #if( $displayMode == "sectionform" ) 
-	       checked="checked" 
-	   #end  
-	   #if( !$hasSection ) 
-	       disabled="disabled" 
-	   #end 
-	   onclick="document.getElementById( 'selectForm' ).submit();"/>
+	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform" disabled="disabled" onclick="displayEntryForm()">
 	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br/>
-
-	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform"
-       #if( $displayMode == "defaultform" ) 
-           checked="checked"           
-       #end       
-       onclick="document.getElementById( 'selectForm' ).submit();"/>    
+	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" onclick="displayEntryForm()">
     <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br/><br/>
-
 </div>
 
-<table>
-	
+<table>	
 	<tr>
 		<td><label>$i18n.getString( "organisation_unit" )</label></td>
-		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( 'select' )]" #end style="min-width:350px"/></td>
-	</tr>
-	
+		<td><input type="text" id="selectedOrganisationUnit" readonly="readonly" value="[ $i18n.getString( 'select' ) ]" style="min-width:350px"/></td>
+	</tr>	
 	<tr>
 		<td><label for="selectedDataSetId">$i18n.getString( "data_set" )</label></td>
-		<td>
-		    <select id="selectedDataSetId" name="selectedDataSetId" style="min-width:350px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $dataSets.size() == 0 ) disabled="disabled" #end>
-				<option value="null">[$i18n.getString( "select" )]</option>
-			    #foreach( $dataSet in $dataSets )
-				<option value="$dataSet.id" #if( $selectedDataSetId && $dataSet.id == $selectedDataSetId ) selected="selected" #end>$encoder.htmlEncode( $dataSet.name )</option>
-			    #end
-			</select>
-		</td>
-	</tr>
-	
+		<td><select id="selectedDataSetId" name="selectedDataSetId" style="min-width:350px" onchange="dataSetSelected()"></select></td>
+	</tr>	
 	<tr>
 		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
 		<td>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="window.location.href='previousPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="window.location.href='nextPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end/><br/>
-			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $periods.size() == 0 ) disabled="disabled" #end>
-				<option value="null">[$i18n.getString( "select" )]</option>
-			    #foreach( $period in $periods )
-				#set( $index = $velocityCount - 1 )
-				<option value="$index" #if( $index && $selectedPeriodIndex && $index == $selectedPeriodIndex ) selected="selected" #end>$format.formatPeriod( $period )</option>
-			    #end
-			</select>
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()"/>
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()"/><br/>
+			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="periodSelected()"></select>
 		</td>
-	</tr>
-	
+	</tr>	
 </table>
-
-</form>
 
 <hr style="clear:both"/>
 <br/>
+
+<div id="entryForm"></div>
 
 <script type="text/javascript">
 	var i18n_save_calculated_data_element_success = '$encoder.jsEscape( $i18n.getString( "save_calculated_data_element_success" ) , "'")';
 	var i18n_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_success" ) , "'")';
 	var i18n_register_complete_dataset_failed = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_failed" ) , "'")';
 	var i18n_undo_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "undo_register_complete_dataset_success" ) , "'")';
-	var i18n_generate_min_max_success = '$encoder.jsEscape( $i18n.getString( "generate_min_max_success" ) , "'")';
-	
+	var i18n_generate_min_max_success = '$encoder.jsEscape( $i18n.getString( "generate_min_max_success" ) , "'")';	
 	var i18n_saving_zero_values_unnecessary = '$encoder.jsEscape( $i18n.getString( "saving_zero_values_unnecessary" ) , "'")';
     var i18n_value_of_data_element_less = '$encoder.jsEscape( $i18n.getString( "value_of_data_element_less" ) , "'")';
     var i18n_value_of_data_element_greater = '$encoder.jsEscape( $i18n.getString( "value_of_data_element_greater" ) , "'")';
@@ -105,5 +61,4 @@
 	var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';
     var i18n_saving_comment_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_comment_failed_status_code" ) , "'")';
     var i18n_saving_minmax_failed_error_code = '$encoder.jsEscape( $i18n.getString( "saving_minmax_failed_error_code" ) , "'")';
-	
 </script>

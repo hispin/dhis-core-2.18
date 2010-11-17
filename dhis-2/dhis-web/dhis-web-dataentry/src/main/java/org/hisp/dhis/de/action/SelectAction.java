@@ -52,6 +52,8 @@ import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import static org.hisp.dhis.de.state.SelectedStateManager.*;
+
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: SelectAction.java 5930 2008-10-15 03:30:52Z tri $
@@ -59,11 +61,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public class SelectAction
     extends ActionSupport
 {
-    private static final String CUSTOM_FORM = "customform";
-    private static final String SECTION_FORM = "sectionform";
-    private static final String DEFAULT_FORM = "defaultform";    
-    private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";   
-
     private static final Log log = LogFactory.getLog( SelectAction.class );
 
     // -------------------------------------------------------------------------
@@ -144,10 +141,6 @@ public class SelectAction
         return locked;
     }
 
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
     private Boolean hasSection;
 
     public Boolean getHasSection()
@@ -160,42 +153,6 @@ public class SelectAction
     public Boolean getCustomDataEntryFormExists()
     {
         return this.customDataEntryFormExists;
-    }
-
-    private String displayMode;
-
-    public String getDisplayMode()
-    {
-        return displayMode;
-    }
-
-    public void setDisplayMode( String displayMode )
-    {
-        this.displayMode = displayMode;
-    }
-
-    private Integer selectedDataSetId;
-
-    public void setSelectedDataSetId( Integer selectedDataSetId )
-    {
-        this.selectedDataSetId = selectedDataSetId;
-    }
-
-    public Integer getSelectedDataSetId()
-    {
-        return selectedDataSetId;
-    }
-
-    private Integer selectedPeriodIndex;
-
-    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
-    {
-        this.selectedPeriodIndex = selectedPeriodIndex;
-    }
-
-    public Integer getSelectedPeriodIndex()
-    {
-        return selectedPeriodIndex;
     }
 
     private Collection<Integer> calculatedDataElementIds;
@@ -224,6 +181,46 @@ public class SelectAction
     public Date getRegistrationDate()
     {
         return registrationDate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
+
+    private String displayMode;
+
+    public String getDisplayMode()
+    {
+        return displayMode;
+    }
+
+    public void setDisplayMode( String displayMode )
+    {
+        this.displayMode = displayMode;
+    }
+
+    private Integer selectedDataSetId;
+
+    public Integer getSelectedDataSetId()
+    {
+        return selectedDataSetId;
+    }
+
+    public void setSelectedDataSetId( Integer selectedDataSetId )
+    {
+        this.selectedDataSetId = selectedDataSetId;
+    }
+
+    private Integer selectedPeriodIndex;
+
+    public Integer getSelectedPeriodIndex()
+    {
+        return selectedPeriodIndex;
+    }
+
+    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
+    {
+        this.selectedPeriodIndex = selectedPeriodIndex;
     }
 
     // -------------------------------------------------------------------------
@@ -329,21 +326,17 @@ public class SelectAction
         period = selectedStateManager.getSelectedPeriod();
 
         // ---------------------------------------------------------------------
-        // Get CalculatedDataElementInformation
+        // Get CalculatedDataElement info
         // ---------------------------------------------------------------------
 
         calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );
         calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );
 
         // ---------------------------------------------------------------------
-        // Get Section Information
+        // Get display info
         // ---------------------------------------------------------------------
 
-        hasSection = dataEntryScreenManager.hasSection( selectedDataSet );
-
-        // ---------------------------------------------------------------------
-        // Get the custom data entry form if any
-        // ---------------------------------------------------------------------
+        hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
 
         customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
 
@@ -359,7 +352,7 @@ public class SelectAction
             registrationDate = registration != null ? registration.getDate() : new Date();
         }
 
-        if ( displayMode == null )
+        if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
         {
             if ( customDataEntryFormExists )
             {
@@ -375,11 +368,8 @@ public class SelectAction
             }
         }
         
-        if ( displayMode.equals( SECTION_FORM ) && hasSection )
-        {
-            return SECTION_FORM;
-        }
-
-        return MULTI_DIMENSIONAL_FORM;
+        selectedStateManager.setSelectedDisplayMode( displayMode );
+        
+        return displayMode;
     }
 }

@@ -161,13 +161,6 @@ public class DefaultDataEntryScreenManager
         return calculatedDataElementMap;
     }
 
-    public boolean hasSection( DataSet dataSet )
-    {
-        Collection<Section> sections = new ArrayList<Section> ( dataSet.getSections() );
-
-        return sections.size() != 0;
-    }
-
     public Map<CalculatedDataElement, Integer> populateValuesForCalculatedDataElements(
         OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {

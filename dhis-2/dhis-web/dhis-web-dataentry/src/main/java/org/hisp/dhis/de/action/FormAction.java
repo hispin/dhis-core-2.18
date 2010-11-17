@@ -316,16 +316,10 @@ public class FormAction
         return zeroValueSaveMode;
     }
 
-    private Boolean disableDefaultForm;
-
-    public Boolean getDisableDefaultForm()
-    {
-        return disableDefaultForm;
-    }
-
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
+    
     private Integer selectedDataSetId;
 
     public void setSelectedDataSetId( Integer selectedDataSetId )
@@ -370,8 +364,6 @@ public class FormAction
     public String execute()
         throws Exception
     {
-        disableDefaultForm = false;
-
         zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();

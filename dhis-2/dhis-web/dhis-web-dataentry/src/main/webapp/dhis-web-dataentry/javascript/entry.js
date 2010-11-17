@@ -1,16 +1,5 @@
 
 // -----------------------------------------------------------------------------
-// Selection
-// -----------------------------------------------------------------------------
-
-function organisationUnitSelected( orgUnits )
-{
-    window.location.href = 'select.action';
-}
-
-selection.setListenerFunction( organisationUnitSelected );
-
-// -----------------------------------------------------------------------------
 // Save
 // -----------------------------------------------------------------------------
 
@@ -315,5 +304,5 @@ function dataValuesReceived( node )
 	
 	unLockScreen();
 	
-	setMessage(i18n_save_calculated_data_element_success);
+	setHeaderDelayMessage(i18n_save_calculated_data_element_success);
 }

@@ -67,6 +67,8 @@ public class DefaultSelectedStateManager
     public static final String SESSION_KEY_SELECTED_PERIOD_INDEX = "data_entry_selected_period_index";
 
     public static final String SESSION_KEY_BASE_PERIOD = "data_entry_base_period";
+    
+    public static final String SESSION_KEY_SELECTED_DISPLAY_MODE = "data_entry_selected_display_mode";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -273,6 +275,20 @@ public class DefaultSelectedStateManager
         Period period = getSelectedPeriod();
 
         return periodService.reloadPeriod( period );
+    }
+
+    // -------------------------------------------------------------------------
+    // DisplayMode
+    // -------------------------------------------------------------------------
+    
+    public void setSelectedDisplayMode( String displayMode )
+    {
+        getSession().put( SESSION_KEY_SELECTED_DISPLAY_MODE, displayMode );
+    }
+    
+    public String getSelectedDisplayMode()
+    {
+        return (String) getSession().get( SESSION_KEY_SELECTED_DISPLAY_MODE );
     }
     
     // -------------------------------------------------------------------------

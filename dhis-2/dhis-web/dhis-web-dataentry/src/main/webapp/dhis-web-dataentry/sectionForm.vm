@@ -1,5 +1,5 @@
 
-#parse( "/dhis-web-dataentry/select.vm" )
+<input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
 
 #set( $marker = 0 )
 #set( $tabIndex = 1 )
