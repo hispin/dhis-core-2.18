@@ -72,12 +72,13 @@ public class FinancialAprilPeriodType
     private Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) + cal.get( Calendar.MONDAY ) / 7 - 1);
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMinimum( Calendar.DAY_OF_YEAR ) + 90 );
+        cal.set( Calendar.MONTH, Calendar.APRIL );
+        cal.set( Calendar.DATE, 1 );
 
         Date startDate = cal.getTime();
 
         cal.add( Calendar.YEAR, 1 );
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMinimum( Calendar.DAY_OF_YEAR ) + 89 );
+        cal.set( Calendar.DAY_OF_YEAR, cal.get( Calendar.DAY_OF_YEAR ) - 1  );
 
         return new Period( this, startDate, cal.getTime() );
     }
@@ -97,7 +98,7 @@ public class FinancialAprilPeriodType
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
 
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 10 );
+        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 12 );
 
         Date startDate = cal.getTime();
         cal.add( Calendar.YEAR, 1 );
@@ -110,7 +111,7 @@ public class FinancialAprilPeriodType
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 - 1 );
+        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 2 );
         Date startDate = cal.getTime();
 
         cal.add( Calendar.YEAR, 1 );
@@ -128,7 +129,8 @@ public class FinancialAprilPeriodType
         ArrayList<Period> years = new ArrayList<Period>();
 
         Calendar cal = createCalendarInstance( date );
-        cal.add( Calendar.YEAR, cal.get( Calendar.YEAR ) % 2 == 0 ? -10 : -9 );
+        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) + cal.get( Calendar.MONDAY ) / 7 - 11);
+        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMinimum( Calendar.DAY_OF_YEAR ) + 90 );
 
         for ( int i = 0; i < 11; ++i )
         {
