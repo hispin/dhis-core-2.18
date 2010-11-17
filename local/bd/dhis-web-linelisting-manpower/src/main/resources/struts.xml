@@ -411,7 +411,6 @@
         
         <action name="saveEmployeePost" class="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction">
             <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-linelisting-mp/select.vm</param>
         </action>
 
         <action name="updateLineListEntry"
@@ -420,10 +419,11 @@
             <param name="requiredAuthorities">F_LINELISTEntry_UPDATE</param>
         </action>
         
-        <action name="getEmployeeName"
-            class="org.hisp.dhis.ll.action.employee.GetEmployeeAction">
+        <action name="validateEmployeeExist"
+            class="org.hisp.dhis.ll.action.lldataentry.ValidateEmployeeExistAction">
             <result name="success" type="velocity-xml">/dhis-web-linelisting-mp/responseSuccess.vm</result>
             <result name="input" type="velocity-xml">/dhis-web-linelisting-mp/responseInput.vm</result>
+			<result name="employeeexist" type="velocity-xml">/dhis-web-linelisting-mp/responseEmployeeExist.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 		

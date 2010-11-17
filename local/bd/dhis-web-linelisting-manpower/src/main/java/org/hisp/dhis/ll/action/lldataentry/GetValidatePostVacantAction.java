@@ -89,13 +89,13 @@ public class GetValidatePostVacantAction
     // --------------------------------------------------------------------------
     // Input/Output
     // --------------------------------------------------------------------------
-    private String datavalue;
-
-    public void setDatavalue( String datavalue )
+    private String dataValue;
+    
+    public void setDataValue( String dataValue )
     {
-        this.datavalue = datavalue;
+        this.dataValue = dataValue;
     }
-
+    
     private String dataValueMapKey;
 
     public void setDataValueMapKey( String dataValueMapKey )
@@ -129,8 +129,6 @@ public class GetValidatePostVacantAction
     {
         OrganisationUnit organisationunit = selectedStateManager.getSelectedOrganisationUnit();
         
-        Period period = selectedStateManager.getSelectedPeriod();
-        
         lineListGroup = selectedStateManager.getSelectedLineListGroup();
         
         LineListOption lineListOption = selectedStateManager.getSelectedLineListOption();
@@ -144,13 +142,14 @@ public class GetValidatePostVacantAction
         llElementValueMap.put( postLineListElementName, lineListOption.getName() );
         llElementValueMap.put( lastWorkingDateLLElementName, "null" );
 
-        int recordNo = dataBaseManagerInterface.getLLValueCountByLLElements( departmentLineListName, llElementValueMap, organisationunit, period );
+        int recordNo = dataBaseManagerInterface.getLLValueCountByLLElements( departmentLineListName, llElementValueMap, organisationunit );
+        System.out .println("The Entered Value is: " + dataValue + "Column name is: " + postLineListElementName );
         
-        int dataValue = Integer.parseInt( datavalue );
+        int input = Integer.parseInt( dataValue );
 
-        if( dataValue > recordNo )
+        if( input > recordNo )
         {
-            message = "Number of Sanctioned Position is " + dataValue + "And Number of Filled Position is " + recordNo + "\n Do you want to Add ?";
+            message = "Number of Sanctioned Position is " + input + " And Number of Filled Position is " + recordNo + "\nDo you want to Add ?";
             saveDataValue();
             return SUCCESS;
         }
@@ -181,13 +180,13 @@ public class GetValidatePostVacantAction
         DataElementCategoryOptionCombo optionCombo = optionComboService
         .getDataElementCategoryOptionCombo( optionComboId );
 
-        if ( datavalue != null && datavalue.trim().length() == 0 )
+        if ( dataValue != null && dataValue.trim().length() == 0 )
         {
-            datavalue = null;
+            dataValue = null;
         }
-        if ( datavalue != null )
+        if ( dataValue != null )
         {
-            datavalue = datavalue.trim();
+            dataValue = dataValue.trim();
         }
 
         DataValue dataValueObj = dataValueService.getDataValue( organisationunit, dataElement, historyPeriod, optionCombo );
@@ -199,16 +198,16 @@ public class GetValidatePostVacantAction
 
         if ( dataValueObj == null )
         {
-            if ( datavalue != null )
+            if ( dataValue != null )
             {
-                dataValueObj = new DataValue( dataElement, historyPeriod, organisationunit, datavalue, storedBy, new Date(), null,
+                dataValueObj = new DataValue( dataElement, historyPeriod, organisationunit, dataValue, storedBy, new Date(), null,
                     optionCombo );
                 dataValueService.addDataValue( dataValueObj );
             }
         }
         else
         {
-            dataValueObj.setValue( datavalue );
+            dataValueObj.setValue( dataValue );
             dataValueObj.setTimestamp( new Date() );
             dataValueObj.setStoredBy( storedBy );
 

@@ -37,6 +37,8 @@ import java.util.Map;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
+import org.hisp.dhis.linelisting.Employee;
+import org.hisp.dhis.linelisting.EmployeeService;
 import org.hisp.dhis.linelisting.LineListDataElementMap;
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
@@ -87,14 +89,7 @@ public class FormAction
     {
         this.lineListService = lineListService;
     }
-/*
-    private I18n i18n;
 
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-*/
     private DataValueService dataValueService;
     
     public void setDataValueService( DataValueService dataValueService )
@@ -102,10 +97,16 @@ public class FormAction
         this.dataValueService = dataValueService;
     }
     
+    private EmployeeService employeeService;
+    
+    public void setEmployeeService( EmployeeService employeeService )
+    {
+        this.employeeService = employeeService;
+    }
+    
     // --------------------------------------------------------------------------
     // Parameters
     // --------------------------------------------------------------------------
-
 
     private Map<String, DataValue> dataValueMap;
     
@@ -127,14 +128,7 @@ public class FormAction
     {
         return sactionedPostdataelement;
     }
-/*
-    private Integer count1;
 
-    public void setCount1( Integer count1 )
-    {
-        this.count1 = count1;
-    }
-*/
     private Integer selectedLineListGroupId;
 
     public Integer getSelectedLineListGroupId()
@@ -184,14 +178,7 @@ public class FormAction
     {
         return llElementOptionsMap;
     }
-/*
-    private Map<LineListElement, String> llElementValuesMap;
 
-    public void setLlElementValuesMap( Map<LineListElement, String> llElementValuesMap )
-    {
-        this.llElementValuesMap = llElementValuesMap;
-    }
-*/
     private List<LineListDataValue> llDataValuesList;
 
     public List<LineListDataValue> getLlDataValuesList()
@@ -204,10 +191,18 @@ public class FormAction
         this.llDataValuesList = llDataValuesList;
     }
 
+    private List<Employee> employeeList;
+    
+    public List<Employee> getEmployeeList()
+    {
+        return employeeList;
+    }
+
     private Collection<LineListOption> lineListOptions;
 
     public String execute() throws Exception
     {
+        employeeList = new ArrayList<Employee>();
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
@@ -218,7 +213,7 @@ public class FormAction
         llElementOptionsMap = new HashMap<String, Collection<LineListOption>>();
 
         List<Integer> recordNumbers = new ArrayList<Integer>();
-
+        
         lineListElements = new ArrayList<LineListElement>( lineListGroup.getLineListElements() );
         if ( lineListElements.size() == 0 )
         {
@@ -253,10 +248,8 @@ public class FormAction
 
         if( lineListGroup != null && lineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) )
         {              
-            //period = periodService.getPeriod( 0 );
             period = dataBaseManagerInterface.getRecentPeriodForOnChangeData( lineListGroup.getShortName(), postLineListElementName, lineListOption.getName(), organisationUnit );
             
-            //System.out.println("CurPeriod: "+period.getId());
         }
         else
         {
@@ -295,7 +288,6 @@ public class FormAction
                 {
                     sactionedPostdataelement = mapName;
                 }
-                //System.out.println("sactionedPostdataelement = "+sactionedPostdataelement + " dataValue = "+dataValue.getValue());
                 dataValueMap.put( mapName, dataValue );
                 
                 dataelementMap.put( mapName, lineListDataElementMap.getDataElement().getName() + " : " + lineListDataElementMap.getDataElementOptionCombo().getName() );
@@ -303,11 +295,12 @@ public class FormAction
 
             llDataValuesList = new ArrayList<LineListDataValue>();
 
-            //llDataValuesList = dataBaseManagerInterface.getFromLLTable( lineListGroup.getShortName(), organisationUnit, period );
-            //llDataValuesList = dataBaseManagerInterface.getLLValuesByLLElementValue( lineListGroup.getShortName(), postLineListElementName, lineListOption.getName(), organisationUnit, period );
             llDataValuesList = dataBaseManagerInterface.getLLValuesFilterByLLElements(  lineListGroup.getShortName(), llElementValueMap, organisationUnit, period );
             
-            if ( llDataValuesList.isEmpty() || llDataValuesList == null )
+            // HardCoding Column Name
+            
+            String pdsCodeColName = "pdscode";
+            if ( llDataValuesList == null || llDataValuesList.isEmpty() )
             {
                 return SUCCESS;
             } 
@@ -315,6 +308,19 @@ public class FormAction
             {
                 for ( LineListDataValue llDataValue : llDataValuesList )
                 {
+                    Map<String, String> llValueMap = llDataValue.getLineListValues();
+                    if ( llValueMap != null)
+                    {
+                        String pdsCode = llValueMap.get( pdsCodeColName );
+                        if( pdsCode != null )
+                        {
+                            Employee employee = employeeService.getEmployeeByPDSCode( pdsCode );
+                            if( employee != null )
+                            {
+                                employeeList.add( employee );
+                            }
+                        }
+                    }
                     recordNumbers.add( Integer.valueOf( llDataValue.getRecordNumber() ) );
                 }
             }

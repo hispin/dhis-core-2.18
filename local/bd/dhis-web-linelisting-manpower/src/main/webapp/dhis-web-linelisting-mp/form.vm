@@ -4,7 +4,7 @@
 <script>
     var rowCount = 0;
     var sancPos = 0;
-    
+    var dataValueMapKey;
     function setSancPost( curSancPos )
     {
     	sancPos = curSancPos;
@@ -29,7 +29,7 @@
 			<td align="center">$count1</td>
 			<td>$dataElementName</td>
 			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" onchange="setSancPost(this.value)"/>
-			<script>sancPos='$!dataValue.value';</script>
+			<script>sancPos='$!dataValue.value'; dataValueMapKey='$dataValueMapKey';</script>
 			#if( $sactionedPostdataelement == $dataValueMapKey)
 				<input type="button" value="Add" onclick="validatePostVacant( '$dataValueMapKey' )">
 			#end
@@ -39,101 +39,33 @@
 	#end
 	
 </table>
-<!--
-<table id="tblGrid" width="100%">
 
-    <tr>
-        <th width="20">Sr.No.</th>
-        #foreach( $lineListElement in $lineListElements )
-			<th>$lineListElement.name</th>
-        #end
-        <th width="20">Delete</th>
+<table class="listTable" id="listTable" align="centre">
+
+				
+				<col>
+                <col width="20">                	
+                <col width="20">
+	<tr>
+        <td>$i18n.getString( "filter_by_name" ) : <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
+    	<td></td><td></td>
     </tr>
-
-	#set($maxRecord = 0)
-	#set($recordNumberList = "")
-	#set($calInfo = "")
-	#set($srno = 0)
-	
-	#if($llDataValuesList.size()!=0)
-
-		#foreach($llDataValue in $llDataValuesList)
-			#set($srno = $srno + 1)
-			#set($recordNumber = $llDataValue.recordNumber)
-			#set($recordNumberList = $recordNumberList + $recordNumber +":")
-			#set($llElementValuesMap = $llDataValue.lineListValues)
-	
-			<tr>
-				<td><label id="sr.no">$srno</label></td>
-				#set( $colCount = 0 )
-				#foreach( $lineListElement in $lineListElements )
-					#set($element = $lineListElement.shortName+':'+$recordNumber)
-					#set($getDate = 'getDate:'+$element)
-					#if($lineListElement.PresentationType == 'text')
-						<td>
-							<input type="text" name="$element" id = "$element" style="width:10em" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')" value=$!llElementValuesMap.get($element)>
-						</td>
-					#elseif($lineListElement.PresentationType == 'combobox')
-						<td>
-							<select name="$element" id="$element" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
-							<option name="SelectOption" value="" selected>--Select--</option>
-								#set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
-								#foreach( $lineListOption in $lineListOptions )
-									<option name="$lineListOption.name" value="$lineListOption.name" #if($lineListOption.name == $llElementValuesMap.get($element)) selected #end>$lineListOption.name</option>
-								#end
-							</select>
-						</td>
-					#elseif($lineListElement.PresentationType == 'calender')
-						<td>
-						  <input type="text" id="$element" name="$element" style="width:10em" value="$!llElementValuesMap.get($element)" onchange="return valueChanged($recordNumber,'$lineListElement.shortName')">
-						  <img src="../images/calendar_icon.gif" width="16" height="16" id="$getDate" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background='green'" alt="Date">
-						</td>
-						<script type="text/javascript">
-							Calendar.setup({
-								inputField     :    "$element",      // id of the input field
-								ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-								button         :    "$getDate"   // trigger for the calendar (button ID)
-							});
-						</script>
-					#end
-				#end
-				<td>
-					<a href="javascript:removeLLRecord( '$recordNumber' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-				</td>
-				<td>
-					<input type="hidden" name="recordNumber:$recordNumber" id="recordNumber:$recordNumber" value="$recordNumber" style="width:10px;">
-				</td>
-				<td>
-					<input type="hidden" name="changedValue:$recordNumber" id="changedValue:$recordNumber">
-				</td>
-			</tr>
-			#set($maxRecord = $maxRecord + 1)
-		#end
-	#end
-
-</table>
-
-<br/><br/><br/>
-
-<table>
-    <tr>
-		<td>
-			<center><input type="submit" value="Save"> 
-			<input type="hidden" id="reportedDate" name="reportedDate">
-		</td>
-		<td>
-			<input type="text" name="recordsFromDb" id="recordsFromDb" value="$maxRecord">recordsFromDb
-			<input type="hidden" name="delRecordNo" id="delRecordNo" >
-		</td>
-		<td>
-			<input type="text" name="totalRecords" id="totalRecords">totalRecords
-		</td>
-		<td>
-			<input type="hidden" name="recordNumbersList" id="recordNumbersList" value="$recordNumberList">
-		</td>
+	<tr>
+	    <th>$i18n.getString( "name" ) - $i18n.getString( "pdscode" )</th>
+	    <th colspan="2">$i18n.getString( "operations" )</th>
 	</tr>
+	<tbody id="list">
+        #set( $mark = false )
+        #foreach( $employee in $employeeList )
+        	<tr id="tr${employee.pdsCode}">
+                    <td#alternate( $mark )>$encoder.htmlEncode( $employee.name ) - $encoder.htmlEncode( $employee.pdsCode )</td>
+                    <td style="text-align:center"#alternate( $mark )><a href="showUpdateEmployeePostForm.action?id=$employee.pdsCode" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                    <td style="text-align:center"#alternate( $mark )><a href="javascript:showEmployeePostDetails( '$employee.pdsCode' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+        #end
+
+	<tbody>
 </table>
--->
+</form>
 <script type="text/javascript">
 
         $calInfo

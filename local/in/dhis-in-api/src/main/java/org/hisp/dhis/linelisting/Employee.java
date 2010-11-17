@@ -88,7 +88,7 @@ public class Employee
     /**
      * isTransferred
      */
-    private boolean isTransferred = false;
+    private Boolean isTransferred = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -114,7 +114,7 @@ public class Employee
 
     public Employee( String pdsCode, String name, Date dateOfBirth, Date lprDate, String sex,
         Date joinDateToGovtService, String resAddress, String contactNumber, String emergencyContactNumber,
-        boolean isTransferred )
+        Boolean isTransferred )
     {
         this.pdsCode = pdsCode;
         this.name = name;
@@ -255,7 +255,7 @@ public class Employee
         this.emergencyContactNumber = emergencyContactNumber;
     }
 
-    public boolean getIsTransferred()
+    public Boolean getIsTransferred()
     {
         return isTransferred;
     }

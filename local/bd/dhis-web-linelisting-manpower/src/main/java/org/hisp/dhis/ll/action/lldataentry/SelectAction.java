@@ -83,28 +83,7 @@ public class SelectAction
     {
         this.lineListService = lineListService;
     }
-/*
-    private DataElementService dataElementService;
 
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-*/
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -259,8 +238,6 @@ public class SelectAction
         // Load LineListGroups
         // ---------------------------------------------------------------------
         lineListGroups = selectedStateManager.loadLineListGroupsForSelectedOrgUnit( organisationUnit );
-        // lineListGroups = new ArrayList<LineListGroup>(
-        // lineListService.getLineListGroupsBySource( organisationUnit ) );
 
         // ---------------------------------------------------------------------
         // Remove LineListGroups which don't have a CalendarPeriodType or are
@@ -287,7 +264,6 @@ public class SelectAction
         {
             selectedLineListGroupId = selectedLineListGroup.getId();
             selectedStateManager.setSelectedLineListGroup( selectedLineListGroup );
-            //System.out.println("REturning SUCCESS from linelist group which is selected");
         }
         else
         {
@@ -300,7 +276,6 @@ public class SelectAction
             selectedStateManager.clearSelectedLineListOption();
             selectedStateManager.clearSelectedPeriod();
 
-            //System.out.println("REturning SUCCESS from linelist group which is not selected");
             return SUCCESS;
         }
         
@@ -317,25 +292,16 @@ public class SelectAction
         if ( selectedLineListOptionId != null && !selectedLineListOptionId.equalsIgnoreCase( "null" ) )
         {
             selectedLineListOption = lineListService.getLineListOptionByName( selectedLineListOptionId );
-            /*
-            if(selectedLineListOption == null )
-            
-                System.out.println("1");
-            else
-                System.out.println("1.1");
-                */
         }
         else
         {
             selectedLineListOption = selectedStateManager.getSelectedLineListOption();
-            //System.out.println("2");
         }
 
         if ( selectedLineListOption != null && lineListOptions.contains( selectedLineListOption ) )
         {
             selectedLineListOptionId = selectedLineListOption.getName();
             selectedStateManager.setSelectedLineListOption( selectedLineListOption );
-            //System.out.println("3");
         }
         else
         {
@@ -345,7 +311,6 @@ public class SelectAction
             selectedStateManager.clearSelectedLineListOption();
             selectedStateManager.clearSelectedPeriod();
             
-            //System.out.println("4");
             return SUCCESS;
         }
 
@@ -378,9 +343,7 @@ public class SelectAction
             selectedPeriodIndex = null;
             selectedStateManager.clearSelectedPeriod();
 
-            //System.out.println("REturning default from from period block");
             return DEFAULT_FORM;
-            // periods.add( periodService.getPeriod( 0 ) );
         }
         else
         {

@@ -60,13 +60,37 @@ implements Action
         return linelistGroupId;
     }
     
+    private String dataValueMapKey;
+    
+    public String getDataValueMapKey()
+    {
+        return dataValueMapKey;
+    }
+
+    public void setDataValueMapKey( String dataValueMapKey )
+    {
+        this.dataValueMapKey = dataValueMapKey;
+    }
+    
+    private String dataValue;
+
+    public String getDataValue()
+    {
+        return dataValue;
+    }
+
+    public void setDataValue( String dataValue )
+    {
+        this.dataValue = dataValue;
+    }
+    
     public String reportingDate;
 
     public String getReportingDate()
     {
         return reportingDate;
     }
-
+    
     public void setReportingDate( String reportingDate )
     {
         this.reportingDate = reportingDate;
