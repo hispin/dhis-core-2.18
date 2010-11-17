@@ -8,7 +8,7 @@
   font-size: 14px;
   text-align: right;
   position: fixed;
-  top: 85px;
+  top: 80px;
   right: 10px;
   filter: alpha(opacity=90);
   opacity: 0.90;
@@ -16,7 +16,7 @@
 
 #selectForm 
 {
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 #actions 

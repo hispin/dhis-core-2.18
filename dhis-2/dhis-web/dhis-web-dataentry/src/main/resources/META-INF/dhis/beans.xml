@@ -41,20 +41,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Actions -->
 
+	<bean id="org.hisp.dhis.de.action.LoadOrganisationUnitAction" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.de.action.LoadDataSetsAction" class="org.hisp.dhis.de.action.LoadDataSetsAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+	</bean>
+
+	<bean id="org.hisp.dhis.de.action.LoadPeriodsAction" class="org.hisp.dhis.de.action.LoadPeriodsAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.de.action.LoadDisplayModesAction" class="org.hisp.dhis.de.action.LoadDisplayModesAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+	</bean>
+
 	<bean id="org.hisp.dhis.de.action.SelectAction" class="org.hisp.dhis.de.action.SelectAction" scope="prototype">
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="dataEntryScreenManager"	ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.NextPeriodsAction" class="org.hisp.dhis.de.action.NextPeriodsAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.PreviousPeriodsAction" class="org.hisp.dhis.de.action.PreviousPeriodsAction" scope="prototype">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.FormAction" class="org.hisp.dhis.de.action.FormAction" scope="prototype">

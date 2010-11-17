@@ -27,6 +27,7 @@ package org.hisp.dhis.de.state;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -39,6 +40,12 @@ import org.hisp.dhis.period.Period;
  */
 public interface SelectedStateManager
 {
+    final String CUSTOM_FORM = "customform";
+    final String SECTION_FORM = "sectionform";
+    final String DEFAULT_FORM = "defaultform";
+    
+    final List<String> ALLOWED_FORM_TYPES = Arrays.asList( CUSTOM_FORM, SECTION_FORM, DEFAULT_FORM );
+
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -76,4 +83,12 @@ public interface SelectedStateManager
     void previousPeriodSpan();
     
     Period reloadPeriod();
+
+    // -------------------------------------------------------------------------
+    // DisplayMode
+    // -------------------------------------------------------------------------
+    
+    void setSelectedDisplayMode( String displayMode );
+    
+    String getSelectedDisplayMode();
 }

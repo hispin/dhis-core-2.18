@@ -48,8 +48,6 @@ public interface DataEntryScreenManager
 {
     boolean hasMultiDimensionalDataElement( Section section );
     
-    boolean hasSection( DataSet dataSet );
-    
     Collection<Integer> getAllCalculatedDataElements( DataSet dataSet );
     
     Map<CalculatedDataElement, Map<DataElement, Integer>> getNonSavedCalculatedDataElements( DataSet dataSet );

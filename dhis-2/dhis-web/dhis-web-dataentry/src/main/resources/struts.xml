@@ -10,13 +10,11 @@
 		namespace="/dhis-web-dataentry">
 
 		<action name="index" class="org.hisp.dhis.de.action.EmptyAction">
-			<result name="success" type="redirect">select.action</result>
+			<result name="success" type="redirect">displayForm.action</result>
 		</action>
 
-		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
+		<action name="displayForm" class="org.hisp.dhis.de.action.LoadOrganisationUnitAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="sectionform" type="chain">sectionform</result>
-			<result name="multidimensionalform" type="chain">multidimensionalform</result>
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dataentry/select.vm</param>
 			<param name="menu">/dhis-web-dataentry/menu.vm</param>
@@ -25,32 +23,39 @@
 			<param name="stylesheets">style/dhis-web-dataentry.css</param>
 		</action>
 
-		<action name="nextPeriods" class="org.hisp.dhis.de.action.NextPeriodsAction">
-			<result name="success" type="redirect">select.action</result>
+		<action name="loadDataSets" class="org.hisp.dhis.de.action.LoadDataSetsAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonDataSets.vm</result>
+		</action>
+		
+		<action name="loadPeriods" class="org.hisp.dhis.de.action.LoadPeriodsAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
+		</action>
+		
+		<action name="loadDisplayModes" class="org.hisp.dhis.de.action.LoadDisplayModesAction">
+			<result name="success" type="velocity-json">/dhis-web-dataentry/responseDisplayModes.vm</result>
+		</action>
+		
+		<action name="select" class="org.hisp.dhis.de.action.SelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="customform" type="chain">customform</result>
+			<result name="sectionform" type="chain">sectionform</result>
+			<result name="defaultform" type="chain">defaultform</result>
+			<result name="success" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
 		</action>
 
-		<action name="previousPeriods" class="org.hisp.dhis.de.action.PreviousPeriodsAction">
-			<result name="success" type="redirect">select.action</result>
+		<action name="customform" class="org.hisp.dhis.de.action.FormAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/dhis-web-dataentry/customForm.vm</result>
 		</action>
 
 		<action name="sectionform" class="org.hisp.dhis.de.action.SectionFormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dataentry/sectionForm.vm</param>
-			<param name="menu">/dhis-web-dataentry/menu.vm</param>
-			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
-			<param name="stylesheets">style/dhis-web-dataentry.css</param>
+			<result name="success" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
 		</action>
 
-		<action name="multidimensionalform"	class="org.hisp.dhis.de.action.FormAction">
+		<action name="defaultform"	class="org.hisp.dhis.de.action.FormAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dataentry/form.vm</param>
-			<param name="menu">/dhis-web-dataentry/menu.vm</param>
-			<param name="menuTreeHeight">420</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/form.js,javascript/entry.js</param>
-			<param name="stylesheets">style/dhis-web-dataentry.css</param>
+			<result name="success" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
 		</action>
 
 		<action name="saveMultiDimensionalValue" class="org.hisp.dhis.de.action.SaveValueAction">
@@ -128,6 +133,6 @@
 		<action name="getHistoryChart" class="org.hisp.dhis.de.action.GetHistoryChartAction">
 			<result name="success" type="chart"></result>
 		</action>
-
+		
 	</package>
 </struts>
