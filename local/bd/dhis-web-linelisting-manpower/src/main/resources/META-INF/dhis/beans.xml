@@ -560,6 +560,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
+	
+	<bean id="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction"
+		class="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction" scope="prototype">
+        <property name="selectedStateManager">
+            <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+        </property>
+		<property name="dataBaseManagerInterface">
+            <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
+        </property>
+    </bean>
+	
+ 	
+	
 <!-- 15/10/2010 Start -->
     <bean id="org.hisp.dhis.ll.action.llValidation.GetLineListElementsAction"
         class="org.hisp.dhis.ll.action.llValidation.GetLineListElementsAction" scope="prototype">

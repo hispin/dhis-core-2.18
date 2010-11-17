@@ -2,7 +2,6 @@
 <script type="text/javascript" src="../"></script>
 
 <form id="employeePostForm" action="saveEmployeePost.action" method="post" >
-	
 	<table align="centre">
 		<tr>
 			<td><label for="department"><Strong>Department</Strong> </label></td>
@@ -16,30 +15,21 @@
 			<td>
 				<input id="post" name="post" type="text" readonly="readonly" value="$linelistOptionName" style="min-width:200px">
 			</td>
-			<td>
-				<input type="hidden" name="groupid" id="groupid" value="$linelistGroupId">
-				<input type="hidden" name="reportingDate" id="reportingDate" value="$reportingDate">
-				<input type="hidden" name="dataValue" id="dataValue" value="$dataValue">
-			</td>
-			<td>
-				<input type="hidden" name="dataValueMapKey" id="dataValueMapKey" value="$dataValueMapKey">
-			</td>
 		</tr>
-		
-		<tr><td></td></tr><tr><td></td></tr>
 		#set( $count = 0 )
 		#foreach( $lineListElement in $lineListElements )
 			<tr>
 				<td><label>$lineListElement.name</label></td>
 				#if($lineListElement.PresentationType == 'text')
 						<td>
-							<input type="text" name="$lineListElement.shortName" id = "$lineListElement.shortName" style="width:10em" #if($count==0) onchange="getEmployeeName( '$lineListElement.shortName', this.value )" #end onkeypress="return keyPress(event, this)" value=$!llElementValuesMap.get($element)>
+							<input type="text" name="$lineListElement.shortName" id = "$lineListElement.shortName" style="width:10em" #if($count==0) readonly="readonly" #end onkeypress="return keyPress(event, this)" value=$llDataValuesMap.get($lineListElement.shortName)>
 						</td>
 					#elseif($lineListElement.PresentationType == 'combobox')
 						<td>
 							<select name="$element" id="$element" onkeypress="return keyPress(event, this)">
 							<option name="SelectOption" value="" selected>--Select--</option>
-								#set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
+								##set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
+								#set($lineListOptions = $lineListElement.lineListElementOptions)
 								#foreach( $lineListOption in $lineListOptions )
 									<option name="$lineListOption.name" value="$lineListOption.name" #if($lineListOption.name == $llElementValuesMap.get($element)) selected #end>$lineListOption.name</option>
 								#end
@@ -56,17 +46,8 @@
 			</tr>
 			#set ($count=$count+1)
 		#end
-		
-		<tr>
-    	
-		<td colspan="2" align="centre">
-			<input type="submit" value="Save">
-			<input type="hidden" id="reportedDate" name="reportedDate">&nbsp;&nbsp;&nbsp; 		
-		</td>
-		<td>
-			<input type="button" value="Reset"> 
-		</td>
-	</tr>
+	
+	
+	
 	</table>
-
 </form>
