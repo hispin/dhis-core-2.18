@@ -33,11 +33,20 @@ import java.io.IOException;
 
 public class PatientAttribute implements MobileSerializable
 {
-
     private String name;
 
     private String value;
 
+    public PatientAttribute( String name, String value )
+    {
+        this.name = name;
+        this.value = value;
+    }
+    
+    public PatientAttribute()
+    {   
+    }
+    
     public String getName()
     {
         return name;

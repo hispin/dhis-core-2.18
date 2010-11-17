@@ -51,7 +51,7 @@ public interface DataBrowserService
      * @return DataBrowserTable the DataBrowserTable with structure for
      *         presentation
      */
-    DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType );
+    DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format );
 
     /**
      * Method that retrieves - all DataElementGroups with DataElement quantity -
@@ -63,7 +63,7 @@ public interface DataBrowserService
      * @return DataBrowserTable the DataBrowserTable with structure for
      *         presentation
      */
-    DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
+    DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format );
 
     /**
      * Method that retrieves - all OrganisationUnitGroups with DataElement
@@ -75,7 +75,7 @@ public interface DataBrowserService
      * @return DataBrowserTable the DataBrowserTable with structure for
      *         presentation
      */
-    DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType );
+    DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format );
 
     /**
      * Method that retrieves - all OrganisationUnits with DataElement quantity -
@@ -90,7 +90,7 @@ public interface DataBrowserService
      *         presentation
      */
     DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
-        PeriodType periodType, Integer maxLevel );
+        PeriodType periodType, Integer maxLevel, I18nFormat format );
 
     /**
      * Method that retrieves - all the DataElements count - in a given period -
@@ -104,7 +104,7 @@ public interface DataBrowserService
      *         presentation
      */
     DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate, String endDate,
-        PeriodType periodType );
+        PeriodType periodType, I18nFormat format );
 
     /**
      * Method that retrieves - all the DataElements count - in a given period -
@@ -119,7 +119,7 @@ public interface DataBrowserService
      *         presentation
      */
     DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId, String startDate,
-        String endDate, PeriodType periodType );
+        String endDate, PeriodType periodType, I18nFormat format );
 
     /**
      * Method retrieves - all the DataElementGroups count - in a given period -
@@ -134,7 +134,7 @@ public interface DataBrowserService
      *         presentation
      */
     DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
-        String endDate, PeriodType periodType );
+        String endDate, PeriodType periodType, I18nFormat format );
 
     /**
      * Method that retrieves - all the DataElements count - in a given period -
@@ -149,7 +149,7 @@ public interface DataBrowserService
      *         presentation
      */
     DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate, String endDate,
-        PeriodType periodType );
+        PeriodType periodType, I18nFormat format );
 
     /**
      * This method converts a string from the date format "yyyy-MM-dd" to "MMMM
