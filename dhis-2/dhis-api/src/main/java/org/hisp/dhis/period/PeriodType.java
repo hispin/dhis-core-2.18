@@ -63,9 +63,10 @@ public abstract class PeriodType
         periodTypes.add( new SixMonthlyPeriodType() );
         periodTypes.add( new YearlyPeriodType() );
         periodTypes.add( new TwoYearlyPeriodType() );
+        periodTypes.add( new FinancialAprilPeriodType() );
         //periodTypes.add( new OnChangePeriodType() );
         //periodTypes.add( new SurveyPeriodType() );
-
+        
         periodTypeMap = new HashMap<String, PeriodType>();
 
         for ( PeriodType periodType : periodTypes )
