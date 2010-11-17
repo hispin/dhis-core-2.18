@@ -42,7 +42,7 @@ public class MobileImportParameters implements Serializable
 
     private String periodType;
 
-    private Map<String, Integer> dataValues;
+    private Map<String, String> dataValues;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -94,13 +94,14 @@ public class MobileImportParameters implements Serializable
         return periodType;
     }
 
-    public Map<String, Integer> getDataValues()
+    public Map<String, String> getDataValues()
     {
         return dataValues;
     }
 
-    public void setDataValues( Map<String, Integer> dataValues )
+    public void setDataValues( Map<String, String> dataValues )
     {
         this.dataValues = dataValues;
     }
+    
 }
