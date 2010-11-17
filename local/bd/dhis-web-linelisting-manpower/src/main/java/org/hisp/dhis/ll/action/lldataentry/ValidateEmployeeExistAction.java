@@ -77,7 +77,6 @@ implements Action
         
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
         LineListGroup lineListGroup = selectedStateManager.getSelectedLineListGroup();
-        LineListOption lineListOption = selectedStateManager.getSelectedLineListOption();
         String departmentLineListName = lineListGroup.getName();
         
         String pdsCodeColumnName = "pdscode";

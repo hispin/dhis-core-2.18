@@ -59,7 +59,7 @@
         #foreach( $employee in $employeeList )
         	<tr id="tr${employee.pdsCode}">
                     <td#alternate( $mark )>$encoder.htmlEncode( $employee.name ) - $encoder.htmlEncode( $employee.pdsCode )</td>
-                    <td style="text-align:center"#alternate( $mark )><a href="showUpdateEmployeePostForm.action?id=$employee.pdsCode" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
+                    <td style="text-align:center"#alternate( $mark )><a href="javascript:showUpdateEmployeePostForm( '$employee.pdsCode' )" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
                     <td style="text-align:center"#alternate( $mark )><a href="javascript:showEmployeePostDetails( '$employee.pdsCode' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
         #end
 
@@ -163,6 +163,23 @@
             }
             return true;
 		}
-}
+		
+		function showUpdateEmployeePostForm( pdsCode ) 
+		{
+			var url = 'showEmployeePostForm.action?id=' + pdsCode;
+			//var url = 'showEmployeePostForm.action';
+			$('#contentDataRecord1').dialog('destroy').remove();
+		    $('<div id="contentDataRecord1" style="z-index: 1;">' ).load(url).dialog({
+		    title: 'Edit Employee Post Detail',
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 420,
+		    height: 380
+			});
+		}
+		
+		
 
 </script>

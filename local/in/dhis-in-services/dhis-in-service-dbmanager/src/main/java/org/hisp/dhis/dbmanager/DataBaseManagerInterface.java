@@ -38,6 +38,8 @@ public interface DataBaseManagerInterface
     public int getLLValueCountByLLElements( String tablename, Map<String,String> llElementValueMap, Source source );
     
     public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, Source source, Period  period );
+    
+    public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, Source source );
 
     public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, Source source, Period  period );
 

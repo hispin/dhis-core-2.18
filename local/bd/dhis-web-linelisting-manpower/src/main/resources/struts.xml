@@ -436,6 +436,14 @@
             <param name="onExceptionReturn">plainTextError</param>
         </action>
         
+        <action name="showEditEmployeePostForm"
+            class="org.hisp.dhis.ll.action.lldataentry.ShowUpdateEmployeePostFormAction">
+			<result name="success" type="velocity">/dhis-web-linelisting-mp/updateEmployeePostForm.vm</result>
+        </action>
+        
+        
+        
+        
     <!-- Org unit -->
         <action name="getOrgUnitDetails"
 			class="org.hisp.dhis.ll.action.lldataentry.GetOrgUnitsAction">
