@@ -31,7 +31,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNotSame;
 
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -74,7 +73,8 @@ public class DataBrowserServiceTest
     {
         // Get all DataSets from earliest to latest registered on daily basis
         // (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getDataSetsInPeriod( null, null, periodA.getPeriodType() );
+        DataBrowserTable table = dataBrowserService.getDataSetsInPeriod( null, null, periodA.getPeriodType(),
+            mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -102,7 +102,8 @@ public class DataBrowserServiceTest
 
         // Get all DataSets from 2005-05-01 to 2005-05-31 registered on weekly
         // basis (this should be only period D data values)
-        table = dataBrowserService.getDataSetsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType() );
+        table = dataBrowserService
+            .getDataSetsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -130,7 +131,8 @@ public class DataBrowserServiceTest
     {
         // Get all DataElementGroups from earliest to latest registered on daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getDataElementGroupsInPeriod( null, null, periodA.getPeriodType() );
+        DataBrowserTable table = dataBrowserService.getDataElementGroupsInPeriod( null, null, periodA.getPeriodType(),
+            mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -159,7 +161,8 @@ public class DataBrowserServiceTest
 
         // Get all DataElementGroups from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
-        table = dataBrowserService.getDataElementGroupsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType() );
+        table = dataBrowserService.getDataElementGroupsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(),
+            mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -189,7 +192,8 @@ public class DataBrowserServiceTest
         // Get all OrganisationUnitGroups from earliest to latest registered on
         // daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getOrgUnitGroupsInPeriod( null, null, periodA.getPeriodType() );
+        DataBrowserTable table = dataBrowserService.getOrgUnitGroupsInPeriod( null, null, periodA.getPeriodType(),
+            mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 1, table.getQueryCount() );
@@ -227,7 +231,7 @@ public class DataBrowserServiceTest
         // Get all children of unit B from 2005-03-01 to 2005-04-30 registered
         // on daily basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getOrgUnitsInPeriod( unitB.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType(), 4 );
+            periodA.getPeriodType(), 4, mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 3, table.getQueryCount() );
@@ -262,7 +266,8 @@ public class DataBrowserServiceTest
             .intValue() );
 
         // Retrieve children of unitG - zero children
-        table = dataBrowserService.getOrgUnitsInPeriod( unitG.getId(), null, null, periodA.getPeriodType(), 4 );
+        table = dataBrowserService.getOrgUnitsInPeriod( unitG.getId(), null, null, periodA.getPeriodType(), 4,
+            mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 3, table.getQueryCount() );
@@ -285,7 +290,7 @@ public class DataBrowserServiceTest
         // Get count for dataSetA from 2005-03-01 to 2005-04-30 registered on
         // daily basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetA.getId(),
-            "2005-03-01", "2005-04-30", periodA.getPeriodType() );
+            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -308,7 +313,7 @@ public class DataBrowserServiceTest
         // Get count for dataSetC from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
         table = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetC.getId(), "2005-05-01",
-            "2005-05-31", periodD.getPeriodType() );
+            "2005-05-31", periodD.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -343,7 +348,7 @@ public class DataBrowserServiceTest
         // Get count for dataElementGroupA from 2005-03-01 to 2005-04-30
         // registered on daily basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupA
-            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType() );
+            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -366,7 +371,7 @@ public class DataBrowserServiceTest
         // Get count for dataElementGroupC from 2005-05-01 to 2005-05-31
         // registered on weekly basis (this should be only period D data values)
         table = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupC.getId(),
-            "2005-05-01", "2005-05-31", periodD.getPeriodType() );
+            "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -402,7 +407,7 @@ public class DataBrowserServiceTest
         // daily
         // basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( unitGroupA
-            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType() );
+            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -450,7 +455,7 @@ public class DataBrowserServiceTest
         // Get count for unitB from 2005-03-01 to 2005-04-30 registered on daily
         // basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( unitB.getId(),
-            "2005-03-01", "2005-04-30", periodA.getPeriodType() );
+            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -469,7 +474,7 @@ public class DataBrowserServiceTest
         // Get count for unitF from 2005-03-01 to 2005-04-30 registered on daily
         // basis (this should be period A and B data values)
         table = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( unitF.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType() );
+            periodA.getPeriodType(), mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 2, table.getQueryCount() );
@@ -520,13 +525,12 @@ public class DataBrowserServiceTest
     @Ignore
     public void testConvertDate()
     {
-        I18nFormat format = new I18nFormat();
         PeriodType monthlyPeriodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
 
         // Get all children of unit B from 2005-03-01 to 2005-04-30 registered
         // on monthly basis (this should be period A and B data values)
         DataBrowserTable table = dataBrowserService.getOrgUnitsInPeriod( unitB.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType(), 4 );
+            periodA.getPeriodType(), 4, mockFormat );
 
         assertNotNull( "DataBrowserTable not supposed to be null", table );
         assertEquals( "No. of queries", 3, table.getQueryCount() );
@@ -534,6 +538,6 @@ public class DataBrowserServiceTest
 
         assertEquals( "Metacolumns", 3, table.getColumns().size() );
         assertEquals( "drilldown_organisation_unit", dataBrowserService.convertDate( monthlyPeriodType, table
-            .getColumns().get( 0 ).getName(), format ) );
+            .getColumns().get( 0 ).getName(), mockFormat ) );
     }
 }

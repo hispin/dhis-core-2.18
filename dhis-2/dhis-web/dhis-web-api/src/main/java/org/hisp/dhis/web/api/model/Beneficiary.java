@@ -31,7 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 public class Beneficiary
     implements MobileSerializable
@@ -44,9 +44,21 @@ public class Beneficiary
 
     private String lastName;
 
-    private Set<String> patientAttValues;
+    private int age;
+
+    private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public void setAge( int age )
+    {
+        this.age = age;
+    }
 
     public PatientAttribute getGroupAttribute()
     {
@@ -58,12 +70,12 @@ public class Beneficiary
         this.groupAttribute = groupAttribute;
     }
 
-    public Set<String> getPatientAttValues()
+    public List<PatientAttribute> getPatientAttValues()
     {
         return patientAttValues;
     }
 
-    public void setPatientAttValues( Set<String> patientAttValues )
+    public void setPatientAttValues( List<PatientAttribute> patientAttValues )
     {
         this.patientAttValues = patientAttValues;
     }
@@ -119,10 +131,11 @@ public class Beneficiary
         dout.writeUTF( this.getFirstName() );
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
-        //Write attribute which is used as group factor of beneficiary.
-        /* False: no group factor
-         * True: with group factor
-         * */
+        dout.writeInt( this.getAge() );
+        // Write attribute which is used as group factor of beneficiary.
+        /*
+         * False: no group factor True: with group factor
+         */
         if ( this.getGroupAttribute() != null )
         {
             dout.writeBoolean( true );
@@ -133,11 +146,11 @@ public class Beneficiary
             dout.writeBoolean( false );
         }
 
-        Set<String> atts = this.getPatientAttValues();
+        List<PatientAttribute> atts = this.getPatientAttValues();
         dout.writeInt( atts.size() );
-        for ( String att : atts )
+        for ( PatientAttribute att : atts )
         {
-            dout.writeUTF( att );
+            dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
 
         bout.flush();

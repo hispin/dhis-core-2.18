@@ -1,7 +1,9 @@
 package org.hisp.dhis.web.api.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -161,12 +163,15 @@ public class DefaultActivityPlanService
 
         Beneficiary beneficiary = new Beneficiary();
 
-        Set<String> patientAttValues = new HashSet<String>();
+        List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
 
         beneficiary.setId( patient.getId() );
         beneficiary.setFirstName( patient.getFirstName() );
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
+        int currentYear = new Date().getYear();
+        int age = currentYear - patient.getBirthDate().getYear();
+        beneficiary.setAge( age );
 
         // Set attribute which is used to group beneficiary on mobile (only if
         // there is attribute which is set to be group factor)
@@ -184,11 +189,47 @@ public class DefaultActivityPlanService
         patientAttribute = null;
 
         // Set all attributes
-        for ( PatientAttributeValue value : patientAttValueService.getPatientAttributeValues( patient ) )
-        {
-            patientAttValues.add( value.getPatientAttribute().getName() + " : " + value.getValue() );
+        org.hisp.dhis.patient.PatientAttribute houseName = patientAttService.getPatientAttributeByName( "House Name" );
+        org.hisp.dhis.patient.PatientAttribute houseNumber = patientAttService
+            .getPatientAttributeByName( "House Number" );
+        org.hisp.dhis.patient.PatientAttribute wardNumber = patientAttService.getPatientAttributeByName( "Ward Number" );
+        org.hisp.dhis.patient.PatientAttribute nearestContact = patientAttService
+            .getPatientAttributeByName( "Nearest Contact Person Name" );
+
+        PatientAttributeValue houseNameValue = patientAttValueService.getPatientAttributeValue( patient, houseName );
+        if(houseNameValue!=null){
+            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ));
         }
-        beneficiary.setPatientAttValues( patientAttValues );
+        
+        
+        PatientAttributeValue houseNumberValue = patientAttValueService.getPatientAttributeValue( patient, houseNumber );
+        if(houseNumberValue!=null){
+            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ));
+        }
+        
+        
+        PatientAttributeValue wardNumberValue = patientAttValueService.getPatientAttributeValue( patient, wardNumber );
+        if(wardNumberValue!=null){
+            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ));
+        }
+        
+        
+        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient, nearestContact );
+        if(nearestContactValue!=null){
+            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ));
+        }
+        
+        beneficiary.setPatientAttValues( patientAtts );
+        
+        
+//         for ( PatientAttributeValue patientAttributeValue :
+//         patientAttValueService.getPatientAttributeValues( patient ) )
+//         {
+//         patientAttValues.add(
+//         patientAttributeValue.getPatientAttribute().getName() + " : "
+//         + patientAttributeValue.getValue() );
+//         }
+//         beneficiary.setPatientAttValues( patientAttValues );
 
         return beneficiary;
     }

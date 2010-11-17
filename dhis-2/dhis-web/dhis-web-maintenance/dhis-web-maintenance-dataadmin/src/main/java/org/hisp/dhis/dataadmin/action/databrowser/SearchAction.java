@@ -440,13 +440,13 @@ public class SearchAction
                 Integer parentInt = Integer.parseInt( parent );
 
                 dataBrowserTable = dataBrowserService.getCountDataElementsForDataSetInPeriod( parentInt, fromDate,
-                    toDate, periodType );
+                    toDate, periodType, format );
 
             }
             else
             {
                 // Get all DataSets
-                dataBrowserTable = dataBrowserService.getDataSetsInPeriod( fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getDataSetsInPeriod( fromDate, toDate, periodType, format );
             }
         }
         else if ( searchOption.equals( "OrganisationUnitGroup" ) )
@@ -456,11 +456,11 @@ public class SearchAction
                 // Show DataElementGroups
                 Integer parentInt = Integer.parseInt( parent );
                 dataBrowserTable = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( parentInt,
-                    fromDate, toDate, periodType );
+                    fromDate, toDate, periodType, format );
             }
             else
             {
-                dataBrowserTable = dataBrowserService.getOrgUnitGroupsInPeriod( fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getOrgUnitGroupsInPeriod( fromDate, toDate, periodType, format );
             }
         }
         else if ( searchOption.equals( "DataElementGroup" ) )
@@ -472,11 +472,12 @@ public class SearchAction
                 Integer parentInt = Integer.parseInt( parent );
 
                 dataBrowserTable = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( parentInt,
-                    fromDate, toDate, periodType );
+                    fromDate, toDate, periodType, format );
             }
             else
             {
-                dataBrowserTable = dataBrowserService.getDataElementGroupsInPeriod( fromDate, toDate, periodType );
+                dataBrowserTable = dataBrowserService.getDataElementGroupsInPeriod( fromDate, toDate, periodType,
+                    format );
             }
         }
         else if ( searchOption.equals( "OrganisationUnit" ) )
@@ -495,12 +496,12 @@ public class SearchAction
 
                 // Show DataElement values only for specified organization unit
                 dataBrowserTable = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( parentInt, fromDate,
-                    toDate, periodType );
+                    toDate, periodType, format );
             }
             else if ( selectedUnit != null )
             {
                 dataBrowserTable = dataBrowserService.getOrgUnitsInPeriod( selectedUnit.getId(), fromDate, toDate,
-                    periodType, null );
+                    periodType, null, format );
             }
             else
             {

@@ -27,6 +27,10 @@ package org.hisp.dhis.mock;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.period.Period.DEFAULT_DATE_FORMAT;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -52,5 +56,22 @@ public class MockI18nFormat
     {
         Random random = new Random();
         return "Date" + random.nextInt( 1000 );
+    }
+    
+    @Override
+    public Date parseDate( String dateString )
+    {
+        try
+        {
+            final SimpleDateFormat format = new SimpleDateFormat();
+
+            format.applyPattern( DEFAULT_DATE_FORMAT );
+
+            return dateString != null ? format.parse( dateString ) : null;
+        }
+        catch ( ParseException ex )
+        {
+            throw new RuntimeException( "Failed to parse medium date", ex );
+        }
     }
 }
