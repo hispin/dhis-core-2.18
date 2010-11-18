@@ -152,13 +152,11 @@ function periodSelected()
 
 function displayEntryFormInternal( callback )
 {
-	var dataSetId = $( '#selectedDataSetId' ).val();
 	var periodIndex = $( '#selectedPeriodIndex' ).val();
 	
-	if ( dataSetId && dataSetId != -1 && periodIndex && periodIndex != -1 )
+	if ( periodIndex && periodIndex != -1 )
 	{
-		var url = 'select.action?selectedDataSetId=' + dataSetId +
-			'&selectedPeriodIndex=' + periodIndex +
+		var url = 'select.action?selectedPeriodIndex=' + periodIndex +
 			'&displayMode=' + $("input[name='displayMode']:checked").val();
 		
 		$( '#entryForm' ).load( url, callback );

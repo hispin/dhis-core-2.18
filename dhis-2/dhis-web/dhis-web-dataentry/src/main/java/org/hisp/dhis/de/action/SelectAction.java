@@ -27,11 +27,13 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
+import static org.hisp.dhis.de.state.SelectedStateManager.ALLOWED_FORM_TYPES;
+import static org.hisp.dhis.de.state.SelectedStateManager.CUSTOM_FORM;
+import static org.hisp.dhis.de.state.SelectedStateManager.DEFAULT_FORM;
+import static org.hisp.dhis.de.state.SelectedStateManager.SECTION_FORM;
+
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -43,16 +45,12 @@ import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.ActionSupport;
-
-import static org.hisp.dhis.de.state.SelectedStateManager.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -79,13 +77,6 @@ public class SelectAction
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
     {
         this.dataEntryScreenManager = dataEntryScreenManager;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
     }
 
     private CompleteDataSetRegistrationService registrationService;
@@ -120,39 +111,11 @@ public class SelectAction
         return period;
     }
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
-
-    public Collection<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    private List<Period> periods = new ArrayList<Period>();
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
-
     private boolean locked;
 
     public boolean isLocked()
     {
         return locked;
-    }
-
-    private Boolean hasSection;
-
-    public Boolean getHasSection()
-    {
-        return hasSection;
-    }
-
-    private Boolean customDataEntryFormExists;
-
-    public Boolean getCustomDataEntryFormExists()
-    {
-        return this.customDataEntryFormExists;
     }
 
     private Collection<Integer> calculatedDataElementIds;
@@ -189,34 +152,12 @@ public class SelectAction
 
     private String displayMode;
 
-    public String getDisplayMode()
-    {
-        return displayMode;
-    }
-
     public void setDisplayMode( String displayMode )
     {
         this.displayMode = displayMode;
     }
 
-    private Integer selectedDataSetId;
-
-    public Integer getSelectedDataSetId()
-    {
-        return selectedDataSetId;
-    }
-
-    public void setSelectedDataSetId( Integer selectedDataSetId )
-    {
-        this.selectedDataSetId = selectedDataSetId;
-    }
-
     private Integer selectedPeriodIndex;
-
-    public Integer getSelectedPeriodIndex()
-    {
-        return selectedPeriodIndex;
-    }
 
     public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
     {
@@ -230,69 +171,12 @@ public class SelectAction
     public String execute()
         throws Exception
     {
-        /*
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
-        if ( organisationUnit == null )
-        {
-            selectedStateManager.clearSelectedDataSet();
-            selectedStateManager.clearSelectedPeriod();
-
-            return SUCCESS;
-        }
-
-        // ---------------------------------------------------------------------
-        // Load and sort DataSets
-        // ---------------------------------------------------------------------
-
-        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
-
-        Collections.sort( dataSets, new DataSetNameComparator() );
-
-        // ---------------------------------------------------------------------
-        // Validate selected DataSet
-        // ---------------------------------------------------------------------
-
-        DataSet selectedDataSet;
-
-        if ( selectedDataSetId != null )
-        {
-            selectedDataSet = dataSetService.getDataSet( selectedDataSetId );
-        }
-        else
-        {
-            selectedDataSet = selectedStateManager.getSelectedDataSet();
-        }
-
-        if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
-        {
-            selectedDataSetId = selectedDataSet.getId();
-            selectedStateManager.setSelectedDataSet( selectedDataSet );
-        }
-        else
-        {
-            selectedStateManager.clearSelectedDataSet();
-            selectedStateManager.clearSelectedPeriod();
-
-            return SUCCESS;
-        }
-*/
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
         
         DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
         
         // ---------------------------------------------------------------------
-        // Generate Periods
-        // ---------------------------------------------------------------------
-
-        periods = selectedStateManager.getPeriodList();
-
-        // ---------------------------------------------------------------------
-        // Validate selected Period
+        // Validate selected period
         // ---------------------------------------------------------------------
 
         if ( selectedPeriodIndex == null )
@@ -300,9 +184,10 @@ public class SelectAction
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
         }
 
-        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
+        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 )
         {
-            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );            
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+            
             period = selectedStateManager.getSelectedPeriod();
         }
         else
@@ -312,9 +197,9 @@ public class SelectAction
             return SUCCESS;
         }
 
-        // -----------------------------------------------------------------------
-        // For Data Locking
-        // -----------------------------------------------------------------------
+        // ---------------------------------------------------------------------
+        // Get data locking info
+        // ---------------------------------------------------------------------
 
         if ( selectedDataSet != null )
         {
@@ -325,36 +210,46 @@ public class SelectAction
             if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
             {
                 locked = true;
+                
                 log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
             }
         }
         
         // ---------------------------------------------------------------------
-        // Get CalculatedDataElement info
+        // Get calculated data element info
         // ---------------------------------------------------------------------
 
         calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );
         calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );
 
         // ---------------------------------------------------------------------
-        // Get display info
+        // Get data set completeness info
         // ---------------------------------------------------------------------
 
-        hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
-
-        customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
-
-        // ---------------------------------------------------------------------
-        // Make available information about dataSet completeness
-        // ---------------------------------------------------------------------
-
-        if ( selectedDataSetId != null && selectedPeriodIndex != null && organisationUnit != null )
+        if ( selectedDataSet != null && period != null && organisationUnit != null )
         {
             registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period,
                 organisationUnit );
 
             registrationDate = registration != null ? registration.getDate() : new Date();
         }
+
+        // ---------------------------------------------------------------------
+        // Get display mode
+        // ---------------------------------------------------------------------
+
+        if ( displayMode == null )
+        {
+            displayMode = selectedStateManager.getSelectedDisplayMode();
+        }
+        else
+        {
+            selectedStateManager.setSelectedDisplayMode( displayMode );
+        }
+
+        boolean hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
+
+        boolean customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
 
         if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
         {
@@ -371,8 +266,6 @@ public class SelectAction
                 displayMode = DEFAULT_FORM;
             }
         }
-        
-        selectedStateManager.setSelectedDisplayMode( displayMode );
         
         return displayMode;
     }
