@@ -230,6 +230,7 @@ public class SelectAction
     public String execute()
         throws Exception
     {
+        /*
         // ---------------------------------------------------------------------
         // Validate selected OrganisationUnit
         // ---------------------------------------------------------------------
@@ -279,7 +280,11 @@ public class SelectAction
 
             return SUCCESS;
         }
-
+*/
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        
+        DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
+        
         // ---------------------------------------------------------------------
         // Generate Periods
         // ---------------------------------------------------------------------
@@ -295,26 +300,10 @@ public class SelectAction
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
         }
 
-        // -----------------------------------------------------------------------
-        // For Data Locking
-        // -----------------------------------------------------------------------
-
         if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
         {
-            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
-
-            if ( selectedDataSet != null )
-            {
-                period = selectedStateManager.getSelectedPeriod();
-
-                DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period );
-
-                if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
-                {
-                    locked = true;
-                    log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
-                }
-            }
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );            
+            period = selectedStateManager.getSelectedPeriod();
         }
         else
         {
@@ -323,8 +312,23 @@ public class SelectAction
             return SUCCESS;
         }
 
-        period = selectedStateManager.getSelectedPeriod();
+        // -----------------------------------------------------------------------
+        // For Data Locking
+        // -----------------------------------------------------------------------
 
+        if ( selectedDataSet != null )
+        {
+            period = selectedStateManager.getSelectedPeriod();
+
+            DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( selectedDataSet, period );
+
+            if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+            {
+                locked = true;
+                log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
+            }
+        }
+        
         // ---------------------------------------------------------------------
         // Get CalculatedDataElement info
         // ---------------------------------------------------------------------

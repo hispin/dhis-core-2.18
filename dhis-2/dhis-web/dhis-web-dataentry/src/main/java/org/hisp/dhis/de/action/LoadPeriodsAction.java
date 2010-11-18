@@ -51,20 +51,6 @@ public class LoadPeriodsAction
         this.dataSetId = dataSetId;
     }
     
-    private boolean next;
-
-    public void setNext( boolean next )
-    {
-        this.next = next;
-    }
-
-    private boolean previous;
-
-    public void setPrevious( boolean previous )
-    {
-        this.previous = previous;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -76,11 +62,11 @@ public class LoadPeriodsAction
         return periods;
     }
 
-    private boolean selectionValid;
+    private boolean periodValid;
 
-    public boolean isSelectionValid()
+    public boolean isPeriodValid()
     {
-        return selectionValid;
+        return periodValid;
     }
     
     // -------------------------------------------------------------------------
@@ -93,20 +79,26 @@ public class LoadPeriodsAction
         
         if ( selectedDataSet != null )
         {
+            // -----------------------------------------------------------------
+            // Check if previous data set has same period type as selected
+            // -----------------------------------------------------------------
+
             DataSet previousDataSet = selectedStateManager.getSelectedDataSet();
             
-            selectionValid = previousDataSet != null && previousDataSet.getPeriodType().equals( selectedDataSet.getPeriodType() );
-            
+            if ( previousDataSet != null && previousDataSet.getPeriodType().equals( selectedDataSet.getPeriodType() ) )
+            {
+                periodValid = true;
+            }
+            else
+            {
+                selectedStateManager.clearSelectedPeriod();
+            }
+
+            // -----------------------------------------------------------------
+            // Load periods for period type of selected data set
+            // -----------------------------------------------------------------
+
             selectedStateManager.setSelectedDataSet( selectedDataSet );
-            
-            if ( next )
-            {
-                selectedStateManager.nextPeriodSpan();
-            }
-            else if ( previous )
-            {
-                selectedStateManager.previousPeriodSpan();
-            }
             
             periods = selectedStateManager.getPeriodList();
             
@@ -115,7 +107,7 @@ public class LoadPeriodsAction
                 period.setName( format.formatPeriod( period ) );
             }
         }
-        
+
         return SUCCESS;
     }
 }
