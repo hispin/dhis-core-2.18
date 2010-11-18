@@ -48,6 +48,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.web.api.provider.DataSerializableProvider" class="org.hisp.dhis.web.api.provider.DataStreamSerializableProvider"
     scope="singleton" />
 	
+	<bean id="org.hisp.dhis.web.api.provider.ActivityPlanProvider"
+                class="org.hisp.dhis.web.api.provider.ActivityPlanProvider" scope="singleton"/>
+	
   <bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" class="org.hisp.dhis.web.api.provider.DataSetValueConsumer"
     scope="singleton" />
 
