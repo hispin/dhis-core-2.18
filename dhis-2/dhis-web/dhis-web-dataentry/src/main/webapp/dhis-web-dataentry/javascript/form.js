@@ -24,7 +24,7 @@ function clearPeriod()
 
 function clearEntryForm()
 {
-	$('#entryForm').html( '' );
+	$('#contentDiv').html( '' );
 }
 
 // -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ function organisationUnitSelected( orgUnits )
     		$( '#selectedDataSetId' ).val( dataSetId );
     		
     		if ( json.periodValid ) {
-    			displayEntryFormInternal( null );
+    			displayEntryFormInternal( false );
     		}
     	}
     	else {
@@ -123,7 +123,7 @@ function dataSetSelected()
 	    	
 	    	if ( json.periodValid && periodIndex != null ) {
 	    		$( '#selectedPeriodIndex' ).val( periodIndex );	    		
-	    		displayEntryFormInternal( setDisplayModes );
+	    		displayEntryFormInternal( true );
 	    	}
 	    	else {
 	    		clearEntryForm();
@@ -138,7 +138,7 @@ function dataSetSelected()
 
 function displayModeSelected()
 {
-	displayEntryFormInternal( null );
+	displayEntryFormInternal( false );
 }
 
 // -----------------------------------------------------------------------------
@@ -147,11 +147,13 @@ function displayModeSelected()
 
 function periodSelected()
 {
-	displayEntryFormInternal( setDisplayModes );
+	displayEntryFormInternal( true );
 }
 
-function displayEntryFormInternal( callback )
+function displayEntryFormInternal( updateDisplayModes )
 {
+	showLoader();
+	
 	var periodIndex = $( '#selectedPeriodIndex' ).val();
 	
 	if ( periodIndex && periodIndex != -1 )
@@ -159,12 +161,16 @@ function displayEntryFormInternal( callback )
 		var url = 'select.action?selectedPeriodIndex=' + periodIndex +
 			'&displayMode=' + $("input[name='displayMode']:checked").val();
 		
-		$( '#entryForm' ).load( url, callback );
+		var callback = updateDisplayModes ? setDisplayModes : hideLoader;
+		
+		$( '#contentDiv' ).load( url, callback );
 	}
 }
 
 function setDisplayModes()
 {
+	hideLoader();
+	
 	$.getJSON( 'loadDisplayModes.action', function( json ) {
 		if ( json.customForm ) {
 			$( '#displayModeCustom' ).removeAttr( 'disabled' );
