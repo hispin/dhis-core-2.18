@@ -75,6 +75,13 @@ public class LoadPeriodsAction
     {
         return periods;
     }
+
+    private boolean selectionValid;
+
+    public boolean isSelectionValid()
+    {
+        return selectionValid;
+    }
     
     // -------------------------------------------------------------------------
     // Action implementation
@@ -82,11 +89,15 @@ public class LoadPeriodsAction
 
     public String execute()
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
         
-        if ( dataSet != null )
+        if ( selectedDataSet != null )
         {
-            selectedStateManager.setSelectedDataSet( dataSet );
+            DataSet previousDataSet = selectedStateManager.getSelectedDataSet();
+            
+            selectionValid = previousDataSet != null && previousDataSet.getPeriodType().equals( selectedDataSet.getPeriodType() );
+            
+            selectedStateManager.setSelectedDataSet( selectedDataSet );
             
             if ( next )
             {

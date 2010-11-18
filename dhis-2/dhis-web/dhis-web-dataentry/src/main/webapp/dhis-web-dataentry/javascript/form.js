@@ -34,7 +34,7 @@ function clearPeriod()
 
 function organisationUnitSelected( orgUnits )
 {
-    var selectedDataSetId = $( '#selectedDataSetId' ).val();
+    var dataSetId = $( '#selectedDataSetId' ).val();
     
     var url = 'loadDataSets.action';
     
@@ -51,8 +51,8 @@ function organisationUnitSelected( orgUnits )
     		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
     	}
     	
-    	if ( json.selectionValid && selectedDataSetId != null ) {
-    		$( '#selectedDataSetId' ).val( selectedDataSetId );
+    	if ( json.selectionValid && dataSetId != null ) {
+    		$( '#selectedDataSetId' ).val( dataSetId );
     	} 
     } );
 }
@@ -78,6 +78,8 @@ function displayPeriodsInternal( next, previous )
 {
 	var dataSetId = $( '#selectedDataSetId' ).val();
 	
+	var periodIndex = $('#selectedPeriodIndex').val();
+	
 	if ( dataSetId && dataSetId != -1 )
 	{
 		var url = 'loadPeriods.action?dataSetId=' + dataSetId + '&next=' + next + '&previous=' + previous;
@@ -91,6 +93,10 @@ function displayPeriodsInternal( next, previous )
 	    	for ( i in json.periods ) {
 	    		addOptionToList( list, i, json.periods[i].name );
 	    	}
+	    	
+	    	if ( json.selectionValid && periodIndex != null ) {
+	    		$('#selectedPeriodIndex').val( periodIndex );
+	    	}	    	
 	    } );
 	}
 }
