@@ -3,6 +3,7 @@ package org.hisp.dhis.web.api.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.Beneficiary;
 import org.hisp.dhis.web.api.model.PatientAttribute;
+import org.hisp.dhis.web.api.model.comparator.ActivityComparator;
 import org.hisp.dhis.web.api.service.mapping.TaskMapper;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -33,6 +35,8 @@ public class DefaultActivityPlanService
 
     private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
 
+    private ActivityComparator activityComparator = new ActivityComparator();
+    
     public org.hisp.dhis.activityplan.ActivityPlanService getActivityPlanService()
     {
         return activityPlanService;
@@ -136,12 +140,15 @@ public class DefaultActivityPlanService
         }
         if ( !items.isEmpty() )
         {
+            Collections.sort( items, activityComparator );
             plan.setActivitiesList( items );
         }
 
         return plan;
 
     }
+    
+    
 
     private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
     {
