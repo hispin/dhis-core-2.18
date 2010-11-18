@@ -32,12 +32,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 
-public class OrgUnit implements MobileSerializable {
+public class OrgUnit implements DataStreamSerializable {
 
     private int id;
 
     private String name;
 
+    private String downloadAllUrl;
+    
+    private String downloadActivityPlanUrl;
+    
+    private String uploadFacilityReportUrl;
+    
+    private String uploadActivityReportUrl;
+    
     public int getId()
     {
         return id;
@@ -58,20 +66,67 @@ public class OrgUnit implements MobileSerializable {
         this.name = name;
     }
 
-    @Override
+    public String getDownloadAllUrl()
+    {
+        return downloadAllUrl;
+    }
+
+    public void setDownloadAllUrl( String downloadAllUrl )
+    {
+        this.downloadAllUrl = downloadAllUrl;
+    }
+
+    public String getDownloadActivityPlanUrl()
+    {
+        return downloadActivityPlanUrl;
+    }
+
+    public void setDownloadActivityPlanUrl( String downloadActivityPlanUrl )
+    {
+        this.downloadActivityPlanUrl = downloadActivityPlanUrl;
+    }
+
+    public String getUploadFacilityReportUrl()
+    {
+        return uploadFacilityReportUrl;
+    }
+
+    public void setUploadFacilityReportUrl( String uploadFacilityReportUrl )
+    {
+        this.uploadFacilityReportUrl = uploadFacilityReportUrl;
+    }
+
+    public String getUploadActivityReportUrl()
+    {
+        return uploadActivityReportUrl;
+    }
+
+    public void setUploadActivityReportUrl( String uploadActivityReportUrl )
+    {
+        this.uploadActivityReportUrl = uploadActivityReportUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
-        dataOutputStream.write( this.id );
+        dataOutputStream.writeInt( this.id );
         dataOutputStream.writeUTF( this.name );
+        dataOutputStream.writeUTF( this.downloadAllUrl );
+        dataOutputStream.writeUTF( this.downloadActivityPlanUrl );
+        dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
+        dataOutputStream.writeUTF( this.uploadActivityReportUrl );
+        
     }
 
-    @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
         this.id = dataInputStream.readInt();
         this.name = dataInputStream.readUTF();
+        this.downloadAllUrl = dataInputStream.readUTF();
+        this.downloadActivityPlanUrl = dataInputStream.readUTF();
+        this.uploadFacilityReportUrl = dataInputStream.readUTF();
+        this.uploadActivityReportUrl = dataInputStream.readUTF();
     }
 
 }

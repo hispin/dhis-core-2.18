@@ -31,7 +31,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PatientAttribute implements MobileSerializable
+public class PatientAttribute implements DataStreamSerializable
 {
     private String name;
 

@@ -35,7 +35,7 @@ import java.io.IOException;
  * Interface for entities that needs to be serialized/deserialized for
  * communication with low-bandwith mobile phones
  */
-public interface MobileSerializable
+public interface DataStreamSerializable
 {
 
     public void serialize( DataOutputStream dataOutputStream )

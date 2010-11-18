@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelList
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
 
     private List<Model> models;

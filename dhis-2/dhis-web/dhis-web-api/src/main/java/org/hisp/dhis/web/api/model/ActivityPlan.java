@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ActivityPlan
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
 
     private List<Activity> activitiesList;

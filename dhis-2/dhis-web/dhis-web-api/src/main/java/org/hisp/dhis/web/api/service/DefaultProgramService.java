@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.hisp.dhis.web.api.service;
 
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
@@ -20,11 +17,8 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Program;
 import org.hisp.dhis.web.api.model.ProgramStage;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
+import org.springframework.beans.factory.annotation.Required;
 
-/**
- * @author abyotag_adm
- * 
- */
 public class DefaultProgramService
     implements IProgramService
 {
@@ -34,67 +28,25 @@ public class DefaultProgramService
     
     private org.hisp.dhis.program.ProgramService programService;
 
-    public org.hisp.dhis.program.ProgramService getProgramService()
-    {
-        return programService;
-    }
-
-    public void setProgramService( org.hisp.dhis.program.ProgramService programService )
-    {
-        this.programService = programService;
-    }
-
     private org.hisp.dhis.i18n.I18nService i18nService;
 
-    public org.hisp.dhis.i18n.I18nService getI18nService()
-    {
-        return i18nService;
-    }
-
-    public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
-    {
-        this.i18nService = i18nService;
-    }
-
-    private CurrentUserService currentUserService;
-    
-
-    public CurrentUserService getCurrentUserService()
-    {
-        return currentUserService;
-    }
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
     // -------------------------------------------------------------------------
     // ProgramService
     // -------------------------------------------------------------------------
-    public List<Program> getAllProgramsForLocale( String localeString )
+
+    public List<Program> getPrograms( OrganisationUnit unit, String localeString )
     {
         List<Program> programs = new ArrayList<Program>();
 
-        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
-        OrganisationUnit unit = null;
-
-        if ( units.size() > 0 )
-        {
-            unit = units.iterator().next();
-        }
-        else
-        {
-            return null;
-        }
         for ( org.hisp.dhis.program.Program program : programService.getPrograms( unit ) )
         {
-            programs.add( getProgramForLocale( program.getId(), localeString ) );
+            programs.add( getProgram( program.getId(), localeString ) );
         }
 
         return programs;
     }
 
-    public Program getProgramForLocale( int programId, String localeString )
+    public Program getProgram( int programId, String localeString )
     {
         Locale locale = LocaleUtil.getLocale( localeString );
 
@@ -157,5 +109,16 @@ public class DefaultProgramService
         return pr;
     }
 
+    @Required
+    public void setProgramService( org.hisp.dhis.program.ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    @Required
+    public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
+    {
+        this.i18nService = i18nService;
+    }
 
 }

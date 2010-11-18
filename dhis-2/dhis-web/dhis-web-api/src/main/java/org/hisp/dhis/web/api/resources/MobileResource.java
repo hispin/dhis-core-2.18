@@ -27,171 +27,73 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.web.api.model.ActivityPlan;
-import org.hisp.dhis.web.api.model.ActivityValue;
-import org.hisp.dhis.web.api.model.DataSetValue;
-import org.hisp.dhis.web.api.model.MobileModel;
 import org.hisp.dhis.web.api.model.OrgUnit;
-import org.hisp.dhis.web.api.service.FacilityReportingService;
-import org.hisp.dhis.web.api.service.IActivityPlanService;
-import org.hisp.dhis.web.api.service.IActivityValueService;
-import org.hisp.dhis.web.api.service.IProgramService;
+import org.hisp.dhis.web.api.model.OrgUnits;
 import org.springframework.beans.factory.annotation.Required;
 
-@Path( "/mobile" )
+import com.sun.jersey.api.core.ResourceContext;
+
+@Path( "/" )
 public class MobileResource
 {
 
     // Dependencies
 
-    private IActivityValueService iactivityValueService;
-
-    private IProgramService programService;
-
-    private IActivityPlanService activityPlanService;
-
-    private FacilityReportingService facilityReportingService;
-
     private CurrentUserService currentUserService;
 
-    @Required
-    public void setProgramService( IProgramService programService )
-    {
-        this.programService = programService;
-    }
+    private OrganisationUnitService organisationUnitService;
 
-    @Required
-    public void setActivityPlanService( IActivityPlanService activityPlanService )
-    {
-        this.activityPlanService = activityPlanService;
-    }
+    @Context
+    UriInfo uriInfo;
 
-    @Required
-    public void setIactivityValueService( IActivityValueService iactivityValueService )
-    {
-        this.iactivityValueService = iactivityValueService;
-    }
-
-    @Required
-    public void setFacilityReportingService( FacilityReportingService facilityReportingService )
-    {
-        this.facilityReportingService = facilityReportingService;
-    }
-
-    @Required
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    // Resource methods
+    @Context
+    private ResourceContext rc;
 
     @GET
     @Produces( MediaType.MOBILE_SERIALIZED )
-    public Response getOrgUnitForUser()
+    @Path( "mobile" )
+    public OrgUnits getOrgUnitsForUser()
     {
         User user = currentUserService.getCurrentUser();
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        if ( units.isEmpty() )
-        {
-            return Response.status( Status.CONFLICT ).entity( "User is not registered to a unit." ).build();
-        }
-        else if ( units.size() > 1 )
-        {
-            StringBuilder sb = new StringBuilder( "User is registered to more than one unit: " );
+        OrgUnits orgUnits = new OrgUnits();
 
-            int i = units.size();
-            for ( OrganisationUnit unit : units )
-            {
-                sb.append( unit.getName() );
-                if ( i-- > 1 )
-                    sb.append( ", " );
-            }
-
-            return Response.status( Status.CONFLICT ).entity( sb.toString() ).build();
+        for ( OrganisationUnit unit : units )
+        {
+            orgUnits.add( getOrgUnit( unit ) );
         }
 
-        OrganisationUnit unit = units.iterator().next();
-        return Response.ok( getOrgUnit( unit ) ).build();
+        return orgUnits;
     }
 
-    @GET
-    @Path( "all" )
-    @Produces( MediaType.MOBILE_SERIALIZED )
-    public MobileModel getAllDataForUser( @HeaderParam( "accept-language" ) String locale )
+    @Path( "orgUnits/{id}" )
+    public OrgUnitResource getOrgUnit( @PathParam( "id" ) int id )
     {
-        
-        
-        MobileModel mobileWrapper = new MobileModel();
-        mobileWrapper.setActivityPlan( activityPlanService.getCurrentActivityPlan( locale ) );
 
-        mobileWrapper.setPrograms( programService.getAllProgramsForLocale( locale ) );
+        OrgUnitResource resource = rc.getResource( OrgUnitResource.class );
 
-        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
+        resource.setOrgUnit( organisationUnitService.getOrganisationUnit( id ) );
 
-        if ( units.size() == 1 )
-        {
-            OrganisationUnit unit = units.iterator().next();
-            mobileWrapper.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale )  );
-        }
-        else
-        {
-            // FIXME: Should handle multiple explicitly;
-        }
-
-
-        return mobileWrapper;
-    }
-
-    @GET
-    @Path( "activities/currentplan" )
-    @Produces( MediaType.ACTIVITYPLAN_SERIALIZED )
-    public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
-    {
-        return activityPlanService.getCurrentActivityPlan( locale );
-    }
-
-    @POST
-    @Path( "dataSets" )
-    @Consumes( MediaType.DATASETVALUE_SERIALIZED )
-    @Produces( "application/xml" )
-    public String saveDataSetValues( DataSetValue dataSetValue )
-    {
-        Collection<OrganisationUnit> units = currentUserService.getCurrentUser().getOrganisationUnits();
-
-        if ( units.size() != 1 )
-        {
-            return "INVALID_REPORTING_UNIT";
-        }
-
-        OrganisationUnit unit = units.iterator().next();
-        
-        return facilityReportingService.saveDataSetValues( unit, dataSetValue );
-    }
-
-    @POST
-    @Path( "activities" )
-    @Consumes( MediaType.ACTIVITYVALUELIST_SERIALIZED )
-    @Produces( "application/xml" )
-    public String saveActivityReport( ActivityValue activityValue )
-    {
-        return iactivityValueService.saveValues( activityValue );
+        return resource;
     }
 
     private OrgUnit getOrgUnit( OrganisationUnit unit )
@@ -201,7 +103,30 @@ public class MobileResource
         m.setId( unit.getId() );
         m.setName( unit.getShortName() );
 
+        m.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" ).build( unit.getId() )
+            .toString() );
+        m.setDownloadActivityPlanUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activitiyplan" )
+            .build( unit.getId() ).toString() );
+        m.setUploadFacilityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "dataSets" )
+            .build( unit.getId() ).toString() );
+        m.setUploadActivityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activities" )
+            .build( unit.getId() ).toString() );
+
         return m;
+    }
+
+    // Setters...
+
+    @Required
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    @Required
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
 }

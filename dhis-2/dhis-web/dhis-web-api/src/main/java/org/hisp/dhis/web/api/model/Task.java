@@ -36,7 +36,7 @@ import java.io.OutputStream;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-public class Task implements MobileSerializable
+public class Task implements DataStreamSerializable
 {
     private int id;   
     

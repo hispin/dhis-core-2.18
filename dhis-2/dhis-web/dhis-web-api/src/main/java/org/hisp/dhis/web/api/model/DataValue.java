@@ -32,7 +32,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class DataValue
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
 
     private int id;
