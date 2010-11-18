@@ -27,43 +27,18 @@ package org.hisp.dhis.web.api.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import org.hisp.dhis.web.api.model.ActivityValue;
+import org.hisp.dhis.web.api.resources.DhisMediaType;
 
 import com.sun.jersey.spi.resource.Singleton;
 
 @Provider
 @Singleton
-@Consumes( "application/vnd.org.dhis2.activityvaluelist+serialized" )
+@Consumes( DhisMediaType.MOBILE_SERIALIZED )
 public class ActivityValueConsumer
-    implements MessageBodyReader<ActivityValue>
+    extends AbstractDataSerializableConsumer<ActivityValue>
 {
-
-    @Override
-    public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
-    {
-        return true;
-    }
-
-    @Override
-    public ActivityValue readFrom( Class<ActivityValue> type, Type genericType, Annotation[] annotations,
-        MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream )
-        throws IOException, WebApplicationException
-    {
-        ActivityValue activityValue = new ActivityValue();
-        activityValue.deSerialize( new DataInputStream( entityStream ) );
-        return activityValue;
-    }
 }

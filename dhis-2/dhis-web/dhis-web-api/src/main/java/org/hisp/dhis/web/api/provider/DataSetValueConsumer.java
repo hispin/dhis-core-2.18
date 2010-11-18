@@ -27,44 +27,18 @@ package org.hisp.dhis.web.api.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-
 import javax.ws.rs.Consumes;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import org.hisp.dhis.web.api.model.DataSetValue;
+import org.hisp.dhis.web.api.resources.DhisMediaType;
 
 import com.sun.jersey.spi.resource.Singleton;
 
 @Provider
 @Singleton
-@Consumes( "application/vnd.org.dhis2.datasetvalue+serialized" )
+@Consumes( DhisMediaType.MOBILE_SERIALIZED )
 public class DataSetValueConsumer
-    implements MessageBodyReader<DataSetValue>
+    extends AbstractDataSerializableConsumer<DataSetValue>
 {
-
-    @Override
-    public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
-    {
-        return true;
-    }
-
-    @Override
-    public DataSetValue readFrom( Class<DataSetValue> type, Type genericType, Annotation[] annotations,
-        MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream )
-        throws IOException, WebApplicationException
-    {
-        DataSetValue dsValue = new DataSetValue();
-        dsValue.deSerialize( new DataInputStream( entityStream ) );
-        return dsValue;
-    }
-
 }

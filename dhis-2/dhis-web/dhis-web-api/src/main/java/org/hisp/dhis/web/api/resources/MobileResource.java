@@ -27,17 +27,13 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -51,6 +47,7 @@ import org.springframework.beans.factory.annotation.Required;
 import com.sun.jersey.api.core.ResourceContext;
 
 @Path( "/" )
+@Produces( DhisMediaType.MOBILE_SERIALIZED )
 public class MobileResource
 {
 
@@ -67,7 +64,6 @@ public class MobileResource
     private ResourceContext rc;
 
     @GET
-    @Produces( MediaType.MOBILE_SERIALIZED )
     @Path( "mobile" )
     public OrgUnits getOrgUnitsForUser()
     {
