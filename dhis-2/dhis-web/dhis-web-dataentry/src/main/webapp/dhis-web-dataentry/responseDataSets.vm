@@ -1,0 +1,17 @@
+#set( $size = $dataSets.size() )
+{ "dataSets": [
+#foreach( $dataSet in $dataSets )
+  {
+    "id": $!{dataSet.id},
+    "name": "$!encoder.jsEncode( ${dataSet.name} )",
+    "shortName": "$!encoder.jsEncode( ${dataSet.shortName} )",
+    "periodTypeId": "$!{dataSet.periodTypeId}"
+  }#if( $velocityCount < $size ),#end
+#end ],
+  "organisationUnit":
+  {
+    "id": $!{organisationUnit.id},
+    "name": "$!encoder.jsEncode( ${organisationUnit.name} )",
+    "shortName": "$!encoder.jsEncode( ${organisationUnit.shortName} )"
+  }
+}

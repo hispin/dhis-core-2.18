@@ -8,6 +8,7 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.de.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.opensymphony.xwork2.Action;
 
@@ -35,6 +36,13 @@ public class LoadDataSetsAction
     {
         return dataSets;
     }
+    
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -45,6 +53,8 @@ public class LoadDataSetsAction
         dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
 
         Collections.sort( dataSets, new DataSetNameComparator() );
+
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
         
         return SUCCESS;
     }
