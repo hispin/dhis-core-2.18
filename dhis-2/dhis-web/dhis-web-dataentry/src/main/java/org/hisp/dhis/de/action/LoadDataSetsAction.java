@@ -43,7 +43,14 @@ public class LoadDataSetsAction
     {
         return organisationUnit;
     }
+    
+    private boolean selectionValid;
 
+    public boolean isSelectionValid()
+    {
+        return selectionValid;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -55,6 +62,22 @@ public class LoadDataSetsAction
         Collections.sort( dataSets, new DataSetNameComparator() );
 
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+
+        // ---------------------------------------------------------------------
+        // Validate whether current data set selection is still valid
+        // ---------------------------------------------------------------------
+
+        DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
+        
+        if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
+        {
+            selectionValid = true;
+        }
+        else
+        {
+            selectedStateManager.clearSelectedDataSet();
+            selectedStateManager.clearSelectedPeriod();
+        }
         
         return SUCCESS;
     }

@@ -74,9 +74,6 @@ public class OrganisationUnitHierarchyConverter
 
     public void write( WritableWorkbook workbook, ExportParams params, int sheetIndex )
     {
-        // if ( params.getOrganisationUnits() != null &&
-        // params.getOrganisationUnits().size() > 0 )
-        // {
         I18n i18n = params.getI18n();
 
         int rowNumber = 0;
@@ -119,7 +116,6 @@ public class OrganisationUnitHierarchyConverter
         {
             e.printStackTrace();
         }
-        // }
     }
 
     // -------------------------------------------------------------------------
