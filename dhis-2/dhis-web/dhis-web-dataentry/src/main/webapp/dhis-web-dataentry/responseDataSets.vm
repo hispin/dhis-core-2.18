@@ -14,5 +14,6 @@
     "name": "$!encoder.jsEncode( ${organisationUnit.name} )",
     "shortName": "$!encoder.jsEncode( ${organisationUnit.shortName} )"
   },
-  "selectionValid": ${selectionValid}
+  "dataSetValid": ${dataSetValid},
+  "periodValid": ${periodValid}
 }

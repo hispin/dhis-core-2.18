@@ -13,11 +13,11 @@
     <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/>
     <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs()" style="width:150px"/><br/><br/>
 
-	<input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayEntryForm()">
+	<input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayModeSelected()">
     <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br/>
-	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform" disabled="disabled" onclick="displayEntryForm()">
+	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform" disabled="disabled" onclick="displayModeSelected()">
 	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br/>
-	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" onclick="displayEntryForm()">
+	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" onclick="displayModeSelected()">
     <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br/><br/>
 </div>
 

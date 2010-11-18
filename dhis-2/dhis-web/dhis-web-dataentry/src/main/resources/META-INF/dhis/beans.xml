@@ -54,6 +54,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 	
+	<bean id="org.hisp.dhis.de.action.LoadNextPreviousPeriodsAction" class="org.hisp.dhis.de.action.LoadNextPreviousPeriodsAction" scope="prototype">
+		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.de.action.LoadDisplayModesAction" class="org.hisp.dhis.de.action.LoadDisplayModesAction" scope="prototype">
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 	</bean>

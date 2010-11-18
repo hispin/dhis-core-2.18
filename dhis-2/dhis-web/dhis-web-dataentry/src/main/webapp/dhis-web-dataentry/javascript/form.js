@@ -16,21 +16,20 @@ window.onload = function ()
 	}
 }
 
-// -----------------------------------------------------------------------------
-// Selection
-// -----------------------------------------------------------------------------
-
-function clearDataSetAndPeriod()
-{
-	clearList( document.getElementById( 'selectedDataSetId' ) );
-	clearPeriod();
-}
-
 function clearPeriod()
 {	
 	clearList( document.getElementById( 'selectedPeriodIndex' ) );	
+	clearEntryForm();
+}
+
+function clearEntryForm()
+{
 	$('#entryForm').html( '' );
 }
+
+// -----------------------------------------------------------------------------
+// OrganisationUnit Selection
+// -----------------------------------------------------------------------------
 
 function organisationUnitSelected( orgUnits )
 {
@@ -41,23 +40,35 @@ function organisationUnitSelected( orgUnits )
     var list = document.getElementById( 'selectedDataSetId' );
     
     clearList( list );
+    
     addOptionToList( list, '-1', '[ Select ]' );
     
     $.getJSON( url, function( json ) {
-    	$('#selectedOrganisationUnit').val( json.organisationUnit.name );
-    	$('#currentOrganisationUnit').html( json.organisationUnit.name );
+    	$( '#selectedOrganisationUnit' ).val( json.organisationUnit.name );
+    	$( '#currentOrganisationUnit' ).html( json.organisationUnit.name );
     	
     	for ( i in json.dataSets ) {
     		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
     	}
     	
-    	if ( json.selectionValid && dataSetId != null ) {
+    	if ( json.dataSetValid && dataSetId != null ) {
     		$( '#selectedDataSetId' ).val( dataSetId );
-    	} 
+    		
+    		if ( json.periodValid ) {
+    			displayEntryFormInternal( null );
+    		}
+    	}
+    	else {
+    		clearPeriod();
+    	}
     } );
 }
 
 selection.setListenerFunction( organisationUnitSelected );
+
+// -----------------------------------------------------------------------------
+// Next/Previous Periods Selection
+// -----------------------------------------------------------------------------
 
 function nextPeriodsSelected()
 {
@@ -69,24 +80,40 @@ function previousPeriodsSelected()
 	displayPeriodsInternal( false, true );
 }
 
-function dataSetSelected()
+function displayPeriodsInternal( next, previous ) 
 {
-	displayPeriodsInternal( false, false );
+	var url = 'loadNextPreviousPeriods.action?next=' + next + '&previous=' + previous;
+	
+	var list = document.getElementById( 'selectedPeriodIndex' );
+		
+	clearList( list );
+	    
+	addOptionToList( list, '-1', '[ Select ]' );
+	
+    $.getJSON( url, function( json ) {
+    	for ( i in json.periods ) {
+    		addOptionToList( list, i, json.periods[i].name );
+    	}
+    } );
 }
 
-function displayPeriodsInternal( next, previous )
+// -----------------------------------------------------------------------------
+// DataSet Selection
+// -----------------------------------------------------------------------------
+
+function dataSetSelected()
 {
-	var dataSetId = $( '#selectedDataSetId' ).val();
-	
-	var periodIndex = $('#selectedPeriodIndex').val();
+	var dataSetId = $( '#selectedDataSetId' ).val();	
+	var periodIndex = $( '#selectedPeriodIndex' ).val();
 	
 	if ( dataSetId && dataSetId != -1 )
 	{
-		var url = 'loadPeriods.action?dataSetId=' + dataSetId + '&next=' + next + '&previous=' + previous;
+		var url = 'loadPeriods.action?dataSetId=' + dataSetId;
 
 		var list = document.getElementById( 'selectedPeriodIndex' );
 		
 	    clearList( list );
+	    
 	    addOptionToList( list, '-1', '[ Select ]' );
 		
 	    $.getJSON( url, function( json ) {
@@ -94,17 +121,29 @@ function displayPeriodsInternal( next, previous )
 	    		addOptionToList( list, i, json.periods[i].name );
 	    	}
 	    	
-	    	if ( json.selectionValid && periodIndex != null ) {
-	    		$('#selectedPeriodIndex').val( periodIndex );
-	    	}	    	
+	    	if ( json.periodValid && periodIndex != null ) {
+	    		$( '#selectedPeriodIndex' ).val( periodIndex );	    		
+	    		displayEntryFormInternal( setDisplayModes );
+	    	}
+	    	else {
+	    		clearEntryForm();
+	    	}
 	    } );
 	}
 }
 
-function displayEntryForm()
+// -----------------------------------------------------------------------------
+// DisplayMode Selection
+// -----------------------------------------------------------------------------
+
+function displayModeSelected()
 {
 	displayEntryFormInternal( null );
 }
+
+// -----------------------------------------------------------------------------
+// Period Selection
+// -----------------------------------------------------------------------------
 
 function periodSelected()
 {
@@ -113,8 +152,8 @@ function periodSelected()
 
 function displayEntryFormInternal( callback )
 {
-	var dataSetId = $('#selectedDataSetId').val();
-	var periodIndex = $('#selectedPeriodIndex').val();
+	var dataSetId = $( '#selectedDataSetId' ).val();
+	var periodIndex = $( '#selectedPeriodIndex' ).val();
 	
 	if ( dataSetId && dataSetId != -1 && periodIndex && periodIndex != -1 )
 	{
@@ -122,7 +161,7 @@ function displayEntryFormInternal( callback )
 			'&selectedPeriodIndex=' + periodIndex +
 			'&displayMode=' + $("input[name='displayMode']:checked").val();
 		
-		$('#entryForm').load( url, callback );
+		$( '#entryForm' ).load( url, callback );
 	}
 }
 
@@ -160,6 +199,10 @@ function setDisplayModes()
 		}
 	} );
 }
+
+// -----------------------------------------------------------------------------
+// History
+// -----------------------------------------------------------------------------
 
 function viewHistory( dataElementId, optionComboId, showComment )
 {

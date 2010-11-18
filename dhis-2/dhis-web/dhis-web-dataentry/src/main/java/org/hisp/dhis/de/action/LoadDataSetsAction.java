@@ -44,11 +44,18 @@ public class LoadDataSetsAction
         return organisationUnit;
     }
     
-    private boolean selectionValid;
+    private boolean dataSetValid;
 
-    public boolean isSelectionValid()
+    public boolean isDataSetValid()
     {
-        return selectionValid;
+        return dataSetValid;
+    }
+    
+    private boolean periodValid;
+
+    public boolean isPeriodValid()
+    {
+        return periodValid;
     }
     
     // -------------------------------------------------------------------------
@@ -57,26 +64,35 @@ public class LoadDataSetsAction
 
     public String execute()
     {
-        dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
-
-        Collections.sort( dataSets, new DataSetNameComparator() );
-
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
-        // ---------------------------------------------------------------------
-        // Validate whether current data set selection is still valid
-        // ---------------------------------------------------------------------
+        if ( organisationUnit != null )
+        {        
+            // -----------------------------------------------------------------
+            // Load data sets for selected org unit
+            // -----------------------------------------------------------------
 
-        DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
-        
-        if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
-        {
-            selectionValid = true;
-        }
-        else
-        {
-            selectedStateManager.clearSelectedDataSet();
-            selectedStateManager.clearSelectedPeriod();
+            dataSets = selectedStateManager.loadDataSetsForSelectedOrgUnit();
+    
+            Collections.sort( dataSets, new DataSetNameComparator() );
+
+            // -----------------------------------------------------------------
+            // Check if selected data set is associated with selected org unit
+            // -----------------------------------------------------------------
+
+            DataSet selectedDataSet = selectedStateManager.getSelectedDataSet();
+            
+            if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
+            {
+                dataSetValid = true;
+                
+                periodValid = selectedStateManager.getSelectedPeriod() != null;
+            }
+            else
+            {
+                selectedStateManager.clearSelectedDataSet();
+                selectedStateManager.clearSelectedPeriod();
+            }
         }
         
         return SUCCESS;

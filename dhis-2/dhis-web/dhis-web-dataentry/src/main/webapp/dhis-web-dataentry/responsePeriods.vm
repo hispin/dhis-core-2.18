@@ -9,5 +9,5 @@
     "externalId": "$!{period.externalId}"
   }#if( $velocityCount < $size ),#end    
 #end ],
-  "selectionValid": ${selectionValid}
+  "periodValid": ${periodValid}
 }
