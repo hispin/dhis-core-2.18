@@ -28,7 +28,7 @@
 		</action>
 		
 		<action name="loadPeriods" class="org.hisp.dhis.de.action.LoadPeriodsAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-dataentry/responsePeriods.vm</result>
 		</action>
 		
 		<action name="loadDisplayModes" class="org.hisp.dhis.de.action.LoadDisplayModesAction">
