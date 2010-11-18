@@ -6,6 +6,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.api.model.ActivityPlan;
@@ -17,6 +18,8 @@ import org.hisp.dhis.web.api.service.FacilityReportingService;
 import org.hisp.dhis.web.api.service.IProgramService;
 import org.springframework.beans.factory.annotation.Required;
 
+@Produces( DhisMediaType.MOBILE_SERIALIZED )
+@Consumes( DhisMediaType.MOBILE_SERIALIZED )
 public class OrgUnitResource
 {
 
@@ -35,7 +38,6 @@ public class OrgUnitResource
 
     @GET
     @Path( "all" )
-    @Produces( MediaType.MOBILE_SERIALIZED )
     public MobileModel getAllDataForUser( @HeaderParam( "accept-language" ) String locale )
     {
         MobileModel mobileModel = new MobileModel();
@@ -49,7 +51,6 @@ public class OrgUnitResource
 
     @GET
     @Path( "activitiyplan" )
-    @Produces( MediaType.ACTIVITYPLAN_SERIALIZED )
     public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
     {
         return activityReportingService.getCurrentActivityPlan( unit, locale );
@@ -57,8 +58,7 @@ public class OrgUnitResource
 
     @POST
     @Path( "dataSets" )
-    @Consumes( MediaType.DATASETVALUE_SERIALIZED )
-    @Produces( "application/xml" )
+    @Produces(MediaType.TEXT_PLAIN)
     public String saveDataSetValues( DataSetValue dataSetValue )
     {
         return facilityReportingService.saveDataSetValues( unit, dataSetValue );
@@ -66,8 +66,7 @@ public class OrgUnitResource
 
     @POST
     @Path( "activities" )
-    @Consumes( MediaType.ACTIVITYVALUELIST_SERIALIZED )
-    @Produces( "application/xml" )
+    @Produces(MediaType.TEXT_PLAIN)
     public String saveActivityReport( ActivityValue activityValue )
     {
         return activityReportingService.saveActivityReport( unit, activityValue );

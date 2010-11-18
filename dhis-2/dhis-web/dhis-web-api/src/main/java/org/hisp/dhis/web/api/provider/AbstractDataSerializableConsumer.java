@@ -27,80 +27,61 @@ package org.hisp.dhis.web.api.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyWriter;
+import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
 import org.hisp.dhis.web.api.model.DataStreamSerializable;
+import org.hisp.dhis.web.api.resources.DhisMediaType;
 
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZOutputStream;
 import com.sun.jersey.spi.resource.Singleton;
 
-@Provider
-@Singleton
-@Produces( org.hisp.dhis.web.api.resources.DhisMediaType.MOBILE_SERIALIZED )
-public class DataStreamSerializableProvider
-    implements MessageBodyWriter<DataStreamSerializable>
+/**
+ * An abstract class mapping from the {@link DhisMediaType.MOBILE_SERIALIZED} to implementations of {@link DataStreamSerializable}
+ * 
+ * <p>Implementations only need to define T and specify the relevant annotations
+ * 
+ * @param <T> The concrete implementation of {@link DataStreamSerializable} this consumer creates and populates
+ */
+public abstract class AbstractDataSerializableConsumer<T extends DataStreamSerializable> implements MessageBodyReader<T>
 {
 
+
     @Override
-    public boolean isWriteable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
+    public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
     {
+        System.out.println("****" + type.getName() + " - " + this.getClass().getName());
         return DataStreamSerializable.class.isAssignableFrom( type );
     }
 
     @Override
-    public long getSize( DataStreamSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
-        MediaType mediaType )
-    {
-        return -1;
-    }
-
-    @Override
-    public void writeTo( DataStreamSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
-        MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream )
+    public T readFrom( Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType,
+        MultivaluedMap<String, String> httpHeaders, InputStream entityStream )
         throws IOException, WebApplicationException
     {
-        ByteArrayOutputStream baos = serializePersistent( t );
-        ZOutputStream gzip = new ZOutputStream( entityStream, JZlib.Z_BEST_COMPRESSION );
-        DataOutputStream dos = new DataOutputStream( gzip );
-
+        T t;
         try
         {
-            byte[] res = baos.toByteArray();
-            dos.write( res );
+            t = type.newInstance();
+            t.deSerialize( new DataInputStream( entityStream ) );
+            return t;
         }
-        catch ( Exception e )
+        catch ( InstantiationException e )
         {
-            e.printStackTrace();
+            throw new IOException("Can't instantiate class " + type.getName(), e);
         }
-        finally
+        catch ( IllegalAccessException e )
         {
-            dos.flush();
-            gzip.finish();
+            throw new IOException("Not allowed to instantiate class " + type.getName(), e);
         }
-
     }
-
-    public ByteArrayOutputStream serializePersistent( DataStreamSerializable entity )
-        throws IOException
-    {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream( baos );
-        entity.serialize( out );
-        out.flush();
-        return baos;
-    }
-
 }
