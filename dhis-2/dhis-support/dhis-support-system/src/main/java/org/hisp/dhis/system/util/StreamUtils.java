@@ -53,7 +53,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.hisp.dhis.system.comparator.FileLastModifiedComprator;
+import org.hisp.dhis.system.comparator.FileLastModifiedComparator;
 
 /**
  * @author Lars Helge Overland
@@ -145,7 +145,7 @@ public class StreamUtils
         
         if ( sort )
         {
-            Collections.sort( files, new FileLastModifiedComprator() );
+            Collections.sort( files, new FileLastModifiedComparator() );
         }
         
         return files;

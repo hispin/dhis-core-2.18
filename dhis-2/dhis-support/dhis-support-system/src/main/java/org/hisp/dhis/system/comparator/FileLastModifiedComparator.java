@@ -34,7 +34,7 @@ import java.util.Comparator;
  * @author Tran Thanh Tri
  * @version $Id: Feature.java 28-04-2008 16:06:00 $
  */
-public class FileLastModifiedComprator
+public class FileLastModifiedComparator
     implements Comparator<File>
 {
     public int compare( File o1, File o2 )
