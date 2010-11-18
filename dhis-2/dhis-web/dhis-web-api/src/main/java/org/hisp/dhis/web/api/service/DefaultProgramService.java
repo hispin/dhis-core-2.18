@@ -140,6 +140,7 @@ public class DefaultProgramService
                 de.setId( programStagedataElement.getDataElement().getId() );
                 de.setName( programStagedataElement.getDataElement().getName() );
                 de.setType( programStagedataElement.getDataElement().getType() );
+                de.setCompulsory( programStagedataElement.isCompulsory() );
                 de.setCategoryOptionCombos( mobileCategpryOptCombos );
 
                 des.add( de );

@@ -27,32 +27,49 @@ package org.hisp.dhis.web.api.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class DataElement extends Model {	
+public class DataElement
+    extends Model
+{
 
-	private String type;
+    private String type;
 
-	private ModelList categoryOptionCombos;
-	
-	public DataElement() {
+    private boolean compulsory;
 
-	}	
+    private ModelList categoryOptionCombos;
 
-	public String getType() {
-		return type;
-	}
+    public DataElement()
+    {
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    }
 
-        public ModelList getCategoryOptionCombos()
-        {
-            return categoryOptionCombos;
-        }
-    
-        public void setCategoryOptionCombos( ModelList categoryOptionCombos )
-        {
-            this.categoryOptionCombos = categoryOptionCombos;
-        }
-		
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    public ModelList getCategoryOptionCombos()
+    {
+        return categoryOptionCombos;
+    }
+
+    public void setCategoryOptionCombos( ModelList categoryOptionCombos )
+    {
+        this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    public boolean isCompulsory()
+    {
+        return compulsory;
+    }
+
+    public void setCompulsory( boolean compulsory )
+    {
+        this.compulsory = compulsory;
+    }
+
 }

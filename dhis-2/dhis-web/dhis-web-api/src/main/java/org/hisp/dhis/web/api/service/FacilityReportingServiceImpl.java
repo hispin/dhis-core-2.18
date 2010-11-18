@@ -159,6 +159,9 @@ public class FacilityReportingServiceImpl
                 de.setId( dataElement.getId() );
                 de.setName( dataElement.getName() );
                 de.setType( dataElement.getType() );
+                
+                //For facility Reporting, all data element are mandetory
+                de.setCompulsory( true );
                 de.setCategoryOptionCombos( deCateOptCombo );
                 dataElementList.add( de );
             }

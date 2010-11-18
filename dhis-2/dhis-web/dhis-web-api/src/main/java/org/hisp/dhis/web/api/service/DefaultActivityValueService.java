@@ -132,6 +132,9 @@ public class DefaultActivityValueService
             dataElementMap.put( dataElement.getId(), dataElement );
         }
 
+        // Set ProgramStageInstance to completed
+        programStageInstance.setCompleted( true );
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
         // Everything is fine, hence save
         saveDataValues( activityValue, programStageInstance, dataElementMap, unit,
             categoryService.getDefaultDataElementCategoryOptionCombo() );
