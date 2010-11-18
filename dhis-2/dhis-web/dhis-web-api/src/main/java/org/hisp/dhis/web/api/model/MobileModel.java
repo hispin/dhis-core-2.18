@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class MobileModel
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
     private ActivityPlan activityPlan;
 
@@ -76,13 +76,17 @@ public class MobileModel
         throws IOException
     {
 
-        if ( programs != null )
-        {
-            dout.writeInt( programs.size() );
-        }
-        else
+        if ( programs == null )
         {
             dout.writeInt( 0 );
+        }
+        else {
+            dout.writeInt( programs.size() );
+
+            for ( Program prog : programs )
+            {
+                prog.serialize( dout );
+            }
         }
 
         // Write ActivityPlans
@@ -95,14 +99,6 @@ public class MobileModel
             this.activityPlan.serialize( dout );
         }
 
-        // Write Programs
-        if ( programs != null || programs.size() > 0 )
-        {
-            for ( Program prog : programs )
-            {
-                prog.serialize( dout );
-            }
-        }
 
         // Write DataSets
         if ( datasets == null )

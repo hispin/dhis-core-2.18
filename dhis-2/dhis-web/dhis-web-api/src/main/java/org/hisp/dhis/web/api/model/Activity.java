@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.Date;
 
 public class Activity
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
 
     private Beneficiary beneficiary;

@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Beneficiary
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
     private int id;
 

@@ -41,7 +41,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.hisp.dhis.web.api.model.MobileSerializable;
+import org.hisp.dhis.web.api.model.DataStreamSerializable;
 
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
@@ -50,25 +50,25 @@ import com.sun.jersey.spi.resource.Singleton;
 @Provider
 @Singleton
 @Produces( "application/vnd.org.dhis2.mobile+serialized" )
-public class DataSerializableProvider
-    implements MessageBodyWriter<MobileSerializable>
+public class DataStreamSerializableProvider
+    implements MessageBodyWriter<DataStreamSerializable>
 {
 
     @Override
     public boolean isWriteable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
     {
-        return true;
+        return DataStreamSerializable.class.isAssignableFrom( type );
     }
 
     @Override
-    public long getSize( MobileSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
+    public long getSize( DataStreamSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
         MediaType mediaType )
     {
         return -1;
     }
 
     @Override
-    public void writeTo( MobileSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
+    public void writeTo( DataStreamSerializable t, Class<?> type, Type genericType, Annotation[] annotations,
         MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream )
         throws IOException, WebApplicationException
     {
@@ -93,7 +93,7 @@ public class DataSerializableProvider
 
     }
 
-    public ByteArrayOutputStream serializePersistent( MobileSerializable entity )
+    public ByteArrayOutputStream serializePersistent( DataStreamSerializable entity )
         throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

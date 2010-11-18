@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityValue
-    implements MobileSerializable
+    implements DataStreamSerializable
 {
 
     private int programInstanceId;
