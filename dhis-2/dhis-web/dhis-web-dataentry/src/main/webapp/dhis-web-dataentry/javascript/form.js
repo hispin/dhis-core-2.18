@@ -20,15 +20,29 @@ window.onload = function ()
 // Selection
 // -----------------------------------------------------------------------------
 
+function clearDataSetAndPeriod()
+{
+	clearList( document.getElementById( 'selectedDataSetId' ) );
+	clearPeriod();
+}
+
+function clearPeriod()
+{	
+	clearList( document.getElementById( 'selectedPeriodIndex' ) );	
+	$('#entryForm').html( '' );
+}
+
 function organisationUnitSelected( orgUnits )
 {
+    var selectedDataSetId = $( '#selectedDataSetId' ).val();
+    
     var url = 'loadDataSets.action';
     
     var list = document.getElementById( 'selectedDataSetId' );
     
     clearList( list );
     addOptionToList( list, '-1', '[ Select ]' );
-        
+    
     $.getJSON( url, function( json ) {
     	$('#selectedOrganisationUnit').val( json.organisationUnit.name );
     	$('#currentOrganisationUnit').html( json.organisationUnit.name );
@@ -36,6 +50,10 @@ function organisationUnitSelected( orgUnits )
     	for ( i in json.dataSets ) {
     		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
     	}
+    	
+    	if ( json.selectionValid && selectedDataSetId != null ) {
+    		$( '#selectedDataSetId' ).val( selectedDataSetId );
+    	} 
     } );
 }
 

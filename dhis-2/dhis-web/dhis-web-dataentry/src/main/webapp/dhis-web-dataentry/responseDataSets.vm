@@ -13,5 +13,6 @@
     "id": $!{organisationUnit.id},
     "name": "$!encoder.jsEncode( ${organisationUnit.name} )",
     "shortName": "$!encoder.jsEncode( ${organisationUnit.shortName} )"
-  }
+  },
+  "selectionValid": ${selectionValid}
 }

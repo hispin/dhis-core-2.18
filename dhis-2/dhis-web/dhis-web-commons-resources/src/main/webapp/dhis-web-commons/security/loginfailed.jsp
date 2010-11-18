@@ -40,11 +40,11 @@
                     </tr>
                     <tr>
                         <td><label for="j_username">Username</label></td>
-                        <td><input type="text" id="j_username" name="j_username" style="width:18em" autocomplete="off"></td>
+                        <td><input type="text" id="j_username" name="j_username" style="width:18em"></td>
                     </tr>
                     <tr>
                         <td><label for="j_password">Password</label></td>
-                        <td><input type="password" id="j_password" name="j_password" style="width:18em" autocomplete="off"></td>
+                        <td><input type="password" id="j_password" name="j_password" style="width:18em"></td>
                     </tr>
                     <tr>
                         <td></td>
