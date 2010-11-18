@@ -1,14 +1,10 @@
 package org.hisp.dhis.web.api.service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -23,7 +19,6 @@ import org.hisp.dhis.web.api.model.comparator.ActivityComparator;
 import org.hisp.dhis.web.api.service.mapping.TaskMapper;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultActivityPlanService
     implements IActivityPlanService
@@ -116,7 +111,7 @@ public class DefaultActivityPlanService
         {
             // there are error on db with patientattributeid 14, so I limit the
             // patient to be downloaded
-            if ( i++ > 10 )
+            if ( i > 10 )
             {
                 break;
             }
@@ -130,12 +125,14 @@ public class DefaultActivityPlanService
             if ( from.isBefore( dueTime ) )
             {
                 items.add( getActivityModel( activity ) );
+                i++;
             }
             else if ( !activity.getTask().isCompleted() )
             {
                 org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity );
                 items.add( a );
                 a.setLate( true );
+                i++;
             }
         }
         if ( !items.isEmpty() )
@@ -204,39 +201,40 @@ public class DefaultActivityPlanService
             .getPatientAttributeByName( "Nearest Contact Person Name" );
 
         PatientAttributeValue houseNameValue = patientAttValueService.getPatientAttributeValue( patient, houseName );
-        if(houseNameValue!=null){
-            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ));
+        if ( houseNameValue != null )
+        {
+            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ) );
         }
-        
-        
+
         PatientAttributeValue houseNumberValue = patientAttValueService.getPatientAttributeValue( patient, houseNumber );
-        if(houseNumberValue!=null){
-            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ));
+        if ( houseNumberValue != null )
+        {
+            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ) );
         }
-        
-        
+
         PatientAttributeValue wardNumberValue = patientAttValueService.getPatientAttributeValue( patient, wardNumber );
-        if(wardNumberValue!=null){
-            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ));
+        if ( wardNumberValue != null )
+        {
+            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ) );
         }
-        
-        
-        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient, nearestContact );
-        if(nearestContactValue!=null){
-            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ));
+
+        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient,
+            nearestContact );
+        if ( nearestContactValue != null )
+        {
+            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ) );
         }
-        
+
         beneficiary.setPatientAttValues( patientAtts );
-        
-        
-//         for ( PatientAttributeValue patientAttributeValue :
-//         patientAttValueService.getPatientAttributeValues( patient ) )
-//         {
-//         patientAttValues.add(
-//         patientAttributeValue.getPatientAttribute().getName() + " : "
-//         + patientAttributeValue.getValue() );
-//         }
-//         beneficiary.setPatientAttValues( patientAttValues );
+
+        // for ( PatientAttributeValue patientAttributeValue :
+        // patientAttValueService.getPatientAttributeValues( patient ) )
+        // {
+        // patientAttValues.add(
+        // patientAttributeValue.getPatientAttribute().getName() + " : "
+        // + patientAttributeValue.getValue() );
+        // }
+        // beneficiary.setPatientAttValues( patientAttValues );
 
         return beneficiary;
     }

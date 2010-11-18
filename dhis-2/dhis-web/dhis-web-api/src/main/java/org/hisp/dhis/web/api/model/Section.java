@@ -63,6 +63,8 @@ public class Section
                 dout.writeInt( de.getId() );
                 dout.writeUTF( de.getName() );
                 dout.writeUTF( de.getType() );
+                dout.writeBoolean( de.isCompulsory() );
+                
                 List<Model> cateOptCombos = de.getCategoryOptionCombos().getAbstractModels();
                 if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
                 {
