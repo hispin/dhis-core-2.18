@@ -36,10 +36,13 @@ import java.util.Map;
 public class ResourceTableNameMap
 {
     private static Map<String, String> resourceNameMap;
+    
+    private static Map<String, String> ignoredNameMap;
 
     static
     {
         resourceNameMap = new HashMap<String, String>();
+        ignoredNameMap = new HashMap<String, String>();
 
         resourceNameMap.put( "_cocn", "_categoryoptioncomboname" );
         resourceNameMap.put( "_cs", "_categorystructure" );
@@ -49,10 +52,23 @@ public class ResourceTableNameMap
         resourceNameMap.put( "_ougss", "_orgunitgroupsetstructure" );
         resourceNameMap.put( "_oustgss", "_organisationunitgroupsetstructure" );
 
+        ignoredNameMap.put( "_users", "users" );
+        ignoredNameMap.put( "_uinfo", "userinfo" );
     }
 
-    public static String getNameByAlias( String alias )
+    public static String getResourceNameByAlias( String alias )
     {
         return resourceNameMap.get( alias );
     }
+    
+    public static String getIgnoredNameByAlias( String alias )
+    {
+        return ignoredNameMap.get( alias );
+    }
+
+    public static Map<String, String> getIgnoredNameMap()
+    {
+        return ignoredNameMap;
+    }
+
 }

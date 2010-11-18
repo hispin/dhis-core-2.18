@@ -132,7 +132,7 @@ public class JdbcSqlViewExpandStore
         try
         {
             ResultSet rs = holder.getStatement().executeQuery(
-                PREFIX_SELECT_QUERY + ResourceTableNameMap.getNameByAlias( resourceTableName ) + " LIMIT 1" );
+                PREFIX_SELECT_QUERY + ResourceTableNameMap.getResourceNameByAlias( resourceTableName ) + " LIMIT 1" );
             ResultSetMetaData rsmd = rs.getMetaData();
 
             int countCols = rsmd.getColumnCount();
