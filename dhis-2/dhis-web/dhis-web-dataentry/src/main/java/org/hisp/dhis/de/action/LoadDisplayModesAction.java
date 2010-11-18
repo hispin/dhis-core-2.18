@@ -53,10 +53,10 @@ public class LoadDisplayModesAction
     {
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
         
-        customForm = dataSet.getSections() != null && dataSet.getSections().size() > 0;
+        customForm = dataSet.getDataEntryForm() != null;
 
-        sectionForm = dataSet.getDataEntryForm() != null;
-        
+        sectionForm = dataSet.getSections() != null && dataSet.getSections().size() > 0;
+
         displayMode = selectedStateManager.getSelectedDisplayMode();
         
         return SUCCESS;
