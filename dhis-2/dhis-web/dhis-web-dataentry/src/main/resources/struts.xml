@@ -24,7 +24,7 @@
 		</action>
 
 		<action name="loadDataSets" class="org.hisp.dhis.de.action.LoadDataSetsAction">
-			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonDataSets.vm</result>
+			<result name="success" type="velocity-json">/dhis-web-dataentry/responseDataSets.vm</result>
 		</action>
 		
 		<action name="loadPeriods" class="org.hisp.dhis.de.action.LoadPeriodsAction">

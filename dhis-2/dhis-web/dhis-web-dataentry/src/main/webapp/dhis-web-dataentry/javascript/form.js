@@ -28,13 +28,11 @@ function organisationUnitSelected( orgUnits )
     
     clearList( list );
     addOptionToList( list, '-1', '[ Select ]' );
-    
-    $.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action?id=' + orgUnits[0], function( json ) {
+        
+    $.getJSON( url, function( json ) {
     	$('#selectedOrganisationUnit').val( json.organisationUnit.name );
     	$('#currentOrganisationUnit').html( json.organisationUnit.name );
-    } );
-    
-    $.getJSON( url, function( json ) {
+    	
     	for ( i in json.dataSets ) {
     		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
     	}
