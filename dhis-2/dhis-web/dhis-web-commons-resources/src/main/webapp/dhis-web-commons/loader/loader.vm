@@ -9,11 +9,12 @@ div#loaderDiv
   width: 500px;
   height: 230px;
   text-align: center;
+  display: none;
 }
 
 </style>
 
-<div id="loaderDiv" style="display:none">
+<div id="loaderDiv">
     
     <br><br><br>
     

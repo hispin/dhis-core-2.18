@@ -337,7 +337,6 @@ public class SectionFormAction
     public String execute()
         throws Exception
     {
-
         zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -417,13 +416,12 @@ public class SectionFormAction
 
             orderdCategoryOptionCombos.put( categoryCombo.getId(), optionCombos );
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Perform ordering of categories and their options so that they
-            // could
-            // be displayed as in the paper form. Note that the total number of
-            // entry cells to be generated are the multiple of options from each
-            // category.
-            // ---------------------------------------------------------------------
+            // could be displayed as in the paper form. Note that the total 
+            // number of entry cells to be generated are the multiple of options 
+            // from each category.
+            // -----------------------------------------------------------------
 
             numberOfTotalColumns.put( categoryCombo.getId(), optionCombos.size() );
 
@@ -438,9 +436,9 @@ public class SectionFormAction
 
             orderedOptionsMap.put( categoryCombo.getId(), optionsMap );
 
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Calculating the number of times each category should be repeated
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
 
             int catColSpan = optionCombos.size();
 
@@ -560,6 +558,5 @@ public class SectionFormAction
         dataElementValueTypeMap.put( DataElement.VALUE_TYPE_DATE, i18n.getString( "date" ) );
 
         return SUCCESS;
-
     }
 }
