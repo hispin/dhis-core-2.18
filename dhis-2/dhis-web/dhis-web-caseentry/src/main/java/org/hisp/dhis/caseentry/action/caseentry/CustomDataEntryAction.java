@@ -58,6 +58,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -172,6 +173,13 @@ public class CustomDataEntryAction
     public Boolean getZeroValueSaveMode()
     {
         return zeroValueSaveMode;
+    }
+
+    private Collection<ProgramStageDataElement> programStageDataElements;
+
+    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    {
+        return programStageDataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -307,12 +315,12 @@ public class CustomDataEntryAction
     {
         this.useDefaultForm = useDefaultForm;
     }
-    
+
     public ProgramStageInstance programStageInstance;
-    
+
     public int getProgramStageInstanceId()
     {
-           return programStageInstance.getId();
+        return programStageInstance.getId();
     }
 
     // -------------------------------------------------------------------------
@@ -322,8 +330,7 @@ public class CustomDataEntryAction
     public String execute()
         throws Exception
     {
-      
-        
+
         Boolean zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
 
         // ---------------------------------------------------------------------
@@ -365,17 +372,16 @@ public class CustomDataEntryAction
             return SUCCESS;
         }
 
-        programStageInstance = programStageInstanceService.getProgramStageInstance(
-            programInstance, programStage );
+        programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
 
         if ( programStageInstance == null )
         {
             return SUCCESS;
         }
 
-        Collection<PatientDataValue> patientDataValues = patientDataValueService.getPatientDataValues(
-             programStageInstance );
-        
+        Collection<PatientDataValue> patientDataValues = patientDataValueService
+            .getPatientDataValues( programStageInstance );
+
         dataEntryForm = programStage.getDataEntryForm();
         if ( dataEntryForm == null )
         {
@@ -395,6 +401,8 @@ public class CustomDataEntryAction
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
                 dataEntryForm.getHtmlCode(), patientDataValues, calculatedValueMap, minMaxMap, disabled,
                 zeroValueSaveMode, i18n, programStage, programStageInstance, organisationUnit );
+
+            //programStageDataElements = dataEntryScreenManager.getProgramStageDataElements( dataEntryForm.getHtmlCode() );
         }
         return SUCCESS;
 

@@ -64,6 +64,7 @@
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post">
 <input type="hidden" name="programStageId" value="$!programStageId"/>
 <input type="hidden" name="associationIdField" id="associationIdField" value="$association.id" />
+<input type="hidden" name="associationid" id="associationid" value="" />
 <h3>$i18n.getString( "dataentryform_management_for_program_stage" ): $association.name </h3>
 <div class="container" >
 	<table id="detailsList" width="100%">
@@ -247,6 +248,7 @@ function openOtherProgramStageDataElements()
 	
 function openDataElementSelector()
 {
+	setFieldValue( 'associationid', $association.id );
 	dataElementSelector.dialog("open");
 }	
 
@@ -274,6 +276,8 @@ function deleteDataEntryForm( associationId )
 
 function getProgramStageDataElements( id )
 {
+	setFieldValue( 'associationid', id );
+	
 	var dataElements = jQuery( "#otherProgramStageDataElements #dataElementIds" );
 	dataElements.empty();
 	var dataElementIdsStore = jQuery( "#otherProgramStageDataElements #dataElementIdsStore" );
@@ -329,7 +333,7 @@ function insertDataElement( source )
 	}
 	var categoryOptionCombos = getSelectedValues( source + ' #optionComboIds' );
 	
-	var associationId = $association.id;
+	var associationId = getFieldValue( 'associationid' );
 	
 	var dataElementId = dataElement.id;	
 	var dataElementName = dataElement.name;	
@@ -380,13 +384,7 @@ function insertDataElement( source )
 		id = boolPSDataEntryId;
 	}else if (dataElementType == "date")
 	{
-		clazz = "date_" + associationId + "_" + dataElementId;
-		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\" class=\"" + clazz + "\">";	
-		selectString += "<script type=\"text/javascript\">";
-		selectString += "jQuery(function(){";
-		selectString += "datePickerjQuery('." + clazz + "');";	
-		selectString += "});";	
-		selectString += "<\/script>";
+		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\" />";	
 		
 		id = datePSDataEntryId;
 	} else if ( dataElementType == "int" )
@@ -428,7 +426,7 @@ function getSelectedValues( jQueryString )
 
 
 function checkExisted( id )
-{	
+{		
 	var result = false;
 	var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
 	var input = jQuery( html ).find("select, :text");

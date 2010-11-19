@@ -35,16 +35,13 @@
 	        <th>$i18n.getString( "last_updated_leave_blank_for_all" )</th>
 	    </tr>
 	    <tr>
-	    	<td><input type="text" id="lastUpdated" name="lastUpdated" style="width:250px">   
-                <img src="../images/calendar_icon.gif" width="16" height="16" id="getLastUpdated" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''"></td>
+	    	<td><input type="text" id="lastUpdated" name="lastUpdated" style="width:250px"></td>
     	</tr>
 		
 		<script type="text/javascript">
-		    Calendar.setup({
-		        inputField     :    "lastUpdated",      // id of the input field
-		        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-		        button         :    "getLastUpdated"   // trigger for the calendar (button ID)
-		    });
+			jQuery(function(){
+				datePicker( 'lastUpdated' );
+			});
 		</script>
 		
 	#else

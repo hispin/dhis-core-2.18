@@ -5,7 +5,7 @@
 	});
 
 </script>
-<input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
+
 <h3>$i18n.getString( "create_new_data_element" )</h3>
 
 <form id="addExtendedDataElementForm" action="addExtendedDataElement.action" method="post" onsubmit="return validateAddExtendedDataElement()">
@@ -89,16 +89,13 @@
 	</tr>
 	<tr>
 		<td><label for="statusDate">$i18n.getString( "status_date" ) ($i18n.getString( "format.date.label" ))</label></td>
-		<td><input type="text" id="statusDate" name="statusDate" style="width:20em" class="{validate:{dateISO:true}}"/></td>
-		<td><img src="../images/calendar_icon.gif" width="16" height="16" id="getStatusDate" style="cursor: pointer;" title="$i18n.getString( 'date_selector' )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( 'status_date' )"/></td>
+		<td><input type="text" id="statusDate" name="statusDate" style="width:20em" class="{validate:{dateISO:true}}"/></td>		
 	</tr>
 	
 	<script type="text/javascript">
-        Calendar.setup({
-            inputField     :    "statusDate",      // id of the input field
-            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-            button         :    "getStatusDate"   // trigger for the calendar (button ID)
-        });
+        jQuery(function(){
+			datePicker( 'statusDate' );
+		});
   	</script>
   	
   	<tr>
