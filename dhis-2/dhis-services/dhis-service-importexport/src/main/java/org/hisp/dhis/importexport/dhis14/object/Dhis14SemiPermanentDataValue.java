@@ -47,7 +47,9 @@ public class Dhis14SemiPermanentDataValue
     
     private int organisationUnitId;
     
-    private int value;
+    private Integer value;
+
+    private Integer yesNo;
     
     private String storedBy;
     
@@ -117,14 +119,24 @@ public class Dhis14SemiPermanentDataValue
         this.organisationUnitId = organisationUnitId;
     }
 
-    public int getValue()
+    public Integer getValue()
     {
         return value;
     }
 
-    public void setValue( int value )
+    public void setValue( Integer value )
     {
         this.value = value;
+    }
+
+    public Integer getYesNo()
+    {
+        return yesNo;
+    }
+
+    public void setYesNo( Integer yesNo )
+    {
+        this.yesNo = yesNo;
     }
 
     public String getStoredBy()

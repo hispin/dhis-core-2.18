@@ -111,8 +111,16 @@ public class RoutineDataValueRowHandler
         value.setOptionCombo( categoryOptionCombo );
         value.setPeriod( period );
         value.setSource( source );
-        value.setValue( String.valueOf( dhis14Value.getValue() ) );
         value.setStoredBy( dhis14Value.getStoredBy() );
+
+        if ( dhis14Value.getValue() != null )
+        {
+            value.setValue( String.valueOf( dhis14Value.getValue() ) );
+        }
+        else if ( dhis14Value.getYesNo() != null )
+        {
+            value.setValue( String.valueOf( dhis14Value.getYesNo() ) );
+        }   
         
         if ( value.getDataElement() != null && value.getPeriod() != null && value.getSource() != null && value.getValue() != null )
         {
