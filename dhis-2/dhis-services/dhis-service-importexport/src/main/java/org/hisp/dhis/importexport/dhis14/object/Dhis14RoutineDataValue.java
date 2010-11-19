@@ -43,6 +43,8 @@ public class Dhis14RoutineDataValue
     
     private Integer value;
     
+    private Integer yesNo;
+    
     private String storedBy;
     
     private Date timeStamp;
@@ -91,14 +93,24 @@ public class Dhis14RoutineDataValue
         this.organisationUnitId = organisationUnitId;
     }
 
-    public int getValue()
+    public Integer getValue()
     {
         return value;
     }
 
-    public void setValue( int value )
+    public void setValue( Integer value )
     {
         this.value = value;
+    }
+
+    public Integer getYesNo()
+    {
+        return yesNo;
+    }
+
+    public void setYesNo( Integer yesNo )
+    {
+        this.yesNo = yesNo;
     }
 
     public String getStoredBy()

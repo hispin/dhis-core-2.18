@@ -18,21 +18,22 @@
         <result property="startDate" column="ValidFrom" typeHandler="dateTypeHandler"/>
         <result property="endDate" column="ValidTo" typeHandler="dateTypeHandler"/>
 		<result property="organisationUnitId" column="OrgUnitID"/>
-		<result property="value" column="EntryNumber" nullValue="0"/>
+		<result property="value" column="EntryNumber"/>
+		<result property="yesNo" column="EntryYesNo"/>
     </resultMap>
 	
 	<!-- Statement -->
 	
 	<select id="getSemiPermanentDataValues" resultMap="semiPermanentDataValueResultMap">
 		SELECT SemiPermanentData.DataElementID, SemiPermanentData.ValidFrom, SemiPermanentData.ValidTo, 
-		SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, DataElement.DataPeriodTypeID 
+		SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, SemiPermanentData.EntryYesNo, DataElement.DataPeriodTypeID 
 		FROM SemiPermanentData, DataElement 
         WHERE SemiPermanentData.DataElementID = DataElement.DataElementID
 	</select>
   
     <select id="getSemiPermanentDataValuesLastUpdated" parameterClass="java.util.Date" resultMap="semiPermanentDataValueResultMap">
         SELECT SemiPermanentData.DataElementID, SemiPermanentData.ValidFrom, SemiPermanentData.ValidTo, 
-        SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, DataElement.DataPeriodTypeID 
+        SemiPermanentData.OrgUnitID, SemiPermanentData.EntryNumber, SemiPermanentData.EntryYesNo, DataElement.DataPeriodTypeID 
         FROM SemiPermanentData, DataElement 
         WHERE SemiPermanentData.DataElementID = DataElement.DataElementID 
         AND LastUpdated > #value#
