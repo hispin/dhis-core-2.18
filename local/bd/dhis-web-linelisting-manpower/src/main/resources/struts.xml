@@ -557,7 +557,7 @@
 
 		<action name="linelistAggregationResult" class="org.hisp.dhis.ll.action.llagg.LinelistingAggregationResultAction">                 
 		  <result name="success" type="velocity">/main.vm</result>
-		  <param name="page">/dhis-web-linelisting-mp/linelistingAggResult.vm</param>
+		  <param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
 		  <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>      
 		</action>
 
@@ -566,6 +566,15 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-linelisting-mp/llDataImportResult.vm</param>
       <param name="menu">/dhis-web-linelisting-mp/menu.vm</param>             
+    </action>
+
+<!-- Linelisting Reports -->
+    <action name="summaryReport" class="org.hisp.dhis.ll.action.reports.SummaryReportAction">
+		<interceptor-ref name="organisationUnitTreeStack"/>
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-linelisting-mp/summaryReportResult.vm</param>
+		<param name="menu">/dhis-web-linelisting-mp/menuForSummaryReport.vm</param>      	  
+        <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>	         
     </action>
 		
     

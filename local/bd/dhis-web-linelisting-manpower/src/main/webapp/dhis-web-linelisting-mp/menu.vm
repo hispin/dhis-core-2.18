@@ -9,6 +9,12 @@
 	<ul>
 		<li><a href="select.action">DataEntry</a></li>
 	</ul>
+<h2>Linelisting Reports</h2>
+    <ul>
+        <li><a href="summaryReport.action">Linelist Summary Report</a></li>
+		<li><a href="#">Linelist Detailed Report</a></li>
+    </ul>
+<!--
 <h2>Linelisting Validation Rules</h2>
 	<ul>
 		<li><a href="showValidationRules.action">Linelist Validation Rules</a></li>
@@ -18,11 +24,8 @@
         <li><a href="showLLAggQueryBuilderForm.action">Linelisting Aggregation Query Builder</a></li>
         <li><a href="linelistAggForm.action">Linelisting Aggregation</a></li>
     </ul>
-<!--<ul>
-        <li><a href="linelistAggForm.action">$i18n.getString( "linelisting_aggregation" )</a></li>     
-    </ul> -->
 <h2>Linelisting Data Import</h2>
     <ul>
         <li><a href="lldataImport.action">Linelisting Data Import</a></li>
     </ul>
-    
+-->    
