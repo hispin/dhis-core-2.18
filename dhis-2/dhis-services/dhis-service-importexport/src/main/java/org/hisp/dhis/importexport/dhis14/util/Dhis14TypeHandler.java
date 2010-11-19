@@ -7,6 +7,8 @@ import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
 
+import org.hisp.dhis.datavalue.DataValue;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: TypeHandler.java 6216 2008-11-06 18:06:42Z eivindwa $
@@ -23,6 +25,15 @@ public class Dhis14TypeHandler
     private static final String DHIS14_TYPE_INT = "3";
     private static final String DHIS14_TYPE_STRING = "4";
     private static final String DHIS14_TYPE_BOOL = "5";
+    
+    // -------------------------------------------------------------------------
+    // Yes/No
+    // -------------------------------------------------------------------------
+    
+    public static String convertYesNoFromDhis14( Integer value )
+    {
+        return value != null && value.intValue() == 1 ? DataValue.TRUE : DataValue.FALSE;
+    }
     
     // -------------------------------------------------------------------------
     // Boolean
