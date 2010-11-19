@@ -1,0 +1,18 @@
+
+#if( $selOrgUnitName == "NONE" )
+	<h1>Please select OrganisationUnit</h1>	
+#else
+	<h1>Summary Report Result for : $selOrgUnitName</h1>
+	<table>
+		<tr>
+			<th>Department Name - Post Name</th>
+			<th>Department Name - Post Name</th>
+		</tr>
+		#foreach( $resultKey in $resultKeys )
+			<tr>
+				<td>$resultKey</td>
+				<td>$resultMap.get( $resultKey )</td>
+			</tr>
+		#end
+	</table>
+#end
