@@ -85,7 +85,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/javascripts/jQuery/jquery.metadata.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js</param>
       <param name="stylesheets">style/patient.css</param>
     </action>
     
@@ -129,10 +129,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
        <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js,../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js
-      ,../dhis-web-commons/javascripts/jQuery/jquery.metadata.js,javascript/customcheckbox/prettyCheckboxes.js</param>
-      <param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css,style/patient.css
-      ,javascript/customcheckbox/prettyCheckboxes.css</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,javascript/customcheckbox/prettyCheckboxes.js</param>
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
     </action>
 
 	<!-- Multi DataEntry -->
@@ -149,21 +147,8 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
       <param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>    
-      <param name="javascripts">
-      	  ../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js, 
-	      ../dhis-web-commons/calendar/calendar.js,
-	      ../dhis-web-commons/calendar/calendar-lang.js,
-	      ../dhis-web-commons/calendar/calendar-setup.js,
-	      ../dhis-web-commons/javascripts/jQuery/jquery.metadata.js,
-	      ../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,
-	      javascript/customcheckbox/prettyCheckboxes.js
-      </param> 
-      <param name="stylesheets">
-	      ../dhis-web-commons/jQuery/ui/css/redmond/jquery-ui.css
-	      ,style/patient.css
-	      ,javascript/customcheckbox/prettyCheckboxes.css
-	      ,../dhis-web-commons/paging/paging.css
-      </param>     
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dataEntry.js,javascript/customcheckbox/prettyCheckboxes.js</param> 
+      <param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css,../dhis-web-commons/paging/paging.css</param>     
     </action>
 	
 	<action name="viewProgramStageRecords" class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
@@ -200,7 +185,7 @@
       <result name="success" type="velocity">/main.vm</result>     
       <param name="page">/dhis-web-caseentry/reportSelect.vm</param>
       <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>      
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/report.js</param>      
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>      
     </action>  
     
     <action name="validateReportParameters"
@@ -216,7 +201,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/report.vm</param>
       <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/report.js</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>         
     </action>
     
@@ -225,11 +210,10 @@
       <param name="page">/dhis-web-caseentry/records.vm</param>                  
     </action>
 	
-	<action name="getPatientDetails"
-            class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction">
-            <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatientDetails.vm</result>
-            <param name="onExceptionReturn">plainTextError</param>
-        </action>
+	<action name="getPatientDetails" class="org.hisp.dhis.caseentry.action.report.GetPatientDetailsAction">
+       <result name="success" type="velocity-xml">/dhis-web-caseentry/responsePatientDetails.vm</result>
+       <param name="onExceptionReturn">plainTextError</param>
+    </action>
     
 	 <!-- Case Aggregation -->
 

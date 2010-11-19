@@ -1,3 +1,9 @@
+<script>
+function setupDataEntryCalendar( id )
+{
+	datePicker( id );
+}
+</script>
 #parse( "/dhis-web-caseentry/dataRecordingSelect.vm" )
 
 <div id="dragDiv">
@@ -23,7 +29,7 @@
 </div>
 <script>
 	initCustomCheckboxes();
-	DRAG_DIV.init(); 
+	DRAG_DIV.init();
 </script>
 #else
 
@@ -83,7 +89,7 @@
             #elseif( $programStageDataElement.dataElement.type == "date" )
                 <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
                     <script type="text/javascript">
-						datePicker('value[$programStageDataElement.dataElement.id].date');
+						setupDataEntryCalendar('value\\[$programStageDataElement.dataElement.id\\]\\.date');
                     </script>  					
             #else
                 <input name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >

@@ -42,7 +42,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/importForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="javascripts">javascript/import.js,javascript/process.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js</param>
+      <param name="javascripts">javascript/import.js,javascript/process.js</param>
     </action>
 		
     <action name="import" class="org.hisp.dhis.importexport.action.imp.ImportAction">
@@ -140,7 +140,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/exportDataValueForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,javascript/export.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/export.js</param>
     </action>
     
     <action name="exportMetaData" class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction">

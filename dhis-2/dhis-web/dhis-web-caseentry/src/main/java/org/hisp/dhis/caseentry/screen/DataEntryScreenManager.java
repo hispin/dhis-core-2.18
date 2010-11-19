@@ -36,6 +36,7 @@ import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -61,5 +62,7 @@ public interface DataEntryScreenManager {
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, 
         Boolean saveMode, I18n i18n,  ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit);
     
+    
+    Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode );
 
 }

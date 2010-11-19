@@ -93,15 +93,12 @@
                     <option value="false" #if( $patientAttributeValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
                 </select>                
             #elseif( $patientAttribute.valueType == "DATE" )
-                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-                    <script type="text/javascript">
-                        Calendar.setup({
-                            inputField     :    "value[$patientAttribute.id].date",      // id of the input field
-                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                            button         :    "getDateValue$patientAttribute.id"   // trigger for the calendar (button ID)
-                        });
-                    </script>     
+                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >                    
+				<script type="text/javascript">
+					jQuery(function(){
+						datePicker( 'value\\[$patientAttribute.id\\]\\.date' );
+					});
+				</script>    
             #elseif( $patientAttribute.valueType == "COMBO" )
 					<select name="entryselect" id="value[$patientAttribute.id].combo"  name="entryfield" onchange="saveCombo( $patient.id, $patientAttribute.id, this)" tabindex="$tabIndex"  >
 						 <option value="">[$i18n.getString( "please_select" )]</option>
@@ -150,15 +147,12 @@
                     <option value="false" #if( $patientAttributeValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
                 </select>                
             #elseif( $patientAttribute.valueType == "DATE" )
-                <input type="text" id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
-                    <img src="../images/calendar_icon.gif" width="16" height="16" id="getDateValue$patientAttribute.id" style="cursor: pointer;" title="$i18n.getString("date_selector")" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''" alt="$i18n.getString( "date" )">
-                    <script type="text/javascript">
-                        Calendar.setup({
-                            inputField     :    "value[$patientAttribute.id].date",      // id of the input field
-                            ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-                            button         :    "getDateValue$patientAttribute.id"   // trigger for the calendar (button ID)
-                        });
-                    </script>     
+                <input type="text"  id="value[$patientAttribute.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientAttributeValue.value )" onchange="saveDate( $patient.id, $patientAttribute.id, '$encoder.jsEncode( $patientAttribute.name )' )" tabindex="$tabIndex" >
+                   <script type="text/javascript">
+						jQuery(function(){
+							datePicker( 'value\\[$patientAttribute.id\\]\\.date' );
+						});
+					</script>      
             #elseif( $patientAttribute.valueType == "COMBO" )
 					<select name="entryselect" id="value[$patientAttribute.id].combo"  name="entryfield" onchange="saveCombo( $patient.id, $patientAttribute.id, this )" tabindex="$tabIndex"  >
 						 <option value="">[$i18n.getString( "please_select" )]</option>
