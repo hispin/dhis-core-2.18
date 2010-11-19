@@ -1,5 +1,5 @@
 
-window.onload = function () 
+function addEventListeners() 
 {
 	var inputs = document.getElementsByName( "entryfield" ) 
 
@@ -147,6 +147,10 @@ function displayModeSelected()
 
 function periodSelected()
 {
+	var periodName = $( '#selectedPeriodIndex :selected' ).text();
+	
+	$( '#currentPeriod' ).html( periodName );
+	
 	displayEntryFormInternal( true );
 }
 
@@ -161,15 +165,21 @@ function displayEntryFormInternal( updateDisplayModes )
 		var url = 'select.action?selectedPeriodIndex=' + periodIndex +
 			'&displayMode=' + $("input[name='displayMode']:checked").val();
 		
-		var callback = updateDisplayModes ? setDisplayModes : hideLoader;
+		var callback = updateDisplayModes ? setDisplayModes : displayEntryFormCompleted;
 		
 		$( '#contentDiv' ).load( url, callback );
 	}
 }
 
+function displayEntryFormCompleted()
+{
+	addEventListeners();
+	hideLoader();
+}
+
 function setDisplayModes()
 {
-	hideLoader();
+	displayEntryFormCompleted();
 	
 	$.getJSON( 'loadDisplayModes.action', function( json ) {
 		if ( json.customForm ) {
