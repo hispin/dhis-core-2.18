@@ -571,6 +571,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
+	<bean id="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction"
+		class="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction" scope="prototype">
+        <property name="selectedStateManager">
+            <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
+        </property>
+		<property name="lineListService">
+            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
+        </property>
+		<property name="currentUserService">
+            <ref bean="org.hisp.dhis.user.CurrentUserService"/>
+        </property>
+		<property name="dbManagerInterface">
+            <ref bean="org.hisp.dhis.dbmanager.DataBaseManagerInterface"/>
+        </property>
+		<property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+    </bean>
+	
  	
 	
 <!-- 15/10/2010 Start -->

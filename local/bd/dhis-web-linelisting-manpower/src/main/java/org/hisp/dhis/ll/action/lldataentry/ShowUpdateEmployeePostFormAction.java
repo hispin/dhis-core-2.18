@@ -45,6 +45,20 @@ implements Action
         this.id = id;
     }
     
+    private String linelistGroupName;
+    
+    public String getLinelistGroupName()
+    {
+        return linelistGroupName;
+    }
+    
+    private String linelistOptionName;
+
+    public String getLinelistOptionName()
+    {
+        return linelistOptionName;
+    }
+
     private Map<String, String> llDataValuesMap;
     
     public Map<String, String> getLlDataValuesMap()
@@ -58,6 +72,26 @@ implements Action
     {
         return lineListElements;
     }
+    
+    public String reportingDate;
+
+    public String getReportingDate()
+    {
+        return reportingDate;
+    }
+    
+    public void setReportingDate( String reportingDate )
+    {
+        this.reportingDate = reportingDate;
+    }
+    
+    private Integer linelistGroupId;
+
+    public Integer getLinelistGroupId()
+    {
+        return linelistGroupId;
+    }
+
 
     //--------------------------------------------------------------------------
     // Action Implementation
@@ -69,6 +103,7 @@ implements Action
         OrganisationUnit orgUnit = selectedStateManager.getSelectedOrganisationUnit();
         LineListGroup llGroup = selectedStateManager.getSelectedLineListGroup();
         lineListElements = new ArrayList<LineListElement>( llGroup.getLineListElements() );
+        lineListElements.remove( 0 );
         List<LineListDataValue> llDataValuesList = new ArrayList<LineListDataValue>();
         
         Map<String, String> llDataValueMap = new HashMap<String, String>();
@@ -79,15 +114,24 @@ implements Action
         
         llDataValueMap.put( pdsCodeColName, id );
         llDataValueMap.put( lastWorkingDateColumnName, "null" );
+        System.out.println("The entered PDSCODE IS ***************" + id );
         
         llDataValuesList = dataBaseManagerInterface.getLLValuesFilterByLLElements( llGroup.getShortName(), llDataValueMap, orgUnit );
         
-        if ( llDataValuesList != null)
+        if ( llDataValuesList != null && llDataValuesList.size() > 0 )
         {
+            System.out.println("************************************************" );
+            System.out.println("LineList Value is----------" + llDataValuesList );
             LineListDataValue llDataValue;
             llDataValue = llDataValuesList.get( 0 );
             llDataValuesMap = llDataValue.getLineListValues();
         }
+        System.out.println("::::::::::::" + llDataValuesMap );
+        
+        linelistGroupName = selectedStateManager.getSelectedLineListGroup().getName();
+        linelistOptionName = selectedStateManager.getSelectedLineListOption().getName();
+        linelistGroupId = selectedStateManager.getSelectedLineListGroup().getId();
+        
         
         return SUCCESS;
     }

@@ -405,12 +405,11 @@
         </action>
 
         <action name="saveValueAction" class="org.hisp.dhis.ll.action.lldataentry.SaveValueAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-linelisting-mp/select.vm</param>
+            <result name="success" type="redirect">select.action</result>
         </action>
         
         <action name="saveEmployeePost" class="org.hisp.dhis.ll.action.lldataentry.SaveEmplyeePostAction">
-            <result name="success" type="velocity">/main.vm</result>
+             <result name="success" type="redirect">select.action</result>
         </action>
 
         <action name="updateLineListEntry"
@@ -441,8 +440,10 @@
 			<result name="success" type="velocity">/dhis-web-linelisting-mp/updateEmployeePostForm.vm</result>
         </action>
         
-        
-        
+        <action name="updateEmployeePost"
+            class="org.hisp.dhis.ll.action.lldataentry.UpdateEmployeePostAction">
+			<result name="success" type="redirect">select.action</result>
+        </action>
         
     <!-- Org unit -->
         <action name="getOrgUnitDetails"

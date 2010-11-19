@@ -1,7 +1,7 @@
 
 <script type="text/javascript" src="../"></script>
 
-<form id="employeePostForm" action="saveEmployeePost.action" method="post" >
+<form id="employeePostForm" action="updateEmployeePost.action" method="post" >
 	<table align="centre">
 		<tr>
 			<td><label for="department"><Strong>Department</Strong> </label></td>
@@ -15,7 +15,12 @@
 			<td>
 				<input id="post" name="post" type="text" readonly="readonly" value="$linelistOptionName" style="min-width:200px">
 			</td>
+			<td>
+				<input type="hidden" name="groupid" id="groupid" value="$linelistGroupId">
+				<input type="hidden" name="reportingDate" id="reportingDate" value="$reportingDate">
+			</td>
 		</tr>
+		<tr><td></td></tr>
 		#set( $count = 0 )
 		#foreach( $lineListElement in $lineListElements )
 			<tr>
@@ -26,12 +31,12 @@
 						</td>
 					#elseif($lineListElement.PresentationType == 'combobox')
 						<td>
-							<select name="$element" id="$element" onkeypress="return keyPress(event, this)">
+							<select name="$lineListElement.shortName" id="$lineListElement.shortName" onkeypress="return keyPress(event, this)">
 							<option name="SelectOption" value="" selected>--Select--</option>
 								##set($lineListOptions = $llElementOptionsMap.get($lineListElement.shortName))
 								#set($lineListOptions = $lineListElement.lineListElementOptions)
 								#foreach( $lineListOption in $lineListOptions )
-									<option name="$lineListOption.name" value="$lineListOption.name" #if($lineListOption.name == $llElementValuesMap.get($element)) selected #end>$lineListOption.name</option>
+									<option value="$lineListOption.name" name="$llDataValuesMap.get($lineListElement.shortName)" #if($lineListOption.name == $llDataValuesMap.get($lineListElement.shortName)) selected #end>$lineListOption.name</option>
 								#end
 							</select>
 						</td>
@@ -39,15 +44,24 @@
 						#set($fordate = $lineListElement.shortName)
 						
 						<td>
-						  <input type="text" id="$fordate" name="$fordate" style="width:10em" onkeypress="return keyPress(event, this)">
+						  <input type="text" id="$fordate" name="$fordate" style="width:10em" onkeypress="return keyPress(event, this)" value=$llDataValuesMap.get($lineListElement.shortName)>
 						  <script>datePickerValid( '$fordate', false );</script>
 						</td>
 					#end
 			</tr>
 			#set ($count=$count+1)
 		#end
-	
-	
+		<tr><td></td><td></td></tr>
+		
+		<tr>
+		<td align="centre">
+			<input type="submit" value="Save">
+			<input type="hidden" id="reportedDate" name="reportedDate">&nbsp;		
+		</td>
+		<td>
+			<input type="button" value="Reset"> 
+		</td>
+	</tr>
 	
 	</table>
 </form>

@@ -55,7 +55,11 @@ function employeeReceived( employeeElement )
 	{
 		if( confirm( employeeElement.firstChild.nodeValue ) )
 		{
-			alert("Edit Employee");
+			
+			var field = document.getElementById( currentPDSCode );
+			document.getElementById('contentDataRecord').style.display="none";
+			showUpdateEmployeePostForm( field.value );
+			
 		}
 		else
 		{
@@ -174,6 +178,57 @@ function showEmployeePostForm( sancPos, dataValueMapKey )
 	overlay:{background:'#000000', opacity:0.1},
 	width: 420,
     height: 380
-});
+    });
+}
+
+function showUpdateEmployeePostForm( pdsCode ) 
+{
+	var reportingDate = document.getElementById( "reportingDate" ).value;
+	var url = 'showEditEmployeePostForm.action?id=' + pdsCode + '&reportingDate=' + reportingDate;
+	$('#contentDataRecord').dialog('destroy').remove();
+    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
+    title: 'Edit Employee Post Detail',
+	maximize: true, 
+	closable: true,
+	modal:true,
+	overlay:{background:'#000000', opacity:0.1},
+	width: 420,
+    height: 380
+	});
+}
+
+function keyPress( event, field )
+{
+    var key = 0;
+    if ( event.charCode )
+    {
+        key = event.charCode; /* Safari2 (Mac) (and probably Konqueror on Linux, untested) */
+    }
+    else
+    {
+        if ( event.keyCode )
+        {
+            key = event.keyCode; /* Firefox1.5 (Mac/Win), Opera9 (Mac/Win), IE6, IE7Beta2, Netscape7.2 (Mac) */
+        }
+        else
+        {
+            if ( event.which )
+            {
+                key = event.which; /* Older Netscape? (No browsers triggered yet) */
+            }
+        }
+    }
     
+    if ( key == 13 ) /* CR */
+    {
+        nextField = getNextEntryField( field );
+        if ( nextField )
+        {
+            nextField.focus(); /* Does not seem to actually work in Safari, unless you also have an Alert in between */
+        }
+        return true;
+    }
+    
+    /* Illegal characters can be removed with a new if-block and return false */
+    return true;
 }

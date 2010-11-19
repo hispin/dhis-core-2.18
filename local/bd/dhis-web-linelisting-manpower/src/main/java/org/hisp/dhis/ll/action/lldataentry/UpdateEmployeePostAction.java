@@ -1,8 +1,10 @@
 package org.hisp.dhis.ll.action.lldataentry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,13 +25,12 @@ import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
-public class SaveEmplyeePostAction
+public class UpdateEmployeePostAction
     implements Action
 {
-
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Dependencies
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private LineListService lineListService;
 
@@ -73,28 +74,22 @@ public class SaveEmplyeePostAction
         this.periodService = periodService;
     }
 
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Input/Output
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+
     private String department;
 
     public void setDepartment( String department )
     {
         this.department = department;
     }
-    
+
     private String post;
-    
+
     public void setPost( String post )
     {
         this.post = post;
-    }
-
-    private Integer groupid;
-
-    public void setGroupid( Integer groupid )
-    {
-        this.groupid = groupid;
     }
 
     private String storedBy;
@@ -110,42 +105,24 @@ public class SaveEmplyeePostAction
     {
         this.reportingDate = reportingDate;
     }
-    
+
     public String getReportingDate()
     {
         return reportingDate;
     }
-    
-    private String dataValueMapKey;
-    
-    public String getDataValueMapKey()
+
+    private Integer groupid;
+
+    public void setGroupid( Integer groupid )
     {
-        return dataValueMapKey;
+        this.groupid = groupid;
     }
-
-    public void setDataValueMapKey( String dataValueMapKey )
-    {
-        this.dataValueMapKey = dataValueMapKey;
-    }
-
-    private String dataValue;
-
-    public String getDataValue()
-    {
-        return dataValue;
-    }
-
-    public void setDataValue( String dataValue )
-    {
-        this.dataValue = dataValue;
-    }
-
 
     private LineListGroup lineListGroup;
 
-    // --------------------------------------------------------------------------
-    // Action Implementation
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // Action Impplementation
+    //--------------------------------------------------------------------------
 
     public String execute()
     {
@@ -162,43 +139,29 @@ public class SaveEmplyeePostAction
 
         Period historyPeriod = getHistoryPeriod();
 
-        int recordNo = dbManagerInterface.getMaxRecordNumber( department ) + 1;
-
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
         LineListDataValue llDataValue = new LineListDataValue();
         for ( LineListElement linelistElement : linelistElements )
         {
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
-            
-            System.out.println("Linelist Em=lement name is :" + linelistElement.getShortName() + " And Linlelist Value is:" + linelistElementValue );
 
-            if( linelistElementValue == null )
-            {
-                continue;
-            }
-            
             if ( linelistElementValue != null && linelistElementValue.trim().equals( "" ) )
             {
-                linelistElementValue = "";                
+                linelistElementValue = "";
             }
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
-            
         }
 
         String postColumnId = linelistElements.iterator().next().getShortName();
         llElementValuesMap.put( postColumnId, post );
-        System.out.println("*********"+postColumnId + " ------ " + post + "**********");
-        
+        System.out.println( "*********" + postColumnId + " ------ " + post + "**********" );
+
         // add map in linelist data value
         llDataValue.setLineListValues( llElementValuesMap );
 
         // add period and source to row
         llDataValue.setPeriod( historyPeriod );
         llDataValue.setSource( organisationUnit );
-
-        // add recordNumber to pass to the update query
-        llDataValue.setRecordNumber( recordNo );
-        
 
         // add stored by, timestamp in linelist data value
         storedBy = currentUserService.getCurrentUsername();
@@ -209,11 +172,15 @@ public class SaveEmplyeePostAction
         }
 
         llDataValue.setStoredBy( storedBy );
+        List<LineListDataValue> llDataValuesList = new ArrayList<LineListDataValue>();
+        
+        llDataValuesList.add( llDataValue );
 
-        boolean valueInserted = dbManagerInterface.insertSingleLLValueIntoDb( llDataValue, department );
-        if ( valueInserted )
+        boolean valueUpdated = dbManagerInterface.updateLLValue( llDataValuesList, department );
+        
+        if ( valueUpdated )
         {
-            System.out.println( "Values Successfully Inserted in DB" );
+            System.out.println( "Values Successfully Updated in DB" );
         }
 
         return SUCCESS;

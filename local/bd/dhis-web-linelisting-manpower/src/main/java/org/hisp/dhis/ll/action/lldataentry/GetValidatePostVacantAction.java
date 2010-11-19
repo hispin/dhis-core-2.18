@@ -165,7 +165,8 @@ public class GetValidatePostVacantAction
     {
         OrganisationUnit organisationunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        Period historyPeriod = getHistoryPeriod();
+        //Period historyPeriod = getHistoryPeriod();
+        Period period = periodService.getPeriod( 0 );
 
         storedBy = currentUserService.getCurrentUsername();
 
@@ -189,7 +190,7 @@ public class GetValidatePostVacantAction
             dataValue = dataValue.trim();
         }
 
-        DataValue dataValueObj = dataValueService.getDataValue( organisationunit, dataElement, historyPeriod, optionCombo );
+        DataValue dataValueObj = dataValueService.getDataValue( organisationunit, dataElement, period, optionCombo );
 
         if ( storedBy == null )
         {
@@ -200,7 +201,7 @@ public class GetValidatePostVacantAction
         {
             if ( dataValue != null )
             {
-                dataValueObj = new DataValue( dataElement, historyPeriod, organisationunit, dataValue, storedBy, new Date(), null,
+                dataValueObj = new DataValue( dataElement, period, organisationunit, dataValue, storedBy, new Date(), null,
                     optionCombo );
                 dataValueService.addDataValue( dataValueObj );
             }
@@ -214,7 +215,7 @@ public class GetValidatePostVacantAction
             dataValueService.updateDataValue( dataValueObj );
         }
     }
-    
+
     private Period getHistoryPeriod( )
     {
         //lineListGroup = selectedStateManager.getSelectedLineListGroup();
