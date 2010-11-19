@@ -163,7 +163,6 @@ public class MySQLDataBaseManager
             SqlRowSet rs = jdbcTemplate.queryForRowSet( columnDefinition );
             if ( rs != null )
             {
-                int i = 0;
                 while ( rs.next() )
                 {
 
@@ -258,59 +257,48 @@ public class MySQLDataBaseManager
     
     public boolean updateTable( String tableName, List<LineListElement> removeList, List<LineListElement> addList )
     {
-
         String columnDefinition = "";
 
         Statement statement = null;
 
-        columnDefinition += "alter table " + tableName;
+        columnDefinition += "ALTER TABLE " + tableName;
 
         int columnAffected = 0;
         boolean rowUpdated = false;
         boolean columnAdded = false;
-        if ( addList != null )
+        if ( addList != null && !addList.isEmpty() )
         {
-            if ( !( addList.isEmpty() ) )
+            int i = 1;
+            Iterator<LineListElement> addListItr = addList.iterator();
+            int size = addList.size();
+            while ( addListItr.hasNext() )
             {
-                int i = 1;
-                Iterator addListItr = addList.iterator();
-                int size = addList.size();
-                while ( addListItr.hasNext() )
+                LineListElement lineListElement = (LineListElement) addListItr.next();
+                if ( lineListElement.getDataType().equalsIgnoreCase( "string" ) )
                 {
-                    LineListElement lineListElement = (LineListElement) addListItr.next();
-                    if ( lineListElement.getDataType().equalsIgnoreCase( "string" ) )
-                    {
-                        columnDefinition += " add column " + lineListElement.getShortName() + " VARCHAR (255)";
-                        columnAdded = true;
-                    } else
-                    {
-                        if ( lineListElement.getDataType().equalsIgnoreCase( "bool" ) )
-                        {
-                            columnDefinition += " add column " + lineListElement.getShortName() + "BIT (1)";
-                            columnAdded = true;
-                        } else
-                        {
-                            if ( lineListElement.getDataType().equalsIgnoreCase( "date" ) )
-                            {
-                                columnDefinition += " add column " + lineListElement.getShortName() + " DATE";
-                                columnAdded = true;
-                            } else
-                            {
-                                if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
-                                {
-                                    columnDefinition += " add column " + lineListElement.getShortName() + " int (11)";
-                                    columnAdded = true;
-                                } else
-                                {
-                                }
-                            }
-                        }
-                    }
-                    if ( i < size )
-                    {
-                        columnDefinition += " ,";
-                        i++;
-                    }
+                    columnDefinition += " ADD COLUMN " + lineListElement.getShortName() + " VARCHAR (255)";
+                    columnAdded = true;
+                } 
+                else if ( lineListElement.getDataType().equalsIgnoreCase( "bool" ) )
+                {
+                    columnDefinition += " ADD COLUMN " + lineListElement.getShortName() + "BIT (1)";
+                    columnAdded = true;
+                } 
+                else if ( lineListElement.getDataType().equalsIgnoreCase( "date" ) )
+                {
+                    columnDefinition += " ADD COLUMN " + lineListElement.getShortName() + " DATE";
+                    columnAdded = true;
+                } 
+                else if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
+                {
+                    columnDefinition += " ADD COLUMN " + lineListElement.getShortName() + " int (11)";
+                    columnAdded = true;
+                } 
+
+                if ( i < size )
+                {
+                    columnDefinition += " ,";
+                    i++;
                 }
             }
         }
@@ -322,7 +310,7 @@ public class MySQLDataBaseManager
             {
 
                 int j = 1;
-                Iterator removeListItr = removeList.iterator();
+                Iterator<LineListElement> removeListItr = removeList.iterator();
                 int size = removeList.size();
 
                 while ( removeListItr.hasNext() )
@@ -1010,10 +998,12 @@ public class MySQLDataBaseManager
 
         }
         columnDefinition += values + ")";
+        
+        System.out.println("ColimnDefination in LLSingleDatavalue " + columnDefinition );
 
         try
         {
-            int sqlResult = jdbcTemplate.update( columnDefinition );
+            int sqlResult = jdbcTemplate.update( columnDefinition );            
             updateLLValue = true;
             columnDefinition = "";
         } 
@@ -1032,10 +1022,6 @@ public class MySQLDataBaseManager
 
         String columnDefinition = "";
 
-        PreparedStatement preparedStatement = null;
-
-        // System.out.println(" llDataValuesList size = " +
-        // llDataValuesList.size());
         for ( LineListDataValue llDataValue : llDataValuesList )
         {
 

@@ -104,6 +104,10 @@ implements Action
     }
     
     private Collection<LineListOption> lineListOptions;
+    
+    //--------------------------------------------------------------------------
+    //Action Implementation
+    //--------------------------------------------------------------------------
 
     public String execute()
     {
@@ -112,6 +116,7 @@ implements Action
         llElementOptionsMap = new HashMap<String, Collection<LineListOption>>();
         
         lineListElements = new ArrayList<LineListElement>( lineListGroup.getLineListElements() );
+        
         if ( lineListElements.size() == 0 )
         {
             return SUCCESS;
@@ -128,6 +133,12 @@ implements Action
             }
         }
         lineListElements.remove( 0 );
+        
+        // Hardcoding to remove lastWorkingDate and reasonWhyLeft
+        
+        lineListElements.remove( lineListElements.size()-1 );
+        lineListElements.remove( lineListElements.size()-1 );
+        
         
         linelistGroupName = selectedStateManager.getSelectedLineListGroup().getName();
         linelistOptionName = selectedStateManager.getSelectedLineListOption().getName();
