@@ -71,7 +71,20 @@ public class Section
     {
         return dataElements != null && dataElements.size() > 0 ? dataElements.iterator().next().getCategoryCombo() : null;
     }
-    
+
+    public boolean hasMultiDimensionalDataElement()
+    {
+        for ( DataElement element : dataElements )
+        {
+            if ( element.isMultiDimensional() )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

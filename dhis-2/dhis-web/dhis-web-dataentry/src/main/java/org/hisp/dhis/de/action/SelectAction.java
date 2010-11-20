@@ -27,7 +27,6 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.de.state.SelectedStateManager.ALLOWED_FORM_TYPES;
 import static org.hisp.dhis.de.state.SelectedStateManager.CUSTOM_FORM;
 import static org.hisp.dhis.de.state.SelectedStateManager.DEFAULT_FORM;
 import static org.hisp.dhis.de.state.SelectedStateManager.SECTION_FORM;
@@ -238,22 +237,18 @@ public class SelectAction
         // Get display mode
         // ---------------------------------------------------------------------
 
-        if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
+        if ( !selectedStateManager.displayModeIsValid( displayMode ) )
         {
             displayMode = selectedStateManager.getSelectedDisplayMode();
         }
         
-        boolean customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
-
-        boolean hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
-        
-        if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
+        if ( !selectedStateManager.displayModeIsValid( displayMode ) )
         {
-            if ( customDataEntryFormExists )
+            if ( selectedDataSet.hasDataEntryForm() )
             {
                 displayMode = CUSTOM_FORM;
             }
-            else if ( hasSection )
+            else if ( selectedDataSet.hasSections() )
             {
                 displayMode = SECTION_FORM;
             }
