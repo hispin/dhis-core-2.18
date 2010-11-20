@@ -1,0 +1,8 @@
+{ "indicatorGroup": 
+  {
+    "id": $!{indicator.id},
+    "name": "$!encoder.jsEncode( ${indicatorGroup.name} )",
+    "alternativeName": "$!encoder.jsEncode( ${indicatorGroup.alternativeNamee} )",
+    "memberCount": "$memberCount"
+  }
+}

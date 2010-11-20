@@ -50,7 +50,7 @@ function showDataElementDetails( dataElementId )
     var request = new Request();
     request.setResponseTypeXML( 'dataElement' );
     request.setCallbackSuccess( dataElementReceived );
-    request.send( 'getDataElement.action?id=' + dataElementId );
+    request.send( '../dhis-web-commons-ajax/getDataElement.action?id=' + dataElementId );
 }
 
 function dataElementReceived( dataElementElement )

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataElement>
 	<id>$dataElement.id</id>
-	<name>$!encoder.xmlEncode( $dataElement.name )</name>
-    <alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
-	<shortName>$!encoder.xmlEncode( $dataElement.shortName )</shortName>
-    <code>$!encoder.xmlEncode( $dataElement.code )</code>
-    <description>$!encoder.xmlEncode( $dataElement.description )</description>
-    <active>$dataElement.active</active>
-    <type>$!encoder.xmlEncode( $dataElement.type )</type>
-	<numberType>$!encoder.xmlEncode( $dataElement.numberType )</numberType>
-    <aggregationOperator>$!encoder.xmlEncode( $dataElement.aggregationOperator )</aggregationOperator>
+	<name>$encoder.xmlEncode( $dataElement.name )</name>
+	<shortName>$encoder.xmlEncode( $dataElement.shortName )</shortName>
+	<alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
+	<code>$!encoder.xmlEncode( $dataElement.code )</code>
+	<description>$!encoder.xmlEncode( $dataElement.description )</description>
+	<active>$dataElement.active</active>
+	<domainType>$dataElement.getDomainTypeNullSafe()</domainType>
+	<valueType>$dataElement.type</valueType>
+	<aggregationOperator>$dataElement.aggregationOperator</aggregationOperator>
+	<url>$!encoder.xmlEncode( $dataElement.url )</url>
+	<lastUpdated>$!format.formatDate( $dataElement.lastUpdated )</lastUpdated>
+	<categoryCombo>$!encoder.xmlEncode( $dataElement.categoryCombo.name )</categoryCombo>
 </dataElement>

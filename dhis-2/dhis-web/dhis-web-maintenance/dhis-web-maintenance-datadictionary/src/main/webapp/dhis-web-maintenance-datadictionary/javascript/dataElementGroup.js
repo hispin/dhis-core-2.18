@@ -17,7 +17,7 @@ function showDataElementGroupDetails( dataElementGroupId )
     var request = new Request();
     request.setResponseTypeXML( 'dataElementGroup' );
     request.setCallbackSuccess( dataElementGroupReceived );
-    request.send( 'getDataElementGroup.action?id=' + dataElementGroupId );
+    request.send( '../dhis-web-commons-ajax/getDataElementGroup.action?id=' + dataElementGroupId );
 }
 
 function dataElementGroupReceived( dataElementGroupElement )
@@ -60,7 +60,6 @@ function searchDataElementGroup(){
 
 function searchDataElementGroupPaging(currentPage, pageSize) 
 {
-	
 	var params = 'key=' + getFieldValue( 'key' );
 		params += '&currentPage=' + currentPage;
 		params += '&pageSize=' + pageSize;

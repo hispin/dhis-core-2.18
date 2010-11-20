@@ -7,7 +7,7 @@ function showDataSetDetails( dataSetId )
   var request = new Request();
   request.setResponseTypeXML( 'dataSet' );
   request.setCallbackSuccess( dataSetRecieved );
-  request.send( 'getDataSet.action?dataSetId=' + dataSetId );
+  request.send( '../dhis-web-commons-ajax/getDataSet.action?id=' + dataSetId );
 }
 
 function dataSetRecieved( dataSetElement )

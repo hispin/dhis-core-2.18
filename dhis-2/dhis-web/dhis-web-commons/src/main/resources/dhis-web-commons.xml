@@ -309,12 +309,40 @@
 	<package name="dhis-web-commons-ajax" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-ajax">
 
+		<action name="getCategoryOptionCombos"
+			class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlCategoryOptionCombos.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getDataElement"
 			class="org.hisp.dhis.commons.action.GetDataElementAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlDataElement.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+
+		<action name="getDataElementGroup"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlDataElementGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getDataElementGroups"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/xmlDataElementGroups.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>		
+
+		<action name="getDataElementGroupSet"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupSetAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/xmlDataElementGroupSet.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>		
 
 		<action name="getDataElements"
 			class="org.hisp.dhis.commons.action.GetDataElementsAction">
@@ -341,9 +369,33 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getIndicatorGroup" class="org.hisp.dhis.commons.action.GetIndicatorGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlIndicatorGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getIndicatorGroups" class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlIndicatorGroups.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getIndicatorGroupSet" class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlIndicatorGroupSet.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getIndicators" class="org.hisp.dhis.commons.action.GetIndicatorsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlIndicators.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -379,26 +431,34 @@
 				/dhis-web-commons/ajax/xmlPeriods.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
-		<action name="getCategoryOptionCombos"
-			class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlCategoryOptionCombos.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlOperands.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
+		
 	</package>
 
 	<!-- Common actions JSON -->
 
 	<package name="dhis-web-commons-ajax-json" extends="dhis-web-commons"
 		namespace="/dhis-web-commons-ajax-json">
+
+		<action name="getCategoryOptionCombos"
+			class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonCategoryOptionCombos.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getDataElement"
+			class="org.hisp.dhis.commons.action.GetDataElementAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataElement.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getDataElementGroup"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
 
 		<action name="getDataElementGroups"
 			class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
@@ -407,10 +467,10 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getDataElement"
-			class="org.hisp.dhis.commons.action.GetDataElementAction">
+		<action name="getDataElementName"
+			class="org.hisp.dhis.commons.action.GetDataElementNameAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonDataElement.vm</result>
+				/dhis-web-commons/ajax/jsonDataElementName.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -433,6 +493,19 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getIndicator" class="org.hisp.dhis.commons.action.GetIndicatorAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonIndicator.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getIndicatorGroup"
+			class="org.hisp.dhis.commons.action.GetIndicatorGroupAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
 		<action name="getIndicatorGroups"
 			class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction">
 			<result name="success" type="velocity-json">
@@ -440,15 +513,22 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getIndicator" class="org.hisp.dhis.commons.action.GetIndicatorAction">
+		<action name="getIndicatorGroupSet"
+			class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonIndicator.vm</result>
+				/dhis-web-commons/ajax/jsonIndicatorGroupSet.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="getIndicators" class="org.hisp.dhis.commons.action.GetIndicatorsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonIndicators.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+
+		<action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -459,13 +539,13 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
-		<action name="getOrganisationUnits"
-			class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction">
+		<action name="getOrganisationUnitGroups"
+			class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonOrganisationUnits.vm</result>
+				/dhis-web-commons/ajax/jsonOrganisationUnitGroups.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
+		
 		<action name="getOrganisationUnitChildren"
 			class="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction">
 			<result name="success" type="velocity-json">
@@ -473,6 +553,20 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getOrganisationUnitLevels"
+			class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOrganisationUnitLevels.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="getOrganisationUnits"
+			class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonOrganisationUnits.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 		<action name="getPeriod" class="org.hisp.dhis.commons.action.GetPeriodAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonPeriod.vm</result>
@@ -482,26 +576,6 @@
 		<action name="getPeriods" class="org.hisp.dhis.commons.action.GetPeriodsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonPeriods.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="getCategoryOptionCombos"
-			class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonCategoryOptionCombos.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="getDataElementName"
-			class="org.hisp.dhis.commons.action.GetDataElementNameAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonDataElementName.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="getOperands" class="org.hisp.dhis.commons.action.GetOperandsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonOperands.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
@@ -521,21 +595,6 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
-		<action name="getOrganisationUnitLevels"
-			class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonOrganisationUnitLevels.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
-		<action name="getOrganisationUnitGroups"
-			class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonOrganisationUnitGroups.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-				
-
 	</package>
 
 	<!-- About -->

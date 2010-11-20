@@ -599,16 +599,41 @@
     
 	<!-- Common actions -->
 	
+	<bean id="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
+		class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction" scope="prototype">
+	</bean>
+	
+	<bean id="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"
+		class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction" scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+	</bean>
+	
 	<bean id="org.hisp.dhis.commons.action.GetDataElementAction"
         class="org.hisp.dhis.commons.action.GetDataElementAction" scope="prototype">
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     </bean>
 
+    <bean id="org.hisp.dhis.commons.action.GetDataElementGroupAction"
+        class="org.hisp.dhis.commons.action.GetDataElementGroupAction" scope="prototype">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
+        
     <bean id="org.hisp.dhis.commons.action.GetDataElementGroupsAction"
         class="org.hisp.dhis.commons.action.GetDataElementGroupsAction" scope="prototype">
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     </bean>
         
+    <bean id="org.hisp.dhis.commons.action.GetDataElementGroupSetAction"
+        class="org.hisp.dhis.commons.action.GetDataElementGroupSetAction" scope="prototype">
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    </bean>
+        
+	<bean id="org.hisp.dhis.commons.action.GetDataElementNameAction"
+		class="org.hisp.dhis.commons.action.GetDataElementNameAction" scope="prototype">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</bean>
+		
 	<bean id="org.hisp.dhis.commons.action.GetDataElementsAction"
 		class="org.hisp.dhis.commons.action.GetDataElementsAction" scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
@@ -621,83 +646,43 @@
 		class="org.hisp.dhis.commons.action.GetDataSetAction" scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
-
 	
 	<bean id="org.hisp.dhis.commons.action.GetDataSetsAction" 
-		class="org.hisp.dhis.commons.action.GetDataSetsAction"
-		scope="prototype">
+		class="org.hisp.dhis.commons.action.GetDataSetsAction" scope="prototype">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
 	
+	<bean id="org.hisp.dhis.commons.action.GetExpressionTextAction"
+		class="org.hisp.dhis.commons.action.GetExpressionTextAction" scope="prototype">
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService"/>
+	</bean>
+	
 	<bean id="org.hisp.dhis.commons.action.GetIndicatorAction" 
-        class="org.hisp.dhis.commons.action.GetIndicatorAction"
-        scope="prototype">
+        class="org.hisp.dhis.commons.action.GetIndicatorAction" scope="prototype">
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetIndicatorGroupAction" 
+        class="org.hisp.dhis.commons.action.GetIndicatorGroupAction" scope="prototype">
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     </bean>
 
     <bean id="org.hisp.dhis.commons.action.GetIndicatorGroupsAction" 
-        class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction"
-        scope="prototype">
+        class="org.hisp.dhis.commons.action.GetIndicatorGroupsAction" scope="prototype">
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction" 
+        class="org.hisp.dhis.commons.action.GetIndicatorGroupSetAction" scope="prototype">
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
     </bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetIndicatorsAction" 
-		class="org.hisp.dhis.commons.action.GetIndicatorsAction"
-		scope="prototype">
+		class="org.hisp.dhis.commons.action.GetIndicatorsAction" scope="prototype">
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-	</bean>
-
-    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitAction"
-        class="org.hisp.dhis.commons.action.GetOrganisationUnitAction" scope="prototype">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-
-	<bean id="org.hisp.dhis.commons.action.GetOrganisationUnitsAction"
-		class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction" scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
-    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction"
-        class="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction"
-        scope="prototype">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-
-    <bean id="org.hisp.dhis.commons.action.GetPeriodAction" 
-        class="org.hisp.dhis.commons.action.GetPeriodAction"
-        scope="prototype">
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    </bean>
-
-	<bean id="org.hisp.dhis.commons.action.GetPeriodsAction" 
-		class="org.hisp.dhis.commons.action.GetPeriodsAction"
-		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.commons.action.GetPeriodTypesAction" 
-        class="org.hisp.dhis.commons.action.GetPeriodTypesAction"
-        scope="prototype">
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    </bean>
-
-	<bean id="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"
-		class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.commons.action.GetDataElementNameAction"
-		class="org.hisp.dhis.commons.action.GetDataElementNameAction"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.commons.action.GetOperandsAction"
@@ -707,32 +692,51 @@
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 
-	<bean id="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
-		class="org.hisp.dhis.commons.action.GetAvailablePeriodsAction"
-		scope="prototype">
-	</bean>
-	
-	<bean id="org.hisp.dhis.commons.action.GetExpressionTextAction"
-		class="org.hisp.dhis.commons.action.GetExpressionTextAction"
-		scope="prototype">
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService"/>
-	</bean>
-	
-	<bean id="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction"
-        class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction"
-        scope="prototype">
+    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitAction"
+        class="org.hisp.dhis.commons.action.GetOrganisationUnitAction" scope="prototype">
         <property name="organisationUnitService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
-    
+
+    <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction"
+        class="org.hisp.dhis.commons.action.GetOrganisationUnitChildrenAction" scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+
     <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction"
-		class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction"
-		scope="prototype">		
+		class="org.hisp.dhis.commons.action.GetOrganisationUnitGroupsAction" scope="prototype">		
 		<property name="organisationUnitGroupService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>		
 	</bean>	
 		
+	<bean id="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction"
+        class="org.hisp.dhis.commons.action.GetOrganisationUnitLevelsAction" scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+    
+	<bean id="org.hisp.dhis.commons.action.GetOrganisationUnitsAction"
+		class="org.hisp.dhis.commons.action.GetOrganisationUnitsAction" scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+
+    <bean id="org.hisp.dhis.commons.action.GetPeriodAction" 
+        class="org.hisp.dhis.commons.action.GetPeriodAction" scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
+
+	<bean id="org.hisp.dhis.commons.action.GetPeriodsAction" 
+		class="org.hisp.dhis.commons.action.GetPeriodsAction" scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.commons.action.GetPeriodTypesAction" 
+        class="org.hisp.dhis.commons.action.GetPeriodTypesAction" scope="prototype">
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.commons.action.NoAction" 
 		class="org.hisp.dhis.commons.action.NoAction" />

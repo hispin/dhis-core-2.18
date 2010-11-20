@@ -2,14 +2,17 @@
 <dataElements>
 #foreach( $dataElement in $dataElements )
 	<dataElement>
-        <id>$dataElement.id</id>
-        <name>$!encoder.xmlEncode( $dataElement.name )</name>
-        <alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
-        <shortName>$!encoder.xmlEncode( $dataElement.shortName )</shortName>
-        <code>$!encoder.xmlEncode( $dataElement.code )</code>
-        <type>$!encoder.xmlEncode( $dataElement.type )</type>
-		<numberType>$!encoder.xmlEncode( $dataElement.numberType )</numberType>
-        <aggregationOperator>$!encoder.xmlEncode( $dataElement.aggregationOperator )</aggregationOperator>
-    </dataElement>
+		<id>$dataElement.id</id>
+		<name>$encoder.xmlEncode( $dataElement.name )</name>
+		<shortName>$encoder.xmlEncode( $dataElement.shortName )</shortName>
+		<alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
+		<code>$!encoder.xmlEncode( $dataElement.code )</code>
+		<description>$!encoder.xmlEncode( $dataElement.description )</description>
+		<active>$dataElement.active</active>
+		<domainType>$dataElement.getDomainTypeNullSafe()</domainType>
+		<type>$dataElement.type</type>
+		<aggregationOperator>$dataElement.aggregationOperator</aggregationOperator>
+		<categoryCombo>$dataElement.categoryCombo</categoryCombo>
+	</dataElement>
 #end
 </dataElements>

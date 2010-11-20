@@ -55,9 +55,8 @@ function showDataElementGroupSetDetails( id ){
     var request = new Request();
     request.setResponseTypeXML( 'dataElementGroupSet' );
     request.setCallbackSuccess( showDetailsCompleted );
-    request.send( "showDataElementGroupSetDetails.action?id=" + id);	
+    request.send( "../dhis-web-commons-ajax/getDataElementGroupSet.action?id=" + id);	
 }
-
 
 function showDetailsCompleted( dataElementGroupSet ){
 

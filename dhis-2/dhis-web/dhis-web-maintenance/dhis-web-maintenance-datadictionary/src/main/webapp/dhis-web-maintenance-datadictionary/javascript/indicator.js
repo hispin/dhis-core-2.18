@@ -21,7 +21,7 @@ function showIndicatorDetails( indicatorId )
     var request = new Request();
     request.setResponseTypeXML( 'indicator' );
     request.setCallbackSuccess( indicatorReceived );
-    request.send( 'getIndicator.action?id=' + indicatorId );
+    request.send( '../dhis-web-commons-ajax/getIndicator.action?id=' + indicatorId );
 }
 
 function indicatorReceived( indicatorElement )
