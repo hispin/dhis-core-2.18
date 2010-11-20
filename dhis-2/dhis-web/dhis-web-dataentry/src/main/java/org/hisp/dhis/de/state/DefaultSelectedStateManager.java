@@ -304,6 +304,22 @@ public class DefaultSelectedStateManager
         return displayMode != null && map.containsKey( displayMode ) ? map.get( displayMode ) : false;
     }
     
+    public String getDisplayMode()
+    {
+        DataSet dataSet = getSelectedDataSet();
+        
+        if ( dataSet.hasDataEntryForm() )
+        {
+            return CUSTOM_FORM;
+        }
+        else if ( dataSet.hasSections() )
+        {
+            return SECTION_FORM;
+        }
+        
+        return DEFAULT_FORM;
+    }
+    
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------

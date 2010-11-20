@@ -17,7 +17,7 @@
     <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br/>
 	<input type="radio" id="displayModeSection" name="displayMode" value="sectionform" disabled="disabled" onclick="displayModeSelected()">
 	<label for="displayModeSection">$i18n.getString( "use_section_form" )</label><br/>
-	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" onclick="displayModeSelected()">
+	<input type="radio" id="displayModeDefault" name="displayMode" value="defaultform" disabled="disabled" onclick="displayModeSelected()">
     <label for="displayModeDefault">$i18n.getString( "use_default_form" )</label><br/><br/>
 </div>
 

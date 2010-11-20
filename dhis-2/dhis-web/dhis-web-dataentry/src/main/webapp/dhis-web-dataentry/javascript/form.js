@@ -199,6 +199,8 @@ function setDisplayModes()
 			$( '#displayModeSection' ).attr( 'disabled', 'disabled' );
 		}
 		
+		$( '#displayModeDefault' ).removeAttr( 'disabled' );
+		
 		if ( json.displayMode == 'customform' ) {
 			$( '#displayModeCustom' ).attr( 'checked', 'checked' );
 			$( '#displayModeSection' ).removeAttr( 'checked' );
