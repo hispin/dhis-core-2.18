@@ -53,3 +53,7 @@
     visibility: collapse;
   } 
 }
+
+.hidden {
+	display: none;
+}
