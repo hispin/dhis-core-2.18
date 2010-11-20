@@ -91,7 +91,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService"/>
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		<property name="dataEntryScreenManager" ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.SaveValueAction" class="org.hisp.dhis.de.action.SaveValueAction" scope="prototype">

@@ -53,7 +53,6 @@ import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.de.comments.StandardCommentsManager;
-import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -127,13 +126,6 @@ public class SectionFormAction
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-    }
-
-    private DataEntryScreenManager dataEntryScreenManager;
-
-    public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
-    {
-        this.dataEntryScreenManager = dataEntryScreenManager;
     }
 
     private SystemSettingManager systemSettingManager;
@@ -394,7 +386,7 @@ public class SectionFormAction
                     .getId() );
             }
 
-            if ( dataEntryScreenManager.hasMultiDimensionalDataElement( section ) )
+            if ( section.hasMultiDimensionalDataElement() )
             {
                 sectionIsMultiDimensional.put( section.getId(), true );
             }

@@ -130,6 +130,20 @@ public class DataSet
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public boolean hasDataEntryForm()
+    {
+        return dataEntryForm != null;
+    }
+    
+    public boolean hasSections()
+    {
+        return sections != null && sections.size() > 0;
+    }
+    
+    // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
 
@@ -242,17 +256,11 @@ public class DataSet
         this.sortOrder = sortOrder;
     }
 
-    /**
-     * @param sections the sections to set
-     */
     public void setSections( Set<Section> sections )
     {
         this.sections = sections;
     }
 
-    /**
-     * @return the sections
-     */
     public Set<Section> getSections()
     {
         return sections;

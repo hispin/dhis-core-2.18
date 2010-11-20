@@ -29,6 +29,7 @@ package org.hisp.dhis.de.state;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -289,6 +290,18 @@ public class DefaultSelectedStateManager
     public String getSelectedDisplayMode()
     {
         return (String) getSession().get( SESSION_KEY_SELECTED_DISPLAY_MODE );
+    }
+    
+    public boolean displayModeIsValid( String displayMode )
+    {
+        DataSet dataSet = getSelectedDataSet();
+        
+        final Map<String, Boolean> map = new HashMap<String, Boolean>();
+        map.put( CUSTOM_FORM, dataSet.hasDataEntryForm() );
+        map.put( SECTION_FORM, dataSet.hasSections() );
+        map.put( DEFAULT_FORM, true );
+        
+        return displayMode != null && map.containsKey( displayMode ) ? map.get( displayMode ) : false;
     }
     
     // -------------------------------------------------------------------------

@@ -52,7 +52,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
@@ -107,19 +106,6 @@ public class DefaultDataEntryScreenManager
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
     
-    public boolean hasMultiDimensionalDataElement( Section section )
-    {
-        for ( DataElement element : section.getDataElements() )
-        {
-            if ( element.isMultiDimensional() )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public Collection<Integer> getAllCalculatedDataElements( DataSet dataSet )
     {
         Collection<Integer> calculatedDataElementIds = new HashSet<Integer>();

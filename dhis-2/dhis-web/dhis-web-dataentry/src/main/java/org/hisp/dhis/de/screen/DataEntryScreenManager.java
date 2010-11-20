@@ -33,7 +33,6 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
@@ -46,8 +45,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface DataEntryScreenManager 
 {
-    boolean hasMultiDimensionalDataElement( Section section );
-    
     Collection<Integer> getAllCalculatedDataElements( DataSet dataSet );
     
     Map<CalculatedDataElement, Map<DataElement, Integer>> getNonSavedCalculatedDataElements( DataSet dataSet );
