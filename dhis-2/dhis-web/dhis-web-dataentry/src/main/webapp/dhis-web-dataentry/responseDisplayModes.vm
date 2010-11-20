@@ -1,5 +1,5 @@
 {
-  "sectionForm": ${sectionForm},
-  "customForm": ${customForm},
-  "displayMode": "${displayMode}"
+  "sectionForm": $!{sectionForm},
+  "customForm": $!{customForm},
+  "displayMode": "$!{displayMode}"
 }

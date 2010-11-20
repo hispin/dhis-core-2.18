@@ -238,19 +238,15 @@ public class SelectAction
         // Get display mode
         // ---------------------------------------------------------------------
 
-        if ( displayMode == null )
+        if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
         {
             displayMode = selectedStateManager.getSelectedDisplayMode();
         }
-        else
-        {
-            selectedStateManager.setSelectedDisplayMode( displayMode );
-        }
-
-        boolean hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
-
+        
         boolean customDataEntryFormExists = selectedDataSet.getDataEntryForm() != null;
 
+        boolean hasSection = selectedDataSet.getSections() != null && selectedDataSet.getSections().size() > 0;
+        
         if ( displayMode == null || !ALLOWED_FORM_TYPES.contains( displayMode ) )
         {
             if ( customDataEntryFormExists )
@@ -266,6 +262,8 @@ public class SelectAction
                 displayMode = DEFAULT_FORM;
             }
         }
+        
+        selectedStateManager.setSelectedDisplayMode( displayMode );
         
         return displayMode;
     }
