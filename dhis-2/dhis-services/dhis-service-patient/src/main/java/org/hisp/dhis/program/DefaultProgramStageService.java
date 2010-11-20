@@ -28,9 +28,7 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.program.ProgramStage;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -45,9 +43,9 @@ public class DefaultProgramStageService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<ProgramStage> programStageStore;
+    private ProgramStageStore programStageStore;
 
-    public void setProgramStageStore( GenericIdentifiableObjectStore<ProgramStage> programStageStore )
+    public void setProgramStageStore( ProgramStageStore programStageStore )
     {
         this.programStageStore = programStageStore;
     }
@@ -56,6 +54,7 @@ public class DefaultProgramStageService
     // ProgramStage implementation
     // -------------------------------------------------------------------------
 
+   
     public int saveProgramStage( ProgramStage programStage )
     {
         return programStageStore.save( programStage );
@@ -84,6 +83,12 @@ public class DefaultProgramStageService
     public Collection<ProgramStage> getAllProgramStages()
     {
         return programStageStore.getAll();
+    }
+
+    @Override
+    public Collection<ProgramStage> getAllProgramStageByDataEntryForm( DataEntryForm dataEntryForm )
+    {       
+        return programStageStore.getAllProgramStageByDataEntryForm( dataEntryForm );
     }
 
 }
