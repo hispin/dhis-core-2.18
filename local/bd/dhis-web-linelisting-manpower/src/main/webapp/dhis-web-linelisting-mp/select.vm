@@ -7,17 +7,13 @@
 
 <form id="selectForm" name="selectForm" method="post" action="select.action">
 
-
+<!--
 <div id="actions" style="width:200px text-align:right">
     <br><br><br>
     <input type="button" value="Save Aggregated Data" onclick="saveLineListingAggData()" #if( $isLineListing.equals("no") ) disabled="disabled" #end disabled>
 </div>
-
+-->
 <table>
-	<!--
-	<col width="140">
-	<col width="200">
-	-->
 	<tr>
 		<td><label>$i18n.getString( "organisation_unit" )</label></td>
 		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="width:200px"></td>

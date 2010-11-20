@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.linelisting.Employee;
+import org.hisp.dhis.linelisting.EmployeeService;
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
@@ -37,6 +39,13 @@ public class UpdateEmployeePostAction
     public void setLineListService( LineListService lineListService )
     {
         this.lineListService = lineListService;
+    }
+    
+    private EmployeeService employeeService;
+
+    public void setEmployeeService( EmployeeService employeeService )
+    {
+        this.employeeService = employeeService;
     }
 
     private SelectedStateManager selectedStateManager;
@@ -141,15 +150,36 @@ public class UpdateEmployeePostAction
 
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
         LineListDataValue llDataValue = new LineListDataValue();
+        int i = 0;
+        int lineListElementsSize = linelistElements.size() - 1;
+        String leftReason = null;
+        String pdsCode = "";
         for ( LineListElement linelistElement : linelistElements )
         {
+            
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
+            System.out.println("i="+i+" The Linelist Element value is ::::::::: " + linelistElementValue );
 
+            if ( i == 1 )
+            {
+                pdsCode = linelistElementValue;
+            }
+            else if ( i == lineListElementsSize )
+            {
+                leftReason = linelistElementValue;
+            }
+
+            if ( linelistElementValue == null )
+            {
+                i++;
+                continue;
+            }
             if ( linelistElementValue != null && linelistElementValue.trim().equals( "" ) )
             {
                 linelistElementValue = "";
             }
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
+            i++;
         }
 
         String postColumnId = linelistElements.iterator().next().getShortName();
@@ -173,14 +203,25 @@ public class UpdateEmployeePostAction
 
         llDataValue.setStoredBy( storedBy );
         List<LineListDataValue> llDataValuesList = new ArrayList<LineListDataValue>();
-        
+
         llDataValuesList.add( llDataValue );
+        System.out.println("The values are ::::::::::" + llDataValuesList + " ----------and the table name is  " + department );
 
         boolean valueUpdated = dbManagerInterface.updateLLValue( llDataValuesList, department );
-        
+
         if ( valueUpdated )
         {
             System.out.println( "Values Successfully Updated in DB" );
+        }
+        
+        Employee employee = employeeService.getEmployeeByPDSCode( pdsCode );
+        
+        System.out.println("The PDSCode is :" + pdsCode + " And LeftReason is :" + leftReason );
+        
+        if( employee != null && leftReason == "Transfer Reason" )
+        {
+            employee.setIsTransferred( true );
+            employeeService.updateEmployee( employee );
         }
 
         return SUCCESS;
