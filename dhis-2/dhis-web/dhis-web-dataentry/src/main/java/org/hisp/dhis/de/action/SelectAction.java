@@ -27,10 +27,6 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.de.state.SelectedStateManager.CUSTOM_FORM;
-import static org.hisp.dhis.de.state.SelectedStateManager.DEFAULT_FORM;
-import static org.hisp.dhis.de.state.SelectedStateManager.SECTION_FORM;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -244,18 +240,7 @@ public class SelectAction
         
         if ( !selectedStateManager.displayModeIsValid( displayMode ) )
         {
-            if ( selectedDataSet.hasDataEntryForm() )
-            {
-                displayMode = CUSTOM_FORM;
-            }
-            else if ( selectedDataSet.hasSections() )
-            {
-                displayMode = SECTION_FORM;
-            }
-            else
-            {
-                displayMode = DEFAULT_FORM;
-            }
+            displayMode = selectedStateManager.getDisplayMode();
         }
         
         selectedStateManager.setSelectedDisplayMode( displayMode );
