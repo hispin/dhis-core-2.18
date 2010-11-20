@@ -1,3 +1,5 @@
+package org.hisp.dhis.program;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -24,35 +26,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.program;
-
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 
 /**
- * @author Abyot Asalefew
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public interface ProgramStageService
-{
-    String ID = ProgramStageService.class.getName();
 
-    // -------------------------------------------------------------------------
-    // ProgramStage
-    // -------------------------------------------------------------------------
-    
-    int saveProgramStage( ProgramStage programStage );
-    
-    void deleteProgramStage( ProgramStage programStage );
-    
-    void updateProgramStage( ProgramStage programStage );
-    
-    ProgramStage getProgramStage( int id );
-    
-    ProgramStage getProgramStageByName( String name );
-    
-    Collection<ProgramStage> getAllProgramStages();
-    
+public interface ProgramStageStore
+    extends GenericStore<ProgramStage>
+{
+    String ID = ProgramStageStore.class.getName();
+
     Collection<ProgramStage> getAllProgramStageByDataEntryForm( DataEntryForm dataEntryForm );
+    
+    ProgramStage getByName( String name );
 }

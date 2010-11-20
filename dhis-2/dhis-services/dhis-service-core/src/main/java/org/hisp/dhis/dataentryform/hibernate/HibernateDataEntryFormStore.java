@@ -127,6 +127,7 @@ public class HibernateDataEntryFormStore
 
         Criteria criteria = session.createCriteria( ProgramStage.class );
         criteria.add( Restrictions.in( "id", programStageIds ) );
+        criteria.add( Restrictions.isNotNull( "dataEntryForm" ) );
         criteria.setProjection( Projections.groupProperty( "dataEntryForm" ) );
 
         return criteria.list();

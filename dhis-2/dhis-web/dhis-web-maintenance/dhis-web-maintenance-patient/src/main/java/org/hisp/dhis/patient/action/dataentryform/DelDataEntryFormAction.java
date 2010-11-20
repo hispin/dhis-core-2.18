@@ -105,7 +105,11 @@ public class DelDataEntryFormAction
 
         programStageService.updateProgramStage( programStage );
 
-        dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+        if ( programStageService.getAllProgramStageByDataEntryForm( dataEntryForm ).isEmpty() )
+        {
+
+            dataEntryFormService.deleteDataEntryForm( dataEntryForm );
+        }
 
         return SUCCESS;
     }

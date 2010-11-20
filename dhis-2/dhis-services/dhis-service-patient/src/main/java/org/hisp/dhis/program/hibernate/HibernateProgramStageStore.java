@@ -1,3 +1,5 @@
+package org.hisp.dhis.program.hibernate;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -24,35 +26,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataentryform.DataEntryForm;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageStore;
 
 /**
- * @author Abyot Asalefew
+ * @author Tran Thanh Tri
  * @version $Id$
  */
-public interface ProgramStageService
-{
-    String ID = ProgramStageService.class.getName();
 
-    // -------------------------------------------------------------------------
-    // ProgramStage
-    // -------------------------------------------------------------------------
+public class HibernateProgramStageStore
+    extends HibernateGenericStore<ProgramStage>
+    implements ProgramStageStore
+{
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<ProgramStage> getAllProgramStageByDataEntryForm( DataEntryForm dataEntryForm )
+    {       
+        return getCriteria( Restrictions.eq( "dataEntryForm", dataEntryForm ) ).list();
+    }
     
-    int saveProgramStage( ProgramStage programStage );
     
-    void deleteProgramStage( ProgramStage programStage );
-    
-    void updateProgramStage( ProgramStage programStage );
-    
-    ProgramStage getProgramStage( int id );
-    
-    ProgramStage getProgramStageByName( String name );
-    
-    Collection<ProgramStage> getAllProgramStages();
-    
-    Collection<ProgramStage> getAllProgramStageByDataEntryForm( DataEntryForm dataEntryForm );
+   
 }

@@ -813,6 +813,11 @@
 			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
 			<result name="success" type="redirect">programStage.action?id=${programStageId}</result>
 		</action>
+		
+		<action name="applyDataEntryForm"
+			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
 
 		<action name="delDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction">
