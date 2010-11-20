@@ -60,33 +60,27 @@
       #set( $calculated = false )
       #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
       <tr>
-      
-        ## Data element name
         <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
-        <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
-        #if( $useShortName )
-        $encoder.htmlEncode( $dataElement.shortName )
-        #else
-        $encoder.htmlEncode( $dataElement.name )
-        #end
-        </span>
+          <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
+          #if( $useShortName )
+          $encoder.htmlEncode( $dataElement.shortName )
+          #else
+          $encoder.htmlEncode( $dataElement.name )
+          #end
+          </span>
+        </td>
+    
+        <td style="display:none">
+          <span id="value[$dataElement.id].type" style="display:none">$dataElement.getDetailedNumberType()</span>
         </td>
 
-        ## Type      
-        <td style="display:none">
-        $dataElementTypeMap.get( $dataElement.type )
-        <span id="value[$dataElement.id].type" style="display:none">$dataElement.getDetailedNumberType()</span>
-        </td>
-                                          
-        #foreach( $optionCombo in $optionCombos )                       
+        #foreach( $optionCombo in $optionCombos )
         #set( $minMax = false )
         #set( $minMax = $minMaxMap.get( "$dataElement.id:$optionCombo.id" ) )
         #set( $dataValue = false )
         #set( $dataValue = $dataValueMap.get( "$dataElement.id:$optionCombo.id" ) )
         #set( $dataEntryId = "value[$dataElement.id].value:value[$optionCombo.id].value" )
-
-        ## Data Entry
-        <td>	                
+        <td>
         #set( $greyedField = false )
         #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
         #if( $dataElement.type == "bool" )
@@ -118,7 +112,6 @@
           #end
         #end
         #end
-        
         #set( $minMaxError = false )
         #if( $dataElement.type == "int" && $dataValue && $minMax )
           #if( $integer.parseInt( $dataValue.value ) < $minMax.min || $integer.parseInt( $dataValue.value ) > $minMax.max )
