@@ -1,29 +1,16 @@
-
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
-
-<form id="completeForm">
 <hr style="clear:both">
-
 <table>
-	<tr>
-	    <td style="min-width:95px"><label for="completeButton">$i18n.getString( "complete" )</label></td>
-	    <td></td>
-	    <td><input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end></td>
-	    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration || $periods.size() == 0 ) disabled="disabled"#end></td>
-	    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
-	    <td><div id="dateDiv" name="dateDiv" #if( $registration || $periods.size() == 0 ) style="display:none"#else style="display:inline"#end>
-	       </div></td>
-	</tr>
+  <tr>
+    <td><input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end></td>
+    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration || $periods.size() == 0 ) disabled="disabled"#end></td>
+    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
+    <td><div id="dateDiv" name="dateDiv" #if( $registration || $periods.size() == 0 ) style="display:none"#else style="display:inline"#end>
+  </tr>
 </table>
 <span id="message"></span>
-</form>
 <script type="text/javascript">
    jQuery(document).ready(function(){
 		datePicker( 'dateField' );
    });
-</script>
-
-<script type="text/javascript">
-    var i18n_confirm_complete = '$encoder.jsEscape( $i18n.getString( "confirm_complete" ) , "'")';
-    var i18n_confirm_undo = '$encoder.jsEscape( $i18n.getString( "confirm_undo" ) , "'")';
 </script>
