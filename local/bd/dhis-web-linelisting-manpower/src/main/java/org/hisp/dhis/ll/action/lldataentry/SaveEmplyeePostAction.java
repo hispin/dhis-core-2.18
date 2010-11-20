@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.linelisting.Employee;
+import org.hisp.dhis.linelisting.EmployeeService;
 import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
@@ -27,9 +29,11 @@ public class SaveEmplyeePostAction
     implements Action
 {
 
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // -
     // Dependencies
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // -
 
     private LineListService lineListService;
 
@@ -73,18 +77,27 @@ public class SaveEmplyeePostAction
         this.periodService = periodService;
     }
 
-    // ---------------------------------------------------------------------------
+    private EmployeeService employeeService;
+
+    public void setEmployeeService( EmployeeService employeeService )
+    {
+        this.employeeService = employeeService;
+    }
+
+    //--------------------------------------------------------------------------
+    // -
     // Input/Output
-    // ---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // -
     private String department;
 
     public void setDepartment( String department )
     {
         this.department = department;
     }
-    
+
     private String post;
-    
+
     public void setPost( String post )
     {
         this.post = post;
@@ -110,14 +123,14 @@ public class SaveEmplyeePostAction
     {
         this.reportingDate = reportingDate;
     }
-    
+
     public String getReportingDate()
     {
         return reportingDate;
     }
-    
+
     private String dataValueMapKey;
-    
+
     public String getDataValueMapKey()
     {
         return dataValueMapKey;
@@ -140,12 +153,11 @@ public class SaveEmplyeePostAction
         this.dataValue = dataValue;
     }
 
-
     private LineListGroup lineListGroup;
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Action Implementation
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     public String execute()
     {
@@ -156,6 +168,8 @@ public class SaveEmplyeePostAction
         Collection<LineListElement> linelistElements = lineListService.getLineListGroup( groupid )
             .getLineListElements();
 
+        String pdsCode = "";
+
         lineListGroup = selectedStateManager.getSelectedLineListGroup();
 
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -165,30 +179,39 @@ public class SaveEmplyeePostAction
         int recordNo = dbManagerInterface.getMaxRecordNumber( department ) + 1;
 
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
+
         LineListDataValue llDataValue = new LineListDataValue();
+        int i = 0;
         for ( LineListElement linelistElement : linelistElements )
         {
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
-            
-            System.out.println("Linelist Em=lement name is :" + linelistElement.getShortName() + " And Linlelist Value is:" + linelistElementValue );
 
-            if( linelistElementValue == null )
+            // Hardcoding to get PDSCode of Employee
+
+            if ( i == 0 )
+            {
+                pdsCode = linelistElementValue;
+            }
+
+            System.out.println( "Linelist Element name is :" + linelistElement.getShortName()
+                + " And Linlelist Value is:" + linelistElementValue );
+
+            if ( linelistElementValue == null )
             {
                 continue;
             }
-            
+
             if ( linelistElementValue != null && linelistElementValue.trim().equals( "" ) )
             {
-                linelistElementValue = "";                
+                linelistElementValue = "";
             }
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
-            
+            i++;
         }
 
         String postColumnId = linelistElements.iterator().next().getShortName();
         llElementValuesMap.put( postColumnId, post );
-        System.out.println("*********"+postColumnId + " ------ " + post + "**********");
-        
+
         // add map in linelist data value
         llDataValue.setLineListValues( llElementValuesMap );
 
@@ -198,7 +221,6 @@ public class SaveEmplyeePostAction
 
         // add recordNumber to pass to the update query
         llDataValue.setRecordNumber( recordNo );
-        
 
         // add stored by, timestamp in linelist data value
         storedBy = currentUserService.getCurrentUsername();
@@ -214,6 +236,13 @@ public class SaveEmplyeePostAction
         if ( valueInserted )
         {
             System.out.println( "Values Successfully Inserted in DB" );
+        }
+        Employee employee = employeeService.getEmployeeByPDSCode( pdsCode );
+
+        if ( employee != null )
+        {
+            employee.setIsTransferred( false );
+            employeeService.updateEmployee( employee );
         }
 
         return SUCCESS;

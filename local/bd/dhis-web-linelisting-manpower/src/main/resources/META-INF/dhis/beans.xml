@@ -558,6 +558,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
+		<property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
+        </property>
     </bean>
 	
 	
@@ -587,6 +590,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
 		<property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+		<property name="employeeService">
+            <ref bean="org.hisp.dhis.linelisting.EmployeeService"/>
         </property>
     </bean>
 	

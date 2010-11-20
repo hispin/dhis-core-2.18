@@ -65,7 +65,7 @@
 			<input type="hidden" id="reportedDate" name="reportedDate">&nbsp;		
 		</td>
 		<td>
-			<input type="button" value="Reset"> 
+			<input type="reset" value="Reset" onclick="window.location.href='showEmployeePostForm.action'" style="width:10em"> 
 		</td>
 	</tr>
 	</table>
