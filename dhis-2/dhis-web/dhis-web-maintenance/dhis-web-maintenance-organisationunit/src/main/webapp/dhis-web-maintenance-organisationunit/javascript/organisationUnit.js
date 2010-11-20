@@ -16,7 +16,7 @@ function showOrganisationUnitDetails( unitId )
     var request = new Request();
     request.setResponseTypeXML( 'organisationUnit' );
     request.setCallbackSuccess( organisationUnitReceived );
-    request.send( 'getOrganisationUnit.action?id=' + unitId );
+    request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + unitId );
 }
 
 function organisationUnitReceived( unitElement )

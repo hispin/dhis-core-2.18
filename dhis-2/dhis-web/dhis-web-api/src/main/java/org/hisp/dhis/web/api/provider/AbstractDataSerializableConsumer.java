@@ -33,17 +33,13 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.Provider;
 
 import org.hisp.dhis.web.api.model.DataStreamSerializable;
 import org.hisp.dhis.web.api.resources.DhisMediaType;
-
-import com.sun.jersey.spi.resource.Singleton;
 
 /**
  * An abstract class mapping from the {@link DhisMediaType.MOBILE_SERIALIZED} to implementations of {@link DataStreamSerializable}
@@ -54,8 +50,6 @@ import com.sun.jersey.spi.resource.Singleton;
  */
 public abstract class AbstractDataSerializableConsumer<T extends DataStreamSerializable> implements MessageBodyReader<T>
 {
-
-
     @Override
     public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
     {
