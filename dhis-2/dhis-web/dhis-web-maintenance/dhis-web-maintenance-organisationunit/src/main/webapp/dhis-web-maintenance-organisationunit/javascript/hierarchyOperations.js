@@ -12,7 +12,7 @@ function organisationUnitToMoveSelected( orgUnitIds )
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );
         request.setCallbackSuccess( organisationUnitToMoveReceived );
-        request.send( 'getOrganisationUnit.action?id=' + orgUnitIds[0] );
+        request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + orgUnitIds[0] );
     }
 }
 
@@ -77,7 +77,7 @@ function newParentSelected( orgUnitIds )
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );
         request.setCallbackSuccess( newParentOrganisationUnitReceived );
-        request.send( 'getOrganisationUnit.action?id=' + orgUnitIds[0] );
+        request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + orgUnitIds[0] );
     }
     else if ( orgUnitIds.length == 0 )
     {

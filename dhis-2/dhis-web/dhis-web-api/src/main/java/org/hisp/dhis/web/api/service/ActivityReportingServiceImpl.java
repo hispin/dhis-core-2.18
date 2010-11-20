@@ -319,7 +319,7 @@ public class ActivityReportingServiceImpl
 
                     dataValue = new PatientDataValue( programStageInstance, dataElement, cateOptCombo, orgUnit,
                         new Date(), value, false );
-                    ;
+                    
                     dataValueService.savePatientDataValue( dataValue );
                 }
             }

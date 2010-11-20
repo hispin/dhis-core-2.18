@@ -9,6 +9,6 @@
     <active>$organisationUnit.active</active>
     <comment>$!encoder.xmlEncode( $organisationUnit.comment )</comment>
     <geoCode>$!encoder.xmlEncode( $organisationUnit.geoCode )</geoCode>
-    <latitude>$!encoder.xmlEncode( $organisationUnit.latitude )</latitude>
-    <longitude>$!encoder.xmlEncode( $organisationUnit.longitude )</longitude>
+	<url>$!encoder.xmlEncode( $organisationUnit.url )</url>
+    <lastUpdated>$!format.formatDate( $organisationUnit.lastUpdated )</lastUpdated>
 </organisationUnit>

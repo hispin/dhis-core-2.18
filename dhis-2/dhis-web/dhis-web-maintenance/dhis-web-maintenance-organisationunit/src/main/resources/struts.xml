@@ -30,14 +30,6 @@
 			<interceptor-ref name="organisationUnitTreeStack" />
 		</action>
 
-		<action name="getOrganisationUnit"
-			class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-organisationunit/responseOrganisationUnitObject.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
 		<action name="validateOrganisationUnit"
 			class="org.hisp.dhis.oum.action.organisationunit.ValidateOrganisationUnitAction">
 			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm

@@ -3,17 +3,15 @@ package org.hisp.dhis.web.api.service;
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Model;
 import org.hisp.dhis.web.api.model.ModelList;
-import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.Program;
 import org.hisp.dhis.web.api.model.ProgramStage;
 import org.hisp.dhis.web.api.utils.LocaleUtil;

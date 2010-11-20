@@ -27,14 +27,9 @@ package org.hisp.dhis.web.api.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 
 public class Task implements DataStreamSerializable
 {
@@ -90,6 +85,4 @@ public class Task implements DataStreamSerializable
         // Fixme
         
     }
-
-
 }
