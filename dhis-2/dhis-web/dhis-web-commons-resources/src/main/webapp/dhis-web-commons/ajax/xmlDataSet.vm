@@ -4,4 +4,7 @@
     <name>$!encoder.xmlEncode( $dataSet.name )</name>
     <shortName>$!encoder.xmlEncode( $dataSet.shortName )</shortName>
     <periodTypeId>$dataSet.periodType.id</periodTypeId>
+    <frequency>$i18n.getString( $dataSet.periodType.name )</frequency>
+    <dataElementCount>$dataSet.dataElements.size()</dataElementCount>
+    <dataentryform>#if( $dataSet.dataEntryForm )$encoder.xmlEncode( $dataSet.dataEntryForm.name )#end</dataentryform>
 </dataSet>

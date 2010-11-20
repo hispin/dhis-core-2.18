@@ -44,13 +44,6 @@
 			</result>
 		</action>
 
-		<action name="getDataElement"
-			class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElement.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
 		<action name="getDataElements"
 			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
 			<result name="success" type="velocity-xml">
@@ -113,8 +106,7 @@
 			<result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-		
+		</action>		
 
 		<!-- DataElementGroup Editor -->
 
@@ -211,14 +203,6 @@
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction" method="searchByName">
 			<result name="success" type="velocity">
 				/dhis-web-maintenance-datadictionary/dataElementGroupSearch.vm</result>
-
-		</action>
-
-		<action name="getDataElementGroup"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElementGroup.vm
-			</result>
 		</action>
 
 		<action name="removeDataElementGroup"
@@ -338,12 +322,83 @@
 			<param name="requiredAuthorities">F_DATAELEMENTGROUPSET_DELETE</param>
 		</action>
 
-		<action name="showDataElementGroupSetDetails"
-			class="org.hisp.dhis.dd.action.dataelementgroupset.GetDataElementGroupSetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElementGroupSet.vm
+		<!-- Indicator -->
+
+		<action name="indicator"
+			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
+			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/denum.js</param>
+		</action>
+
+		<action name="showSortIndicatorForm"
+			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-datadictionary/sortIndicatorForm.vm</param>
+		</action>
+
+		<action name="saveIndicatorSortOrder"
+			class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction">
+			<result name="success" type="redirect">indicator.action
 			</result>
 		</action>
+
+		<action name="removeIndicator"
+			class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<param name="requiredAuthorities">F_INDICATOR_DELETE</param>
+		</action>
+
+		<action name="showAddIndicatorForm"
+			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
+		</action>
+
+		<action name="addIndicator"
+			class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
+			<result name="success" type="redirect">indicator.action
+			</result>
+			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
+		</action>
+
+		<action name="showUpdateIndicatorForm"
+			class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
+			<result name="success" type="chain">getIndicatorTypeList
+			</result>
+			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
+		</action>
+
+		<action name="getIndicatorTypeList"
+			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
+			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
+			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
+		</action>
+
+		<action name="updateIndicator"
+			class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
+			<result name="success" type="redirect">indicator.action
+			</result>
+			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
+		</action>
+
+		<action name="validateIndicator"
+			class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>		
 
 		<!-- Indicator Group Editor -->
 
@@ -436,14 +491,6 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicatorGroup.js</param>
-		</action>
-
-		<action name="getIndicatorGroup"
-			class="org.hisp.dhis.dd.action.indicatorgroup.GetIndicatorGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseIndicatorGroup.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
 		<action name="removeIndicatorGroup"
@@ -562,14 +609,6 @@
 			<param name="requiredAuthorities">F_INDICATORGROUPSET_DELETE</param>
 		</action>
 
-		<action name="showIndicatorGroupSetDetails"
-			class="org.hisp.dhis.dd.action.indicatorgroupset.GetIndicatorGroupSetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseIndicatorGroupSet.vm
-			</result>
-		</action>
-
-
 		<!-- IndicatorType -->
 
 		<action name="indicatorType"
@@ -634,91 +673,6 @@
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
-		<!-- Indicator -->
-
-		<action name="indicator"
-			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/denum.js</param>
-		</action>
-
-		<action name="showSortIndicatorForm"
-			class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/sortIndicatorForm.vm</param>
-		</action>
-
-		<action name="saveIndicatorSortOrder"
-			class="org.hisp.dhis.dd.action.indicator.SaveIndicatorSortOrderAction">
-			<result name="success" type="redirect">indicator.action
-			</result>
-		</action>
-
-		<action name="getIndicator"
-			class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseIndicator.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-		<action name="removeIndicator"
-			class="org.hisp.dhis.dd.action.indicator.RemoveIndicatorAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_INDICATOR_DELETE</param>
-		</action>
-
-		<action name="showAddIndicatorForm"
-			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/addIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
-			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
-		</action>
-
-		<action name="addIndicator"
-			class="org.hisp.dhis.dd.action.indicator.AddIndicatorAction">
-			<result name="success" type="redirect">indicator.action
-			</result>
-			<param name="requiredAuthorities">F_INDICATOR_ADD</param>
-		</action>
-
-		<action name="showUpdateIndicatorForm"
-			class="org.hisp.dhis.dd.action.indicator.GetIndicatorAction">
-			<result name="success" type="chain">getIndicatorTypeList
-			</result>
-			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
-		</action>
-
-		<action name="getIndicatorTypeList"
-			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/updateIndicatorForm.vm</param>
-			<param name="javascripts">javascript/shortName.js,javascript/indicator.js,javascript/denum.js</param>
-			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
-		</action>
-
-		<action name="updateIndicator"
-			class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
-			<result name="success" type="redirect">indicator.action
-			</result>
-			<param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
-		</action>
-
-		<action name="validateIndicator"
-			class="org.hisp.dhis.dd.action.indicator.ValidateIndicatorAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>		
 
 		<!-- DataDictionary -->
 
