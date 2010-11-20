@@ -24,7 +24,7 @@ function clearPeriod()
 
 function clearEntryForm()
 {
-	$('#contentDiv').html( '' );
+	$( '#contentDiv' ).html( '' );
 }
 
 // -----------------------------------------------------------------------------
@@ -162,8 +162,11 @@ function displayEntryFormInternal( updateDisplayModes )
 	
 	if ( periodIndex && periodIndex != -1 )
 	{
-		var url = 'select.action?selectedPeriodIndex=' + periodIndex +
-			'&displayMode=' + $("input[name='displayMode']:checked").val();
+		var url = 'select.action?selectedPeriodIndex=' + periodIndex;
+		
+		var displayMode = $("input[name='displayMode']:checked").val();
+		
+		url += displayMode ? '&displayMode=' + displayMode : '';
 		
 		var callback = updateDisplayModes ? setDisplayModes : displayEntryFormCompleted;
 		
