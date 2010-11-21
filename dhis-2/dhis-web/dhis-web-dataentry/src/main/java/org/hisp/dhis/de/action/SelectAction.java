@@ -89,6 +89,24 @@ public class SelectAction
     }
 
     // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String displayMode;
+
+    public void setDisplayMode( String displayMode )
+    {
+        this.displayMode = displayMode;
+    }
+
+    private Integer selectedPeriodIndex;
+
+    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
+    {
+        this.selectedPeriodIndex = selectedPeriodIndex;
+    }
+
+    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -139,24 +157,6 @@ public class SelectAction
     public Date getRegistrationDate()
     {
         return registrationDate;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private String displayMode;
-
-    public void setDisplayMode( String displayMode )
-    {
-        this.displayMode = displayMode;
-    }
-
-    private Integer selectedPeriodIndex;
-
-    public void setSelectedPeriodIndex( Integer selectedPeriodIndex )
-    {
-        this.selectedPeriodIndex = selectedPeriodIndex;
     }
 
     // -------------------------------------------------------------------------
@@ -223,8 +223,7 @@ public class SelectAction
 
         if ( selectedDataSet != null && period != null && organisationUnit != null )
         {
-            registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period,
-                organisationUnit );
+            registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, period, organisationUnit );
 
             registrationDate = registration != null ? registration.getDate() : new Date();
         }

@@ -185,54 +185,32 @@ function setDisplayModes()
 	displayEntryFormCompleted();
 	
 	$.getJSON( 'loadDisplayModes.action', function( json ) {
-		if ( json.customForm ) {
-			$( '#displayModeCustom' ).removeAttr( 'disabled' );
-		}
-		else {
-			$( '#displayModeCustom' ).attr( 'disabled', 'disabled' );
-		}
-		
-		if ( json.sectionForm ) {
-			$( '#displayModeSection' ).removeAttr( 'disabled' );
-		}
-		else {
-			$( '#displayModeSection' ).attr( 'disabled', 'disabled' );
-		}
-		
+		$( '#displayModeCustom' ).removeAttr( 'disabled' );
+		$( '#displayModeSection' ).removeAttr( 'disabled' );
 		$( '#displayModeDefault' ).removeAttr( 'disabled' );
+		
+		$( '#displayModeCustom' ).removeAttr( 'checked' );
+		$( '#displayModeSection' ).removeAttr( 'checked' );
+		$( '#displayModeDefault' ).removeAttr( 'checked' );
 		
 		if ( json.displayMode == 'customform' ) {
 			$( '#displayModeCustom' ).attr( 'checked', 'checked' );
-			$( '#displayModeSection' ).removeAttr( 'checked' );
-			$( '#displayModeDefault' ).removeAttr( 'checked' );
 		}
-		else if ( json.displayMode = 'sectionform' ) {
-			$( '#displayModeCustom' ).removeAttr( 'checked' );
+		else if ( json.displayMode == 'sectionform' ) {
 			$( '#displayModeSection' ).attr( 'checked', 'checked' );
-			$( '#displayModeDefault' ).removeAttr( 'checked' );
 		}
-		else if ( json.displayMode = 'defaultform' ) {
-			$( '#displayModeCustom' ).removeAttr( 'checked' );
-			$( '#displayModeSection' ).removeAttr( 'checked' );
+		else {
 			$( '#displayModeDefault' ).attr( 'checked', 'checked' );
 		}
+		
+		if ( !json.customForm ) {
+			$( '#displayModeCustom' ).attr( 'disabled', 'disabled' );
+		}		
+		if ( !json.sectionForm ) {
+			$( '#displayModeSection' ).attr( 'disabled', 'disabled' );
+		}		
 	} );
 }
-
-// -----------------------------------------------------------------------------
-// History
-// -----------------------------------------------------------------------------
-
-function viewHistory( dataElementId, optionComboId, showComment )
-{
-    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=580,height=710,scrollbars=yes' );
-}
-
-/**
- * Display data element name in selection display when a value field recieves
- * focus.
- */
-var customDataEntryFormExists = "false";
 
 function valueFocus(e) 
 {
@@ -393,7 +371,7 @@ function getNextEntryField( field )
 }
 
 // -----------------------------------------------------------------------------
-// View history
+// Min max
 // -----------------------------------------------------------------------------
 
 /**
@@ -542,4 +520,13 @@ function undoReceived( messageElement )
 function validate()
 {
     window.open( 'validate.action', '_blank', 'width=800, height=400, scrollbars=yes, resizable=yes' );
+}
+
+// -----------------------------------------------------------------------------
+// History
+// -----------------------------------------------------------------------------
+
+function viewHistory( dataElementId, optionComboId, showComment )
+{
+    window.open( 'viewHistory.action?dataElementId=' + dataElementId + '&optionComboId=' + optionComboId + '&showComment=' + showComment, '_blank', 'width=580,height=710,scrollbars=yes' );
 }
