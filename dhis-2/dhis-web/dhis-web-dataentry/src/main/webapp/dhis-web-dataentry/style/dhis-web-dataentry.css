@@ -21,11 +21,18 @@
   text-align: right;
 }
 
-.hidden {
-	display: none;
+.hidden 
+{
+  display: none;
 }
 
-@media print {
+.gray
+{
+  background-color: #000000;
+}
+
+@media print 
+{
   #mainHeader, #topMenu, #leftBar, #currentSelection, #actions, input[type=button] 
   {
     display: none;

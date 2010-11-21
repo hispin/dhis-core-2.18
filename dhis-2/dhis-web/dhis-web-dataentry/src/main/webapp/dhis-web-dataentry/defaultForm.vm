@@ -81,7 +81,7 @@
       #end
       </select>
       #else
-      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
+      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100%; #if( $minMaxError )background-color:#ffcccc#end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>                                
       #end
       #end
       #end
@@ -93,10 +93,8 @@
         #end
       #end
       <span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span><span id="value[option$optionCombo.id].name" class="hidden">$optionCombo.name</span><span id="value[$dataElement.id].name" class="hidden">$encoder.htmlEncode( $dataElement.shortName )</span><div id="value[$dataElement.id:$optionCombo.id].min" class="hidden">$!minMax.min</div><div id="value[$dataElement.id:$optionCombo.id].max" class="hidden">$!minMax.max</div>
-      #if( $dataElement.aggregationOperator == "sum" && $dataElement.type != "string")
-      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
-      #elseif( $dataElement.type != "string")
-      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError ) ;background-color:#ffcccc #end #if( $dataElement.type == "int" ) ;text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
+      #if( $dataElement.type != "string")
+      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100%; text-align:center; #if( $minMaxError )background-color:#ffcccc#end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
       #end
     </td>
     #set( $tabIndex = $tabIndex + 1 )
@@ -112,7 +110,6 @@
 #parse( "/dhis-web-dataentry/completeRegistration.vm" )
 
 <script type="text/javascript">
-
     var calculatedDataElementMap = {
 		#set( $count = 1 )
 		#foreach( $cde in $calculatedDataElementMap.keySet() )

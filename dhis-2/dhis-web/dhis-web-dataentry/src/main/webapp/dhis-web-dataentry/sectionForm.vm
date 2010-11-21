@@ -58,7 +58,7 @@
       #set( $calculated = false )
       #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
       <tr>
-        <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
+        <td #if( $mark == 1 ) style="background-color: #dddddd" #end>
           <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">
           #if( $useShortName )
           $encoder.htmlEncode( $dataElement.shortName )
@@ -78,7 +78,7 @@
         #set( $greyedField = $greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
         #if( $dataElement.type == "bool" )
         <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
-        <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%  #if( $greyedField ) ;background-color:#000000 #end " tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+        <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
 	      <option value="">[$i18n.getString( "no_value" )]</option>
           <option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
           <option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
@@ -92,7 +92,7 @@
           #end
           #end
           #if( $coun > 0 )
-          <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100% #if( $greyedField ) ;background-color:#000000 #end " tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+          <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue" )) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
             <option value="">[$i18n.getString( "please_select" )] </option>
             #foreach($customValue in $customValues)
               #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)
@@ -101,7 +101,7 @@
             #end
 		  </select>
 	      #else
-          <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError );background-color:#ffcccc #end  #if( $greyedField );background-color:#000000 #end #if( $dataElement.type == "int" );text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+          <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100%; #if( $minMaxError )background-color:#ffcccc;#end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
           #end
         #end
         #end
@@ -112,10 +112,8 @@
           #end
         #end
         <span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span><span id="value[option$optionCombo.id].name"  class="hidden">$optionCombo.name</span><span id="value[$dataElement.id].name" class="hidden">$encoder.htmlEncode( $dataElement.shortName )</span><div id="value[$dataElement.id:$optionCombo.id].min" class="hidden">$!minMax.min</div><div id="value[$dataElement.id:$optionCombo.id].max" class="hidden">$!minMax.max</div>
-        #if( $dataElement.aggregationOperator == "sum" && $dataElement.type != "string")
-        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError );background-color:#ffcccc #end  #if( $greyedField );background-color:#000000 #end #if( $dataElement.type == "int" );text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end  #if( $greyedField ) disabled="disabled" #end>
-        #elseif( $dataElement.type != "string")
-        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100% #if( $minMaxError );background-color:#ffcccc #end  #if( $greyedField );background-color:#000000 #end #if( $dataElement.type == "int" );text-align:center #end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField ) disabled="disabled" #end>
+        #if( $dataElement.type != "string")
+        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue( $dataElement.id, $optionCombo.id, '$encoder.jsEncode( $dataElement.name )', $zeroValueSaveMode )" ondblclick="viewHistory( $dataElement.id, $optionCombo.id, true  )" #else disabled="disabled" #end onkeypress="return keyPress(event, this)" style="width:100%; text-align:center; #if( $minMaxError )background-color:#ffcccc;#end" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled" #end>
         #end
       </td>
       #set( $tabIndex = $tabIndex + 1 )
