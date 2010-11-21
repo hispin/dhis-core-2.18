@@ -1,5 +1,5 @@
 
-#currentSelection 
+#currentSelection
 {
   color: black;
   padding: 5px;
@@ -10,24 +10,19 @@
   position: fixed;
   top: 80px;
   right: 10px;
-  filter: alpha(opacity=90);
-  opacity: 0.90;
+  filter: alpha(opacity=85);
+  opacity: 0.85;
 }
 
-#selectForm 
-{
-  padding-top: 10px;
-}
-
-#actions 
+#actions
 {
   float: right;
-  width: 170px;
+  width:200px;
+  text-align: right;
 }
 
-#actions button[type=button] 
-{
-  width: 100%;
+.hidden {
+	display: none;
 }
 
 @media print {
@@ -52,8 +47,4 @@
   {
     visibility: collapse;
   } 
-}
-
-.hidden {
-	display: none;
 }
