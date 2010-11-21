@@ -28,14 +28,11 @@ package org.hisp.dhis.startup;
  */
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -165,12 +162,11 @@ public class TableAlteror
         {
             executeSql( "UPDATE patientattribute SET mandatory=false" );
         }
-
-        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0 )
-        {
+        
+        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0){
             executeSql( "UPDATE patientattribute SET groupby=false" );
         }
-
+        
         // update periodType field to ValidationRule
         executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
 
@@ -198,8 +194,6 @@ public class TableAlteror
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
 
         executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
-        
-        updateDataEntryFormCode();
 
         log.info( "Tables updated" );
     }
@@ -385,46 +379,6 @@ public class TableAlteror
             holder.close();
         }
 
-    }
-
-    private void updateDataEntryFormCode()
-    {
-        log.info( "Update data entry html code" );
-        
-        StatementHolder holder = statementManager.getHolder();
-
-        Statement statement = holder.getStatement();
-
-        try
-        {
-            Pattern calendarPattern = Pattern.compile( "(<img.*?)(.*Calendar\\.setup.*?)(</script>)" );
-
-            ResultSet resultSet = statement.executeQuery( "SELECT * FROM dataentryform" );
-
-            while ( resultSet.next() )
-            {
-                int id = resultSet.getInt( 1 );
-                String htmlCode = resultSet.getString( 3 );
-
-                Matcher matcher = calendarPattern.matcher( htmlCode );
-                
-                while ( matcher.find() )
-                {
-                    String calendarString = matcher.group();
-                    
-                    htmlCode = htmlCode.replace( calendarString, "" );
-                    
-                }
-                
-                executeSql( "UPDATE dataentryform SET htmlcode = '" + htmlCode + "' WHERE dataentryformid = " + id );
-
-            }
-        }
-        catch ( SQLException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
 }

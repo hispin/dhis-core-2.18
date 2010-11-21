@@ -27,7 +27,6 @@ package org.hisp.dhis.patient.action.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +34,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -67,13 +65,6 @@ public class SaveDataEntryFormAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -113,13 +104,6 @@ public class SaveDataEntryFormAction
         this.programStageId = programStageId;
     }
 
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -127,12 +111,8 @@ public class SaveDataEntryFormAction
     public String execute()
         throws Exception
     {
-        Calendar calendar = Calendar.getInstance();
-        String time = calendar.get( Calendar.HOUR_OF_DAY ) + ":" + calendar.get( Calendar.MINUTE ) + ":"
-            + calendar.get( Calendar.SECOND );
-
         ProgramStage association = programStageService.getProgramStage( associationIdField );
-
+        
         DataEntryForm dataEntryForm = association.getDataEntryForm();
 
         if ( dataEntryForm == null )
@@ -140,16 +120,12 @@ public class SaveDataEntryFormAction
             dataEntryForm = new DataEntryForm( name, prepareDataEntryFormCode( designTextarea ) );
             association.setDataEntryForm( dataEntryForm );
             programStageService.updateProgramStage( association );
-
-            message = i18n.getString( "saved_dataentryform" ) + " " + time;
         }
         else
         {
             dataEntryForm.setName( name );
             dataEntryForm.setHtmlCode( prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
-
-            message = i18n.getString( "updated_dataentryform" ) + " " + time;
         }
 
         return SUCCESS;
