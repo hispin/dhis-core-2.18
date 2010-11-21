@@ -88,19 +88,24 @@ public class Activity
     public void serialize( DataOutputStream dout )
         throws IOException
     {
+        this.getTask().serialize( dout );
         this.getBeneficiary().serialize( dout );
         dout.writeBoolean( late );
-        this.getTask().serialize( dout );
         dout.writeLong( this.getDueDate().getTime() );
-
     }
-
+    
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
-
+        this.task = new Task();
+        task.deSerialize( dataInputStream );
+        
+        this.beneficiary = new Beneficiary();
+        beneficiary.deSerialize( dataInputStream );
+        
+        this.late = dataInputStream.readBoolean();
+        this.dueDate = new Date(dataInputStream.readLong());
     }
 
 }
