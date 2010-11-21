@@ -28,8 +28,6 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataentryform.DataEntryForm;
-
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -53,6 +51,4 @@ public interface ProgramStageService
     ProgramStage getProgramStageByName( String name );
     
     Collection<ProgramStage> getAllProgramStages();
-    
-    Collection<ProgramStage> getAllProgramStageByDataEntryForm( DataEntryForm dataEntryForm );
 }

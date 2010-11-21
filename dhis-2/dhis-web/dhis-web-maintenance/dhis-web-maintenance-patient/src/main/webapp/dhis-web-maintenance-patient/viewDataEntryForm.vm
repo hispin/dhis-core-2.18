@@ -103,7 +103,6 @@
 <table width="100%">	
     <tr>
         <td align="right">
-			<input type="button" name="apply" value="$i18n.getString( 'apply' )" style="width:100px" onclick="applyDataEntryForm()"/>
             <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
             <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStageId'">            
 			#if( $!dataEntryForm )
@@ -271,7 +270,7 @@ function deleteDataEntryForm( associationId )
 {
 	if( window.confirm( i18n_delete_confirm ) )
 	{
-		window.location = 'delDataEntryForm.action?associationId=' + associationId + '&programStageId=$!programStageId';
+		window.location = 'delDataEntryForm.action?associationId=' + associationId;
 	}
 }
 
@@ -452,21 +451,6 @@ function filterDataElements( filter, container, list )
 			dataElementList.append( "<option value='" + item.attr('value') + "'>" + item.text() + "</option>" );
 		}
 	});	
-}
-
-function applyDataEntryForm()
-{
-	if( jQuery("#saveDataEntryForm").valid() )
-	{
-		var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
-		jQuery.postJSON("applyDataEntryForm.action", {
-			name: getFieldValue( 'name' ),
-			designTextarea: html,
-			associationIdField: getFieldValue( 'associationIdField' )
-		}, function( json ){
-			showSuccessMessage( json.message, 0 );
-		});
-	}
 }
 
 

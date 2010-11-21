@@ -37,7 +37,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.program.ProgramStageStore" class="org.hisp.dhis.program.hibernate.HibernateProgramStageStore">
+	<bean id="org.hisp.dhis.program.ProgramStageStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
 		<property name="clazz" value="org.hisp.dhis.program.ProgramStage" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
