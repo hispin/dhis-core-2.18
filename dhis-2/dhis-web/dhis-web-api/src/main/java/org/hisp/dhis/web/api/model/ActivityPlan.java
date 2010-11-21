@@ -62,17 +62,7 @@ public class ActivityPlan
             dout.writeInt( activitiesList.size() );
             for ( int i = 0; i < activitiesList.size(); i++ )
             {
-                Activity activity = (Activity) activitiesList.get( i );
-                dout.writeLong( activity.getDueDate().getTime() );
-                dout.writeBoolean( activity.isLate() );
-
-                Beneficiary b = activity.getBeneficiary();
-                b.serialize( dout );
-
-                Task t = activity.getTask();
-                dout.writeInt( t.getId() );
-                dout.writeInt( t.getProgramStageId() );
-                dout.writeBoolean( t.isCompleted() );
+                activitiesList.get( i ).serialize( dout );
             }
         }
 
