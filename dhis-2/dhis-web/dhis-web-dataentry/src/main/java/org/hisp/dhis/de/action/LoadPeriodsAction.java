@@ -106,6 +106,12 @@ public class LoadPeriodsAction
             {
                 period.setName( format.formatPeriod( period ) );
             }
+
+            // -----------------------------------------------------------------
+            // Clear display mode when loading new data set
+            // -----------------------------------------------------------------
+
+            selectedStateManager.clearSelectedDisplayMode();
         }
 
         return SUCCESS;

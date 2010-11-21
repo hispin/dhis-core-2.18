@@ -92,6 +92,8 @@ public interface SelectedStateManager
     
     String getSelectedDisplayMode();
     
+    void clearSelectedDisplayMode();
+    
     boolean displayModeIsValid( String displayMode );
     
     String getDisplayMode();

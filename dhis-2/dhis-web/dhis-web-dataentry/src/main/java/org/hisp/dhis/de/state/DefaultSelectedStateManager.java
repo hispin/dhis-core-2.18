@@ -292,6 +292,11 @@ public class DefaultSelectedStateManager
         return (String) getSession().get( SESSION_KEY_SELECTED_DISPLAY_MODE );
     }
     
+    public void clearSelectedDisplayMode()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_DISPLAY_MODE );
+    }
+    
     public boolean displayModeIsValid( String displayMode )
     {
         DataSet dataSet = getSelectedDataSet();
