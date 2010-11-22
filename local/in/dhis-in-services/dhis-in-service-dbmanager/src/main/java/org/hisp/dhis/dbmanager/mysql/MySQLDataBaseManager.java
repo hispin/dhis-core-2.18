@@ -70,7 +70,7 @@ public class MySQLDataBaseManager
     }
 
     // -------------------------------------------------------------------------
-    // Implementation
+    // Create Table
     // -------------------------------------------------------------------------
     public boolean createTable( String tableName, List<String> columnNames, List<String> autoIncrement,
         List<String> dataTypes, List<Integer> sizeOfColumns )
@@ -79,8 +79,7 @@ public class MySQLDataBaseManager
 
         PreparedStatement preparedStatement = null;
 
-        String columnDefinition = "create table " + tableName + " ( ";
-        // System.out.println(columnDefinition);
+        String columnDefinition = "CREATE TABLE " + tableName + " ( ";
 
         for ( int i = 0; i < columnNames.size(); i++ )
         {
@@ -89,16 +88,19 @@ public class MySQLDataBaseManager
                 if ( i < ( columnNames.size() - 1 ) )
                 {
                     columnDefinition += columnNames.get( i ) + " " + dataTypes.get( i ) + ",";
-                } else
+                } 
+                else
                 {
                     columnDefinition += columnNames.get( i ) + " " + dataTypes.get( i );
                 }
-            } else
+            } 
+            else
             {
                 if ( i < ( columnNames.size() - 1 ) )
                 {
                     columnDefinition += columnNames.get( i ) + " " + dataTypes.get( i ) + "(" + sizeOfColumns.get( i ) + ") " + autoIncrement.get( i ) + ",";
-                } else
+                } 
+                else
                 {
                     columnDefinition += columnNames.get( i ) + " " + dataTypes.get( i ) + "(" + sizeOfColumns.get( i ) + ") " + autoIncrement.get( i );
                 }
@@ -106,7 +108,7 @@ public class MySQLDataBaseManager
         }
 
         columnDefinition += ");";
-        // System.out.println(columnDefinition);
+
         try
         {
             Connection connection = jdbcTemplate.getDataSource().getConnection();
@@ -116,7 +118,8 @@ public class MySQLDataBaseManager
             preparedStatement.execute();
 
             preparedStatement.close();
-        } catch ( SQLException e )
+        } 
+        catch ( SQLException e )
         {
             tableCreated = false;
 
@@ -126,81 +129,69 @@ public class MySQLDataBaseManager
         return tableCreated;
     }
 
+    // -------------------------------------------------------------------------
+    // Drop Table
+    // -------------------------------------------------------------------------
+
     public void dropTable( String tableName )
     {
+        PreparedStatement preparedStatement = null;
+        
         try
         {
             Connection connection = jdbcTemplate.getDataSource().getConnection();
 
             String columnDefinition = "";
 
-            PreparedStatement preparedStatement = null;
-
-            columnDefinition += "drop table " + tableName + " ;";
+            columnDefinition += "DROP TABLE " + tableName + " ;";
 
             preparedStatement = connection.prepareStatement( columnDefinition );
 
             preparedStatement.execute();
-            preparedStatement.close();
-        } catch ( SQLException e )
+        } 
+        catch ( SQLException e )
         {
             e.printStackTrace();
         }
+        finally
+        {
+            try
+            {
+                if( preparedStatement != null ) preparedStatement.close();
+            }
+            catch( Exception e )
+            {
+                
+            }
+        }
     }
+
+    // -------------------------------------------------------------------------
+    // Check if any data exists in Table
+    // -------------------------------------------------------------------------
 
     public boolean checkDataFromTable( String tableName, LineListElement lineListElement )
     {
         boolean doNotDelete = false;
-
-        //Statement statement = null;
-
+        int recordCount = 0;
         try
         {
-            //Connection connection = jdbcTemplate.getDataSource().getConnection();
-            //statement = connection.createStatement();
-            String columnDefinition = "select " + lineListElement.getShortName() + " from " + tableName;
-            //ResultSet rs = statement.executeQuery( query );
+            String columnDefinition = "SELECT COUNT(" + lineListElement.getShortName() + ") FROM " + tableName;
             SqlRowSet rs = jdbcTemplate.queryForRowSet( columnDefinition );
-            if ( rs != null )
+            
+            if( rs != null && rs.next() )
             {
-                while ( rs.next() )
-                {
-
-                    if ( lineListElement.getDataType().equalsIgnoreCase( "string" ) )
-                    {
-                        if ( rs.getString( lineListElement.getShortName() ) != null )
-                        {
-                            doNotDelete = true;
-                            break;
-                        }
-                    } else
-                    {
-                        if ( lineListElement.getDataType().equalsIgnoreCase( "date" ) )
-                        {
-                            if ( rs.getDate( lineListElement.getShortName() ) != null )
-                            {
-                                doNotDelete = true;
-                                break;
-                            }
-                        } else
-                        {
-                            if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
-                            {
-
-                                if ( rs.getInt( lineListElement.getShortName() ) != 0 )
-                                {
-                                    doNotDelete = true;
-                                    break;
-                                }
-                            } else
-                            {
-                            }
-                        }
-                    }
-                }
+                recordCount = rs.getInt( 1 );                
             }
+            
+            if( recordCount > 0 )
+            {
+                doNotDelete = true;
+            }
+
             log.debug( tableName + ", " + lineListElement.getShortName() + (doNotDelete ? " has data" : " can be deleted") );
-        } catch ( Exception e )
+        } 
+        catch ( Exception e )
         {
             log.error( "Caught exception while checking " + tableName + ", " + lineListElement.getShortName() + ". Won't delete.", e );
             doNotDelete = false;
@@ -209,8 +200,9 @@ public class MySQLDataBaseManager
         return doNotDelete;
     }
     
-    
- // function to get max row number
+    // -------------------------------------------------------------------------
+    // Get Max Record Number from Department table
+    // -------------------------------------------------------------------------
     public int getMaxRecordNumber( String tableName )
     {
         int maxRecordNumber = 0;
@@ -1140,8 +1132,6 @@ public class MySQLDataBaseManager
 
         PreparedStatement preparedStatement = null;
 
-        // System.out.println(" llDataValuesList size = " +
-        // llDataValuesList.size());
         for ( LineListDataValue llDataValue : llDataValuesList )
         {
 
@@ -1229,6 +1219,90 @@ public class MySQLDataBaseManager
         return valueUpdated;
     }
 
+    
+    public boolean updateSingleLLValue( LineListDataValue llDataValue, String tableName )
+    {
+        boolean valueUpdated = false;
+
+        String columnDefinition = "";
+
+        columnDefinition = "UPDATE " + tableName + " SET ";
+
+        Map<String, String> elementValues = llDataValue.getLineListValues();
+
+        Set<String> elements = elementValues.keySet();
+        System.out.println("In Update recordnumber = " + llDataValue.getRecordNumber());
+        int size = elements.size();
+        int i = 1;
+        java.util.Date today = llDataValue.getTimestamp();
+        long t = today.getTime();
+        java.sql.Date date = new java.sql.Date( t );
+        String whereClause = " WHERE recordnumber = " + llDataValue.getRecordNumber();
+        for ( String elementName : elements )
+        {
+            LineListElement lineListElement = lineListService.getLineListElementByShortName( elementName );
+            if ( i == size )
+            {
+                if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
+                {
+                    try
+                    {
+                        columnDefinition += elementName + " = " + Integer.parseInt( elementValues.get( elementName ) ) + ",";
+                        llDataValue.getSource().getId();
+                        columnDefinition += "periodid = '" + llDataValue.getPeriod().getId() + "', sourceid = '" + llDataValue.getSource().getId() + "', storedby = '" + llDataValue.getStoredBy() + "', lastupdated = '" + date + "' ";
+
+                    } 
+                    catch ( Exception e )
+                    {
+                        System.out.println( "Exception: "+ e.getMessage() );
+                    }
+                } 
+                else
+                {
+                    columnDefinition += elementName + " = '" + elementValues.get( elementName ) + "'" + ",";
+                    columnDefinition += "periodid = '" + llDataValue.getPeriod().getId() + "', sourceid = '" + llDataValue.getSource().getId() + "', storedby = '" + llDataValue.getStoredBy() + "', lastupdated = '" + date + "' ";
+                }
+            } 
+            else
+            {
+                if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
+                {
+                    try
+                    {
+                        columnDefinition += elementName + " = " + Integer.parseInt( elementValues.get( elementName ) ) + ",";
+                    } 
+                    catch ( Exception e )
+                    {
+                        System.out.println( "Exception: "+ e.getMessage() );
+                    }
+                } else
+                {
+                    columnDefinition += elementName + " = '" + elementValues.get( elementName ) + "'" + ",";
+                }
+                i++;
+            }
+
+        }
+
+        columnDefinition += whereClause;
+        System.out.println("Update Definition = " + columnDefinition);
+
+        try
+        {
+            int sqlResult = jdbcTemplate.update( columnDefinition );
+            valueUpdated = true;
+            columnDefinition = "";
+        } 
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            valueUpdated = false;
+        }
+
+        return valueUpdated;
+    }
+
+    
     public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, Source source )
     {
         String columnDefinition = "";

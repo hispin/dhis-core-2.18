@@ -12,7 +12,6 @@
 <h2>Linelisting Reports</h2>
     <ul>
         <li><a href="summaryReport.action">Linelist Summary Report</a></li>
-		<li><a href="#">Linelist Detailed Report</a></li>
     </ul>
 <!--
 <h2>Linelisting Validation Rules</h2>

@@ -578,6 +578,9 @@
         <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js</param>	         
     </action>
 		
+    <action name="showEmployeePostDetails" class="org.hisp.dhis.ll.action.reports.EmployeePostDetailsReportAction">
+        <result name="success" type="velocity">/dhis-web-linelisting-mp/employeePostDetailsResult.vm</result>
+    </action>
     
     </package>
 </struts>
