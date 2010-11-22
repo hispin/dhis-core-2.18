@@ -441,7 +441,6 @@ public class SearchAction
 
                 dataBrowserTable = dataBrowserService.getCountDataElementsForDataSetInPeriod( parentInt, fromDate,
                     toDate, periodType, format );
-
             }
             else
             {
