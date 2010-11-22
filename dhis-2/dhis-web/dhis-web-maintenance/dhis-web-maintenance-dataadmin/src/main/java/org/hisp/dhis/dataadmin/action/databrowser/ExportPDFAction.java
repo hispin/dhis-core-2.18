@@ -58,6 +58,10 @@ public class ExportPDFAction
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
 
+    private static final String REGEX_EXTENSION_PDF = "\\.pdf";
+
+    private static final String EXTENSION_PDF = ".pdf";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -117,14 +121,7 @@ public class ExportPDFAction
 
     public void setFileName( String fileName )
     {
-        if ( fileName.endsWith( ".pdf" ) )
-        {
-            this.fileName = fileName.substring( 0, fileName.length() - 4 );
-        }
-        else
-        {
-            this.fileName = fileName;
-        }
+        this.fileName = fileName.replaceAll( REGEX_EXTENSION_PDF, "" ).concat( EXTENSION_PDF );
     }
 
     public String getFileName()
