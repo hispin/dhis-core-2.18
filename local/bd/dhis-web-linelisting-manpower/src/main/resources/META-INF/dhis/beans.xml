@@ -794,5 +794,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
     </bean>
+
+    <bean id="org.hisp.dhis.ll.action.reports.EmployeePostDetailsReportAction"
+        class="org.hisp.dhis.ll.action.reports.EmployeePostDetailsReportAction" scope="prototype">
+        <property name="lineListService" ref="org.hisp.dhis.linelisting.LineListService" />
+        <property name="dataBaseManagerInterface" ref="org.hisp.dhis.dbmanager.DataBaseManagerInterface" />
+        <property name="selectedStateManager" ref="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager" />
+    </bean>
 		
 </beans>

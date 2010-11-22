@@ -131,13 +131,6 @@ public class UpdateLineListGroupAction
     // -------------------------------------------------------------------------
     public String execute()
     {
-
-        // ---------------------------------------------------------------------
-        // Prepare values
-        // ---------------------------------------------------------------------
-
-       // System.out.println("Line List Group ID : "+id);
-        
         if ( description != null && description.trim().length() == 0 )
         {
             description = null;
@@ -151,31 +144,26 @@ public class UpdateLineListGroupAction
 
         LineListGroup lineListGroup = lineListService.getLineListGroup( id );
         
-        
-        
         List<LineListElement> newElements = new ArrayList<LineListElement>();
         List<LineListElement> oldElements = new ArrayList<LineListElement>( lineListGroup.getLineListElements() );
         List<LineListElement> removeElementList = new ArrayList<LineListElement>();
         Collection<LineListElement> updatedDataElementList = new ArrayList<LineListElement>();
 
-        if ( selectedList == null )
+        if( selectedList == null )
         {
             System.out.println( "selectedList is null" );
-        } else
+        } 
+        else if( newElements.isEmpty() )
         {
-            if ( newElements.isEmpty() )
+            for( String elementId : selectedList )
             {
-                for ( String elementId : selectedList )
+                LineListElement element = lineListService.getLineListElement( Integer.parseInt( elementId ) );
+                if ( !( oldElements.contains( element ) ) )
                 {
-
-                    LineListElement element = lineListService.getLineListElement( Integer.parseInt( elementId ) );
-                    if ( !( oldElements.contains( element ) ) )
-                    {
-                        newElements.add( element );
-                        System.out.println( "New element that should be added is: " + element );
-                    }
-                    updatedDataElementList.add( element );
+                    newElements.add( element );
+                    System.out.println( "New element that should be added is: " + element );
                 }
+                updatedDataElementList.add( element );
             }
         }
 
@@ -183,7 +171,6 @@ public class UpdateLineListGroupAction
         {
             if ( !( updatedDataElementList.contains( oldElements.get( i ) ) ) )
             {
-
                 boolean doNotDelete = dataBaseManagerInterface.checkDataFromTable( lineListGroup.getShortName(), oldElements.get( i ) );
                 if ( !doNotDelete )
                 {
@@ -195,9 +182,7 @@ public class UpdateLineListGroupAction
         }
 
         lineListGroup.getLineListElements().removeAll( updatedDataElementList );
-
         lineListGroup.getLineListElements().retainAll( updatedDataElementList );
-
         lineListGroup.getLineListElements().addAll( updatedDataElementList );
 
         lineListGroup.setName( name );
@@ -209,8 +194,9 @@ public class UpdateLineListGroupAction
         lineListGroup.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
 
         lineListService.updateLineListGroup( lineListGroup );
-                 
 
+        dataBaseManagerInterface.updateTable( lineListGroup.getName(), removeElementList, newElements );
+        
         return SUCCESS;
     }
 }

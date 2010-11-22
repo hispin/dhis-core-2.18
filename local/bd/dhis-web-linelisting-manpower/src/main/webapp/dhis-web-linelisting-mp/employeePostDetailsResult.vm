@@ -1,0 +1,16 @@
+
+<table>
+	<tr>
+        #foreach( $lineListElement in $lineListElements)
+            <th>$lineListElement.name</th>
+        #end
+	</tr>
+	#foreach( $llDataValue in $llDataValuesList )
+		#set( $llValueMap = $llDataValue.lineListValues )
+		<tr>
+		#foreach( $lineListElement in $lineListElements )
+			<td>$llValueMap.get( $lineListElement.shortName )</td>
+		#end
+		</tr>
+	#end
+</table>

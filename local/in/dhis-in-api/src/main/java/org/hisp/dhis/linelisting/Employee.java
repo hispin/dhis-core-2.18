@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.linelisting;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**

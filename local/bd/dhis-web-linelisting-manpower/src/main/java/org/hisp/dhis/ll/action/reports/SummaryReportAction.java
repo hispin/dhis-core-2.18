@@ -74,6 +74,13 @@ implements Action
         return resultMap;
     }
 
+    private Map<String, String> resultIdMap;
+    
+    public Map<String, String> getResultIdMap()
+    {
+        return resultIdMap;
+    }
+
     List<String> resultKeys;
     
     public List<String> getResultKeys()
@@ -95,6 +102,7 @@ implements Action
     public String execute()
     {
         resultMap = new HashMap<String, String>();
+        resultIdMap = new HashMap<String, String>();
         resultKeys = new ArrayList<String>();
         Period dataValuePeriod = periodService.getPeriod( 0 );
         OrganisationUnit selOrgUnit = selectedStateManager.getSelectedOrganisationUnit();
@@ -124,7 +132,7 @@ implements Action
 
                 List<LineListDataElementMap> lineListDataElementMaps = lineListService.getLinelistDataelementMappings( postElement, postOption );
                 
-                if( lineListDataElementMaps != null )
+                if( lineListDataElementMaps != null && !lineListDataElementMaps.isEmpty() )
                 {
                     LineListDataElementMap lineListDataElementMap = lineListDataElementMaps.iterator().next();
                     DataValue dataValue = dataValueService.getDataValue( selOrgUnit, lineListDataElementMap.getDataElement(), dataValuePeriod, lineListDataElementMap.getDataElementOptionCombo() );
@@ -137,7 +145,8 @@ implements Action
                 int filledPostsCount = dataBaseManagerInterface.getLLValueCountByLLElements( lineListGroup.getName(), llElementValueMap, selOrgUnit );
                 int vacantPostsCount = sanctionedPostsCount - filledPostsCount;
                 
-                resultMap.put( lineListGroup.getName()+" - "+postElement.getName(), sanctionedPostsCount + " - " + filledPostsCount + " - " + vacantPostsCount);
+                resultMap.put( lineListGroup.getName()+" - "+postOption.getName(), sanctionedPostsCount + " - " + filledPostsCount + " - " + vacantPostsCount );
+                resultIdMap.put( lineListGroup.getName()+" - "+postOption.getName(), lineListGroup.getId()+":"+postOption.getId() );
             }
         }
         
