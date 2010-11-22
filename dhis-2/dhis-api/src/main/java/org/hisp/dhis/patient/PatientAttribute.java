@@ -65,6 +65,8 @@ public class PatientAttribute
 
     private Set<PatientAttributeOption> attributeOptions;
 
+    private PatientMobileSetting patientMobileSetting;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -217,5 +219,16 @@ public class PatientAttribute
     {
         this.inheritable = inheritable;
     }
+
+    public PatientMobileSetting getPatientMobileSetting()
+    {
+        return patientMobileSetting;
+    }
+
+    public void setPatientMobileSetting( PatientMobileSetting patientMobileSetting )
+    {
+        this.patientMobileSetting = patientMobileSetting;
+    }
+    
 
 }

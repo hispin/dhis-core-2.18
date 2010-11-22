@@ -93,8 +93,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="statementManager" ref="statementManager"/>
 	<property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-	<property name="sqlViewService" 
-      ref="org.hisp.dhis.sqlview.SqlViewService"/>
   </bean>
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserService"
@@ -114,6 +112,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.datamerge.jdbc.JdbcDataMergeStore">
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	<property name="statementBuilder" ref="statementBuilder"/>
+	<!--property name="statementManager" ref="statementManager"/-->
   </bean>
   
   <bean id="org.hisp.dhis.datamerge.DataMergeService"

@@ -281,4 +281,6 @@ public interface OrganisationUnitService
     List<OrganisationUnitLevel> getFilledOrganisationUnitLevels();
     
     int getNumberOfOrganisationUnits();
+    
+    int getMaxOfOrganisationUnitLevels();
 }

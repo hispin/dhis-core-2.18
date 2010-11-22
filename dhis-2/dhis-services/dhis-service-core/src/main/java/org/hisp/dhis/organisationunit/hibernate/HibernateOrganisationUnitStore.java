@@ -208,4 +208,12 @@ public class HibernateOrganisationUnitStore
 
         return jdbcTemplate.queryForInt( sql );
     }
+
+    @Override
+    public int getMaxOfOrganisationUnitLevels()
+    {
+        final String sql = "SELECT MAX(level) FROM orgunitlevel";
+
+        return jdbcTemplate.queryForInt( sql );
+    }
 }
