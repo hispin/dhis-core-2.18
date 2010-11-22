@@ -318,7 +318,7 @@
     </bean>
         
     <bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
-        <property name="defaultFailureUrl" value="/dhis-web-commons/security/loginfailed.jsp" />
+        <property name="defaultFailureUrl" value="/dhis-web-commons/security/loginfailed.html" />
     </bean>
 
 	<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
@@ -360,7 +360,7 @@
 
     <bean id="requiredLoginFilter" class="org.hisp.dhis.security.filter.RequiredLoginFilter">
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-        <property name="loginPageUrl" value="/dhis-web-commons/security/login.jsp" />
+        <property name="loginPageUrl" value="/dhis-web-commons/security/login.html" />
     </bean>
 
     <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">

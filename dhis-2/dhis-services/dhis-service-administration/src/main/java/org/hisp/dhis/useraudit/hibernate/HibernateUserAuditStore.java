@@ -88,6 +88,7 @@ public class HibernateUserAuditStore
     }
 
     //TODO: create GUI for reset and accurate logging
+    
     @Override
     public void resetLoginFailures( String username, Date date )
     {

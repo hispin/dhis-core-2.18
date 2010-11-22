@@ -52,7 +52,7 @@ public class UserAuditLogoutFilter
 
     public void logout( HttpServletRequest request, HttpServletResponse response, Authentication authentication )
     {
-        if ( authentication != null )
+        if ( authentication != null && authentication.getPrincipal() != null )
         {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             userAuditService.registerLogout( username );
