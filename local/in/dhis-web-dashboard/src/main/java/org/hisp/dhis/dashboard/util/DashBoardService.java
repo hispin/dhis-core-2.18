@@ -723,15 +723,15 @@ public class DashBoardService
         return periodNameList;
     }
     
-    public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Period period ) 
+    public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate ) 
     {
 
         String numeratorExp = indicator.getNumerator();
         String denominatorExp = indicator.getDenominator();
         int indicatorFactor = indicator.getIndicatorType().getFactor();
-        String reportModelTB = null;
-        String numeratorVal = reportservice.getIndividualResultDataValue( numeratorExp, period.getStartDate(), period.getEndDate(), orgunit, reportModelTB  );
-        String denominatorVal = reportservice.getIndividualResultDataValue( denominatorExp, period.getStartDate(), period.getEndDate(), orgunit, reportModelTB );
+        String reportModelTB = "";
+        String numeratorVal = reportservice.getIndividualResultDataValue( numeratorExp, startDate, endDate, orgunit, reportModelTB  );
+        String denominatorVal = reportservice.getIndividualResultDataValue( denominatorExp, startDate, endDate, orgunit, reportModelTB );
 
         double numeratorValue;
         try
@@ -756,7 +756,15 @@ public class DashBoardService
         double aggregatedValue;
         try
         {
-            aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+            //aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+            if( denominatorValue == 0 )
+            {
+                aggregatedValue = 0.0;
+            }
+            else
+            {
+                aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
+            }
         } 
         catch ( Exception e )
         {

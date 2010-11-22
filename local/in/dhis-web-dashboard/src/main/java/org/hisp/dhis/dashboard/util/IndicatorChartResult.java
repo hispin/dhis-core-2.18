@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.dashboard.util;
 
+
 /**
  * @author Mithilesh Kumar Thakur
  *
@@ -43,11 +44,15 @@ public class IndicatorChartResult
        
     }
    
-    public IndicatorChartResult( String[] series, String[] categories, Double data[][],String chartTitle,String xAxis_Title,String yAxis_Title )
+    public IndicatorChartResult( String[] series, String[] categories, Double data[][],Double numDataArray[][],Double denumDataArray[][],String chartTitle,String xAxis_Title,String yAxis_Title )
     {
         this.series = series;
         this.categories = categories;
         this.data = data;
+        this.numDataArray = numDataArray;
+        this.denumDataArray = denumDataArray;
+      //  this.numData = numData;
+      //  this.denumData = denumData;
         this.chartTitle = chartTitle;
         this.xAxis_Title = xAxis_Title;
         this.yAxis_Title = yAxis_Title;
@@ -56,9 +61,6 @@ public class IndicatorChartResult
     }
     
   
-
-  
-    
     //---------------------------------------------------------------
     // Getters and Setters
     //---------------------------------------------------------------
@@ -100,6 +102,58 @@ public class IndicatorChartResult
         this.data = data;
     }
    
+    
+    Double numDataArray[][];
+   
+    public Double[][] getNumDataArray()
+    {
+        return numDataArray;
+    }
+
+    public void setNumDataArray( Double[][] numDataArray )
+    {
+        this.numDataArray = numDataArray;
+    }
+
+    Double denumDataArray[][];
+    
+    public Double[][] getDenumDataArray()
+    {
+        return denumDataArray;
+    }
+
+    public void setDenumDataArray( Double[][] denumDataArray )
+    {
+        this.denumDataArray = denumDataArray;
+    }
+    
+
+   /* 
+    public Map<Integer, List<Double>> numData;
+    
+    
+    public Map<Integer, List<Double>> getNumData()
+    {
+        return numData;
+    }
+
+    public void setNumData( Map<Integer, List<Double>> numData )
+    {
+        this.numData = numData;
+    }
+
+    public Map<Integer, List<Double>> denumData;
+    
+    public Map<Integer, List<Double>> getDenumData()
+    {
+        return denumData;
+    }
+
+    public void setDenumData( Map<Integer, List<Double>> denumData )
+    {
+        this.denumData = denumData;
+    }
+*/
     private String chartTitle;
 
     public String getChartTitle()

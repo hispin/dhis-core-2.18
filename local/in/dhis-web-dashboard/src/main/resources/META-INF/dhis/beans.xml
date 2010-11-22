@@ -68,7 +68,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
     </bean>
 	
-	<!-- Export Data Elements to Excel -->
+<!-- sorting DataElement data -->    
+    <bean id="org.hisp.dhis.dashboard.action.GetSortedDataElementAction"
+        class="org.hisp.dhis.dashboard.action.GetSortedDataElementAction"
+        scope="prototype">
+    </bean>	
+<!-- Export Data Elements to Excel -->
     <bean id="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
         class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
         scope="prototype">
@@ -77,27 +82,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-	<!-- Graphical Analyser Indicator Result -->
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
-        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
-        scope="prototype">
-        
-        <property name="statementManager" ref="statementManager"/>
-		<property name="dashBoardService" ref="org.hisp.dhis.dashboard.util.DashBoardService">
-		</property>
-        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
-        </property>
-        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-        </property>
-        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
-        </property>     
-        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
-        </property>
-<!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
-        </property>-->
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-        </property>
-    </bean>
+
 	
 	
 <!-- Graphical Analyser DataElements End -->
@@ -119,6 +104,42 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         
     </bean>
 	
+	   <!-- Graphical Analyser Indicator Result -->
+    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
+        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
+        scope="prototype">
+        
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dashBoardService" ref="org.hisp.dhis.dashboard.util.DashBoardService">
+        </property>
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+        </property>
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
+        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+	   <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>   
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
+        </property>
+<!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+        </property>-->
+<!--        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+        </property>-->
+    </bean>
+<!-- sorting Indiacator data -->	
+	<bean id="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction"
+        class="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction"
+        scope="prototype">
+    </bean>
+<!-- Export Indicator to Excel -->
+    <bean id="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction"
+        class="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction"
+        scope="prototype">
+
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+    </bean>	
 <!-- Graphical Analyser Indicators End-->	
 	
 		

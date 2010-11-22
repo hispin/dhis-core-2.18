@@ -1201,8 +1201,9 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
         }
     public String getIndividualResultIndicatorValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
         {
-    		int deFlag1 = 0;
-    		int deFlag2 = 0;
+           
+            int deFlag1 = 0;
+            int deFlag2 = 0;
             try
             {
                 Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -1232,10 +1233,10 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
                     String numeratorExp = indicator.getNumerator();
                     String denominatorExp = indicator.getDenominator();
                     int indicatorFactor = indicator.getIndicatorType().getFactor();
-                    String reportModelTB = null;
-					String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, organisationUnit, reportModelTB  );
+                    String reportModelTB = "";
+                    String numeratorVal = getIndividualResultDataValue( numeratorExp, startDate, endDate, organisationUnit, reportModelTB  );
                     String denominatorVal = getIndividualResultDataValue( denominatorExp, startDate, endDate, organisationUnit, reportModelTB );
-
+                    
                     double numeratorValue;
                     try
                     {
@@ -1302,11 +1303,15 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
                     deFlag2 = 0;
                     resultValue = buffer.toString();
                 }
+               
                 return resultValue;
-            } catch ( NumberFormatException ex )
+                
+            }
+            catch ( NumberFormatException ex )
             {
                 throw new RuntimeException( "Illegal DataElement id", ex );
             }
+           
         }
     
     // -------------------------------------------------------------------------

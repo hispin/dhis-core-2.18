@@ -25,19 +25,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.hisp.dhis.dashboard.ga.action.charts;
-    
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
+import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dashboard.util.IndicatorChartResult;
@@ -45,49 +48,45 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.reports.ReportService;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author Mithilesh Kumar Thakur
- *
+ * 
  * @version GenerateChartIdicatorAction.java Nov 3, 2010 12:41:31 PM
  */
 public class GenerateChartIndicatorAction
-implements Action
+    implements Action
 {
 
-private final String PERIODWISE = "period";
+    private final String PERIODWISE = "period";
 
-private final String CHILDREN = "children";
+    private final String CHILDREN = "children";
 
-private final String SELECTED = "random";
+    private final String SELECTED = "random";
 
-IndicatorChartResult  indicatorChartResult = new IndicatorChartResult() ;
+    // IndicatorChartResult indicatorChartResult = new IndicatorChartResult() ;
 
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-// Dependencies
-// -------------------------------------------------------------------------
-
-    
     private StatementManager statementManager;
-    
-    
+
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
-    }    
+    }
 
     private DashBoardService dashBoardService;
 
@@ -95,245 +94,292 @@ IndicatorChartResult  indicatorChartResult = new IndicatorChartResult() ;
     {
         this.dashBoardService = dashBoardService;
     }
-    
-    private PeriodService periodService;
-    
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-    
+
     private AggregationService aggregationService;
-    
+
     public void setAggregationService( AggregationService aggregationService )
     {
         this.aggregationService = aggregationService;
     }
-    
+
     private IndicatorService indicatorService;
-    
+
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
     }
-    
+
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
     private OrganisationUnitService organisationUnitService;
-    
+
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private I18nFormat format;
-    
+
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
-    
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-    /*
-    private Comparator<Indicator> indicatorComparator;
-    
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-    */
-    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
     // Parameters
-    //--------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     private HttpSession session;
-    
+
     public HttpSession getSession()
     {
         return session;
     }
-    
-    
+
     private List<Object> selectedServiceList;
-    
+
     public List<Object> getSelectedServiceList()
     {
         return selectedServiceList;
     }
-    
+
     private List<OrganisationUnit> selOUList;
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private List<String> selectedIndicators;
-    
+
     public void setSelectedIndicators( List<String> selectedIndicators )
     {
         this.selectedIndicators = selectedIndicators;
     }
-    
-    
-    
+
     private String ougGroupSetCB;
-    
+
     public void setOugGroupSetCB( String ougGroupSetCB )
     {
         this.ougGroupSetCB = ougGroupSetCB;
     }
-    
+
     public String getOugGroupSetCB()
     {
         return ougGroupSetCB;
     }
-    
-    
-    
+
     private List<String> orgUnitListCB;
-    
+
     public void setOrgUnitListCB( List<String> orgUnitListCB )
     {
         this.orgUnitListCB = orgUnitListCB;
     }
-    
+
     private String categoryLB;
-    
+
     public String getCategoryLB()
     {
         return categoryLB;
     }
-    
+
     public void setCategoryLB( String categoryLB )
     {
         this.categoryLB = categoryLB;
     }
-    
+
     private String selectedButton;
-    
+
     public String getSelectedButton()
     {
         return selectedButton;
     }
-    
+
     public void setSelectedButton( String selectedButton )
     {
         this.selectedButton = selectedButton;
     }
-    
-   private String aggDataCB;
-    
+
+    private List<String> orgUnitGroupList;
+
+    public List<String> getOrgUnitGroupList()
+    {
+        return orgUnitGroupList;
+    }
+
+    public void setOrgUnitGroupList( List<String> orgUnitGroupList )
+    {
+        this.orgUnitGroupList = orgUnitGroupList;
+    }
+
+    private String aggDataCB;
+
     public void setAggDataCB( String aggDataCB )
     {
         this.aggDataCB = aggDataCB;
     }
-    
+
     private String periodTypeLB;
-    
+
     public void setPeriodTypeLB( String periodTypeLB )
     {
         this.periodTypeLB = periodTypeLB;
     }
-    
+
     private List<String> yearLB;
-    
+
     public void setYearLB( List<String> yearLB )
     {
         this.yearLB = yearLB;
     }
-    
+
     private List<String> periodLB;
-    
+
     public void setPeriodLB( List<String> periodLB )
     {
         this.periodLB = periodLB;
     }
-    
+
     private List<String> periodNames;
-    
+
     private List<Date> selStartPeriodList;
-    
+
     private List<Date> selEndPeriodList;
-    
-    
+
+    private IndicatorChartResult indicatorChartResult;
+
+    public IndicatorChartResult getIndicatorChartResult()
+    {
+        return indicatorChartResult;
+    }
+
+    List<Indicator> yseriesList;
+
+    public List<Indicator> getYseriesList()
+    {
+        return yseriesList;
+    }
+
+    List<String> numeratorDEList;
+
+    public List<String> getNumeratorDEList()
+    {
+        return numeratorDEList;
+    }
+
+    List<String> denominatorDEList;
+
+    public List<String> getDenominatorDEList()
+    {
+        return denominatorDEList;
+    }
+
+    ListTool listTool;
+
+    public ListTool getListTool()
+    {
+        return listTool;
+    }
+
+    private OrganisationUnit selectedOrgUnit;
+
+    private OrganisationUnitGroup selOrgUnitGroup;
+
+    private List<OrganisationUnit> selOUGroupMemberList = new ArrayList<OrganisationUnit>();
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
+
     @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
     {
-        
+
         statementManager.initialise();
-    
+
+        listTool = new ListTool();
+
         selOUList = new ArrayList<OrganisationUnit>();
         System.out.println( "selected orgUnit  size : " + orgUnitListCB.size() );
-    
+
         System.out.println( "selected Year  size : " + yearLB.size() );
-    
-        System.out.println( "selected Period  size : " + periodLB.size() );
-    
-        System.out.println( "selected dataelements : " + selectedIndicators );
-    
-        System.out.println( "selected dataelements size : " + selectedIndicators.size() );
-    
+
+        // System.out.println( "selected Period  size : " + periodLB.size() );
+
+        System.out.println( "selected Indicators : " + selectedIndicators );
+
+        System.out.println( "selected Indicators size : " + selectedIndicators.size() );
+        /*
+         * double d = 4.57767; System.out.println(Math.round(d));
+         */
+
         // int flag = 0;
         // selOUList = new ArrayList<OrganisationUnit>();
         selStartPeriodList = new ArrayList<Date>();
         selEndPeriodList = new ArrayList<Date>();
-    
+
+        yseriesList = new ArrayList<Indicator>();
+
+        numeratorDEList = new ArrayList<String>();
+        denominatorDEList = new ArrayList<String>();
+
         // ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
-    
+
         String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
         int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
-    
+
         /* Period Info */
-    
+
         String startD = "";
         String endD = "";
-    
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-    
+
         periodNames = new ArrayList<String>();
-    
+
         for ( String year : yearLB )
         {
             int selYear = Integer.parseInt( year.split( "-" )[0] );
-    
+
             if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
             {
-    
+
                 startD = "" + selYear + "-04-01";
                 endD = "" + (selYear + 1) + "-03-31";
-    
+
                 selStartPeriodList.add( format.parseDate( startD ) );
                 selEndPeriodList.add( format.parseDate( endD ) );
-    
+
                 periodNames.add( "" + selYear + "-" + (selYear + 1) );
-    
+
                 continue;
-    
+
             }
-    
+
             for ( String periodStr : periodLB )
             {
                 int period = Integer.parseInt( periodStr );
-    
+
                 if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
                 {
                     simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-    
+
                     if ( period >= 9 )
                     {
                         startD = "" + (selYear + 1) + "-" + monthOrder[period] + "-01";
                         endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + monthDays[period];
-    
+
                         if ( (selYear + 1) % 4 == 0 && period == 10 )
                         {
                             endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
@@ -344,7 +390,7 @@ IndicatorChartResult  indicatorChartResult = new IndicatorChartResult() ;
                         startD = "" + selYear + "-" + monthOrder[period] + "-01";
                         endD = "" + selYear + "-" + monthOrder[period] + "-" + monthDays[period];
                     }
-    
+
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
                     periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
@@ -395,166 +441,939 @@ IndicatorChartResult  indicatorChartResult = new IndicatorChartResult() ;
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
                 }
-    
+
                 System.out.println( startD + " : " + endD );
             }
-    
+
         }
-         
-           List<Indicator> indicatorList = new ArrayList<Indicator>();
-           Iterator deIterator = selectedIndicators.iterator();
-            while ( deIterator.hasNext() )
-            {
-                String indicatorId = (String) deIterator.next();
-             
-                Indicator indicator = indicatorService.getIndicator( indicatorId );                    
-                
-                indicatorList.add( indicator );
-    
-            }
-    
-            selectedServiceList = new ArrayList<Object>( indicatorList );
-    
+        // Indicator Information
+        List<Indicator> indicatorList = new ArrayList<Indicator>();
+        Iterator deIterator = selectedIndicators.iterator();
+        while ( deIterator.hasNext() )
+        {
+            // String indicatorId = (String) deIterator.next();
+            int serviceID = Integer.parseInt( (String) deIterator.next() );
+            Indicator indicator = indicatorService.getIndicator( serviceID );
+
+            indicatorList.add( indicator );
+
+        }
+
+        selectedServiceList = new ArrayList<Object>( indicatorList );
+
         // OrgUnit Information
-    
+
         for ( String ouStr : orgUnitListCB )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouStr ) );
             selOUList.add( orgUnit );
         }
-    
+
         // calling individual Function
         if ( categoryLB.equalsIgnoreCase( PERIODWISE ) && ougGroupSetCB == null )
         {
-           
-            System.out.println( "Inside PeriodWise Chart Data" );
-            System.out.println( "\n\nsize of OrgUnit List : " + selOUList.size()+ " , size of Indicator List : " + indicatorList.size() );
-            
-            indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList,selEndPeriodList, periodNames, indicatorList, selOUList.iterator().next() );
-    
 
-    
+            System.out.println( "Inside PeriodWise Chart Data and group not selected" );
+            System.out.println( "\n\nsize of OrgUnit List : " + selOUList.size() + " , size of Indicator List : "
+                + indicatorList.size() );
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+            indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList, selEndPeriodList, periodNames,
+                indicatorList, selOUList.iterator().next() );
+
         }
         else if ( categoryLB.equalsIgnoreCase( CHILDREN ) && ougGroupSetCB == null )
         {
-            // System.out.println( "Report Generation Start Time is : \t" + new
-            // Date() );
+
             System.out.println( "Inside ChildWise Chart Data" );
-            // generateChartDataWithChildWise();
-    
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+
+            selectedOrgUnit = new OrganisationUnit();
+            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+
+            List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
+            childOrgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
+
+            indicatorChartResult = generateChartDataWithChildrenWise( selStartPeriodList, selEndPeriodList,
+                periodNames, indicatorList, childOrgUnitList );
+
         }
         else if ( categoryLB.equalsIgnoreCase( SELECTED ) && ougGroupSetCB == null )
         {
-            // System.out.println( "Report Generation Start Time is : \t" + new
-            // Date() );
-    
+
             System.out.println( "Inside SelectedOrgUnit Chart Data" );
-            // generateChartDataSelectedOrgUnitWise();
-    
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+
+            indicatorChartResult = generateChartDataSelectedOrgUnitWise( selStartPeriodList, selEndPeriodList,
+                periodNames, indicatorList, selOUList );
+
         }
-    
+
         else if ( categoryLB.equalsIgnoreCase( PERIODWISE ) && ougGroupSetCB != null )
         {
-            // System.out.println( "Report Generation Start Time is : \t" + new
-            // Date() );
+
             System.out.println( "Inside ChildWise With OrgGroup Chart Data" );
-            // generateChartDataOrgGroupPeriodWise();
-    
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+
+            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+            List<OrganisationUnit> orgUnitChildList = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
+
+            // System.out.println( "oug Group Set is  = " + orgUnitGroupList );
+
+            selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( orgUnitGroupList
+                .get( 0 ) ) );
+
+            selOUGroupMemberList = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+
+            selOUGroupMemberList.retainAll( orgUnitChildList );
+
+            indicatorChartResult = generateChartDataOrgGroupPeriodWise( selStartPeriodList, selEndPeriodList,
+                periodNames, indicatorList, selOUGroupMemberList );
+
         }
-    
+
         else if ( categoryLB.equalsIgnoreCase( CHILDREN ) && ougGroupSetCB != null )
         {
-            // System.out.println( "Report Generation Start Time is : \t" + new
-            // Date() );
+
             System.out.println( "Inside ChildWise With OrgGroup Chart Data" );
-            // generateChartDataOrgGroupChildWise();
-    
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+
+            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+            List<OrganisationUnit> orgUnitChildList = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
+
+            // int groupCount = 0;
+            System.out.println( "\n\n ++++++++++++++++++++++ \n orgUnitGroup : " + orgUnitGroupList );
+            for ( String orgUnitGroupId : orgUnitGroupList )
+            {
+                OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer
+                    .parseInt( orgUnitGroupId ) );
+
+                List<OrganisationUnit> selectedOUGroupMemberList = new ArrayList<OrganisationUnit>( selOrgUnitGroup
+                    .getMembers() );
+
+                selOUGroupMemberList.addAll( selectedOUGroupMemberList );
+
+                // groupCount++;
+
+            }
+
+            selOUGroupMemberList.retainAll( orgUnitChildList );
+
+            indicatorChartResult = generateChartDataSelectedOrgUnitWise( selStartPeriodList, selEndPeriodList,
+                periodNames, indicatorList, selOUGroupMemberList );
+
         }
-    
+
         else if ( categoryLB.equalsIgnoreCase( SELECTED ) && ougGroupSetCB != null )
         {
-            // System.out.println( "Report Generation Start Time is : \t" + new
-            // Date() );
-    
+
             System.out.println( "Inside SelectedOrgUnit With OrgGroup Chart Data" );
-            // generateChartDataSelectedOrgUnitGroupWise();
-    
-        } 
+            System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+
+            Map<OrganisationUnitGroup, List<OrganisationUnit>> orgUnitGroupMap = new HashMap<OrganisationUnitGroup, List<OrganisationUnit>>();
+
+            selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
+            List<OrganisationUnit> orgUnitChildList = new ArrayList<OrganisationUnit>( organisationUnitService
+                .getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
+
+            for ( String orgUnitGroupId : orgUnitGroupList )
+            {
+                OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer
+                    .parseInt( orgUnitGroupId ) );
+                List<OrganisationUnit> selectedOUGroupMemberList = new ArrayList<OrganisationUnit>( selOrgUnitGroup
+                    .getMembers() );
+
+                selectedOUGroupMemberList.retainAll( orgUnitChildList );
+
+                orgUnitGroupMap.put( selOrgUnitGroup, selectedOUGroupMemberList );
+                // selOUGroupMemberList.addAll( selectedOUGroupMemberList );
+            }
+
+            indicatorChartResult = generateChartDataSelectedOrgUnitGroupWise( selStartPeriodList, selEndPeriodList,
+                periodNames, indicatorList, orgUnitGroupMap );
+
+        }
+
         ActionContext ctx = ActionContext.getContext();
         HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
 
         session = req.getSession();
-       
 
         session.setAttribute( "data1", indicatorChartResult.getData() );
-        session.setAttribute( "series1", indicatorChartResult.getSeries()) ;
-        session.setAttribute( "categories1", indicatorChartResult.getCategories()) ;
-        session.setAttribute( "chartTitle", indicatorChartResult.getChartTitle()) ;
-        session.setAttribute( "xAxisTitle", indicatorChartResult.getXAxis_Title()) ;
-        session.setAttribute( "yAxisTitle", indicatorChartResult.getYAxis_Title()) ;
-        
+        session.setAttribute( "numDataArray", indicatorChartResult.getNumDataArray() );
+        session.setAttribute( "denumDataArray", indicatorChartResult.getDenumDataArray() );
+        session.setAttribute( "series1", indicatorChartResult.getSeries() );
+        session.setAttribute( "categories1", indicatorChartResult.getCategories() );
+        session.setAttribute( "chartTitle", indicatorChartResult.getChartTitle() );
+        session.setAttribute( "xAxisTitle", indicatorChartResult.getXAxis_Title() );
+        session.setAttribute( "yAxisTitle", indicatorChartResult.getYAxis_Title() );
+
         statementManager.destroy();
+        System.out.println( "Chart Generation End Time is : \t" + new Date() );
         return SUCCESS;
- 
-    // execute end
-    }
-    
-    
-    public  IndicatorChartResult  generateChartDataPeriodWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList,OrganisationUnit orgUnit )
+
+    } // execute end
+
+    // Supporting Methods
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data only Period Wise start
+    // -------------------------------------------------------------------------
+
+    public IndicatorChartResult generateChartDataPeriodWise( List<Date> selStartPeriodList,
+        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList, OrganisationUnit orgUnit )
         throws Exception
-      {
-        
-        System.out.println("inside function defination");
-        IndicatorChartResult  indicatorChartResult ;
-    
+    {
+
+        IndicatorChartResult indicatorChartResult;
+
         String[] series = new String[indicatorList.size()];
         String[] categories = new String[selStartPeriodList.size()];
         Double[][] data = new Double[indicatorList.size()][selStartPeriodList.size()];
+
+        Double[][] numDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
+        Double[][] denumDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
+
+        // Map<Integer, List<Double>> numData = new HashMap<Integer,
+        // List<Double>>();
+        // Map<Integer, List<Double>> denumData = new HashMap<Integer,
+        // List<Double>>();
+
         String chartTitle = "OrganisationUnit : " + orgUnit.getShortName();
         String xAxis_Title = "Time Line";
         String yAxis_Title = "Value";
-    
-    
+
         int serviceCount = 0;
-        for (  Indicator indicator: indicatorList)  
+        for ( Indicator indicator : indicatorList )
         {
+            series[serviceCount] = indicator.getName();
+            yseriesList.add( indicator );
+
+            numeratorDEList.add( indicator.getNumeratorDescription() );
+            denominatorDEList.add( indicator.getDenominatorDescription() );
+
+            // List<Double> numeratorValueList = new ArrayList<Double>();
+            // List<Double> denumeratorValueList = new ArrayList<Double>();
+
             int periodCount = 0;
             for ( Date startDate : selStartPeriodList )
             {
                 Date endDate = selEndPeriodList.get( periodCount );
-    
+
                 categories[periodCount] = periodNames.get( periodCount );
-    
+
                 Double aggIndicatorValue = 0.0;
+                Double aggIndicatorNumValue = 0.0;
+                Double aggIndicatorDenumValue = 0.0;
                 if ( aggDataCB != null )
                 {
-                   
-                    aggIndicatorValue = aggregationService.getAggregatedIndicatorValue( indicator,  startDate, endDate, orgUnit );
-                    if(aggIndicatorValue == null ) aggIndicatorValue = 0.0;
-                    
+
+                    System.out.println( "aggDataCB checked " + aggDataCB );
+                    System.out.println( "inside aggIndicatorValue" );
+
+                    // System.out.println( "\n\nsize of OrgUnit List : " +
+                    // selOUList.size()+ " , size of Indicator List : " +
+                    // indicatorList.size() + "\n\nStart date : " + startDate +
+                    // " , End date : " + endDate );
+
+                    System.out.println( "\n\norgUnit : " + orgUnit );
+                    System.out.println( "\n\nStart Date : " + startDate );
+                    System.out.println( "\n\nEnd date : " + endDate );
+
+                    System.out.println( "\n\nIndicator : " + indicator );
+                    System.out.println( "\n\nIndicator Name : " + indicator.getName() );
+
+                    aggIndicatorValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                        orgUnit );
+
+                    aggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator, startDate,
+                        endDate, orgUnit );
+                    aggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue( indicator, startDate,
+                        endDate, orgUnit );
+
+                    if ( aggIndicatorValue == null )
+                        aggIndicatorValue = 0.0;
+
                 }
                 else
                 {
-                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                    Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
-    
-                    for ( Period period : periods )
+                    aggIndicatorValue = dashBoardService.getIndividualIndicatorValue( indicator, orgUnit, startDate,
+                        endDate );
+
+                    System.out.println( " \nIndicator Numerator value  : " + indicator.getNumerator()
+                        + ", Start Date :- " + startDate + ", End Date :- " + endDate + ", Org Unit :- " + orgUnit );
+
+                    String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(), startDate,
+                        endDate, orgUnit, "" );
+                    System.out.println( " \nIndicatorNumerator valu is " + tempStr );
+
+                    try
                     {
-                       aggIndicatorValue = dashBoardService.getIndividualIndicatorValue(indicator, orgUnit,  period );
-                       
-                     }
-                  }
+                        aggIndicatorNumValue = Double.parseDouble( tempStr );
+                    }
+                    catch ( Exception e )
+                    {
+                        aggIndicatorNumValue = 0.0;
+                    }
+
+                    tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
+                        endDate, orgUnit, "" );
+
+                    try
+                    {
+                        aggIndicatorDenumValue = Double.parseDouble( tempStr );
+                    }
+                    catch ( Exception e )
+                    {
+                        aggIndicatorDenumValue = 0.0;
+                    }
+
+                }
                 data[serviceCount][periodCount] = aggIndicatorValue;
+                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )
+                    / Math.pow( 10, 1 );
+
+                numDataArray[serviceCount][periodCount] = aggIndicatorNumValue;
+                denumDataArray[serviceCount][periodCount] = aggIndicatorDenumValue;
+
+                // numeratorValueList.add( aggIndicatorNumValue );
+                // denumeratorValueList.add( aggIndicatorDenumValue );
+
                 periodCount++;
             }
+
+            // numData.put( serviceCount, numeratorValueList );
+            // denumData.put( serviceCount, denumeratorValueList );
+
             serviceCount++;
-    }
-        indicatorChartResult = new IndicatorChartResult( series,categories,data,chartTitle,xAxis_Title,yAxis_Title);
-        
+        }
+
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
+            chartTitle, xAxis_Title, yAxis_Title );
         return indicatorChartResult;
-     
+
+    }
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data only Period Wise end
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data With Children Wise start
+    // -------------------------------------------------------------------------
+
+    public IndicatorChartResult generateChartDataWithChildrenWise( List<Date> selStartPeriodList,
+        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList,
+        List<OrganisationUnit> childOrgUnitList )
+        throws Exception
+    {
+        IndicatorChartResult indicatorChartResult;
+
+        String[] series = new String[indicatorList.size()];
+        String[] categories = new String[childOrgUnitList.size()];
+
+        Double[][] numDataArray = new Double[indicatorList.size()][childOrgUnitList.size()];
+        Double[][] denumDataArray = new Double[indicatorList.size()][childOrgUnitList.size()];
+        Double[][] data = new Double[indicatorList.size()][childOrgUnitList.size()];
+
+        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
+
+        String xAxis_Title = "Facilities";
+        String yAxis_Title = "Value";
+
+        int serviceCount = 0;
+
+        for ( Indicator indicator : indicatorList )
+        {
+            series[serviceCount] = indicator.getName();
+            yseriesList.add( indicator );
+
+            numeratorDEList.add( indicator.getNumeratorDescription() );
+            denominatorDEList.add( indicator.getDenominatorDescription() );
+
+            int childCount = 0;
+            for ( OrganisationUnit orgChild : childOrgUnitList )
+            {
+
+                categories[childCount] = orgChild.getName();
+
+                Double aggIndicatorValue = 0.0;
+                Double aggIndicatorNumValue = 0.0;
+                Double aggIndicatorDenumValue = 0.0;
+                int periodCount = 0;
+                for ( Date startDate : selStartPeriodList )
+                {
+                    Date endDate = selEndPeriodList.get( periodCount );
+
+                    if ( aggDataCB != null )
+                    {
+
+                        Double tempAggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator,
+                            startDate, endDate, orgChild );
+                        Double tempAggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue(
+                            indicator, startDate, endDate, orgChild );
+
+                        if ( tempAggIndicatorNumValue != null )
+                        {
+                            aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        }
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                        }
+
+                    }
+                    else
+                    {
+                        Double tempAggIndicatorNumValue = 0.0;
+                        String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(),
+                            startDate, endDate, orgChild, "" );
+                        try
+                        {
+                            tempAggIndicatorNumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorNumValue = 0.0;
+                        }
+                        aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        Double tempAggIndicatorDenumValue = 0.0;
+
+                        tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
+                            endDate, orgChild, "" );
+                        try
+                        {
+                            tempAggIndicatorDenumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorDenumValue = 0.0;
+                        }
+                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                    }
+
+                    periodCount++;
+                }
+                try
+                {
+                    // aggIndicatorValue = ( aggIndicatorNumValue /
+                    // aggIndicatorDenumValue )*
+                    // indicator.getIndicatorType().getFactor();
+                    if ( aggIndicatorDenumValue == 0 )
+                    {
+                        aggIndicatorValue = 0.0;
+                    }
+                    else
+                    {
+                        aggIndicatorValue = (aggIndicatorNumValue / aggIndicatorDenumValue)
+                            * indicator.getIndicatorType().getFactor();
+                    }
+                }
+                catch ( Exception e )
+                {
+                    aggIndicatorValue = 0.0;
+                }
+
+                data[serviceCount][childCount] = aggIndicatorValue;
+                data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) )
+                    / Math.pow( 10, 1 );
+
+                numDataArray[serviceCount][childCount] = aggIndicatorNumValue;
+                denumDataArray[serviceCount][childCount] = aggIndicatorDenumValue;
+                // data[serviceCount][childCount] = aggDataValue;
+                childCount++;
+            }
+
+            serviceCount++;
+        }
+
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
+            chartTitle, xAxis_Title, yAxis_Title );
+        return indicatorChartResult;
+    }
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data With Children Wise end
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data With Selected Wise start
+    // -------------------------------------------------------------------------
+
+    public IndicatorChartResult generateChartDataSelectedOrgUnitWise( List<Date> selStartPeriodList,
+        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList,
+        List<OrganisationUnit> selOUList )
+        throws Exception
+    {
+        IndicatorChartResult indicatorChartResult;
+
+        String[] series = new String[indicatorList.size()];
+        String[] categories = new String[selOUList.size()];
+
+        Double[][] numDataArray = new Double[indicatorList.size()][selOUList.size()];
+        Double[][] denumDataArray = new Double[indicatorList.size()][selOUList.size()];
+        Double[][] data = new Double[indicatorList.size()][selOUList.size()];
+        String chartTitle = "OrganisationUnit : -----";
+
+        String xAxis_Title = "Facilities";
+        String yAxis_Title = "Value";
+
+        int serviceCount = 0;
+
+        for ( Indicator indicator : indicatorList )
+        {
+            series[serviceCount] = indicator.getName();
+            yseriesList.add( indicator );
+
+            numeratorDEList.add( indicator.getNumeratorDescription() );
+            denominatorDEList.add( indicator.getDenominatorDescription() );
+
+            int orgUnitCount = 0;
+            for ( OrganisationUnit orgUnit : selOUList )
+            {
+                categories[orgUnitCount] = orgUnit.getName();
+
+                Double aggIndicatorValue = 0.0;
+                Double aggIndicatorNumValue = 0.0;
+                Double aggIndicatorDenumValue = 0.0;
+
+                int periodCount = 0;
+                for ( Date startDate : selStartPeriodList )
+                {
+                    Date endDate = selEndPeriodList.get( periodCount );
+
+                    if ( aggDataCB != null )
+                    {
+                        Double tempAggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator,
+                            startDate, endDate, orgUnit );
+                        Double tempAggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue(
+                            indicator, startDate, endDate, orgUnit );
+
+                        if ( tempAggIndicatorNumValue != null )
+                        {
+                            aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        }
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        Double tempAggIndicatorNumValue = 0.0;
+
+                        String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(),
+                            startDate, endDate, orgUnit, "" );
+                        try
+                        {
+                            tempAggIndicatorNumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorNumValue = 0.0;
+                        }
+                        aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        // System.out.println( " \nAggIndicator Num Value : " +
+                        // aggIndicatorNumValue );
+
+                        Double tempAggIndicatorDenumValue = 0.0;
+
+                        tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
+                            endDate, orgUnit, "" );
+                        try
+                        {
+                            tempAggIndicatorDenumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorDenumValue = 0.0;
+                        }
+                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        // System.out.println( " \nAggIndicator Denum Value : "
+                        // + aggIndicatorDenumValue );
+
+                    }
+
+                    periodCount++;
+                }
+
+                try
+                {
+                    // aggIndicatorValue = ( aggIndicatorNumValue /
+                    // aggIndicatorDenumValue )*
+                    // indicator.getIndicatorType().getFactor();
+                    if ( aggIndicatorDenumValue == 0 )
+                    {
+                        aggIndicatorValue = 0.0;
+                    }
+                    else
+                    {
+                        aggIndicatorValue = (aggIndicatorNumValue / aggIndicatorDenumValue)
+                            * indicator.getIndicatorType().getFactor();
+                    }
+                }
+                catch ( Exception e )
+                {
+                    aggIndicatorValue = 0.0;
+                }
+
+                data[serviceCount][orgUnitCount] = aggIndicatorValue;
+                data[serviceCount][orgUnitCount] = Math.round( data[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) )
+                    / Math.pow( 10, 1 );
+
+                numDataArray[serviceCount][orgUnitCount] = aggIndicatorNumValue;
+                denumDataArray[serviceCount][orgUnitCount] = aggIndicatorDenumValue;
+
+                // data[serviceCount][orgUnitCount] = aggDataValue;
+                orgUnitCount++;
+
+            }
+
+            serviceCount++;
+        }
+
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
+            chartTitle, xAxis_Title, yAxis_Title );
+        return indicatorChartResult;
+    }
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data With Selected Wise end
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data OrgGroup Period Wise start
+    // -------------------------------------------------------------------------
+
+    public IndicatorChartResult generateChartDataOrgGroupPeriodWise( List<Date> selStartPeriodList,
+        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList,
+        List<OrganisationUnit> selOUGroupMemberList )
+        throws Exception
+    {
+        IndicatorChartResult indicatorChartResult;
+
+        String[] series = new String[indicatorList.size()];
+        String[] categories = new String[selStartPeriodList.size()];
+
+        Double[][] numDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
+        Double[][] denumDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
+        Double[][] data = new Double[indicatorList.size()][selStartPeriodList.size()];
+
+        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName() + "(" + selOrgUnitGroup.getName()
+            + ")";
+        String xAxis_Title = "Time Line";
+        String yAxis_Title = "Value";
+
+        int serviceCount = 0;
+
+        for ( Indicator indicator : indicatorList )
+        {
+            series[serviceCount] = indicator.getName();
+            yseriesList.add( indicator );
+
+            numeratorDEList.add( indicator.getNumeratorDescription() );
+            denominatorDEList.add( indicator.getDenominatorDescription() );
+
+            Double aggIndicatorValue = 0.0;
+            Double aggIndicatorNumValue = 0.0;
+            Double aggIndicatorDenumValue = 0.0;
+
+            int periodCount = 0;
+            for ( Date startDate : selStartPeriodList )
+            {
+                Date endDate = selEndPeriodList.get( periodCount );
+                categories[periodCount] = periodNames.get( periodCount );
+
+                int orgGroupCount = 0;
+
+                for ( OrganisationUnit orgUnit : selOUGroupMemberList )
+                {
+                    if ( aggDataCB != null )
+                    {
+                        Double tempAggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator,
+                            startDate, endDate, orgUnit );
+                        Double tempAggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue(
+                            indicator, startDate, endDate, orgUnit );
+
+                        if ( tempAggIndicatorNumValue != null )
+                        {
+                            aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        }
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        Double tempAggIndicatorNumValue = 0.0;
+
+                        String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(),
+                            startDate, endDate, orgUnit, "" );
+                        try
+                        {
+                            tempAggIndicatorNumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorNumValue = 0.0;
+                        }
+                        aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                        Double tempAggIndicatorDenumValue = 0.0;
+
+                        // tempStr =
+                        // reportService.getIndividualResultIndicatorValue(
+                        // indicator.getDenominator(), startDate, endDate,
+                        // orgUnit );
+                        tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
+                            endDate, orgUnit, "" );
+                        try
+                        {
+                            tempAggIndicatorDenumValue = Double.parseDouble( tempStr );
+                        }
+                        catch ( Exception e )
+                        {
+                            tempAggIndicatorDenumValue = 0.0;
+                        }
+                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                    }
+                    orgGroupCount++;
+                }
+
+                try
+                {
+                    // aggIndicatorValue = ( aggIndicatorNumValue /
+                    // aggIndicatorDenumValue )*
+                    // indicator.getIndicatorType().getFactor();
+                    if ( aggIndicatorDenumValue == 0 )
+                    {
+                        aggIndicatorValue = 0.0;
+                    }
+                    else
+                    {
+                        aggIndicatorValue = (aggIndicatorNumValue / aggIndicatorDenumValue)
+                            * indicator.getIndicatorType().getFactor();
+                    }
+                }
+                catch ( Exception e )
+                {
+                    aggIndicatorValue = 0.0;
+                }
+
+                data[serviceCount][periodCount] = aggIndicatorValue;
+                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )
+                    / Math.pow( 10, 1 );
+
+                numDataArray[serviceCount][periodCount] = aggIndicatorNumValue;
+                denumDataArray[serviceCount][periodCount] = aggIndicatorDenumValue;
+                periodCount++;
+            }
+
+            serviceCount++;
+        }
+
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
+            chartTitle, xAxis_Title, yAxis_Title );
+        return indicatorChartResult;
+
+    }
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data OrgGroup Period Wise end
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data OrgGroup Selected orgUnit Wise start
+    // -------------------------------------------------------------------------
+
+    public IndicatorChartResult generateChartDataSelectedOrgUnitGroupWise( List<Date> selStartPeriodList,
+        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList,
+        Map<OrganisationUnitGroup, List<OrganisationUnit>> orgUnitGroupMap )
+        throws Exception
+    {
+        IndicatorChartResult indicatorChartResult;
+
+        String[] series = new String[indicatorList.size()];
+        String[] categories = new String[orgUnitGroupMap.keySet().size()];
+
+        Double[][] numDataArray = new Double[indicatorList.size()][orgUnitGroupMap.keySet().size()];
+        Double[][] denumDataArray = new Double[indicatorList.size()][orgUnitGroupMap.keySet().size()];
+        Double[][] data = new Double[indicatorList.size()][orgUnitGroupMap.keySet().size()];
+
+        // Double[][] data = new
+        // Double[dataElementList.size()][orgUnitGroupMap.keySet().size()];
+        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName() + " - ";
+        String xAxis_Title = "Organisation Unit Group";
+        String yAxis_Title = "Value";
+
+        int serviceCount = 0;
+
+        for ( Indicator indicator : indicatorList )
+        {
+
+            series[serviceCount] = indicator.getName();
+
+            yseriesList.add( indicator );
+
+            numeratorDEList.add( indicator.getNumeratorDescription() );
+            denominatorDEList.add( indicator.getDenominatorDescription() );
+
+            int orgGroupCount = 0;
+            for ( OrganisationUnitGroup orgUnitGroup : orgUnitGroupMap.keySet() )
+            {
+                Double aggIndicatorValue = 0.0;
+                Double aggIndicatorNumValue = 0.0;
+                Double aggIndicatorDenumValue = 0.0;
+
+                categories[orgGroupCount] = orgUnitGroup.getName();
+
+                if ( serviceCount == 0 )
+                {
+                    chartTitle += orgUnitGroup.getName() + ",";
+                }
+                Collection<OrganisationUnit> orgUnitGroupMembers = orgUnitGroupMap.get( orgUnitGroup );
+                if ( orgUnitGroupMembers == null || orgUnitGroupMembers.size() == 0 )
+                {
+                    numDataArray[serviceCount][orgGroupCount] = aggIndicatorNumValue;
+                    denumDataArray[serviceCount][orgGroupCount] = aggIndicatorDenumValue;
+                    data[serviceCount][orgGroupCount] = aggIndicatorValue;
+
+                    orgGroupCount++;
+                    continue;
+                }
+                for ( OrganisationUnit orgUnit : orgUnitGroupMembers )
+                {
+                    int periodCount = 0;
+                    for ( Date startDate : selStartPeriodList )
+                    {
+                        Date endDate = selEndPeriodList.get( periodCount );
+
+                        if ( aggDataCB != null )
+                        {
+                            Double tempAggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue(
+                                indicator, startDate, endDate, orgUnit );
+                            Double tempAggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue(
+                                indicator, startDate, endDate, orgUnit );
+
+                            if ( tempAggIndicatorNumValue != null )
+                            {
+                                aggIndicatorNumValue += tempAggIndicatorNumValue;
+
+                            }
+                            if ( tempAggIndicatorDenumValue != null )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            // System.out.println(
+                            // " \ninside aggdata not checked" );
+                            Double tempAggIndicatorNumValue = 0.0;
+
+                            String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(),
+                                startDate, endDate, orgUnit, "" );
+                            try
+                            {
+                                tempAggIndicatorNumValue = Double.parseDouble( tempStr );
+                            }
+                            catch ( Exception e )
+                            {
+                                tempAggIndicatorNumValue = 0.0;
+                            }
+                            aggIndicatorNumValue += tempAggIndicatorNumValue;
+                            // System.out.println(
+                            // " \nAggIndicator Num Value : " +
+                            // aggIndicatorNumValue );
+
+                            Double tempAggIndicatorDenumValue = 0.0;
+
+                            tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(),
+                                startDate, endDate, orgUnit, "" );
+                            try
+                            {
+                                tempAggIndicatorDenumValue = Double.parseDouble( tempStr );
+                            }
+                            catch ( Exception e )
+                            {
+                                tempAggIndicatorDenumValue = 0.0;
+                            }
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            // System.out.println(
+                            // " \nAggIndicator Denum Value : " +
+                            // aggIndicatorDenumValue );
+                        }
+
+                        periodCount++;
+                    }
+
+                }// orgunit member
+                try
+                {
+
+                    if ( aggIndicatorDenumValue == 0 )
+                    {
+                        aggIndicatorValue = 0.0;
+                    }
+                    else
+                    {
+                        aggIndicatorValue = (aggIndicatorNumValue / aggIndicatorDenumValue)
+                            * indicator.getIndicatorType().getFactor();
+                    }
+                }
+                catch ( Exception e )
+                {
+                    aggIndicatorValue = 0.0;
+                }
+
+                data[serviceCount][orgGroupCount] = aggIndicatorValue;
+
+                // System.out.println(
+                // " \nAgg Indicator Value Before Rounding : " +
+                // data[serviceCount][orgGroupCount] );
+
+                data[serviceCount][orgGroupCount] = Math.round( data[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) )
+                    / Math.pow( 10, 1 );
+
+                // System.out.println(
+                // " \nAgg Indicator Value After Rounding : " +
+                // data[serviceCount][orgGroupCount] );
+
+                numDataArray[serviceCount][orgGroupCount] = aggIndicatorNumValue;
+                denumDataArray[serviceCount][orgGroupCount] = aggIndicatorDenumValue;
+
+                orgGroupCount++;
+            }
+
+            serviceCount++;
+        }
+
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
+            chartTitle, xAxis_Title, yAxis_Title );
+
+        return indicatorChartResult;
+
+    }
+    // -------------------------------------------------------------------------
+    // Methods for getting Chart Data OrgGroup Selected orgUnit Wise end
+    // -------------------------------------------------------------------------
+
 }
-
-
-
-}      

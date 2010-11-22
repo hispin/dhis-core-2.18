@@ -50,6 +50,13 @@
             </result>
         </action>
 		
+		<!-- sorting DataElement data -->        
+        <action name="getSortedDataElement"
+            class="org.hisp.dhis.dashboard.action.GetSortedDataElementAction">
+            <result name="success" type="velocity-xml">/dhis-web-dashboard/responseSortedData.vm</result>
+            <!--<interceptor-ref name="transactionStack"/>-->
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
 		<!-- Export Data Elements to Excel -->
         <action name="exportDataElementsToExcel"
             class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction">
@@ -82,8 +89,23 @@
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
-		
-		
+<!-- sorting Indiacator data -->		
+		<action name="getSortedIndicatorData"
+            class="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction">
+            <result name="success" type="velocity-xml">/dhis-web-dashboard/responseSortedData.vm</result>
+            <!--<interceptor-ref name="transactionStack"/>-->
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+<!-- Export Indicator data to Excel -->
+        <action name="exportIndicatorToExcel"
+            class="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>		
 		
 <!-- GraphicalAnalyser  Indicators end	-->	
 				

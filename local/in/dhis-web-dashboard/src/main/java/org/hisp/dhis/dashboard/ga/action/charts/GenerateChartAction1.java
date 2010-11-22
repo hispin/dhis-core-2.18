@@ -151,14 +151,14 @@ public class GenerateChartAction1
         yAxis_Title = (String) session.getAttribute( "yAxisTitle" );
 
         initialzeAllLists( series1S,  categories1S );
-       /* 
+      
         System.out.println( "\n data1 : " + objData1 );
         System.out.println( "\n series1 : " + series1S );
         System.out.println( "\n categories1 : " + categories1S );
         System.out.println( "\n chartTitle : " + chartTitle );
         System.out.println( "\n xAxisTitle : " + xAxis_Title );
         System.out.println( "\n yAxisTitle : " + yAxis_Title );
-        */
+       
         
         if( objData1 == null || series1 == null ||  categories1 == null ||  chartTitle == null || xAxis_Title == null || yAxis_Title == null )
                 System.out.println("Session Objects are null");
@@ -175,7 +175,7 @@ public class GenerateChartAction1
         
         initializeDataLists();
         
-        System.out.println( "current chart Type is : " + currentChart + "And Chart Display Option is : " + chartDisplayOption );
+        System.out.println( "current chart Type is : " + currentChart + " ,And Chart Display Option is : " + chartDisplayOption );
         
         if ( currentChart == null )
         {
@@ -316,7 +316,7 @@ public class GenerateChartAction1
             {
                // System.out.println(objData[i][j]);
                 data[i][j] = objData[i][j].doubleValue();
-               // System.out.print(categories1[j]+": "+data[i][j]+", ");                
+                System.out.print(categories1[j]+": "+data[i][j]+", ");                
             }
             //System.out.println("");
         }

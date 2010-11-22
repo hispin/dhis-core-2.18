@@ -406,14 +406,14 @@ function formValidationsIndicator()
     		orgUnitListCB.options[k].selected = true;
         }
     }
-/*  
+  
     var sWidth = 1000;
 	var sHeight = 1000;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
     var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
 
-    window.open('','chartWindowDataElement','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
-*/  	
+    window.open('','chartWindowIndicator','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
+  	
   	return true;
 } 
 // formValidations Function Indicators End
