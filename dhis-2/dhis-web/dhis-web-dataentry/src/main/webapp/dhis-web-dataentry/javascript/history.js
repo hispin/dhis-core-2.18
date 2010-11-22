@@ -3,10 +3,10 @@
 // Comments
 // -----------------------------------------------------------------------------
 
-function commentSelected( dataElementId, optionComboId )
+function commentSelected()
 {  
-    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
-    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
+    var commentSelector = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comments' );
+    var commentField = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comment' );
 
     var value = commentSelector.options[commentSelector.selectedIndex].value;
     
@@ -22,14 +22,14 @@ function commentSelected( dataElementId, optionComboId )
     {
         commentField.value = value;
         
-        saveComment( dataElementId, optionComboId, value );
+        saveComment( value );
     }
 }
 
-function commentLeft( dataElementId, optionComboId )
+function commentLeft()
 {
-    var commentField = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );
-    var commentSelector = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
+    var commentField = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comment' );
+    var commentSelector = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comments' );
 
     saveComment( dataElementId, optionComboId, commentField.value );
 
@@ -44,16 +44,15 @@ function commentLeft( dataElementId, optionComboId )
     }
 }
 
-function saveComment( dataElementId, optionComboId, commentValue )
+function saveComment( commentValue )
 {
-    var field = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comment' );                
-    var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
-    var organisationUnitId = getFieldValue( 'organisationUnitId' );
+    var field = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comment' );                
+    var select = document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].comments' );
 
     field.style.backgroundColor = '#ffffcc';
     select.style.backgroundColor = '#ffffcc';
     
-    var commentSaver = new CommentSaver( dataElementId, optionComboId, organisationUnitId, commentValue );
+    var commentSaver = new CommentSaver( currentDataElementId, currentOptionComboId, currentOrganisationUnitId, commentValue );
     commentSaver.save();
 }
 
@@ -118,14 +117,17 @@ function isInt(value)
 	} 
 }
 
-function removeMinMaxLimit( organisationUnitId, dataElementId, optionComboId )
+function removeMinMaxLimit()
 {
-	var url = 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&optionComboId=' + optionComboId;
+	$( '#minLimit' ).val( '' );
+	$( '#maxLimit' ).val( '' );
+	
+	var url = 'removeMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + '&optionComboId=' + currentOptionComboId;
 	
 	$.get( url, refreshWindow );
 }
 
-function saveMinMaxLimit( organisationUnitId, dataElementId, optionComboId )
+function saveMinMaxLimit()
 {
 	var minValue = $( '#minLimit' ).val();
 	var maxValue = $( '#maxLimit' ).val();
@@ -160,15 +162,17 @@ function saveMinMaxLimit( organisationUnitId, dataElementId, optionComboId )
 		$( '#maxSpan' ).html( '' );
 	}
 	
-    var url = 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + 
-    	'&optionComboId=' + optionComboId + '&minLimit=' + minValue + '&maxLimit=' + maxValue;
+    var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + 
+    	'&optionComboId=' + currentOptionComboId + '&minLimit=' + minValue + '&maxLimit=' + maxValue;
     
     $.get( url, refreshWindow );
 }
 
 function refreshWindow()
 {
-    window.location.reload();
+	var source = 'getHistoryChart.action?dataElementId=' + currentDataElementId + '&categoryOptionComboId=' + currentOptionComboId + '&r=' + Math.random();
+	
+	$( '#historyChart' ).attr( 'src', source );
 }
 
 function markValueForFollowup( dataElementId, periodId, sourceId, categoryOptionComboId )

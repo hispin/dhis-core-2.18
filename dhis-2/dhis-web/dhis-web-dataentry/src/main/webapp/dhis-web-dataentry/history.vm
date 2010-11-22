@@ -7,8 +7,6 @@
     $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
 </h3>
 
-<input type="hidden" id="organisationUnitId" value="$dataElementHistory.organisationUnit.id"/>
-
 <table>
 	<tr>		
 		<!-- Column 1 - Comment and Followup -->
@@ -16,7 +14,7 @@
 			<h4>$i18n.getString( "dataelement_comment" )</h4>       
 			#if( $showComment == 'true' )
 			##comment       
-			    <select id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
+			    <select id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comments" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ) ) onchange="commentSelected()" #else disabled="disabled" #end #if( $dataValue.comment && !$standardComments.contains( $dataValue.comment ) ) style="display:none; width:100%" #end#if( $locked ) disabled="disabled"#end>
 			        <option value="">[$i18n.getString( "no_comment" )]</option>
 			        <option value="custom">[$i18n.getString( "custom_comment" )]</option>
 			        #foreach( $comment in $standardComments )
@@ -24,7 +22,7 @@
 			        #end
 			    </select>
 			    <input id="value[$dataElementHistory.dataElement.id:$dataElementHistory.optionCombo.id].comment" type="text" value="$!encoder.htmlEncode( $dataValue.comment )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveComment" ))
-			        onblur="commentLeft( $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end"/>
+			        onblur="commentLeft()" #else disabled="disabled" #end style="width:100% #if( !$dataValue.comment || $standardComments.contains( $dataValue.comment )) ;display:none #end"/>
 			#end
 			
 			<br/><br/>
@@ -47,7 +45,7 @@
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                            onchange="saveMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id,  $dataElementHistory.optionCombo.id )"
+                            onchange="saveMinMaxLimit()"
                         #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='maxSpan' style="color:red;"></span>
 						</td>
@@ -57,7 +55,7 @@
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                           onchange="saveMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )"
+                           onchange="saveMinMaxLimit()"
                         #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='minSpan' style="color:red;"></span>
 					</td>
@@ -73,7 +71,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                	<td colspan="3"><input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" style="width:100px"></td>
+                	<td colspan="3"><input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit()" style="width:100px"></td>
                 </tr>
             </table>        
         </td>
@@ -86,8 +84,7 @@
 			    <h4>$encoder.htmlEncode( $i18n.getString( "history_not_valid" ) )</h4>  
 			#end    
 			
-			<img src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&
-			    categoryOptionComboId=${dataElementHistory.optionCombo.id}"/>			
+			<img id="historyChart" src="getHistoryChart.action?dataElementId=${dataElementHistory.dataElement.id}&categoryOptionComboId=${dataElementHistory.optionCombo.id}"/>			
         </td>
     </tr>
 	<tr>
@@ -106,9 +103,13 @@
 
 </table>
 
-<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )"/></p>
+<p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="javascript:self.close()"/></p>
 
 <script type="text/javascript">
+
+var currentOrganisationUnitId = $!{dataElementHistory.organisationUnit.id};
+var currentDataElementId = $!{dataElementHistory.dataElement.id};
+var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
 
 var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
 var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
