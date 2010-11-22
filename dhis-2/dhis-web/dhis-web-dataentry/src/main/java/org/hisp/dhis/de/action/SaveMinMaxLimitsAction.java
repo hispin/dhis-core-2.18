@@ -27,8 +27,6 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -46,9 +44,7 @@ import com.opensymphony.xwork2.Action;
  */
 public class SaveMinMaxLimitsAction
     implements Action
-{
-    private static final Log log = LogFactory.getLog( SaveMinMaxLimitsAction.class );
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -139,7 +135,7 @@ public class SaveMinMaxLimitsAction
         if ( minMaxDataElement == null )
         {
             minMaxDataElement = new MinMaxDataElement( organisationUnit, dataElement, optionCombo, minLimit, maxLimit, false );
-
+    
             minMaxDataElementService.addMinMaxDataElement( minMaxDataElement );
         }
         else
@@ -150,8 +146,6 @@ public class SaveMinMaxLimitsAction
 
             minMaxDataElementService.updateMinMaxDataElement( minMaxDataElement );
         }
-
-        log.info( "Generated min-max data elements" );
         
         return SUCCESS;
     }

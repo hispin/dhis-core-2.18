@@ -2,18 +2,6 @@
 #set( $lastIndex = $dataElementHistory.historyLength - 1 )
 #set( $average = $dataElementHistory.historyPoints.get( $lastIndex ).average )
 
-#if( $dataElementHistory.minLimit )
-	#set( $minLimit = $dataElementHistory.minLimit )
-#else
-	#set( $minLimit = $encoder.htmlEncode( $i18n.getString( "not_set" ) ) )
-#end
-
-#if( $dataElementHistory.maxLimit )
-	#set( $maxLimit = $dataElementHistory.maxLimit )
-#else
-	#set( $maxLimit = $encoder.htmlEncode( $i18n.getString( "not_set" ) ) )
-#end
-
 <h3>
     $encoder.htmlEncode( $dataElementHistory.dataElement.name )
     $encoder.htmlEncode( $dataElementHistory.optionCombo.name )
@@ -57,9 +45,9 @@
                 <tr>
                     <td style="background-color:#2e4e83; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
-                    <td><input type="text" id="maxLimit" style="width:10em" value="$maxLimit" class="{validate:{digits:true}}"
+                    <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                            onchange="saveMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id,  $dataElementHistory.optionCombo.id )"
+                            onchange="saveMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id,  $dataElementHistory.optionCombo.id )"
                         #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='maxSpan' style="color:red;"></span>
 						</td>
@@ -67,9 +55,9 @@
                 <tr>
                     <td style="background-color:#d54a4a; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
-                    <td><input type="text" id="minLimit" style="width:10em" value="$minLimit"
+                    <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                           onchange="saveMinLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )"
+                           onchange="saveMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )"
                         #else disabled="disabled" #end onfocus="this.select()"/>
 						<span id='minSpan' style="color:red;"></span>
 					</td>
@@ -83,6 +71,9 @@
                     <td style="background-color:#75e077; height:26px">&nbsp;</td>
                     <td>$encoder.htmlEncode( $i18n.getString( "interpolation" ) ) </td>
                     <td></td>
+                </tr>
+                <tr>
+                	<td colspan="3"><input type="button" value="$i18n.getString( 'remove' )" onclick="removeMinMaxLimit( $dataElementHistory.organisationUnit.id, $dataElementHistory.dataElement.id, $dataElementHistory.optionCombo.id )" style="width:100px"></td>
                 </tr>
             </table>        
         </td>
@@ -120,6 +111,7 @@
 <script type="text/javascript">
 
 var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
+var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
 var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
 var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
 
