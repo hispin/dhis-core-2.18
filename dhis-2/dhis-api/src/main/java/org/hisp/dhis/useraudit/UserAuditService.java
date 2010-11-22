@@ -38,8 +38,6 @@ public interface UserAuditService
     
     void registerLoginFailure( String username );
 
-    void resetLockoutTimeframe( String username );
-
     int getLoginFailures( String username );
 
     int getMaxAttempts();

@@ -68,12 +68,17 @@ public class DefaultUserAuditService
         this.userAuditStore = userAuditStore;
     }
 
+    // -------------------------------------------------------------------------
+    // UserAuditService implementation
+    // -------------------------------------------------------------------------
+
     @Override
+    @Transactional
     public void registerLoginSuccess( String username )
     {
         log.info( "User login success: '" + username + "'" );
 
-        resetLockoutTimeframe( username );
+        userAuditStore.resetLoginFailures( username, getDate() );
     }
 
     @Override
@@ -82,8 +87,8 @@ public class DefaultUserAuditService
         log.info( "User logout: '" + username + "'" );
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void registerLoginFailure( String username )
     {
         log.info( "User login failure: '" + username + "'" );
@@ -100,8 +105,8 @@ public class DefaultUserAuditService
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public int getLoginFailures( String username )
     {
         return userAuditStore.getLoginFailures( username, getDate() );
@@ -119,11 +124,9 @@ public class DefaultUserAuditService
         return (Integer) systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES, DEFAULT_TIMEFRAME_MINUTES );
     }
 
-    @Override
-    public void resetLockoutTimeframe( String username )
-    {
-        userAuditStore.resetLoginFailures( username, getDate() );
-    }
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private Date getDate()
     {
