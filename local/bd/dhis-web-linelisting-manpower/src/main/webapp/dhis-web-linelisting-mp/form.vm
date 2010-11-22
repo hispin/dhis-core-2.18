@@ -13,61 +13,61 @@
 
 <form id="LineListDataEntryForm" action="saveValueAction.action" method="post" onsubmit="return calMaxRecords()">
 
-#set( $count1 = 1 )
-<table width="70%" align="center">
-    <tr align="center">
-        <th width="10%">Sr.No.</th>
-        <th width="40%">DataElement</th>
-        <th width="20%">Entry</th>
-        
-    </tr>
-	#set( $dataValueMapKeys = $dataelementMap.keySet() )
-	#foreach( $dataValueMapKey in $dataValueMapKeys )
-		#set( $dataElementName = $dataelementMap.get( $dataValueMapKey ) )
-		#set( $dataValue = $dataValueMap.get( $dataValueMapKey ) )
+	#set( $count1 = 1 )
+	<table width="70%" align="center">
+		<tr align="center">
+			<th width="10%">Sr.No.</th>
+			<th width="40%">DataElement</th>
+			<th width="20%">Entry</th>
+		</tr>
+		#set( $dataValueMapKeys = $dataelementMap.keySet() )
+		#foreach( $dataValueMapKey in $dataValueMapKeys )
+			#set( $dataElementName = $dataelementMap.get( $dataValueMapKey ) )
+			#set( $dataValue = $dataValueMap.get( $dataValueMapKey ) )
+			<tr>
+				<td align="center">$count1</td>
+				<td>$dataElementName</td>
+				<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" onchange="setSancPost(this.value)"/>
+				<script>sancPos='$!dataValue.value'; dataValueMapKey='$dataValueMapKey';</script>
+				#if( $sactionedPostdataelement == $dataValueMapKey)
+					<input type="button" value="Add" onclick="validatePostVacant( '$dataValueMapKey' )">
+				#end
+				</td>
+			<tr>		
+			#set( $count1 = $count1 + 1 )
+		#end
+	</table>
+
+	<table class="listTable" id="listTable" align="centre">
+		<col>
+		<col width="20">                	
+		<col width="20">
 		<tr>
-			<td align="center">$count1</td>
-			<td>$dataElementName</td>
-			<td align="center"><input type="text" id="$dataValueMapKey" name="$dataValueMapKey" value="$!dataValue.value" onchange="setSancPost(this.value)"/>
-			<script>sancPos='$!dataValue.value'; dataValueMapKey='$dataValueMapKey';</script>
-			#if( $sactionedPostdataelement == $dataValueMapKey)
-				<input type="button" value="Add" onclick="validatePostVacant( '$dataValueMapKey' )">
-			#end
-			</td>
-		<tr>		
-		#set( $count1 = $count1 + 1 )
-	#end
-	
-</table>
-
-<table class="listTable" id="listTable" align="centre">
-
-				
-				<col>
-                <col width="20">                	
-                <col width="20">
-	<tr>
-        <td>$i18n.getString( "filter_by_name" ) : <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
-    	<td></td><td></td>
-    </tr>
-	<tr>
-	    <th>$i18n.getString( "name" ) - $i18n.getString( "pdscode" )</th>
-	    <th colspan="2">$i18n.getString( "operations" )</th>
-	</tr>
-	<tbody id="list">
-        #set( $mark = false )
-        #foreach( $employee in $employeeList )
-        	<tr id="tr${employee.pdsCode}">
-                    <td#alternate( $mark )>$encoder.htmlEncode( $employee.name ) - $encoder.htmlEncode( $employee.pdsCode )</td>
-                    <td style="text-align:center"#alternate( $mark )><a href="javascript:showUpdateEmployeePostForm( '$employee.pdsCode' )" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-        #end
-
-	<tbody>
-</table>
+			<td>$i18n.getString( "filter_by_name" ) : <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
+			<td></td><td></td>
+		</tr>
+		<tr>
+			<th>$i18n.getString( "name" ) - $i18n.getString( "pdscode" )</th>
+			<th colspan="2">$i18n.getString( "operations" )</th>
+		</tr>
+		<tbody id="list">
+			#set( $mark = false )
+			#foreach( $employee in $employeeList )
+				<tr id="tr${employee.pdsCode}">
+					<td#alternate( $mark )>$encoder.htmlEncode( $employee.name ) - $encoder.htmlEncode( $employee.pdsCode )</td>
+					<td style="text-align:center"#alternate( $mark )>
+						<a href="javascript:showUpdateEmployeePostForm( '$employee.pdsCode' )" title="$i18n.getString( "edit" )">
+							<img src="../images/edit.png" alt="$i18n.getString( "edit" )" />
+						</a>
+					</td>
+				</tr>	
+			#end	
+		</tbody>
+	</table>
 </form>
+
 <script type="text/javascript">
 
-        $calInfo
         var counter=0;
         var lastRow =0;
         var curRow=0;

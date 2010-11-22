@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
@@ -222,17 +220,16 @@ public class MySQLDataBaseManager
         }
         return maxRecordNumber;
     }
-    
-// function for row count
+
+    // -------------------------------------------------------------------------
+    // Get Row Count from Department table
+    // -------------------------------------------------------------------------
     public int rowCount( String tableName )
     {
         int noOfRows = 0;
         try
         {
-           //String rowCount = null;
-            //Connection connection = jdbcTemplate.getDataSource().getConnection();
             String query = "SELECT COUNT(*) FROM " + tableName;
-           // String query = "select * from " + tableName + " ;";
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
            
             if( rs.next() )
@@ -246,7 +243,10 @@ public class MySQLDataBaseManager
         }
         return noOfRows;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Update Department table
+    // -------------------------------------------------------------------------    
     public boolean updateTable( String tableName, List<LineListElement> removeList, List<LineListElement> addList )
     {
         String columnDefinition = "";
@@ -296,36 +296,33 @@ public class MySQLDataBaseManager
         }
 
         System.out.println( removeList.size() );
-        if ( removeList != null )
+        if ( removeList != null && !( removeList.isEmpty() ) )
         {
-            if ( !( removeList.isEmpty() ) )
+            int j = 1;
+            int size = removeList.size();
+
+            Iterator<LineListElement> removeListItr = removeList.iterator();
+            while ( removeListItr.hasNext() )
             {
-
-                int j = 1;
-                Iterator<LineListElement> removeListItr = removeList.iterator();
-                int size = removeList.size();
-
-                while ( removeListItr.hasNext() )
+                LineListElement element = (LineListElement) removeListItr.next();
+                if ( columnAdded )
                 {
-                    LineListElement element = (LineListElement) removeListItr.next();
-                    if ( columnAdded )
-                    {
-                        columnDefinition += " , drop column " + element.getShortName();
-                        columnAdded = false;
-                    } else
-                    {
-                        columnDefinition += " drop column " + element.getShortName();
-                    }
-                    System.out.println( " element = " + element.getShortName() );
-                    if ( j < size )
-                    {
-                        columnDefinition += " ,";
-                        j++;
-                    }
+                    columnDefinition += " , drop column " + element.getShortName();
+                    columnAdded = false;
+                } 
+                else
+                {
+                    columnDefinition += " drop column " + element.getShortName();
                 }
-
-                System.out.println( " columnDefinition = " + columnDefinition );
+                System.out.println( " element = " + element.getShortName() );
+                if ( j < size )
+                {
+                    columnDefinition += " ,";
+                    j++;
+                }
             }
+
+            System.out.println( " columnDefinition = " + columnDefinition );
         }
         System.out.println( columnDefinition );
 
@@ -341,9 +338,9 @@ public class MySQLDataBaseManager
             rowUpdated = true;
             statement.close();
 
-        } catch ( SQLException e )
+        } 
+        catch ( SQLException e )
         {
-
             rowUpdated = false;
             e.printStackTrace();
         }
@@ -351,34 +348,32 @@ public class MySQLDataBaseManager
         return rowUpdated;
     }
 
+    // -------------------------------------------------------------------------
+    // Get LineListDataValues from Department table by source and period
+    // -------------------------------------------------------------------------    
     public List<LineListDataValue> getFromLLTable( String tableName, Source source, Period period )
     {
         String columnDefinition = "";
-        //Statement statement = null;
-
-        // creating map of element and its values
+        
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
-
+        
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
-        // LineListDataValue llDataValue = new LineListDataValue();
+
         if ( period != null && source != null )
         {
-            columnDefinition += "select * from " + tableName + " where periodid = " + period.getId() + " and sourceid = " + source.getId() + " order by recordnumber";
+            columnDefinition += "SELECT * FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId() + " ORDER BY recordnumber";
 
             Collection<LineListElement> elementsCollection = new ArrayList<LineListElement>();
 
             elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
             LineListElement element;
+            
             String name = "";
 
             try
             {
-                //Connection connection = jdbcTemplate.getDataSource().getConnection();
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                //ResultSet result = statement.executeQuery( columnDefinition );
                 SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
-                System.out.println( columnDefinition );
 
                 if ( result != null )
                 {
@@ -388,28 +383,24 @@ public class MySQLDataBaseManager
                     {
                         LineListDataValue llDataValue = new LineListDataValue();
                         llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
-                        Iterator it1 = elementsCollection.iterator();
+                        Iterator<LineListElement> it1 = elementsCollection.iterator();
                         while ( it1.hasNext() )
                         {
                             element = (LineListElement) it1.next();
                             name = element.getShortName() + ":" + result.getInt( "recordnumber" );
+                            
                             if ( element.getDataType().equalsIgnoreCase( "string" ) )
                             {
                                 llElementValuesMap.put( name, result.getString( element.getShortName() ) );
-                            } else
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "date" ) )
                             {
-                                if ( element.getDataType().equalsIgnoreCase( "date" ) )
-                                {
-                                    llElementValuesMap.put( name, result.getDate( element.getShortName() ).toString() );
-                                } else
-                                {
-                                    if ( element.getDataType().equalsIgnoreCase( "int" ) )
-                                    {
-                                        llElementValuesMap.put( name, Integer.toString( result.getInt( element.getShortName() ) ) );
-                                    }
-                                }
+                                llElementValuesMap.put( name, result.getDate( element.getShortName() ).toString() );
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "int" ) )
+                            {
+                                llElementValuesMap.put( name, Integer.toString( result.getInt( element.getShortName() ) ) );
                             }
-                            //System.out.println("Key = "+name+ "Value = "+llElementValuesMap.get(name));
                         }
 
                         llDataValue.setLineListValues( llElementValuesMap );
@@ -417,11 +408,9 @@ public class MySQLDataBaseManager
                         llDataValue.setSource( source );
                         llDataValues.add( llDataValue );
                     }
-
                 }
-                //statement.close();
-
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
             }
@@ -429,19 +418,20 @@ public class MySQLDataBaseManager
         return llDataValues;
     }
 
+    // -------------------------------------------------------------------------
+    // Get LineListDataValues from Department table by source and period and linelist element
+    // -------------------------------------------------------------------------    
     public List<LineListDataValue> getLLValuesByLLElementValue( String tableName, String llElementName, String llElementValue, Source source, Period period )
     {
         String columnDefinition = "";
-        //Statement statement = null;
 
-        // creating map of element and its values
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
 
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
-        // LineListDataValue llDataValue = new LineListDataValue();
+
         if ( period != null && source != null )
         {
-            columnDefinition += "select * from " + tableName + " where periodid = " + period.getId() + " and sourceid = " + source.getId() + " and " + llElementName + " LIKE '" + llElementValue + "' order by recordnumber";
+            columnDefinition += "SELECT * FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId() + " AND " + llElementName + " LIKE '" + llElementValue + "' ORDER BY recordnumber";
 
             System.out.println( columnDefinition );
 
@@ -450,14 +440,12 @@ public class MySQLDataBaseManager
             elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
             LineListElement element;
+            
             String name = "";
 
             try
             {
-               //Connection connection = jdbcTemplate.getDataSource().getConnection();
-               // statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                //ResultSet result = statement.executeQuery( columnDefinition );
-                 SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
+                SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
 
                 if ( result != null )
                 {
@@ -467,7 +455,8 @@ public class MySQLDataBaseManager
                     {
                         LineListDataValue llDataValue = new LineListDataValue();
                         llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
-                        Iterator it1 = elementsCollection.iterator();
+                        
+                        Iterator<LineListElement> it1 = elementsCollection.iterator();
                         while ( it1.hasNext() )
                         {
                             element = (LineListElement) it1.next();
@@ -480,30 +469,26 @@ public class MySQLDataBaseManager
                                     tempString = "";
                                 }
                                 llElementValuesMap.put( name, tempString );
-                            } else
+                            }
+                            else if ( element.getDataType().equalsIgnoreCase( "date" ) )
                             {
-                                if ( element.getDataType().equalsIgnoreCase( "date" ) )
+                                Date tempDate = result.getDate( element.getShortName() );
+                                String tempStr = "";
+                                if ( tempDate != null )
                                 {
-                                    Date tempDate = result.getDate( element.getShortName() );
-                                    String tempStr = "";
-                                    if ( tempDate != null )
-                                    {
-                                        tempStr = tempDate.toString();
-                                    }
-                                    llElementValuesMap.put( name, tempStr );
-                                } else
-                                {
-                                    if ( element.getDataType().equalsIgnoreCase( "int" ) )
-                                    {
-                                        String tempStr = "";
-                                        Integer tempInt = result.getInt( element.getShortName() );
-                                        if ( tempInt != null )
-                                        {
-                                            tempStr = Integer.toString( tempInt );
-                                        }
-                                        llElementValuesMap.put( name, tempStr );
-                                    }
+                                    tempStr = tempDate.toString();
                                 }
+                                llElementValuesMap.put( name, tempStr );
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "int" ) )
+                            {
+                                String tempStr = "";
+                                Integer tempInt = result.getInt( element.getShortName() );
+                                if ( tempInt != null )
+                                {
+                                    tempStr = Integer.toString( tempInt );
+                                }
+                                llElementValuesMap.put( name, tempStr );
                             }
                         }
 
@@ -512,35 +497,31 @@ public class MySQLDataBaseManager
                         llDataValue.setSource( source );
                         llDataValues.add( llDataValue );
                     }
-
                 }
-                //statement.close();
-
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
             }
         }
         return llDataValues;
-
     }
 
+    // -------------------------------------------------------------------------
+    // Get LineListDataValues from Department table filter by source and period and list of linelist elements
+    // -------------------------------------------------------------------------    
     public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, Source source, Period period )
     {
         String columnDefinition = "";
 
-        //Statement statement = null;
-
-        // creating map of element and its values
-        //Map<String, String> llElementValuesMap = new HashMap<String, String>();
-
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
-        // LineListDataValue llDataValue = new LineListDataValue();
+
         if ( period != null && source != null )
         {
-            columnDefinition += "select * from " + tableName + " where periodid = " + period.getId() + " and sourceid = " + source.getId();
+            columnDefinition += "SELECT * FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId();
 
             List<String> llElementNames = new ArrayList<String>( llElementValueMap.keySet() );
+
             Iterator<String> llENamesIterator = llElementNames.iterator();
             while ( llENamesIterator.hasNext() )
             {
@@ -548,23 +529,21 @@ public class MySQLDataBaseManager
 
                 String lleValue = llElementValueMap.get( lleName );
 
-                if ( lleValue.equalsIgnoreCase( "notnull" ) )
+                if( lleValue.equalsIgnoreCase( "notnull" ) )
                 {
                     columnDefinition += " and " + lleName + " IS NOT NULL";
-                } else
+                } 
+                else if( lleValue.equalsIgnoreCase( "null" ) )
                 {
-                    if ( lleValue.equalsIgnoreCase( "null" ) )
-                    {
-                        columnDefinition += " and " + lleName + " IS NULL";
-                    } else
-                    {
-                        columnDefinition += " and " + lleName + " LIKE '" + lleValue + "'";
-                    }
+                    columnDefinition += " and " + lleName + " IS NULL";
+                } 
+                else
+                {
+                    columnDefinition += " and " + lleName + " LIKE '" + lleValue + "'";
                 }
             }
 
-
-            columnDefinition += " order by recordnumber";
+            columnDefinition += " ORDER BY recordnumber";
 
             System.out.println( columnDefinition );
 
@@ -573,15 +552,12 @@ public class MySQLDataBaseManager
             elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
             LineListElement element;
+
             String name = "";
 
             try
             {
-               //Connection connection = jdbcTemplate.getDataSource().getConnection();
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                //ResultSet result = statement.executeQuery( columnDefinition );
                 SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
-                //System.out.println(columnDefinition);
 
                 if ( result != null )
                 {
@@ -592,11 +568,10 @@ public class MySQLDataBaseManager
                         LineListDataValue llDataValue = new LineListDataValue();
                         Map<String, String> llElementValuesMap = new HashMap<String, String>();
                         llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
-                        Iterator it1 = elementsCollection.iterator();
+                        Iterator<LineListElement> it1 = elementsCollection.iterator();
                         while ( it1.hasNext() )
                         {
                             element = (LineListElement) it1.next();
-                            //name = element.getShortName() + ":" + result.getInt( "recordnumber" );
                             name = element.getShortName();
                             if ( element.getDataType().equalsIgnoreCase( "string" ) )
                             {
@@ -606,30 +581,26 @@ public class MySQLDataBaseManager
                                     tempString = "";
                                 }
                                 llElementValuesMap.put( name, tempString );
-                            } else
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "date" ) )
                             {
-                                if ( element.getDataType().equalsIgnoreCase( "date" ) )
+                                Date tempDate = result.getDate( element.getShortName() );
+                                String tempStr = "";
+                                if ( tempDate != null )
                                 {
-                                    Date tempDate = result.getDate( element.getShortName() );
-                                    String tempStr = "";
-                                    if ( tempDate != null )
-                                    {
-                                        tempStr = tempDate.toString();
-                                    }
-                                    llElementValuesMap.put( name, tempStr );
-                                } else
-                                {
-                                    if ( element.getDataType().equalsIgnoreCase( "int" ) )
-                                    {
-                                        String tempStr = "";
-                                        Integer tempInt = result.getInt( element.getShortName() );
-                                        if ( tempInt != null )
-                                        {
-                                            tempStr = Integer.toString( tempInt );
-                                        }
-                                        llElementValuesMap.put( name, tempStr );
-                                    }
+                                    tempStr = tempDate.toString();
                                 }
+                                llElementValuesMap.put( name, tempStr );
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "int" ) )
+                            {
+                                String tempStr = "";
+                                Integer tempInt = result.getInt( element.getShortName() );
+                                if ( tempInt != null )
+                                {
+                                    tempStr = Integer.toString( tempInt );
+                                }
+                                llElementValuesMap.put( name, tempStr );
                             }
                         }
 
@@ -638,32 +609,28 @@ public class MySQLDataBaseManager
                         llDataValue.setSource( source );
                         llDataValues.add( llDataValue );
                     }
-
                 }
-
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
             }
         }
         return llDataValues;
-
     }
     
+    // -------------------------------------------------------------------------
+    // Get LineListDataValues from Department table filter by source and list of linelist elements
+    // -------------------------------------------------------------------------    
     public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String, String> llElementValueMap, Source source )
     {
         String columnDefinition = "";
 
-        //Statement statement = null;
-
-        // creating map of element and its values
-        //Map<String, String> llElementValuesMap = new HashMap<String, String>();
-
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
-        // LineListDataValue llDataValue = new LineListDataValue();
+
         if ( source != null )
         {
-            columnDefinition += "select * from " + tableName + " where sourceid = " + source.getId();
+            columnDefinition += "SELECT * FROM " + tableName + " WHERE sourceid = " + source.getId();
 
             List<String> llElementNames = new ArrayList<String>( llElementValueMap.keySet() );
             Iterator<String> llENamesIterator = llElementNames.iterator();
@@ -676,20 +643,18 @@ public class MySQLDataBaseManager
                 if ( lleValue.equalsIgnoreCase( "notnull" ) )
                 {
                     columnDefinition += " and " + lleName + " IS NOT NULL";
-                } else
+                } 
+                else if ( lleValue.equalsIgnoreCase( "null" ) )
                 {
-                    if ( lleValue.equalsIgnoreCase( "null" ) )
-                    {
-                        columnDefinition += " and " + lleName + " IS NULL";
-                    } else
-                    {
-                        columnDefinition += " and " + lleName + " LIKE '" + lleValue + "'";
-                    }
+                    columnDefinition += " and " + lleName + " IS NULL";
+                } 
+                else
+                {
+                    columnDefinition += " and " + lleName + " LIKE '" + lleValue + "'";
                 }
             }
 
-
-            columnDefinition += " order by recordnumber";
+            columnDefinition += " ORDER BY recordnumber";
 
             System.out.println( columnDefinition );
 
@@ -698,15 +663,12 @@ public class MySQLDataBaseManager
             elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
             LineListElement element;
+
             String name = "";
 
             try
             {
-               //Connection connection = jdbcTemplate.getDataSource().getConnection();
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                //ResultSet result = statement.executeQuery( columnDefinition );
                 SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
-                //System.out.println(columnDefinition);
 
                 if ( result != null )
                 {
@@ -717,11 +679,10 @@ public class MySQLDataBaseManager
                         LineListDataValue llDataValue = new LineListDataValue();
                         Map<String, String> llElementValuesMap = new HashMap<String, String>();
                         llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
-                        Iterator it1 = elementsCollection.iterator();
+                        Iterator<LineListElement> it1 = elementsCollection.iterator();
                         while ( it1.hasNext() )
                         {
                             element = (LineListElement) it1.next();
-                            //name = element.getShortName() + ":" + result.getInt( "recordnumber" );
                             name = element.getShortName();
                             if ( element.getDataType().equalsIgnoreCase( "string" ) )
                             {
@@ -731,30 +692,26 @@ public class MySQLDataBaseManager
                                     tempString = "";
                                 }
                                 llElementValuesMap.put( name, tempString );
-                            } else
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "date" ) )
                             {
-                                if ( element.getDataType().equalsIgnoreCase( "date" ) )
+                                Date tempDate = result.getDate( element.getShortName() );
+                                String tempStr = "";
+                                if ( tempDate != null )
                                 {
-                                    Date tempDate = result.getDate( element.getShortName() );
-                                    String tempStr = "";
-                                    if ( tempDate != null )
-                                    {
-                                        tempStr = tempDate.toString();
-                                    }
-                                    llElementValuesMap.put( name, tempStr );
-                                } else
-                                {
-                                    if ( element.getDataType().equalsIgnoreCase( "int" ) )
-                                    {
-                                        String tempStr = "";
-                                        Integer tempInt = result.getInt( element.getShortName() );
-                                        if ( tempInt != null )
-                                        {
-                                            tempStr = Integer.toString( tempInt );
-                                        }
-                                        llElementValuesMap.put( name, tempStr );
-                                    }
+                                    tempStr = tempDate.toString();
                                 }
+                                llElementValuesMap.put( name, tempStr );
+                            } 
+                            else if ( element.getDataType().equalsIgnoreCase( "int" ) )
+                            {
+                                String tempStr = "";
+                                Integer tempInt = result.getInt( element.getShortName() );
+                                if ( tempInt != null )
+                                {
+                                    tempStr = Integer.toString( tempInt );
+                                }
+                                llElementValuesMap.put( name, tempStr );
                             }
                         }
 
@@ -762,25 +719,26 @@ public class MySQLDataBaseManager
                         llDataValue.setSource( source );
                         llDataValues.add( llDataValue );
                     }
-
                 }
-
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
             }
         }
+        
         return llDataValues;
-
     }
 
+    // -------------------------------------------------------------------------
+    // Get LineListDataValueCount from Department table filter by source and list of linelist elements
+    // -------------------------------------------------------------------------    
     public int getLLValueCountByLLElements( String tableName, Map<String, String> llElementValueMap, Source source )
     {
         String columnDefinition = "";
         int noOfRows = 0;
         if ( source != null )
         {
-            //columnDefinition += "SELECT COUNT(*) FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId();
             columnDefinition += "SELECT COUNT(*) FROM " + tableName + " WHERE sourceid = " + source.getId();
 
             List<String> llElementNames = new ArrayList<String>( llElementValueMap.keySet() );
@@ -794,18 +752,18 @@ public class MySQLDataBaseManager
                 if ( lleValue.equalsIgnoreCase( "notnull" ) )
                 {
                     columnDefinition += " AND " + lleName + " IS NOT NULL";
-                } else
+                } 
+                else if ( lleValue.equalsIgnoreCase( "null" ) )
                 {
-                    if ( lleValue.equalsIgnoreCase( "null" ) )
-                    {
-                        columnDefinition += " AND " + lleName + " IS NULL";
-                    } else
-                    {
-                        columnDefinition += " AND " + lleName + " LIKE '" + lleValue + "'";
-                    }
+                    columnDefinition += " AND " + lleName + " IS NULL";
+                } 
+                else
+                {
+                    columnDefinition += " AND " + lleName + " LIKE '" + lleValue + "'";
                 }
             }
-            columnDefinition += " order by recordnumber";
+
+            columnDefinition += " ORDER BY recordnumber";
             System.out.println( columnDefinition );
 
             try
@@ -825,22 +783,20 @@ public class MySQLDataBaseManager
         return noOfRows;
     }
 
-    
-    
-    
+    // -------------------------------------------------------------------------
+    // Get LineListDataValues from Department table sort by line list element
+    // -------------------------------------------------------------------------    
     public List<LineListDataValue> getLLValuesSortBy( String tableName, String sortBy, Source source, Period period )
     {
         String columnDefinition = "";
-        //Statement statement = null;
 
-        // creating map of element and its values
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
 
         List<LineListDataValue> llDataValues = new ArrayList<LineListDataValue>();
-        // LineListDataValue llDataValue = new LineListDataValue();
+
         if ( period != null && source != null )
         {
-            columnDefinition += "select * from " + tableName + " where periodid = " + period.getId() + " and sourceid = " + source.getId() + " order by " + sortBy;
+            columnDefinition += "SELECT * FROM " + tableName + " WHERE periodid = " + period.getId() + " AND sourceid = " + source.getId() + " ORDER by " + sortBy;
 
             System.out.println( columnDefinition );
 
@@ -849,22 +805,16 @@ public class MySQLDataBaseManager
             elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
             LineListElement element;
+
             String name = "";
 
             try
             {
-                //Connection connection = jdbcTemplate.getDataSource().getConnection();
-
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-            	
             	SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( columnDefinition );
-
-                //ResultSet result = statement.executeQuery( columnDefinition );
-                //System.out.println(columnDefinition);
 
                 if ( sqlResultSet != null )
                 {
-                	sqlResultSet.beforeFirst();
+                    sqlResultSet.beforeFirst();
 
                     while ( sqlResultSet.next() )
                     {
@@ -913,10 +863,7 @@ public class MySQLDataBaseManager
                         llDataValue.setSource( source );
                         llDataValues.add( llDataValue );
                     }
-
                 }// while loop end
-                //result.close();
-                //statement.close();
             }// Try block end 
             catch ( Exception e )
             {
@@ -926,7 +873,9 @@ public class MySQLDataBaseManager
         return llDataValues;
     }
 
-    
+    // -------------------------------------------------------------------------
+    // Insert single LineListDataValue into Department table
+    // -------------------------------------------------------------------------        
     public boolean insertSingleLLValueIntoDb( LineListDataValue llDataValue, String tableName )
     {
         boolean updateLLValue = false;
@@ -1007,7 +956,10 @@ public class MySQLDataBaseManager
         return updateLLValue;
     }
 
-    
+
+    // -------------------------------------------------------------------------
+    // Insert List of LineListDataValues into Department table
+    // -------------------------------------------------------------------------        
     public boolean insertLLValueIntoDb( List<LineListDataValue> llDataValuesList, String tableName )
     {
         boolean updateLLValue = false;
@@ -1016,15 +968,11 @@ public class MySQLDataBaseManager
 
         for ( LineListDataValue llDataValue : llDataValuesList )
         {
-
-            columnDefinition = "insert into " + tableName + " (periodid,sourceid,storedby,lastupdated,";
-            // get periodid from llDataValue
+            columnDefinition = "INSERT INTO " + tableName + " (periodid,sourceid,storedby,lastupdated,";
 
             Period period = llDataValue.getPeriod();
 
             Source source = llDataValue.getSource();
-
-            // System.out.println(period.getId() + " " + source.getId());
 
             Map<String, String> elementValues = llDataValue.getLineListValues();
             Set<String> elements = elementValues.keySet();
@@ -1037,17 +985,16 @@ public class MySQLDataBaseManager
             {
                 Date d = new Date();
                 t = d.getTime();
-            } else
+            } 
+            else
             {
                 t = today.getTime();
             }
 
             java.sql.Date date = new java.sql.Date( t );
-            String values = " values (" + period.getId() + "," + source.getId() + ",'" + llDataValue.getStoredBy() + "','" + date + "',";
+            String values = " VALUES (" + period.getId() + "," + source.getId() + ",'" + llDataValue.getStoredBy() + "','" + date + "',";
             for ( String elementName : elements )
             {
-
-                // String name = elementName.replaceAll(" ", "_");
                 LineListElement lineListElement = lineListService.getLineListElementByShortName( elementName );
                 if ( i == size )
                 {
@@ -1061,7 +1008,8 @@ public class MySQLDataBaseManager
                     {
                         values += "'" + elementValues.get( elementName ) + "'";
                     }
-                } else
+                } 
+                else
                 {
                     columnDefinition += elementName + ",";
                     if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
@@ -1080,42 +1028,35 @@ public class MySQLDataBaseManager
 
             try
             {
-                //Connection connection = jdbcTemplate.getDataSource().getConnection();
-                //preparedStatement = connection.prepareStatement( columnDefinition );
-                //updateLLValue = preparedStatement.execute();
                 int sqlResult = jdbcTemplate.update( columnDefinition );
                 updateLLValue = true;
                 columnDefinition = "";
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
                 updateLLValue = false;
             }
-
         }
 
         return updateLLValue;
-
     }
 
+    // -------------------------------------------------------------------------
+    // Remove single LineListDataValue from Department table by record number
+    // -------------------------------------------------------------------------        
     public boolean removeLLRecord( int recordId, String tableName )
     {
         boolean valueDeleted = false;
 
-        String columnDefinition = " delete from " + tableName + " where recordnumber = " + recordId;
-
-        PreparedStatement preparedStatement = null;
+        String columnDefinition = "DELETE FROM " + tableName + " WHERE recordnumber = " + recordId;
 
         try
         {
-            //Connection connection = jdbcTemplate.getDataSource().getConnection();
-            //preparedStatement = connection.prepareStatement( columnDefinition );
-           // valueDeleted = preparedStatement.execute();
             int sqlResult = jdbcTemplate.update( columnDefinition );
             valueDeleted = true;
-            columnDefinition = "";
-            //preparedStatement.close();
-        } catch ( Exception e )
+        } 
+        catch ( Exception e )
         {
             e.printStackTrace();
             valueDeleted = false;
@@ -1124,40 +1065,45 @@ public class MySQLDataBaseManager
         return valueDeleted;
     }
 
+    // -------------------------------------------------------------------------
+    // Update LineListDataValue List for Department table
+    // -------------------------------------------------------------------------        
     public boolean updateLLValue( List<LineListDataValue> llDataValuesList, String tableName )
     {
         boolean valueUpdated = false;
 
         String columnDefinition = "";
 
-        PreparedStatement preparedStatement = null;
-
         for ( LineListDataValue llDataValue : llDataValuesList )
         {
-
-            // UPDATE table_name SET column1=value, column2=value2,... WHERE
-            // some_column=some_value
-            columnDefinition = "update " + tableName + " set ";
-            // get periodid from llDataValue
+            columnDefinition = "UPDATE " + tableName + " SET ";
 
             Map<String, String> elementValues = llDataValue.getLineListValues();
-            // System.out.println("size of map = "+elementValues.size());
+
             Set<String> elements = elementValues.keySet();
-            System.out.println("In Update recordnumber = " + llDataValue.getRecordNumber());
+
             int size = elements.size();
-            //System.out.println("size = "+size);
             int i = 1;
             java.util.Date today = llDataValue.getTimestamp();
-            long t = today.getTime();
+            long t;
+            if ( today == null )
+            {
+                Date d = new Date();
+                t = d.getTime();
+            } 
+            else
+            {
+                t = today.getTime();
+            }
+
             java.sql.Date date = new java.sql.Date( t );
-            String whereClause = " where recordnumber = " + llDataValue.getRecordNumber();
+
+            String whereClause = " WHERE recordnumber = " + llDataValue.getRecordNumber();
             for ( String elementName : elements )
             {
-                //System.out.println( "elementName = " + elementName );
                 LineListElement lineListElement = lineListService.getLineListElementByShortName( elementName );
                 if ( i == size )
                 {
-
                     if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
                     {
                         try
@@ -1165,34 +1111,37 @@ public class MySQLDataBaseManager
                             columnDefinition += elementName + " = " + Integer.parseInt( elementValues.get( elementName ) ) + ",";
                             llDataValue.getSource().getId();
                             columnDefinition += "periodid = '" + llDataValue.getPeriod().getId() + "', sourceid = '" + llDataValue.getSource().getId() + "', storedby = '" + llDataValue.getStoredBy() + "', lastupdated = '" + date + "' ";
-
-                        } catch ( Exception e )
+                        } 
+                        catch ( Exception e )
                         {
-                            JOptionPane.showMessageDialog( null, elementName + " cannot be null" );
+                            System.out.println( "Exception:"+e.getMessage() );
                         }
-                    } else
+                    } 
+                    else
                     {
                         columnDefinition += elementName + " = '" + elementValues.get( elementName ) + "'" + ",";
                         columnDefinition += "periodid = '" + llDataValue.getPeriod().getId() + "', sourceid = '" + llDataValue.getSource().getId() + "', storedby = '" + llDataValue.getStoredBy() + "', lastupdated = '" + date + "' ";
                     }
-                } else
+                } 
+                else
                 {
                     if ( lineListElement.getDataType().equalsIgnoreCase( "int" ) )
                     {
                         try
                         {
                             columnDefinition += elementName + " = " + Integer.parseInt( elementValues.get( elementName ) ) + ",";
-                        } catch ( Exception e )
+                        } 
+                        catch ( Exception e )
                         {
-                            JOptionPane.showMessageDialog( null, elementName + " cannot be null " );
+                            System.out.println( "Exception:"+e.getMessage() );
                         }
-                    } else
+                    } 
+                    else
                     {
                         columnDefinition += elementName + " = '" + elementValues.get( elementName ) + "'" + ",";
                     }
                     i++;
                 }
-
             }
 
             columnDefinition += whereClause;
@@ -1200,26 +1149,23 @@ public class MySQLDataBaseManager
 
             try
             {
-                //Connection connection = jdbcTemplate.getDataSource().getConnection();
-
-                //preparedStatement = connection.prepareStatement( columnDefinition );
                 int sqlResult = jdbcTemplate.update( columnDefinition );
                 valueUpdated = true;
-                //valueUpdated = preparedStatement.execute();
                 columnDefinition = "";
-                //preparedStatement.close();
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
                 valueUpdated = false;
             }
-
         }
 
         return valueUpdated;
     }
 
-    
+    // -------------------------------------------------------------------------
+    // Update LineListDataValue List for Department table
+    // -------------------------------------------------------------------------        
     public boolean updateSingleLLValue( LineListDataValue llDataValue, String tableName )
     {
         boolean valueUpdated = false;
@@ -1234,8 +1180,19 @@ public class MySQLDataBaseManager
         System.out.println("In Update recordnumber = " + llDataValue.getRecordNumber());
         int size = elements.size();
         int i = 1;
+        
         java.util.Date today = llDataValue.getTimestamp();
-        long t = today.getTime();
+        long t;
+        if ( today == null )
+        {
+            Date d = new Date();
+            t = d.getTime();
+        } 
+        else
+        {
+            t = today.getTime();
+        }
+
         java.sql.Date date = new java.sql.Date( t );
         String whereClause = " WHERE recordnumber = " + llDataValue.getRecordNumber();
         for ( String elementName : elements )
@@ -1250,7 +1207,6 @@ public class MySQLDataBaseManager
                         columnDefinition += elementName + " = " + Integer.parseInt( elementValues.get( elementName ) ) + ",";
                         llDataValue.getSource().getId();
                         columnDefinition += "periodid = '" + llDataValue.getPeriod().getId() + "', sourceid = '" + llDataValue.getSource().getId() + "', storedby = '" + llDataValue.getStoredBy() + "', lastupdated = '" + date + "' ";
-
                     } 
                     catch ( Exception e )
                     {
@@ -1275,7 +1231,8 @@ public class MySQLDataBaseManager
                     {
                         System.out.println( "Exception: "+ e.getMessage() );
                     }
-                } else
+                } 
+                else
                 {
                     columnDefinition += elementName + " = '" + elementValues.get( elementName ) + "'" + ",";
                 }
@@ -1302,12 +1259,13 @@ public class MySQLDataBaseManager
         return valueUpdated;
     }
 
-    
+
+    // -------------------------------------------------------------------------
+    // Get Recent Period from Department table for onChange period type
+    // -------------------------------------------------------------------------        
     public Period getRecentPeriodForOnChangeData( String tableName, String llElementName, String llElementValue, Source source )
     {
         String columnDefinition = "";
-
-        //Statement statement = null;
 
         List<Period> periodList = new ArrayList<Period>();
 
@@ -1319,17 +1277,11 @@ public class MySQLDataBaseManager
 
             try
             {
-                //Connection connection = jdbcTemplate.getDataSource().getConnection();
-
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-
-                //ResultSet result = statement.executeQuery( columnDefinition );
-            	
             	SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( columnDefinition );
 
                 if ( sqlResultSet != null )
                 {
-                	sqlResultSet.beforeFirst();
+                    sqlResultSet.beforeFirst();
 
                     while ( sqlResultSet.next() )
                     {
@@ -1337,13 +1289,9 @@ public class MySQLDataBaseManager
                         Period tempPeriod = periodService.getPeriod( tempPeriodId );
                         periodList.add( tempPeriod );
                     }
-
                 }
-
-                //result.close();
-
-                //statement.close();
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 e.printStackTrace();
             }
@@ -1354,111 +1302,108 @@ public class MySQLDataBaseManager
         if ( periodList != null && periodList.size() > 0 )
         {
             return periodList.get( 0 );
-        } else
+        } 
+        else
         {
             return periodService.getPeriod( 0 );
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Get Linelist Values from Department table by record number
+    // -------------------------------------------------------------------------        
     public LineListDataValue getLLValuesByRecordNumber( String tableName, int recordId )
     {
         String columnDefinition = "";
-        //Statement statement = null;
 
-        // creating map of element and its values
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
 
         LineListDataValue llDataValue = new LineListDataValue();
-        // LineListDataValue llDataValue = new LineListDataValue();
 
-            columnDefinition += "select * from " + tableName + "where recordnumber = "+recordId;
+        columnDefinition += "select * from " + tableName + "where recordnumber = "+recordId;
 
-            System.out.println( columnDefinition );
+        System.out.println( columnDefinition );
 
-            Collection<LineListElement> elementsCollection = new ArrayList<LineListElement>();
+        Collection<LineListElement> elementsCollection = new ArrayList<LineListElement>();
 
-            elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
+        elementsCollection = lineListService.getLineListGroupByShortName( tableName ).getLineListElements();
 
-            LineListElement element;
-            String name = "";
+        LineListElement element;
 
-            try
+        String name = "";
+
+        try
+        {
+            SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
+            if ( result != null )
             {
-               // Connection connection = jdbcTemplate.getDataSource().getConnection();
-                //statement = connection.createStatement( ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                //ResultSet result = statement.executeQuery( columnDefinition );
-                SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );
-                if ( result != null )
+                result.beforeFirst();
+    
+                while ( result.next() )
                 {
-                    result.beforeFirst();
-
-                    while ( result.next() )
+                    llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
+                    Iterator<LineListElement> it1 = elementsCollection.iterator();
+                    while ( it1.hasNext() )
                     {
-                        llDataValue.setRecordNumber( result.getInt( "recordnumber" ) );
-                        Iterator it1 = elementsCollection.iterator();
-                        while ( it1.hasNext() )
+                        element = (LineListElement) it1.next();
+                        name = element.getShortName() + ":" + result.getInt( "recordnumber" );
+                        
+                        if ( element.getDataType().equalsIgnoreCase( "string" ) )
                         {
-                            element = (LineListElement) it1.next();
-                            name = element.getShortName() + ":" + result.getInt( "recordnumber" );
-                            if ( element.getDataType().equalsIgnoreCase( "string" ) )
+                            String tempString = result.getString( element.getShortName() );
+                            if ( tempString == null )
                             {
-                                String tempString = result.getString( element.getShortName() );
-                                if ( tempString == null )
-                                {
-                                    tempString = "";
-                                }
-                                llElementValuesMap.put( name, tempString );
-                            } else
-                            {
-                                if ( element.getDataType().equalsIgnoreCase( "date" ) )
-                                {
-                                    Date tempDate = result.getDate( element.getShortName() );
-                                    String tempStr = "";
-                                    if ( tempDate != null )
-                                    {
-                                        tempStr = tempDate.toString();
-                                    }
-                                    llElementValuesMap.put( name, tempStr );
-                                } else
-                                {
-                                    if ( element.getDataType().equalsIgnoreCase( "int" ) )
-                                    {
-                                        String tempStr = "";
-                                        Integer tempInt = result.getInt( element.getShortName() );
-                                        if ( tempInt != null )
-                                        {
-                                            tempStr = Integer.toString( tempInt );
-                                        }
-                                        llElementValuesMap.put( name, tempStr );
-                                    }
-                                }
+                                tempString = "";
                             }
+                            llElementValuesMap.put( name, tempString );
+                        } 
+                        else if ( element.getDataType().equalsIgnoreCase( "date" ) )
+                        {
+                            Date tempDate = result.getDate( element.getShortName() );
+                            String tempStr = "";
+                            if ( tempDate != null )
+                            {
+                                tempStr = tempDate.toString();
+                            }
+                            llElementValuesMap.put( name, tempStr );
+                        } 
+                        else if ( element.getDataType().equalsIgnoreCase( "int" ) )
+                        {
+                            String tempStr = "";
+                            Integer tempInt = result.getInt( element.getShortName() );
+                            if ( tempInt != null )
+                            {
+                                tempStr = Integer.toString( tempInt );
+                            }
+                            llElementValuesMap.put( name, tempStr );
                         }
-
-                        llDataValue.setLineListValues( llElementValuesMap );
-                        llDataValue.setPeriod( periodService.getPeriod( result.getInt( "periodid" )) );
-                        llDataValue.setSource( organisationUnitService.getOrganisationUnit( result.getInt( "sourceid" )) );
                     }
-
+    
+                    llDataValue.setLineListValues( llElementValuesMap );
+                    llDataValue.setPeriod( periodService.getPeriod( result.getInt( "periodid" )) );
+                    llDataValue.setSource( organisationUnitService.getOrganisationUnit( result.getInt( "sourceid" )) );
                 }
-                //statement.close();
-            } catch ( Exception e )
-            {
-                e.printStackTrace();
             }
-        
+        } 
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    
         return llDataValue;
-
     }
 
+    // -------------------------------------------------------------------------
+    // Get Period from Department table by record number
+    // -------------------------------------------------------------------------        
     public Period getPeriodByRecordNumber( String tableName, int recordId )
     {
         String columnDefinition = "";
 
         columnDefinition += "select periodid from " + tableName + " where recordnumber = "+recordId;
 
-        System.out.println( columnDefinition );
         Period tempPeriod = new Period();
+
         try
         {
             SqlRowSet result = jdbcTemplate.queryForRowSet( columnDefinition );

@@ -1,10 +1,10 @@
 <h2>Linelisting Meta Data</h2>
-  <ul>
-	<li><a href="getLineListOptions.action">Linelist Option</a></li>
-	<li><a href="lineListElements.action">Linelist Element</a></li>
-    <li><a href="getLineListGroups.action">Linelist Group</a></li>
-    <li><a href="getEmployeeList.action">Employee Management</a></li>
-  </ul>
+	<ul>
+		<li><a href="getLineListOptions.action">Linelist Option</a></li>
+		<li><a href="lineListElements.action">Linelist Element</a></li>
+		<li><a href="getLineListGroups.action">Department Management</a></li>
+		<li><a href="getEmployeeList.action">Employee Management</a></li>
+	</ul>
 <h2>Linelisting DataEntry</h2>
 	<ul>
 		<li><a href="select.action">DataEntry</a></li>

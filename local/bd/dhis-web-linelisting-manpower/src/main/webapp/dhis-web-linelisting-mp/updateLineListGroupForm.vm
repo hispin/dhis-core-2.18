@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "edit_line_list_group" )</h3>
+<h3>$i18n.getString( "edit_department" )</h3>
 
 <form id="showUpdateLineListGroupForm" action="updateLineListGroup.action" method="post" onsubmit="return validateUpdateLineListGroup()">
 

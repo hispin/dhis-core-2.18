@@ -15,9 +15,6 @@
 		  <tr>
 			<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
 			<td colspan="5" style="text-align:right">
-<!--
-				<input type="button" value="$i18n.getString( "sort" )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px">
--->				
 				<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='addLineListElementForm.action'" style="width:80px">
 			</td>
 		  </tr>

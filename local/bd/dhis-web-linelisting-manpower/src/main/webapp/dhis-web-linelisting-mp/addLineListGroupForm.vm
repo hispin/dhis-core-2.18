@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "create_new_line_list_group" )</h3>
+<h3>$i18n.getString( "create_new_department" )</h3>
 
 <form id="addLineListGroupElementForm" action="addLineListGroup.action" method="post" onsubmit="return validateAddLineListGroup()">
 
