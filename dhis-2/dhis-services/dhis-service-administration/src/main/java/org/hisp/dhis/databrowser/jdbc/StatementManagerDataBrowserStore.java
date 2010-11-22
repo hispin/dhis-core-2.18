@@ -1,7 +1,5 @@
 package org.hisp.dhis.databrowser.jdbc;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -546,19 +544,6 @@ public class StatementManagerDataBrowserStore
         try
         {
             TimeUtils.start();
-
-            try
-            {
-                FileWriter stream = new FileWriter( "C:\\drill_down.sql" );
-                BufferedWriter out = new BufferedWriter( stream );
-
-                out.write( sqlsbDescentdants.toString() );
-                out.close();
-            }
-            catch ( Exception e )
-            {
-                System.err.println( "COULD NOT WRITE A FILE" );
-            }
 
             ResultSet resultSet = this.getScrollableResult( sqlsbDescentdants.toString(), holder );
 
