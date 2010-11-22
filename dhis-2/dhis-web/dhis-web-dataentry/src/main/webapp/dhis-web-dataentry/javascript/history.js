@@ -162,6 +162,11 @@ function saveMinMaxLimit()
 		$( '#maxSpan' ).html( '' );
 	}
 	
+	if ( window.opener && window.opener.document ) {
+		window.opener.document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].min' ).innerHTML = minValue;
+    	window.opener.document.getElementById( 'value[' + currentDataElementId + ':' + currentOptionComboId + '].max' ).innerHTML = maxValue;
+	}
+	
     var url = 'saveMinMaxLimits.action?organisationUnitId=' + currentOrganisationUnitId + '&dataElementId=' + currentDataElementId + 
     	'&optionComboId=' + currentOptionComboId + '&minLimit=' + minValue + '&maxLimit=' + maxValue;
     
