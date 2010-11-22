@@ -11,14 +11,11 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -26,9 +23,9 @@ import com.opensymphony.xwork2.Action;
 public class GetValidatePostVacantAction
     implements Action
 {
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Dependency
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private SelectedStateManager selectedStateManager;
 
@@ -71,7 +68,7 @@ public class GetValidatePostVacantAction
     {
         this.optionComboService = optionComboService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -79,23 +76,16 @@ public class GetValidatePostVacantAction
         this.periodService = periodService;
     }
 
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Input/Output
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     private String dataValue;
-    
+
     public void setDataValue( String dataValue )
     {
         this.dataValue = dataValue;
     }
-    
+
     private String dataValueMapKey;
 
     public void setDataValueMapKey( String dataValueMapKey )
@@ -109,7 +99,7 @@ public class GetValidatePostVacantAction
     {
         return message;
     }
-    
+
     public String reportingDate;
 
     public void setReportingDate( String reportingDate )
@@ -118,45 +108,47 @@ public class GetValidatePostVacantAction
     }
 
     private String storedBy;
-    
+
     private LineListGroup lineListGroup;
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Action Implementation
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     public String execute()
     {
         OrganisationUnit organisationunit = selectedStateManager.getSelectedOrganisationUnit();
-        
+
         lineListGroup = selectedStateManager.getSelectedLineListGroup();
-        
+
         LineListOption lineListOption = selectedStateManager.getSelectedLineListOption();
-        
+
         String postLineListElementName = lineListGroup.getLineListElements().iterator().next().getShortName();
-        String lastWorkingDateLLElementName  = "lastworkingdate";
+        String lastWorkingDateLLElementName = "lastworkingdate";
         String departmentLineListName = lineListGroup.getName();
-        
+
         // preparing map to filter records from linelist table
         Map<String, String> llElementValueMap = new HashMap<String, String>();
         llElementValueMap.put( postLineListElementName, lineListOption.getName() );
         llElementValueMap.put( lastWorkingDateLLElementName, "null" );
 
-        int recordNo = dataBaseManagerInterface.getLLValueCountByLLElements( departmentLineListName, llElementValueMap, organisationunit );
-        System.out .println("The Entered Value is: " + dataValue + "Column name is: " + postLineListElementName );
-        
+        int recordNo = dataBaseManagerInterface.getLLValueCountByLLElements( departmentLineListName, llElementValueMap,
+            organisationunit );
+        System.out.println( "The Entered Value is: " + dataValue + "Column name is: " + postLineListElementName );
+
         int input = Integer.parseInt( dataValue );
 
-        if( input > recordNo )
+        if ( input > recordNo )
         {
-            message = "Number of Sanctioned Position is " + input + " And Number of Filled Position is " + recordNo + "\nDo you want to Add ?";
+            message = "Number of Sanctioned Position is " + input + " And Number of Filled Position is " + recordNo
+                + "\nDo you want to Add ?";
             saveDataValue();
             return SUCCESS;
         }
         else
         {
             message = "Number of Filled Position is equal to Number Sanctioned Post";
-            
+
             return INPUT;
         }
     }
@@ -165,7 +157,6 @@ public class GetValidatePostVacantAction
     {
         OrganisationUnit organisationunit = selectedStateManager.getSelectedOrganisationUnit();
 
-        //Period historyPeriod = getHistoryPeriod();
         Period period = periodService.getPeriod( 0 );
 
         storedBy = currentUserService.getCurrentUsername();
@@ -179,7 +170,7 @@ public class GetValidatePostVacantAction
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         DataElementCategoryOptionCombo optionCombo = optionComboService
-        .getDataElementCategoryOptionCombo( optionComboId );
+            .getDataElementCategoryOptionCombo( optionComboId );
 
         if ( dataValue != null && dataValue.trim().length() == 0 )
         {
@@ -201,8 +192,8 @@ public class GetValidatePostVacantAction
         {
             if ( dataValue != null )
             {
-                dataValueObj = new DataValue( dataElement, period, organisationunit, dataValue, storedBy, new Date(), null,
-                    optionCombo );
+                dataValueObj = new DataValue( dataElement, period, organisationunit, dataValue, storedBy, new Date(),
+                    null, optionCombo );
                 dataValueService.addDataValue( dataValueObj );
             }
         }
@@ -214,60 +205,6 @@ public class GetValidatePostVacantAction
 
             dataValueService.updateDataValue( dataValueObj );
         }
-    }
-
-    private Period getHistoryPeriod( )
-    {
-        //lineListGroup = selectedStateManager.getSelectedLineListGroup();
-        Date historyDate = format.parseDate( reportingDate );
-        System.out.println("Report Date is :::::::" + reportingDate );
-        
-        Period period;
-        period = periodService.getPeriod( 0 );
-        Period historyPeriod;
-        
-
-        if ( lineListGroup != null && lineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) )
-        {
-            PeriodType dailyPeriodType = new DailyPeriodType();
-            historyPeriod = dailyPeriodType.createPeriod( historyDate );
-            
-            System.out.println( reportingDate + " : " + historyPeriod );
-            if ( historyPeriod == null )
-            {
-                System.out.println( "historyPeriod is null" );
-            }
-            historyPeriod = reloadPeriodForceAdd( historyPeriod );
-        }
-        else
-        {
-            period = selectedStateManager.getSelectedPeriod();
-
-            period = reloadPeriodForceAdd( period );
-
-            historyPeriod = period;
-        }
-        
-        return historyPeriod;
-    }
-    
-    private final Period reloadPeriod( Period period )
-    {
-        return periodService.getPeriod( period.getStartDate(), period.getEndDate(), period.getPeriodType() );
-    }
-
-    private final Period reloadPeriodForceAdd( Period period )
-    {
-        Period storedPeriod = reloadPeriod( period );
-
-        if ( storedPeriod == null )
-        {
-            periodService.addPeriod( period );
-
-            return period;
-        }
-
-        return storedPeriod;
     }
 
 }

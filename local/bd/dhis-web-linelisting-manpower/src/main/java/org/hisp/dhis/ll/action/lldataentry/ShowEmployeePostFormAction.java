@@ -135,10 +135,8 @@ implements Action
         lineListElements.remove( 0 );
         
         // Hardcoding to remove lastWorkingDate and reasonWhyLeft
-        
         lineListElements.remove( lineListElements.size()-1 );
         lineListElements.remove( lineListElements.size()-1 );
-        
         
         linelistGroupName = selectedStateManager.getSelectedLineListGroup().getName();
         linelistOptionName = selectedStateManager.getSelectedLineListOption().getName();

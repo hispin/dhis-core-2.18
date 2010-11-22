@@ -278,17 +278,11 @@ public class SelectAction
 
             return SUCCESS;
         }
-        
 
-        // ---------------------------------------------------------------------
         // Load Options for First LineListElement in the Group
-        // ---------------------------------------------------------------------
         lineListOptions = new ArrayList<LineListOption>( selectedLineListGroup.getLineListElements().iterator().next().getLineListElementOptions() );
 
-        // ---------------------------------------------------------------------
         // Validate selected LineListOption
-        // ---------------------------------------------------------------------
-
         if ( selectedLineListOptionId != null && !selectedLineListOptionId.equalsIgnoreCase( "null" ) )
         {
             selectedLineListOption = lineListService.getLineListOptionByName( selectedLineListOptionId );
@@ -314,10 +308,7 @@ public class SelectAction
             return SUCCESS;
         }
 
-        // ---------------------------------------------------------------------
         // Prepare for multidimensional dataentry
-        // ---------------------------------------------------------------------
-
         int numberOfTotalColumns = 1;
 
         if ( selectedLineListGroup.getLineListElements().size() > 0 )
@@ -331,10 +322,7 @@ public class SelectAction
             }
         }
 
-        // ---------------------------------------------------------------------
         // Generate Periods
-        // ---------------------------------------------------------------------
-
         if ( selectedLineListGroup != null
             && selectedLineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) )
         {
@@ -350,10 +338,7 @@ public class SelectAction
             periods = selectedStateManager.getPeriodList();
         }
 
-        // ---------------------------------------------------------------------
         // Validate selected Period
-        // ---------------------------------------------------------------------
-
         if ( selectedPeriodIndex == null )
         {
             selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
