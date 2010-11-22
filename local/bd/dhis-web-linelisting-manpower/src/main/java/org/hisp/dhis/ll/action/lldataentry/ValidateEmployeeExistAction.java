@@ -7,7 +7,6 @@ import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.linelisting.Employee;
 import org.hisp.dhis.linelisting.EmployeeService;
 import org.hisp.dhis.linelisting.LineListGroup;
-import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.opensymphony.xwork2.Action;
@@ -65,8 +64,6 @@ implements Action
         return message;
     }
     
-    //private String EMPLOYEEEXIST;
-    
     //--------------------------------------------------------------------------
     //Action Implementation
     //--------------------------------------------------------------------------
@@ -80,8 +77,11 @@ implements Action
         String departmentLineListName = lineListGroup.getName();
         
         String pdsCodeColumnName = "pdscode";
+        String lastWorkingDateColumnName  = "lastworkingdate";
+        
         Map<String, String> llElementValueMap = new HashMap<String, String>();
         llElementValueMap.put( pdsCodeColumnName, pdsCode );
+        llElementValueMap.put( lastWorkingDateColumnName, "null" );
 
         if ( employee == null )
         {

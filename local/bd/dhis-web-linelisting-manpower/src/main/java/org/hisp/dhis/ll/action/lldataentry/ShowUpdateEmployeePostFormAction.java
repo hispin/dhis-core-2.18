@@ -92,14 +92,12 @@ implements Action
         return linelistGroupId;
     }
 
-
     //--------------------------------------------------------------------------
     // Action Implementation
     //--------------------------------------------------------------------------
   
     public String execute()
     {
-        System.out.println("Inside UPDATE EMPLOYEE POST FORM:::::::");
         OrganisationUnit orgUnit = selectedStateManager.getSelectedOrganisationUnit();
         LineListGroup llGroup = selectedStateManager.getSelectedLineListGroup();
         lineListElements = new ArrayList<LineListElement>( llGroup.getLineListElements() );
@@ -108,13 +106,12 @@ implements Action
         
         Map<String, String> llDataValueMap = new HashMap<String, String>();
         
-        // HardCoding Columan name
+        // HardCoding Column name
         String pdsCodeColName = "pdscode";
         String lastWorkingDateColumnName  = "lastworkingdate";
         
         llDataValueMap.put( pdsCodeColName, id );
         llDataValueMap.put( lastWorkingDateColumnName, "null" );
-        System.out.println("The entered PDSCODE IS ***************" + id );
         
         llDataValuesList = dataBaseManagerInterface.getLLValuesFilterByLLElements( llGroup.getShortName(), llDataValueMap, orgUnit );
         
@@ -126,12 +123,10 @@ implements Action
             llDataValue = llDataValuesList.get( 0 );
             llDataValuesMap = llDataValue.getLineListValues();
         }
-        System.out.println("::::::::::::" + llDataValuesMap );
         
         linelistGroupName = selectedStateManager.getSelectedLineListGroup().getName();
         linelistOptionName = selectedStateManager.getSelectedLineListOption().getName();
         linelistGroupId = selectedStateManager.getSelectedLineListGroup().getId();
-        
         
         return SUCCESS;
     }

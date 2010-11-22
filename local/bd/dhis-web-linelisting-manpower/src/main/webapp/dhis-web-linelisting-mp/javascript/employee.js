@@ -4,7 +4,7 @@
 
 function removeEmployee( pdsCode, name )
 {
-	removeItem( pdsCode, name, confirm_to_delete_employee, 'removeEmployee.action' );
+	removeItem( pdsCode, name, i18n_confirm_delete, 'removeEmployee.action' );
 }
 
 function showEmployeeDetails( pdsCode )

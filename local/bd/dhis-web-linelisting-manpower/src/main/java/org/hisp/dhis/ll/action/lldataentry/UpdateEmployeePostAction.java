@@ -1,6 +1,5 @@
 package org.hisp.dhis.ll.action.lldataentry;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -149,14 +148,16 @@ public class UpdateEmployeePostAction
         Period historyPeriod = getHistoryPeriod();
 
         Map<String, String> llElementValuesMap = new HashMap<String, String>();
-        LineListDataValue llDataValue = new LineListDataValue();
+        
+        Map<String, String> llDataValueMap = new HashMap<String, String>();
         int i = 0;
         int lineListElementsSize = linelistElements.size() - 1;
         String leftReason = null;
         String pdsCode = "";
+        String pdsCodeColName = "pdscode";
+        String lastWorkingDateColumnName  = "lastworkingdate";
         for ( LineListElement linelistElement : linelistElements )
         {
-            
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
             System.out.println("i="+i+" The Linelist Element value is ::::::::: " + linelistElementValue );
 
@@ -174,40 +175,47 @@ public class UpdateEmployeePostAction
                 i++;
                 continue;
             }
+         
             if ( linelistElementValue != null && linelistElementValue.trim().equals( "" ) )
             {
                 linelistElementValue = "";
             }
+          
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
             i++;
         }
-
         String postColumnId = linelistElements.iterator().next().getShortName();
         llElementValuesMap.put( postColumnId, post );
-        System.out.println( "*********" + postColumnId + " ------ " + post + "**********" );
-
-        // add map in linelist data value
-        llDataValue.setLineListValues( llElementValuesMap );
-
-        // add period and source to row
-        llDataValue.setPeriod( historyPeriod );
-        llDataValue.setSource( organisationUnit );
-
-        // add stored by, timestamp in linelist data value
-        storedBy = currentUserService.getCurrentUsername();
-
-        if ( storedBy == null )
+        
+        llDataValueMap.put( pdsCodeColName, pdsCode );
+        llDataValueMap.put( lastWorkingDateColumnName, "null" );
+        llDataValueMap.put( postColumnId, post );
+        
+        List<LineListDataValue> llDataValueList = dbManagerInterface.getLLValuesFilterByLLElements( department, llDataValueMap, organisationUnit );
+        
+        LineListDataValue llDataValue = new LineListDataValue();
+        
+        if( llDataValueList != null && llDataValueList.size() != 0 )
         {
-            storedBy = "[unknown]";
+            llDataValue = llDataValueList.iterator().next();
+        
+            // add map in linelist data value
+            llDataValue.setLineListValues( llElementValuesMap );
+    
+            // add period and source to row
+            llDataValue.setPeriod( historyPeriod );
+    
+            // add stored by, timestamp in linelist data value
+            storedBy = currentUserService.getCurrentUsername();
+    
+            if ( storedBy == null )
+            {
+                storedBy = "[unknown]";
+            }
+    
+            llDataValue.setStoredBy( storedBy );
         }
-
-        llDataValue.setStoredBy( storedBy );
-        List<LineListDataValue> llDataValuesList = new ArrayList<LineListDataValue>();
-
-        llDataValuesList.add( llDataValue );
-        System.out.println("The values are ::::::::::" + llDataValuesList + " ----------and the table name is  " + department );
-
-        boolean valueUpdated = dbManagerInterface.updateLLValue( llDataValuesList, department );
+        boolean valueUpdated = dbManagerInterface.updateSingleLLValue( llDataValue, department );
 
         if ( valueUpdated )
         {
@@ -218,10 +226,16 @@ public class UpdateEmployeePostAction
         
         System.out.println("The PDSCode is :" + pdsCode + " And LeftReason is :" + leftReason );
         
-        if( employee != null && leftReason == "Transfer Reason" )
+        if( employee != null && leftReason.equalsIgnoreCase( "Transfer Reason" ) )
         {
+            System.out.println("Inside Transfer reason" );
             employee.setIsTransferred( true );
             employeeService.updateEmployee( employee );
+            System.out.println("The value of Employee Transfer is :" + employee.getIsTransferred() );
+        }
+        else
+        {
+            System.out.println("Either Employee Object is null or left reason is different than transfer");
         }
 
         return SUCCESS;

@@ -30,10 +30,8 @@ public class SaveEmplyeePostAction
 {
 
     //--------------------------------------------------------------------------
-    // -
     // Dependencies
     //--------------------------------------------------------------------------
-    // -
 
     private LineListService lineListService;
 
@@ -85,10 +83,9 @@ public class SaveEmplyeePostAction
     }
 
     //--------------------------------------------------------------------------
-    // -
     // Input/Output
     //--------------------------------------------------------------------------
-    // -
+
     private String department;
 
     public void setDepartment( String department )
@@ -163,8 +160,6 @@ public class SaveEmplyeePostAction
     {
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        System.out.println( "GroupId id :::::" + groupid );
-
         Collection<LineListElement> linelistElements = lineListService.getLineListGroup( groupid )
             .getLineListElements();
 
@@ -187,14 +182,10 @@ public class SaveEmplyeePostAction
             String linelistElementValue = request.getParameter( linelistElement.getShortName() );
 
             // Hardcoding to get PDSCode of Employee
-
             if ( i == 0 )
             {
                 pdsCode = linelistElementValue;
             }
-
-            System.out.println( "Linelist Element name is :" + linelistElement.getShortName()
-                + " And Linlelist Value is:" + linelistElementValue );
 
             if ( linelistElementValue == null )
             {
@@ -205,6 +196,7 @@ public class SaveEmplyeePostAction
             {
                 linelistElementValue = "";
             }
+
             llElementValuesMap.put( linelistElement.getShortName(), linelistElementValue );
             i++;
         }
@@ -299,5 +291,4 @@ public class SaveEmplyeePostAction
 
         return storedPeriod;
     }
-
 }

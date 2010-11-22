@@ -35,6 +35,8 @@ public interface DataBaseManagerInterface
 
     public boolean updateLLValue( List<LineListDataValue> llDataValuesList, String tableName );
     
+    public boolean updateSingleLLValue( LineListDataValue llDataValue, String tableName );
+    
     public int getLLValueCountByLLElements( String tablename, Map<String,String> llElementValueMap, Source source );
     
     public List<LineListDataValue> getLLValuesFilterByLLElements( String tableName, Map<String,String> llElementValueMap, Source source, Period  period );
