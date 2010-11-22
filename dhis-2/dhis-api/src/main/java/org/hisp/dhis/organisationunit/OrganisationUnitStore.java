@@ -164,5 +164,17 @@ public interface OrganisationUnitStore
      */
     OrganisationUnitLevel getOrganisationUnitLevelByName( String name );
     
+    /**
+     * Gets the number of organisation units.
+     * 
+     * @return the number of units.
+     */
     int getNumberOfOrganisationUnits();
+    
+    /**
+     * Gets the maximum level from the hierarchy.
+     * 
+     * @return the maximum number of level.
+     */
+    int getMaxOfOrganisationUnitLevels();
 }

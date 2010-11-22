@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.hisp.dhis.patient.PatientMobileSetting" table="patientmobilesetting">
+		<id name="id" column="patientmobilesettingid">
+			<generator class="native" />
+		</id>
+		
+		<set name="patientAttributes">
+			<key column="patientmobilesettingid" />
+			<one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
+		</set>
+	</class>
+</hibernate-mapping>

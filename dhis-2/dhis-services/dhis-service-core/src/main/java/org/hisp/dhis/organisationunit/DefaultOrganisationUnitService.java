@@ -562,4 +562,10 @@ public class DefaultOrganisationUnitService
             getUnitsInTheTree( root.getChildren(), unitsInTheTree );
         }
     }
+
+    @Override
+    public int getMaxOfOrganisationUnitLevels()
+    {
+        return organisationUnitStore.getMaxOfOrganisationUnitLevels();
+    }
 }
