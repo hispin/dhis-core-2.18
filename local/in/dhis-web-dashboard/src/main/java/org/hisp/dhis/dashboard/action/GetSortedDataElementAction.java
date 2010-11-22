@@ -1,3 +1,29 @@
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.hisp.dhis.dashboard.action;
 
 import java.util.ArrayList;
@@ -11,20 +37,19 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
-public class GetSortedDataAction
+/**
+ * @author Mithilesh Kumar Thakur
+ * 
+ * @version GetSortedDataElementAction.java Nov 22, 2010 10:37:45 AM
+ */
+public class GetSortedDataElementAction
     implements Action
 {
     double[][] data1;
 
-    double[][] data2;
-
     String[] series1;
 
-    String[] series2;
-
     String[] categories1;
-
-    String[] categories2;
 
     private List<String> headingInfo;
 
@@ -45,23 +70,22 @@ public class GetSortedDataAction
 
         HttpSession session = req.getSession();
         Double[][] objData1 = (Double[][]) session.getAttribute( "data1" );
-        Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
 
         String[] series1S = (String[]) session.getAttribute( "series1" );
-        String[] series2S = (String[]) session.getAttribute( "series2" );
+
         String[] categories1S = (String[]) session.getAttribute( "categories1" );
-        String[] categories2S = (String[]) session.getAttribute( "categories2" );
 
-        initialzeAllLists( series1S, series2S, categories1S, categories2S );
+        // initialzeAllLists(series1S, series2S, categories1S, categories2S);
+        initialzeAllLists( series1S, categories1S );
 
-        if ( objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null
-            || categories2 == null )
+        // if(objData1 == null || objData2 == null || series1 == null || series2
+        // == null || categories1 == null || categories2 == null )
+        if ( objData1 == null || series1 == null || categories1 == null )
             System.out.println( "Session Objects are null" );
         else
             System.out.println( "Session Objects are not null" );
 
         data1 = convertDoubleTodouble( objData1 );
-        data2 = convertDoubleTodouble( objData2 );
 
         if ( chartDisplayOption == null || chartDisplayOption.equalsIgnoreCase( "none" ) )
         {
@@ -117,32 +141,24 @@ public class GetSortedDataAction
         headingInfo.add( "</table>" );
     }
 
-    public void initialzeAllLists( String[] series1S, String[] series2S, String[] categories1S, String[] categories2S )
+    // public void initialzeAllLists(String[]series1S, String[] series2S,
+    // String[] categories1S, String[] categories2S)
+    public void initialzeAllLists( String[] series1S, String[] categories1S )
     {
         int i;
         series1 = new String[series1S.length];
-        series2 = new String[series2S.length];
+        // series2 = new String[series2S.length];
         categories1 = new String[categories1S.length];
-        categories2 = new String[categories2S.length];
+        // categories2 = new String[categories2S.length];
 
         for ( i = 0; i < series1S.length; i++ )
         {
             series1[i] = series1S[i];
         }
 
-        for ( i = 0; i < series2S.length; i++ )
-        {
-            series2[i] = series2S[i];
-        }
-
         for ( i = 0; i < categories1S.length; i++ )
         {
             categories1[i] = categories1S[i];
-        }
-
-        for ( i = 0; i < categories2S.length; i++ )
-        {
-            categories2[i] = categories2S[i];
         }
 
     }
@@ -186,26 +202,6 @@ public class GetSortedDataAction
             }
         }
 
-        for ( int i = 0; i < categories2.length - 1; i++ )
-        {
-            for ( int j = 0; j < categories2.length - 1 - i; j++ )
-            {
-                if ( data2[0][j] > data2[0][j + 1] )
-                {
-                    for ( int k = 0; k < series2.length; k++ )
-                    {
-                        double temp1 = data2[k][j];
-                        data2[k][j] = data2[k][j + 1];
-                        data2[k][j + 1] = temp1;
-                    }
-
-                    String temp2 = categories2[j];
-                    categories2[j] = categories2[j + 1];
-                    categories2[j + 1] = temp2;
-                }
-            }
-        }
-
     }
 
     public void sortByDesscending()
@@ -226,26 +222,6 @@ public class GetSortedDataAction
                     String temp2 = categories1[j];
                     categories1[j] = categories1[j + 1];
                     categories1[j + 1] = temp2;
-                }
-            }
-        }
-
-        for ( int i = 0; i < categories2.length - 1; i++ )
-        {
-            for ( int j = 0; j < categories2.length - 1 - i; j++ )
-            {
-                if ( data2[0][j] < data2[0][j + 1] )
-                {
-                    for ( int k = 0; k < series2.length; k++ )
-                    {
-                        double temp1 = data2[k][j];
-                        data2[k][j] = data2[k][j + 1];
-                        data2[k][j + 1] = temp1;
-                    }
-
-                    String temp2 = categories2[j];
-                    categories2[j] = categories2[j + 1];
-                    categories2[j + 1] = temp2;
                 }
             }
         }
@@ -274,26 +250,7 @@ public class GetSortedDataAction
             }
         }
 
-        for ( int i = 0; i < categories2.length - 1; i++ )
-        {
-            for ( int j = 0; j < categories2.length - 1 - i; j++ )
-            {
-                if ( categories2[j].compareToIgnoreCase( categories2[j + 1] ) > 0 )
-                {
-                    for ( int k = 0; k < series2.length; k++ )
-                    {
-                        double temp1 = data2[k][j];
-                        data2[k][j] = data2[k][j + 1];
-                        data2[k][j + 1] = temp1;
-                    }
-
-                    String temp2 = categories2[j];
-                    categories2[j] = categories2[j + 1];
-                    categories2[j + 1] = temp2;
-                }
-            }
-        }
-
     }
 
 }// class end
+

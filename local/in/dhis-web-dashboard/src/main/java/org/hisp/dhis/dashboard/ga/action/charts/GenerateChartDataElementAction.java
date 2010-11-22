@@ -1216,25 +1216,27 @@ public class GenerateChartDataElementAction implements Action
            
                        int orgGroupCount = 0;
                       // int orgGroupCount1 = 0;
-                       Double aggDataValue = 0.0;
+                      // Double aggDataValue = 0.0;
                        
                        for( OrganisationUnitGroup orgUnitGroup : orgUnitGroupMap.keySet() )
                        {
                           // Double aggDataValue = 0.0;
+                           Double aggDataValue = 0.0;
+                           
                            categories[orgGroupCount] = orgUnitGroup.getName();
                            
                            if( serviceCount == 0 )
                            {
                                chartTitle += orgUnitGroup.getName() + ",";
                            }
-                           Collection<OrganisationUnit> orgUnitGroupMembers = orgUnitGroup.getMembers();
+                           Collection<OrganisationUnit> orgUnitGroupMembers = orgUnitGroupMap.get( orgUnitGroup );
                            if( orgUnitGroupMembers == null || orgUnitGroupMembers.size() == 0 )
                            {
                                data[serviceCount][orgGroupCount] = aggDataValue;
                                orgGroupCount++;
                                continue;
                            }
-                           for( OrganisationUnit orgUnit : orgUnitGroup.getMembers() )
+                           for( OrganisationUnit orgUnit : orgUnitGroupMembers )
                            {
                                
                                int periodCount = 0;

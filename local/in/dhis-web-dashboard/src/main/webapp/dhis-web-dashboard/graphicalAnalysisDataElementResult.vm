@@ -63,7 +63,7 @@ function getSortedList(chartDisplayOptionValue)
     request.setCallbackSuccess( getSortedListReceived );
     //request.send( url );
 
-    var requestString = "getSortedData.action";
+    var requestString = "getSortedDataElement.action";
     var params = "chartDisplayOption=" + chartDisplayOptionValue;
     request.sendAsPost( params );
     request.send( requestString );

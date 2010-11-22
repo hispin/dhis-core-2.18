@@ -142,7 +142,15 @@ public class Vertical3DBarChart
     @SuppressWarnings("deprecation")
     public JFreeChart getChartViewergetChartViewerDataElement( double[][] data1, String[] series1, String[] categories1, String chartTitle, String xAxis_Title, String yAxis_Title )
     {
+/*        System.out.println( "\n\ndataset1 : " + data1.length );
+        System.out.println( "\n\nseries1 : " + series1.length );
+        System.out.println( "\n\ncategories1 : " + categories1.length );
+        System.out.println( "\n\nchartTitle : " + chartTitle );
+        System.out.println( "\n\nxAxis_Title : " + xAxis_Title );
+        System.out.println( "\n\nyAxis_Title : " + yAxis_Title );
+*/        
         DefaultCategoryDataset dataset1 = getDataset( data1, series1, categories1 );
+        
         // create the chart...
         final JFreeChart chart = ChartFactory.createBarChart3D( "", // chart
             // title

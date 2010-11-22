@@ -34,10 +34,10 @@
 
      var chartTypeOptionList = document.getElementById("chartTypeOption");
      var chartTypeOptionValue = chartTypeOptionList.options[ chartTypeOptionList.selectedIndex ].value;   
- 
+    // alert(chartTypeOptionValue);   
      var chartDisplayOptionList = document.getElementById("chartDisplayOption");
      var chartDisplayOptionValue = chartDisplayOptionList.options[ chartDisplayOptionList.selectedIndex ].value;
-  
+    // alert(chartDisplayOptionValue);   
    //  iframeForChart.location.href = "generateChart1.action?currentChart="+chartNamesToView[chartType][indexForChart]+"&chartDisplayOption="+chartDisplayOptionValue;
      
      iframeForChart.location.href = "generateChart1.action?currentChart="+chartTypeOptionValue+"&chartDisplayOption="+chartDisplayOptionValue;
@@ -61,8 +61,9 @@ function getSortedList(chartDisplayOptionValue)
     request.setResponseTypeXML( 'messages' );
     request.setCallbackSuccess( getSortedListReceived );
     //request.send( url );
-
-    var requestString = "getSortedData.action";
+    
+   // alert("inside sorting function");
+    var requestString = "getSortedIndicatorData.action";
     var params = "chartDisplayOption=" + chartDisplayOptionValue;
     request.sendAsPost( params );
     request.send( requestString );
@@ -88,11 +89,11 @@ function getSortedListReceived(xmlObject)
 
 function exportToExcelFunction1( summaryOption )
     {
-        //alert("inside Viw Summary:" + summaryOption );
+        //alert("inside Viw Summary: " + summaryOption );
         var chartDisplayOptionList = document.getElementById("chartDisplayOption");
         var chartDisplayOptionValue = chartDisplayOptionList.options[ chartDisplayOptionList.selectedIndex ].value;
         
-        document.getElementById("exportExcelAnchor1").href="exportDataElementsToExcel.action?viewSummary="+summaryOption+"&chartDisplayOption="+chartDisplayOptionValue;
+        document.getElementById("exportExcelAnchor1").href="exportIndicatorToExcel.action?viewSummary="+summaryOption+"&chartDisplayOption="+chartDisplayOptionValue;
     
     }
  
@@ -111,7 +112,7 @@ function exportToExcelFunction2( summaryOption )
         var chartDisplayOptionList = document.getElementById("chartDisplayOption");
         var chartDisplayOptionValue = chartDisplayOptionList.options[ chartDisplayOptionList.selectedIndex ].value;
         
-        document.getElementById("exportExcelAnchor2").href="exportDataElementsToExcel.action?viewSummary="+summaryOption+"&chartDisplayOption="+chartDisplayOptionValue;
+        document.getElementById("exportExcelAnchor2").href="exportIndicatorToExcel.action?viewSummary="+summaryOption+"&chartDisplayOption="+chartDisplayOptionValue;
     
     }
 
@@ -120,7 +121,7 @@ function exportToExcelFunction2( summaryOption )
     <table>
         <tr>
             <td class="NormalB">
-        #if($selectedButton.equals("ViewSummary"))
+              #if($selectedButton.equals("ViewSummary"))
                       
               <td class="NormalB"><a id="exportExcelAnchor2" name="exportExcelAnchor2" href="#" onclick="javascript:exportToExcelFunction2('yes')" target="_blank">Export To WorkBook</a></td>
               <td class="NormalB">&nbsp;&nbsp;
@@ -131,10 +132,11 @@ function exportToExcelFunction2( summaryOption )
                             <option value="alphabet">Alphabetical</option>
                         </select>
                         &nbsp;&nbsp;
-              <br><br>
+              
              </td>
+    
      </tr>      
-     #else    
+             #else 
      <tr>        
         <td class="NormalB"><a id="exportExcelAnchor1" name="exportExcelAnchor1" href="#" onclick="javascript:exportToExcelFunction1('no')" target="_blank">Export To Excel</a></td>
         <td class="NormalB">&nbsp;&nbsp;<!--<font face="Arial, Helvetica, sans-serif" color="#000000">-->
@@ -154,78 +156,84 @@ function exportToExcelFunction2( summaryOption )
                     </select>
         </td>        
     </tr>            
-   #end 
-</table>             
+        #end 
+    </table>             
 </div> 
 
 <div id="formResult">
-<!-- 
-    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: dotted" bordercolor="#111111" width="100%">                
+<div id="headingInfoId">
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">                
         <tr>
-            <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="2">Service Name</td>              
-                #foreach($xaxisvalue in $xseriesList)
-                    <td class="TableHeadingCellStyles" align="center" style="border-style: dotted; border-width: 1" colspan="3">$xaxisvalue</td>                     
-                #end
-            </tr>
-            <tr>    
-                #foreach($xaxisvalue in $xseriesList)
-                    <td class="TableHeadingCellStyles" align="center" style="border-style: dotted; border-width: 1" >Num</td>
-                    <td class="TableHeadingCellStyles" align="center" style="border-style: dotted; border-width: 1" >Den</td>
-                    <td class="TableHeadingCellStyles" align="center" style="border-style: dotted; border-width: 1" >Val</td>                                        
-                #end                
-            </tr>
-            #set($count1 = 0)                           
-        #foreach($onedataList in $dataList)
-            #set($oneNumList = $numList.get($count1))
-            #set($oneDenList = $denList.get($count1))                    
-            <tr>
-                <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1)</td>
-                    #set($count2 = 0)
-                     #foreach($data in $onedataList)                        
-                         <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$oneNumList.get($count2)</td>
-                         <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$oneDenList.get($count2)</td>
-                         <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$data</td>
-                         #set($count2 = $count2 + 1)                                 
-                     #end
-                     #set($count1 = $count1 + 1)
-            </tr>    
-        #end    
+            <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" rowspan="2"><strong>Indicator Names</strong></td>             
+                     #foreach($xaxisvalue in $indicatorChartResult.categories)
+            <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" colspan="3"><strong>$xaxisvalue</strong></td>                     
+                    #end
+        </tr>
+        <tr>  
+        	        
+                    #foreach($xaxisvalue in $indicatorChartResult.categories)
+                    <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Num</strong></td>
+                    <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
+                    <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td>                                        
+                    #end             
+        </tr>
+                   #set( $numValCimpleteResult = $indicatorChartResult.numDataArray )
+                   #set( $denumValCimpleteResult = $indicatorChartResult.denumDataArray )
+                   #set($count1 = 0)  
+                   #foreach($onedataList in $indicatorChartResult.data )
+                                           
+        <tr>
+                        <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1).name</td>        	
+                         
+                         #set( $numValList = $listTool.get($numValCimpleteResult, $count1) )
+                         #set( $denumValList = $listTool.get($denumValCimpleteResult, $count1) )
+                         #set( $count2 = 0 )                         
+                         #foreach($data in $onedataList) 
+                         	             
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($numValList, $count2)</td>
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$data</td>
+                               
+                          #set( $count2 = $count2 + 1 ) 
+                        #end 
+                    
+        </tr> 
+                 #set( $count1 = $count1 + 1 )    
+               #end  
     </table>
 </div>
--->   
-<!--    #if($selectedButton.equals("ViewSummary"))
+</div>   
+#if($selectedButton.equals("ViewSummary"))
          <br><br>
-     #else-->
-         <br>
+     #else
+    <br>
          <div align="center">
-             <iframe name="iframeForChart" id="iframeForChart" src="generateChart.action?currentChart=Vertical3DBarChart" width="850px" height="550px" scrolling=auto frameborder="0"></iframe>
+             <iframe name="iframeForChart" id="iframeForChart" src="generateChart1.action?currentChart=Vertical3DBarChart" width="850px" height="550px" scrolling=auto frameborder="0"></iframe>
          </div>    
-         <br>
-     #end
+    <br>
+#end 
 </div> 
-<!--    
-         <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: dotted" bordercolor="#111111" width="100%">
-                <tr>
-                        <td class="TableHeadingCellStyles" width="30%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><font color="maroon">Indicator Names</font></td>
-                        <td class="TableHeadingCellStyles" width="30%" colspan="2" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><font color="maroon">Formula</font></td>
-                        <!-- <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><font color="maroon">Numerator DataElements</font></td>
-                        <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><font color="maroon">Denominator DataElements</font></td> -->                    
-                </tr>-->
-<!--                #set($count1 = 0)
-                #foreach($service in $selectedServiceList)
-                <tr>
-                                <td class="TableHeadingCellStyles" width="30%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$service.getName()</td>
-                                <td class="TableHeadingCellStyles" width="25%" align="center" style="border-left-style:dotted; border-left-width:1; border-right-width:0; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><u>$service.getNumeratorDescription()</u><br>$service.getDenominatorDescription()</td>
-                                <td class="TableHeadingCellStyles" width="5%" align="left" style="border-left-style:dotted; border-left-width:0; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">&nbsp;X&nbsp;$service.getIndicatorType().getFactor()</td>
-                                <!-- <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$numeratorDEList.get($count1)</td>
-                                <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$denominatorDEList.get($count1)</td> -->
-               </tr>  -->                                             
-                                 <!--   #set($count1 = $count1 + 1) -->
-                                #end
-         </table>   
- 
-<!--                        
-    <textarea id="testId" rows="10" cols="70" style="display:none">&nbsp;</textarea>   -->                                                                     
-    </form>
->
-    
+   
+        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">
+              <tr>
+                      <td class="TableHeadingCellStyles" width="30%"  align="center" bgcolor="#C0C0C0" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Indicator Names</strong></td>
+                      <td class="TableHeadingCellStyles" width="30%"  align="center"  bgcolor="#C0C0C0" colspan="2" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Formula</strong></td>
+                      <td class="TableHeadingCellStyles" width="20%"  align="center"  bgcolor="#C0C0C0" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Numerator DataElements</strong></td> 
+                      <td class="TableHeadingCellStyles" width="20%"  align="center"  bgcolor="#C0C0C0" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Denominator DataElements</strong></td>                   
+             </tr>
+                    #set($count1 = 0)
+                    #foreach($service in $yseriesList )
+             <tr>
+                      <td class="TableHeadingCellStyles" width="30%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$service.getName()</td>
+                      <td class="TableHeadingCellStyles" width="25%" align="center" style="border-left-style:dotted; border-left-width:1; border-right-width:0; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><u>$service.getNumeratorDescription()</u><br>$service.getDenominatorDescription()</td>
+                      <td class="TableHeadingCellStyles" width="5%"  align="left" style="border-left-style:dotted; border-left-width:0; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">&nbsp;X&nbsp;$service.getIndicatorType().getFactor()</td>
+                      <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$numeratorDEList.get($count1)</td>
+                      <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$denominatorDEList.get($count1)</td>
+             </tr>                                           
+                     #set($count1 = $count1 + 1) 
+                     #end 
+       </table> 
+
+                       
+	<textarea id="testId" rows="10" cols="70" style="display:none">&nbsp;</textarea>                                                                       
+</form>
