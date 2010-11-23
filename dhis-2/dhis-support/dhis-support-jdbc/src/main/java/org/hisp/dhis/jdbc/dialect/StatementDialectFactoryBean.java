@@ -79,9 +79,9 @@ public class StatementDialectFactoryBean
         
         String dialect = hibernateConfiguration.getProperty( KEY_DIALECT );
         
-        this.statementDialect = dialectMap.get( dialect );
+        statementDialect = dialectMap.get( dialect );
         
-        if ( this.statementDialect == null )
+        if ( statementDialect == null )
         {
             throw new RuntimeException( "Unsupported dialect: " + dialect );
         }
@@ -95,11 +95,11 @@ public class StatementDialectFactoryBean
     public StatementDialect getObject()
         throws Exception
     {
-        return this.statementDialect;
+        return statementDialect;
     }
 
     @Override
-    public Class<?> getObjectType()
+    public Class<StatementDialect> getObjectType()
     {
         return StatementDialect.class;
     }

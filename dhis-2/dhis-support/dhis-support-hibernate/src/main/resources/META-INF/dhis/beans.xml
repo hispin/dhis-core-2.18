@@ -53,7 +53,7 @@
   </bean>
 
   <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-    <property name="driverClass" ref="driverClassName"/>
+    <property name="driverClass" ref="driverClass"/>
     <property name="jdbcUrl" ref="url"/>
     <property name="user" ref="username"/>
     <property name="password" ref="password"/>
@@ -63,7 +63,7 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
     
-  <bean id="driverClassName" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
+  <bean id="driverClass" class="org.hisp.dhis.hibernate.ConnectionPropertyFactoryBean">
 	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
     <property name="hibernateProperty" value="hibernate.connection.driver_class"/>
   </bean>

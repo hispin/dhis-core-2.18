@@ -29,9 +29,7 @@ package org.hisp.dhis.jdbc.batchhandler;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.amplecode.quick.StatementDialect;
+import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 
 /**
@@ -45,9 +43,9 @@ public class GenericBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public GenericBatchHandler( DataSource dataSource, StatementDialect dialect )
+    public GenericBatchHandler( JdbcConfiguration config )
     {
-        super( dataSource, dialect, true, true );
+        super( config, true, true );
     }
     
     // -------------------------------------------------------------------------
