@@ -57,7 +57,6 @@ $(document).ready(function(){
 	
 	var visited = byId('visited').value;
 	if(visited == 0 ){
-		byId('visited').value = 1; 
 		byId('searchSpan').style.display = 'none';
 	}else{
 		$("#searchSpan").show();
