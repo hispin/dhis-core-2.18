@@ -171,6 +171,10 @@
       <result name="success" type="outputStreamResult"/>
     </action>
     
+    <action name="getReportDesign" class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction">
+      <result name="success" type="outputStreamResult"/>
+    </action>
+    
     <!-- ReportTable -->
     
     <action name="displayManageTableForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">      
