@@ -177,7 +177,7 @@ function showEmployeePostForm( sancPos, dataValueMapKey )
 	modal:true,
 	overlay:{background:'#000000', opacity:0.1},
 	width: 420,
-    height: 380
+    height: 330
     });
 }
 
