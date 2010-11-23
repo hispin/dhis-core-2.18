@@ -7,54 +7,53 @@ import org.hisp.dhis.linelisting.EmployeeService;
 import com.opensymphony.xwork2.Action;
 
 public class ValidateEmployeeAction
-implements Action
+    implements Action
 {
-	
-	// -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-	private EmployeeService employeeService;
-	
-	public void setEmployeeService (EmployeeService employeeService)
-	{
-		this.employeeService = employeeService;
-	}
-	
-	// -------------------------------------------------------------------------
+    private EmployeeService employeeService;
+
+    public void setEmployeeService( EmployeeService employeeService )
+    {
+        this.employeeService = employeeService;
+    }
+
+    // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-	private String pdscode;
-	
-	public void setPdscode(String pdscode)
-	{
-		this.pdscode = pdscode;
-	}
-	
-	private I18n i18n;
+    private String pdscode;
+
+    public void setPdscode( String pdscode )
+    {
+        this.pdscode = pdscode;
+    }
+
+    private I18n i18n;
 
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
     }
-	
-	private String message;
+
+    private String message;
 
     public String getMessage()
     {
         return message;
     }
-	
-	
-	// -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
-	{
-		
-		if ( pdscode != null )
+    public String execute()
+    {
+
+        if ( pdscode != null )
         {
 
             Employee match = employeeService.getEmployeeByPDSCode( pdscode );
@@ -65,11 +64,11 @@ implements Action
 
                 return ERROR;
             }
-        }  
-		
-		message = "OK";
-		
-		return SUCCESS;
-	}
+        }
+
+        message = "OK";
+
+        return SUCCESS;
+    }
 
 }

@@ -52,7 +52,7 @@ public class GetEmployeeAction
     {
         employee = employeeService.getEmployeeByPDSCode( pdsCode );
 
-        if ( employee == null )
+        if( employee == null )
         {
             message = "The Employee with this PDSCode does not exist. Do you want to add new Employee?";
             return INPUT;
