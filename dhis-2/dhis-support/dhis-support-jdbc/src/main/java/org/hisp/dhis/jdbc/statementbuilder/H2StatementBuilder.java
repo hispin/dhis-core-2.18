@@ -29,7 +29,10 @@ package org.hisp.dhis.jdbc.statementbuilder;
 
 import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -157,31 +160,44 @@ public class H2StatementBuilder
     public String getUpdateDestination( int destDataElementId, int destCategoryOptionComboId,
         int sourceDataElementId, int sourceCategoryOptionComboId )
     {
-        return "UPDATE datavalue AS d1 SET dataelementid=" + destDataElementId + ", categoryoptioncomboid="
-            + destCategoryOptionComboId + " " + "WHERE dataelementid=" + sourceDataElementId
-            + " and categoryoptioncomboid=" + sourceCategoryOptionComboId + " " + "AND NOT EXISTS ( "
-            + "SELECT * FROM datavalue AS d2 " + "WHERE d2.dataelementid=" + destDataElementId + " "
-            + "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " + "AND d1.periodid=d2.periodid "
-            + "AND d1.sourceid=d2.sourceid );";
+        return "UPDATE datavalue AS d1 " 
+            + "SET dataelementid=" + destDataElementId + ", categoryoptioncomboid=" + destCategoryOptionComboId + " " 
+            + "WHERE dataelementid=" + sourceDataElementId + " " 
+            + "AND categoryoptioncomboid=" + sourceCategoryOptionComboId + " " 
+            + "AND NOT EXISTS ( "
+                + "SELECT 1 FROM datavalue AS d2 " 
+                + "WHERE d2.dataelementid=" + destDataElementId + " "
+                + "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " 
+                + "AND d1.periodid=d2.periodid "
+                + "AND d1.sourceid=d2.sourceid );";
 
     }
 
     @Override
     public String getMoveFromSourceToDestination( int destDataElementId, int destCategoryOptionComboId,
         int sourceDataElementId, int sourceCategoryOptionComboId )
-    {
-        return "UPDATE datavalue SET value=d2.value,storedby=d2.storedby,lastupdated=d2.lastupdated,comment=d2.comment,followup=d2.followup "
-            + "FROM datavalue AS d2 "
-            + "WHERE datavalue.periodid=d2.periodid "
-            + "AND datavalue.sourceid=d2.sourceid "
-            + "AND datavalue.lastupdated<d2.lastupdated "
-            + "AND datavalue.dataelementid="
-            + destDataElementId
-            + " AND datavalue.categoryoptioncomboid="
-            + destCategoryOptionComboId
-            + " "
-            + "AND d2.dataelementid="
-            + sourceDataElementId + " AND d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + ";";
+    {        
+//        return "UPDATE datavalue AS d1 " 
+//             + "SET (value,storedby,lastupdated,comment,followup) IN "
+//                + "(SELECT d2.value,d2.storedby,d2.lastupdated,d2.comment,d2.followup " 
+//                + "FROM datavalue AS d2 "
+//                + "WHERE (d1.periodid=d2.periodid) "
+//                + "AND (d1.sourceid=d2.sourceid) "
+//                + "AND (d1.lastupdated<d2.lastupdated) " 
+//                + "AND (d1.dataelementid=" + destDataElementId + ") "
+//                + "AND (d1.categoryoptioncomboid=" + destCategoryOptionComboId + ") "
+//                + "AND (d2.dataelementid=" + sourceDataElementId + ") "
+//                + "AND (d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + "))";
+        System.out.println("hey");
+        return "UPDATE datavalue AS d1 "
+           + "SET value=(SELECT d2.value FROM datavalue AS d2 "
+           + "WHERE (d1.periodid=d2.periodid) "
+           + "AND (d1.sourceid=d2.sourceid) "
+           + "AND (d1.lastupdated<d2.lastupdated) " 
+           + "AND (d1.dataelementid=" + destDataElementId + ") "
+           + "AND (d1.categoryoptioncomboid=" + destCategoryOptionComboId + ") "
+           + "AND (d2.dataelementid=" + sourceDataElementId + ") "
+           + "AND (d2.categoryoptioncomboid=" + sourceCategoryOptionComboId + "))";
     }
     
     public String getStandardDeviation( int dataElementId, int categoryOptionComboId, int organisationUnitId ){
@@ -217,6 +233,29 @@ public class H2StatementBuilder
             "AND dv.sourceid='" + organisationUnitId + "' " +
             "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
             "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
+    }
+    
+    public String getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+        OrganisationUnit organisationUnit, String minValueSql, String maxValueSql, String periodIds )
+    {
+        return  "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " + "'"
+            + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId()
+            + "' AS categoryoptioncomboid, "
+            + "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, "
+            + "( " + minValueSql + " ) AS minvalue, ( " + maxValueSql + " ) AS maxvalue, "
+            + encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, "
+            + encode( organisationUnit.getName() ) + " AS sourcename, "
+            + encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname "
+            + // TODO join?
+            "FROM period AS pe " 
+            + "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " 
+            + "WHERE pe.periodid IN (" + periodIds + ") " 
+            + "AND pe.periodtypeid='" + dataElement.getPeriodType().getId() + "' " 
+            + "AND pe.periodid NOT IN ( " 
+                + "SELECT DISTINCT periodid FROM datavalue " 
+                + "WHERE dataelementid='" + dataElement.getId() + "' "
+                + "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " 
+                + "AND sourceid='" + organisationUnit.getId() + "' )";
     }
     
     public String archiveData( String startDate, String endDate )
