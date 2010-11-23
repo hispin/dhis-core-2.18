@@ -27,9 +27,7 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.sql.DataSource;
-
-import org.amplecode.quick.StatementDialect;
+import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 
@@ -44,9 +42,9 @@ public class AggregatedDataValueBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
     
-    public AggregatedDataValueBatchHandler( DataSource dataSource, StatementDialect dialect )
+    public AggregatedDataValueBatchHandler( JdbcConfiguration config )
     {
-        super( dataSource, dialect, true, true );
+        super( config, true, true );
     }
 
     // -------------------------------------------------------------------------

@@ -27,9 +27,7 @@ package org.hisp.dhis.jdbc.batchhandler;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.sql.DataSource;
-
-import org.amplecode.quick.StatementDialect;
+import org.amplecode.quick.JdbcConfiguration;
 import org.amplecode.quick.batchhandler.AbstractBatchHandler;
 import org.hisp.dhis.dataelement.DataElementGroup;
 
@@ -44,9 +42,9 @@ public class DataElementGroupBatchHandler
     // Constructor
     // -------------------------------------------------------------------------
  
-    public DataElementGroupBatchHandler( DataSource dataSource, StatementDialect dialect )
+    public DataElementGroupBatchHandler( JdbcConfiguration config )
     {
-        super( dataSource, dialect, false, false );
+        super( config, false, false );
     }
 
     // -------------------------------------------------------------------------
