@@ -29,7 +29,10 @@ package org.hisp.dhis.jdbc.statementbuilder;
 
 import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -220,6 +223,29 @@ public class PostgreSQLStatementBuilder
            "AND dv.sourceid='" + organisationUnitId + "' " +
            "AND ( CAST( dv.value AS " + getDoubleColumnType() + " ) < '" + lowerBound + "' " +
            "OR CAST( dv.value AS " + getDoubleColumnType() + " ) > '" + upperBound + "' )";
+    }
+    
+    public String getDeflatedDataValueGaps( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
+        OrganisationUnit organisationUnit, String minValueSql, String maxValueSql, String periodIds )
+    {
+        return  "SELECT '" + dataElement.getId() + "' AS dataelementid, pe.periodid, " + "'"
+            + organisationUnit.getId() + "' AS sourceid, '" + categoryOptionCombo.getId()
+            + "' AS categoryoptioncomboid, "
+            + "'' AS value, '' AS storedby, '1900-01-01' AS lastupdated, '' AS comment, false AS followup, "
+            + "( " + minValueSql + " ) AS minvalue, ( " + maxValueSql + " ) AS maxvalue, "
+            + encode( dataElement.getName() ) + " AS dataelementname, pt.name AS periodtypename, pe.startdate, pe.enddate, "
+            + encode( organisationUnit.getName() ) + " AS sourcename, "
+            + encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname "
+            + // TODO join?
+            "FROM period AS pe " 
+            + "JOIN periodtype AS pt USING (periodtypeid) " 
+            + "WHERE pe.periodid IN (" + periodIds + ") " 
+            + "AND pe.periodtypeid='" + dataElement.getPeriodType().getId() + "' " 
+            + "AND pe.periodid NOT IN ( " 
+                + "SELECT DISTINCT periodid FROM datavalue " 
+                + "WHERE dataelementid='" + dataElement.getId() + "' "
+                + "AND categoryoptioncomboid='" + categoryOptionCombo.getId() + "' " 
+                + "AND sourceid='" + organisationUnit.getId() + "' )";
     }
     
     public String archiveData( String startDate, String endDate )
