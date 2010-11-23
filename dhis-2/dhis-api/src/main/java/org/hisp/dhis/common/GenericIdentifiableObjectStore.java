@@ -27,6 +27,8 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -73,4 +75,39 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the object with the given code.
      */
     T getByCode( String code );
+    
+    /**
+     * Retrieves the objects determined by the given first result and max result.
+     * 
+     * @param first the first result object to return.
+     * @param max the max number of result objects to return. 
+     * @return collection of objects.
+     */
+    Collection<T> getBetween( int first, int max );
+
+    /**
+     * Retrieves the objects determined by the given first result and max result
+     * which name is like the given name.
+     * 
+     * @param the name which result object names must be like.
+     * @param first the first result object to return.
+     * @param max the max number of result objects to return. 
+     * @return collection of objects.
+     */    
+    Collection<T> getBetweenByName( String name, int first, int max );
+    
+    /**
+     * Gets the count of objects.
+     * 
+     * @return the count of objects.
+     */
+    int getCount();
+    
+    /**
+     * Gets the count of objects which name is like the given name.
+     * 
+     * @param name the name which result object names must be like.
+     * @return the count of objects.
+     */
+    int getCountByName( String name );
 }

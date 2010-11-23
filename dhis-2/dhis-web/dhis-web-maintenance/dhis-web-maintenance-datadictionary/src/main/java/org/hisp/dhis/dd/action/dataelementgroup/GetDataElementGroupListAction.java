@@ -81,24 +81,25 @@ public class GetDataElementGroupListAction
 
     public String execute()
     {
-        this.paging = createPaging( dataElementService.getNumberOfDataElementGroups() );
+        this.paging = createPaging( dataElementService.getDataElementGroupCount() );
 
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups( paging.getStartPos(), paging.getPageSize() ) );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
 
         return SUCCESS;
     }
     
     public String searchByName()
     {
-        if(key != null && !key.trim().equals( "" )) {
+        if ( key != null && !key.trim().isEmpty() ) 
+        {   
+            this.paging = createPaging( dataElementService.getDataElementGroupCountByName( key ) );
             
-            this.paging = createPaging( dataElementService.countNumberOfSearchDataElementGroupByName( key ) );
-            
-            dataElementGroups = new ArrayList<DataElementGroup>(dataElementService.searchDataElementGroupByName( key, paging.getStartPos(), paging.getPageSize() ));
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
             
             return SUCCESS;
         }
-        else {
+        else
+        {
             return execute();
         }
     }

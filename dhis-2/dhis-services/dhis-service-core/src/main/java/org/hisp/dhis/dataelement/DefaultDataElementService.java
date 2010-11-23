@@ -358,6 +358,26 @@ public class DefaultDataElementService
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
 
+    public Collection<DataElement> getDataElementsBetween( int first, int max )
+    {
+        return dataElementStore.getDataElementsBetween( first, max );
+    }
+    
+    public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
+    {
+        return dataElementStore.getDataElementsBetweenByName( name, first, max );
+    }
+
+    public int getDataElementCount()
+    {
+        return dataElementStore.getDataElementCount();
+    }
+    
+    public int getDataElementCountByName( String name )
+    {
+        return dataElementStore.getDataElementCountByName( name );
+    }
+    
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------
@@ -576,6 +596,26 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupStore.get( groupId ).getMembers() );
     }
 
+    public Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max )
+    {
+        return dataElementGroupStore.getBetween( first, max );
+    }
+    
+    public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
+    {
+        return dataElementGroupStore.getBetweenByName( name, first, max );
+    }
+
+    public int getDataElementGroupCount()
+    {
+        return dataElementGroupStore.getCount();
+    }
+    
+    public int getDataElementGroupCountByName( String name )
+    {
+        return dataElementGroupStore.getCountByName( name );
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -643,49 +683,5 @@ public class DefaultDataElementService
     public Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements )
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
-    }
-
-    public Collection<DataElement> getAllDataElements( int from, int to )
-    {
-        return dataElementStore.getAllDataElements( from, to );
-    }
-
-    public int getNumberOfDataElements()
-    {
-        return dataElementStore.getNumberOfDataElements();
-    }
-
-    public Collection<DataElement> searchDataElementByName( String key, int from, int to )
-    {
-        return dataElementStore.searchDataElementByName( key, from, to );
-    }
-
-    public int countNumberOfSearchDataElementByName( String key )
-    {
-        return dataElementStore.countNumberOfSearchDataElementByName( key );
-    }
-
-    @Override
-    public Collection<DataElementGroup> getAllDataElementGroups( int from, int to )
-    {
-        return dataElementStore.getAllDataElementGroups( from, to );
-    }
-
-    @Override
-    public int getNumberOfDataElementGroups()
-    {
-        return dataElementStore.getNumberOfDataElementGroups();
-    }
-
-    @Override
-    public Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to )
-    {
-        return dataElementStore.searchDataElementGroupByName( key, from, to );
-    }
-
-    @Override
-    public int countNumberOfSearchDataElementGroupByName( String key )
-    {
-        return dataElementStore.countNumberOfSearchDataElementGroupByName( key );
     }
 }

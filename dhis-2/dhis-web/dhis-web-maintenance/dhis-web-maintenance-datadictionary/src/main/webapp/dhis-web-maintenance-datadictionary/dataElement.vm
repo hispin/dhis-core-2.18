@@ -83,9 +83,7 @@
 				</tbody>
 			</table>
 			<p></p>
-	  		<div class="paging-container">
-				#parse( "/dhis-web-commons/paging/paging.vm" )
-			</div>
+	  		#parse( "/dhis-web-commons/paging/paging.vm" )
 			</div>
 			
 		</td>

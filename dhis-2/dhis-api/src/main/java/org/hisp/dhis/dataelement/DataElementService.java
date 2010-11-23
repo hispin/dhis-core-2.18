@@ -299,6 +299,14 @@ public interface DataElementService
 
     Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
     
+    Collection<DataElement> getDataElementsBetween( int first, int max );
+    
+    Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max );
+    
+    int getDataElementCount();
+    
+    int getDataElementCountByName( String name );
+    
     // -------------------------------------------------------------------------
     // Calculated Data Elements
     // -------------------------------------------------------------------------
@@ -479,6 +487,14 @@ public interface DataElementService
      */
     Collection<DataElement> getDataElementsByZeroIsSignificantAndGroup( boolean zeroIsSignificant, DataElementGroup dataElementGroup );
 
+    Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max );
+    
+    Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max );
+    
+    int getDataElementGroupCount();
+    
+    int getDataElementGroupCountByName( String name );
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -518,19 +534,4 @@ public interface DataElementService
      */
     Collection<DataElementOperand> getAllGeneratedOperands( Collection<DataElement> dataElements );
     
-    int getNumberOfDataElements();
-
-    Collection<DataElement> getAllDataElements( int from, int to );
-
-    Collection<DataElement> searchDataElementByName( String key, int from, int to );
-
-    int countNumberOfSearchDataElementByName( String key );
-
-    Collection<DataElementGroup> getAllDataElementGroups( int from, int to );
-    
-    int getNumberOfDataElementGroups();
-    
-    Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to );
-    
-    int countNumberOfSearchDataElementGroupByName( String key );
 }
