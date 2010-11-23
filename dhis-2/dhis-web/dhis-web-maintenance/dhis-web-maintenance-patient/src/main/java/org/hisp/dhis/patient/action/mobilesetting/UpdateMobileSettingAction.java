@@ -1,8 +1,9 @@
 package org.hisp.dhis.patient.action.mobilesetting;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
@@ -58,13 +59,13 @@ public class UpdateMobileSettingAction implements Action
             PatientMobileSetting setting;
             if(patientMobileSettingService.getCurrentSetting().size()>0){
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
-                Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }else{
                 setting = new PatientMobileSetting();
-                Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
@@ -73,13 +74,13 @@ public class UpdateMobileSettingAction implements Action
             PatientMobileSetting setting;
             if(patientMobileSettingService.getCurrentSetting().size()>0){
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
-                Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }else{
                 setting = new PatientMobileSetting();
-                Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+                List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
@@ -88,7 +89,7 @@ public class UpdateMobileSettingAction implements Action
         return SUCCESS;
     }
     
-    private void fillValues(Set<PatientAttribute> attributes){
+    private void fillValues(List<PatientAttribute> attributes){
         for(String id : selectedList){
             attributes.add( patientAttributeService.getPatientAttribute( Integer.parseInt( id )) );
         }

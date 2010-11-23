@@ -27,6 +27,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Collection;
@@ -60,22 +62,33 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PDFUtils
 {
     public static final int ALIGN_CENTER = PdfPCell.ALIGN_CENTER;
+
     public static final int ALIGN_LEFT = PdfPCell.ALIGN_LEFT;
+
     public static final int ALIGN_RIGHT = PdfPCell.ALIGN_RIGHT;
 
     private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
+
     private static final Font TEXT5 = new Font( Font.HELVETICA, 8, Font.NORMAL );
+
     private static final Font TEXT6 = new Font( Font.HELVETICA, 6, Font.NORMAL );
+
     private static final Font TEXT7 = new Font( Font.HELVETICA, 4, Font.NORMAL );
 
     private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );
 
     private static final Font HEADER1 = new Font( Font.HELVETICA, 20, Font.BOLD );
+
     private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
+
     private static final Font HEADER3 = new Font( Font.HELVETICA, 12, Font.BOLD );
+
     private static final Font HEADER4 = new Font( Font.HELVETICA, 9, Font.BOLD );
+
     private static final Font HEADER5 = new Font( Font.HELVETICA, 8, Font.BOLD );
+
     private static final Font HEADER6 = new Font( Font.HELVETICA, 6, Font.BOLD );
+
     private static final Font HEADER7 = new Font( Font.HELVETICA, 4, Font.BOLD );
 
     public static final String PDF_ARIAL_FONT = "arial.ttf";
@@ -577,7 +590,7 @@ public class PDFUtils
      * 
      * @param dataElementIds the identifier list of Data
      * @param i18n The i18n object
-     * @param format The i18nFormat object 
+     * @param format The i18nFormat object
      * 
      */
     public static void printDataElementFrontPage( Document document, Collection<Integer> dataElementIds, I18n i18n,
@@ -597,7 +610,7 @@ public class PDFUtils
      * @param document The document
      * @param indicatorIds the identifier list of Indicators
      * @param i18n The i18n object
-     * @param format The i18nFormat object 
+     * @param format The i18nFormat object
      * 
      */
     public static void printIndicatorFrontPage( Document document, Collection<Integer> indicatorIds, I18n i18n,
@@ -634,7 +647,7 @@ public class PDFUtils
     /**
      * Writes a "Organization unit hierarchy" title in front of page
      * 
-     * @param document The document 
+     * @param document The document
      * @param unitIds the identifier list of organization units
      * @param i18n The i18n object
      * @param format The i18nFormat object
@@ -657,7 +670,7 @@ public class PDFUtils
      * @param document The document
      * @param unitIds the identifier list of organization units
      * @param i18n The i18n object
-     * @param format The i18nFormat object 
+     * @param format The i18nFormat object
      * 
      */
     public static void printOrganisationUnitFrontPage( Document document, Collection<Integer> unitIds, I18n i18n,
@@ -676,7 +689,7 @@ public class PDFUtils
      * 
      * @param document The document
      * @param i18n The i18n object
-     * @param format The i18nFormat object 
+     * @param format The i18nFormat object
      * 
      */
     public static void printDocumentFrontPage( Document document, I18n i18n, I18nFormat format )
@@ -743,14 +756,21 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
         table.addCell( getTextCell( element.getShortName(), TEXT ) );
 
-        table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-        table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
-
-        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-        table.addCell( getTextCell( element.getCode() ) );
-
-        table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( element.getDescription(), TEXT ) );
+        if ( nullIfEmpty( element.getAlternativeName() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
+        }
+        if ( nullIfEmpty( element.getCode() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getCode() ) );
+        }
+        if ( nullIfEmpty( element.getDescription() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( element.getDescription(), TEXT ) );
+        }
 
         table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ), TEXT ) );
@@ -792,15 +812,22 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
         table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
 
-        table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
-
-        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getCode() ) );
-
-        table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
-
+        if ( nullIfEmpty( indicator.getAlternativeName() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
+        }
+        if ( nullIfEmpty( indicator.getCode() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getCode() ) );
+        }        
+        if ( nullIfEmpty( indicator.getDescription() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
+        }
+        
         table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
 
@@ -856,22 +883,31 @@ public class PDFUtils
 
         table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
         table.addCell( getTextCell( unit.getShortName(), TEXT ) );
-
-        table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
-        table.addCell( getTextCell( unit.getCode() ) );
-
+        
+        if ( nullIfEmpty( unit.getCode() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getTextCell( unit.getCode() ) );
+        }
+        
         table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
         table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : "" ) );
 
-        table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
-        table.addCell( getTextCell( unit.getClosedDate() != null ? format.formatDate( unit.getClosedDate() ) : "" ) );
-
+        if ( nullIfEmpty( unit.getClosedDate().toString() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
+            table.addCell( getTextCell( unit.getClosedDate() != null ? format.formatDate( unit.getClosedDate() ) : "" ) );
+        }
+        
         table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
 
-        table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
-        table.addCell( getTextCell( unit.getComment(), TEXT ) );
-
+        if ( nullIfEmpty( unit.getComment() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
+            table.addCell( getTextCell( unit.getComment(), TEXT ) );
+        }
+        
         table.addCell( getCell( 2, 30 ) );
 
         return table;
@@ -906,4 +942,5 @@ public class PDFUtils
         map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
         return map;
     }
+
 }

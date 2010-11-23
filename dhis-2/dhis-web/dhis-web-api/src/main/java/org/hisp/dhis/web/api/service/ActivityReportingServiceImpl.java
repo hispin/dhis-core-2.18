@@ -15,6 +15,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientMobileSetting;
+import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -55,6 +57,8 @@ public class ActivityReportingServiceImpl
     private org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService;
 
     private CurrentUserService currentUserService;
+    
+    private PatientMobileSettingService patientMobileSettingService;
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
@@ -173,37 +177,49 @@ public class ActivityReportingServiceImpl
         patientAttribute = null;
 
         // Set all attributes
-        org.hisp.dhis.patient.PatientAttribute houseName = patientAttService.getPatientAttributeByName( "House Name" );
-        org.hisp.dhis.patient.PatientAttribute houseNumber = patientAttService
-            .getPatientAttributeByName( "House Number" );
-        org.hisp.dhis.patient.PatientAttribute wardNumber = patientAttService.getPatientAttributeByName( "Ward Number" );
-        org.hisp.dhis.patient.PatientAttribute nearestContact = patientAttService
-            .getPatientAttributeByName( "Nearest Contact Person Name" );
-
-        PatientAttributeValue houseNameValue = patientAttValueService.getPatientAttributeValue( patient, houseName );
-        if ( houseNameValue != null )
-        {
-            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ) );
+        PatientMobileSetting setting = patientMobileSettingService.getCurrentSetting()==null?null:patientMobileSettingService.getCurrentSetting().iterator().next();
+        List<org.hisp.dhis.patient.PatientAttribute> atts;
+        if(setting != null){
+            atts = setting.getPatientAttributes();
+            for(org.hisp.dhis.patient.PatientAttribute each : atts){
+                PatientAttributeValue value = patientAttValueService.getPatientAttributeValue( patient, each );
+                if ( value != null )
+                {
+                    patientAtts.add( new PatientAttribute( each.getName(), value.getValue() ) );
+                }
+            }
         }
+//        org.hisp.dhis.patient.PatientAttribute houseName = patientAttService.getPatientAttributeByName( "House Name" );
+//        org.hisp.dhis.patient.PatientAttribute houseNumber = patientAttService
+//            .getPatientAttributeByName( "House Number" );
+//        org.hisp.dhis.patient.PatientAttribute wardNumber = patientAttService.getPatientAttributeByName( "Ward Number" );
+//        org.hisp.dhis.patient.PatientAttribute nearestContact = patientAttService
+//            .getPatientAttributeByName( "Nearest Contact Person Name" );
 
-        PatientAttributeValue houseNumberValue = patientAttValueService.getPatientAttributeValue( patient, houseNumber );
-        if ( houseNumberValue != null )
-        {
-            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ) );
-        }
-
-        PatientAttributeValue wardNumberValue = patientAttValueService.getPatientAttributeValue( patient, wardNumber );
-        if ( wardNumberValue != null )
-        {
-            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ) );
-        }
-
-        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient,
-            nearestContact );
-        if ( nearestContactValue != null )
-        {
-            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ) );
-        }
+//        PatientAttributeValue houseNameValue = patientAttValueService.getPatientAttributeValue( patient, houseName );
+//        if ( houseNameValue != null )
+//        {
+//            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ) );
+//        }
+//
+//        PatientAttributeValue houseNumberValue = patientAttValueService.getPatientAttributeValue( patient, houseNumber );
+//        if ( houseNumberValue != null )
+//        {
+//            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ) );
+//        }
+//
+//        PatientAttributeValue wardNumberValue = patientAttValueService.getPatientAttributeValue( patient, wardNumber );
+//        if ( wardNumberValue != null )
+//        {
+//            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ) );
+//        }
+//
+//        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient,
+//            nearestContact );
+//        if ( nearestContactValue != null )
+//        {
+//            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ) );
+//        }
 
         beneficiary.setPatientAttValues( patientAtts );
 
@@ -385,5 +401,13 @@ public class ActivityReportingServiceImpl
     {
         this.currentUserService = currentUserService;
     }
+
+    @Required
+    public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
+    {
+        this.patientMobileSettingService = patientMobileSettingService;
+    }
+    
+    
 
 }
