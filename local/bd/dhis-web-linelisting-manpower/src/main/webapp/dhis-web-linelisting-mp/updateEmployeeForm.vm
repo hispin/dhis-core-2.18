@@ -35,7 +35,7 @@
 			</tr>
 			<tr>
 				<td><label for="lprDate"> $i18n.getString( "lprDate" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString("required")"class="required">*</em></label></td>
-				<td><input type="text" id="lprDate" name="lprDate" value="$employee.lprDate" style="width:20em"></td>
+				<td><input type="text" id="lprDate" name="lprDate" value="$employee.lprDate" style="width:20em" onchange="validateDate( this )"></td>
 			</tr>
 			<tr>
 				<td><label for="sex"> $i18n.getString( "sex" ) <em title="$i18n.getString("required")"class="required">*</em></label></td>
@@ -48,7 +48,7 @@
 			</tr>
 			<tr>
 				<td><label for="govtserjoindate"> $i18n.getString( "joinDate" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString("required")"class="required">*</em></label></td>
-				<td><input type="text" id="govtSerJoinDate" name="govtSerJoinDate" value="$employee.joinDateToGovtService" style="width:20em"></td>
+				<td><input type="text" id="govtSerJoinDate" name="govtSerJoinDate" value="$employee.joinDateToGovtService" style="width:20em" onchange="validateDate( this )"></td>
 			</tr>
 			<tr>
 				<td><label for="resAdd"> $i18n.getString( "res_Add" ) <em title="$i18n.getString("required")"class="required">*</em></label></td>
@@ -56,11 +56,11 @@
 			</tr>
 			<tr>
 				<td><label for="contactNo"> $i18n.getString( "contact_no" ) <em title="$i18n.getString("required")"class="required">*</em></label></td>
-				<td><input type="text" id="contactNo" name="contactNo" value="$employee.contactNumber" style="width:20em" class="{validate:{required:true,minlength:8}}"></td>
+				<td><input type="text" id="contactNo" name="contactNo" value="$employee.contactNumber" style="width:20em" class="{validate:{required:true,number:true,minlength:6}}"></td>
 			</tr>
 			<tr>
 				<td><label for="emerContactNo"> $i18n.getString( "emer_cont_no" ) <em title="$i18n.getString("required")"class="required">*</em></label></td>
-				<td><input type="text" id="emerContactNo" name="emerContactNo" value="$employee.emergencyContactNumber" style="width:20em" class="{validate:{required:true,minlength:8}}"></td>
+				<td><input type="text" id="emerContactNo" name="emerContactNo" value="$employee.emergencyContactNumber" style="width:20em" class="{validate:{required:true,number:true,minlength:6}}"></td>
 			</tr>
 			
 			<tr>

@@ -1,5 +1,33 @@
 var currentPDSCode;
 
+function validateDate( date )
+{
+	alert("In Validate Date Function and date is " + date );
+	var sourceDate = document.getElementById('dob').value;
+	var compareDate = date.value
+	var request = new Request();
+	request.setResponseTypeXML('element');
+	request.setCallbackSuccess( elementReceived );
+	request.send( 'validateDate.action?sourceDate=' + sourceDate + '&compareDate=' + compareDate);
+}
+
+function elementReceived( dateElement )
+{
+	var type = dateElement.getAttribute( "type" );
+	if (type == 'success' )
+	{
+		
+	}
+	else if (type == 'input' )
+	{
+		alert( dateElement.firstChild.nodeValue );
+		date.value = "";
+		setTimeout(function(){
+			date.focus();date.select();
+	    },2);
+	}
+}
+
 function validatePostVacant( dataValueMapKey )
 {
 	var reportingDate = document.getElementById('reportingDate').value;
