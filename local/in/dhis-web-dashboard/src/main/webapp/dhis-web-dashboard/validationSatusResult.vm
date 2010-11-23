@@ -1,4 +1,6 @@
 
+<link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css"> 
+
 <script>
     var startDate = "$sDateLB";
     var endDate = "$eDateLB";
@@ -20,68 +22,68 @@
 <form id="form1" name="form1" action="exportDataStatusToExcel.action" method="post" onsubmit="return exportDataStatusResultToWorkBook()" target="_newtab">
     <input type="hidden" name="htmlCode" id="htmlCode" />
     <div align="right" class="NormalB">
-        <!--<input type="checkbox" name="includeZeros" id="includeZeros" #if($includeZeros) checked #end /> Include Zero<br />-->
         <input type="submit" name="ExportToWorkBook" value="Export To WorkBook" style="width: 160; height: 25; font-family:Arial; font-weight:bold; color:#000000">
     </div>
 
     <div id="formResult">
         <div align="center" class="NormalB">Validation Status</div>
+        
         <div align="right">
             <table width="30%">
-                <tr class="TableDataCellStyles" >
-                    <td bgcolor="#a0c0a0">&nbsp;</td>
-                    <td align="left">&nbsp;Validation Check Performed On Data Entry Screen</td>
+                <tr class="TableHeadingCellStyles" >
+                    <td class="TableHeadingCellStyles" bgcolor="#a0c0a0">&nbsp;</td>
+                    <td class="TableHeadingCellStyles" align="left"><strong>Validation Check Performed On Data Entry Screen</strong></td>
                 </tr>
-
-                <tr class="TableDataCellStyles">
-                    <td bgcolor="#ff0000">&nbsp;</td>
-                    <td align="left">&nbsp;Validation Check Not Performed On Data Entry Screen</td>
+                <tr class="TableHeadingCellStyles">
+                    <td class="TableHeadingCellStyles" bgcolor="#ff0000">&nbsp;</td>
+                    <td class="TableHeadingCellStyles" align="left"><strong>Validation Check Not Performed On Data Entry Screen</strong></td>
                 </tr>
             </table>
         </div>
+        
         #set($count2 = 0)
 
-        <br><br>
+        <br/>
+        
         <div align="left" class="NormalB">DataSet : $selDataSet.name</div>
-        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
-            <tr class="TableHeadingCellStyles" align="center">
-                #foreach($levelName in $levelNames)
-                    <th>$!levelName</th>
-                #end
-                #foreach($periodname in $periodNameList)
-                    <th>$periodname</th>
-                #end
-            </tr>
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse  border-style: solid" bordercolor="black" width="100%">
+	            <tr class="TableHeadingCellStyles" align="center">
+	                #foreach($levelName in $levelNames)
+	                    <td class="TableHeadingCellStyles"  bgcolor="#C0C0C0"><strong>$!levelName</strong></td>
+	                #end
+	                #foreach( $periodname in $periodNameList )
+	                    <td class="TableHeadingCellStyles"  bgcolor="#C0C0C0"><strong>$periodname</strong></td>
+	                #end
+	            </tr>
 
-            #foreach($chiildorgUnit in $orgUnitList)
-                #set($count1 = $minOULevel)
-                #set($curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit($chiildorgUnit))
-                <tr class="TableHeadingCellStyles">
-                    #foreach($levelName in $levelNames)
-                        #if($count1 == $curOrgUnitLevel)
-                            <td><a href="#" onclick="javascript:getImmChildInfo(event, '$selDataSet.id', '$chiildorgUnit.id')" target="_blank">$chiildorgUnit.name</a></td>
-  			#else
-                            <td>&nbsp;</td>
-  			#end
-  			#set($count1 = $count1 + 1)
-                    #end
-                    #set($dsValidationPassResults = $ouMapValidationPassStatusResult.get($chiildorgUnit))
-                    #foreach($result in $dsValidationPassResults)
-
-                        #set($count2 = $count2 + 1)
-                        #if($result < 0)
-                            <td  bgcolor="white">&nbsp;</td>
-                        #elseif($result == 0)
-                            <td align="center" bgcolor="#ff0000"><font color="#ffffff">0</font></td>
-                        #elseif($result == 1)
-                            <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">1</font></td>
-                        #elseif($result > 1)
-                            <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result</font></td>
-                        #end
-                    #end
-               </tr>
-            #end
+	            #foreach( $chiildorgUnit in $orgUnitList )
+	                #set( $count1 = $minOULevel )
+	                #set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit($chiildorgUnit) )
+	                <tr class="TableHeadingCellStyles" >
+	                    #foreach($levelName in $levelNames)
+	                    	#if($count1 == $curOrgUnitLevel)
+	                           <td><a href="#" onclick="javascript:getImmChildInfo(event, '$selDataSet.id', '$chiildorgUnit.id')" target="_blank">$chiildorgUnit.name</a></td>
+	  			            #else
+	                           <td>&nbsp;</td>
+	  			            #end
+			  			    #set($count1 = $count1 + 1)
+			            #end
+			            
+			            #set( $dsValidationPassResults = $ouMapValidationPassStatusResult.get($chiildorgUnit) )
+			            
+			            #foreach( $result in $dsValidationPassResults )		
+	                        #if($result < 0)
+	                            <td  bgcolor="white">&nbsp;</td>
+	                        #elseif($result == 0)
+	                            <td align="center" bgcolor="#ff0000"><font color="#ffffff">0</font></td>
+	                        #elseif($result == 1)
+	                            <td  align="center" bgcolor="#a0c0a0"><font color="#ffffff">1</font></td>
+	                        #elseif($result > 1)
+	                            <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result</font></td>                           
+	                        #end
+	                    #end
+                    </tr>
+                #end
         </table>
-
     </div>
 </form>
