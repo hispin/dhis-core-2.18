@@ -378,6 +378,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="jdbcTemplate"/>
   </bean>
   
+  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
+    class="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"
+    scope="prototype">
+	<property name="reportService" 
+	  ref="org.hisp.dhis.report.ReportService"/>
+  </bean>
+  
   <!-- PivotTable -->
   
   <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"

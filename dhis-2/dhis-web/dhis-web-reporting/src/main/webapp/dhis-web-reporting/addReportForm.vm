@@ -19,6 +19,12 @@
 		<td><label for="upload">$i18n.getString( "design" )</label></td>
 		<td><input type="file" id="upload" name="upload" size="35"></td>
 	</tr>
+	#if( $reportFramework == "jasper" && $report && $report.designContent )
+	<tr>
+		<td></td>
+		<td><input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'"></td>
+	</tr>
+	#end
 	<tr>
 		<td colspan="2" height="7px"></td>
 	</tr>
