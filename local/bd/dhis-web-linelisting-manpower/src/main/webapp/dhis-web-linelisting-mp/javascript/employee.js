@@ -44,3 +44,16 @@ function lprChanged()
     
 }
 
+function validateDate( dateType )
+{
+	var sourceDate = document.getElementById('dob').value;
+	var compareDate = dateType.value;
+	if ( sourceDate > compareDate)
+	{
+		alert("This Date can not be before than Date of Birth");
+		dateType.value = "";
+		setTimeout(function(){
+			dateType.focus();dateType.select();
+	    },2);
+	}
+}
