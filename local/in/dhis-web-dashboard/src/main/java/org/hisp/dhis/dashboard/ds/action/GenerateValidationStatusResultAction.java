@@ -117,15 +117,9 @@ public class GenerateValidationStatusResultAction
 
     private Map<OrganisationUnit, List<Integer>> ouMapValidationPassStatusResult;
 
-    public Map<OrganisationUnit, List<Integer>> getouMapValidationPassStatusResult()
+    public Map<OrganisationUnit, List<Integer>> getOuMapValidationPassStatusResult()
     {
         return ouMapValidationPassStatusResult;
-    }
-
-    private List<Integer> dsValidationPassResults;
-
-    public List<Integer> getDsValidationPassResults() {
-        return dsValidationPassResults;
     }
 
     private Collection<Period> periodList;
@@ -154,20 +148,6 @@ public class GenerateValidationStatusResultAction
     public List<Integer> getResults()
     {
         return results;
-    }
-
-    private Map<DataSet, Map<OrganisationUnit, List<Integer>>> dataStatusResult;
-
-    public Map<DataSet, Map<OrganisationUnit, List<Integer>>> getDataStatusResult()
-    {
-        return dataStatusResult;
-    }
-
-    private Map<DataSet, Collection<Period>> dataSetPeriods;
-
-    public Map<DataSet, Collection<Period>> getDataSetPeriods()
-    {
-        return dataSetPeriods;
     }
 
     List<Period> selectedPeriodList;
@@ -306,7 +286,7 @@ public class GenerateValidationStatusResultAction
         return periodNameList;
     }
 
-    String orgUnitInfo;
+   String orgUnitInfo;
 
     String periodInfo;
 
@@ -452,8 +432,8 @@ public class GenerateValidationStatusResultAction
 
             periodIterator = periodList.iterator();
             Period p;
-            List<Integer> dsResults = new ArrayList<Integer>();
-            dsValidationPassResults = new ArrayList<Integer>();
+            //List<Integer> dsResults = new ArrayList<Integer>();
+            List<Integer> dsValidationPassResults = new ArrayList<Integer>();
            
             while ( periodIterator.hasNext() )
             {
@@ -463,7 +443,7 @@ public class GenerateValidationStatusResultAction
 
                 if ( dso == null )
                 {
-                    dsResults.add( -1 );
+                    //dsResults.add( -1 );
                     dsValidationPassResults.add( -1 );
                     continue;
                 }
@@ -473,7 +453,7 @@ public class GenerateValidationStatusResultAction
                     childOrgUnits = filterChildOrgUnitsByDataSet( dataSetService.getDataSet( Integer
                         .valueOf( selectedDataSets.get( 0 ) ) ), o );
                     Iterator assignedChildrenIterator = childOrgUnits.iterator();
-                    int dataStatusCount = 0;
+                    Integer dataStatusCount = 0;
 
                     while ( assignedChildrenIterator.hasNext() )
                     {
@@ -492,29 +472,46 @@ public class GenerateValidationStatusResultAction
                         }
                         
                     }
+                    //System.out.println("\ndataStatusCount : " + dataStatusCount);
+                    //System.out.println(o.getName()+ " : "+dataStatusCount);
                     dsValidationPassResults.add( dataStatusCount );
 
                     continue;
                 }
 
+               // System.out.println("\no = "+o.getName() + " dsValidationPassResults size = "+dsValidationPassResults.size());
+                
                 orgUnitInfo = "" + o.getId();
 
                 CompleteDataSetRegistration completeDataSetRegistration = registrationService.getCompleteDataSetRegistration( selDataSet, p, o );
                 
                 if ( completeDataSetRegistration != null )
                 {
-                    dsValidationPassResults.add( 1 );
+                    dsValidationPassResults.add( new Integer(1) );
+                   // System.out.println(o.getName()+ " : 1");
                 }
                 else
                 {
-                    dsValidationPassResults.add( 0 );
+                    dsValidationPassResults.add( new Integer(0) );
+                    //System.out.println(o.getName()+ " : 0");
                 }
                 
             }
             //System.out.println("o = "+o.getName() + " dsValidationPassResults size = "+dsValidationPassResults.size());
             ouMapValidationPassStatusResult.put( o, dsValidationPassResults );
         }
+/*        
         
+        for( OrganisationUnit orgUnit : ouMapValidationPassStatusResult.keySet() )
+        {
+            System.out.print( orgUnit.getName() );
+            for( Integer result : ouMapValidationPassStatusResult.get( orgUnit ) )
+            {
+                System.out.print( " - "+ result );
+            }
+            System.out.println("");
+        }
+*/        
         // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         
