@@ -37,9 +37,8 @@ public class GetEmployeeListAction implements Action
     // Action implementation
     // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
     {
-    	
     	employeeList = new ArrayList<Employee>( employeeService.getAllEmployee() );
     	
         return SUCCESS;
