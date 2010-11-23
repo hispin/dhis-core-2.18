@@ -9,9 +9,10 @@
 			<generator class="native" />
 		</id>
 		
-		<set name="patientAttributes">
+		<list name="patientAttributes">
 			<key column="patientmobilesettingid" />
+			<list-index column="sort_order_patientattributename" base="0"/>
 			<one-to-many class="org.hisp.dhis.patient.PatientAttribute" />
-		</set>
+		</list>
 	</class>
 </hibernate-mapping>

@@ -27,24 +27,25 @@
 
 package org.hisp.dhis.patient;
 
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 
 public class PatientMobileSetting extends IdentifiableObject
 {
-    private Set<PatientAttribute> patientAttributes;
+    private List<PatientAttribute> patientAttributes;
 
     public PatientMobileSetting()
     {
     }
 
-    public Set<PatientAttribute> getPatientAttributes()
+    public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
     }
 
-    public void setPatientAttributes( Set<PatientAttribute> patientAttributes )
+    public void setPatientAttributes( List<PatientAttribute> patientAttributes )
     {
         this.patientAttributes = patientAttributes;
     }

@@ -1,8 +1,10 @@
 package org.hisp.dhis.patient.action.mobilesetting;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.patient.PatientAttribute;
@@ -46,14 +48,14 @@ public class ShowMobileSettingFormAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Set<PatientAttribute> patientAtts;
+    private List<PatientAttribute> patientAtts;
 
-    public Set<PatientAttribute> getPatientAtts()
+    public List<PatientAttribute> getPatientAtts()
     {
         return patientAtts;
     }
 
-    public void setPatientAtts( Set<PatientAttribute> patientAtts )
+    public void setPatientAtts( List<PatientAttribute> patientAtts )
     {
         this.patientAtts = patientAtts;
     }
@@ -99,7 +101,7 @@ public class ShowMobileSettingFormAction
             else
             {
                 System.out.println( "Setting is null" );
-                patientAtts = new HashSet<PatientAttribute>();
+                patientAtts = new ArrayList<PatientAttribute>();
             }
         }
 //        System.out.println( "List " + patientAtts + " has size: " + patientAtts.size() );
