@@ -28,7 +28,6 @@
 package org.hisp.dhis.patient;
 
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 
@@ -49,8 +48,4 @@ public class PatientMobileSetting extends IdentifiableObject
     {
         this.patientAttributes = patientAttributes;
     }
-    
-    
-    
-    
 }

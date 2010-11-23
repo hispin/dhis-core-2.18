@@ -41,15 +41,16 @@ function removeDataElementGroup( dataElementGroupId, dataElementGroupName )
 // Search data element group
 // -----------------------------------------------------------------------------
 
-function searchDataElementGroup(){
+function searchDataElementGroup()
+{
+	var key = $( '#key' ).val();
 	
-	var params = 'key=' + getFieldValue( 'key' );
-    
-    var url = 'searchDataElementGroup.action?' + params;
-    
-    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
+    if ( key != null && key != '' ) 
     {
-    	$( '#content' ).load( url, null, unLockScreen );
+    	var url = 'searchDataElementGroup.action?key=' + key;
+    	
+    	$( '#content' ).load( url, unLockScreen );
+    	
     	lockScreen();
     }
     else 
@@ -58,7 +59,7 @@ function searchDataElementGroup(){
     }
 }
 
-function searchDataElementGroupPaging(currentPage, pageSize) 
+function searchDataElementGroupPaging( currentPage, pageSize ) 
 {
 	var params = 'key=' + getFieldValue( 'key' );
 		params += '&currentPage=' + currentPage;
@@ -66,9 +67,10 @@ function searchDataElementGroupPaging(currentPage, pageSize)
 
     var url = 'searchDataElementGroup.action?' + params;
     
-    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
+    if ( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
     {
     	$( '#content' ).load( url, null, unLockScreen );
+    	
     	lockScreen();
     }
     else 
@@ -79,13 +81,13 @@ function searchDataElementGroupPaging(currentPage, pageSize)
 
 function changePageSizeSearch()
 {
-    var pageSize = jQuery("#sizeOfPage").val();
-    searchDataElementGroupPaging(1, pageSize);
+    var pageSize = $( '#sizeOfPage' ).val();
+    searchDataElementGroupPaging( 1, pageSize );
 }
 
 function jumpToPageSearch()
 {
-    var pageSize = jQuery("#sizeOfPage").val();
-    var currentPage = jQuery("#jumpToPage").val();
-    searchDataElementGroupPaging(currentPage, pageSize);
+    var pageSize = $( '#sizeOfPage' ).val();
+    var currentPage = $( '#jumpToPage' ).val();
+    searchDataElementGroupPaging( currentPage, pageSize );
 }

@@ -38,16 +38,15 @@ import org.amplecode.quick.mapper.ObjectMapper;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -59,18 +58,11 @@ import org.hisp.dhis.system.util.TextUtils;
  *          larshelg $
  */
 public class HibernateDataElementStore
-    implements DataElementStore
+    extends HibernateGenericStore<DataElement> implements DataElementStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     private StatementManager statementManager;
 
@@ -287,9 +279,7 @@ public class HibernateDataElementStore
             query.setParameterList( "dataElementIds", dataElementIds );
 
             query.executeUpdate();
-
         }
-
     }
 
     @SuppressWarnings( "unchecked" )
@@ -389,69 +379,26 @@ public class HibernateDataElementStore
 
     }
 
-    // -------------------------------------------------------------------------
-    // DataElementGroup
-    // -------------------------------------------------------------------------
-
-    public int addDataElementGroup( DataElementGroup dataElementGroup )
+    public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( dataElementGroup );
+        return getBetween( first, max );
     }
 
-    public void updateDataElementGroup( DataElementGroup dataElementGroup )
+    public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( dataElementGroup );
+        return getBetweenByName( name, first, max );
     }
 
-    public void deleteDataElementGroup( DataElementGroup dataElementGroup )
+    public int getDataElementCount()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( dataElementGroup );
+        return getCount();
     }
 
-    public DataElementGroup getDataElementGroup( int id )
+    public int getDataElementCountByName( String name )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (DataElementGroup) session.get( DataElementGroup.class, id );
+        return getCountByName( name );
     }
-
-    public DataElementGroup getDataElementGroup( String uuid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
-
-        return (DataElementGroup) criteria.uniqueResult();
-    }
-
-    public DataElementGroup getDataElementGroupByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.add( Restrictions.eq( "name", name ) );
-
-        return (DataElementGroup) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<DataElementGroup> getAllDataElementGroups()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.setCacheable( true );
-
-        return criteria.list();
-    }
-
+    
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
@@ -502,99 +449,5 @@ public class HibernateDataElementStore
         {
             throw new RuntimeException( "Failed to get all operands", ex );
         }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<DataElement> getAllDataElements( int from, int to )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( from );
-        criteria.setMaxResults( to );
-        criteria.setCacheable( true );
-
-        return criteria.list();
-    }
-
-    public int getNumberOfDataElements()
-    {
-        String sql = "select count(*) from DataElement";
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );
-        Number countResult = (Number) query.uniqueResult();
-
-        return countResult.intValue();
-    }
-
-    public int countNumberOfSearchDataElementByName( String key )
-    {
-        return searchDataElementByName( key ).size();
-    }
-
-    @SuppressWarnings("unchecked")
-    public Collection<DataElement> searchDataElementByName( String key, int from, int to )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( from );
-        criteria.setMaxResults( to );
-
-        return criteria.list();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<DataElementGroup> getAllDataElementGroups( int from, int to )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( from );
-        criteria.setMaxResults( to );
-        criteria.setCacheable( true );
-
-        return criteria.list();
-    }
-
-    @Override
-    public int getNumberOfDataElementGroups()
-    {
-        String sql = "select count(*) from DataElementGroup";
-        Query query = sessionFactory.getCurrentSession().createQuery( sql );
-        Number countResult = (Number) query.uniqueResult();
-
-        return countResult.intValue();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Collection<DataElementGroup> searchDataElementGroupByName( String key, int from, int to )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
-        criteria.addOrder( Order.asc( "name" ) );
-        criteria.setFirstResult( from );
-        criteria.setMaxResults( to );
-
-        return criteria.list();
-    }
-
-    @Override
-    public int countNumberOfSearchDataElementGroupByName( String key )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElementGroup.class );
-        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
-
-        return criteria.list().size();
     }
 }

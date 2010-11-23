@@ -35,6 +35,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
@@ -45,6 +47,8 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 public class HibernateGenericStore<T>
     implements GenericIdentifiableObjectStore<T>
 {
+    //TODO cacheable
+    
     protected SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
@@ -150,69 +154,121 @@ public class HibernateGenericStore<T>
     }
 
     // -------------------------------------------------------------------------
-    // GenericStore implementation
+    // GenericIdentifiableObjectStore implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public final int save( T object )
     {
         return (Integer) sessionFactory.getCurrentSession().save( object );
     }
-    
+
+    @Override
     public final void update( T object )
     {
         sessionFactory.getCurrentSession().update( object );
     }
-    
+
+    @Override
     public final void saveOrUpdate( T object )
     {
         sessionFactory.getCurrentSession().saveOrUpdate( object );
     }
-    
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public final T get( int id )
     {
         return (T) sessionFactory.getCurrentSession().get( getClazz(), id );
     }
 
+    @Override
     @SuppressWarnings( "unchecked" )
     public final T load( int id )
     {
         return (T) sessionFactory.getCurrentSession().load( getClazz(), id );
     }
 
+    @Override
     public final T getByUuid( String uuid )
     {
         return getObject( Restrictions.eq( "uuid", uuid ) );
     }
-    
+
+    @Override
     public final T getByName( String name )
     {
         return getObject( Restrictions.eq( "name", name ) );
     }
-    
+
+    @Override
     public final T getByAlternativeName( String alternativeName )
     {
         return getObject( Restrictions.eq( "alternativeName", alternativeName ) );
     }
-    
+
+    @Override
     public final T getByShortName( String shortName )
     {
         return getObject( Restrictions.eq( "shortName", shortName ) );
     }
-    
+
+    @Override
     public final T getByCode( String code )
     {
         return getObject( Restrictions.eq( "code", code ) );
     }
-    
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public final Collection<T> getAll()
     {
         return getCriteria().list();
     }
 
+    @Override
     public final void delete( T object )
     {
         sessionFactory.getCurrentSession().delete( object );
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<T> getBetween( int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Collection<T> getBetweenByName( String name, int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
+        criteria.addOrder( Order.asc( "name" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    @Override
+    public int getCount()
+    {
+        Criteria criteria = getCriteria();
+        criteria.setProjection( Projections.rowCount() );        
+        return ((Number) criteria.uniqueResult()).intValue();
+    }
+
+    @Override
+    public int getCountByName( String name )
+    {
+        Criteria criteria = getCriteria();
+        criteria.setProjection( Projections.rowCount() );
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );        
+        return ((Number) criteria.uniqueResult()).intValue();
+    }    
 }

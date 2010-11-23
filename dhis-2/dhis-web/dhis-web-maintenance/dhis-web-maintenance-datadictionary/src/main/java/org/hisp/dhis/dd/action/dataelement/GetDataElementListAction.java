@@ -210,9 +210,9 @@ public class GetDataElementListAction
         }
         else
         {
-            this.paging = createPaging( dataElementService.getNumberOfDataElements() );
+            this.paging = createPaging( dataElementService.getDataElementCount() );
 
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements( paging.getStartPos(), paging.getPageSize() ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         displayPropertyHandler.handle( dataElements );
@@ -266,8 +266,8 @@ public class GetDataElementListAction
         }
         else
         {
-            this.paging = createPaging( dataElementService.countNumberOfSearchDataElementByName(key) );
-            dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementByName( key, this.paging.getStartPos(), this.paging.getPageSize() ) );
+            this.paging = createPaging( dataElementService.getDataElementCountByName( key ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsBetweenByName( key, this.paging.getStartPos(), this.paging.getPageSize() ) );
         }
 
         displayPropertyHandler.handle( dataElements );

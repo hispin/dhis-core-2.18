@@ -75,7 +75,6 @@ public class DefaultDataElementOperandService
     {
         for ( DataElementOperand operand : getAllDataElementOperands() )
         {
-
             if ( operand.getDataElement().equals( dataElementOperand.getDataElement() )
                 && operand.getCategoryOptionCombo().equalsOnName( dataElementOperand.getCategoryOptionCombo() ) )
             {

@@ -26,8 +26,6 @@ package org.hisp.dhis.dd.action.concept;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.regex.Pattern;
-
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.i18n.I18n;
@@ -41,8 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ValidateAddUpdateConceptAction
     extends ActionSupport
 {
-
-    private static final Pattern conceptNamePattern = Pattern.compile( "^[a-zA-Z][a-zA-Z0-9_]{0,9}$" );
+    //TODO private static final Pattern conceptNamePattern = Pattern.compile( "^[a-zA-Z][a-zA-Z0-9_]{0,9}$" );
 
     // -------------------------------------------------------------------------
     // Dependencies
