@@ -52,7 +52,11 @@
 	</tr>
 	
 	<tr #if( !$selectedLineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) ) style="display:none" #end>
-		<td><label for="reportingDate">$i18n.getString( "reporting_date" )</label></td>
+		<td>
+			<label for="reportingDate">$i18n.getString( "reporting_date" )</label>
+			<br />
+			(YYYY-MM-DD)
+		</td>
         <td>
             <input type="text" id="reportingDate" name="reportingDate" value="$curDate" style="width:200px"  >
         </td>

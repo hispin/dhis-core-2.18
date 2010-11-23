@@ -29,7 +29,7 @@
 		closable: true,
 		modal:true,
 		overlay:{background:'#000000', opacity:0.1},
-		width: 800,
+		width: 850,
 		height: 380
 		});
 	}
