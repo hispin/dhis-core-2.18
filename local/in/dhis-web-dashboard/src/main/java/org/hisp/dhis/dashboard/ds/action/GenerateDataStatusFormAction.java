@@ -63,12 +63,15 @@ public class GenerateDataStatusFormAction
         
         dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         
-        Iterator dataSetListIterator = dataSetList.iterator();
+        //dataSetList = new ArrayList<DataSet>( dataSetService.getDataSetsForMobile( ));
+        
+        Iterator<DataSet> dataSetListIterator = dataSetList.iterator();
         
         while(dataSetListIterator.hasNext())
         {
              DataSet d = (DataSet) dataSetListIterator.next();
 
+            
             if ( d.getSources().size() <= 0 )
 			{
                 dataSetListIterator.remove();
