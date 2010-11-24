@@ -1,4 +1,4 @@
-#set( $size = $periods.size() )
+#set( $size1 = $periods.size() )
 { "periods": [
 #foreach( $period in $periods )
   {
@@ -7,7 +7,12 @@
     "endDate": "$!format.formatDate( ${period.endDate} )",
     "name": "$!format.formatPeriod( ${period} )",
     "externalId": "$!{period.externalId}"
-  }#if( $velocityCount < $size ),#end    
+  }#if( $velocityCount < $size1 ),#end
+#end ],
+#set( $size2 = $significantZeros.size() )
+  "significantZeros": [
+#foreach( $dataElement in $significantZeros )
+  ${dataElement.id}#if( $velocityCount < $size2 ),#end
 #end ],
   "periodValid": ${periodValid}
 }

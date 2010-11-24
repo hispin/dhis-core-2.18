@@ -5,3 +5,5 @@
 <td><span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span></td>       
 #end
 $customDataEntryFormCode
+
+#parse( "/dhis-web-dataentry/completeRegistration.vm" )

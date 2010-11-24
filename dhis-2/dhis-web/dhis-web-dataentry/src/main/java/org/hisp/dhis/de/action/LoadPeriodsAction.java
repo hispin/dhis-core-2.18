@@ -2,8 +2,10 @@ package org.hisp.dhis.de.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.de.state.SelectedStateManager;
@@ -69,6 +71,13 @@ public class LoadPeriodsAction
         return periodValid;
     }
     
+    private Collection<DataElement> significantZeros = new HashSet<DataElement>();
+
+    public Collection<DataElement> getSignificantZeros()
+    {
+        return significantZeros;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -107,6 +116,18 @@ public class LoadPeriodsAction
                 period.setName( format.formatPeriod( period ) );
             }
 
+            // -----------------------------------------------------------------
+            // Load data elemements for which zero values are insignificant
+            // -----------------------------------------------------------------
+
+            for ( DataElement dataElement : selectedDataSet.getDataElements() )
+            {
+                if ( dataElement.isZeroIsSignificant() )
+                {
+                    significantZeros.add( dataElement );
+                }
+            }
+            
             // -----------------------------------------------------------------
             // Clear display mode when loading new data set
             // -----------------------------------------------------------------

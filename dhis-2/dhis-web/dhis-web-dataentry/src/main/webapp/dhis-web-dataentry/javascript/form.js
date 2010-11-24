@@ -1,4 +1,6 @@
 
+var significantZeros = []; // Identifiers for which zero values are insignificant, also used in entry.js
+
 function addEventListeners() 
 {
 	var inputs = document.getElementsByName( "entryfield" ) 
@@ -118,6 +120,8 @@ function dataSetSelected()
 	    addOptionToList( list, '-1', '[ Select ]' );
 		
 	    $.getJSON( url, function( json ) {
+	    	significantZeros = json.significantZeros;
+	    	
 	    	for ( i in json.periods ) {
 	    		addOptionToList( list, i, json.periods[i].name );
 	    	}

@@ -1286,42 +1286,29 @@ function exportPdfByType( type )
 	window.location.href = 'exportToPdf.action?type=' + type + activeIds;
 }
 
-
 function isNumber( value )
 {
-    var number = new Number( value );
-    
-    if ( isNaN(parseFloat(value) ) )
-    {
-        return false;
-    }
-    return true;
+	var regex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+	return regex.test( value );
 }
 
 function isInt(value)
 {
-	if(((value) == parseInt(value)) && !isNaN(parseInt(value)))
-	{
-		return true;
-	} else {
-		  return false;
-	} 
+	var regex = /^\d+$/;
+	return regex.test( value );
 }
 
-function isPositiveNumber(value)
+function isPositiveNumber( value )
 {
-	if(parseFloat(value) > 0 ){
-		return true;
-	} else {
-		return false;
-	} 
+	return isNumber( value ) && parseFloat( value ) > 0;
 }
 
-function isNegativeNumber(value)
+function isNegativeNumber( value )
 {
-	if(parseFloat(value) < 0 ){
-		return true;
-	} else {
-		return false;
-	} 
+	return isNumber( value ) && parseFloat( value ) < 0;
+}
+
+function isZeroNumber( value )
+{
+	return isNumber( value ) && parseFloat( value ) == 0;
 }
