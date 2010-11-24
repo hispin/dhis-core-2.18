@@ -28,6 +28,7 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -49,6 +50,8 @@ public class AggregatedDataValue
     private int level;
     
     private double value;
+
+    private Date modified;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -76,6 +79,29 @@ public class AggregatedDataValue
         this.organisationUnitId = organisationUnitId;
         this.level = level;
         this.value = value;
+        this.modified = new Date();
+    }
+
+        /**
+     * @param dataElementId data element id
+     * @param categoryOptionComboId category option combo id
+     * @param periodId period id
+     * @param periodTypeId period type id
+     * @param organisationUnitId organisation unit id
+     * @param level level
+     * @param value value
+     * @param timestamp modification timestamp
+     */
+    public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, int periodTypeId, int organisationUnitId, int level, double value, Date timestamp )
+    {
+        this.dataElementId = dataElementId;
+        this.categoryOptionComboId = categoryOptionComboId;
+        this.periodId = periodId;
+        this.periodTypeId = periodTypeId;
+        this.organisationUnitId = organisationUnitId;
+        this.level = level;
+        this.value = value;
+        this.modified = timestamp;
     }
 
     // ----------------------------------------------------------------------
@@ -166,7 +192,18 @@ public class AggregatedDataValue
     {
         this.value = value;
     }
-    
+
+    public Date getModified()
+    {
+        return modified;
+    }
+
+    public void setModified( Date modified )
+    {
+        this.modified = modified;
+    }
+
+
     // ----------------------------------------------------------------------
     // hashCode and equals
     // ----------------------------------------------------------------------
@@ -191,6 +228,7 @@ public class AggregatedDataValue
         AggregatedDataValue that = (AggregatedDataValue) object;
         
         return this.dataElementId == that.getDataElementId() &&
+            this.categoryOptionComboId == that.categoryOptionComboId &&
     	    this.periodId == that.getPeriodId() &&
     	    this.organisationUnitId == that.getOrganisationUnitId();
     }

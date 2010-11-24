@@ -73,7 +73,8 @@ public class PostgreSQLStatementBuilder
             "organisationunitid INTEGER, " +
             "periodtypeid INTEGER, " +
             "level INTEGER, " +
-            "value DOUBLE PRECISION );";
+            "value DOUBLE PRECISION, " +
+            "modified TIMESTAMP WITH TIME ZONE DEFAULT now() );";
     }
     
     public String getCreateAggregatedIndicatorTable()
@@ -89,7 +90,8 @@ public class PostgreSQLStatementBuilder
             "factor DOUBLE PRECISION, " +
             "value DOUBLE PRECISION, " +
             "numeratorvalue DOUBLE PRECISION, " +
-            "denominatorvalue DOUBLE PRECISION );";
+            "denominatorvalue DOUBLE PRECISION, " +
+            "modified TIMESTAMP WITH TIME ZONE DEFAULT now());";
     }
 
     public String getCreateDataSetCompletenessTable()

@@ -73,7 +73,8 @@ public class H2StatementBuilder
             "organisationunitid INTEGER, " +
             "periodtypeid INTEGER, " +
             "level INTEGER, " +
-            "value DOUBLE );";
+            "value DOUBLE, " +
+            "modified TIMESTAMP DEFAULT now() );";
     }
     
     public String getCreateAggregatedIndicatorTable()
@@ -89,7 +90,8 @@ public class H2StatementBuilder
             "factor DOUBLE, " +
             "value DOUBLE, " +
             "numeratorvalue DOUBLE, " +
-            "denominatorvalue DOUBLE );";
+            "denominatorvalue DOUBLE, " +
+            "modified TIMESTAMP DEFAULT now() );";
     }
 
     public String getCreateDataSetCompletenessTable()
