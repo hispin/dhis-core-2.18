@@ -424,6 +424,41 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
+	<!-- DataStatus For Mobile start  -->
+
+	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateDataStatusMobileFormAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateDataStatusMobileFormAction"
+        scope="prototype">
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+<!--    <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>-->
+    </bean>	
+    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
+        scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService"/>
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+		</property>
+    </bean>
+    <!-- DataStatus For Mobile end  -->	
+	
+	
+	
     <bean
 		id="org.hisp.dhis.dashboard.ds.action.GenerateSummaryDataStatusResultAction"
 		class="org.hisp.dhis.dashboard.ds.action.GenerateSummaryDataStatusResultAction"

@@ -71,7 +71,7 @@ function textvalue(summary)
 {
   
     document.getElementById("selectedButton").value = summary;
-  
+   // alert(summary);
     if(formValidationsForDataStatus())
     {
         if(summary == "SummaryStatus")
@@ -88,7 +88,13 @@ function textvalue(summary)
         }
         else if(summary == "ValidationStatus")
         {
-            document.ChartGenerationForm.action = "validationStatusResult.action";
+        	document.ChartGenerationForm.action = "validationStatusResult.action";
+        	//alert("inside validation status reult");
+            document.ChartGenerationForm.submit();
+        }
+        else if(summary == "ValidationMobileStatus")
+        {
+            document.ChartGenerationForm.action = "validationMobileStatusResult.action";
             document.ChartGenerationForm.submit();
         }
         else if(summary == "LastUpdatedStatus")

@@ -14,6 +14,7 @@
 		<li>Data Status</li>
 			<ul>				
 		   		<li><a href="dataStatusForm.action">Data Status</a></li>
+		   		<li><a href="dataStatusMobileForm.action">$i18n.getString( "ds_mobile" )</a></li>
 				<li><a href="dataStatusOrgnisationunitGroupSetWiseForm.action">OrgUnitGroupwise Data Status</a></li>
 				<li><a href="NullReporter.action">Null Reporter</a></li>	
 	    		<!-- <li><a href="commentsForm.action">Comments</a></li>

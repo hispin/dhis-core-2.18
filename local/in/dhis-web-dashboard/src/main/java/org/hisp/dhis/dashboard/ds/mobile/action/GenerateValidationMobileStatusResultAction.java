@@ -1,7 +1,5 @@
-package org.hisp.dhis.dashboard.ds.action;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +24,7 @@ package org.hisp.dhis.dashboard.ds.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.dashboard.ds.mobile.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,15 +51,18 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author brajesh murari
+ * @author Mithilesh Kumar Thakur
  *
+ * @version GenerateValidationMobileStatusResultAction.java Nov 24, 2010 2:32:53 PM
  */
-public class GenerateValidationStatusResultAction 
-   implements Action
+public class GenerateValidationMobileStatusResultAction
+implements Action
 {
     // ---------------------------------------------------------------
     // Dependencies
@@ -110,7 +112,14 @@ public class GenerateValidationStatusResultAction
     {
         this.registrationService = registrationService;
     }
+    
+    private UserStore userStore;
 
+    public void setUserStore( UserStore userStore )
+    {
+        this.userStore = userStore;
+    }
+    
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -121,7 +130,16 @@ public class GenerateValidationStatusResultAction
     {
         return ouMapValidationPassStatusResult;
     }
+    
+    private Map<OrganisationUnit, String> ouMapUserPhoneNo;
+    
+    public Map<OrganisationUnit, String> getOuMapUserPhoneNo()
+    {
+        return ouMapUserPhoneNo;
+    }
 
+   // private Map<OrganisationUnit, List<String>> ouMapUserPhoneNo;
+    
     private Collection<Period> periodList;
 
     public Collection<Period> getPeriodList()
@@ -170,7 +188,13 @@ public class GenerateValidationStatusResultAction
     {
         return maxOULevel;
     }
-
+    
+    private String userPhoneNo;
+    
+    public String getUserPhoneNo()
+    {
+        return userPhoneNo;
+    }
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -303,6 +327,8 @@ public class GenerateValidationStatusResultAction
         // Intialization
         periodNameList = new ArrayList<String>();
         ouMapValidationPassStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
+        ouMapUserPhoneNo = new HashMap<OrganisationUnit,String>();
+        
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
@@ -422,6 +448,22 @@ public class GenerateValidationStatusResultAction
         {
             //System.out.println( "Getting into first orgunit loop" );
             o = (OrganisationUnit) orgUnitListIterator.next();
+            
+            // user phone no
+            userPhoneNo = "";
+            
+            List<User> users = new ArrayList<User>( userStore.getUsersByOrganisationUnit( o ) );
+            
+            for ( User user : users )
+            {
+                if ( user != null && user.getPhoneNumber() != null  && !user.getPhoneNumber().trim().equalsIgnoreCase( "" ) )
+                {
+                    userPhoneNo += user.getPhoneNumber() + ", ";
+                }
+            }    
+            
+            ouMapUserPhoneNo.put( o, userPhoneNo );
+            
             orgUnitInfo = "" + o.getId();
 
             if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -454,7 +496,7 @@ public class GenerateValidationStatusResultAction
                         .valueOf( selectedDataSets.get( 0 ) ) ), o );
                     Iterator assignedChildrenIterator = childOrgUnits.iterator();
                     Integer dataStatusCount = 0;
-
+                                        
                     while ( assignedChildrenIterator.hasNext() )
                     {
                         OrganisationUnit cUnit = (OrganisationUnit) assignedChildrenIterator.next();
@@ -470,10 +512,13 @@ public class GenerateValidationStatusResultAction
                         {
                             dataStatusCount += 1;
                         }
+                       
+                        
                         
                     }
                     //System.out.println("\ndataStatusCount : " + dataStatusCount);
-                    //System.out.println(o.getName()+ " : "+dataStatusCount);
+                   // System.out.println(o.getName()+ " , " + o.getComment()  + " : " +dataStatusCount);
+                   // System.out.println( "user phone No is : " + userPhoneNo );
                     dsValidationPassResults.add( dataStatusCount );
 
                     continue;
@@ -500,19 +545,20 @@ public class GenerateValidationStatusResultAction
             }
             //System.out.println("o = "+o.getName() + " dsValidationPassResults size = "+dsValidationPassResults.size());
             ouMapValidationPassStatusResult.put( o, dsValidationPassResults );
+            
         }
-/*        
+/*      
         
-        for( OrganisationUnit orgUnit : ouMapValidationPassStatusResult.keySet() )
+        for( OrganisationUnit orgUnit : ouMapUserPhoneNo.keySet() )
         {
-            System.out.print( orgUnit.getName() );
-            for( Integer result : ouMapValidationPassStatusResult.get( orgUnit ) )
+            System.out.print( orgUnit.getName()+ " : " + orgUnit.getComment() );
+            for( String phoneNo : ouMapUserPhoneNo.values() )
             {
-                System.out.print( " - "+ result );
+                System.out.print( " - "+ phoneNo );
             }
             System.out.println("");
         }
-*/        
+*/       
         // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         
@@ -621,3 +667,4 @@ public class GenerateValidationStatusResultAction
     }
 
 }// class end
+

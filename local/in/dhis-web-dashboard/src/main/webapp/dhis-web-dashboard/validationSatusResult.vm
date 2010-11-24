@@ -31,12 +31,12 @@
         <div align="right">
             <table width="30%">
                 <tr class="TableHeadingCellStyles" >
-                    <td class="TableHeadingCellStyles" bgcolor="#a0c0a0">&nbsp;</td>
-                    <td class="TableHeadingCellStyles" align="left"><strong>Validation Check Performed On Data Entry Screen</strong></td>
+                    <td  bgcolor="#a0c0a0">&nbsp;</td>
+                    <td  align="left"><strong>Validation Check Performed On Data Entry Screen</strong></td>
                 </tr>
                 <tr class="TableHeadingCellStyles">
-                    <td class="TableHeadingCellStyles" bgcolor="#ff0000">&nbsp;</td>
-                    <td class="TableHeadingCellStyles" align="left"><strong>Validation Check Not Performed On Data Entry Screen</strong></td>
+                    <td bgcolor="#ff0000">&nbsp;</td>
+                    <td align="left"><strong>Validation Check Not Performed On Data Entry Screen</strong></td>
                 </tr>
             </table>
         </div>
@@ -46,7 +46,7 @@
         <br/>
         
         <div align="left" class="NormalB">DataSet : $selDataSet.name</div>
-            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse  border-style: solid" bordercolor="black" width="100%">
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;  border-style: solid" bordercolor="black" width="100%">
 	            <tr class="TableHeadingCellStyles" align="center">
 	                #foreach($levelName in $levelNames)
 	                    <td class="TableHeadingCellStyles"  bgcolor="#C0C0C0"><strong>$!levelName</strong></td>
