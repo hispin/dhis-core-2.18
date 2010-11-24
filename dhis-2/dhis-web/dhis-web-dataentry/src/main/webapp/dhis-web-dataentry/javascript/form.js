@@ -31,7 +31,7 @@ function clearEntryForm()
 // OrganisationUnit Selection
 // -----------------------------------------------------------------------------
 
-function organisationUnitSelected( orgUnits )
+function organisationUnitSelected(  )
 {
     var dataSetId = $( '#selectedDataSetId' ).val();
     
