@@ -85,6 +85,22 @@ public class XmlCreatorService extends Thread
     @Override
     public void run()
     {
+        String[] text = info.split( "#" );
+        text = text[1].split( "\\*" );
+        String formID = text[0];
+        
+        if( formID.equalsIgnoreCase( MobileImportParameters.ANMREG_FORM_ID ) )
+        {
+            createXMLFileForANMRegForm();
+        }
+        else
+        {
+            createXMLFileForDataValueForm();
+        }
+    }
+    
+    void createXMLFileForDataValueForm()
+    {
         //System.out.println( "Info to convert to XML: " + info );
         String dhis2Home = System.getenv( "DHIS2_HOME" );
         String[] text = info.split( "#" );
@@ -109,6 +125,7 @@ public class XmlCreatorService extends Thread
             FileWriter writer = new FileWriter( file );
             writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
             writer.write( "<mxf version=\"" + msgVersion + "\">\n" );
+            writer.write( "<formtype>" + MobileImportParameters.FORM_TYPE_DATAFORM + "</formtype>\n" );
             writer.write( "<source>" + phoneNumber + "</source>\n" );
             writer.write( "<periodType>" + periodType + "</periodType>\n" );
             writer.write( "<period>" + period + "</period>\n" );
@@ -117,19 +134,67 @@ public class XmlCreatorService extends Thread
             {
                 if ( ( dataValues.length - 1 ) < i || dataValues[i].isEmpty() )
                 {
-                } else
+                } 
+                else
                 {
                     writer.write( "<dataValue>\n" );
                     writer.write( "<dataElement>" + elementIds[i] + "</dataElement>\n" );
                     writer.write( "<value>" + dataValues[i] + "</value>\n" );
                     writer.write( "</dataValue>\n" );
                 }
-
             }
             writer.write( "<info>" + info + "</info>\n" );
             writer.write( "</mxf>\n" );
             writer.close();
-        } catch (Exception e)
+        } 
+        catch (Exception e)
+        {
+            System.out.println("Exception while creating XML File"+ e.getMessage());
+            return;
+        }
+    }
+    
+    void createXMLFileForANMRegForm()
+    {
+        String dhis2Home = System.getenv( "DHIS2_HOME" );
+        String[] text = info.split( "#" );
+        String msgVersion = text[0];
+        text = text[1].split( "\\*" );
+        String formID = text[0];
+        text = text[1].split( "\\?" );
+        String periodType = text[0];
+        text = text[1].split( "\\$" );
+        String period = text[0];
+        String anmName = text[1];
+
+        System.out.println("ANM Name: "+text[1] + " period : " + text[0]);
+        
+        try
+        {
+            File file = new File( dhis2Home + File.separator + "mi" + File.separator + "pending" + File.separator + phoneNumber + "_" +sendTime.replace( ":", "-" ) + ".xml" );
+            FileWriter writer = new FileWriter( file );
+            writer.write( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
+            writer.write( "<mxf version=\"" + msgVersion + "\">\n" );
+            writer.write( "<formtype>" + MobileImportParameters.FORM_TYPE_ANMREGFORM + "</formtype>\n" );
+            writer.write( "<source>" + phoneNumber + "</source>\n" );
+            writer.write( "<periodType>" + periodType + "</periodType>\n" );
+            writer.write( "<period>" + period + "</period>\n" );
+            writer.write( "<timeStamp>" + sendTime + "</timeStamp>\n" );
+
+            if( anmName != null && !anmName.trim().equalsIgnoreCase( "" ) )
+            {
+                writer.write( "<anmname>" + anmName + "</anmname>\n" );
+            }
+            else
+            {
+                writer.write( "<anmname> </anmname>\n" );
+            }
+            
+            writer.write( "<info>" + info + "</info>\n" );
+            writer.write( "</mxf>\n" );
+            writer.close();
+        } 
+        catch (Exception e)
         {
             System.out.println("Exception while creating XML File"+ e.getMessage());
             return;

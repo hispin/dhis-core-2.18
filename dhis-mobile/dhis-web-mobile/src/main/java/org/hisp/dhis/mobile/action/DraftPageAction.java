@@ -1,9 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.mobile.SmsService;
 import org.hisp.dhis.mobile.api.SendSMS;
@@ -38,24 +36,6 @@ public class DraftPageAction implements Action
     
     public void setSendPendingSMS( String sendPendingSMS )
     {
-        /*
-        int draftCount = sendSMSService.getRowCount();
-        
-        if( draftCount == 0 )
-        {
-            this.result = "No Drafts to send";
-        }
-        else if( draftCount < 30 )
-        {
-            List<SendSMS> sendSMSList =  new ArrayList<SendSMS>( sendSMSService.getSendSMS( 0, draftCount ) );
-            this.result = smsService.sendMessages( sendSMSList );
-        }
-        else
-        {
-            List<SendSMS> sendSMSList =  new ArrayList<SendSMS>( sendSMSService.getSendSMS( 0, 29 ) );
-            this.result = smsService.sendMessages( sendSMSList );
-        }
-        */
         this.result = smsService.sendDrafts();
     }
 

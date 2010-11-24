@@ -34,6 +34,12 @@ import java.util.Map;
 public class MobileImportParameters implements Serializable
 {
 
+    public static final String FORM_TYPE_ANMREGFORM = "anmregform";
+    public static final String FORM_TYPE_DATAFORM = "dataform";
+    public static final String ANMREG_FORM_ID = "ANMRF";
+    
+    private String formType;
+    
     private String mobileNumber;
 
     private String startDate;
@@ -44,6 +50,8 @@ public class MobileImportParameters implements Serializable
 
     private Map<String, String> dataValues;
 
+    private String anmName;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -102,6 +110,26 @@ public class MobileImportParameters implements Serializable
     public void setDataValues( Map<String, String> dataValues )
     {
         this.dataValues = dataValues;
+    }
+
+    public String getFormType()
+    {
+        return formType;
+    }
+
+    public void setFormType( String formType )
+    {
+        this.formType = formType;
+    }
+
+    public String getAnmName()
+    {
+        return anmName;
+    }
+
+    public void setAnmName( String anmName )
+    {
+        this.anmName = anmName;
     }
     
 }
