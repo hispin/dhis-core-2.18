@@ -11,48 +11,37 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
     
     field.style.backgroundColor = '#ffffcc';
     
-    if ( field.value != '' )
+    if ( field.value && field.value != '' )
     {
         if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
-            var value = new Number( field.value );       	
-        	
-            if (  type == 'int' && !isInt( field.value ))
+            if ( type == 'int' && !isInt( field.value ) )
             {
-                field.style.backgroundColor = '#ffcc00';
-                window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
-                field.select();
-                field.focus();
-
-                return;
+            	window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
+                return alertField( field );
             }  
-            else if (  type == 'number' && !isNumber( field.value ))
+            else if ( type == 'number' && !isNumber( field.value ) )
             {
-                field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
-                field.select();
-                field.focus();
-
-                return;
+                return alertField( field );
             } 
-			else if (  type == 'positiveNumber' && !isPositiveNumber( field.value ))
+			else if ( type == 'positiveNumber' && !isPositiveNumber( field.value ) )
             {
-                field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_positive_number + '\n\n' + dataElementName );
-                field.select();
-                field.focus();
-
-                return;
+                return alertField( field );
             } 
-			else if (  type == 'negativeNumber' && !isNegativeNumber( field.value ))
+			else if ( type == 'negativeNumber' && !isNegativeNumber( field.value ) )
             {
-                field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
-                field.select();
-                field.focus();
-
+                return alertField( field );
+            }
+            else if ( isZeroNumber( field.value ) && zeroValueSaveMode == false && significantZeros.indexOf( dataElementId ) == -1 )
+            {
+                // If value is 0, and zeroValueSaveMode is false, and zero is not significant for data element, then skip value
+                
+                field.style.backgroundColor = '#ccffcc';
                 return;
-            } 
+            }
             else
             {
                 var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;
@@ -133,6 +122,17 @@ function saveComment( dataElementId, optionComboId, commentValue )
     commentSaver.save();
 }
 
+/**
+ * Supportive method.
+ */
+function alertField( field )
+{
+	field.style.backgroundColor = '#ffcc00';
+    field.select();
+    field.focus();
+    return false;
+}
+
 // -----------------------------------------------------------------------------
 // Saver objects
 // -----------------------------------------------------------------------------
@@ -190,11 +190,11 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         {
             element = document.getElementById( 'value[' + dataElementId + '].boolean' );
         }
-        else if( type == 'date' )
+        else if ( type == 'date' )
         {
         	element = document.getElementById( 'value[' + dataElementId + '].date' );
         }
-        else if( selectedOption )
+        else if ( selectedOption )
         {
         	element = selectedOption;    
         }

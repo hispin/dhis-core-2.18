@@ -77,7 +77,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager" />
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService" />
 	</bean>
