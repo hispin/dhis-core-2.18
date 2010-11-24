@@ -45,7 +45,6 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,8 +55,9 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.mobile.SmsService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -149,6 +149,13 @@ public class DefaultMobileImportService
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
@@ -171,7 +178,6 @@ public class DefaultMobileImportService
     {
         smsService.readAllMessages();
         System.out.println("Message reading done");
-        
     }
     
     @Override
@@ -185,16 +191,6 @@ public class DefaultMobileImportService
         {
             selectedUser = userList.iterator().next();
         }
-
-        /*
-         * List<User> allUsers = new ArrayList<User>( userStore.getAllUsers() );
-         * 
-         * User selectedUser = null;
-         * 
-         * for ( User user : allUsers ) { if ( user.getPhoneNumber() != null &&
-         * user.getPhoneNumber().equalsIgnoreCase( mobileNumber ) ) {
-         * selectedUser = user; break; } }
-         */
 
         return selectedUser;
     }
@@ -268,6 +264,8 @@ public class DefaultMobileImportService
         String smsTime;
         String startDate;
         String periodType;
+        String formType;
+        String anmName;
 
         String tempDeid;
         String tempDataValue;
@@ -318,34 +316,54 @@ public class DefaultMobileImportService
 
             mobileImportParameters.setPeriodType( periodType );
 
-            NodeList listOfDataValues = doc.getElementsByTagName( "dataValue" );
-            int totalDataValues = listOfDataValues.getLength();
-            for ( int s = 0; s < totalDataValues; s++ )
+            // To get FormType
+            NodeList formTypeInfo = doc.getElementsByTagName( "formtype" );
+            Element formTypeInfoElement = (Element) formTypeInfo.item( 0 );
+            NodeList formTypeInfoNameList = formTypeInfoElement.getChildNodes();
+            formType = formTypeInfoNameList.item( 0 ).getNodeValue().trim();
+
+            mobileImportParameters.setFormType( formType );
+            
+            if( formType.equalsIgnoreCase( MobileImportParameters.FORM_TYPE_DATAFORM ) )
             {
-                Node dataValueNode = listOfDataValues.item( s );
-                if ( dataValueNode.getNodeType() == Node.ELEMENT_NODE )
+                NodeList listOfDataValues = doc.getElementsByTagName( "dataValue" );
+                int totalDataValues = listOfDataValues.getLength();
+                for ( int s = 0; s < totalDataValues; s++ )
                 {
-                    Element dataValueElement = (Element) dataValueNode;
+                    Node dataValueNode = listOfDataValues.item( s );
+                    if ( dataValueNode.getNodeType() == Node.ELEMENT_NODE )
+                    {
+                        Element dataValueElement = (Element) dataValueNode;
+    
+                        NodeList dataElementIdList = dataValueElement.getElementsByTagName( "dataElement" );
+                        Element dataElementElement = (Element) dataElementIdList.item( 0 );
+                        NodeList textdataElementIdList = dataElementElement.getChildNodes();
+                        tempDeid = textdataElementIdList.item( 0 ).getNodeValue().trim();
+    
+                        NodeList valueList = dataValueElement.getElementsByTagName( "value" );
+                        Element valueElement = (Element) valueList.item( 0 );
+                        NodeList textValueElementList = valueElement.getChildNodes();
+                        tempDataValue = textValueElementList.item( 0 ).getNodeValue();
+    
+                        String tempDeID = tempDeid;
+                        //Integer tempDV = Integer.parseInt( tempDataValue );
+    
+                        dataValues.put( tempDeID, tempDataValue );
+                    }
+                }// end of for loop with s var
+    
+                mobileImportParameters.setDataValues( dataValues );
+            }
+            else if( formType.equalsIgnoreCase( MobileImportParameters.FORM_TYPE_ANMREGFORM ) )
+            {
+                // To get ANM Name
+                NodeList anmNameInfo = doc.getElementsByTagName( "anmname" );
+                Element anmNameInfoElement = (Element) anmNameInfo.item( 0 );
+                NodeList anmNameInfoNameList = anmNameInfoElement.getChildNodes();
+                anmName = anmNameInfoNameList.item( 0 ).getNodeValue().trim();
 
-                    NodeList dataElementIdList = dataValueElement.getElementsByTagName( "dataElement" );
-                    Element dataElementElement = (Element) dataElementIdList.item( 0 );
-                    NodeList textdataElementIdList = dataElementElement.getChildNodes();
-                    tempDeid = textdataElementIdList.item( 0 ).getNodeValue().trim();
-
-                    NodeList valueList = dataValueElement.getElementsByTagName( "value" );
-                    Element valueElement = (Element) valueList.item( 0 );
-                    NodeList textValueElementList = valueElement.getChildNodes();
-                    tempDataValue = textValueElementList.item( 0 ).getNodeValue();
-
-                    String tempDeID = tempDeid;
-                    //Integer tempDV = Integer.parseInt( tempDataValue );
-
-                    dataValues.put( tempDeID, tempDataValue );
-                }
-            }// end of for loop with s var
-
-            mobileImportParameters.setDataValues( dataValues );
-
+                mobileImportParameters.setAnmName( anmName );
+            }
         }// try block end
         catch ( SAXParseException err )
         {
@@ -518,7 +536,7 @@ public class DefaultMobileImportService
         }
     }
 
-    @Override
+    /*
     @Transactional
     public void importAllFiles()
     {
@@ -595,26 +613,17 @@ public class DefaultMobileImportService
                     {
                         LOG.error( "dataValue map is null" );
                     }
-                    else
+                    else if ( source == null )
                     {
-                        if ( source == null )
-                        {
-                            LOG.error( "source is null" );
-                        }
-                        else
-                        {
-                            if ( period == null )
-                            {
-                                LOG.error( "period is null" );
-                            }
-                            else
-                            {
-                                if ( timeStamp == null )
-                                {
-                                    LOG.error( "timeStamp is null" );
-                                }
-                            }
-                        }
+                        LOG.error( "source is null" );
+                    }
+                    else if ( period == null )
+                    {
+                        LOG.error( "period is null" );
+                    }
+                    else if ( timeStamp == null )
+                    {
+                        LOG.error( "timeStamp is null" );
                     }
 
                     if ( source == null || period == null || timeStamp == null || dataValueMap == null
@@ -647,8 +656,6 @@ public class DefaultMobileImportService
                         optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
                             .valueOf( optStr ) );
 
-                        // DataValue dataValue = dataValueService.getDataValue(
-                        // source, dataElement, period, optionCombo );
                         DataValue dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp,
                             null, optionCombo );
                         boolean exists = batchHandler.objectExists( dataValue );
@@ -657,11 +664,6 @@ public class DefaultMobileImportService
                         {
                             if ( value != null )
                             {
-                                // dataValue = new DataValue( dataElement,
-                                // period, source, value, storedBy, timeStamp,
-                                // null, optionCombo );
-
-                                // dataValueService.addDataValue( dataValue );
                                 batchHandler.addObject( dataValue );
                             }
                         }
@@ -673,7 +675,6 @@ public class DefaultMobileImportService
 
                             dataValue.setStoredBy( storedBy );
 
-                            // dataValueService.updateDataValue( dataValue );
                             batchHandler.updateObject( dataValue );
                         }
                     }
@@ -701,76 +702,24 @@ public class DefaultMobileImportService
             }
         }
     }
-
+*/
     @Override
     @Transactional
     public void importPendingFiles()
     {
-        /*
-        List<String> status1PhoneNumbers = new ArrayList<String>();
-        List<String> status2PhoneNumbers = new ArrayList<String>();
-        List<String> status3PhoneNumbers = new ArrayList<String>();
-        List<String> status4PhoneNumbers = new ArrayList<String>();
-        List<String> status5PhoneNumbers = new ArrayList<String>();
-        */
-        
         List<String> fileNames = new ArrayList<String>( getImportFiles() );
 
         for ( String importFile : fileNames )
         {
-            //List<String> status = importPendingFile( importFile );
-            
             String statusMsg = importXMLFile( importFile );
-            
-            //smsService.sendMessage( importFile.split( "_" )[0], statusMsg );
             
             SendSMS sendSMS = new SendSMS( importFile.replace( ".xml", "" ), statusMsg );
             
             sendSMSService.addSendSMS( sendSMS );
-            
-            /*
-            if( status.get( 0 ).equalsIgnoreCase( "1" ) )
-            {
-                status1PhoneNumbers.add( importFile.split( "_" )[0] );
-            }
-            else if( status.get( 0 ).equalsIgnoreCase( "2" ) )
-            {
-                status2PhoneNumbers.add( importFile.split( "_" )[0] );
-            }
-            else if( status.get( 0 ).equalsIgnoreCase( "3" ) )
-            {
-                status3PhoneNumbers.add( importFile.split( "_" )[0] );
-            }
-            else if( status.get( 0 ).equalsIgnoreCase( "4" ) )
-            {
-                status4PhoneNumbers.add( importFile.split( "_" )[0] );
-            }
-            else if( status.get( 0 ).equalsIgnoreCase( "5" ) )
-            {
-                status5PhoneNumbers.add( importFile.split( "_" )[0] );
-            }
-            */
         }
-        
-        /*
-        String groupName = UUID.randomUUID().toString();
-        smsService.sendMessageToGroup( groupName, status1PhoneNumbers, msg );
-        
-        groupName = UUID.randomUUID().toString();
-        smsService.sendMessageToGroup( groupName, status2PhoneNumbers, msg );
-        
-        groupName = UUID.randomUUID().toString();
-        smsService.sendMessageToGroup( groupName, status3PhoneNumbers, msg );
-        
-        groupName = UUID.randomUUID().toString();
-        smsService.sendMessageToGroup( groupName, status4PhoneNumbers, msg );
-        
-        groupName = UUID.randomUUID().toString();
-        smsService.sendMessageToGroup( groupName, status5PhoneNumbers, msg );
-        */
     }
     
-    
+    /*
     @Transactional
     public List<String> importPendingFile( String importFile )
     {
@@ -793,7 +742,6 @@ public class DefaultMobileImportService
                 statusMsgs.add( 1, "Data not Received Properly, Please send again" );
                 
                 return statusMsgs;
-                //return "Data not Received Properly, Please send again";
             }
 
             User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
@@ -816,7 +764,6 @@ public class DefaultMobileImportService
                     statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
                     
                     return statusMsgs;
-                    //return "Phone number is not registered to any facility. Please contact admin";
                 }
 
                 List<Source> sources = new ArrayList<Source>( curUser.getOrganisationUnits() );
@@ -831,8 +778,6 @@ public class DefaultMobileImportService
                     statusMsgs.add( 1, "Phone number is not registered to any facility. Please contact admin" );
                     
                     return statusMsgs;
-
-                    //return "Phone number is not registered to any facility. Please contact admin";
                 }
                 
                 Source source = sources.get( 0 );
@@ -885,8 +830,6 @@ public class DefaultMobileImportService
                     statusMsgs.add( 1, "Data not Received Properly, Please send again" );
                     
                     return statusMsgs;
-
-                    //return "Data not Received Properly, Please send again";
                 }
 
                 Set<String> keys = dataValueMap.keySet();
@@ -987,21 +930,95 @@ public class DefaultMobileImportService
         }
         finally
         {
-            //batchHandler.flush();
         }
 
         return statusMsgs;
+    }
+    */
+
+    @Transactional
+    public String importANMRegData( String importFile, MobileImportParameters mobImportParameters )
+    {
+        String importStatus="";
+
+        try
+        {
+            User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
+
+            if ( curUser != null )
+            {
+                UserCredentials userCredentials = userStore.getUserCredentials( curUser );
+
+                if ( (userCredentials != null)
+                    && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
+                {
+                }
+                else
+                {
+                    LOG.error( " Import File Contains Unrecognised Phone Numbers : "
+                        + mobImportParameters.getMobileNumber() );
+                    moveFailedFile( importFile );
+                    return "Phone number is not registered to any facility. Please contact admin";
+                }
+
+                List<OrganisationUnit> sources = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
+
+                if ( sources == null || sources.size() <= 0 )
+                {
+                    LOG.error( " No User Exists with corresponding Phone Numbers : "
+                        + mobImportParameters.getMobileNumber() );
+                    moveFailedFile( importFile );
+                    
+                    return "Phone number is not registered to any facility. Please contact admin";
+                }
+                
+                OrganisationUnit source = sources.get( 0 );
+                String anmName = mobImportParameters.getAnmName();
+
+                if ( source == null || anmName == null || anmName.trim().equalsIgnoreCase( "" ) )
+                {
+                    LOG.error( importFile + " Import File is not Properly Formated" );
+                    moveFailedFile( importFile );
+                    
+                    return "Data not Received Properly, Please send again";
+                }
+
+                source.setComment( anmName );
+                
+                organisationUnitService.updateOrganisationUnit( source );
+
+                moveImportedFile( importFile );
+                
+               importStatus = "YOUR NAME IS REGISTERD SUCCESSFULLY";
+            }
+            else
+            {
+                LOG.error( importFile + " Phone number not found... Sending to Bounced" );
+                importStatus = "Phone number is not registered to any facility. Please contact admin";
+                moveFailedFile( importFile );
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            LOG.error( e.getMessage() );
+            LOG.error( "Exception caused in importing... Moving to Bounced" );
+            
+            importStatus = "Data not Received Properly, Please send again";
+            moveFailedFile( importFile );
+        }
+        finally
+        {
+        }
+
+        return importStatus;
     }
     
     @Override
     @Transactional
     public String importXMLFile( String importFile )
     {
-        //BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class );
-        //batchHandler.init();
-        
         int insertFlag = 1;
-        //StringBuffer insertQuery = new StringBuffer( "INSERT INTO datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ") ;
         String insertQuery = "INSERT INTO datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
         String importStatus="";
 
@@ -1017,6 +1034,14 @@ public class DefaultMobileImportService
                 return "Data not Received Properly, Please send again";
             }
 
+            // Checking for FormType, if formtype is ANMREG
+            if( mobImportParameters.getFormType().equalsIgnoreCase( MobileImportParameters.FORM_TYPE_ANMREGFORM ) )
+            {
+                importStatus = importANMRegData( importFile, mobImportParameters );
+                
+                return importStatus;
+            }
+            
             User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
 
             if ( curUser != null )
@@ -1076,26 +1101,17 @@ public class DefaultMobileImportService
                 {
                     LOG.error( "dataValue map is null" );
                 }
-                else
+                else if ( source == null )
                 {
-                    if ( source == null )
-                    {
-                        LOG.error( "source is null" );
-                    }
-                    else
-                    {
-                        if ( period == null )
-                        {
-                            LOG.error( "period is null" );
-                        }
-                        else
-                        {
-                            if ( timeStamp == null )
-                            {
-                                LOG.error( "timeStamp is null" );
-                            }
-                        }
-                    }
+                    LOG.error( "source is null" );
+                }
+                else if ( period == null )
+                {
+                    LOG.error( "period is null" );
+                }
+                else if ( timeStamp == null )
+                {
+                    LOG.error( "timeStamp is null" );
                 }
 
                 if ( source == null || period == null || timeStamp == null || dataValueMap == null
@@ -1128,25 +1144,14 @@ public class DefaultMobileImportService
                         .valueOf( optStr ) );
 
                     DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, optionCombo );
-                    //DataValue dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp, null, optionCombo );
-                    //boolean exists = batchHandler.objectExists( dataValue );
 
                     if ( dataValue == null )
                     {
                         if ( value != null )
                         {
-                            //dataValue = new DataValue( dataElement, period, source, value, storedBy, timeStamp, null, optionCombo );
-                            
-                            //insertQuery.append( "( "+ dataElement.getId() + ", " + period.getId() + ", "+ source.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), " );
                             insertQuery += "( "+ dataElement.getId() + ", " + period.getId() + ", "+ source.getId() +", " + optionCombo.getId() + ", '" + value + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
-                            
-                            //System.out.println( insertQuery );
-                            
+
                             insertFlag = 2;
-                            
-                            //jdbcTemplate.update( insertQuery );
-                            //dataValueService.addDataValue( dataValue );
-                            //batchHandler.addObject( dataValue );
                         }
                     }
                     else
@@ -1158,16 +1163,12 @@ public class DefaultMobileImportService
                         dataValue.setStoredBy( storedBy );
 
                         dataValueService.updateDataValue( dataValue );
-                        //batchHandler.updateObject( dataValue );
                     }
                 }
                 
                 if( insertFlag != 1 )
                 {
-                 
                     insertQuery = insertQuery.substring( 0, insertQuery.length()-2 );
-                    //insertQuery += ";";
-                    //System.out.println( insertQuery );
                     
                     jdbcTemplate.update( insertQuery );
                 }
@@ -1205,7 +1206,6 @@ public class DefaultMobileImportService
         }
         finally
         {
-            //batchHandler.flush();
         }
 
         return importStatus;

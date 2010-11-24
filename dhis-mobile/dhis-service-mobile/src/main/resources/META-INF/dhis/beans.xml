@@ -23,6 +23,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="smsService" ref="org.hisp.dhis.mobile.SmsService"/>
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 		<property name="sendSMSService" ref="org.hisp.dhis.mobile.api.SendSMSService"/>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 		<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
