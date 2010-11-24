@@ -28,6 +28,7 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -56,6 +57,8 @@ public class AggregatedIndicatorValue
     
     private double denominatorValue;
 
+    private Date modified;
+
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -78,6 +81,7 @@ public class AggregatedIndicatorValue
         this.value = value;
         this.numeratorValue = numeratorValue;
         this.denominatorValue = denominatorValue;
+        this.modified = new Date();
     }
     
     /**
@@ -103,6 +107,34 @@ public class AggregatedIndicatorValue
         this.value = value;
         this.numeratorValue = numeratorValue;
         this.denominatorValue = denominatorValue;
+        this.modified = new Date();
+    }
+
+    /**
+     * @param indicatorId indicator id
+     * @param periodId period id
+     * @param periodTypeId period type id
+     * @param organisationUnitId organisation unit id
+     * @param level level
+     * @param factor factor
+     * @param value value
+     * @param numeratorValue numerator value
+     * @param denominatorValue denominator value
+     * @param timestamp modification timestamp
+     */
+    public AggregatedIndicatorValue( int indicatorId, int periodId, int periodTypeId, int organisationUnitId,
+        int level, double factor, double value, double numeratorValue, double denominatorValue, Date timestamp )
+    {
+        this.indicatorId = indicatorId;
+        this.periodId = periodId;
+        this.periodTypeId = periodTypeId;
+        this.organisationUnitId = organisationUnitId;
+        this.level = level;
+        this.factor = factor;
+        this.value = value;
+        this.numeratorValue = numeratorValue;
+        this.denominatorValue = denominatorValue;
+        this.modified = timestamp;
     }
 
     // ----------------------------------------------------------------------
@@ -224,6 +256,16 @@ public class AggregatedIndicatorValue
     public void setValue( double value )
     {
         this.value = value;
+    }
+
+    public Date getModified()
+    {
+        return modified;
+    }
+
+    public void setModified( Date modified )
+    {
+        this.modified = modified;
     }
 
     // ----------------------------------------------------------------------

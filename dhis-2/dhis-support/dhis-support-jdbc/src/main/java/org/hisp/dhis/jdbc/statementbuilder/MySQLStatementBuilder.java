@@ -73,7 +73,8 @@ public class MySQLStatementBuilder
             "organisationunitid INTEGER, " +
             "periodtypeid INTEGER, " +
             "level INTEGER, " +
-            "value DOUBLE );";
+            "value DOUBLE, " +
+            "modified TIMESTAMP);";
     }
     
     public String getCreateAggregatedIndicatorTable()
@@ -89,7 +90,8 @@ public class MySQLStatementBuilder
             "factor DOUBLE, " +
             "value DOUBLE, " +
             "numeratorvalue DOUBLE, " +
-            "denominatorvalue DOUBLE );";
+            "denominatorvalue DOUBLE, " +
+            "modified TIMESTAMP);";
     }
 
     public String getCreateDataSetCompletenessTable()
