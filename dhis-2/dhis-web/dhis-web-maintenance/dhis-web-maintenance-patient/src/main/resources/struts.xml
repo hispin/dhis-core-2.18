@@ -976,16 +976,52 @@
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
 		</action>
 
-		<!-- Case Aggregation Mapping -->
+		<!-- Case Aggregation Condition -->
 
-		<action name="caseaggregationMapForm"
-			class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationMapping">
+		<action name="caseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/caseAggMapping.vm</param>
+			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/caseaggregation.js</param>
 		</action>
+		
+		<action name="showAddCaseAggregationForm"
+			class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/caseaggregation.js</param>
+		</action>
+		
+		<action name="showUpdateCaseAggregationForm"
+			class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction">
+			<result name="success" type="chain">updateCaseAggregationFormChain</result>
+		</action>
+		
+		<action name="updateCaseAggregationFormChain"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
+			<param name="javascripts">javascript/caseaggregation.js</param>
+		</action>
+		
+		<action name="addCaseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction">
+			<result name="success" type="redirect">caseAggregation.action</result>
+		</action>
 
+		<action name="updateCaseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction">
+			<result name="success" type="redirect">caseAggregation.action</result>
+		</action>
+		
+		<action name="removeCaseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction">
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
 		<action name="getAggDataElements"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction">
 			<result name="success" type="velocity-xml">
@@ -993,7 +1029,7 @@
 			</result>
 		</action>
 
-		<action name="getPrgramStages"
+		<action name="getProgramStages"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-maintenance-patient/responseProgramStages.vm
@@ -1007,25 +1043,13 @@
 			</result>
 		</action>
 
-		<action name="getCaseAggExpression"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggExpressionAction">
+		<action name="getCaseAggregation"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseExpression.vm
-			</result>
+				/dhis-web-maintenance-patient/responseCaseAggregation.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-
-		<action name="saveCaseAggMapping"
-			class="org.hisp.dhis.patient.action.caseaggregation.SaveCaseAggregationMappingAction">
-			<result name="success" type="redirect">index.action</result>
-		</action>
-
-		<action name="caseAggregationOptionCapture"
-			class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseCaseAggOptionCapture.vm
-			</result>
-		</action>
-
+		
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"

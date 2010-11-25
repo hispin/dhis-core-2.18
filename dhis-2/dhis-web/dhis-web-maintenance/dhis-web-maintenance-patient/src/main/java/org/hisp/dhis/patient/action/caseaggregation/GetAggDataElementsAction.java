@@ -71,15 +71,20 @@ public class GetAggDataElementsAction
         return optionComboIds;
     }
 
-    private Integer degId;
+    private Integer dataElementGroupId;
 
-    public void setDegId( Integer degId )
+    public void setDataElementGroupId( Integer dataElementGroupId )
     {
-        this.degId = degId;
+        this.dataElementGroupId = dataElementGroupId;
     }
 
     private List<DataElement> dataElementList;
 
+    public List<DataElement> getDataElementList()
+    {
+        return dataElementList;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -90,15 +95,16 @@ public class GetAggDataElementsAction
 
         optionComboIds = new ArrayList<String>();
 
-        dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( degId ).getMembers() );
+        dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
+            .getMembers() );
 
         Iterator<DataElement> deIterator = dataElementList.iterator();
 
         while ( deIterator.hasNext() )
         {
-            DataElement de = deIterator.next();
-            if ( de.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_PATIENT )
-                || !de.getType().equals( DataElement.VALUE_TYPE_INT ) )
+            DataElement dataElement = deIterator.next();
+            if ( dataElement.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_PATIENT )
+                || !dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 deIterator.remove();
             }
@@ -123,13 +129,13 @@ public class GetAggDataElementsAction
                 {
                     DataElementCategoryOptionCombo decoc = optionComboIterator.next();
 
-                    optionComboIds.add( de.getId() + ":" + decoc.getId() );
+                    optionComboIds.add( de.getId() + "." + decoc.getId() );
 
-                    optionComboNames.add( de.getName() + ":" + decoc.getName() );
+                    optionComboNames.add( de.getName() + " (" + decoc.getName() + ")");
                 }
             }
         }
-
+        
         return SUCCESS;
     }
 }

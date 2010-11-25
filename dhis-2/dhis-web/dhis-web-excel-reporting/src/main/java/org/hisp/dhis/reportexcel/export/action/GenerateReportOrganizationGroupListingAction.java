@@ -88,7 +88,7 @@ public class GenerateReportOrganizationGroupListingAction
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
-
+            
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
             this.generateOutPutFile( reportExcel, orgUniGroupAtLevels, reportExcelItems, organisationUnit, sheet );

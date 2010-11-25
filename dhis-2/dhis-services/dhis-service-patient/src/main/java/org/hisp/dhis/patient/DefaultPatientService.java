@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.patient;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -36,6 +37,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
@@ -105,6 +108,13 @@ public class DefaultPatientService
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
     {
         this.relationshipTypeService = relationshipTypeService;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -289,15 +299,15 @@ public class DefaultPatientService
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, int min, int max,
         PatientAttribute patientAttribute )
     {
-        List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit) );
-        
+        List<Patient> patientList = new ArrayList<Patient>( patientStore.getByOrgUnit( organisationUnit ) );
+
         if ( patientAttribute != null )
         {
             List<Patient> sortedPatientList = (ArrayList<Patient>) sortPatientsByAttribute( patientList,
                 patientAttribute );
             return sortedPatientList.subList( min, max );
         }
-        
+
         return patientList.subList( min, max );
     }
 
@@ -422,11 +432,10 @@ public class DefaultPatientService
         return patientStore.countListPatientByOrgunit( organisationUnit );
     }
 
-  
     @Override
-    public void updatePatient( Patient patient, Integer representativeId,
-        Integer relationshipTypeId, List<PatientAttributeValue> valuesForSave,
-        List<PatientAttributeValue> valuesForUpdate, Collection<PatientAttributeValue> valuesForDelete )
+    public void updatePatient( Patient patient, Integer representativeId, Integer relationshipTypeId,
+        List<PatientAttributeValue> valuesForSave, List<PatientAttributeValue> valuesForUpdate,
+        Collection<PatientAttributeValue> valuesForDelete )
     {
 
         patientStore.update( patient );
@@ -481,13 +490,50 @@ public class DefaultPatientService
             }
         }
     }
-    
-    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max ){
+
+    public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max )
+    {
         return patientStore.getByOrgUnitProgram( organisationUnit, program, min, max );
     }
 
-    public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program ){
+    public int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program )
+    {
         return patientStore.countGetPatientsByOrgUnitProgram( organisationUnit, program );
+    }
+
+    @Override
+    public Object getObjectValue( String property, String value )
+    {
+        try
+        {
+            Type type = Patient.class.getMethod( "get" + StringUtils.capitalize( property ) ).getReturnType();
+
+            // Get value
+            if ( type == Integer.class || type == Integer.TYPE )
+            {
+                return Integer.valueOf( value );
+            }
+            else if ( type.equals( Boolean.class ) || type == Boolean.TYPE )
+            {
+                return Boolean.valueOf( value );
+            }
+            else if ( type.equals( Date.class ) )
+            {
+                return format.parseDate( value.trim() );
+            }
+            else if ( type.equals( Character.class ) || type == Character.TYPE )
+            {
+                return Character.valueOf( value.charAt( 0 ) );
+            }
+
+            return value;
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        
+        return null;
     }
 
 }

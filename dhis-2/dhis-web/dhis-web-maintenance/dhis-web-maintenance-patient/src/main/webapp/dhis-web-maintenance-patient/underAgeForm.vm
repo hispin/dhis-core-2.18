@@ -263,7 +263,12 @@ jQuery(document).ready(function()
 </div>
 </div>
 <script>
-
+Calendar.setup({
+    inputField     :    "birthDate"      // id of the input field
+    ,ifFormat      :    "$i18n.getString('format.date.label')"       // format of the input field
+    ,button        :    "getBirthDate"   // trigger for the calendar (button ID)
+    ,onUpdate 	   :  function(){jQuery("#birthDate").focus();}
+});
 var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
 var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
 var i18n_patient_fullName = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'")';

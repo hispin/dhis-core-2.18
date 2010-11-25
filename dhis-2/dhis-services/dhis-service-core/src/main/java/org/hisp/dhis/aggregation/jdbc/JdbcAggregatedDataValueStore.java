@@ -16,6 +16,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueStore;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -23,6 +24,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionType;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataMapValueRowMapper;
@@ -33,7 +35,7 @@ import org.hisp.dhis.system.objectmapper.DataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 
 public class JdbcAggregatedDataValueStore
-    implements AggregatedDataValueStore
+    extends HibernateGenericStore<CaseAggregationCondition> implements AggregatedDataValueStore
 {
     // -------------------------------------------------------------------------
     // Dependencies

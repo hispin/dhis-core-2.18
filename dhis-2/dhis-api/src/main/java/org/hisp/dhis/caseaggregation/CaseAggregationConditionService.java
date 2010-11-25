@@ -25,55 +25,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.caseaggregation;
+package org.hisp.dhis.caseaggregation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
-import com.opensymphony.xwork2.Action;
-
-public class GetProgramStagesAction implements Action
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version CaseAggregationCondititionService.java Nov 17, 2010 10:56:29 AM
+ */
+public interface CaseAggregationConditionService
 {
+    int  addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    void updateCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
+    void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition );
     
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
+    CaseAggregationCondition getCaseAggregationCondition( int id );
+    
+    Collection<CaseAggregationCondition> getAllCaseAggregationCondition( );
+   
+    CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
 
-    private List<ProgramStage> programStages;
     
-    public List<ProgramStage> getProgramStages()
-    {
-        return programStages;
-    }
-    
-    private Integer programId;
-    
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    public String execute()
-    {
-        programStages = new ArrayList<ProgramStage>( programService.getProgram( programId ).getProgramStages() );
-        
-        return SUCCESS;
-    }
+    double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
 }

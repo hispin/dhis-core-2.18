@@ -25,55 +25,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.caseaggregation;
+package org.hisp.dhis.caseaggregation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
-import com.opensymphony.xwork2.Action;
-
-public class GetProgramStagesAction implements Action
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version PatientAggregationExpressionStore.java Nov 18, 2010 9:27:59 AM
+ */
+public interface CaseAggregationConditionStore
+    extends GenericStore<CaseAggregationCondition>
 {
+    String ID = CaseAggregationConditionStore.class.getName();
 
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
+    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Input & Output
-    // -------------------------------------------------------------------------
-
-    private List<ProgramStage> programStages;
-    
-    public List<ProgramStage> getProgramStages()
-    {
-        return programStages;
-    }
-    
-    private Integer programId;
-    
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-    public String execute()
-    {
-        programStages = new ArrayList<ProgramStage>( programService.getProgram( programId ).getProgramStages() );
-        
-        return SUCCESS;
-    }
+    Collection<Integer> executeSQL( String sql );
 }

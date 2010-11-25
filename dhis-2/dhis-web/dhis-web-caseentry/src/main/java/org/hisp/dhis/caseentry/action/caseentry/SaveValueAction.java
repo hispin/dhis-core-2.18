@@ -187,7 +187,7 @@ public class SaveValueAction
             programInstance, programStage );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-System.out.println("\n\n ==== save value : " + value );
+        
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
