@@ -8,9 +8,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<!-- Store definitions -->
 	
-	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingStore"
-    class="org.hisp.dhis.caseaggregation.hibernate.HibernateCaseAggregationMappingStore">
-    	<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore"
+    class="org.hisp.dhis.caseaggregation.jdbc.JdbcCaseAggregationConditionStore">
+    	<property name="statementManager" ref="statementManager" />
+    	<property name="clazz" value="org.hisp.dhis.caseaggregation.CaseAggregationCondition" />
+		<property name="sessionFactory" ref="sessionFactory" />
     </bean>
 	
 	<bean id="org.hisp.dhis.relationship.RelationshipStore"
@@ -142,18 +144,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"
-    	class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationMappingService">
-        <property name="caseAggregationMappingStore"
-      	  ref="org.hisp.dhis.caseaggregation.CaseAggregationMappingStore"/>
+	<bean id="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"
+    class="org.hisp.dhis.caseaggregation.DefaultCaseAggregationConditionService">
+    	<property name="aggregationConditionStore" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore" />     	
     </bean>
-	
+    
     <bean id="org.hisp.dhis.program.ProgramStageDataElementService"
     class="org.hisp.dhis.program.DefaultProgramStageDataElementService">
       <property name="programStageDataElementStore"
         ref="org.hisp.dhis.program.ProgramStageDataElementStore"/>
     </bean>
-
+	
 	<bean id="org.hisp.dhis.program.nextvisit.NextVisitGenerator"
 		class="org.hisp.dhis.program.nextvisit.DefaultNextVisitGenerator">
 		<property name="patientDataValueService"
@@ -161,17 +162,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
-
+	
 	<bean id="org.hisp.dhis.relationship.RelationshipService" class="org.hisp.dhis.relationship.DefaultRelationshipService">
 		<property name="relationshipStore" ref="org.hisp.dhis.relationship.RelationshipStore" />
 	</bean>
-
+	
 	<bean id="org.hisp.dhis.relationship.RelationshipTypeService"
 		class="org.hisp.dhis.relationship.DefaultRelationshipTypeService">
 		<property name="relationshipTypeStore"
 			ref="org.hisp.dhis.relationship.RelationshipTypeStore" />
 	</bean>
-
+	
 	<bean id="org.hisp.dhis.program.ProgramStageInstanceService"
 		class="org.hisp.dhis.program.DefaultProgramStageInstanceService">
 		<property name="programStageInstanceStore"

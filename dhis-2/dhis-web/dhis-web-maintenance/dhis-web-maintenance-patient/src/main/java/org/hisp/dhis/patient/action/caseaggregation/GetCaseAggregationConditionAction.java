@@ -25,66 +25,64 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.caseaggregation;
+package org.hisp.dhis.patient.action.caseaggregation;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GetOrgUnitsAction
-    extends ActionSupport
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version GetCaseAggregationConditionAction.java Nov 18, 2010 10:42:01 AM
+ */
+public class GetCaseAggregationConditionAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private CaseAggregationConditionService aggregationConditionService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    private CaseAggregationCondition caseAggregation;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.aggregationConditionService = aggregationConditionService;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public CaseAggregationCondition getCaseAggregation()
+    {
+        return caseAggregation;
     }
 
     // -------------------------------------------------------------------------
-    // Getters & Setters
+    // Implementation Action
     // -------------------------------------------------------------------------
 
-    private Integer orgUnitId;
-
-    public void setOrgUnitId( Integer orgUnitId )
+    @Override
+    public String execute()
+        throws Exception
     {
-        this.orgUnitId = orgUnitId;
-    }
-    
-    private OrganisationUnit orgUnit;
+        caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
 
-    public OrganisationUnit getOrgUnit()
-    {
-        return orgUnit;
-    }
-
-    private Integer orgUnitLevel;
-
-    public Integer getOrgUnitLevel()
-    {
-        return orgUnitLevel;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    public String execute() throws Exception
-    {
-        /* OrganisationUnit */
-        if ( orgUnitId != null )
-        {
-            orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-        }
-
-        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-        
         return SUCCESS;
     }
 

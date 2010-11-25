@@ -1,5 +1,3 @@
-package org.hisp.dhis.patient.action.caseaggregation;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -27,47 +25,42 @@ package org.hisp.dhis.patient.action.caseaggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.patient.action.caseaggregation;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.program.comparator.ProgramNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-public class CaseAggregationMapping
+/**
+ * @author Chau Thu Tran
+ * 
+ * @version ShowCaseAggregationConditionFormAction.java Nov 17, 2010 11:04:46 AM
+ */
+public class ShowCaseAggregationConditionFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramService programService;
+    public DataElementService dataElementService;
 
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
+    public ProgramService programService;
 
     private PatientAttributeService patientAttributeService;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -75,87 +68,66 @@ public class CaseAggregationMapping
 
     private List<PatientAttribute> patientAttributes;
 
-    public List<PatientAttribute> getPatientAttributes()
-    {
-        return patientAttributes;
-    }
-
     private List<DataElementGroup> dataElementGroups;
 
+    private List<DataElement> dataElements;
+
+    private List<Program> programs;
+
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
     }
-
-    private List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    private List<Program> programs;
 
     public List<Program> getPrograms()
     {
         return programs;
     }
 
-    private String intType;
-
-    public String getIntType()
+    public List<DataElement> getDataElements()
     {
-        return intType;
+        return dataElements;
     }
 
-    private String stringType;
-
-    public String getStringType()
+    public void setDataElementService( DataElementService dataElementService )
     {
-        return stringType;
+        this.dataElementService = dataElementService;
     }
 
-    private String dateType;
-
-    public String getDateType()
+    public void setProgramService( ProgramService programService )
     {
-        return dateType;
+        this.programService = programService;
     }
 
-    private String boolType;
-
-    public String getBoolType()
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
-        return boolType;
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public List<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
+        throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get Dataelement's types
-        // ---------------------------------------------------------------------
-
-        intType = DataElement.VALUE_TYPE_INT;
-
-        stringType = DataElement.VALUE_TYPE_STRING;
-
-        dateType = DataElement.VALUE_TYPE_DATE;
-
-        boolType = DataElement.VALUE_TYPE_BOOL;
-
-        // ---------------------------------------------------------------------
-        // Get attributes, dataElementGroup, programs
-        // ---------------------------------------------------------------------
-
-        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
-
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
+        Collections.sort( programs, new ProgramNameComparator() );
+
+        patientAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getAllPatientAttributes() );
+        Collections.sort( patientAttributes, new PatientAttributeComparator() );
 
         return SUCCESS;
     }

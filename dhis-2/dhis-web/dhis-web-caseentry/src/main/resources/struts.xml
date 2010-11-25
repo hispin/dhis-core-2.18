@@ -218,11 +218,10 @@
 	 <!-- Case Aggregation -->
 
     <action name="caseAggregationForm" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>            
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/caseAggregationForm.vm</param>
       <param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>    
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/caseagg.js,javascript/date.js</param>      
+      <param name="javascripts">javascript/caseagg.js,javascript/date.js</param>      
     </action>
     
 	<action name="getOrgUnitDetails" class="org.hisp.dhis.caseentry.action.caseaggregation.GetOrgUnitsAction">

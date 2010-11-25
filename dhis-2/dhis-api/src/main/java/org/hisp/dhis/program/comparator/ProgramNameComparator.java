@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,54 +24,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.caseaggregation;
 
-import java.util.ArrayList;
-import java.util.List;
+package org.hisp.dhis.program.comparator;
+
+import java.util.Comparator;
+
+import org.hisp.dhis.program.Program;
 
 /**
- * @author Viet Nguyen
+ * @author Chau Thu Tran
  *
- * @version $Id$
+ * @version ProgramNameComparator.java Nov 17, 2010 11:13:44 AM 
  */
-public class CaseAggregationQuery
+public class ProgramNameComparator implements Comparator<Program>
 {
-    /**
-     * List all conditions of the query
-     */
-    private List<CaseAggregationCondition> conditions = new ArrayList<CaseAggregationCondition>();
-
-    /**
-     * Value: SUM | COUNT
-     */
-    private String function;
-
-    public List<CaseAggregationCondition> getConditions()
+    public int compare( Program program0, Program program1 )
     {
-        return conditions;
+        return program0.getName().compareTo( program1.getName() );
     }
-
-    public void setConditions( List<CaseAggregationCondition> conditions )
-    {
-        this.conditions = conditions;
-    }
-
-    public String getFunction()
-    {
-        return function;
-    }
-
-    public void setFunction( String function )
-    {
-        this.function = function;
-    }
-    
-    public void addCondition( CaseAggregationCondition c )
-    {
-        if( conditions == null )
-            conditions = new ArrayList<CaseAggregationCondition>();
-        conditions.add( c );
-    }
-    
-    
 }

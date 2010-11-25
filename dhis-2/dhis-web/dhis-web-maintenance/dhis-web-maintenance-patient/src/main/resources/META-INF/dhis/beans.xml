@@ -1006,22 +1006,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
 	</bean>
+	
 	<!-- Case Aggregation Mapping -->
+	
 	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationMapping"
-		class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationMapping"
+		id="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.AddCaseAggregationConditionAction"
 		scope="prototype">
-		<property name="programService">
-			<ref bean="org.hisp.dhis.program.ProgramService" />
-		</property>
-		<property name="patientAttributeService">
-			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
+		<property name="dataElementCategoryService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
 	</bean>
-
+	
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
@@ -1030,7 +1032,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
 	</bean>
-
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+	
 	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction"
@@ -1050,44 +1070,46 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageDataElementService"
 			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
-
+	
 	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggExpressionAction"
-		class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggExpressionAction"
+		id="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.RemoveCaseAggregationConditionAction"
 		scope="prototype">
-		<property name="caseAggregationMappingService">
-			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationMappingService" />
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.ShowCaseAggregationConditionFormAction"
+		scope="prototype">
+		<property name="dataElementService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+		<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
+		class="org.hisp.dhis.patient.action.caseaggregation.UpdateCaseAggregationConditionAction"
+		scope="prototype">
+		<property name="aggregationConditionService">
+			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
-		<property name="categoryService">
+		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		</property>
 	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.SaveCaseAggregationMappingAction"
-		class="org.hisp.dhis.patient.action.caseaggregation.SaveCaseAggregationMappingAction"
-		scope="prototype">
-		<property name="caseAggregationMappingService">
-			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationMappingService" />
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="categoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		</property>
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction"
-		class="org.hisp.dhis.patient.action.caseaggregation.CaseAggregationOptionCaptureAction"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-	</bean>
-
+	
 	<!-- Validation - PatientValidationCriteria -->
 
 	<bean

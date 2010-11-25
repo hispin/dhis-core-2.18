@@ -225,4 +225,6 @@ public interface PatientService
     
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
     
+    Object getObjectValue( String property, String value );
+    
 }

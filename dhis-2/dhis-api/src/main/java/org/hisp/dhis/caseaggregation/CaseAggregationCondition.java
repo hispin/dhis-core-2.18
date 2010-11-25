@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,123 +24,148 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.caseaggregation;
 
+import java.io.Serializable;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+
 /**
- * @author Viet Nguyen
- *
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version CaseAggregationCondition.java Nov 17, 2010 10:47:12 AM
  */
 public class CaseAggregationCondition
+    implements Serializable
 {
-    //---------------------------------------------------------------------------
-    // Constants
-    //---------------------------------------------------------------------------
+    public static final String SEPARATOR_ID = "\\.";
+
+    public static final String SEPARATOR_OBJECT = ":";
     
-    public static final char OPEN_CONDITION = '{';
 
-    public static final char CLOSE_CONDITION = '}';
+    public static final String AGGRERATION_COUNT = "COUNT";
 
-    public static final char OPEN_EXPRESSION = '(';
-
-    public static final char CLOSE_EXPRESSION = ')';
-
-    public static final char OPEN_ARGUMENT = '[';
-
-    public static final char CLOSE_ARGUMENT = ']';
-
-    public static final String CONDITION = "COND";
-
-    public static final String SINGLE_CONDITION = "SCOND";
-
-    public static final char ARGUMENT_IDENTIFIER = ':';
-
-    public static final char ARGUMENT_SPLITTER = '.';
-
-    public static final String ARGUMENT_DATALEMENT = "DE";
-
-    public static final String ARGUMENT_CASE_ATTRIBUTE = "CA";
-
-    public static final String ARGUMENT_CASE_PROPERTIES = "CP";
-
-    public static final String FUNCTION_IDENTIFIER = "@";
+    public static final String AGGRERATION_SUM = "SUM";
     
-    //---------------------------------------------------------------------------
-    // Variables
-    //---------------------------------------------------------------------------
     
-    /**
-     * Value : SCOND | COND  ( Single condition | Condition )
-     */
-    private String type;
+    public static final String OPERATOR_AND = "AND";
 
-    /**
-     * Value : AND | OR 
-     * Value : NULL if this is the last condition in the query
-     */
-    private String next;
-
-    /**
-     * Left side expression of the condition
-     * Format : [DE:ProgramStageId.DataElementId.OptionComboId]    
-     *          [CP:CasePropertiesName] 
-     *          [CA:CaseAttributeId]
-     */
-    private String leftExpression;
-
-    /**
-     * Right side expression of the condition
-     * Format : like the left side.
-     */
-    private String rightExpression;
+    public static final String OPERATOR_OR = "OR";
     
-    /**
-     * Current supported : > , >= , < , <=
-     */
-    private String operator = "";
 
-    //---------------------------------------------------------------------------
-    // Getters / Setters
-    //---------------------------------------------------------------------------
+    public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
+
+    public static String OBJECT_PATIENT_ATTRIBUTE = "CA";
+
+    public static String OBJECT_PATIENT_PROPERTY = "CP";
     
-    public String getType()
+    
+
+    // -------------------------------------------------------------------------
+    // Fields
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    private String operator;
+
+    private String aggregationExpression;
+
+    private String description;
+
+    private DataElement aggregationDataElement;
+
+    private DataElementCategoryOptionCombo optionCombo;
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    public CaseAggregationCondition()
     {
-        return type;
+
     }
 
-    public void setType( String type )
+    public CaseAggregationCondition( String description, String operator, String aggregationExpression, 
+        DataElement aggregationDataElement, DataElementCategoryOptionCombo optionCombo )
     {
-        this.type = type;
+        this.description = description;
+        this.operator = operator;
+        this.aggregationExpression = aggregationExpression;
+        this.aggregationDataElement = aggregationDataElement;
+        this.optionCombo = optionCombo;
     }
 
-    public String getNext()
+    // -------------------------------------------------------------------------
+    // Logical
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
     {
-        return next;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((aggregationExpression == null) ? 0 : aggregationExpression.hashCode());
+        result = prime * result + ((operator == null) ? 0 : operator.hashCode());
+        return result;
     }
 
-    public void setNext( String next )
+    @Override
+    public boolean equals( Object obj )
     {
-        this.next = next;
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        CaseAggregationCondition other = (CaseAggregationCondition) obj;
+        if ( aggregationExpression == null )
+        {
+            if ( other.aggregationExpression != null )
+                return false;
+        }
+        else if ( !aggregationExpression.equals( other.aggregationExpression ) )
+            return false;
+        if ( operator == null )
+        {
+            if ( other.operator != null )
+                return false;
+        }
+        else if ( !operator.equals( other.operator ) )
+            return false;
+        return true;
     }
 
-    public String getLeftExpression()
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
+
+    public Integer getId()
     {
-        return leftExpression;
+        return id;
     }
 
-    public void setLeftExpression( String leftExpression )
+    public DataElement getAggregationDataElement()
     {
-        this.leftExpression = leftExpression;
+        return aggregationDataElement;
     }
 
-    public String getRightExpression()
+    public DataElementCategoryOptionCombo getOptionCombo()
     {
-        return rightExpression;
+        return optionCombo;
     }
 
-    public void setRightExpression( String rightExpression )
+    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
     {
-        this.rightExpression = rightExpression;
+        this.optionCombo = optionCombo;
+    }
+
+    public void setAggregationDataElement( DataElement aggregationDataElement )
+    {
+        this.aggregationDataElement = aggregationDataElement;
     }
 
     public String getOperator()
@@ -152,5 +177,30 @@ public class CaseAggregationCondition
     {
         this.operator = operator;
     }
-    
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public String getAggregationExpression()
+    {
+        return aggregationExpression;
+    }
+
+    public void setAggregationExpression( String aggregationExpression )
+    {
+        this.aggregationExpression = aggregationExpression;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
 }

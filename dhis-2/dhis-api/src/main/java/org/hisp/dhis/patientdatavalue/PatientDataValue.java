@@ -27,7 +27,7 @@ public class PatientDataValue
     private Date timestamp;
 
     private String value;
-    
+
     private boolean providedByAnotherFacility = false;
 
     // -------------------------------------------------------------------------
@@ -67,9 +67,10 @@ public class PatientDataValue
         this.timestamp = timeStamp;
         this.value = value;
     }
-    
+
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Date timeStamp, String value, boolean providedByAnotherFacility )
+        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Date timeStamp, String value,
+        boolean providedByAnotherFacility )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
@@ -89,36 +90,52 @@ public class PatientDataValue
     {
         final int prime = 31;
         int result = 1;
-
-        result = result * prime + programStageInstance.hashCode();
-        result = result * prime + dataElement.hashCode();        
-        result = result * prime + organisationUnit.hashCode();
-
+        result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
+        result = prime * result + ((optionCombo == null) ? 0 : optionCombo.hashCode());
+        result = prime * result + ((organisationUnit == null) ? 0 : organisationUnit.hashCode());
+        result = prime * result + ((programStageInstance == null) ? 0 : programStageInstance.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object o )
+    public boolean equals( Object obj )
     {
-        if ( this == o )
-        {
+        if ( this == obj )
             return true;
-        }
-
-        if ( o == null )
-        {
+        if ( obj == null )
             return false;
-        }
-
-        if ( !(o instanceof PatientDataValue) )
-        {
+        if ( getClass() != obj.getClass() )
             return false;
+        PatientDataValue other = (PatientDataValue) obj;
+        if ( dataElement == null )
+        {
+            if ( other.dataElement != null )
+                return false;
         }
-
-        final PatientDataValue other = (PatientDataValue) o;
-
-        return programStageInstance.equals( other.programStageInstance ) && dataElement.equals( other.dataElement )
-            && organisationUnit.equals( other.organisationUnit );
+        else if ( !dataElement.equals( other.dataElement ) )
+            return false;
+        if ( optionCombo == null )
+        {
+            if ( other.optionCombo != null )
+                return false;
+        }
+        else if ( !optionCombo.equals( other.optionCombo ) )
+            return false;
+        if ( organisationUnit == null )
+        {
+            if ( other.organisationUnit != null )
+                return false;
+        }
+        else if ( !organisationUnit.equals( other.organisationUnit ) )
+            return false;
+        if ( programStageInstance == null )
+        {
+            if ( other.programStageInstance != null )
+                return false;
+        }
+        else if ( !programStageInstance.equals( other.programStageInstance ) )
+            return false;
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -183,13 +200,13 @@ public class PatientDataValue
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
-    }   
-    
+    }
+
     public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
     {
         this.providedByAnotherFacility = providedByAnotherFacility;
     }
-    
+
     public boolean isProvidedByAnotherFacility()
     {
         return providedByAnotherFacility;
