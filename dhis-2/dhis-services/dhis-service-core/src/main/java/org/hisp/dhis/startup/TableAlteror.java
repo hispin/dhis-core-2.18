@@ -199,11 +199,7 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE aggregateddatavalue ADD COLUMN modified timestamp with time zone not null default now();");
 
-        executeSql( "create index adv_diff on aggregateddatavalue(modified);");
-
         executeSql( "ALTER TABLE aggregatedindicatorvalue ADD COLUMN modified timestamp with time zone not null default now();");
-
-        executeSql( "create index aiv_diff on aggregatedindicatorvalue(modified);");
 
         log.info( "Tables updated" );
     }
