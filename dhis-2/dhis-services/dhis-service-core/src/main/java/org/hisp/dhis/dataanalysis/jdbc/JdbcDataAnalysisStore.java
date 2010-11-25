@@ -145,7 +145,7 @@ public class JdbcDataAnalysisStore
             statementBuilder.encode( organisationUnit.getName() ) + " AS sourcename, " + 
             statementBuilder.encode( categoryOptionCombo.getName() ) + " AS categoryoptioncomboname " + //TODO join?
             "FROM period AS pe " +
-            "JOIN periodtype AS pt USING (periodtypeid) " +
+            "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " +
             "WHERE periodid IN (" + periodIds + ") " +
             "AND periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
             "AND periodid NOT IN ( " +
@@ -179,13 +179,13 @@ public class JdbcDataAnalysisStore
             "dv.storedby, dv.lastupdated, dv.comment, dv.followup, mm.minvalue, mm.maxvalue, de.name AS dataelementname, " +
             "pe.startdate, pe.enddate, pt.name AS periodtypename, ou.name AS sourcename, cc.categoryoptioncomboname " +
             "FROM datavalue AS dv " +
-            "LEFT JOIN minmaxdataelement AS mm using (sourceid, dataelementid, categoryoptioncomboid) " +
-            "JOIN dataelement AS de using (dataelementid) " +
-            "JOIN period AS pe using (periodid) " +
-            "JOIN periodtype AS pt using (periodtypeid) " +
-            "JOIN source AS sr using (sourceid) " +
-            "LEFT JOIN organisationunit AS ou on ou.organisationunitid=sr.sourceid " +
-            "LEFT JOIN _categoryoptioncomboname AS cc using (categoryoptioncomboid) " +
+            "LEFT JOIN minmaxdataelement AS mm ON (dv.sourceid = mm.sourceid AND dv.dataelementid = mm.dataelementid AND dv.categoryoptioncomboid = mm.categoryoptioncomboid) " +
+            "JOIN dataelement AS de ON (dv.dataelementid = de.dataelementid) " +
+            "JOIN period AS pe ON (dv.periodid = pe.periodid) " +
+            "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " +
+            "JOIN source AS sr ON (dv.sourceid = sr.sourceid) " +
+            "LEFT JOIN organisationunit AS ou ON (ou.organisationunitid = sr.sourceid) " +
+            "LEFT JOIN _categoryoptioncomboname AS cc ON (dv.categoryoptioncomboid = cc.categoryoptioncomboid) " +
             "WHERE dv.followup=true";
         
         try
