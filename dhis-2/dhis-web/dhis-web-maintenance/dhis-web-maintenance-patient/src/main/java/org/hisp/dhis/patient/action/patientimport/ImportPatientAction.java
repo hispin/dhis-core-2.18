@@ -342,6 +342,8 @@ public class ImportPatientAction
 
                 for ( XMLItem xmlItem : itemProperty )
                 {
+                    sheet = wb.getSheetAt( xmlItem.getSheet() );
+                    
                     value = readValue( row, xmlItem.getColumn(), sheet );
 
                     // ---------------------------------------------------------
@@ -575,15 +577,33 @@ public class ImportPatientAction
                         ProgramStageInstance stageInstance = programStageInstanceService.getProgramStageInstance(
                             programInstance, stage );
 
-                        PatientDataValue dataValue = new PatientDataValue();
-                        dataValue.setDataElement( dataElement );
-                        dataValue.setOptionCombo( optionCombo );
-                        dataValue.setOrganisationUnit( orgunit );
-                        dataValue.setProgramStageInstance( stageInstance );
-                        dataValue.setTimestamp( new Date() );
-                        dataValue.setValue( value );
+                        PatientDataValue dataValue = patientDataValueService.getPatientDataValue( stageInstance,
+                            dataElement, orgunit );
+                        if ( dataValue == null )
+                        {
+                            dataValue = new PatientDataValue();
 
-                        patientDataValueService.savePatientDataValue( dataValue );
+                            dataValue.setDataElement( dataElement );
+                            dataValue.setOptionCombo( optionCombo );
+                            dataValue.setOrganisationUnit( orgunit );
+                            dataValue.setProgramStageInstance( stageInstance );
+                            dataValue.setTimestamp( new Date() );
+                            dataValue.setValue( value );
+
+                            patientDataValueService.savePatientDataValue( dataValue );
+                        }
+                        else
+                        {
+
+                            // dataValue.setDataElement(dataElement);
+                            // dataValue.setOptionCombo(optionCombo);
+                            // dataValue.setOrganisationUnit(orgunit);
+                            // dataValue.setProgramStageInstance(stageInstance);
+                            dataValue.setTimestamp( new Date() );
+                            dataValue.setValue( value );
+
+                            patientDataValueService.updatePatientDataValue( dataValue );
+                        }
                     }
 
                 }
@@ -782,7 +802,7 @@ public class ImportPatientAction
         throws Exception
     {
         Type type = Patient.class.getMethod( "get" + StringUtils.capitalize( property ) ).getReturnType();
-
+       
         // Get value
         if ( type == Integer.class || type == Integer.TYPE )
         {
@@ -811,5 +831,6 @@ public class ImportPatientAction
         {
             Patient.class.getMethod( "set" + StringUtils.capitalize( property ), String.class ).invoke( patient, value );
         }
+        
     }
 }
