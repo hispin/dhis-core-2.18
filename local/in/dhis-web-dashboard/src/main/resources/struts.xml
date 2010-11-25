@@ -267,15 +267,47 @@
             <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ds.js,javascript/db.js,javascript/date.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>		
-		
+        </action>
+				
+		<!-- for Mobile Validation Status -->
        <action name="validationMobileStatusResult"
             class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction">
             <result name="success" type="velocity">/dhis-web-dashboard/validationMobileSatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
        </action>
-			
+		
+		<!--  for Mobile summary data status -->
+       <action name="summaryMobileStatusResult"
+            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction">        
+            <result name="success" type="velocity">/dhis-web-dashboard/summaryMobileSatusResult.vm</result>
+            <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+       </action>		
+		
+		<!--  for Mobile  dataStatus result -->
+       <action name="mobileDataStatusResult"
+            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction">
+            <result name="success" type="velocity">/dhis-web-dashboard/mobileDataStatusResult.vm</result>
+            <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+       </action>
+		
+	 <!--  for Mobile Group wise data status -->			
+	  <action name="groupWiseMobileDataStatusResult"
+		   class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction">
+	       <result name="success" type="velocity">/dhis-web-dashboard/groupWiseMobileDataStatusResult.vm</result>
+	       <param name="javascripts">javascript/ds.js,javascript/hashtable.js,javascript/date.js</param>
+	       <param name="stylesheets">css/StylesForTags.css</param>
+     </action>
+		
+     <!-- for Mobile Last Updated Status -->    
+     <action name="lastUpdatedMobileDataSetResult"
+            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction">
+            <result name="success" type="velocity">/dhis-web-dashboard/lastUpdatedMobileDataSetSatusResult.vm</result>
+            <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+    </action>						
         <!-- DataStatus For Mobile end  -->	
 			
 		<action name="summaryStatusResult"

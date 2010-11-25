@@ -69,9 +69,8 @@ function facilityChangeFunction(evt)
 
 function textvalue(summary)
 {
-  
     document.getElementById("selectedButton").value = summary;
-   // alert(summary);
+  
     if(formValidationsForDataStatus())
     {
         if(summary == "SummaryStatus")
@@ -80,34 +79,60 @@ function textvalue(summary)
             document.ChartGenerationForm.action = "summaryStatusResult.action";
             document.ChartGenerationForm.submit();
         }
+       // for Mobile summary data status
+        else if(summary == "SummaryMobileStatus")
+        {
+        	document.ChartGenerationForm.action = "summaryMobileStatusResult.action";
+            document.ChartGenerationForm.submit();
+        }        
+        
         else if(summary == "GroupWiseStatus")
         {
             document.ChartGenerationForm.action = "groupWiseDataStatusResult.action";
             document.ChartGenerationForm.submit();
   	 	
         }
-        else if(summary == "ValidationStatus")
+        //for Mobile Group wise data status
+        else if(summary == "GroupWiseMobileStatus")
         {
-        	document.ChartGenerationForm.action = "validationStatusResult.action";
-        	//alert("inside validation status reult");
+        	document.ChartGenerationForm.action = "groupWiseMobileDataStatusResult.action";
             document.ChartGenerationForm.submit();
         }
+        
+        else if(summary == "ValidationStatus")
+        {
+        	
+        	document.ChartGenerationForm.action = "validationStatusResult.action";
+            document.ChartGenerationForm.submit();
+        }
+        // for Mobile Validation Status
         else if(summary == "ValidationMobileStatus")
         {
-            document.ChartGenerationForm.action = "validationMobileStatusResult.action";
+        	document.ChartGenerationForm.action = "validationMobileStatusResult.action";
             document.ChartGenerationForm.submit();
         }
         else if(summary == "LastUpdatedStatus")
         {
-            document.ChartGenerationForm.action = "lastUpdatedDataSetResult.action";
+        	document.ChartGenerationForm.action = "lastUpdatedDataSetResult.action";
             document.ChartGenerationForm.submit();
         }
+        // for Mobile Last Updated Status
+        else if(summary == "LastUpdatedMobileStatus")
+        {
+        	document.ChartGenerationForm.action = "lastUpdatedMobileDataSetResult.action";
+            document.ChartGenerationForm.submit();
+        }
+        // for Mobile  dataStatus result
+        else if(summary == "MobileDataStatus")
+        {
+        	document.ChartGenerationForm.action = "mobileDataStatusResult.action";
+            document.ChartGenerationForm.submit();
+        }
+        
         else
         {
-  	 	
             document.ChartGenerationForm.action = "dataStatusResult.action";
             document.ChartGenerationForm.submit();
-  	 	
         }
     }
   	 
@@ -197,14 +222,14 @@ function formValidationsForOUwiseDataStatus()
         alert("Please Select OrganisationUnit"); return false;
     }
 
-    /*
+   /*
 	var k=0;
 	
 	 for(k=0;k<selOUListIndex;k++)
 	 {
 	 	document.ChartGenerationForm.orgUnitListCB.options[k].selected = true;
 	 }
-	 */
+	*/
     var sWidth = 850;
     var sHeight = 650;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
@@ -214,11 +239,12 @@ function formValidationsForOUwiseDataStatus()
 		
     return true;
 
-} // formValidations Function End	
+} 
+// formValidations Function End	
 
 
-// 
-//
+
+
 //  Getting corresponding Period List for Datasets. 
 function getdSetPeriods()
 {
