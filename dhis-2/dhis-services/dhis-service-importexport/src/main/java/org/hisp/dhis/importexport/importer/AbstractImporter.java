@@ -100,7 +100,7 @@ public abstract class AbstractImporter<T extends ImportableObject>
                         importDataValueBatchHandler.addObject( value );
                     }
                     else // Using ImportObjectService
-                    {                
+                    {
                         importObjectService.addImportObject( NEW, groupMemberType, object );
                     }
                 }
