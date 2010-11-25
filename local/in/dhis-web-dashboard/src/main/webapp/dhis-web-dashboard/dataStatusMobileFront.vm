@@ -100,16 +100,16 @@
         <tr>
             <td>
                 
-                <input type="button" name="ViewSummary" value="View DataSummary" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/>
-                <input type="button" name="ViewStatus" value="View DataStatus" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/>
+                <input type="button" name="ViewSummary" value="View DataSummary" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryMobileStatus')"/>
+                <input type="button" name="ViewStatus" value="View DataStatus" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('MobileDataStatus')"/>
             </td>
             <td class="NormalB">
                 <br/><br/><br/><br/><br/>
-                <input type="button" name="LastUpdatedStatus" value="   User Details   " style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/>
+                <input type="button" name="LastUpdatedStatus" value="   User Details   " style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedMobileStatus')"/>
             </td>
             <td>
                 
-                <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/>
+                <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseMobileStatus')"/>
                 <input type="button" name="ValidationStatus" value="Validation Status" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationMobileStatus')"/>
             </td>
         </tr>

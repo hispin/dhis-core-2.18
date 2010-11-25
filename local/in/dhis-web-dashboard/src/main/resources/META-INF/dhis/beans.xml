@@ -436,6 +436,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>-->
     </bean>	
+	
+	<!-- for Mobile Validation Status -->
     <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
         class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
         scope="prototype">
@@ -455,7 +457,102 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
 		</property>
     </bean>
-    <!-- DataStatus For Mobile end  -->	
+   
+	<!--  for Mobile summary data status -->
+	
+	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
+        scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+        </property>
+	</bean>
+	
+	<!--  for Mobile  dataStatus result -->
+    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction"
+        scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+        </property>
+    </bean>	
+	
+	<!--  for Mobile Group wise data status -->    
+    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
+        scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="dataElementService">
+            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+        </property>
+    </bean>	
+	
+    <!-- for Mobile Last Updated Status -->    	
+	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
+        scope="prototype">
+
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="userStore">
+            <ref bean="org.hisp.dhis.user.UserStore"/>
+        </property>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+<!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/> -->
+    </bean>
+	
+	 <!-- DataStatus For Mobile end  -->	
 	
 	
 	
