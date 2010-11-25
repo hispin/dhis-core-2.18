@@ -42,6 +42,7 @@ import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -174,6 +175,13 @@ implements Action
     public List<OrganisationUnit> getOrgUnitList()
     {
         return orgUnitList;
+    }
+    
+    private Map<DataElementGroup, Integer> deMapGroupCount;
+
+    public Map<DataElementGroup, Integer> getDeMapGroupCount()
+    {
+        return deMapGroupCount;
     }
 
     private List<DataSet> dataSetList;
@@ -371,7 +379,13 @@ implements Action
     {
         return selDataSet;
     }
-    
+    private Integer dsSize;
+     
+    public Integer getDsSize()
+    {
+        return dsSize;
+    }
+
     private String userPhoneNo;
     
     public String getUserPhoneNo()
@@ -394,6 +408,8 @@ implements Action
         // Intialization
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         ouMapUserPhoneNo = new HashMap<OrganisationUnit,String>();//for User PhoneNo Map
+        deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
+        
         
         results = new ArrayList<Integer>();
         maxOULevel = 1;
@@ -498,10 +514,15 @@ implements Action
         deInfo = "-1";
         selDataSet = new DataSet();      
         selDataSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets.get( 0 ) ) );
-
+        
+        //for size of dataset( no of dataElement of Selected dataset)
+        dsSize = selDataSet.getDataElements().size(); 
+        
         // Data Element Group Related Info
         dataElementGroups = new ArrayList<DataElementGroup>();
+        
         dataElementGroups.addAll( getApplicableDataElementGroups( selDataSet ) );
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         for ( DataElementGroup deGroup : dataElementGroups )
         {
@@ -537,13 +558,20 @@ implements Action
 
             dataElements = deg.getMembers();
             dataElements.retainAll( ds.getDataElements() );
-
+            
+           // System.out.println( "dataElementGroup Size  : " + dataElements.size() );
+            
             int deGroupMemberCount1 = 0;
             for ( DataElement de1 : dataElements )
             {
                 deGroupMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
             }
 
+            // detaElement Group member Count
+            Integer deGroupMemberCount = dataElements.size();
+            
+            deMapGroupCount.put( deg, deGroupMemberCount );
+            
             deInfo = getDEInfo( dataElements );
 
             dataSetPeriodType = ds.getPeriodType();
@@ -683,7 +711,19 @@ implements Action
                 }
             }
         }
-
+      
+ /*       
+        for( DataElementGroup orgUnitGroup : deMapGroupCount.keySet() )
+        {
+            System.out.print( orgUnitGroup.getName()+ " : " );
+            for( Integer gCount : deMapGroupCount.values())
+            {
+                System.out.print( " - "+ gCount );
+            }
+            System.out.println("");
+        }
+*/      
+        
         // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         for ( int i = 0; i < ouLevelNames.length; i++ )

@@ -44,7 +44,7 @@
 			</div>
 			
 		<div id="formResult">			    
-		        <div align="center" class="NormalB">Data Entry Status by Data Element Groups</div>
+		        <div align="center" class="NormalB">Data Entry Status by Data Element Groups Of Data Set :  $selDataSet.name </div>
         <div align="right">
             			<table width="30%">
                 				<tr class="TableDataCellStyles" >
@@ -68,7 +68,8 @@
         		#set($count2 = 0)
         			#foreach($dataElementGroup in $dataElementGroups)
             <br><br>
-            			<div align="left" class="NormalB">Data Element Group : $dataElementGroup.name</div>
+            			#set( $deGroupCount = $deMapGroupCount.get($dataElementGroup) )
+            			<div align="left" class="NormalB">Data Element Group : $dataElementGroup.name  ( $!deGroupCount )</div>
             			<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">		
   				              <tr class="TableHeadingCellStyles" align="center">
   				                  #foreach($levelName in $levelNames)

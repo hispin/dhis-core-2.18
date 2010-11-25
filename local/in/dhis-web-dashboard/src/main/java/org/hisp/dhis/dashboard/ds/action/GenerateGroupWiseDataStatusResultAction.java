@@ -16,6 +16,7 @@ import org.hisp.dhis.dashboard.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -129,7 +130,14 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return orgUnitList;
     }
+    
+    private Map<DataElementGroup, Integer> deMapGroupCount;
 
+    public Map<DataElementGroup, Integer> getDeMapGroupCount()
+    {
+        return deMapGroupCount;
+    }
+    
     private List<DataSet> dataSetList;
 
     public List<DataSet> getDataSetList()
@@ -325,7 +333,13 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         return selDataSet;
     }
-
+    
+    private Integer dsSize;
+    
+    public Integer getDsSize()
+    {
+        return dsSize;
+    }
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -339,6 +353,8 @@ public class GenerateGroupWiseDataStatusResultAction
 
         // Intialization
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
+        deMapGroupCount = new HashMap<DataElementGroup, Integer>(); // dataelement Group Count
+        
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
@@ -442,10 +458,15 @@ public class GenerateGroupWiseDataStatusResultAction
         deInfo = "-1";
         selDataSet = new DataSet();      
         selDataSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets.get( 0 ) ) );
-
+        
+        //for size of dataset( no of dataElement of Selected dataset)
+        dsSize = selDataSet.getDataElements().size(); 
+        
         // Data Element Group Related Info
         dataElementGroups = new ArrayList<DataElementGroup>();
         dataElementGroups.addAll( getApplicableDataElementGroups( selDataSet ) );
+        
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
 
         for ( DataElementGroup deGroup : dataElementGroups )
         {
@@ -488,6 +509,11 @@ public class GenerateGroupWiseDataStatusResultAction
                 deGroupMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
             }
 
+            // detaElement Group member Count
+            Integer deGroupMemberCount = dataElements.size();
+            
+            deMapGroupCount.put( deg, deGroupMemberCount );
+            
             deInfo = getDEInfo( dataElements );
 
             dataSetPeriodType = ds.getPeriodType();
