@@ -324,13 +324,13 @@ public class DataBrowserServiceTest
         assertEquals( "Period column header", "2005-05-01", table.getColumns().get( 1 ).getName() );
 
         // dataSetC has two dataElements - sorted by name
-        assertEquals( "Metarows", 2, table.getRows().size() );
+        assertEquals( "Metarows", 3, table.getRows().size() );
         assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
         assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
         assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
         assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
 
-        assertEquals( "Row count entries", 2, table.getCounts().size() );
+        assertEquals( "Row count entries", 3, table.getCounts().size() );
         assertEquals( "DataValues in dataElementC", 3, table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
             .intValue() );
         assertEquals( "DataValues in dataElementE", 3, table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
@@ -382,13 +382,13 @@ public class DataBrowserServiceTest
         assertEquals( "Period column header", "2005-05-01", table.getColumns().get( 1 ).getName() );
 
         // dataElementGroupC has two dataElements - sorted by name
-        assertEquals( "Metarows", 2, table.getRows().size() );
+        assertEquals( "Metarows", 3, table.getRows().size() );
         assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
         assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
         assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
         assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
 
-        assertEquals( "Row count entries", 2, table.getCounts().size() );
+        assertEquals( "Row count entries", 3, table.getCounts().size() );
         assertEquals( "DataValues in dataElementC", 3, table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
             .intValue() );
         assertEquals( "DataValues in dataElementE", 3, table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
@@ -492,7 +492,7 @@ public class DataBrowserServiceTest
         // two data values for B count
         // one data value for D count
 
-        assertEquals( "Metarows", 3, table.getRows().size() );
+        assertEquals( "Metarows", 4, table.getRows().size() );
 
         assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
@@ -501,7 +501,7 @@ public class DataBrowserServiceTest
         assertEquals( dataElementD.getName(), table.getRows().get( 2 ).getName() );
         assertEquals( dataElementD.getId(), table.getRows().get( 2 ).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
+        assertEquals( "Row count entries", 4, table.getCounts().size() );
 
         assertEquals( "DataValues in dataElementA for periodA", 1, table.getRowBasedOnRowName( dataElementA.getName() )
             .get( 0 ).intValue() );
