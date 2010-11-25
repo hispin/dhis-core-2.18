@@ -6,32 +6,16 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr valign="bottom">
-					<td>$i18n.getString( "filter_by_name" ): 
-					<form style="display:inline" action="none" onsubmit="return false">
-						<div style="inline"><input type="text" id='key'>
-						<input type="button" value="$i18n.getString( "go" )" onclick="searchDataElementName();" />
-						</div>
-					</form></td>
+					<td>#filterDiv( "dataElement" )</td>
 					<td>
 					   $i18n.getString( "select_data_dictionary" ):
 					   <div style="inline">
-					       <select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:140px">
+					       <select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:180px">
 					           <option value="-1">[ $i18n.getString( "all" ) ]</option>
 					           #foreach( $dictionary in $dataDictionaries )
 					           <option value="$dictionary.id" #if ( $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.name</option>
 					           #end
 				            </select>
-						</div>
-					</td>
-					<td>
-						$i18n.getString( "filter_by_group_view_all" ):
-						<div style="inline">
-							<select id="dataElementGroupList" name="dataElementGroupList" onchange="criteriaChanged()" style="min-width:200px">
-								<option value="null">[ $i18n.getString( "all" ) ]</option>
-								#foreach( $dataElementGroup in $dataElementGroups )
-								<option value="$dataElementGroup.id" #if ( $dataElementGroup.id == $dataElementGroupId ) selected="selected"#end>$dataElementGroup.name</option>
-								#end
-							</select>
 						</div>
 					</td>
 					<td style="text-align:right">

@@ -34,6 +34,8 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
+import static org.apache.commons.lang.StringUtils.*;
+
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetDataElementGroupListAction.java 2869 2007-02-20 14:26:09Z andegje $
@@ -53,7 +55,23 @@ public class GetDataElementGroupListAction
     }
 
     // -------------------------------------------------------------------------
-    // Input and Output
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String key;
+        
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
     // -------------------------------------------------------------------------
 
     private List<DataElementGroup> dataElementGroups;
@@ -63,44 +81,25 @@ public class GetDataElementGroupListAction
         return dataElementGroups;
     }
     
-    private String key;
-    
-    public String getKey()
-    {
-        return key;
-    }
-    
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        this.paging = createPaging( dataElementService.getDataElementGroupCount() );
-
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
-
-        return SUCCESS;
-    }
-    
-    public String searchByName()
-    {
-        if ( key != null && !key.trim().isEmpty() ) 
-        {   
+        if ( isNotBlank( key) )
+        {
             this.paging = createPaging( dataElementService.getDataElementGroupCountByName( key ) );
             
             dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
-            
-            return SUCCESS;
         }
         else
         {
-            return execute();
+            this.paging = createPaging( dataElementService.getDataElementGroupCount() );
+
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getDataElementGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
+
+        return SUCCESS;
     }
 }

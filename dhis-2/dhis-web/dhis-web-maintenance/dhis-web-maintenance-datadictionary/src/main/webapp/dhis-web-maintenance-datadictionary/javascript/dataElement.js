@@ -33,10 +33,9 @@ function changeCategory( value )
 
 function criteriaChanged()
 {
-    var dataElementGroupId = getListValue( "dataElementGroupList" );
     var dataDictionaryId = getListValue( "dataDictionaryList" );
 	
-    var url = "dataElement.action?&dataDictionaryId=" + dataDictionaryId + "&dataElementGroupId=" + dataElementGroupId;
+    var url = "dataElement.action?&dataDictionaryId=" + dataDictionaryId;
 	
     window.location.href = url;
 }
@@ -322,63 +321,3 @@ function getDataElementIdsForValidate()
 		dataElementValidators.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');	
 	});
 }
-
-
-// -----------------------------------------------------------------------------
-// Search DataElement Name
-// -----------------------------------------------------------------------------
-
-function searchDataElementName(){
-	
-	var params = 'key=' + getFieldValue( 'key' );
-		params += '&dataDictionaryId=' + getFieldValue( 'dataDictionaryList' );
-		params += '&dataElementGroupId=' + getFieldValue( 'dataElementGroupList' );
-    
-    var url = 'searchDataElement.action?' + params;
-    
-    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
-    {
-    	$( '#content' ).load( url, null, unLockScreen );
-    	lockScreen();
-    }
-    else 
-    {
-    	window.location.href='dataElement.action?' + params;
-    }
-}
-
-function searchDataElementNamePagination(currentPage, pageSize) 
-{
-	
-	var params = 'key=' + getFieldValue( 'key' );
-		params += '&dataDictionaryId=' + getFieldValue( 'dataDictionaryList' );
-		params += '&dataElementGroupId=' + getFieldValue( 'dataElementGroupList' );
-		params += '&currentPage=' + currentPage;
-		params += '&pageSize=' + pageSize;
-
-    var url = 'searchDataElement.action?' + params;
-    
-    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
-    {
-    	$( '#content' ).load( url, null, unLockScreen );
-    	lockScreen();
-    }
-    else 
-    {
-    	window.location.href='dataElement.action?' + params;
-    }
-}
-
-function changePageSizeSearch()
-{
-    var pageSize = jQuery("#sizeOfPage").val();
-    searchDataElementNamePagination(1, pageSize);
-}
-
-function jumpToPageSearch()
-{
-    var pageSize = jQuery("#sizeOfPage").val();
-    var currentPage = jQuery("#jumpToPage").val();
-    searchDataElementNamePagination(currentPage, pageSize);
-}
-

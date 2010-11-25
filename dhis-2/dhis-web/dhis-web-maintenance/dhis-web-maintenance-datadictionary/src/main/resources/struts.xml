@@ -26,12 +26,6 @@
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 		
-		<action name="searchDataElement"
-			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction" method="searchDataElementByName">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-datadictionary/dataElementSearch.vm</result>
-		</action>
-
 		<action name="showSortDataElementForm"
 			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -197,12 +191,6 @@
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/dataElementGroup.js</param>
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-		</action>
-
-		<action name="searchDataElementGroup"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction" method="searchByName">
-			<result name="success" type="velocity">
-				/dhis-web-maintenance-datadictionary/dataElementGroupSearch.vm</result>
 		</action>
 
 		<action name="removeDataElementGroup"
