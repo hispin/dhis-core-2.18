@@ -33,6 +33,8 @@ import org.hisp.dhis.common.IdentifiableObject;
 
 public class PatientMobileSetting extends IdentifiableObject
 {
+    private Boolean gender, dobtype, birthdate, bloodgroup, registrationdate;
+    
     private List<PatientAttribute> patientAttributes;
 
     public PatientMobileSetting()
@@ -48,4 +50,55 @@ public class PatientMobileSetting extends IdentifiableObject
     {
         this.patientAttributes = patientAttributes;
     }
+
+    public Boolean getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( Boolean gender )
+    {
+        this.gender = gender;
+    }
+
+    public Boolean getDobtype()
+    {
+        return dobtype;
+    }
+
+    public void setDobtype( Boolean dobtype )
+    {
+        this.dobtype = dobtype;
+    }
+
+    public Boolean getBirthdate()
+    {
+        return birthdate;
+    }
+
+    public void setBirthdate( Boolean birthdate )
+    {
+        this.birthdate = birthdate;
+    }
+
+    public Boolean getBloodgroup()
+    {
+        return bloodgroup;
+    }
+
+    public void setBloodgroup( Boolean bloodgroup )
+    {
+        this.bloodgroup = bloodgroup;
+    }
+
+    public Boolean getRegistrationdate()
+    {
+        return registrationdate;
+    }
+
+    public void setRegistrationdate( Boolean registrationdate )
+    {
+        this.registrationdate = registrationdate;
+    } 
+    
 }

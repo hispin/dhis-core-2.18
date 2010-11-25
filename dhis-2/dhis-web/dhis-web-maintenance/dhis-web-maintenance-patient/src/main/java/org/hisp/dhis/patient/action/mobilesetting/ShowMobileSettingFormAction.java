@@ -71,6 +71,18 @@ public class ShowMobileSettingFormAction
     {
         this.attributes = attributes;
     }
+    
+    private PatientMobileSetting setting;
+
+    public PatientMobileSetting getSetting()
+    {
+        return setting;
+    }
+
+    public void setSetting( PatientMobileSetting setting )
+    {
+        this.setting = setting;
+    }
 
     @Override
     public String execute()
@@ -86,7 +98,7 @@ public class ShowMobileSettingFormAction
             
             if ( settingsIt.hasNext() )
             {
-                PatientMobileSetting setting = settingsIt.next(); 
+                setting = settingsIt.next(); 
                 
                 //Selected List
                 patientAtts = setting.getPatientAttributes();

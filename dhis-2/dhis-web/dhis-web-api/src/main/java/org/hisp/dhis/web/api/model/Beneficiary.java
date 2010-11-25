@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class Beneficiary
@@ -49,10 +50,82 @@ public class Beneficiary
     private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;
+    
+    private List<PatientIdentifier> identifiers;    
+
+    private String gender;
+
+    private Date birthDate;
+
+    private String bloodGroup;
+    
+    private Date registrationDate;
+    
+    private Character dobType;
+    
+    public List<PatientIdentifier> getIdentifiers()
+    {
+        return identifiers;
+    }
+
+    public void setIdentifiers( List<PatientIdentifier> identifiers )
+    {
+        this.identifiers = identifiers;
+    }
 
     public int getAge()
     {
         return age;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
+
+    public Date getBirthDate()
+    {
+        return birthDate;
+    }
+
+    public void setBirthDate( Date birthDate )
+    {
+        this.birthDate = birthDate;
+    }
+
+    public String getBloodGroup()
+    {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup( String bloodGroup )
+    {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public Date getRegistrationDate()
+    {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate( Date registrationDate )
+    {
+        this.registrationDate = registrationDate;
+    }
+
+    public Character getDobType()
+    {
+        return dobType;
+    }
+
+    public void setDobType( Character dobType )
+    {
+        this.dobType = dobType;
     }
 
     public void setAge( int age )
@@ -132,6 +205,45 @@ public class Beneficiary
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
         dout.writeInt( this.getAge() );
+        
+        // Write static attributes if it is required (gender, dobtype, birthdate, bloodgroup, registrationdate)
+        if(gender != null){
+            dout.writeBoolean( true );
+            dout.writeUTF(gender);
+        }else{
+            dout.writeBoolean( false );
+        }
+        
+        if(dobType != null){
+            dout.writeBoolean( true );
+            dout.writeChar(dobType);
+        }else{
+            dout.writeBoolean( false );
+        }
+        
+        if(birthDate != null){
+            dout.writeBoolean( true );
+            dout.writeLong(birthDate.getTime());
+        }else{
+            dout.writeBoolean( false );
+        }
+        
+        if(bloodGroup != null){
+            dout.writeBoolean( true );
+            dout.writeUTF(bloodGroup);
+        }else{
+            dout.writeBoolean( false );
+        }
+        
+        if(registrationDate != null){
+            dout.writeBoolean( true );
+            dout.writeLong(registrationDate.getTime());
+        }else{
+            dout.writeBoolean( false );
+        }
+        //End
+        
+        
         // Write attribute which is used as group factor of beneficiary.
         /*
          * False: no group factor True: with group factor
@@ -151,6 +263,12 @@ public class Beneficiary
         for ( PatientAttribute att : atts )
         {
             dout.writeUTF( att.getName() + ":" + att.getValue() );
+        }
+        
+        //Write PatientIdentifier
+        dout.writeInt( identifiers.size() );
+        for(PatientIdentifier each : identifiers){
+            each.serialize( dout );
         }
 
         bout.flush();

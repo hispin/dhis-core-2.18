@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.activityplan.ActivityPlanService;
@@ -15,6 +16,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -59,6 +62,8 @@ public class ActivityReportingServiceImpl
     private CurrentUserService currentUserService;
     
     private PatientMobileSettingService patientMobileSettingService;
+    
+//    private PatientIdentifierService patientIdentifierService;
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
@@ -148,7 +153,8 @@ public class ActivityReportingServiceImpl
 
     private org.hisp.dhis.web.api.model.Beneficiary getBeneficiaryModel( Patient patient )
     {
-
+        PatientMobileSetting setting = patientMobileSettingService.getCurrentSetting()==null?null:patientMobileSettingService.getCurrentSetting().iterator().next();
+        
         Beneficiary beneficiary = new Beneficiary();
 
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
@@ -160,6 +166,31 @@ public class ActivityReportingServiceImpl
         int currentYear = new Date().getYear();
         int age = currentYear - patient.getBirthDate().getYear();
         beneficiary.setAge( age );
+        
+        // Set static attributes if it is required (gender, dobtype, birthdate, bloodgroup, registrationdate)
+        if(setting != null){
+            if(setting.getGender()){
+                beneficiary.setGender( patient.getGender() );
+            }
+            if(setting.getDobtype()){
+                beneficiary.setDobType( patient.getDobType() );
+            }
+            if(setting.getBirthdate()){
+                beneficiary.setBirthDate( patient.getBirthDate() );
+            }
+            if(setting.getBloodgroup()){
+                beneficiary.setBloodGroup( patient.getBloodGroup() );
+            }
+            if(setting.getRegistrationdate()){
+                beneficiary.setRegistrationDate( patient.getRegistrationDate() );
+            }
+        }else{
+            beneficiary.setGender(null);
+            beneficiary.setBirthDate( null );
+            beneficiary.setDobType( null );
+            beneficiary.setBloodGroup( null );
+            beneficiary.setRegistrationDate( null );
+        }
 
         // Set attribute which is used to group beneficiary on mobile (only if
         // there is attribute which is set to be group factor)
@@ -177,7 +208,7 @@ public class ActivityReportingServiceImpl
         patientAttribute = null;
 
         // Set all attributes
-        PatientMobileSetting setting = patientMobileSettingService.getCurrentSetting()==null?null:patientMobileSettingService.getCurrentSetting().iterator().next();
+        
         List<org.hisp.dhis.patient.PatientAttribute> atts;
         if(setting != null){
             atts = setting.getPatientAttributes();
@@ -189,49 +220,20 @@ public class ActivityReportingServiceImpl
                 }
             }
         }
-//        org.hisp.dhis.patient.PatientAttribute houseName = patientAttService.getPatientAttributeByName( "House Name" );
-//        org.hisp.dhis.patient.PatientAttribute houseNumber = patientAttService
-//            .getPatientAttributeByName( "House Number" );
-//        org.hisp.dhis.patient.PatientAttribute wardNumber = patientAttService.getPatientAttributeByName( "Ward Number" );
-//        org.hisp.dhis.patient.PatientAttribute nearestContact = patientAttService
-//            .getPatientAttributeByName( "Nearest Contact Person Name" );
-
-//        PatientAttributeValue houseNameValue = patientAttValueService.getPatientAttributeValue( patient, houseName );
-//        if ( houseNameValue != null )
-//        {
-//            patientAtts.add( new PatientAttribute( "House Name", houseNameValue.getValue() ) );
-//        }
-//
-//        PatientAttributeValue houseNumberValue = patientAttValueService.getPatientAttributeValue( patient, houseNumber );
-//        if ( houseNumberValue != null )
-//        {
-//            patientAtts.add( new PatientAttribute( "House Number", houseNumberValue.getValue() ) );
-//        }
-//
-//        PatientAttributeValue wardNumberValue = patientAttValueService.getPatientAttributeValue( patient, wardNumber );
-//        if ( wardNumberValue != null )
-//        {
-//            patientAtts.add( new PatientAttribute( "Ward Number", wardNumberValue.getValue() ) );
-//        }
-//
-//        PatientAttributeValue nearestContactValue = patientAttValueService.getPatientAttributeValue( patient,
-//            nearestContact );
-//        if ( nearestContactValue != null )
-//        {
-//            patientAtts.add( new PatientAttribute( "Nearest Contact", nearestContactValue.getValue() ) );
-//        }
-
+        
+        // Set all identifier
+        Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
+        List<org.hisp.dhis.web.api.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.web.api.model.PatientIdentifier>();
+        if(patientIdentifiers.size() > 0){
+            
+            for(PatientIdentifier each : patientIdentifiers){
+                identifiers.add( new org.hisp.dhis.web.api.model.PatientIdentifier(each.getIdentifierType().getName(), each.getIdentifier()) );
+            }
+            
+            beneficiary.setIdentifiers( identifiers );
+        }
+        
         beneficiary.setPatientAttValues( patientAtts );
-
-        // for ( PatientAttributeValue patientAttributeValue :
-        // patientAttValueService.getPatientAttributeValues( patient ) )
-        // {
-        // patientAttValues.add(
-        // patientAttributeValue.getPatientAttribute().getName() + " : "
-        // + patientAttributeValue.getValue() );
-        // }
-        // beneficiary.setPatientAttValues( patientAttValues );
-
         return beneficiary;
     }
 
@@ -407,6 +409,14 @@ public class ActivityReportingServiceImpl
     {
         this.patientMobileSettingService = patientMobileSettingService;
     }
+
+//    @Required
+//    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+//    {
+//        this.patientIdentifierService = patientIdentifierService;
+//    }
+    
+    
     
     
 
