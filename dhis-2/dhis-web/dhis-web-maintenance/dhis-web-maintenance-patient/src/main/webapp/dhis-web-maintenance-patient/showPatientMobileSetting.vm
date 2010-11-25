@@ -6,6 +6,29 @@
 </script>
 <h3>$i18n.getString( "patient_mobile_setting" )</h3>
 <form id="editPatientMobileSetting" name="editPatientMobileSetting" action="editPatientMobileSetting.action" method="post" >
+	<table>
+		<tr>
+			<td>$i18n.getString( "gender" )</td>
+			<td><input type="checkbox" id="gender" name="gender" value="true" #if( $setting.gender == 'true' ) checked #end/></td>
+		</tr>
+		<tr>
+			<td>$i18n.getString( "dob_type" )</td>
+			<td><input type="checkbox" id="dobtype" name="dobtype" value="true" #if( $setting.dobtype == 'true' ) checked #end/></td>
+		</tr>
+		<tr>
+			<td>$i18n.getString( "date_of_birth" )</td>
+			<td><input type="checkbox" id="birthdate" name="birthdate" value="true" #if( $setting.birthdate == 'true' ) checked #end/></td>
+		</tr>
+		<tr>
+			<td>$i18n.getString( "blood_group" )</td>
+			<td><input type="checkbox" id="bloodgroup" name="bloodgroup" value="true" #if( $setting.bloodgroup == 'true' ) checked #end/></td>
+		</tr>
+		<tr>
+			<td>$i18n.getString( "registration_date" )</td>
+			<td><input type="checkbox" id="registrationdate" name="registrationdate" value="true" #if( $setting.registrationdate == 'true' ) checked #end/></td>
+		</tr>
+	</table>
+  <br/>
   <table id="dataElementSelectionArea">
     <col/> ## Available DataElements
     <col/> ## Filter

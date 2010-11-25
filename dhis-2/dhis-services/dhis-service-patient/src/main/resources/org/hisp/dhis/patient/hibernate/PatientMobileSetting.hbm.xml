@@ -9,6 +9,16 @@
 			<generator class="native" />
 		</id>
 		
+		<property name="gender" column="gender" not-null="true"/>
+		
+		<property name="dobtype" column="dobtype" not-null="true"/>
+		
+		<property name="birthdate" column="birthdate" not-null="true"/>
+		
+		<property name="bloodgroup" column="bloodgroup" not-null="true"/>
+		
+		<property name="registrationdate" column="registrationdate" not-null="true"/>
+		
 		<list name="patientAttributes">
 			<key column="patientmobilesettingid" />
 			<list-index column="sort_order_patientattributename" base="0"/>

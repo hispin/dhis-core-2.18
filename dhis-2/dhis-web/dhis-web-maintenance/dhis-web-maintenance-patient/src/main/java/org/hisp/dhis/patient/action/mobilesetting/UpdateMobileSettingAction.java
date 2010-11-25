@@ -51,10 +51,38 @@ public class UpdateMobileSettingAction implements Action
         this.selectedList = selectedList;
     }
 
+    private String gender, dobtype, birthdate, bloodgroup, registrationdate;
+    
+    public void setGender( String gender )
+    {
+        this.gender = gender;
+    }
+
+    public void setDobtype( String dobtype )
+    {
+        this.dobtype = dobtype;
+    }
+
+    public void setBirthdate( String birthdate )
+    {
+        this.birthdate = birthdate;
+    }
+
+    public void setBloodgroup( String bloodgroup )
+    {
+        this.bloodgroup = bloodgroup;
+    }
+
+    public void setRegistrationdate( String registrationdate )
+    {
+        this.registrationdate = registrationdate;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
+        
         if(selectedList.size() > 0){
             PatientMobileSetting setting;
             if(patientMobileSettingService.getCurrentSetting().size()>0){
@@ -62,11 +90,21 @@ public class UpdateMobileSettingAction implements Action
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
                 fillValues( attributes );
+                setting.setGender( Boolean.parseBoolean( gender ));
+                setting.setDobtype( Boolean.parseBoolean(dobtype ));
+                setting.setBirthdate( Boolean.parseBoolean(birthdate ));
+                setting.setBloodgroup( Boolean.parseBoolean(bloodgroup ));
+                setting.setRegistrationdate( Boolean.parseBoolean(registrationdate ));
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }else{
                 setting = new PatientMobileSetting();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
+                setting.setGender( Boolean.parseBoolean( gender ));
+                setting.setDobtype( Boolean.parseBoolean(dobtype ));
+                setting.setBirthdate( Boolean.parseBoolean(birthdate ));
+                setting.setBloodgroup( Boolean.parseBoolean(bloodgroup ));
+                setting.setRegistrationdate( Boolean.parseBoolean(registrationdate ));
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
             }
@@ -76,12 +114,22 @@ public class UpdateMobileSettingAction implements Action
                 setting = patientMobileSettingService.getCurrentSetting().iterator().next();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
+                setting.setGender( Boolean.parseBoolean( gender ));
+                setting.setDobtype( Boolean.parseBoolean(dobtype ));
+                setting.setBirthdate( Boolean.parseBoolean(birthdate ));
+                setting.setBloodgroup( Boolean.parseBoolean(bloodgroup ));
+                setting.setRegistrationdate( Boolean.parseBoolean(registrationdate ));
                 fillValues( attributes );
                 patientMobileSettingService.updatePatientMobileSetting( setting );
             }else{
                 setting = new PatientMobileSetting();
                 List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
                 setting.setPatientAttributes( attributes );
+                setting.setGender( Boolean.parseBoolean( gender ));
+                setting.setDobtype( Boolean.parseBoolean(dobtype ));
+                setting.setBirthdate( Boolean.parseBoolean(birthdate ));
+                setting.setBloodgroup( Boolean.parseBoolean(bloodgroup ));
+                setting.setRegistrationdate( Boolean.parseBoolean(registrationdate ));
                 fillValues( attributes );
                 patientMobileSettingService.savePatientMobileSetting( setting );
             }
