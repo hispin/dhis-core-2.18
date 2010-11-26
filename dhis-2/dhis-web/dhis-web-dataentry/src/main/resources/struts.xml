@@ -62,7 +62,7 @@
 			<result name="success" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
 		</action>
 
-		<action name="saveMultiDimensionalValue" class="org.hisp.dhis.de.action.SaveValueAction">
+		<action name="saveValue" class="org.hisp.dhis.de.action.SaveValueAction">
 			<result name="success" type="velocity">status.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
