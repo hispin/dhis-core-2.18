@@ -27,6 +27,7 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,6 +117,12 @@ public class ExceptionInterceptor
                 return EXCEPTION_RESULT_ACCESS_DENIED; // Access denied as nice page
             }
 
+            // HACK to get rid of useless stack traces when the client closes the connection in tomcat
+            if (e instanceof IOException && e.getClass().getName().equals("org.apache.catalina.connector.ClientAbortException") )
+            {
+                LOG.info( "Client aborted connection." );
+            }
+            
             LOG.error( "Error while executing action", e );
 
             if ( exceptionResultName != null )
