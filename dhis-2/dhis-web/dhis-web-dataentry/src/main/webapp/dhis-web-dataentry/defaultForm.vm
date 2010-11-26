@@ -28,6 +28,9 @@
   #set( $dataElements = $orderedDataElements.get( $categoryCombo )  )
   #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryCombo.id )  )
   #set( $mark = 0 )
+  #foreach( $optionCombo in $optionCombos )
+  <span id="value[option${optionCombo.id}].name" class="hidden">${optionCombo.name}</span>
+  #end
   #foreach( $dataElement in $dataElements )
   #if( $mark == 1 )
   #set( $mark = 0 )
@@ -39,7 +42,7 @@
   #set( $calculatedValue = false )
   #set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )                        
   #set( $calculated = false )
-  #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id)) )
+  #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id) ) )
   <tr>
     <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
       <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">$encoder.htmlEncode( $dataElement.name )</span><span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span>
@@ -56,7 +59,7 @@
       #set( $minMaxError = true )
       #end
     #end
-    <span id="value[option$optionCombo.id].name" class="hidden">$optionCombo.name</span><span id="value[$dataElement.id:$optionCombo.id].min" class="hidden">$!minMax.min</span><span id="value[$dataElement.id:$optionCombo.id].max" class="hidden">$!minMax.max</span>
+    <span id="value[${dataElement.id}:${optionCombo.id}].min" class="hidden">$!minMax.min</span><span id="value[${dataElement.id}:${optionCombo.id}].max" class="hidden">$!minMax.max</span>
     <td>
     #if( $dataElement.type == "bool" )
     <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>

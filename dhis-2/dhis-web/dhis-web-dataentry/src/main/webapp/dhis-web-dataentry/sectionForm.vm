@@ -46,6 +46,9 @@
       #set( $count = 0 )
       #set( $mark = 0 )
       #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )
+      #foreach( $optionCombo in $optionCombos )
+      <span id="value[option${optionCombo.id}].name" class="hidden">${optionCombo.name}</span>
+      #end
       #foreach( $dataElement in $section.dataElements )
       #if( $mark == 1 )
       #set( $mark = 0 )
@@ -75,7 +78,7 @@
           #set( $minMaxError = true )
           #end
         #end
-        <span id="value[option$optionCombo.id].name" class="hidden">$optionCombo.name</span><span id="value[$dataElement.id:$optionCombo.id].min" class="hidden">$!minMax.min</span><span id="value[$dataElement.id:$optionCombo.id].max" class="hidden">$!minMax.max</span>
+        <span id="value[${dataElement.id}:${optionCombo.id}].min" class="hidden">$!minMax.min</span><span id="value[${dataElement.id}:${optionCombo.id}].max" class="hidden">$!minMax.max</span>
         <td>
         #if( $dataElement.type == "bool" )
         <span id="value[option$optionCombo.id].name" style="display:none">$optionCombo.name</span>
