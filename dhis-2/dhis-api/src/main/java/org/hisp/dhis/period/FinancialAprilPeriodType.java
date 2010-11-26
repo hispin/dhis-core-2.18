@@ -103,7 +103,6 @@ public class FinancialAprilPeriodType
         Date startDate = cal.getTime();
         cal.add( Calendar.YEAR, 1 );
         cal.add( Calendar.DAY_OF_YEAR, -2 );
-        System.out.println( "" );
         return new Period( this, startDate, cal.getTime() );
     }
 
