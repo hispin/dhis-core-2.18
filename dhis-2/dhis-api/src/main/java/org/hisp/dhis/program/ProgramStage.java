@@ -34,7 +34,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class ProgramStage
     implements Serializable
