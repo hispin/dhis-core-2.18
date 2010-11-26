@@ -416,8 +416,8 @@ public class GenerateSummaryDataStatusResultAction
         Period endPeriod = periodService.getPeriod( eDateLB );
 
         PeriodType dataSetPeriodType = selDataSet.getPeriodType();       
-        periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType,
-            startPeriod.getStartDate(), endPeriod.getEndDate() ) );
+        periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
+            endPeriod.getEndDate() );
 
         periodInfo = "-1";
         for ( Period p : periodList )

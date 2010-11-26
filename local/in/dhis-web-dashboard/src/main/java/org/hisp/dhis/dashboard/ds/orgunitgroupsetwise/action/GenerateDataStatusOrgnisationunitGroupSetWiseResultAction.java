@@ -389,7 +389,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
 
         deInfo = getDEInfo( dataElements );
         dataSetPeriodType = selDataSet.getPeriodType();
-        periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
+        periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
             endPeriod.getEndDate() );
 
         // Dataset source

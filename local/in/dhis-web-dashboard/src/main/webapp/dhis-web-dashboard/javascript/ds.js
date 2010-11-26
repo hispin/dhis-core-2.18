@@ -125,8 +125,19 @@ function textvalue(summary)
         // for Mobile  dataStatus result
         else if(summary == "MobileDataStatus")
         {
-        	document.ChartGenerationForm.action = "mobileDataStatusResult.action";
-            document.ChartGenerationForm.submit();
+        	
+			var selIndex= document.getElementById("percentage").selectedIndex;
+        	var selValue = document.getElementById("percentage").options[selIndex].value;
+        	if ( selValue == "select")
+        	{
+	            document.ChartGenerationForm.action = "mobileDataStatusResult.action";
+				document.ChartGenerationForm.submit();
+        	}
+        	else
+        	{
+        		document.ChartGenerationForm.action = "percentageDataStatusResult.action";
+	            document.ChartGenerationForm.submit();
+        	}
         }
         
         else
@@ -281,6 +292,12 @@ function getdSetPeriodsReceived( xmlObject )
     var eDateLB = document.getElementById( "eDateLB" );
 		
     var periods = xmlObject.getElementsByTagName( "period" );
+    
+    if ( periods.length <= 0 )
+    {
+    	clearList( sDateLB );
+        clearList( eDateLB );
+    }
 	
     for ( var i = 0; i < periods.length; i++)
     {

@@ -503,6 +503,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>	
 	
+	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction"
+        class="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction"
+        scope="prototype">
+        <property name="dashBoardService">
+            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+        </property>
+        <property name="dataSetService">
+            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
+        </property>
+    </bean>	
+	
 	<!--  for Mobile Group wise data status -->    
     <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
         class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"

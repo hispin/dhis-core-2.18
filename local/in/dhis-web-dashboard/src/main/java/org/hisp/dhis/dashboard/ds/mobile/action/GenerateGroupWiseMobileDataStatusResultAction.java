@@ -542,9 +542,8 @@ implements Action
 
         dataElements = selDataSet.getDataElements();
         dataSetPeriodType = selDataSet.getPeriodType();
-        periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
+        periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
             endPeriod.getEndDate() );
-
         dataSetPeriods = new HashMap<DataSet, Collection<Period>>();
         Iterator<DataElementGroup> dataElementGroupIterator = dataElementGroups.iterator();
 
@@ -576,7 +575,7 @@ implements Action
 
             dataSetPeriodType = ds.getPeriodType();
 
-            periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType, startPeriod.getStartDate(),
+            periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
                 endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
