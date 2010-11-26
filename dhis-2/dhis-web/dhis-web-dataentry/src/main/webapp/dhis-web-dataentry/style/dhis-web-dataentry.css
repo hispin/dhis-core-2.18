@@ -26,15 +26,15 @@
   display: none;
 }
 
-.gray
-{
-  background-color: #000000;
-}
-
 .entryField
 {
   width: 100%;
   text-align: center;
+}
+
+.minmax
+{
+  background-color: #ffcccc;
 }
 
 @media print 

@@ -163,7 +163,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );        
-        request.send( 'saveMultiDimensionalValue.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
+        request.send( 'saveValue.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' +
                 dataElementId + '&optionComboId=' + optionComboId + '&value=' + value );
     };
     

@@ -2,10 +2,10 @@
 <hr style="clear:both">
 <table>
   <tr>
-    <td><input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end></td>
-    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration || $periods.size() == 0 ) disabled="disabled"#end></td>
-    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration || $periods.size() == 0 ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
-    <td><div id="dateDiv" name="dateDiv" #if( $registration || $periods.size() == 0 ) style="display:none"#else style="display:inline"#end>
+    <td><input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration ) disabled="disabled"#end></td>
+    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration ) disabled="disabled"#end></td>
+    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
+    <td><div id="dateDiv" name="dateDiv" #if( $registration ) style="display:none"#else style="display:inline"#end>
   </tr>
 </table>
 <span id="message"></span>
