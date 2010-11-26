@@ -1,7 +1,5 @@
-#set( $size = $object.size() )
-{ "mapViews": [
-#foreach( $mapView in $object )
-  {
+{
+  "mapView": { 
     "id": "$!{mapView.id}",
     "name": "$!encoder.jsonEncode( ${mapView.name} )",
     "mapValueType": "$!encoder.jsonEncode( ${mapView.mapValueType} )",
@@ -29,6 +27,8 @@
     "longitude": "$!encoder.jsonEncode( ${mapView.longitude} )",
     "latitude": "$!encoder.jsonEncode( ${mapView.latitude} )",
     "zoom": "$!{mapView.zoom}"
-  }#if( $velocityCount < $size ),#end
-#end
-] }
+  },
+  "userSettings": {
+    "mapDateType": "$!encoder.jsonEncode( ${mapDateType} )"
+  }
+}

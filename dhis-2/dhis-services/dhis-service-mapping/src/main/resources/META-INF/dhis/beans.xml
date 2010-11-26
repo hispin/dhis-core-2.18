@@ -22,8 +22,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.period.PeriodService"/>
 	<property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>
-	<property name="aggregatedDataValueService"
-	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
 	<property name="aggregationService"
 	  ref="org.hisp.dhis.aggregation.AggregationService"/>
   </bean>
@@ -37,20 +35,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <!-- DeletionHandlers -->
     
-  <bean id="org.hisp.dhis.mapping.MapDeletionHandler"
-    class="org.hisp.dhis.mapping.MapDeletionHandler">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-    
   <bean id="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"
     class="org.hisp.dhis.mapping.MapLegendSetDeletionHandler">
-    <property name="mappingService"
-      ref="org.hisp.dhis.mapping.MappingService"/>
-  </bean>
-    
-  <bean id="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"
-    class="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler">
     <property name="mappingService"
       ref="org.hisp.dhis.mapping.MappingService"/>
   </bean>
@@ -69,9 +55,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="arguments">
       <list>
         <list>
-          <ref local="org.hisp.dhis.mapping.MapDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapLegendSetDeletionHandler"/>
-          <ref local="org.hisp.dhis.mapping.MapOrganisationUnitRelationDeletionHandler"/>
           <ref local="org.hisp.dhis.mapping.MapViewDeletionHandler"/>
         </list>
       </list>
@@ -83,10 +67,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <aop:config>
   
     <aop:aspect ref="deletionInterceptor">      
-      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMap(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegend(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegendSet(..) )" method="intercept"/>
-      <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapOrganisationUnitRelation(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept"/>
     </aop:aspect>
       

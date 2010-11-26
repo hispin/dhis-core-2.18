@@ -38,12 +38,12 @@
         <property name="startDate"/>
         
         <property name="endDate"/>
-		
-		<property name="mapSourceType"/>
-		
-		<property name="organisationUnitSelectionType"/>
-		
-		<property name="mapSource"/>
+        
+        <many-to-one name="parentOrganisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit" 
+            column="parentorganisationunitid" foreign-key="fk_mapview_parentorganisationunitid"/>
+        
+        <many-to-one name="organisationUnitLevel" class="org.hisp.dhis.organisationunit.OrganisationUnitLevel" 
+            column="organisationunitlevelid" foreign-key="fk_mapview_organisationunitlevelid"/>		
 		
 		<property name="mapLegendType"/>
 		

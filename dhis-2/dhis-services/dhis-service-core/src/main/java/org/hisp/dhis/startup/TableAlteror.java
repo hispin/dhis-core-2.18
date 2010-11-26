@@ -87,7 +87,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
         executeSql( "ALTER TABLE section DROP COLUMN label" );
-        executeSql( "ALTER TABLE section DROP COLUMN title;" );
+        executeSql( "ALTER TABLE section DROP COLUMN title" );
         executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
         executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptName" );
 
@@ -96,6 +96,10 @@ public class TableAlteror
         executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
 
         // mapping
+        executeSql( "DROP TABLE mapOrganisationUnitRelation" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
+        executeSql( "DROP TABLE map" );
+        
         executeSql( "ALTER TABLE map DROP CONSTRAINT fk_map_organisationunitid" );
         executeSql( "ALTER TABLE map DROP COLUMN organisationunitid" );
         executeSql( "ALTER TABLE map DROP COLUMN longitude" );

@@ -4,46 +4,30 @@
 	Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
 	
-	GLOBALS.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
-	GLOBALS.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
-    GLOBALS.vars.parameter = GLOBALS.util.getUrlParam('view') ? {id: GLOBALS.util.getUrlParam('view')} : false;
-    
+	GLOBAL.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	GLOBAL.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
+    GLOBAL.vars.parameter = GLOBAL.util.getUrlParam('view') ? {id: GLOBAL.util.getUrlParam('view')} : false;
+
     Ext.Ajax.request({
-        url: GLOBALS.conf.path_mapping + 'getMapView' + GLOBALS.conf.type,
-        method: 'GET',
-        params: {id: GLOBALS.vars.parameter.id || 0},
+        url: GLOBAL.conf.path_mapping + 'initialize' + GLOBAL.conf.type,
+        method: 'POST',
+        params: {id: GLOBAL.vars.parameter.id || null},
         success: function(r) {
-            var mv = Ext.util.JSON.decode(r.responseText).mapView[0];
-            if (GLOBALS.vars.parameter) {
-                if (!mv.id) {
-                    GLOBALS.vars.parameter = false;
-                }
-                else {
-                    GLOBALS.vars.parameter.mapView = mv;
-                }
+            var init = Ext.util.JSON.decode(r.responseText);
+            if (GLOBAL.vars.parameter) {
+                GLOBAL.vars.parameter.mapView = init.mapView;
             }
-            
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'getMapUserSettings' + GLOBALS.conf.type,
-                method: 'GET',
-                success: function(r) {
-                    var us = Ext.util.JSON.decode(r.responseText);
-                    GLOBALS.vars.mapSourceType.value = GLOBALS.vars.parameter ? GLOBALS.vars.parameter.mapView.mapSourceType : us.mapSource;
-                    GLOBALS.vars.mapDateType.value = GLOBALS.vars.parameter ? GLOBALS.vars.parameter.mapView.mapDateType : us.mapDateType;
-                    
-                    Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
-                        method: 'POST',
-                        params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
-                        success: function() {
+            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;
                         
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllMapViews' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllMapViews' + GLOBAL.conf.type,
         root: 'mapViews',
-        fields: ['id', 'name', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId', 'mapDateType', 'periodTypeId',
-            'periodId', 'startDate', 'endDate', 'mapSourceType', 'organisationUnitSelectionType', 'mapSource', 'organisationUnitSelectionTypeName', 'mapLegendType',
-			'method', 'classes', 'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'],
+        fields: [ 'id', 'name', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
+            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
+            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'
+        ],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
@@ -55,7 +39,7 @@
     });
 
     var indicatorGroupStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllIndicatorGroups' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllIndicatorGroups' + GLOBAL.conf.type,
         root: 'indicatorGroups',
         fields: ['id', 'name'],
         idProperty: 'id',
@@ -70,7 +54,7 @@
     });
     
     var indicatorsByGroupStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + GLOBAL.conf.type,
         root: 'indicators',
         fields: ['id', 'name', 'shortName'],
         idProperty: 'id',
@@ -92,7 +76,7 @@
     });
     
 	var indicatorStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllIndicators' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllIndicators' + GLOBAL.conf.type,
         root: 'indicators',
         fields: ['id','name','shortName'],
         sortInfo: {field: 'shortName', direction: 'ASC'},
@@ -106,7 +90,7 @@
     });
   
     var dataElementGroupStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllDataElementGroups' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllDataElementGroups' + GLOBAL.conf.type,
         root: 'dataElementGroups',
         fields: ['id', 'name'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -120,7 +104,7 @@
     });
     
     var dataElementsByGroupStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getDataElementsByDataElementGroup' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getDataElementsByDataElementGroup' + GLOBAL.conf.type,
         root: 'dataElements',
         fields: ['id', 'name', 'shortName'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -141,7 +125,7 @@
     });
     
     var dataElementStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllDataElements' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllDataElements' + GLOBAL.conf.type,
         root: 'dataElements',
         fields: ['id','name','shortName'],
         sortInfo: {field: 'shortName', direction: 'ASC'},
@@ -155,7 +139,7 @@
     });
     
     var periodTypeStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllPeriodTypes' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllPeriodTypes' + GLOBAL.conf.type,
         root: 'periodTypes',
         fields: ['name'],
         autoLoad: false,
@@ -168,7 +152,7 @@
     });
         
     var periodsByTypeStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getPeriodsByPeriodType' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getPeriodsByPeriodType' + GLOBAL.conf.type,
         root: 'periods',
         fields: ['id', 'name'],
         autoLoad: false,
@@ -181,7 +165,7 @@
     });  
         
     var mapStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllMaps' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllMaps' + GLOBAL.conf.type,
         root: 'maps',
         fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel', 'nameColumn'],
         idProperty: 'mapLayerPath',
@@ -195,7 +179,7 @@
     });
     
 	var predefinedMapLegendStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getAllMapLegends' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllMapLegends' + GLOBAL.conf.type,
         root: 'mapLegends',
         fields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
         autoLoad: false,
@@ -208,8 +192,8 @@
     });    
     
     var predefinedMapLegendSetStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getMapLegendSetsByType' + GLOBALS.conf.type,
-        baseParams: {type: GLOBALS.conf.map_legend_type_predefined},
+        url: GLOBAL.conf.path_mapping + 'getMapLegendSetsByType' + GLOBAL.conf.type,
+        baseParams: {type: GLOBAL.conf.map_legend_type_predefined},
         root: 'mapLegendSets',
         fields: ['id', 'name', 'indicators', 'dataelements'],
         sortInfo: {field:'name', direction:'ASC'},
@@ -223,8 +207,7 @@
     });
     
 	var organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getOrganisationUnitLevels' + GLOBALS.conf.type,
-        id: 'id',
+        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitLevels' + GLOBAL.conf.type,
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: false,
@@ -232,12 +215,13 @@
         listeners: {
             'load': function(store) {
                 store.isLoaded = true;
+                // Ext.getCmp('level_cb').mode = 'local';
             }
         }
     });
     
 	var organisationUnitsAtLevelStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getOrganisationUnitsAtLevel' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitsAtLevel' + GLOBAL.conf.type,
         baseParams: {level: 1},
         root: 'organisationUnits',
         fields: ['id', 'name'],
@@ -252,7 +236,7 @@
     });
     
 	var geojsonFilesStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getGeoJsonFiles' + GLOBALS.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getGeoJsonFiles' + GLOBAL.conf.type,
         root: 'files',
         fields: ['name'],
         autoLoad: false,
@@ -264,12 +248,8 @@
         }
     });
     
-	var nameColumnStore = new Ext.data.ArrayStore({
-        fields: ['name']
-    });
-    
 	var wmsCapabilitiesStore = new GeoExt.data.WMSCapabilitiesStore({
-        url: GLOBALS.conf.path_geoserver + GLOBALS.conf.ows,
+        url: GLOBAL.conf.path_geoserver + GLOBAL.conf.ows,
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -280,8 +260,8 @@
     });
     
 	var baseLayerStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
-        baseParams: {type: GLOBALS.conf.map_layer_type_baselayer},
+        url: GLOBAL.conf.path_mapping + 'getMapLayersByType' + GLOBAL.conf.type,
+        baseParams: {type: GLOBAL.conf.map_layer_type_baselayer},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -295,8 +275,8 @@
     });
     
     var overlayStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getMapLayersByType' + GLOBALS.conf.type,
-        baseParams: {type: GLOBALS.conf.map_layer_type_overlay},
+        url: GLOBAL.conf.path_mapping + 'getMapLayersByType' + GLOBAL.conf.type,
+        baseParams: {type: GLOBAL.conf.map_layer_type_overlay},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -310,8 +290,8 @@
     });
     
     var userSettingStore = new Ext.data.JsonStore({
-        url: GLOBALS.conf.path_mapping + 'getMapUserSettings' + GLOBALS.conf.type,
-        fields: ['mapSource', 'mapDateType'],
+        url: GLOBAL.conf.path_mapping + 'getMapUserSettings' + GLOBAL.conf.type,
+        fields: ['mapDateType'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -321,7 +301,7 @@
         }
     });	
     
-    GLOBALS.stores = {
+    GLOBAL.stores = {
         mapView: mapViewStore,
         indicatorGroup: indicatorGroupStore,
         indicatorsByGroup: indicatorsByGroupStore,
@@ -337,7 +317,6 @@
         organisationUnitLevel: organisationUnitLevelStore,
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
-        nameColumn: nameColumnStore,
         wmsCapabilities: wmsCapabilitiesStore,
         baseLayer: baseLayerStore,
         overlay: overlayStore
@@ -345,14 +324,14 @@
 	
 	/* Add base layers */	
 	function addBaseLayersToMap() {
-		GLOBALS.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
-		GLOBALS.vars.map.layers[0].setVisibility(false);
+		GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
+		GLOBAL.vars.map.layers[0].setVisibility(false);
 		
-		GLOBALS.stores.baseLayer.load({callback: function(r) {
+		GLOBAL.stores.baseLayer.load({callback: function(r) {
 			if (r.length) {
 				for (var i = 0; i < r.length; i++) {
-					GLOBALS.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
-					GLOBALS.vars.map.layers[GLOBALS.vars.map.layers.length-1].setVisibility(false);
+					GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
+					GLOBAL.vars.map.layers[GLOBAL.vars.map.layers.length-1].setVisibility(false);
 				}
 			}
 		}});
@@ -360,10 +339,18 @@
 	addBaseLayersToMap();	
     
 	function addOverlaysToMap() {
-		GLOBALS.stores.overlay.load({callback: function(r) {
+		GLOBAL.stores.overlay.load({callback: function(r) {
 			if (r.length) {
+                var loadStart = function() {
+                    GLOBAL.vars.mask.msg = i18n_loading;
+                    GLOBAL.vars.mask.show();
+                };
+                var loadEnd = function() {
+                    GLOBAL.vars.mask.hide();
+                };
+                
 				for (var i = 0; i < r.length; i++) {
-					var url = GLOBALS.vars.mapSourceType.isShapefile() ? GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + r[i].data.mapSource + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource;
+					var url = GLOBAL.vars.mapSourceType.isShapefile() ? GLOBAL.conf.path_geoserver + GLOBAL.conf.wfs + r[i].data.mapSource + GLOBAL.conf.output : GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource;
 					var fillColor = r[i].data.fillColor;
 					var fillOpacity = parseFloat(r[i].data.fillOpacity);
 					var strokeColor = r[i].data.strokeColor;
@@ -386,18 +373,10 @@
 						})
 					});
 					
-					overlay.events.register('loadstart', null, function() {
-						GLOBALS.vars.mask.msg = i18n_loading;
-						GLOBALS.vars.mask.show();
-					});
-					
-					overlay.events.register('loadend', null, function() {
-						GLOBALS.vars.mask.hide();
-					});
-                    
+					overlay.events.register('loadstart', null, loadStart);					
+					overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
-						
-					GLOBALS.vars.map.addLayer(overlay);
+					GLOBAL.vars.map.addLayer(overlay);
 				}
 			}
 		}});
@@ -405,9 +384,9 @@
 	addOverlaysToMap();
 			
 	/* Section: mapview */
-	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptytext:'',width:GLOBALS.conf.combo_width,hideLabel:true,autoCreate:{tag:'input',type:'text',size:'20',autocomplete:'off', maxlength:'35'}});
-	var deleteMapViewComboBox=new Ext.form.ComboBox({id:'view_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.mapView});
-	var dashboardMapViewComboBox=new Ext.form.ComboBox({id:'view2_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.mapView});
+	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptytext:'',width:GLOBAL.conf.combo_width,hideLabel:true,autoCreate:{tag:'input',type:'text',size:'20',autocomplete:'off', maxlength:'35'}});
+	var deleteMapViewComboBox=new Ext.form.ComboBox({id:'view_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.mapView});
+	var dashboardMapViewComboBox=new Ext.form.ComboBox({id:'view2_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.mapView});
     
     var newViewPanel = new Ext.form.FormPanel({
         id: 'newview_p',
@@ -434,26 +413,26 @@
                     
                     var formValues;
                     
-                    if (GLOBALS.vars.activePanel.isPolygon()) {
-                        if (!choropleth.validateForm(true)) {
+                    if (GLOBAL.vars.activePanel.isPolygon()) {
+                        if (!choropleth.formValidation.validateForm(true)) {
                             return;
                         }
                         formValues = choropleth.getFormValues();
                     }
-                    else if (GLOBALS.vars.activePanel.isPoint()) {
-                        if (!proportionalSymbol.validateForm(true)) {
+                    else if (GLOBAL.vars.activePanel.isPoint()) {
+                        if (!symbol.formValidation.validateForm(true)) {
                             return;
                         }
-                        formValues = proportionalSymbol.getFormValues();
+                        formValues = symbol.getFormValues();
                     }
                     
-                    if (GLOBALS.stores.mapView.find('name', vn) !== -1) {
+                    if (GLOBAL.stores.mapView.find('name', vn) !== -1) {
                         Ext.message.msg(false, i18n_there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
                         return;
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'addOrUpdateMapView' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapView' + GLOBAL.conf.type,
                         method: 'POST',
                         params: {
                             name: vn,
@@ -466,8 +445,8 @@
                             periodId: formValues.periodId,
                             startDate: formValues.startDate,
                             endDate: formValues.endDate,
-                            organisationUnitSelectionType: formValues.organisationUnitSelectionType,
-                            mapSource:formValues.mapSource,
+                            parentOrganisationUnitId: formValues.parentOrganisationUnitId,
+                            organisationUnitLevel: formValues.organisationUnitLevel,
                             mapLegendType: formValues.mapLegendType,
                             method: formValues.method,
                             classes: formValues.classes,
@@ -481,7 +460,7 @@
                         },
                         success: function(r) {
                             Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + i18n_registered);
-                            GLOBALS.stores.mapView.load();
+                            GLOBAL.stores.mapView.load();
                             Ext.getCmp('viewname_tf').reset();
                         }
                     });
@@ -512,20 +491,20 @@
 						return;
 					}
                     
-					var name = GLOBALS.stores.mapView.getById(v).get('name');				
+					var name = GLOBAL.stores.mapView.getById(v).get('name');				
 					
 					Ext.Ajax.request({
-						url: GLOBALS.conf.path_mapping + 'deleteMapView' + GLOBALS.conf.type,
+						url: GLOBAL.conf.path_mapping + 'deleteMapView' + GLOBAL.conf.type,
 						method: 'POST',
 						params: {id:v},
 						success: function(r) {
 							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + name + '</span> ' + i18n_deleted);
-                            GLOBALS.stores.mapView.load();
-                            if (v == Ext.getCmp('mapview_cb').getValue()) {
-                                Ext.getCmp('mapview_cb').clearValue();
+                            GLOBAL.stores.mapView.load();
+                            if (v == choropleth.form.findField('mapview').getValue()) {
+                                choropleth.form.findField('mapview').clearValue();
                             }
-                            if (v == Ext.getCmp('mapview_cb2').getValue()) {
-                                Ext.getCmp('mapview_cb2').clearValue();
+                            if (v == symbol.form.findField('mapview').getValue()) {
+                                symbol.form.findField('mapview').clearValue();
                             }
 						}
 					});
@@ -558,7 +537,7 @@
 					}
 					
 					Ext.Ajax.request({
-						url: GLOBALS.conf.path_mapping + 'addMapViewToDashboard' + GLOBALS.conf.type,
+						url: GLOBAL.conf.path_mapping + 'addMapViewToDashboard' + GLOBAL.conf.type,
 						method: 'POST',
 						params: {id:v},
 						success: function(r) {
@@ -575,7 +554,7 @@
         title: '<span id="window-favorites-title">' + i18n_favorite + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 234,
+		width: 223,
         items:
         [
             {
@@ -632,12 +611,12 @@
 				xtype: 'textfield',
 				id: 'exportimagetitle_tf',
 				fieldLabel: i18n_title,
-				labelSeparator: GLOBALS.conf.labelseparator,
+				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
 				isFormField: true,
-				width: GLOBALS.conf.combo_width_fieldset,
+				width: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all'
 			},
@@ -645,14 +624,13 @@
 				xtype: 'combo',
 				id: 'exportimagequality_cb',
 				fieldLabel: i18n_image_resolution,
-                fieldLabel: 'Image resolution',
-				labelSeparator: GLOBALS.conf.labelseparator,
+				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: false,
 				valueField: 'id',
 				displayField: 'text',
 				isFormField: true,
-				width: GLOBALS.conf.combo_width_fieldset,
-				minListWidth: GLOBALS.conf.combo_width_fieldset,
+				width: GLOBAL.conf.combo_width_fieldset,
+				minListWidth: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all',
 				value: 1,
@@ -673,68 +651,63 @@
 				xtype: 'button',
                 id: 'exportimage_b',
 				isFormField: true,
-				labelSeparator: GLOBALS.conf.labelseparator,
+				labelSeparator: GLOBAL.conf.labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
 				text: i18n_export,
 				handler: function() {
-                    var vcb, dcb, mcb, lcb, period;
-                    if (GLOBALS.vars.activePanel.isPolygon()) {
-                        vcb = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBALS.conf.map_value_type_indicator ? Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
-                        dcb = GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getValue() : Ext.getCmp('startdate_df').getValue() && Ext.getCmp('startdate_df').getValue() ? true : false;
-                        period = GLOBALS.vars.mapDateType.isFixed() ? Ext.getCmp('period_cb').getRawValue() : new Date(Ext.getCmp('startdate_df').getRawValue()).format('Y M j') + ' - ' + new Date(Ext.getCmp('enddate_df').getRawValue()).format('Y M j');
-                        mcb = GLOBALS.vars.mapSourceType.isDatabase() ? Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
-                        lcb = Ext.getCmp('maplegendtype_cb').getValue() == GLOBALS.conf.map_legend_type_automatic ? true : Ext.getCmp('maplegendset_cb').getValue() ? true : false;
+                    var vcb, period;
+                    if (GLOBAL.vars.activePanel.isPolygon()) {
+                        if (choropleth.formValidation.validateForm()) {
+                            vcb = choropleth.form.findField('mapvaluetype').getValue() == GLOBAL.conf.map_value_type_indicator ? choropleth.form.findField('indicator').getValue() : choropleth.form.findField('dataelement').getValue();
+                            period = GLOBAL.vars.mapDateType.isFixed() ? choropleth.form.findField('period').getRawValue() : new Date(choropleth.form.findField('startdate').getRawValue()).format('Y M j') + ' - ' + new Date(choropleth.form.findField('enddate').getRawValue()).format('Y M j');
+                    
+                            var svgElement = document.getElementsByTagName('svg')[0];
+                            var parentSvgElement = svgElement.parentNode;                            
+                            var svg = parentSvgElement.innerHTML;                            
+                            var viewBox = svgElement.getAttribute('viewBox');
+                            var title = Ext.getCmp('exportimagetitle_tf').getValue();
+                            
+                            if (!title) {
+                                Ext.message.msg(false, i18n_form_is_not_complete);
+                            }
+                            else {
+                                var q = Ext.getCmp('exportimagequality_cb').getValue();
+                                var w = svgElement.getAttribute('width') * q;
+                                var h = svgElement.getAttribute('height') * q;
+                                var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
+                                
+                                Ext.getCmp('exportimagetitle_tf').reset();
+                                
+                                var exportForm = document.getElementById('exportForm');
+                                exportForm.action = '../exportImage.action';
+                                exportForm.target = '_blank';
+                                
+                                document.getElementById('titleField').value = title;   
+                                document.getElementById('viewBoxField').value = viewBox;  
+                                document.getElementById('svgField').value = svg;  
+                                document.getElementById('widthField').value = w;  
+                                document.getElementById('heightField').value = h;  
+                                document.getElementById('includeLegendsField').value = includeLegend;  
+                                document.getElementById('periodField').value = period;  
+                                document.getElementById('indicatorField').value = vcb;
+                                document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
+
+                                exportForm.submit();
+                            }
+                        }
+                        else {
+                            Ext.message.msg(false, i18n_please_render_map_first);
+                        }
                     }
-                    else if (GLOBALS.vars.activePanel.isPoint()) {
+                    else if (GLOBAL.vars.activePanel.isPoint()) {
                         Ext.message.msg(false, 'Please use <span class="x-msg-hl">polygon layer</span> for printing');
                         return;
                     }
                     else {
                         Ext.message.msg(false, i18n_please_expand_layer_panel);
                         return;
-                    }
-                    
-                    if (vcb && dcb && mcb && lcb) {
-						var svgElement = document.getElementsByTagName('svg')[0];
-						var parentSvgElement = svgElement.parentNode;
-						
-						var svg = parentSvgElement.innerHTML;
-						
-                        var viewBox = svgElement.getAttribute('viewBox');
-                        var title = Ext.getCmp('exportimagetitle_tf').getValue();
-                    	
-                        if (!title) {
-                            Ext.message.msg(false, i18n_form_is_not_complete);
-                        }
-                        else {
-                            var q = Ext.getCmp('exportimagequality_cb').getValue();
-                            var w = svgElement.getAttribute('width') * q;
-                            var h = svgElement.getAttribute('height') * q;
-                            var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
-                            
-                            Ext.getCmp('exportimagetitle_tf').reset();
-                            
-                            var exportForm = document.getElementById('exportForm');
-                            exportForm.action = '../exportImage.action';
-                            exportForm.target = '_blank';
-                            
-                            document.getElementById('titleField').value = title;   
-                            document.getElementById('viewBoxField').value = viewBox;  
-                            document.getElementById('svgField').value = svg;  
-                            document.getElementById('widthField').value = w;  
-                            document.getElementById('heightField').value = h;  
-                            document.getElementById('includeLegendsField').value = includeLegend;  
-                            document.getElementById('periodField').value = period;  
-                            document.getElementById('indicatorField').value = vcb;
-                            document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
-
-                            exportForm.submit();
-                        }
-                    }
-                    else {
-                        Ext.message.msg(false, i18n_please_render_map_first);
-                    }
+                    }                    
 				}
 			}	
 		]
@@ -748,13 +721,13 @@
 				xtype: 'textfield',
 				id: 'exportexceltitle_ft',
 				fieldLabel: i18n_title,
-				labelSeparator: GLOBALS.conf.labelseparator,
+				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
 				isFormField: true,
-				width: GLOBALS.conf.combo_width_fieldset,
-				minListWidth: GLOBALS.conf.combo_list_width_fieldset,
+				width: GLOBAL.conf.combo_width_fieldset,
+				minListWidth: GLOBAL.conf.combo_list_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all'
 			},	
@@ -778,24 +751,24 @@
 				xtype: 'button',
                 id: 'exportexcel_b',
 				isFormField: true,
-				labelSeparator: GLOBALS.conf.labelseparator,
+				labelSeparator: GLOBAL.conf.labelseparator,
 				hideLabel: false,
 				cls: 'window-button',
 				text: i18n_export_excel,
 				handler: function() {
                     var indicatorOrDataElement, period, mapOrOrganisationUnit;
-					if (GLOBALS.vars.activePanel.isPolygon()) {
-                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBALS.conf.map_value_type_indicator ?
+					if (GLOBAL.vars.activePanel.isPolygon()) {
+                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBAL.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
                         period = Ext.getCmp('period_cb').getValue();
-                        mapOrOrganisationUnit = GLOBALS.vars.mapSourceType.isDatabase() ?
-                            Ext.getCmp('map_tf').getValue() : Ext.getCmp('map_cb').getValue();
+                        mapOrOrganisationUnit = GLOBAL.vars.mapSourceType.isDatabase() ?
+                            Ext.getCmp('boundary_tf').getValue() : Ext.getCmp('map_cb').getValue();
                     }
-                    else if (GLOBALS.vars.activePanel.isPoint()) {
-                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == GLOBALS.conf.map_value_type_indicator ?
+                    else if (GLOBAL.vars.activePanel.isPoint()) {
+                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == GLOBAL.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
                         period = Ext.getCmp('period_cb2').getValue();
-                        mapOrOrganisationUnit = GLOBALS.vars.mapSourceType.isDatabase() ?
+                        mapOrOrganisationUnit = GLOBAL.vars.mapSourceType.isDatabase() ?
                             Ext.getCmp('map_tf2').getValue() : Ext.getCmp('map_cb2').getValue();
                     }
                     
@@ -804,7 +777,6 @@
                         var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
                         var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();
                         var includeValues = Ext.getCmp('exportexcelincludevalue_chb').getValue();
-                        var period = Ext.getCmp('period_cb').getValue();
                         var indicator = Ext.getCmp('indicator_cb').getValue();
                         
                         Ext.getCmp('exportexceltitle_ft').clearValue();
@@ -820,8 +792,8 @@
                         document.getElementById('includeValuesField').value = includeValues; 
                         document.getElementById('periodField').value = period;  
                         document.getElementById('indicatorField').value = indicator;   
-                        document.getElementById('legendsField').value = GLOBALS.util.getLegendsJSON();
-                        document.getElementById('dataValuesField').value = GLOBALS.vars.exportValues;
+                        document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
+                        document.getElementById('dataValuesField').value = GLOBAL.vars.exportValues;
 
                         exportForm.submit();
                     }
@@ -843,48 +815,52 @@
         items:
         [   
             { html: '<div class="window-field-label-first">'+i18n_display_name+'</div>' },
-            new Ext.form.TextField({id:'predefinedmaplegendname_tf',isFormField:true,hideLabel:true,emptyText:GLOBALS.conf.emptytext,width:GLOBALS.conf.combo_width}),
+            new Ext.form.TextField({id:'predefinedmaplegendname_tf',isFormField:true,hideLabel:true,emptyText:GLOBAL.conf.emptytext,width:GLOBAL.conf.combo_width}),
             { html: '<div class="window-field-label">'+i18n_start_value+'</div>' },
-            new Ext.form.TextField({id:'predefinedmaplegendstartvalue_tf',isFormField:true,hideLabel:true,emptyText:GLOBALS.conf.emptytext,width:GLOBALS.conf.combo_number_width,minListWidth:GLOBALS.conf.combo_number_width}),
+            new Ext.form.TextField({id:'predefinedmaplegendstartvalue_tf',isFormField:true,hideLabel:true,emptyText:GLOBAL.conf.emptytext,width:GLOBAL.conf.combo_number_width,minListWidth:GLOBAL.conf.combo_number_width}),
             { html: '<div class="window-field-label">'+i18n_end_value+'</div>' },
-            new Ext.form.TextField({id:'predefinedmaplegendendvalue_tf',isFormField:true,hideLabel:true,emptyText:GLOBALS.conf.emptytext,width:GLOBALS.conf.combo_number_width,minListWidth:GLOBALS.conf.combo_number_width}),
+            new Ext.form.TextField({id:'predefinedmaplegendendvalue_tf',isFormField:true,hideLabel:true,emptyText:GLOBAL.conf.emptytext,width:GLOBAL.conf.combo_number_width,minListWidth:GLOBAL.conf.combo_number_width}),
             { html: '<div class="window-field-label">'+i18n_color+'</div>' },
-            new Ext.ux.ColorField({id:'predefinedmaplegendcolor_cp',isFormField:true,hideLabel:true,allowBlank:false,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,value:"#FFFF00"}),
+            new Ext.ux.ColorField({id:'predefinedmaplegendcolor_cp',isFormField:true,hideLabel:true,allowBlank:false,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,value:"#FFFF00"}),
             {
                 xtype: 'button',
                 id: 'newpredefinedmaplegend_b',
-				isFormField: true,
 				hideLabel: true,
                 text: i18n_register,
 				cls: 'window-button',
                 handler: function() {
                     var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
-					var mlsv = Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue();
-					var mlev = Ext.getCmp('predefinedmaplegendendvalue_tf').getValue();
+					var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_tf').getValue());
+					var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_tf').getValue());
                     var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
+                    
+                    if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
+                        Ext.message.msg(false, 'Input invalid');
+                        return;
+                    }
 					
-					if (!mln || mlsv == "" || mlev == "" || !mlc) {
+					if (!mln || !mlsv || !mlev || !mlc) {
                         Ext.message.msg(false, i18n_form_is_not_complete);
                         return;
                     }
                     
-                    if (!GLOBALS.util.validateInputNameLength(mln)) {
+                    if (!GLOBAL.util.validateInputNameLength(mln)) {
                         Ext.message.msg(false, i18n_name_can_not_longer_than_25);
                         return;
                     }
                     
-                    if (GLOBALS.stores.predefinedMapLegend.find('name', mln) !== -1) {
+                    if (GLOBAL.stores.predefinedMapLegend.find('name', mln) !== -1) {
                         Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + mln + '</span> ' + i18n_already_exists);
                         return;
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'addOrUpdateMapLegend' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegend' + GLOBAL.conf.type,
                         method: 'POST',
                         params: {name: mln, startValue: mlsv, endValue: mlev, color: mlc},
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
-                            GLOBALS.stores.predefinedMapLegend.load();
+                            GLOBAL.stores.predefinedMapLegend.load();
                             Ext.getCmp('predefinedmaplegendname_tf').reset();
                             Ext.getCmp('predefinedmaplegendstartvalue_tf').reset();
                             Ext.getCmp('predefinedmaplegendendvalue_tf').reset();
@@ -914,11 +890,11 @@
                 mode: 'remote',
                 forceSelection: true,
                 triggerAction: 'all',
-                emptyText: GLOBALS.conf.emptytext,
+                emptyText: GLOBAL.conf.emptytext,
                 selectOnFocus: true,
-                width: GLOBALS.conf.combo_width,
-                minListWidth: GLOBALS.conf.combo_width,
-                store: GLOBALS.stores.predefinedMapLegend
+                width: GLOBAL.conf.combo_width,
+                minListWidth: GLOBAL.conf.combo_width,
+                store: GLOBAL.stores.predefinedMapLegend
             },
             {
                 xtype: 'button',
@@ -935,12 +911,12 @@
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'deleteMapLegend' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'deleteMapLegend' + GLOBAL.conf.type,
                         method: 'POST',
                         params: {id: mlv},
                         success: function(r) {
                             Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + i18n_was_deleted);
-                            GLOBALS.stores.predefinedMapLegend.load();
+                            GLOBAL.stores.predefinedMapLegend.load();
                             Ext.getCmp('predefinedmaplegend_cb').clearValue();
                         }
                     });
@@ -955,9 +931,9 @@
         items:
         [   
             { html: '<div class="window-field-label-first">'+i18n_display_name+'</div>' },
-            new Ext.form.TextField({id:'predefinedmaplegendsetname_tf',hideLabel:true,emptyText:GLOBALS.conf.emptytext,width:GLOBALS.conf.combo_width}),
+            new Ext.form.TextField({id:'predefinedmaplegendsetname_tf',hideLabel:true,emptyText:GLOBAL.conf.emptytext,width:GLOBAL.conf.combo_width}),
             { html: '<div class="window-field-label">'+i18n_legends+'</div>' },
-			new Ext.ux.Multiselect({id:'predefinednewmaplegend_ms',hideLabel:true,dataFields:['id','name','startValue','endValue','color','displayString'],valueField:'id',displayField:'displayString',width:GLOBALS.conf.multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:GLOBALS.stores.predefinedMapLegend}),
+			new Ext.ux.Multiselect({id:'predefinednewmaplegend_ms',hideLabel:true,dataFields:['id','name','startValue','endValue','color','displayString'],valueField:'id',displayField:'displayString',width:GLOBAL.conf.multiselect_width,height:GLOBAL.util.getMultiSelectHeight(),store:GLOBAL.stores.predefinedMapLegend}),
             {
                 xtype: 'button',
                 id: 'newpredefinedmaplegendset_b',
@@ -966,18 +942,18 @@
                 handler: function() {
                     var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
                     var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
-					var array = new Array();
+					var array = [];
 					
 					if (mlms) {
 						array = mlms.split(',');
 						if (array.length > 1) {
 							for (var i = 0; i < array.length; i++) {
-								var sv = GLOBALS.stores.predefinedMapLegend.getById(array[i]).get('startValue');
-								var ev = GLOBALS.stores.predefinedMapLegend.getById(array[i]).get('endValue');
+								var sv = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('startValue');
+								var ev = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('endValue');
 								for (var j = 0; j < array.length; j++) {
 									if (j != i) {
-										var temp_sv = GLOBALS.stores.predefinedMapLegend.getById(array[j]).get('startValue');
-										var temp_ev = GLOBALS.stores.predefinedMapLegend.getById(array[j]).get('endValue');
+										var temp_sv = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('startValue');
+										var temp_ev = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('endValue');
 										for (var k = sv+1; k < ev; k++) {
 											if (k > temp_sv && k < temp_ev) {
 												Ext.message.msg(false, i18n_overlapping_legends_are_not_allowed);
@@ -1002,19 +978,19 @@
                     array = mlms.split(',');
                     var params = '?mapLegends=' + array[0];
                     if (array.length > 1) {
-                        for (var i = 1; i < array.length; i++) {
-                            array[i] = '&mapLegends=' + array[i];
-                            params += array[i];
+                        for (var l = 1; l < array.length; l++) {
+                            array[l] = '&mapLegends=' + array[l];
+                            params += array[l];
                         }
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
                         method: 'POST',
-                        params: {name: mlsv, type: GLOBALS.conf.map_legend_type_predefined},
+                        params: {name: mlsv, type: GLOBAL.conf.map_legend_type_predefined},
                         success: function(r) {
                             Ext.message.msg(true, i18n_new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + i18n_was_registered);
-                            GLOBALS.stores.predefinedMapLegendSet.load();
+                            GLOBAL.stores.predefinedMapLegendSet.load();
 							Ext.getCmp('predefinedmaplegendsetname_tf').reset();
 							Ext.getCmp('predefinednewmaplegend_ms').reset();							
                         }
@@ -1030,7 +1006,7 @@
         items:
         [   
             { html: '<div class="window-field-label-first">' + i18n_legendset + '</p>' },
-            new Ext.form.ComboBox({id:'predefinedmaplegendsetindicator_cb',hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.predefinedMapLegendSet}),
+            new Ext.form.ComboBox({id:'predefinedmaplegendsetindicator_cb',hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.predefinedMapLegendSet}),
             {
                 xtype: 'button',
                 id: 'deletepredefinedmaplegendset_b',
@@ -1046,12 +1022,12 @@
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'deleteMapLegendSet' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'deleteMapLegendSet' + GLOBAL.conf.type,
                         method: 'POST',
                         params: {id: mlsv},
                         success: function(r) {
                             Ext.message.msg(true, i18n_legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
-                            GLOBALS.stores.predefinedMapLegendSet.load();
+                            GLOBAL.stores.predefinedMapLegendSet.load();
                             Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
                             if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
                                 Ext.getCmp('predefinedmaplegendsetindicator2_cb').clearValue();
@@ -1082,14 +1058,14 @@
                 mode: 'remote',
                 forceSelection: true,
                 triggerAction: 'all',
-                emptyText: GLOBALS.conf.emptytext,
+                emptyText: GLOBAL.conf.emptytext,
                 selectOnFocus: true,
-                width: GLOBALS.conf.combo_width,
-                minListWidth: GLOBALS.conf.combo_width,
-                store: GLOBALS.stores.predefinedMapLegendSet,
+                width: GLOBAL.conf.combo_width,
+                minListWidth: GLOBAL.conf.combo_width,
+                store: GLOBAL.stores.predefinedMapLegendSet,
                 listeners: {
                     'select': {
-                        fn: function(cb, record, i) {
+                        fn: function(cb, record) {
                             var indicators = record.data.indicators || [];
                             var indicatorString = '';
                             
@@ -1106,7 +1082,7 @@
                 }					
             }),
             { html: '<div class="window-field-label">' + i18n_indicators + '</div>' },
-			new Ext.ux.Multiselect({id:'predefinedmaplegendsetindicator_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBALS.conf.multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:GLOBALS.stores.indicator}),
+			new Ext.ux.Multiselect({id:'predefinedmaplegendsetindicator_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBAL.conf.multiselect_width,height:GLOBAL.util.getMultiSelectHeight(),store:GLOBAL.stores.indicator}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetindicator_b',
@@ -1127,7 +1103,7 @@
                         return;
                     }
                     
-                    var array = new Array();
+                    var array = [];
                     array = lims.split(',');
                     var params = '?indicators=' + array[0];
                     
@@ -1139,12 +1115,12 @@
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
+                        url: GLOBAL.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
                         method: 'POST',
                         params: {id: ls},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_legend_set+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                            GLOBALS.stores.predefinedMapLegendSet.load();
+                            Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
+                            GLOBAL.stores.predefinedMapLegendSet.load();
                         }
                     });
                 }
@@ -1169,14 +1145,14 @@
                 mode: 'remote',
                 forceSelection: true,
                 triggerAction: 'all',
-                emptyText: GLOBALS.conf.emptytext,
+                emptyText: GLOBAL.conf.emptytext,
                 selectOnFocus: true,
-                width: GLOBALS.conf.combo_width,
-                minListWidth: GLOBALS.conf.combo_width,
-                store: GLOBALS.stores.predefinedMapLegendSet,
+                width: GLOBAL.conf.combo_width,
+                minListWidth: GLOBAL.conf.combo_width,
+                store: GLOBAL.stores.predefinedMapLegendSet,
                 listeners:{
                     'select': {
-                        fn: function(cb, record, i) {
+                        fn: function(cb, record) {
                             var dataElements = record.data.dataElements || [];
                             var dataElementString = '';
 
@@ -1193,7 +1169,7 @@
                 }					
             }),
             { html: '<div class="window-field-label">' + i18n_dataelements + '</div>' },
-			new Ext.ux.Multiselect({id:'predefinedmaplegendsetdataelement_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBALS.conf.multiselect_width,height:GLOBALS.util.getMultiSelectHeight(),store:GLOBALS.stores.dataElement}),
+			new Ext.ux.Multiselect({id:'predefinedmaplegendsetdataelement_ms',hideLabel:true,dataFields:['id','name','shortName'],valueField:'id',displayField:'shortName',width:GLOBAL.conf.multiselect_width,height:GLOBAL.util.getMultiSelectHeight(),store:GLOBAL.stores.dataElement}),
             {
                 xtype: 'button',
                 id: 'assignpredefinedmaplegendsetdataelement_b',
@@ -1214,7 +1190,7 @@
                         return;
                     }
                     
-                    var array = new Array();
+                    var array = [];
                     array = lims.split(',');
                     var params = '?dataElements=' + array[0];
                     
@@ -1226,12 +1202,12 @@
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
+                        url: GLOBAL.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
                         method: 'POST',
                         params: {id: ls},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_legend_set+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                            GLOBALS.stores.predefinedMapLegendSet.load();
+                            Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
+                            GLOBAL.stores.predefinedMapLegendSet.load();
                         }
                     });
                 }
@@ -1266,16 +1242,16 @@
 							w.setHeight(151);
 						}
 						else if (tab.id == 'predefinedmaplegendset2') {
-							w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
+							w.setHeight(GLOBAL.util.getMultiSelectHeight() + 178);
 						}
 						else if (tab.id == 'predefinedmaplegendset3') {
 							w.setHeight(151);
 						}
                         else if (tab.id == 'predefinedmaplegendset4') {
-                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
+                            w.setHeight(GLOBAL.util.getMultiSelectHeight() + 178);
                         }
                         else if (tab.id == 'predefinedmaplegendset5') {
-                            w.setHeight(GLOBALS.util.getMultiSelectHeight() + 178);
+                            w.setHeight(GLOBAL.util.getMultiSelectHeight() + 178);
                         }
 					}
 				},
@@ -1348,28 +1324,28 @@
                     tabchange: function(panel, tab)
                     {
                         if (tab.id == 'help0') {
-							getHelpText(GLOBALS.conf.thematicMap, tab.id);
+							getHelpText(GLOBAL.conf.thematicMap, tab.id);
                         }
                         else if (tab.id == 'help1') {
-							getHelpText(GLOBALS.conf.mapRegistration, tab.id);
+							getHelpText(GLOBAL.conf.mapRegistration, tab.id);
                         }
                         else if (tab.id == 'help2') {
-                            getHelpText(GLOBALS.conf.organisationUnitAssignment, tab.id);
+                            getHelpText(GLOBAL.conf.organisationUnitAssignment, tab.id);
                         }
 						if (tab.id == 'help3') { 
-                            getHelpText(GLOBALS.conf.overlayRegistration, tab.id);
+                            getHelpText(GLOBAL.conf.overlayRegistration, tab.id);
                         }
                         else if (tab.id == 'help4') {
-                            getHelpText(GLOBALS.conf.administration, tab.id);
+                            getHelpText(GLOBAL.conf.administration, tab.id);
                         }
                         else if (tab.id == 'help5') {
-                            getHelpText(GLOBALS.conf.favorites, tab.id);
+                            getHelpText(GLOBAL.conf.favorites, tab.id);
                         }
 						else if (tab.id == 'help6') {
-                            getHelpText(GLOBALS.conf.legendSets, tab.id);
+                            getHelpText(GLOBAL.conf.legendSets, tab.id);
                         }
 						else if (tab.id == 'help7') {
-                            getHelpText(GLOBALS.conf.pdfprint, tab.id);
+                            getHelpText(GLOBAL.conf.pdfprint, tab.id);
                         }
                     }
                 },
@@ -1409,543 +1385,12 @@
                     }
                 ]
             }
-        ],
-		listeners: {
-			'hide': {
-				fn: function() {
-					mapping.relation = false;
-				}
-			}
-		}
-    });
-
-    /* Section: register maps */
-	var newNameTextField=new Ext.form.TextField({id:'newname_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
-    var editNameTextField=new Ext.form.TextField({id:'editname_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
-	var organisationUnitLevelComboBox=new Ext.form.ComboBox({id:'organisationunitlevel_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',emptyText:GLOBALS.conf.emptytext,hideLabel:true,mode:'remote',forceSelection:true,triggerAction:'all',selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.organisationUnitLevel});
-		
-	var mapLayerPathComboBox = new Ext.form.ComboBox({
-        id: 'maplayerpath_cb',
-		typeAhead: true,
-        editable: false,
-        valueField: 'name',
-        displayField: 'name',
-		emptyText: GLOBALS.conf.emptytext,
-		hideLabel: true,
-        width: GLOBALS.conf.combo_width,
-        minListWidth: GLOBALS.conf.combo_width,
-        triggerAction: 'all',
-        mode: 'remote',
-        store: GLOBALS.stores.geojsonFiles,
-		listeners: {
-			'select': function(cb) {
-                Ext.Ajax.request({
-                    url: GLOBALS.conf.path_mapping + 'getGeoJsonFromFile' + GLOBALS.conf.type,
-                    method: 'POST',
-                    params: {name: cb.getValue()},
-                    success: function(r) {
-                        var file = Ext.util.JSON.decode(r.responseText);
-                        var keys = [];
-                        var data = [];
-
-                        var nameList = GLOBALS.util.getKeys(file.features[0].properties);
-                        for (var i = 0; i < nameList.length; i++) {
-                            data.push(new Array(nameList[i]));
-                        }
-                        
-                        GLOBALS.stores.nameColumn.loadData(data, false);
-                    }
-                });
-			}
-		}
-    });
-    
-	var wmsGrid = new Ext.grid.GridPanel({
-		id: 'wms_g',
-		sm: new Ext.grid.RowSelectionModel({
-			singleSelect: true
-		}),
-        columns: [
-            {header: 'Title', dataIndex: 'title', sortable: true, width: 180},
-            {header: 'Name', dataIndex: 'name', sortable: true, width: 180},
-            {header: 'Queryable', dataIndex: 'queryable', sortable: true, width: 100},
-            {header: 'Description', id: 'description_c', dataIndex: 'abstract'}
-        ],
-        autoExpandColumn: 'description_c',
-        width: 700,
-        height: screen.height * 0.6,
-		store: GLOBALS.stores.wmsCapabilities,
-        listeners: {
-            'rowdblclick': mapPreview
-        }
-    });
-    
-    function mapPreview(grid, i) {
-        var record = grid.getStore().getAt(i);
-        var layer = record.get('layer').clone();
-        
-        var wmsPreviewWindow = new Ext.Window({
-            title: '<span class="panel-title">Preview: ' + record.get("title") + '</span>',
-            width: screen.width * 0.5,
-            height: screen.height * 0.3,
-            layout: 'fit',
-            items: [{
-                xtype: 'gx_mappanel',
-                layers: [layer],
-                extent: record.get('llbbox')
-            }]
-        });
-        wmsPreviewWindow.show();
-    }
-	
-	var wmsWindow = new Ext.Window({
-		id: 'wms_w',
-		title: '<span class="panel-title">'+i18n_geoserver_shapefiles+'</span>',
-		closeAction: 'hide',
-		width: wmsGrid.width,
-		height: screen.height * 0.4,
-		items: [wmsGrid],
-		bbar: new Ext.Toolbar({
-			id: 'wmswindow_sb',
-			items:
-			[
-				{
-					xtype: 'button',
-					id: 'selectwms_b',
-					text: 'Select',
-					cls: 'aa_med',
-					handler: function() {
-						var selected = Ext.getCmp('wms_g').getSelectionModel().getSelected() || false;
-                        if (selected) {
-                            mapLayerPathWMSTextField.setValue(selected.get('name'));
-                            wmsWindow.hide();
-                            newNameColumnComboBox.focus();
-                        }
-					}
-				}
-			]
-		})		
-	});
-	
-	var mapLayerPathWMSTextField = new Ext.form.TextField({
-		id: 'maplayerpathwms_tf',
-		emptyText: GLOBALS.conf.emptytext,
-		hideLabel: true,
-        width: GLOBALS.conf.combo_width,
-		listeners: {
-			'focus': {
-				fn: function() {
-                    function show() {
-                        var x = Ext.getCmp('center').x + 15;
-                        var y = Ext.getCmp('center').y + 41;    
-                        wmsWindow.show();
-                        wmsWindow.setPosition(x,y);
-                    }
-                    
-                    if (!GLOBALS.stores.wmsCapabilities.isLoaded) {
-                        GLOBALS.stores.wmsCapabilities.load({callback: function() {
-                            show();
-                        }});
-                    }
-                    else {
-                        show();
-                    }
-				}
-			}
-		}
-	});
-
-	var newNameColumnComboBox = new Ext.form.ComboBox({
-        id: 'newnamecolumn_cb',
-        editable: false,
-        displayField: 'name',
-        valueField: 'name',
-		emptyText: GLOBALS.conf.emptytext,
-		hideLabel: true,
-        width: GLOBALS.conf.combo_width,
-        minListWidth: GLOBALS.conf.combo_width,
-        triggerAction: 'all',
-        mode: 'local',
-        store: GLOBALS.stores.nameColumn,
-		listeners: {
-			'focus': {
-				fn: function() {
-					var mlp = Ext.getCmp('maplayerpathwms_tf').getValue();
-					
-					if (GLOBALS.vars.mapSourceType.isShapefile() && mlp) {
-						Ext.Ajax.request({
-							url: GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlp + GLOBALS.conf.output,
-							method: 'POST',
-							success: function(r) {
-								var file = Ext.util.JSON.decode(r.responseText);
-								var keys = [];
-
-								var nameList = GLOBALS.util.getKeys(file.features[0].properties);
-								for (var i = 0; i < nameList.length; i++) {
-									data.push(new Array(nameList[i]));
-								}
-								
-								GLOBALS.stores.nameColumn.loadData(data, false);
-							}
-						});
-					}
-				}
-			}
-		}				
-	});
-	
-	var editNameColumnComboBox=new Ext.form.ComboBox({id:'editnamecolumn_cb',editable:false,displayField:'name',valueField:'name',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,triggerAction:'all',mode:'local',store:GLOBALS.stores.nameColumn});
-    
-    var newMapButton = new Ext.Button({
-        id: 'newmap_b',
-        text: i18n_register,
-		cls: 'aa_med',
-        handler: function()
-        {
-            var ouli = Ext.getCmp('organisationunitlevel_cb').getValue();
-            var nn = Ext.getCmp('newname_tf').getValue();
-            var mlp = Ext.getCmp('maplayerpath_cb').getValue();
-            var mlpwms = Ext.getCmp('maplayerpathwms_tf').getValue();					
-            var nc = Ext.getCmp('newnamecolumn_cb').getValue();
-             
-            if (!nn || !ouli || !nc) {
-                Ext.message.msg(false, i18n_form_is_not_complete);
-                return;
-            }
-            else if (!mlp && !mlpwms) {
-                Ext.message.msg(false, i18n_form_is_not_complete);
-                return;
-            }
-            
-            if (GLOBALS.util.validateInputNameLength(nn) == false) {
-                Ext.message.msg(false, '<span class="x-msg-hl">' + i18n_map + ' ' + i18n_name_can_not_longer_than_25 + '</span>');
-                return;
-            }
-            
-            if (GLOBALS.stores.map.find('name', nn) !== -1) {
-                Ext.message.msg(false, i18n_map + ' <span class="x-msg-hl">' + nn + ' </span>' + i18n_already_exists);
-                return;
-            }
-            
-            if (GLOBALS.stores.map.find('mapLayerPath', mlp) !== -1) {
-                Ext.message.msg(false, i18n_the_source_file + ' <span class="x-msg-hl">' + mlp + '</span> ' + i18n_already_exists);
-                return;
-            }
-                            
-            var source = mlp || mlpwms;
-            
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'addOrUpdateMap' + GLOBALS.conf.type,
-                method: 'POST',
-                params: {
-                    name: nn,
-                    mapLayerPath: source,
-                    organisationUnitLevelId: ouli,
-                    nameColumn: nc
-                },
-                success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + nn + '</span> (<span class="x-msg-hl">' + source + '</span>) ' + i18n_registered);
-                    
-                    GLOBALS.stores.map.load();
-                    Ext.getCmp('organisationunitlevel_cb').clearValue();
-                    Ext.getCmp('newname_tf').reset();
-                    Ext.getCmp('maplayerpath_cb').clearValue();
-                    Ext.getCmp('newnamecolumn_cb').clearValue();                            
-                }
-            });
-        }
-    });
-    
-    var editMapButton = new Ext.Button({
-        id: 'editmap_b',
-        text: i18n_update,
-		cls: 'aa_med',
-        handler: function() {
-            var en = Ext.getCmp('editname_tf').getValue();
-            var em = Ext.getCmp('editmap_cb').getValue();
-            var nc = Ext.getCmp('editnamecolumn_cb').getValue();
-
-            if (!en || !em || !nc) {
-                Ext.message.msg(false, i18n_form_is_not_complete );
-                return;
-            }
-            
-            if (GLOBALS.util.validateInputNameLength(en) == false) {
-                Ext.message.msg(false, i18n_name_can_not_longer_than_25);
-                return;
-            }
-           
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'addOrUpdateMap' + GLOBALS.conf.type,
-                method: 'POST',
-                params: {name: en, mapLayerPath: em, nameColumn: nc},
-                success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + en + '</span> (<span class="x-msg-hl">' + em + '</span>) ' + i18n_updated);
-                    
-                    GLOBALS.stores.map.load();
-                    Ext.getCmp('editmap_cb').clearValue();
-                    Ext.getCmp('deletemap_cb').clearValue();
-                    Ext.getCmp('editmap_cb').clearValue();
-                    Ext.getCmp('editname_tf').reset();
-                    Ext.getCmp('editnamecolumn_cb').clearValue();
-                }
-            });
-        }
-    });
-    
-    var deleteMapButton = new Ext.Button({
-        id: 'deletemap_b',
-        text: i18n_delete,
-		cls: 'aa_med',
-        handler: function() {
-            var mlp = Ext.getCmp('deletemap_cb').getValue();
-            var mn = Ext.getCmp('deletemap_cb').getRawValue();
-            
-            if (!mlp) {
-                Ext.message.msg(false, i18n_please_select_a_map);
-                return;
-            }
-            
-            Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'deleteMap' + GLOBALS.conf.type,
-                method: 'POST',
-                params: {mapLayerPath: mlp},
-                success: function(r) {
-                    Ext.message.msg(true, i18n_map + ' <span class="x-msg-hl">' + mn + '</span> (<span class="x-msg-hl">' + mlp + '</span>) ' + i18n_deleted);
-                    
-					if (mlp == Ext.getCmp('map_cb').getValue()) {
-						Ext.getCmp('map_cb').clearValue();
-					}
-                    if (mlp == Ext.getCmp('map_cb2').getValue()) {
-						Ext.getCmp('map_cb2').clearValue();
-					}
-                    if (mlp == Ext.getCmp('editmap_cb').getValue()) {
-                        Ext.getCmp('editmap_cb').clearValue();
-                        Ext.getCmp('editname_tf').reset();
-                        Ext.getCmp('editnamecolumn_cb').clearValue();
-                    }
-                    
-                    GLOBALS.stores.map.load();
-                    GLOBALS.stores.mapView.load();
-                    Ext.getCmp('editmap_cb').clearValue();
-                    Ext.getCmp('deletemap_cb').clearValue();
-                    Ext.getCmp('mapview_cb').clearValue();
-                }
-            });
-        }
-    });
-    
-    var editMapComboBox = new Ext.form.ComboBox({
-        id: 'editmap_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'mapLayerPath',
-        displayField: 'name',
-        emptyText: GLOBALS.conf.emptytext,
-		hideLabel: true,
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: GLOBALS.conf.combo_width,
-        minListWidth: GLOBALS.conf.combo_width,
-        store: GLOBALS.stores.map,
-        listeners: {
-            'select': {
-                fn: function(cb, record, i) {
-                    Ext.getCmp('editname_tf').setValue(record.data.name);
-                    Ext.getCmp('editnamecolumn_cb').setValue(record.data.nameColumn);
-					
-                    var url;
-                    var params = {};
-                    
-					if (GLOBALS.vars.mapSourceType.isGeojson()) {
-                        url = GLOBALS.conf.path_mapping + 'getGeoJsonFromFile' + GLOBALS.conf.type;
-                        params.name = cb.getValue();
-                    }
-                    else if (GLOBALS.vars.mapSourceType.isShapefile()) {
-                        url = GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlp + GLOBALS.conf.output;
-                    }
-                    
-                    Ext.Ajax.request({
-                        url: url,
-                        method: 'POST',
-                        params: params,
-                        success: function(r) {
-                            var file = Ext.util.JSON.decode(r.responseText);
-                            var keys = [];
-                            var data = [];
-
-                            var nameList = GLOBALS.util.getKeys(file.features[0].properties);
-                            for (var i = 0; i < nameList.length; i++) {
-                                data.push(new Array(nameList[i]));
-                            }
-                            
-                            GLOBALS.stores.nameColumn.loadData(data, false);
-                        }
-                    });
-                }
-            }
-        }
-    });
-    
-    var deleteMapComboBox = new Ext.form.ComboBox({
-        xtype: 'combo',
-        id: 'deletemap_cb',
-        typeAhead: true,
-        editable: false,
-        valueField: 'mapLayerPath',
-        displayField: 'name',
-        emptyText: GLOBALS.conf.emptytext,
-		hideLabel: true,
-        mode: 'remote',
-        forceSelection: true,
-        triggerAction: 'all',
-        selectOnFocus: true,
-        width: GLOBALS.conf.combo_width,
-        minListWidth: GLOBALS.conf.combo_width,
-        store: GLOBALS.stores.map
-    });
-    
-    var newMapPanel = new Ext.form.FormPanel({
-        id: 'newmap_p',
-        items:
-        [   
-            { html: '<div class="panel-fieldlabel-first">' + i18n_display_name + '</div>' }, newNameTextField,
-            { html: '<div class="panel-fieldlabel">' + i18n_organisation_unit_level + '</div>' }, organisationUnitLevelComboBox,
-			{ html: '<div class="panel-fieldlabel">' + i18n_map_source_file + '</div>' }, mapLayerPathComboBox, mapLayerPathWMSTextField,
-            { html: '<div class="panel-fieldlabel">' + i18n_name_column + '</div>' }, newNameColumnComboBox
-        ]
-    });
-    
-    var editMapPanel = new Ext.form.FormPanel({
-        id: 'editmap_p',
-        items: [
-            { html: '<div class="panel-fieldlabel-first">' + i18n_map + '</div>' }, editMapComboBox,
-            { html: '<div class="panel-fieldlabel">' + i18n_display_name + '</div>' }, editNameTextField,
-            { html: '<div class="panel-fieldlabel">' + i18n_name_column + '</div>' }, editNameColumnComboBox
-        ]
-    });
-    
-    var deleteMapPanel = new Ext.form.FormPanel({
-        id: 'deletemap_p',
-        items: [
-            { html: '<div class="panel-fieldlabel-first">' + i18n_map + '</div>' }, deleteMapComboBox
         ]
     });
 
-    var shapefilePanel = new Ext.Panel({
-        id: 'shapefile_p',
-        title: '<span class="panel-title">' + i18n_register_maps + '</span>',
-        items:
-        [
-            {
-                xtype: 'tabpanel',
-                activeTab: 0,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
-                listeners: {
-                    tabchange: function(panel, tab) {
-                        var nm_b = Ext.getCmp('newmap_b');
-                        var em_b = Ext.getCmp('editmap_b');
-                        var dm_b = Ext.getCmp('deletemap_b');
-                        
-                        if (tab.id == 'map0')
-                        { 
-                            nm_b.setVisible(true);
-                            em_b.setVisible(false);
-                            dm_b.setVisible(false);
-                        }
-                        
-                        else if (tab.id == 'map1')
-                        {
-                            nm_b.setVisible(false);
-                            em_b.setVisible(true);
-                            dm_b.setVisible(false);
-                        }
-                        
-                        else if (tab.id == 'map2')
-                        {
-                            nm_b.setVisible(false);
-                            em_b.setVisible(false);
-                            dm_b.setVisible(true);
-                        }
-                    }
-                },
-                items:
-                [
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_new + '</span>',
-                        id: 'map0',
-                        items: [newMapPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_edit + '</span>',
-                        id: 'map1',
-                        items: [editMapPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_delete + '</span>',
-                        id: 'map2',
-                        items: [deleteMapPanel]
-                    }
-                ]
-            },
-            { html: '<br>' },
-            
-            newMapButton,
-            
-            editMapButton,
-            
-            deleteMapButton
-        ],
-		listeners: {
-			expand: {
-				fn: function() {
-					if (GLOBALS.vars.mapSourceType.isShapefile()) {
-						mapLayerPathComboBox.hide();
-						mapLayerPathWMSTextField.show();						
-					}
-					else {
-						mapLayerPathComboBox.show();
-						mapLayerPathWMSTextField.hide();						
-					}
-					
-					GLOBALS.vars.activePanel.value = GLOBALS.conf.mapRegistration;
-				}
-			},
-			collapse: {
-				fn: function() {
-					GLOBALS.vars.activePanel.value = null;
-				}
-			}
-		}
-    });
-    
     /* Section: map layers */
-	var mapLayerNameTextField=new Ext.form.TextField({id:'maplayername_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
-	var mapLayerMapSourceFileComboBox=new Ext.form.ComboBox({id:'maplayermapsourcefile_cb',editable:false,displayField:'name',valueField:'name',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,triggerAction:'all',mode:'remote',store:GLOBALS.stores.geojsonFiles});
-	
-	var wmsOverlayGrid = new Ext.grid.GridPanel({
-		id: 'wmsoverlay_g',
-		sm: new Ext.grid.RowSelectionModel({
-			singleSelect:true
-		}),
-        columns: [
-            {header: i18n_title, dataIndex: 'title', sortable: true, width: 180},
-            {header: name, dataIndex: 'name', sortable: true, width: 180},
-            {header: i18n_queryable, dataIndex: 'queryable', sortable: true, width: 100},
-            {header: i18n_description, id: 'description', dataIndex: 'abstract'}
-        ],
-        autoExpandColumn: 'description',
-        width: 700,
-        height: screen.height * 0.6,
-        store: GLOBALS.stores.wmsCapabilities,
-        listeners: {
-            'rowdblclick': mapOverlayPreview
-        }
-    });
+	var mapLayerNameTextField=new Ext.form.TextField({id:'maplayername_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
+	var mapLayerMapSourceFileComboBox=new Ext.form.ComboBox({id:'maplayermapsourcefile_cb',editable:false,displayField:'name',valueField:'name',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,triggerAction:'all',mode:'remote',store:GLOBAL.stores.geojsonFiles});
     
     function mapOverlayPreview(grid, index) {
         var record = grid.getStore().getAt(index);
@@ -1964,6 +1409,26 @@
         });
         wmsOverlayPreviewWindow.show();
     }
+	
+	var wmsOverlayGrid = new Ext.grid.GridPanel({
+		id: 'wmsoverlay_g',
+		sm: new Ext.grid.RowSelectionModel({
+			singleSelect:true
+		}),
+        columns: [
+            {header: i18n_title, dataIndex: 'title', sortable: true, width: 180},
+            {header: name, dataIndex: 'name', sortable: true, width: 180},
+            {header: i18n_queryable, dataIndex: 'queryable', sortable: true, width: 100},
+            {header: i18n_description, id: 'description', dataIndex: 'abstract'}
+        ],
+        autoExpandColumn: 'description',
+        width: 700,
+        height: screen.height * 0.6,
+        store: GLOBAL.stores.wmsCapabilities,
+        listeners: {
+            'rowdblclick': mapOverlayPreview
+        }
+    });
 	
 	var wmsOverlayWindow = new Ext.Window({
 		id: 'wmsoverlay_w',
@@ -1996,9 +1461,9 @@
 	
 	var mapLayerPathWMSOverlayTextField = new Ext.form.TextField({
 		id: 'maplayerpathwmsoverlay_tf',
-		emptyText: GLOBALS.conf.emptytext,
+		emptyText: GLOBAL.conf.emptytext,
 		hideLabel: true,
-        width: GLOBALS.conf.combo_width,
+        width: GLOBAL.conf.combo_width,
 		listeners: {
 			'focus': {
 				fn: function() {
@@ -2009,8 +1474,8 @@
                         wmsOverlayWindow.setPosition(x,y);
                     }
                     
-                    if (!GLOBALS.stores.wmsCapabilities.isLoaded) {
-                        GLOBALS.stores.wmsCapabilities.load({callback: function() {
+                    if (!GLOBAL.stores.wmsCapabilities.isLoaded) {
+                        GLOBAL.stores.wmsCapabilities.load({callback: function() {
                             show();
                         }});
                     }
@@ -2022,16 +1487,16 @@
 		}
 	});
 	
-	var mapLayerFillColorColorField=new Ext.ux.ColorField({id:'maplayerfillcolor_cf',hideLabel:true,allowBlank:false,width:GLOBALS.conf.combo_width,value:'#FF0000'});
-	var mapLayerFillOpacityComboBox=new Ext.form.ComboBox({id:'maplayerfillopacity_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:GLOBALS.conf.combo_number_width,minListWidth:GLOBALS.conf.combo_number_width,value:0.5,store:new Ext.data.ArrayStore({fields:['value'],data:[[0.0],[0.1],[0.2],[0.3],[0.4],[0.5],[0.6],[0.7],[0.8],[0.9],[1.0]]})});
-	var mapLayerStrokeColorColorField=new Ext.ux.ColorField({id:'maplayerstrokecolor_cf',hideLabel:true,allowBlank:false,width:GLOBALS.conf.combo_width,value:'#222222'});
-	var mapLayerStrokeWidthComboBox=new Ext.form.ComboBox({id:'maplayerstrokewidth_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:GLOBALS.conf.combo_number_width,minListWidth:GLOBALS.conf.combo_number_width,value:2,store:new Ext.data.ArrayStore({fields:['value'],data:[[0],[1],[2],[3],[4]]})});
-	var mapLayerComboBox=new Ext.form.ComboBox({id:'maplayer_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,hideLabel:true,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.overlay});
+	var mapLayerFillColorColorField=new Ext.ux.ColorField({id:'maplayerfillcolor_cf',hideLabel:true,allowBlank:false,width:GLOBAL.conf.combo_width,value:'#FF0000'});
+	var mapLayerFillOpacityComboBox=new Ext.form.ComboBox({id:'maplayerfillopacity_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:GLOBAL.conf.combo_number_width,minListWidth:GLOBAL.conf.combo_number_width,value:0.5,store:new Ext.data.ArrayStore({fields:['value'],data:[[0.0],[0.1],[0.2],[0.3],[0.4],[0.5],[0.6],[0.7],[0.8],[0.9],[1.0]]})});
+	var mapLayerStrokeColorColorField=new Ext.ux.ColorField({id:'maplayerstrokecolor_cf',hideLabel:true,allowBlank:false,width:GLOBAL.conf.combo_width,value:'#222222'});
+	var mapLayerStrokeWidthComboBox=new Ext.form.ComboBox({id:'maplayerstrokewidth_cb',hideLabel:true,editable:true,valueField:'value',displayField:'value',mode:'local',triggerAction:'all',width:GLOBAL.conf.combo_number_width,minListWidth:GLOBAL.conf.combo_number_width,value:2,store:new Ext.data.ArrayStore({fields:['value'],data:[[0],[1],[2],[3],[4]]})});
+	var mapLayerComboBox=new Ext.form.ComboBox({id:'maplayer_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,hideLabel:true,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.overlay});
     
     var deleteMapLayerButton = new Ext.Button({
         id: 'deletemaplayer_b',
         text: i18n_delete_overlay,
- 		cls: 'window-button',
+        cls: 'window-button',
         handler: function() {
             var ml = Ext.getCmp('maplayer_cb').getValue();
             var mln = Ext.getCmp('maplayer_cb').getRawValue();
@@ -2042,17 +1507,17 @@
             }
             
             Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'deleteMapLayer' + GLOBALS.conf.type,
+                url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
                 method: 'POST',
                 params: {id:ml},
                 success: function(r) {
                     Ext.message.msg(true, i18n_overlay + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                    GLOBALS.stores.overlay.load();
+                    GLOBAL.stores.overlay.load();
                     Ext.getCmp('maplayer_cb').clearValue();
                 }
             });
             
-            GLOBALS.vars.map.getLayersByName(mln)[0].destroy();
+            GLOBAL.vars.map.getLayersByName(mln)[0].destroy();
         }
     });
 	
@@ -2089,30 +1554,30 @@
 						return;
 					}
 					
-					if (GLOBALS.util.validateInputNameLength(mln) == false) {
+					if (GLOBAL.util.validateInputNameLength(mln)) {
 						Ext.message.msg(false, i18n_overlay_name_cannot_be_longer_than_25_characters);
 						return;
 					}
                     
-                    if (GLOBALS.stores.overlay.find('name', mln) !== -1) {
+                    if (GLOBAL.stores.overlay.find('name', mln) !== -1) {
                         Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_is_already_in_use);
                         return;
                     }
                         
-                    var ms = GLOBALS.vars.mapSourceType.isShapefile() ? mlwmso : mlmsf;
+                    var ms = GLOBAL.vars.mapSourceType.isShapefile() ? mlwmso : mlmsf;
 							
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
                         method: 'POST',
                         params: {name: mln, type: 'overlay', mapSource: ms, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
                         success: function(r) {
                             Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> '+i18n_was_registered);
-                            GLOBALS.stores.overlay.load();
+                            GLOBAL.stores.overlay.load();
                     
-                            var mapurl = GLOBALS.vars.mapSourceType.isShapefile() ?
-                                GLOBALS.conf.path_geoserver + GLOBALS.conf.wfs + mlwmso + GLOBALS.conf.output : GLOBALS.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf;
+                            var mapurl = GLOBAL.vars.mapSourceType.isShapefile() ?
+                                GLOBAL.conf.path_geoserver + GLOBAL.conf.wfs + mlwmso + GLOBAL.conf.output : GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf;
                             
-                            GLOBALS.vars.map.addLayer(
+                            GLOBAL.vars.map.addLayer(
                                 new OpenLayers.Layer.Vector(mln, {
                                     'visibility': false,
                                     'styleMap': new OpenLayers.StyleMap({
@@ -2168,10 +1633,10 @@
                     tabchange: function(panel, tab)
                     {
                         if (tab.id == 'overlay0') {
-							Ext.getCmp('overlays_w').setHeight(395);                        
+							Ext.getCmp('overlays_w').setHeight(390);                        
                         }
                         else if (tab.id == 'overlay1') {
-							Ext.getCmp('overlays_w').setHeight(151);
+							Ext.getCmp('overlays_w').setHeight(150);
                         }
                     }
                 },
@@ -2193,30 +1658,24 @@
 		listeners: {
 			show: {
 				fn: function() {
-					if (GLOBALS.vars.mapSourceType.isGeojson() || GLOBALS.vars.mapSourceType.isDatabase()) {
-						mapLayerMapSourceFileComboBox.show();
-						mapLayerPathWMSOverlayTextField.hide();
-					}
-					else if (GLOBALS.vars.mapSourceType.isShapefile()) {
-						mapLayerMapSourceFileComboBox.hide();
-						mapLayerPathWMSOverlayTextField.show();
-					}
+                    mapLayerMapSourceFileComboBox.show();
+                    mapLayerPathWMSOverlayTextField.hide();
 				}
 			}
 		}
     });
     
-    var mapLayerBaseLayersNameTextField=new Ext.form.TextField({id:'maplayerbaselayersname_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
-    var mapLayerBaseLayersUrlTextField=new Ext.form.TextField({id:'maplayerbaselayersurl_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
-    var mapLayerBaseLayersLayerTextField=new Ext.form.TextField({id:'maplayerbaselayerslayer_tf',emptyText:GLOBALS.conf.emptytext,hideLabel:true,width:GLOBALS.conf.combo_width});
+    var mapLayerBaseLayersNameTextField=new Ext.form.TextField({id:'maplayerbaselayersname_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
+    var mapLayerBaseLayersUrlTextField=new Ext.form.TextField({id:'maplayerbaselayersurl_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
+    var mapLayerBaseLayersLayerTextField=new Ext.form.TextField({id:'maplayerbaselayerslayer_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
     
     
-	var mapLayerBaseLayerComboBox=new Ext.form.ComboBox({id:'maplayerbaselayers_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBALS.conf.emptytext,hideLabel:true,selectOnFocus:true,width:GLOBALS.conf.combo_width,minListWidth:GLOBALS.conf.combo_width,store:GLOBALS.stores.baseLayer});
+	var mapLayerBaseLayerComboBox=new Ext.form.ComboBox({id:'maplayerbaselayers_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,hideLabel:true,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.baseLayer});
     
     var deleteMapLayerBaseLayersButton = new Ext.Button({
         id: 'deletemaplayerbaselayers_b',
         text: i18n_delete_baselayer,
- 		cls: 'window-button',
+        cls: 'window-button',
         handler: function() {
             var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
             var mln = Ext.getCmp('maplayerbaselayers_cb').getRawValue();
@@ -2227,20 +1686,20 @@
             }
             
             Ext.Ajax.request({
-                url: GLOBALS.conf.path_mapping + 'deleteMapLayer' + GLOBALS.conf.type,
+                url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
                 method: 'POST',
                 params: {id: ml},
                 success: function(r) {
                     Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                    GLOBALS.stores.baseLayer.load({callback: function() {
+                    GLOBAL.stores.baseLayer.load({callback: function() {
                         Ext.getCmp('maplayerbaselayers_cb').clearValue();
-                        var names = GLOBALS.stores.baseLayer.collect('name');
+                        var names = GLOBAL.stores.baseLayer.collect('name');
                         
                         for (var i = 0; i < names.length; i++) {
-                            GLOBALS.vars.map.getLayersByName(names[i])[0].setVisibility(false);
+                            GLOBAL.vars.map.getLayersByName(names[i])[0].setVisibility(false);
                         }
                         
-                        GLOBALS.vars.map.getLayersByName(mln)[0].destroy(false);
+                        GLOBAL.vars.map.getLayersByName(mln)[0].destroy(false);
                     }});
                 }
             });
@@ -2270,24 +1729,24 @@
 						return;
 					}
 					
-					if (GLOBALS.util.validateInputNameLength(mlbn) == false) {
+					if (GLOBAL.util.validateInputNameLength(mlbn)) {
 						Ext.message.msg(false, i18n_baselayer_name_cannot_be_longer_than_25_characters);
 						return;
 					}
                     
-                    if (GLOBALS.stores.baseLayer.find('name', mlbn) !== -1) {
+                    if (GLOBAL.stores.baseLayer.find('name', mlbn) !== -1) {
                         Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_is_already_in_use);
                         return;
                     }
 					
                     Ext.Ajax.request({
-                        url: GLOBALS.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBALS.conf.type,
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
                         method: 'POST',
-                        params: {name: mlbn, type: GLOBALS.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
+                        params: {name: mlbn, type: GLOBAL.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
                         success: function(r) {
                             Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_was_registered);
-                            GLOBALS.stores.baseLayer.load();
-                            GLOBALS.vars.map.addLayers([
+                            GLOBAL.stores.baseLayer.load();
+                            GLOBAL.vars.map.addLayers([
                                 new OpenLayers.Layer.WMS(
                                     mlbn,
                                     mlbu,
@@ -2362,133 +1821,6 @@
         title: '<span class="panel-title">' + i18n_administrator + '</span>',
         items:
         [
-			{ html: '<p style="height:5px;">' },
-			{
-				xtype:'fieldset',
-				columnWidth: 0.5,
-				title: '&nbsp;<span class="panel-tab-title">' + i18n_map_source + '</span>&nbsp;',
-				collapsible: true,
-				animCollapse: true,
-				autoHeight:true,
-				items:
-				[
-					{
-						xtype: 'combo',
-						id: 'mapsource_cb',
-						fieldLabel: i18n_type,
-						labelSeparator: GLOBALS.conf.labelseparator,
-						editable: false,
-						valueField: 'id',
-						displayField: 'text',
-						isFormField: true,
-						width: GLOBALS.conf.combo_width_fieldset,
-						minListWidth: GLOBALS.conf.combo_width_fieldset,
-						mode: 'local',
-						triggerAction: 'all',
-						value: GLOBALS.vars.mapSourceType.value,
-						store: new Ext.data.ArrayStore({
-							fields: ['id', 'text'],
-							data: [
-                                [GLOBALS.conf.map_source_type_database, 'DHIS database'],
-                                [GLOBALS.conf.map_source_type_geojson, 'GeoJSON files'],
-                                [GLOBALS.conf.map_source_type_shapefile, 'Shapefiles']
-                            ]
-						}),
-						listeners: {
-							'select': {
-								fn: function(cb) {
-                                    if (GLOBALS.vars.mapSourceType.value != cb.getValue()) {
-                                        GLOBALS.vars.mapSourceType.value = cb.getValue();
-                                        
-                                        Ext.Ajax.request({
-                                            url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
-											method: 'POST',
-											params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
-											success: function(r) {
-                                                GLOBALS.stores.map.load();
-                                                GLOBALS.stores.mapView.load();
-                                                GLOBALS.stores.overlay.load();
-
-												Ext.getCmp('map_cb').clearValue();
-                                                Ext.getCmp('map_cb2').clearValue();
-												Ext.getCmp('mapview_cb').clearValue();
-                                                
-                                                if (GLOBALS.vars.mapSourceType.isDatabase()) {
-													Ext.getCmp('register_chb').disable();													
-													mapping.hide();
-													shapefilePanel.hide();
-												}
-                                                else {
-                                                    Ext.getCmp('register_chb').enable();
-													
-													if (Ext.getCmp('register_chb').checked) {
-														mapping.show();
-														shapefilePanel.show();
-													}
-                                                    
-                                                    if (GLOBALS.vars.mapDateType.isStartEnd()) {
-                                                        GLOBALS.vars.mapDateType.setFixed();
-                                                        Ext.getCmp('mapdatetype_cb').setValue(GLOBALS.vars.mapDateType.value);
-                                                        choropleth.prepareMapViewDateType();
-                                                        proportionalSymbol.prepareMapViewDateType();
-                                                    }
-										
-                                                    if (GLOBALS.vars.mapSourceType.isGeojson()) {
-                                                        mapLayerMapSourceFileComboBox.show();
-                                                        mapLayerPathWMSOverlayTextField.hide();
-                                                    }
-                                                    else if (GLOBALS.vars.mapSourceType.isShapefile()) {
-                                                        mapLayerMapSourceFileComboBox.hide();
-                                                        mapLayerPathWMSOverlayTextField.show();
-                                                    }
-												}
-                                                
-                                                choropleth.prepareMapViewMap();
-                                                proportionalSymbol.prepareMapViewMap();
-                                                
-												if (GLOBALS.vars.map.layers.length > 2) {
-													for (var i = 0; i < GLOBALS.vars.map.layers.length; i++) {
-                                                        if (GLOBALS.vars.map.layers[i].isOverlay) {
-                                                            GLOBALS.vars.map.removeLayer(GLOBALS.vars.map.layers[i]);
-                                                        }
-													}
-												}
-												addOverlaysToMap();
-												Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_is_saved_as_map_source);
-											}
-										});
-									}
-								}
-							}
-						}
-					},
-                    
-					{
-						xtype: 'checkbox',
-						id: 'register_chb',
-						fieldLabel: i18n_admin_panels,
-						labelSeparator: GLOBALS.conf.labelseparator,
-						isFormField: true,
-						listeners: {
-							'check': {
-								fn: function(checkbox,checked) {
-									if (checked) {
-										mapping.show();
-										shapefilePanel.show();
-										Ext.getCmp('west').doLayout();
-									}
-									else {
-										mapping.hide();
-										shapefilePanel.hide();
-										Ext.getCmp('west').doLayout();
-									}
-								}
-							}
-						}
-					}
-				]
-			},
-            
 			{
 				xtype:'fieldset',
 				columnWidth: 0.5,
@@ -2501,44 +1833,36 @@
                         xtype: 'combo',
                         id: 'mapdatetype_cb',
                         fieldLabel: i18n_date_type,
-                        labelSeparator: GLOBALS.conf.labelseparator,
+                        labelSeparator: GLOBAL.conf.labelseparator,
                         editable: false,
                         valueField: 'value',
                         displayField: 'text',
                         mode: 'local',
-                        value: GLOBALS.conf.map_date_type_fixed,
+                        value: GLOBAL.conf.map_date_type_fixed,
                         triggerAction: 'all',
-						width: GLOBALS.conf.combo_width_fieldset,
-						minListWidth: GLOBALS.conf.combo_width_fieldset,
-                        store: new Ext.data.SimpleStore({
+						width: GLOBAL.conf.combo_width_fieldset,
+						minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        store: new Ext.data.ArrayStore({
                             fields: ['value', 'text'],
                             data: [
-                                [GLOBALS.conf.map_date_type_fixed, i18n_fixed_periods],
-                                [GLOBALS.conf.map_date_type_start_end, i18n_start_end_dates]
+                                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
+                                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
                             ]
                         }),
                         listeners: {
-                            'select': {
-                                fn: function(cb) {
-                                    if (cb.getValue() != GLOBALS.vars.mapDateType.value) {
-                                        if (cb.getValue() == GLOBALS.conf.map_date_type_start_end && GLOBALS.vars.mapSourceType.value != GLOBALS.conf.map_source_type_database) {
-                                            cb.setValue(GLOBALS.conf.map_date_type_fixed);
-                                            Ext.message.msg(false, 'Start-end dates require map source <span class="x-msg-hl">' + GLOBALS.conf.map_source_type_database + '</span>');
-                                            return;
+                            'select': function(cb) {
+                                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
+                                    GLOBAL.vars.mapDateType.value = cb.getValue();
+                                    Ext.Ajax.request({
+                                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
+                                        method: 'POST',
+                                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
+                                        success: function() {
+                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
+                                            choropleth.prepareMapViewDateType();
+                                            symbol.prepareMapViewDateType();
                                         }
-
-                                        GLOBALS.vars.mapDateType.value = cb.getValue();
-                                        Ext.Ajax.request({
-                                            url: GLOBALS.conf.path_mapping + 'setMapUserSettings' + GLOBALS.conf.type,
-                                            method: 'POST',
-                                            params: {mapSourceType: GLOBALS.vars.mapSourceType.value, mapDateType: GLOBALS.vars.mapDateType.value},
-                                            success: function() {
-                                                Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
-                                                choropleth.prepareMapViewDateType();
-                                                proportionalSymbol.prepareMapViewDateType();
-                                            }
-                                        });
-                                    }
+                                    });
                                 }
                             }
                         }
@@ -2547,22 +1871,11 @@
             }
         ],
         listeners: {
-            expand: {
-                fn: function() {
-                    if (GLOBALS.vars.mapSourceType.isGeojson()) {
-                        Ext.getCmp('register_chb').enable();
-                    }
-                    else if (GLOBALS.vars.mapSourceType.isDatabase()) {
-                        Ext.getCmp('register_chb').disable();
-                    }
-					
-					GLOBALS.vars.activePanel.value = GLOBALS.conf.administration;
-                }
+            expand: function() {					
+                GLOBAL.vars.activePanel.value = GLOBAL.conf.administration;
             },
-			collapse: {
-				fn: function() {
-					GLOBALS.vars.activePanel.value = null;
-				}
+			collapse: function() {
+                GLOBAL.vars.activePanel.value = null;
 			}
         }
     });
@@ -2584,7 +1897,7 @@
         })
     });
     
-    var proportionalSymbolLayer = new OpenLayers.Layer.Vector('Point layer', {
+    var symbolLayer = new OpenLayers.Layer.Vector('Point layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -2600,7 +1913,7 @@
         })
     });
     
-    GLOBALS.vars.map.addLayers([choroplethLayer, proportionalSymbolLayer]);
+    GLOBAL.vars.map.addLayers([choroplethLayer, symbolLayer]);
         
     /* Section: layer options */
     function showWMSLayerOptions(layer) {
@@ -2744,7 +2057,7 @@
             layout: 'fit',
             defaults: {layout: 'fit', bodyStyle:'padding:8px; border:0px'},
             width: 250,
-            height: GLOBALS.util.getMultiSelectHeight() + 145,
+            height: GLOBAL.util.getMultiSelectHeight() + 145,
             items: [
                 {
                     xtype: 'panel',
@@ -2755,11 +2068,11 @@
                                 { html: '<div class="window-field-label-first">' + i18n_highlight_color + '</div>' },
                                 {
                                     xtype: 'colorfield',
-                                    labelSeparator: GLOBALS.conf.labelseparator,
+                                    labelSeparator: GLOBAL.conf.labelseparator,
                                     id: 'highlightcolor_cf',
                                     allowBlank: false,
                                     isFormField: true,
-                                    width: GLOBALS.conf.combo_width,
+                                    width: GLOBAL.conf.combo_width,
                                     value: "#0000FF"
                                 },
                                 { html: '<div class="window-field-label">' + i18n_feature_filter + '</div>' },
@@ -2780,7 +2093,7 @@
                                 {
                                     xtype: 'grid',
                                     id: 'featuregrid_gp',
-                                    height: GLOBALS.util.getMultiSelectHeight(),
+                                    height: GLOBAL.util.getMultiSelectHeight(),
                                     store: featureStore,
                                     cm: new Ext.grid.ColumnModel({
                                         columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
@@ -2820,14 +2133,14 @@
             listeners: {
                 'close': {
                     fn: function() {
-                        GLOBALS.vars.locateFeatureWindow = false;
+                        GLOBAL.vars.locateFeatureWindow = false;
                         layer.redraw();
                     }
                 }
             }
         });
         
-        GLOBALS.vars.locateFeatureWindow = locateFeatureWindow;
+        GLOBAL.vars.locateFeatureWindow = locateFeatureWindow;
         
         var vectorLayerOptionsWindow = new Ext.Window({
             id: 'vectorlayeroptions_w',
@@ -2867,19 +2180,16 @@
                                     fn: function() {
                                         if (layer.features.length > 0) {
                                             if (layer.name == 'Polygon layer') {
-                                                if (GLOBALS.vars.activePanel.isPolygon()) {
-                                                    GLOBALS.util.toggleFeatureLabels(choropleth);
-                                                }
-                                                else if (GLOBALS.vars.activePanel.isAssignment()) {
-                                                    GLOBALS.util.toggleFeatureLabelsAssignment();
+                                                if (GLOBAL.vars.activePanel.isPolygon()) {
+                                                    GLOBAL.util.toggleFeatureLabels(choropleth);
                                                 }
                                                 else {
                                                     Ext.message.msg(false, 'Please use <span class="x-msg-hl">Point layer</span> options');
                                                 }
                                             }
                                             else if (layer.name == 'Point layer') {
-                                                if (GLOBALS.vars.activePanel.isPoint()) {
-                                                    GLOBALS.util.toggleFeatureLabels(proportionalSymbol);
+                                                if (GLOBAL.vars.activePanel.isPoint()) {
+                                                    GLOBAL.util.toggleFeatureLabels(symbol);
                                                 }
                                                 else {
                                                     Ext.message.msg(false, 'Please use <span class="x-msg-hl">Polygon layer</span> options');
@@ -2990,13 +2300,13 @@
 			'click': {
 				fn: function(n) {
 					if (n.parentNode.attributes.text == 'Base layers') {
-						showWMSLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer.name)[0]);
+						showWMSLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0]);
 					}
                     else if (n.parentNode.attributes.text == 'Overlays') {
-                        showVectorLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer.name)[0]);
+                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0]);
                     }
 					else if (n.isLeaf()) {
-                        showVectorLayerOptions(GLOBALS.vars.map.getLayersByName(n.attributes.layer)[0]);
+                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer)[0]);
 					}
 				}
 			}
@@ -3036,80 +2346,35 @@
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
-        map: GLOBALS.vars.map,
+        map: GLOBAL.vars.map,
         layer: choroplethLayer,
 		title: '<span class="panel-title">' + i18n_polygon_layer + '</span>',
-        url: 'init',
         featureSelection: false,
         legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
-            'expand': {
-                fn: function() {
-                    if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap) {
-                        GLOBALS.vars.activePanel.setPolygon();
-                        this.layer.setVisibility(true);
-                        
-                        if (this.legend.type == GLOBALS.conf.map_legend_type_predefined) {
-                            this.applyPredefinedLegend();
-                        }
-                        else {
-                            this.classify(false, true);
-                        }
-                    }
-                }
+            'expand': function() {
+                GLOBAL.vars.activePanel.setPolygon();
             }
         }
     });
 
-    proportionalSymbol = new mapfish.widgets.geostat.Symbol({
-        id: 'proportionalsymbol',
-        map: GLOBALS.vars.map,
-        layer: proportionalSymbolLayer,
+    symbol = new mapfish.widgets.geostat.Symbol({
+        id: 'symbol',
+        map: GLOBAL.vars.map,
+        layer: symbolLayer,
 		title: '<span class="panel-title">' + i18n_point_layer + '</span>',
-        url: 'init',
         featureSelection: false,
         legendDiv: 'pointlegend',
         defaults: {width: 130},
         listeners: {
-            'expand': {
-                fn: function() {
-                    if (GLOBALS.vars.activePanel.value != GLOBALS.conf.thematicMap2) {
-                        GLOBALS.vars.activePanel.setPoint();
-                        this.layer.setVisibility(false);
-                        
-                        if (this.legend.type == GLOBALS.conf.map_legend_type_predefined) {
-                            this.applyPredefinedLegend();
-                        }
-                        else {
-                            this.classify(false, true);
-                        }
-                    }
-                }
+            'expand': function() {
+                GLOBAL.vars.activePanel.setPoint();
             }
         }
     });
     
-    mapping = new mapfish.widgets.geostat.Mapping({
-        id: 'mapping',
-        map: GLOBALS.vars.map,
-        layer: choroplethLayer,
-        title: '<span class="panel-title">' + i18n_assign_organisation_units_to_map + '</span>',
-        url: 'init',
-        featureSelection: false,
-        legendDiv: 'polygonlegend',
-        defaults: {width: 130},
-        listeners: {
-            'expand': {
-                fn: function() {
-                    GLOBALS.vars.activePanel.setAssignment();
-                    this.layer.setVisibility(false);
-                    proportionalSymbol.layer.setVisibility(false);
-                    this.classify(false, true);
-                }
-            }
-        }
-    });
+    mapping = new mapfish.widgets.geostat.Mapping({});
 	
 	/* Section: map toolbar */  
 	var mapLabel = new Ext.form.Label({
@@ -3120,8 +2385,8 @@
 	var zoomInButton = new Ext.Button({
 		iconCls: 'icon-zoomin',
 		tooltip: i18n_zoom_in,
-		handler:function() {
-			GLOBALS.vars.map.zoomIn();
+		handler: function() {
+			GLOBAL.vars.map.zoomIn();
 		}
 	});
 	
@@ -3129,7 +2394,7 @@
 		iconCls: 'icon-zoomout',
 		tooltip: i18n_zoom_out,
 		handler:function() {
-			GLOBALS.vars.map.zoomOut();
+			GLOBAL.vars.map.zoomOut();
 		}
 	});
 	
@@ -3137,20 +2402,14 @@
 		iconCls: 'icon-zoommin',
 		tooltip: i18n_zoom_to_visible_extent,
 		handler: function() {
-            if (GLOBALS.vars.activePanel.isPolygon()) {
+            if (GLOBAL.vars.activePanel.isPolygon()) {
                 if (choropleth.layer.getDataExtent()) {
-                    GLOBALS.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
-                }
-                else {
-                    Ext.message.msg(false, 'Vector layer is empty');
+                    GLOBAL.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
                 }
             }
-            else if (GLOBALS.vars.activePanel.isPoint()) {
-                if (proportionalSymbol.layer.getDataExtent()) {
-                    GLOBALS.vars.map.zoomToExtent(proportionalSymbol.layer.getDataExtent());
-                }
-                else {
-                    Ext.message.msg(false, 'Vector layer is empty');
+            else if (GLOBAL.vars.activePanel.isPoint()) {
+                if (symbol.layer.getDataExtent()) {
+                    GLOBAL.vars.map.zoomToExtent(symbol.layer.getDataExtent());
                 }
             }
         }
@@ -3222,14 +2481,14 @@
 			}
 			else {
 				predefinedMapLegendSetWindow.show();
-                if (!GLOBALS.stores.predefinedMapLegend.isLoaded) {
-                    GLOBALS.stores.predefinedMapLegend.load();
+                if (!GLOBAL.stores.predefinedMapLegend.isLoaded) {
+                    GLOBAL.stores.predefinedMapLegend.load();
                 }
-                if (!GLOBALS.stores.indicator.isLoaded) {
-                    GLOBALS.stores.indicator.load();
+                if (!GLOBAL.stores.indicator.isLoaded) {
+                    GLOBAL.stores.indicator.load();
                 }
-                if (!GLOBALS.stores.dataElement.isLoaded) {
-                    GLOBALS.stores.dataElement.load();
+                if (!GLOBAL.stores.dataElement.isLoaded) {
+                    GLOBAL.stores.dataElement.load();
                 }                
 			}
 		}
@@ -3253,7 +2512,7 @@
 		icon: '../../images/exit.png',
 		tooltip: i18n_return_to_DHIS_2_dashboard,
 		handler: function() {
-			window.location.href = '../../dhis-web-portal/redirect.action'
+			window.location.href = '../../dhis-web-portal/redirect.action';
 		}
 	});
 	
@@ -3267,19 +2526,13 @@
 			zoomOutButton, ' ',
 			zoomToVisibleExtentButton,
 			'-',
+			favoritesButton, ' ',
+            predefinedMapLegendSetButton, ' ',
 			exportImageButton,
-			// exportExcelButton,
-			// '-',
-            ' ',
-			favoritesButton,
-			// '-',
-            ' ',
-            predefinedMapLegendSetButton,
 			'-',
 			helpButton,
 			'->',
-			exitButton,
-            ' ',' '
+			exitButton, ' ',' '
 		]
 	});
     
@@ -3295,7 +2548,7 @@
                 region: 'north',
                 id: 'north',
                 el: 'north',
-                height: GLOBALS.conf.north_height
+                height: GLOBAL.conf.north_height
             }),
             {
                 region: 'east',
@@ -3363,7 +2616,7 @@
 				header: false,
                 collapsible: true,
 				collapseMode: 'mini',
-                width: GLOBALS.conf.west_width,
+                width: GLOBAL.conf.west_width,
                 minSize: 175,
                 maxSize: 500,
                 margins: '0 0 0 5',
@@ -3374,9 +2627,7 @@
                 },
                 items: [
                     choropleth,
-                    proportionalSymbol,
-                    shapefilePanel,
-                    mapping,
+                    symbol,
 					adminPanel
                 ]
             },
@@ -3386,7 +2637,7 @@
                 id: 'center',
                 height: 1000,
                 width: 800,
-                map: GLOBALS.vars.map,
+                map: GLOBAL.vars.map,
                 title: '',
                 zoom: 3,
 				tbar: mapToolbar
@@ -3394,19 +2645,16 @@
         ]
     });
 	
-    shapefilePanel.hide();
-	mapping.hide();
-	// Ext.getCmp('printMultiPage_p').hide();
-	GLOBALS.vars.activePanel.setPolygon();
+	GLOBAL.vars.activePanel.setPolygon();
 
-	GLOBALS.vars.map.addControl(new OpenLayers.Control.MousePosition({
+	GLOBAL.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
         prefix: '<span style="color:#666;">x: &nbsp;</span>',
         separator: '<br/><span style="color:#666;">y: &nbsp;</span>'
     }));
     
-    GLOBALS.vars.map.addControl(new OpenLayers.Control.OverviewMap({
+    GLOBAL.vars.map.addControl(new OpenLayers.Control.OverviewMap({
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
@@ -3419,20 +2667,20 @@
         ]
     }));
     
-    GLOBALS.vars.map.addControl(new OpenLayers.Control.ZoomBox());
+    GLOBAL.vars.map.addControl(new OpenLayers.Control.ZoomBox());
     
     function toggleSelectFeatures(e) {
-        if (GLOBALS.stores.overlay.find('name', e.layer.name) !== -1) {
-            var names = GLOBALS.stores.overlay.collect('name');
+        if (GLOBAL.stores.overlay.find('name', e.layer.name) !== -1) {
+            var names = GLOBAL.stores.overlay.collect('name');
             var visibleOverlays = false;
             
             for (var i = 0; i < names.length; i++) {
-                if (GLOBALS.vars.map.getLayersByName(names[i])[0].visibility) {
+                if (GLOBAL.vars.map.getLayersByName(names[i])[0].visibility) {
                     visibleOverlays = true;
                 }
             }
             
-            var widget = GLOBALS.vars.activePanel.isPolygon() ? choropleth : proportionalSymbol;
+            var widget = GLOBAL.vars.activePanel.isPolygon() ? choropleth : symbol;
             
             if (visibleOverlays) {
                 widget.selectFeatures.deactivate();
@@ -3443,12 +2691,12 @@
         }
     }
 	
-	GLOBALS.vars.map.events.on({
+	GLOBAL.vars.map.events.on({
         changelayer: function(e) {
             if (e.layer.name != 'Polygon layer' && e.layer.name != 'Point layer') {
                 if (e.property == 'visibility') {
-                    if (!GLOBALS.stores.overlay.isLoaded) {
-                        GLOBALS.stores.overlay.load({callback: function() {
+                    if (!GLOBAL.stores.overlay.isLoaded) {
+                        GLOBAL.stores.overlay.load({callback: function() {
                             toggleSelectFeatures(e);
                         }});
                     }
@@ -3460,22 +2708,16 @@
         }
     });
             
-    Ext.getCmp('mapsource_cb').setValue(GLOBALS.vars.mapSourceType.value);
-    Ext.getCmp('mapdatetype_cb').setValue(GLOBALS.vars.mapDateType.value);
+    Ext.getCmp('mapdatetype_cb').setValue(GLOBAL.vars.mapDateType.value);
     
     choropleth.prepareMapViewValueType();
-    proportionalSymbol.prepareMapViewValueType();
+    symbol.prepareMapViewValueType();
     
     choropleth.prepareMapViewDateType();
-    proportionalSymbol.prepareMapViewDateType();
+    symbol.prepareMapViewDateType();
     
     choropleth.prepareMapViewLegend();
-    proportionalSymbol.prepareMapViewLegend();
+    symbol.prepareMapViewLegend();
     
-    choropleth.prepareMapViewMap();
-    proportionalSymbol.prepareMapViewMap();
-    
-	}});
-	}});
 	}});
 });

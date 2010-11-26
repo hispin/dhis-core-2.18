@@ -28,52 +28,62 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
-import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetAvailableMapOrganisationUnitRelationsAction
+public class GetGeoJsonAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setMappingService( MappingService mappingService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.mappingService = mappingService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String mapLayerPath;
+    private Integer parentId;
 
-    public void setMapLayerPath( String mapLayerPath )
+    public void setParentId( Integer id )
     {
-        this.mapLayerPath = mapLayerPath;
+        this.parentId = id;
     }
-
+    
+    private Integer level;
+    
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<MapOrganisationUnitRelation> object;
+    private Collection<OrganisationUnit> object;
 
-    public Collection<MapOrganisationUnitRelation> getObject()
+    public Collection<OrganisationUnit> getObject()
     {
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -81,8 +91,13 @@ public class GetAvailableMapOrganisationUnitRelationsAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getAvailableMapOrganisationUnitRelations( mapLayerPath );
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
-        return SUCCESS;
+        object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
+        
+        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
+        
+        return object.iterator().next().getFeatureType();
     }
 }
+

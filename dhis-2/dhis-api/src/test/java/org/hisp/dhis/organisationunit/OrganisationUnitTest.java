@@ -40,13 +40,16 @@ import org.junit.Test;
  */
 public class OrganisationUnitTest
 {
-    private List<CoordinatesTuple> coordinatesList = new ArrayList<CoordinatesTuple>();
+    private List<CoordinatesTuple> multiPolygonCoordinatesList = new ArrayList<CoordinatesTuple>();
+    private List<CoordinatesTuple> pointCoordinatesList = new ArrayList<CoordinatesTuple>();
     
-    private String coordinates = "[[[[11.11,22.22],[33.33,44.44],[55.55,66.66]]],[[[77.77,88.88],[99.99,11.11],[22.22,33.33]]],[[[44.44,55.55],[66.66,77.77],[88.88,99.99]]]]";
+    private String multiPolygonCoordinates = "[[[[11.11,22.22],[33.33,44.44],[55.55,66.66]]],[[[77.77,88.88],[99.99,11.11],[22.22,33.33]]],[[[44.44,55.55],[66.66,77.77],[88.88,99.99]]]]";
+    private String pointCoordinates = "[11.11,22.22]";
     
     private CoordinatesTuple tupleA;
     private CoordinatesTuple tupleB;
     private CoordinatesTuple tupleC;
+    private CoordinatesTuple tupleD;
     
     @Before
     public void before()
@@ -66,25 +69,38 @@ public class OrganisationUnitTest
         tupleC.addCoordinates( "66.66,77.77" );
         tupleC.addCoordinates( "88.88,99.99" );
         
-        coordinatesList.add( tupleA );
-        coordinatesList.add( tupleB );
-        coordinatesList.add( tupleC );
+        tupleD = new CoordinatesTuple();
+        tupleD.addCoordinates( "11.11,22.22" );
+        
+        multiPolygonCoordinatesList.add( tupleA );
+        multiPolygonCoordinatesList.add( tupleB );
+        multiPolygonCoordinatesList.add( tupleC );
+        pointCoordinatesList.add( tupleD );
     }
 
     @Test
-    public void testSetCoordinatesFromCollection()
+    public void testSetMultiPolygonCoordinatesFromCollection()
     {
         OrganisationUnit unit = new OrganisationUnit();
-        unit.setCoordinatesFromList( coordinatesList );
+        unit.setMultiPolygonCoordinatesFromList( multiPolygonCoordinatesList );
         
-        assertEquals( coordinates, unit.getCoordinates() );
+        assertEquals( multiPolygonCoordinates, unit.getCoordinates() );
+    }
+
+    @Test
+    public void testSetPointCoordinatesFromCollection()
+    {
+        OrganisationUnit unit = new OrganisationUnit();
+        unit.setPointCoordinatesFromList( pointCoordinatesList );
+        
+        assertEquals( pointCoordinates, unit.getCoordinates() );
     }
     
     @Test
     public void testGetCoordinatesAsCollection()
     {   
         OrganisationUnit unit = new OrganisationUnit();
-        unit.setCoordinates( coordinates );
+        unit.setCoordinates( multiPolygonCoordinates );
         
         assertEquals( 3, unit.getCoordinatesAsList().size() );
         

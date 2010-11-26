@@ -3,11 +3,11 @@
 #foreach( $mapLegend in $object )
   {
     "id": $!{mapLegend.id},
-    "name": "$!encoder.jsEncode( ${mapLegend.name} )",
+    "name": "$!encoder.jsonEncode( ${mapLegend.name} )",
     "startValue": $!{mapLegend.startValue},
     "endValue": $!{mapLegend.endValue},
-    "color": "$!encoder.jsEncode( ${mapLegend.color} )",
-    "displayString": "$!encoder.jsEncode( ${mapLegend.name} ), $!{mapLegend.startValue} - $!{mapLegend.endValue}, $!encoder.jsEncode( ${mapLegend.color} )"
+    "color": "$!encoder.jsonEncode( ${mapLegend.color} )",
+    "displayString": "$!encoder.jsonEncode( ${mapLegend.name} ), $!{mapLegend.startValue} - $!{mapLegend.endValue}, $!encoder.jsonEncode( ${mapLegend.color} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

@@ -44,8 +44,6 @@ import com.opensymphony.xwork2.Action;
 public class GetMapViewAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( GetMapViewAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -55,13 +53,6 @@ public class GetMapViewAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -85,7 +76,7 @@ public class GetMapViewAction
     {
         return object;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -94,34 +85,7 @@ public class GetMapViewAction
         throws Exception
     {
         object = mappingService.getMapView( id );
-
-        log.info( "Getting map view: " + object );
-
-        if ( object != null && object.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
-        {
-            if ( object.getOrganisationUnitSelectionType() == null
-                || object.getOrganisationUnitSelectionType().trim().isEmpty()
-                || object.getOrganisationUnitSelectionType().equals(
-                    MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-            {
-                object.setOrganisationUnitSelectionType( MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT );
-                
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( organisationUnit.getName() );
-            }
-
-            else if ( object.getOrganisationUnitSelectionType().equals(
-                MappingService.ORGANISATION_UNIT_SELECTION_TYPE_LEVEL ) )
-            {
-                OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
-                    .parseInt( object.getMapSource() ) );
-
-                object.setOrganisationUnitSelectionTypeName( level.getName() );
-            }
-        }
-
+        
         return SUCCESS;
     }
 }

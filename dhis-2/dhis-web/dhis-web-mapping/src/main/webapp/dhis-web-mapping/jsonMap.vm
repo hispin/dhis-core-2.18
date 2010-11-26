@@ -1,9 +1,9 @@
 { "map": 
   [{
     "id": "$!{object.id}",
-    "name": "$!encoder.jsEncode( ${object.name} )",
-    "mapLayerPath": "$!encoder.jsEncode( ${object.mapLayerPath} )",
+    "name": "$!encoder.jsonEncode( ${object.name} )",
+    "mapLayerPath": "$!encoder.jsonEncode( ${object.mapLayerPath} )",
     "organisationUnitLevel": "$!{object.organisationUnitLevel.level}",
-    "nameColumn": "$!encoder.jsEncode( ${object.nameColumn} )"
+    "nameColumn": "$!encoder.jsonEncode( ${object.nameColumn} )"
   }]
 }

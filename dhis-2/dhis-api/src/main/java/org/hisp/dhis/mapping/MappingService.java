@@ -32,8 +32,6 @@ import java.util.Date;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
  * @author Jan Henrik Overland
@@ -44,14 +42,6 @@ public interface MappingService
     final String ID = MappingService.class.getName();
 
     final String GEOJSON_DIR = "geojson";
-
-    final String KEY_MAP_SOURCE_TYPE = "mapSource";
-
-    final String MAP_SOURCE_TYPE_DATABASE = "database";
-
-    final String MAP_SOURCE_TYPE_GEOJSON = "geojson";
-
-    final String MAP_SOURCE_TYPE_SHAPEFILE = "shapefile";
 
     final String MAP_VALUE_TYPE_INDICATOR = "indicator";
 
@@ -66,41 +56,24 @@ public interface MappingService
     final String MAP_DATE_TYPE_FIXED = "fixed";
 
     final String MAP_DATE_TYPE_START_END = "start-end";
-    
+
     final String ORGANISATION_UNIT_SELECTION_TYPE_PARENT = "parent";
-    
+
     final String ORGANISATION_UNIT_SELECTION_TYPE_LEVEL = "level";
-
-    // -------------------------------------------------------------------------
-    // DataMapValue
-    // -------------------------------------------------------------------------
-
-    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, String mapLayerPath );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId );
-
-    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level );
-
-    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate, Date endDate,
-        int level );
 
     // -------------------------------------------------------------------------
     // IndicatorMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, Collection<Integer> periodIds,
-        String mapLayerPath, String featureId );
-
-    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, String mapLayerPath );
-
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId );
 
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
         int parentOrganisationUnitId );
+
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId, int level );
+
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
+        int parentOrganisationUnitId, int level );
 
     Collection<AggregatedMapValue> getIndicatorMapValuesByLevel( int dataElementId, int periodId, int level );
 
@@ -108,247 +81,25 @@ public interface MappingService
         int level );
 
     // -------------------------------------------------------------------------
-    // Map
+    // DataMapValue
     // -------------------------------------------------------------------------
 
-    /**
-     * Adds a Map.
-     * 
-     * @param map , the Map to add.
-     * @return a generated unique id of the added Map.
-     */
-    int addMap( Map map );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId );
 
-    /**
-     * Adds a Map.
-     * 
-     * @param name , Map description.
-     * @param mapLayerPath , the link to Geoserver.
-     * @param organisationUnitLevelId , the level of the organisation units into
-     *        which the map is devided.
-     * @param nameColumn , the shapefile column which holds the name of the
-     *        organisation unit.
-     * @return a generated unique id of the added Map.
-     */
-    int addMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId );
 
-    /**
-     * Adds a map. If a map with the same mapLayerPath already exists, the map
-     * will be updated.
-     * 
-     * @param name , Map description.
-     * @param mapLayerPath , the link to Geoserver or GeoJSON file.
-     * @param organisationUnitLevelId , the level of the organisation units into
-     *        which the map is devided.
-     * @param nameColumn , the shapefile column which holds the name of the
-     *        organisation unit.
-     */
-    void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId, int level );
 
-    /**
-     * Updates a Map.
-     * 
-     * @param map , the Map to update.
-     */
-    void updateMap( Map map );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId, int level );
 
-    /**
-     * Deletes a Map.
-     * 
-     * @param map , the Map to delete.
-     */
-    void deleteMap( Map map );
+    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level );
 
-    /**
-     * Returns the Map with the given id.
-     * 
-     * @param id , the id of the map.
-     * @return the Map with the given id.
-     */
-    Map getMap( int id );
-
-    /**
-     * Returns the Map with the given map layer path.
-     * 
-     * @param id , the id of the map.
-     * @return a Map.
-     */
-    Map getMapByMapLayerPath( String mapLayerPath );
-
-    /**
-     * Returns a Collection<Map> of maps with the right type.
-     * 
-     * @param type , the map type.
-     * @return a Collection<Map>.
-     */
-    Collection<Map> getMapsByType( String type );
-
-    /**
-     * Returns a Collection<Map> of maps by sourceType.
-     * 
-     * @return a Collection<Map>.
-     */
-    Collection<Map> getMapsBySourceType();
-
-    /**
-     * Returns a Collection of all Maps at the given level.
-     * 
-     * @param organisationUnitLevel , the organisation unit level to return maps
-     *        at.
-     * @return a Collection with all Maps at the given level.
-     */
-    Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel );
-
-    /**
-     * Returns a Collection of all registered Maps.
-     * 
-     * @return a Collection of all registered Maps.
-     */
-    Collection<Map> getAllMaps();
-
-    /**
-     * Returns a Collection of all generated Maps.
-     * 
-     * @return a Collection of all generated Maps.
-     */
-    Collection<Map> getAllGeneratedMaps();
-
-    /**
-     * Returns a Collection of all Maps.
-     * 
-     * @return a Collection of all Maps.
-     */
-    Collection<Map> getAllUserMaps();
-
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation , the MapOrganisationUnitRelation to
-     *        add.
-     * @return a generated unique id of the added MapOrganisationUnitRelation.
-     */
-    int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Adds a MapOrganisationUnitRelation.
-     * 
-     * @param mapLayerPath , the map the MapOrganisationUnitRelation should be
-     *        added to.
-     * @param organisationUnitId , an organisation unit in the database.
-     * @param featureId , the id of an organisation unit in the shapefile.
-     * @return a generated unique id of the added MapOrganisationUnitRelation.
-     */
-    int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
-
-    void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations );
-
-    /**
-     * Adds a MapOrganisationUnitRelation. If it already exists, it will be
-     * updated.
-     * 
-     * @param mapLayerPath , the map the MapOrganisationUnitRelation should be
-     *        added to.
-     * @param organisationUnitId , an organisation unit in the database.
-     * @param featureId , the id of an organisation unit in the shapefile.
-     * @return a generated unique id of the added MapOrganisationUnitRelation.
-     */
-    void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId );
-
-    /**
-     * Updates a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation , the MapOrganisationUnitRelation to
-     *        update.
-     */
-    void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Deletes a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation , the MapOrganisationUnitRelation to
-     *        delete.
-     */
-    void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Returns a MapOrganisationUnitRelation.
-     * 
-     * @param id , the id of the returned MapOrganisationUnitRelation.
-     * @return the MapOrganisationUnitRelation with the given id.
-     */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
-
-    /**
-     * Returns a Collection <MapOrganisationUnitRelation>.
-     * 
-     * @param map , the foreign Map in the MapOrganisationUnitRelation.
-     * @param map , the foreign OrganisationUnit in the
-     *        MapOrganisationUnitRelation.
-     * @return a Collection<MapOrganisationUnitRelation> which contains the
-     *         given Map and OrganisationUnit.
-     */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
-
-    MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId, String mapLayerPath );
-
-    /**
-     * Returns a Collection of MapOrganisationUnitRelations.
-     * 
-     * @return a Collection of all MapOrganisationUnitRelations.
-     */
-    Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations();
-
-    /**
-     * Returns a Collection of all MapOrganisationUnitRelations connected to the
-     * given Map.
-     * 
-     * @param map , the Map to which the MapOrganisationUnitRelations are
-     *        connected.
-     * @return a Collection of MapOrganisationUnitRelations connected to the
-     *         given Map.
-     */
-    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map );
-
-    /**
-     * Returns a Collection of all existing MapOrganisationUnitRelations and the
-     * MapOrganisationUnitRelations that are not yet created (no featureId).
-     * 
-     * @param map , the Map to which the MapOrganisationUnitRelations are
-     *        connected.
-     * @return a Collection of MapOrganisationUnitRelations.
-     */
-    Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map );
-
-    /**
-     * Returns a Collection of all existing MapOrganisationUnitRelations and the
-     * MapOrganisationUnitRelations that are not yet created (no featureId).
-     * 
-     * @param mapLayerPath , the map to which the MapOrganisationUnitRelations
-     *        are connected.
-     * @return a Collection of MapOrganisationUnitRelations.
-     */
-    Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath );
-
-    /**
-     * Deletes all MapOrganisationUnitRelations associated with the given
-     * OrganisationUnit.
-     * 
-     * @param organisationUnit the OrganisationUnit.
-     * @return the number of deleted objects.
-     */
-    int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit );
-
-    /**
-     * Deletes all MapOrganisationUnitRelations associated with the given Map.
-     * 
-     * @param map the Map.
-     * @return the number of deleted objects.
-     */
-    int deleteMapOrganisationUnitRelations( Map map );
+    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate, Date endDate,
+        int level );
 
     // -------------------------------------------------------------------------
     // MapLegend
@@ -397,27 +148,19 @@ public interface MappingService
 
     int addMapView( MapView mapView );
 
-    int addMapView( String name, String mapValueType, int indicatorGroupId, int indicatorId, int dataElementGroupId,
-        int dataElementId, String periodTypeName, int periodId, String mapSourceType,
-        String organisationUnitSelectionType, String mapSource, String mapLegendType, int method, int classes,
-        String bounds, String colorLow, String colorHigh, int mapLegendSetId, String longitude, String latitude,
-        int zoom );
-
     void updateMapView( MapView mapView );
 
     void addOrUpdateMapView( String name, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
         Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
-        String endDate, String organisationUnitSelectionType, String mapSource, String mapLegendType, int method,
-        int classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId, String longitude,
-        String latitude, int zoom );
+        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevelId, String mapLegendType,
+        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+        String longitude, String latitude, int zoom );
 
     void deleteMapView( MapView view );
 
     MapView getMapView( int id );
 
     MapView getMapViewByName( String name );
-
-    Collection<MapView> getMapViewsByMapSourceType();
 
     Collection<MapView> getAllMapViews();
 
@@ -439,8 +182,6 @@ public interface MappingService
     MapLayer getMapLayerByName( String name );
 
     Collection<MapLayer> getMapLayersByType( String type );
-
-    Collection<MapLayer> getMapLayersByMapSourceType();
 
     MapLayer getMapLayerByMapSource( String mapSource );
 

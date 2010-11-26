@@ -3,9 +3,9 @@
 #foreach( $mapView in $object )
   {
     "id": $!{mapView.id},
-    "name": "$!encoder.jsEncode( ${mapView.name} )",
-    "mapSourceType": "$!encoder.jsEncode( ${object.mapSourceType} )",
-    "mapSource": "$!encoder.jsEncode( ${object.mapSource} )",
+    "name": "$!encoder.jsonEncode( ${mapView.name} )",
+    "mapSourceType": "$!encoder.jsonEncode( ${object.mapSourceType} )",
+    "mapSource": "$!encoder.jsonEncode( ${object.mapSource} )",
   }#if( $velocityCount < $size ),#end
 #end
 ] }

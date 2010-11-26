@@ -27,19 +27,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.MathUtils.isNumeric;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -66,12 +58,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultMappingService
     implements MappingService
 {
-    private static final Log log = LogFactory.getLog( DefaultMappingService.class );
-
-    private static final String RELATION_SEPARATOR = ";;";
-
-    private static final String PAIR_SEPARATOR = "::";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -118,13 +104,6 @@ public class DefaultMappingService
         this.userSettingService = userSettingService;
     }
 
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
-    {
-        this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
     private AggregationService aggregationService;
 
     public void setAggregationService( AggregationService aggregationService )
@@ -137,127 +116,8 @@ public class DefaultMappingService
     // -------------------------------------------------------------------------
 
     // -------------------------------------------------------------------------
-    // DataMapValues
-    // -------------------------------------------------------------------------
-
-    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId,
-        String mapLayerPath )
-    {
-        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
-
-        return aggregatedDataValueService.getAggregatedDataMapValues( dataElementId, periodId, level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId )
-    {
-        Period period = periodService.getPeriod( periodId );
-
-        return getDataElementMapValues( dataElementId, period.getStartDate(), period.getEndDate(),
-            parentOrganisationUnitId );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId )
-    {
-        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
-
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-        for ( OrganisationUnit organisationUnit : parent.getChildren() )
-        {
-            if ( organisationUnit.hasCoordinates() )
-            {
-                Double value = aggregationService.getAggregatedDataValue( dataElement, null, startDate, endDate,
-                    organisationUnit );
-
-                value = value != null ? value : 0; // TODO improve
-
-                AggregatedMapValue mapValue = new AggregatedMapValue();
-                mapValue.setOrganisationUnitId( organisationUnit.getId() );
-                mapValue.setOrganisationUnitName( organisationUnit.getName() );
-                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
-
-                values.add( mapValue );
-            }
-        }
-
-        return values;
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level )
-    {
-        Period period = periodService.getPeriod( periodId );
-
-        return getDataElementMapValuesByLevel( dataElementId, period.getStartDate(), period.getEndDate(), level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate,
-        Date endDate, int level )
-    {
-        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
-
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level );
-
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
-        for ( OrganisationUnit organisationUnit : organisationUnits )
-        {
-            if ( organisationUnit.hasCoordinates() )
-            {
-                Double value = aggregationService.getAggregatedDataValue( dataElement, null, startDate, endDate,
-                    organisationUnit );
-
-                value = value != null ? value : 0; // TODO improve
-
-                AggregatedMapValue mapValue = new AggregatedMapValue();
-                mapValue.setOrganisationUnitId( organisationUnit.getId() );
-                mapValue.setOrganisationUnitName( organisationUnit.getName() );
-                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
-
-                values.add( mapValue );
-            }
-        }
-
-        return values;
-    }
-
-    // -------------------------------------------------------------------------
     // IndicatorMapValues
     // -------------------------------------------------------------------------
-
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId,
-        Collection<Integer> periodIds, String mapLayerPath, String featureId )
-    {
-        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
-
-        int organisationUnitId = getMapOrganisationUnitRelationByFeatureId( featureId, mapLayerPath )
-            .getOrganisationUnit().getId();
-
-        Collection<AggregatedMapValue> mapValues;
-
-        if ( periodIds.size() < 2 )
-        {
-            mapValues = aggregatedDataValueService.getAggregatedIndicatorMapValues( indicatorId, periodIds.iterator()
-                .next(), level, organisationUnitId );
-        }
-        else
-        {
-            mapValues = aggregatedDataValueService.getAggregatedIndicatorMapValues( indicatorId, periodIds, level,
-                organisationUnitId );
-        }
-
-        return mapValues;
-    }
-
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId,
-        String mapLayerPath )
-    {
-        int level = getMapByMapLayerPath( mapLayerPath ).getOrganisationUnitLevel().getLevel();
-
-        return aggregatedDataValueService.getAggregatedIndicatorMapValues( indicatorId, periodId, level );
-    }
 
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
         int parentOrganisationUnitId )
@@ -276,6 +136,48 @@ public class DefaultMappingService
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
         for ( OrganisationUnit organisationUnit : parent.getChildren() )
+        {
+            if ( organisationUnit.hasCoordinates() )
+            {
+                Double value = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
+                    organisationUnit );
+
+                value = value != null ? value : 0; // TODO improve
+
+                AggregatedMapValue mapValue = new AggregatedMapValue();
+                mapValue.setOrganisationUnitId( organisationUnit.getId() );
+                mapValue.setOrganisationUnitName( organisationUnit.getName() );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
+
+                values.add( mapValue );
+            }
+        }
+
+        return values;
+    }
+
+    public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
+        int parentOrganisationUnitId, int level )
+    {
+        Period period = periodService.getPeriod( periodId );
+
+        return getIndicatorMapValues( indicatorId, period.getStartDate(), period.getEndDate(),
+            parentOrganisationUnitId, level );
+    }
+
+    public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
+        int parentOrganisationUnitId, int level )
+    {
+        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
+
+        Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
+            parent );
+
+        for ( OrganisationUnit organisationUnit : organisationUnits )
         {
             if ( organisationUnit.hasCoordinates() )
             {
@@ -334,330 +236,124 @@ public class DefaultMappingService
     }
 
     // -------------------------------------------------------------------------
-    // Map
+    // DataMapValues
     // -------------------------------------------------------------------------
 
-    public int addMap( Map map )
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId )
     {
-        return mappingStore.addMap( map );
+        Period period = periodService.getPeriod( periodId );
+
+        return getDataElementMapValues( dataElementId, period.getStartDate(), period.getEndDate(),
+            parentOrganisationUnitId );
     }
 
-    public int addMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn )
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId )
     {
-        OrganisationUnitLevel organisationUnitLevel = organisationUnitService
-            .getOrganisationUnitLevel( organisationUnitLevelId );
+        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
 
-        String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        Map map = new Map( name, mapLayerPath, sourceType, organisationUnitLevel, nameColumn, null );
-
-        return addMap( map );
-    }
-
-    public void addOrUpdateMap( String name, String mapLayerPath, int organisationUnitLevelId, String nameColumn )
-    {
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        if ( map != null )
+        for ( OrganisationUnit organisationUnit : parent.getChildren() )
         {
-            map.setName( name );
-            map.setNameColumn( nameColumn );
-
-            updateMap( map );
-        }
-        else
-        {
-            OrganisationUnitLevel organisationUnitLevel = organisationUnitService
-                .getOrganisationUnitLevel( organisationUnitLevelId );
-
-            String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE,
-                MAP_SOURCE_TYPE_GEOJSON );
-
-            map = new Map( name, mapLayerPath, sourceType, organisationUnitLevel, nameColumn, null );
-
-            addMap( map );
-        }
-    }
-
-    public void updateMap( Map map )
-    {
-        mappingStore.updateMap( map );
-    }
-
-    public void deleteMap( Map map )
-    {
-        mappingStore.deleteMap( map );
-    }
-
-    public void deleteMapByMapLayerPath( String mapLayerPath )
-    {
-        deleteMap( getMapByMapLayerPath( mapLayerPath ) );
-    }
-
-    public Map getMap( int id )
-    {
-        return mappingStore.getMap( id );
-    }
-
-    public Map getMapByMapLayerPath( String mapLayerPath )
-    {
-        return mappingStore.getMapByMapLayerPath( mapLayerPath );
-    }
-
-    public Collection<Map> getMapsByType( String type )
-    {
-        return mappingStore.getMapsByType( type );
-    }
-
-    public Collection<Map> getMapsBySourceType()
-    {
-        String sourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-
-        return mappingStore.getMapsBySourceType( sourceType );
-    }
-
-    public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
-    {
-        return mappingStore.getMapsAtLevel( organisationUnitLevel );
-    }
-
-    public Collection<Map> getAllMaps()
-    {
-        return mappingStore.getAllMaps();
-    }
-
-    public Collection<Map> getAllGeneratedMaps()
-    {
-        List<OrganisationUnitLevel> organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
-
-        List<Map> maps = new ArrayList<Map>();
-
-        for ( OrganisationUnitLevel organisationUnitLevel : organisationUnitLevels )
-        {
-            Map map = new Map();
-            map.setName( organisationUnitLevel.getName() );
-            map.setMapLayerPath( String.valueOf( organisationUnitLevel.getLevel() ) );
-            map.setOrganisationUnitLevel( organisationUnitLevel );
-            maps.add( map );
-        }
-
-        return maps;
-    }
-
-    public Collection<Map> getAllUserMaps()
-    {
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-
-        return type != null && type.equals( MAP_SOURCE_TYPE_DATABASE ) ? getAllGeneratedMaps() : getMapsBySourceType();
-    }
-
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation
-    // -------------------------------------------------------------------------
-
-    public int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        return mappingStore.addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public int addMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
-    {
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        MapOrganisationUnitRelation mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map,
-            organisationUnit, featureId );
-
-        return addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public void addOrUpdateMapOrganisationUnitRelations( String mapLayerPath, String relations )
-    {
-        String[] rels = relations.split( RELATION_SEPARATOR );
-
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
-
-        relationsLoop: for ( int i = 0; i < rels.length; i++ )
-        {
-            final String[] rel = rels[i].split( PAIR_SEPARATOR );
-
-            if ( rel.length != 2 )
+            if ( organisationUnit.hasCoordinates() )
             {
-                log.warn( "Pair '" + toString( rel ) + "' is invalid for input '" + rels[i] + "'" );
+                Double value = aggregationService.getAggregatedDataValue( dataElement, null, startDate, endDate,
+                    organisationUnit );
 
-                continue relationsLoop;
-            }
+                value = value != null ? value : 0; // TODO improve
 
-            if ( !isNumeric( rel[0] ) )
-            {
-                log.warn( "Organisation unit id '" + rel[0] + "' belonging to feature id '" + rel[1]
-                    + "' is not numeric" );
+                AggregatedMapValue mapValue = new AggregatedMapValue();
+                mapValue.setOrganisationUnitId( organisationUnit.getId() );
+                mapValue.setOrganisationUnitName( organisationUnit.getName() );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
 
-                continue relationsLoop;
-            }
-
-            final int organisationUnitId = Integer.parseInt( rel[0] );
-            final String featureId = rel[1];
-
-            MapOrganisationUnitRelation mapOrganisationUnitRelation = relationMap.get( organisationUnitId );
-
-            if ( mapOrganisationUnitRelation != null )
-            {
-                mapOrganisationUnitRelation.setFeatureId( featureId );
-
-                updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-            }
-            else
-            {
-                final OrganisationUnit organisationUnit = organisationUnitService
-                    .getOrganisationUnit( organisationUnitId );
-
-                mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map, organisationUnit, featureId );
-
-                addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-            }
-        }
-    }
-
-    /**
-     * Provides a textual representation of the contents of a String array.
-     */
-    private String toString( String[] array )
-    {
-        final StringBuffer buffer = new StringBuffer( "{" );
-
-        for ( int i = 0; i < array.length; i++ )
-        {
-            buffer.append( "[" + array[i] + "]," );
-        }
-
-        return buffer.append( "}" ).toString();
-    }
-
-    public void addOrUpdateMapOrganisationUnitRelation( String mapLayerPath, int organisationUnitId, String featureId )
-    {
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        MapOrganisationUnitRelation mapOrganisationUnitRelation = getMapOrganisationUnitRelation( map, organisationUnit );
-
-        if ( mapOrganisationUnitRelation != null )
-        {
-            mapOrganisationUnitRelation.setFeatureId( featureId );
-
-            updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-        }
-        else
-        {
-            mapOrganisationUnitRelation = new MapOrganisationUnitRelation( map, organisationUnit, featureId );
-
-            addMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-        }
-    }
-
-    public void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        mappingStore.updateMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        mappingStore.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelation );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
-    {
-        return mappingStore.getMapOrganisationUnitRelation( id );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
-    {
-        return mappingStore.getMapOrganisationUnitRelation( map, organisationUnit );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelationByFeatureId( String featureId, String mapLayerPath )
-    {
-        Map map = mappingStore.getMapByMapLayerPath( mapLayerPath );
-
-        Collection<MapOrganisationUnitRelation> relations = mappingStore.getMapOrganisationUnitRelationsByMap( map );
-
-        for ( MapOrganisationUnitRelation relation : relations )
-        {
-            if ( relation.getFeatureId().equals( featureId ) )
-            {
-                return relation;
+                values.add( mapValue );
             }
         }
 
-        return null;
+        return values;
     }
 
-    public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId, int level )
     {
-        return mappingStore.getAllMapOrganisationUnitRelations();
+        Period period = periodService.getPeriod( periodId );
+
+        return getDataElementMapValues( dataElementId, period.getStartDate(), period.getEndDate(),
+            parentOrganisationUnitId, level );
     }
 
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map )
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId, int level )
     {
-        return mappingStore.getMapOrganisationUnitRelationsByMap( map );
-    }
+        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
 
-    public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( Map map )
-    {
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( map
-            .getOrganisationUnitLevel().getLevel() );
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        java.util.Map<Integer, MapOrganisationUnitRelation> relationMap = getRelationshipMap( getMapOrganisationUnitRelationsByMap( map ) );
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
 
-        Collection<MapOrganisationUnitRelation> availableRelations = new ArrayList<MapOrganisationUnitRelation>();
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
+            parent );
 
-        for ( OrganisationUnit unit : organisationUnits )
+        for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            MapOrganisationUnitRelation relation = relationMap.get( unit.getId() );
+            if ( organisationUnit.hasCoordinates() )
+            {
+                Double value = aggregationService.getAggregatedDataValue( dataElement, null, startDate, endDate,
+                    organisationUnit );
 
-            availableRelations.add( relation != null ? relation : new MapOrganisationUnitRelation( map, unit, null ) );
+                value = value != null ? value : 0; // TODO improve
+
+                AggregatedMapValue mapValue = new AggregatedMapValue();
+                mapValue.setOrganisationUnitId( organisationUnit.getId() );
+                mapValue.setOrganisationUnitName( organisationUnit.getName() );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
+
+                values.add( mapValue );
+            }
         }
 
-        return availableRelations;
+        return values;
     }
 
-    /**
-     * Returns a Map<Integer, MapOrganisationUnitRelation> where the key is the
-     * OrganisationUnit identifier and the value the MapOrganisationUnitRelation
-     * itself.
-     */
-    private java.util.Map<Integer, MapOrganisationUnitRelation> getRelationshipMap(
-        Collection<MapOrganisationUnitRelation> relations )
+    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level )
     {
-        java.util.Map<Integer, MapOrganisationUnitRelation> map = new HashMap<Integer, MapOrganisationUnitRelation>();
+        Period period = periodService.getPeriod( periodId );
 
-        for ( MapOrganisationUnitRelation relation : relations )
+        return getDataElementMapValuesByLevel( dataElementId, period.getStartDate(), period.getEndDate(), level );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate,
+        Date endDate, int level )
+    {
+        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
+
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level );
+
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+        for ( OrganisationUnit organisationUnit : organisationUnits )
         {
-            map.put( relation.getOrganisationUnit().getId(), relation );
+            if ( organisationUnit.hasCoordinates() )
+            {
+                Double value = aggregationService.getAggregatedDataValue( dataElement, null, startDate, endDate,
+                    organisationUnit );
+
+                value = value != null ? value : 0; // TODO improve
+
+                AggregatedMapValue mapValue = new AggregatedMapValue();
+                mapValue.setOrganisationUnitId( organisationUnit.getId() );
+                mapValue.setOrganisationUnitName( organisationUnit.getName() );
+                mapValue.setValue( MathUtils.getRounded( value, 2 ) );
+
+                values.add( mapValue );
+            }
         }
 
-        return map;
-    }
-
-    public Collection<MapOrganisationUnitRelation> getAvailableMapOrganisationUnitRelations( String mapLayerPath )
-    {
-        Map map = getMapByMapLayerPath( mapLayerPath );
-
-        return getAvailableMapOrganisationUnitRelations( map );
-    }
-
-    public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
-    {
-        return mappingStore.deleteMapOrganisationUnitRelations( organisationUnit );
-    }
-
-    public int deleteMapOrganisationUnitRelations( Map map )
-    {
-        return mappingStore.deleteMapOrganisationUnitRelations( map );
+        return values;
     }
 
     // -------------------------------------------------------------------------
@@ -835,58 +531,6 @@ public class DefaultMappingService
         return mappingStore.addMapView( mapView );
     }
 
-    public int addMapView( String name, String mapValueType, int indicatorGroupId, int indicatorId,
-        int dataElementGroupId, int dataElementId, String periodTypeName, int periodId, String mapSourceType,
-        String organisationUnitSelectionType, String mapSource, String mapLegendType, int method, int classes,
-        String bounds, String colorLow, String colorHigh, int mapLegendSetId, String longitude, String latitude,
-        int zoom )
-    {
-        MapView mapView = new MapView();
-
-        PeriodType periodType = periodService.getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName )
-            .getClass() );
-
-        Period period = periodService.getPeriod( periodId );
-
-        MapLegendSet mapLegendSet = getMapLegendSet( mapLegendSetId );
-
-        if ( mapValueType.equals( MappingService.MAP_VALUE_TYPE_INDICATOR ) )
-        {
-            mapView.setIndicatorGroup( indicatorService.getIndicatorGroup( indicatorGroupId ) );
-            mapView.setIndicator( indicatorService.getIndicator( indicatorId ) );
-            mapView.setDataElementGroup( null );
-            mapView.setDataElement( null );
-        }
-
-        else if ( mapValueType.equals( MappingService.MAP_VALUE_TYPE_INDICATOR ) )
-        {
-            mapView.setIndicatorGroup( null );
-            mapView.setIndicator( null );
-            mapView.setDataElementGroup( dataElementService.getDataElementGroup( dataElementGroupId ) );
-            mapView.setDataElement( dataElementService.getDataElement( dataElementId ) );
-        }
-
-        mapView.setName( name );
-        mapView.setMapValueType( mapValueType );
-        mapView.setPeriodType( periodType );
-        mapView.setPeriod( period );
-        mapView.setMapSourceType( mapSourceType );
-        mapView.setOrganisationUnitSelectionType( organisationUnitSelectionType );
-        mapView.setMapSource( mapSource );
-        mapView.setMapLegendType( mapLegendType );
-        mapView.setMethod( method );
-        mapView.setClasses( classes );
-        mapView.setBounds( bounds );
-        mapView.setColorLow( colorLow );
-        mapView.setColorHigh( colorHigh );
-        mapView.setMapLegendSet( mapLegendSet );
-        mapView.setLongitude( longitude );
-        mapView.setLatitude( latitude );
-        mapView.setZoom( zoom );
-
-        return mappingStore.addMapView( mapView );
-    }
-
     public void updateMapView( MapView mapView )
     {
         mappingStore.updateMapView( mapView );
@@ -894,9 +538,9 @@ public class DefaultMappingService
 
     public void addOrUpdateMapView( String name, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
         Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
-        String endDate, String organisationUnitSelectionType, String mapSource, String mapLegendType, int method,
-        int classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId, String longitude,
-        String latitude, int zoom )
+        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
+        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+        String longitude, String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = null;
 
@@ -905,20 +549,6 @@ public class DefaultMappingService
         DataElementGroup dataElementGroup = null;
 
         DataElement dataElement = null;
-
-        String mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
-
-        PeriodType periodType = periodTypeName != null && !periodTypeName.isEmpty() ? periodService
-            .getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName ).getClass() ) : null;
-
-        Period period = periodId != null ? periodService.getPeriod( periodId ) : null;
-
-        MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
-
-        String mapSourceType = (String) userSettingService
-            .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-
-        MapView mapView = mappingStore.getMapViewByName( name );
 
         if ( mapValueType.equals( MappingService.MAP_VALUE_TYPE_INDICATOR ) )
         {
@@ -930,6 +560,21 @@ public class DefaultMappingService
             dataElementGroup = dataElementService.getDataElementGroup( dataElementGroupId );
             dataElement = dataElementService.getDataElement( dataElementId );
         }
+
+        String mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
+
+        PeriodType periodType = periodTypeName != null && !periodTypeName.isEmpty() ? periodService
+            .getPeriodTypeByClass( PeriodType.getPeriodTypeByName( periodTypeName ).getClass() ) : null;
+
+        Period period = periodId != null ? periodService.getPeriod( periodId ) : null;
+
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+
+        OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( organisationUnitLevel );
+
+        MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
+
+        MapView mapView = mappingStore.getMapViewByName( name );
 
         if ( mapView != null )
         {
@@ -944,9 +589,8 @@ public class DefaultMappingService
             mapView.setPeriod( period );
             mapView.setStartDate( startDate );
             mapView.setEndDate( endDate );
-            mapView.setMapSourceType( mapSourceType );
-            mapView.setOrganisationUnitSelectionType( organisationUnitSelectionType );
-            mapView.setMapSource( mapSource );
+            mapView.setParentOrganisationUnit( parent );
+            mapView.setOrganisationUnitLevel( level );
             mapView.setMapLegendType( mapLegendType );
             mapView.setMethod( method );
             mapView.setClasses( classes );
@@ -963,9 +607,8 @@ public class DefaultMappingService
         else
         {
             mapView = new MapView( name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-                mapDateType, periodType, period, startDate, endDate, mapSourceType, organisationUnitSelectionType,
-                mapSource, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSet, longitude,
-                latitude, zoom );
+                mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method, classes,
+                bounds, colorLow, colorHigh, mapLegendSet, longitude, latitude, zoom );
 
             addMapView( mapView );
         }
@@ -978,7 +621,12 @@ public class DefaultMappingService
 
     public MapView getMapView( int id )
     {
-        return mappingStore.getMapView( id );
+        MapView mapView = mappingStore.getMapView( id );
+        
+        mapView.getParentOrganisationUnit().setLevel(
+            organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+
+        return mapView;
     }
 
     public MapView getMapViewByName( String name )
@@ -986,33 +634,17 @@ public class DefaultMappingService
         return mappingStore.getMapViewByName( name );
     }
 
-    public Collection<MapView> getMapViewsByMapSourceType()
-    {
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
-
-        return mappingStore.getMapViewsByMapSourceType( type );
-    }
-
     public Collection<MapView> getAllMapViews()
     {
-        Collection<MapView> selectedMapViews = new ArrayList<MapView>();
-
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
 
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
-
-        if ( mapViews != null )
+        for ( MapView mapView : mapViews )
         {
-            for ( MapView mapView : mapViews )
-            {
-                if ( mapView.getMapSourceType() != null && mapView.getMapSourceType().equals( type ) )
-                {
-                    selectedMapViews.add( mapView );
-                }
-            }
+            mapView.getParentOrganisationUnit().setLevel(
+                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
         }
-
-        return selectedMapViews;
+        
+        return mapViews;
     }
 
     // -------------------------------------------------------------------------
@@ -1034,14 +666,10 @@ public class DefaultMappingService
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
-        String mapSourceType = (String) userSettingService
-            .getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-
         if ( mapLayer != null )
         {
             mapLayer.setName( name );
             mapLayer.setType( type );
-            mapLayer.setMapSourceType( mapSourceType );
             mapLayer.setMapSource( mapSource );
             mapLayer.setLayer( layer );
             mapLayer.setFillColor( fillColor );
@@ -1053,8 +681,7 @@ public class DefaultMappingService
         }
         else
         {
-            addMapLayer( new MapLayer( name, type, mapSourceType, mapSource, layer, fillColor, fillOpacity,
-                strokeColor, strokeWidth ) );
+            addMapLayer( new MapLayer( name, type, mapSource, layer, fillColor, fillOpacity, strokeColor, strokeWidth ) );
         }
     }
 
@@ -1076,13 +703,6 @@ public class DefaultMappingService
     public Collection<MapLayer> getMapLayersByType( String type )
     {
         return mappingStore.getMapLayersByType( type );
-    }
-
-    public Collection<MapLayer> getMapLayersByMapSourceType()
-    {
-        String type = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_GEOJSON );
-
-        return mappingStore.getMapLayersByMapSourceType( type );
     }
 
     public MapLayer getMapLayerByMapSource( String mapSource )

@@ -99,18 +99,6 @@ public class MapViewDeletionHandler
     }
     
     @Override
-    public void deleteMap( Map map )
-    {
-        for ( MapView mapView : mappingService.getAllMapViews() )
-        {
-            if ( mapView.getMapSource().equals( map.getMapLayerPath() ) )
-            {
-                mappingService.deleteMapView( mapView );
-            }
-        }
-    }
-    
-    @Override
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
     {
         for ( MapView mapView : mappingService.getAllMapViews() )

@@ -28,8 +28,6 @@ package org.hisp.dhis.mapping;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -75,14 +73,6 @@ public class MappingServiceTest
 
     private MapLegendSet mapLegendSet;
 
-    private Map mapA;
-
-    private Map mapB;
-
-    private MapOrganisationUnitRelation mapOrganisationUnitRelationA;
-
-    private MapOrganisationUnitRelation mapOrganisationUnitRelationB;
-
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -106,12 +96,6 @@ public class MappingServiceTest
         organisationUnitService.addOrganisationUnit( organisationUnit );
         organisationUnitService.addOrganisationUnitLevel( organisationUnitLevel );
 
-        mapA = createMap( 'A', organisationUnit, organisationUnitLevel );
-        mapB = createMap( 'B', organisationUnit, organisationUnitLevel );
-
-        mapOrganisationUnitRelationA = new MapOrganisationUnitRelation( mapA, organisationUnit, "Feature" );
-        mapOrganisationUnitRelationB = new MapOrganisationUnitRelation( mapB, organisationUnit, "Feature" );
-
         indicatorGroup = createIndicatorGroup( 'A' );
         indicatorService.addIndicatorGroup( indicatorGroup );
 
@@ -133,95 +117,16 @@ public class MappingServiceTest
     }
 
     // -------------------------------------------------------------------------
-    // Map tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddGetMap()
-    {
-        int idA = mappingService.addMap( mapA );
-        int idB = mappingService.addMap( mapB );
-
-        assertEquals( mapA, mappingService.getMap( idA ) );
-        assertEquals( mapB, mappingService.getMap( idB ) );
-    }
-
-    @Test
-    public void testDeleteMap()
-    {
-        int idA = mappingService.addMap( mapA );
-        int idB = mappingService.addMap( mapB );
-
-        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-
-        assertNotNull( mappingService.getMap( idA ) );
-        assertNotNull( mappingService.getMap( idB ) );
-
-        mappingService.deleteMap( mapA );
-
-        assertNull( mappingService.getMap( idA ) );
-        assertNotNull( mappingService.getMap( idB ) );
-
-        mappingService.deleteMap( mapB );
-
-        assertNull( mappingService.getMap( idA ) );
-        assertNull( mappingService.getMap( idB ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void addGetMapOrganisationUnitRelation()
-    {
-        mappingService.addMap( mapA );
-        mappingService.addMap( mapB );
-
-        int idA = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        int idB = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-
-        assertEquals( mappingService.getMapOrganisationUnitRelation( idA ), mapOrganisationUnitRelationA );
-        assertEquals( mappingService.getMapOrganisationUnitRelation( idB ), mapOrganisationUnitRelationB );
-    }
-
-    @Test
-    public void deleteMapOrganisationUnitRelation()
-    {
-        mappingService.addMap( mapA );
-        mappingService.addMap( mapB );
-
-        int idA = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-        int idB = mappingService.addMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idB ) );
-
-        mappingService.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelationA );
-
-        assertNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNotNull( mappingService.getMapOrganisationUnitRelation( idB ) );
-
-        mappingService.deleteMapOrganisationUnitRelation( mapOrganisationUnitRelationB );
-
-        assertNull( mappingService.getMapOrganisationUnitRelation( idA ) );
-        assertNull( mappingService.getMapOrganisationUnitRelation( idB ) );
-    }
-
-    // -------------------------------------------------------------------------
     // MapView tests
     // -------------------------------------------------------------------------
 
     @Test
     public void testAddGetMapView()
     {
-        mappingService.addMap( mapA );
-
         MapView mapView = new MapView( "MapViewA", MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
             new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
-            MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT, MappingService.MAP_SOURCE_TYPE_SHAPEFILE,
-            "sl_districts", MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
+            mapLegendSet, "1", "1", 1 );
 
         int idA = mappingService.addMapView( mapView );
 
@@ -233,7 +138,7 @@ public class MappingServiceTest
     }
 
     // -------------------------------------------------------------------------
-    // MapValue tests
+    // Map value tests
     // -------------------------------------------------------------------------
 
     @Test

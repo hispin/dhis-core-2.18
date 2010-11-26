@@ -101,17 +101,22 @@ public class GetIndicatorsByIndicatorGroupAction
     public String execute()
         throws Exception
     {
-        IndicatorGroup group = indicatorService.getIndicatorGroup( indicatorGroupId );
-        
-        if ( group != null )
+        if ( indicatorGroupId != null )
         {
-            object = new ArrayList<Indicator>( group.getMembers() );
-
-            Collections.sort( object, indicatorComparator );
+            IndicatorGroup group = indicatorService.getIndicatorGroup( indicatorGroupId );
             
-            displayPropertyHandler.handle( object );
+            if ( group != null )
+            {
+                object = new ArrayList<Indicator>( group.getMembers() );
+    
+                Collections.sort( object, indicatorComparator );
+                
+                displayPropertyHandler.handle( object );
+                
+                return SUCCESS;
+            }
         }
         
-        return SUCCESS;
+        return NONE;
     }
 }

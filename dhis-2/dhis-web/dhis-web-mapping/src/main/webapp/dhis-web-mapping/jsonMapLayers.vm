@@ -3,13 +3,13 @@
 #foreach( $mapLayer in $object )
   {
     "id": "$!{mapLayer.id}",
-    "name": "$!encoder.jsEncode( ${mapLayer.name} )",
-    "type": "$!encoder.jsEncode( ${mapLayer.type} )",
-    "mapSource": "$!encoder.jsEncode( ${mapLayer.mapSource} )",
-    "layer": "$!encoder.jsEncode( ${mapLayer.layer} )",
-    "fillColor": "$!encoder.jsEncode( ${mapLayer.fillColor} )",
+    "name": "$!encoder.jsonEncode( ${mapLayer.name} )",
+    "type": "$!encoder.jsonEncode( ${mapLayer.type} )",
+    "mapSource": "$!encoder.jsonEncode( ${mapLayer.mapSource} )",
+    "layer": "$!encoder.jsonEncode( ${mapLayer.layer} )",
+    "fillColor": "$!encoder.jsonEncode( ${mapLayer.fillColor} )",
     "fillOpacity": "$!{mapLayer.fillOpacity}",
-    "strokeColor": "$!encoder.jsEncode( ${mapLayer.strokeColor} )",
+    "strokeColor": "$!encoder.jsonEncode( ${mapLayer.strokeColor} )",
     "strokeWidth": "$!{mapLayer.strokeWidth}"
   }#if( $velocityCount < $size ),#end
 #end
