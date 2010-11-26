@@ -83,7 +83,7 @@ public class DefaultProgramService
                     Model mobileCategpryOptCombo = new Model();
                     mobileCategpryOptCombo.setId( categoryOptCombo.getId() );
                     mobileCategpryOptCombo.setName( categoryOptCombo.getName() );
-                    mobileCategpryOptCombos.getAbstractModels().add( mobileCategpryOptCombo );
+                    mobileCategpryOptCombos.getModels().add( mobileCategpryOptCombo );
                 }
 
                 DataElement de = new DataElement();

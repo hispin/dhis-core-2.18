@@ -39,7 +39,7 @@ public class ModelList
 
     private List<Model> models;
 
-    public List<Model> getAbstractModels()
+    public List<Model> getModels()
     {
         return models;
     }

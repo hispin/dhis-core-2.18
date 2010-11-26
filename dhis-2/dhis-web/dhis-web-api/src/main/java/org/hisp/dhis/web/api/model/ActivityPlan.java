@@ -32,6 +32,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class ActivityPlan
     implements DataStreamSerializable
 {

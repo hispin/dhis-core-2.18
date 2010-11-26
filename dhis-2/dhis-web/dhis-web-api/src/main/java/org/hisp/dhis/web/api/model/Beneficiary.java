@@ -50,19 +50,19 @@ public class Beneficiary
     private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;
-    
-    private List<PatientIdentifier> identifiers;    
+
+    private List<PatientIdentifier> identifiers;
 
     private String gender;
 
     private Date birthDate;
 
     private String bloodGroup;
-    
+
     private Date registrationDate;
-    
+
     private Character dobType;
-    
+
     public List<PatientIdentifier> getIdentifiers()
     {
         return identifiers;
@@ -71,6 +71,32 @@ public class Beneficiary
     public void setIdentifiers( List<PatientIdentifier> identifiers )
     {
         this.identifiers = identifiers;
+    }
+
+    public String getFullName()
+    {
+        boolean space = false;
+        String name = "";
+
+        if ( firstName != null && firstName.length() != 0 )
+        {
+            name = firstName;
+            space = true;
+        }
+        if ( middleName != null && middleName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += middleName;
+            space = true;
+        }
+        if ( lastName != null && lastName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += lastName;
+        }
+        return name;
     }
 
     public int getAge()
@@ -205,48 +231,60 @@ public class Beneficiary
         dout.writeUTF( this.getMiddleName() );
         dout.writeUTF( this.getLastName() );
         dout.writeInt( this.getAge() );
-        
-        // Write static attributes if it is required (gender, dobtype, birthdate, bloodgroup, registrationdate)
-        if(gender != null){
+
+        if ( gender != null )
+        {
             dout.writeBoolean( true );
-            dout.writeUTF(gender);
-        }else{
+            dout.writeUTF( gender );
+        }
+        else
+        {
             dout.writeBoolean( false );
         }
-        
-        if(dobType != null){
+
+        if ( dobType != null )
+        {
             dout.writeBoolean( true );
-            dout.writeChar(dobType);
-        }else{
+            dout.writeChar( dobType );
+        }
+        else
+        {
             dout.writeBoolean( false );
         }
-        
-        if(birthDate != null){
+
+        if ( birthDate != null )
+        {
             dout.writeBoolean( true );
-            dout.writeLong(birthDate.getTime());
-        }else{
+            dout.writeLong( birthDate.getTime() );
+        }
+        else
+        {
             dout.writeBoolean( false );
         }
-        
-        if(bloodGroup != null){
+
+        if ( bloodGroup != null )
+        {
             dout.writeBoolean( true );
-            dout.writeUTF(bloodGroup);
-        }else{
+            dout.writeUTF( bloodGroup );
+        }
+        else
+        {
             dout.writeBoolean( false );
         }
-        
-        if(registrationDate != null){
+
+        if ( registrationDate != null )
+        {
             dout.writeBoolean( true );
-            dout.writeLong(registrationDate.getTime());
-        }else{
+            dout.writeLong( registrationDate.getTime() );
+        }
+        else
+        {
             dout.writeBoolean( false );
         }
-        //End
-        
-        
-        // Write attribute which is used as group factor of beneficiary.
+
         /*
-         * False: no group factor True: with group factor
+         * Write attribute which is used as group factor of beneficiary - false:
+         * no group factor, true: with group factor
          */
         if ( this.getGroupAttribute() != null )
         {
@@ -264,10 +302,11 @@ public class Beneficiary
         {
             dout.writeUTF( att.getName() + ":" + att.getValue() );
         }
-        
-        //Write PatientIdentifier
+
+        // Write PatientIdentifier
         dout.writeInt( identifiers.size() );
-        for(PatientIdentifier each : identifiers){
+        for ( PatientIdentifier each : identifiers )
+        {
             each.serialize( dout );
         }
 
@@ -282,6 +321,5 @@ public class Beneficiary
         // FIXME: Get implementation from client
 
     }
-
 
 }

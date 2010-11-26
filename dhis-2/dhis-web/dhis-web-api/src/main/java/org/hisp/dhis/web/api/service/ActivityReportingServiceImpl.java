@@ -1,5 +1,32 @@
 package org.hisp.dhis.web.api.service;
 
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.activityplan.Activity;
 import org.hisp.dhis.activityplan.ActivityPlanService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -17,7 +46,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -25,7 +53,6 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.Beneficiary;
@@ -35,11 +62,16 @@ import org.hisp.dhis.web.api.model.Task;
 import org.hisp.dhis.web.api.model.comparator.ActivityComparator;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ActivityReportingServiceImpl
     implements ActivityReportingService
 {
+
+    private static Log log = LogFactory.getLog( ActivityReportingServiceImpl.class );
+
+    private static final boolean DEBUG = log.isDebugEnabled();
 
     private ActivityComparator activityComparator = new ActivityComparator();
 
@@ -59,11 +91,7 @@ public class ActivityReportingServiceImpl
 
     private org.hisp.dhis.patientdatavalue.PatientDataValueService dataValueService;
 
-    private CurrentUserService currentUserService;
-    
     private PatientMobileSettingService patientMobileSettingService;
-    
-//    private PatientIdentifierService patientIdentifierService;
 
     // -------------------------------------------------------------------------
     // MobileDataSetService
@@ -81,43 +109,49 @@ public class ActivityReportingServiceImpl
 
         List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
 
-        int i = 0;
+        if (DEBUG)
+            log.debug( "Filtering through " + allActivities.size() + " activities" );
+
         for ( Activity activity : allActivities )
         {
-            // there are error on db with patientattributeid 14, so I limit the
-            // patient to be downloaded
-            if ( i > 10 )
-            {
-                break;
-            }
-
             long dueTime = activity.getDueDate().getTime();
+            
             if ( to.isBefore( dueTime ) )
             {
                 continue;
             }
 
+
+            if (DEBUG)
+                log.debug( "Activity " + activity.getBeneficiary().getFirstName() + ", " + activity.getTask().getProgramStage().getName() );
+
             if ( from.isBefore( dueTime ) )
             {
                 items.add( getActivityModel( activity ) );
-                i++;
             }
             else if ( !activity.getTask().isCompleted() )
             {
                 org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity );
-                items.add( a );
                 a.setLate( true );
-                i++;
+                items.add( a );
             }
+            
+            if (items.size() > 10)
+                break;
         }
-        if ( !items.isEmpty() )
+
+        if (DEBUG)
+            log.debug( "Found " + items.size() + " current activities" );
+
+        if ( items.isEmpty() )
         {
-            Collections.sort( items, activityComparator );
-            plan.setActivitiesList( items );
+            return null;
         }
+
+        Collections.sort( items, activityComparator );
+        plan.setActivitiesList( items );
 
         return plan;
-
     }
 
     private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
@@ -151,10 +185,8 @@ public class ActivityReportingServiceImpl
         return task;
     }
 
-    private org.hisp.dhis.web.api.model.Beneficiary getBeneficiaryModel( Patient patient )
+    private Beneficiary getBeneficiaryModel( Patient patient )
     {
-        PatientMobileSetting setting = patientMobileSettingService.getCurrentSetting()==null?null:patientMobileSettingService.getCurrentSetting().iterator().next();
-        
         Beneficiary beneficiary = new Beneficiary();
 
         List<PatientAttribute> patientAtts = new ArrayList<PatientAttribute>();
@@ -163,33 +195,34 @@ public class ActivityReportingServiceImpl
         beneficiary.setFirstName( patient.getFirstName() );
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
-        int currentYear = new Date().getYear();
-        int age = currentYear - patient.getBirthDate().getYear();
-        beneficiary.setAge( age );
-        
-        // Set static attributes if it is required (gender, dobtype, birthdate, bloodgroup, registrationdate)
-        if(setting != null){
-            if(setting.getGender()){
+
+        Period period = new Period( new DateTime(patient.getBirthDate()), new DateTime());
+        beneficiary.setAge( period.getYears() );
+
+        PatientMobileSetting setting = getSettings();
+
+        if ( setting != null )
+        {
+            if ( setting.getGender() )
+            {
                 beneficiary.setGender( patient.getGender() );
             }
-            if(setting.getDobtype()){
+            if ( setting.getDobtype() )
+            {
                 beneficiary.setDobType( patient.getDobType() );
             }
-            if(setting.getBirthdate()){
+            if ( setting.getBirthdate() )
+            {
                 beneficiary.setBirthDate( patient.getBirthDate() );
             }
-            if(setting.getBloodgroup()){
+            if ( setting.getBloodgroup() )
+            {
                 beneficiary.setBloodGroup( patient.getBloodGroup() );
             }
-            if(setting.getRegistrationdate()){
+            if ( setting.getRegistrationdate() )
+            {
                 beneficiary.setRegistrationDate( patient.getRegistrationDate() );
             }
-        }else{
-            beneficiary.setGender(null);
-            beneficiary.setBirthDate( null );
-            beneficiary.setDobType( null );
-            beneficiary.setBloodGroup( null );
-            beneficiary.setRegistrationDate( null );
         }
 
         // Set attribute which is used to group beneficiary on mobile (only if
@@ -208,11 +241,13 @@ public class ActivityReportingServiceImpl
         patientAttribute = null;
 
         // Set all attributes
-        
+
         List<org.hisp.dhis.patient.PatientAttribute> atts;
-        if(setting != null){
+        if ( setting != null )
+        {
             atts = setting.getPatientAttributes();
-            for(org.hisp.dhis.patient.PatientAttribute each : atts){
+            for ( org.hisp.dhis.patient.PatientAttribute each : atts )
+            {
                 PatientAttributeValue value = patientAttValueService.getPatientAttributeValue( patient, each );
                 if ( value != null )
                 {
@@ -220,21 +255,34 @@ public class ActivityReportingServiceImpl
                 }
             }
         }
-        
+
         // Set all identifier
         Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
         List<org.hisp.dhis.web.api.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.web.api.model.PatientIdentifier>();
-        if(patientIdentifiers.size() > 0){
-            
-            for(PatientIdentifier each : patientIdentifiers){
-                identifiers.add( new org.hisp.dhis.web.api.model.PatientIdentifier(each.getIdentifierType().getName(), each.getIdentifier()) );
+        if ( patientIdentifiers.size() > 0 )
+        {
+
+            for ( PatientIdentifier id : patientIdentifiers )
+            {
+                identifiers.add( new org.hisp.dhis.web.api.model.PatientIdentifier( id.getIdentifierType().getName(),
+                    id.getIdentifier() ) );
             }
-            
+
             beneficiary.setIdentifiers( identifiers );
         }
-        
+
         beneficiary.setPatientAttValues( patientAtts );
         return beneficiary;
+    }
+
+    private PatientMobileSetting getSettings()
+    {
+        PatientMobileSetting setting = null;
+
+        Collection<PatientMobileSetting> currentSetting = patientMobileSettingService.getCurrentSetting();
+        if ( currentSetting != null && !currentSetting.isEmpty() )
+            setting = currentSetting.iterator().next();
+        return setting;
     }
 
     // -------------------------------------------------------------------------
@@ -337,7 +385,7 @@ public class ActivityReportingServiceImpl
 
                     dataValue = new PatientDataValue( programStageInstance, dataElement, cateOptCombo, orgUnit,
                         new Date(), value, false );
-                    
+
                     dataValueService.savePatientDataValue( dataValue );
                 }
             }
@@ -399,25 +447,9 @@ public class ActivityReportingServiceImpl
     }
 
     @Required
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
-
-    @Required
     public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
     {
         this.patientMobileSettingService = patientMobileSettingService;
     }
-
-//    @Required
-//    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-//    {
-//        this.patientIdentifierService = patientIdentifierService;
-//    }
-    
-    
-    
-    
 
 }

@@ -10,6 +10,6 @@ public class ActivityComparator implements Comparator<Activity>
     @Override
     public int compare( Activity act1, Activity act2 )
     {
-        return act2.getBeneficiary().getFirstName().compareToIgnoreCase( act1.getBeneficiary().getFirstName() );
+        return act2.getBeneficiary().getFullName().compareToIgnoreCase( act1.getBeneficiary().getFullName() );
     }
 }

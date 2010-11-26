@@ -8,20 +8,27 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
 import org.hisp.dhis.web.api.service.ActivityReportingService;
+import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
 import org.hisp.dhis.web.api.service.IProgramService;
 import org.springframework.beans.factory.annotation.Required;
 
-@Produces( DhisMediaType.MOBILE_SERIALIZED )
+@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
 @Consumes( DhisMediaType.MOBILE_SERIALIZED )
 public class OrgUnitResource
 {
+
+    private static Log log = LogFactory.getLog( ActivityReportingServiceImpl.class );
+
+    private static final boolean DEBUG = log.isDebugEnabled();
 
     private IProgramService programService;
 
@@ -31,8 +38,9 @@ public class OrgUnitResource
 
     // Set by parent resource
     private OrganisationUnit unit;
-    
-    public void setOrgUnit(OrganisationUnit unit) {
+
+    public void setOrgUnit( OrganisationUnit unit )
+    {
         this.unit = unit;
     }
 
@@ -42,9 +50,12 @@ public class OrgUnitResource
     {
         MobileModel mobileModel = new MobileModel();
 
+        if ( DEBUG )
+            log.debug( "Getting all resources for org unit " + unit.getName() );
+
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
         mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
-        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale )  );
+        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
 
         return mobileModel;
     }
@@ -58,7 +69,7 @@ public class OrgUnitResource
 
     @POST
     @Path( "dataSets" )
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces( MediaType.TEXT_PLAIN )
     public String saveDataSetValues( DataSetValue dataSetValue )
     {
         return facilityReportingService.saveDataSetValues( unit, dataSetValue );
@@ -66,14 +77,14 @@ public class OrgUnitResource
 
     @POST
     @Path( "activities" )
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces( MediaType.TEXT_PLAIN )
     public String saveActivityReport( ActivityValue activityValue )
     {
         return activityReportingService.saveActivityReport( unit, activityValue );
     }
 
     // Setters...
-    
+
     @Required
     public void setProgramService( IProgramService programService )
     {

@@ -127,7 +127,7 @@ public class FacilityReportingServiceImpl
         List<Section> sectionList = new ArrayList<Section>();
         ds.setSections( sectionList );
 
-        if ( sections.size() == 0 || sections == null )
+        if ( sections == null || sections.size() == 0 )
         {
             // Collection<org.hisp.dhis.dataelement.DataElement> dataElements =
             // new ArrayList<org.hisp.dhis.dataelement.DataElement>();
