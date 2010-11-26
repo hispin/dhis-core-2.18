@@ -297,6 +297,7 @@
         <sec:filter-chain pattern="/dhis-web-commons/security/**" filters="none"/>
         <sec:filter-chain pattern="/dhis-web-commons/javascripts/**" filters="none"/>
         <sec:filter-chain pattern="/dhis-web-commons/css/**" filters="none"/>
+        <sec:filter-chain pattern="/api/**/*" filters="httpSessionContextIntegrationFilter,basicAuthenticationRequiredFilter"/>
         <sec:filter-chain pattern="/**" filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,basicAuthenticationFilter,requiredLoginFilter"/>
         </sec:filter-chain-map>
     </bean>
@@ -350,6 +351,11 @@
 	</bean>
 
     <bean id="basicAuthenticationFilter" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+    </bean>
+
+    <bean id="basicAuthenticationRequiredFilter" class="org.hisp.dhis.security.filter.BasicAuthenticationRequiredFilter">
         <property name="authenticationManager" ref="authenticationManager" />
         <property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
     </bean>
