@@ -64,6 +64,10 @@
           		#end
           </select>
           </td>
+          <td style="width:30px; text-align:center">
+            <a href="javascript:moveUpSelectedOption( 'selectedList' )"><img src="../images/move_up.png"/></a><br/><br/>
+            <a href="javascript:moveDownSelectedOption( 'selectedList' )"><img src="../images/move_down.png"/></a><br/><br/>
+          </td>
 		</tr>
 		<tr>
         <td colspan="3">
