@@ -31,6 +31,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import javax.xml.bind.annotation.XmlAttachmentRef;
+import javax.xml.bind.annotation.XmlAttribute;
+
 
 public class OrgUnit implements DataStreamSerializable {
 
@@ -46,6 +49,7 @@ public class OrgUnit implements DataStreamSerializable {
     
     private String uploadActivityReportUrl;
     
+    @XmlAttribute
     public int getId()
     {
         return id;
@@ -56,6 +60,7 @@ public class OrgUnit implements DataStreamSerializable {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName()
     {
         return name;

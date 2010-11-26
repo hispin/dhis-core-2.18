@@ -53,7 +53,6 @@ public abstract class AbstractDataSerializableConsumer<T extends DataStreamSeria
     @Override
     public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
     {
-        System.out.println("****" + type.getName() + " - " + this.getClass().getName());
         return DataStreamSerializable.class.isAssignableFrom( type );
     }
 

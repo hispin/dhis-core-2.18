@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.model.OrgUnits;
@@ -25,14 +27,15 @@ public class OrgUnitsTest
         DataOutputStream dos = new DataOutputStream( baos );
         
         OrgUnits units = new OrgUnits();
-        units.add( unit );
+        units.setOrgUnits( Arrays.asList( new OrgUnit[] {unit} ));
         units.serialize( dos );
         dos.flush();
         OrgUnits units2 = new OrgUnits( );
         units2.deSerialize( new DataInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) );
-        assertEquals( 1, units2.size() );
+        List<OrgUnit> unitList = units2.getOrgUnits();
+        assertEquals( 1, unitList.size() );
 
-        OrgUnit unit2 = units2.get( 0 );
+        OrgUnit unit2 = unitList.get( 0 );
         assertEquals( unit.getName(), unit2.getName() );
         assertEquals( unit.getId(), unit2.getId() );
         

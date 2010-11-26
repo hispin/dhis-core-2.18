@@ -27,13 +27,16 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,7 +50,7 @@ import org.springframework.beans.factory.annotation.Required;
 import com.sun.jersey.api.core.ResourceContext;
 
 @Path( "/" )
-@Produces( DhisMediaType.MOBILE_SERIALIZED )
+@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
 public class MobileResource
 {
 
@@ -73,10 +76,14 @@ public class MobileResource
 
         OrgUnits orgUnits = new OrgUnits();
 
+        List<OrgUnit> unitList = new ArrayList<OrgUnit>();
+        
         for ( OrganisationUnit unit : units )
         {
-            orgUnits.add( getOrgUnit( unit ) );
+            unitList.add( getOrgUnit( unit ) );
         }
+
+        orgUnits.setOrgUnits( unitList );
 
         return orgUnits;
     }
