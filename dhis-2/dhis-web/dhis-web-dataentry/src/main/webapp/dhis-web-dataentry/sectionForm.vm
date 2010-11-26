@@ -1,4 +1,6 @@
 <input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
+<input type="hidden" value="$zeroValueSaveMode" id="zeroValueSaveMode"/>
+
 #set( $marker = 0 )
 #set( $tabIndex = 1 )
 
@@ -46,8 +48,7 @@
       #set( $count = 0 )
       #set( $mark = 0 )
       #set( $optionCombos = $orderdCategoryOptionCombos.get( $categoryComboId )  )
-      #foreach( $optionCombo in $optionCombos )
-      <span id="value[option${optionCombo.id}].name" class="hidden">${optionCombo.name}</span>
+      #foreach( $optionCombo in $optionCombos )<span id="value[option${optionCombo.id}].name" class="hidden">${optionCombo.name}</span>
       #end
       #foreach( $dataElement in $section.dataElements )
       #if( $mark == 1 )
@@ -104,10 +105,10 @@
             #end
 		  </select>
 	      #else
-          <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue(${dataElement.id},${optionCombo.id},'$encoder.jsEncode( ${dataElement.name} )',${zeroValueSaveMode})" ondblclick="viewHistory(${dataElement.id},${optionCombo.id},true)" #else disabled="disabled" #end onkeypress="return keyPress(event,this)" class="entryField" #if( $minMaxError )style="background-color:#ffcccc"#end tabindex="$tabIndex" #if( $locked )disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
+          <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled" #end onkeypress="return keyPress(event,this)" class="entryField" #if( $minMaxError )style="background-color:#ffcccc"#end tabindex="$tabIndex" #if( $locked )disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
           #end
         #else
-        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveValue(${dataElement.id},${optionCombo.id},'$encoder.jsEncode( ${dataElement.name} )',${zeroValueSaveMode})" ondblclick="viewHistory(${dataElement.id},${optionCombo.id},true)" #else disabled="disabled" #end onkeypress="return keyPress(event,this)" class="entryField" #if( $minMaxError )style="background-color:#ffcccc"#end tabindex="$tabIndex" #if( $locked )disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
+        <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveMultiDimensionalValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled" #end onkeypress="return keyPress(event,this)" class="entryField" #if( $minMaxError )style="background-color:#ffcccc"#end tabindex="$tabIndex" #if( $locked )disabled="disabled"#end #if( $greyedField )class="gray" disabled="disabled"#end>
         #end
       </td>
       #set( $tabIndex = $tabIndex + 1 )

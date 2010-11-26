@@ -3,6 +3,14 @@
 // Save
 // -----------------------------------------------------------------------------
 
+function saveVal( dataElementId, optionComboId )
+{
+	var zeroValueSaveMode = document.getElementById( 'zeroValueSaveMode' ).value;
+	var dataElementName = document.getElementById( 'value[' + dataElementId + '].name' ).innerHTML;
+	
+	saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode );
+}
+
 function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
