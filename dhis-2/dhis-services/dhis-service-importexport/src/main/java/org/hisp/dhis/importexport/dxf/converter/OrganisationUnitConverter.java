@@ -205,7 +205,16 @@ public class OrganisationUnitConverter
                     }
                     list.add( tuple );
                 }
-                unit.setCoordinatesFromList( list );
+                
+                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                {
+                    unit.setPointCoordinatesFromList( list );
+                }
+                
+                else
+                {
+                    unit.setMultiPolygonCoordinatesFromList( list );
+                }
                 
                 reader.moveToStartElement( FIELD_LAST_UPDATED );
                 unit.setLastUpdated( DateUtils.getMediumDate( reader.getElementValue() ) );

@@ -29,9 +29,6 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-
 /**
  * @author Jan Henrik Overland
  * @version $Id$
@@ -39,163 +36,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 public interface MappingStore
 {
     String ID = MappingStore.class.getName();
-
-    // -------------------------------------------------------------------------
-    // Map
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a Map.
-     * 
-     * @param map, the Map to add.
-     * @return a generated unique id of the added Map.
-     */
-    int addMap( Map map );
-
-    /**
-     * Updates a Map.
-     * 
-     * @param map, the Map to update.
-     */
-    void updateMap( Map map );
-
-    /**
-     * Deletes a Map.
-     * 
-     * @param map, the Map to delete.
-     */
-    void deleteMap( Map map );
-
-    /**
-     * Returns the Map with the given id.
-     * 
-     * @param id, the id of the map.
-     * @return the Map with the given id.
-     */
-    Map getMap( int id );
-
-    /**
-     * Returns the Map with the given map layer path.
-     * 
-     * @param id, the id of the map.
-     * @return a Map.
-     */
-    Map getMapByMapLayerPath( String mapLayerPath );
-
-    /**
-     * Returns a Collection<Map> of maps with the right type.
-     * 
-     * @param type, the map type.
-     * @return a Collection<Map>.
-     */
-    Collection<Map> getMapsByType( String type );
-
-    /**
-     * Returns a Collection<Map> of maps with the right sourceType.
-     * 
-     * @param type, the source type.
-     * @return a Collection<Map>.
-     */
-    Collection<Map> getMapsBySourceType( String sourceType );
-
-    /**
-     * Returns a Collection of all Maps.
-     * 
-     * @return a Collection of all Maps.
-     */
-    Collection<Map> getAllMaps();
-
-    /**
-     * Returns a Collection of all Maps at the given level.
-     * 
-     * @param organisationUnitLevel, the organisation unit level to return maps
-     *        at.
-     * @return a Collection with all Maps at the given level.
-     */
-    Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel );
-
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation
-    // -------------------------------------------------------------------------
-
-    /**
-     * Adds a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
-     *        add.
-     * @return a generated unique id of the added MapOrganisationUnitRelation.
-     */
-    int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Updates a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
-     *        update.
-     */
-    void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Deletes a MapOrganisationUnitRelation.
-     * 
-     * @param mapOrganisationUnitRelation, the MapOrganisationUnitRelation to
-     *        delete.
-     */
-    void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation );
-
-    /**
-     * Returns a MapOrganisationUnitRelation.
-     * 
-     * @param id, the id of the returned MapOrganisationUnitRelation.
-     * @return the MapOrganisationUnitRelation with the given id.
-     */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id );
-
-    /**
-     * Returns a Collection<MapOrganisationUnitRelation>.
-     * 
-     * @param map, the foreign Map in the MapOrganisationUnitRelation.
-     * @param map, the foreign OrganisationUnit in the
-     *        MapOrganisationUnitRelation.
-     * @return a Collection<MapOrganisationUnitRelation> which contains the
-     *         given Map and OrganisationUnit.
-     */
-    MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit );
-
-    /**
-     * Returns a Collection of MapOrganisationUnitRelations.
-     * 
-     * @return a Collection of all MapOrganisationUnitRelations.
-     */
-    Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations();
-
-    /**
-     * Returns a Collection of all MapOrganisationUnitRelations connected to the
-     * given Map.
-     * 
-     * @param map, the Map to which the MapOrganisationUnitRelations are
-     *        connected.
-     * @return a Collection of MapOrganisationUnitRelations connected to the
-     *         given Map.
-     */
-    Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map );
-
-    /**
-     * Deletes all MapOrganisationUnitRelations associated with the given
-     * OrganisationUnit.
-     * 
-     * @param organisationUnit the OrganisationUnit.
-     * @return the number of deleted objects.
-     */
-    int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit );
-
-    /**
-     * Deletes all MapOrganisationUnitRelations associated with the given Map.
-     * 
-     * @param map the Map.
-     * @return the number of deleted objects.
-     */
-    int deleteMapOrganisationUnitRelations( Map map );
 
     // -------------------------------------------------------------------------
     // MapLegend
@@ -245,8 +85,6 @@ public interface MappingStore
 
     MapView getMapViewByName( String name );
 
-    Collection<MapView> getMapViewsByMapSourceType( String mapSourceType );
-
     Collection<MapView> getAllMapViews();
 
     // -------------------------------------------------------------------------
@@ -264,8 +102,6 @@ public interface MappingStore
     MapLayer getMapLayerByName( String name );
 
     Collection<MapLayer> getMapLayersByType( String type );
-
-    Collection<MapLayer> getMapLayersByMapSourceType( String mapSourceType );
 
     MapLayer getMapLayerByMapSource( String mapSource );
 

@@ -33,7 +33,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: EncoderVelocityContext.java 5824 2008-10-07 18:00:24Z larshelg $
+ * @version $Id: EncoderVelocityContext.java 5824 2008-10-07 18:00:24Z larshelg
+ *          $
  */
 public class EncoderVelocityContext
     extends VelocityContext
@@ -83,11 +84,20 @@ public class EncoderVelocityContext
         {
             return StringEscapeUtils.escapeJavaScript( object );
         }
-        
+
+        /**
+         * Assumes " is used as quote char and not used inside values and does
+         * not escape '.
+         */
+        public String jsonEncode( String object )
+        {
+            return StringEscapeUtils.escapeJava( object );
+        }
+
         @Deprecated
         public String jsEscape( String object, String quoteChar )
         {
-            return jsEncode( object );            
+            return jsEncode( object );
         }
     }
 }

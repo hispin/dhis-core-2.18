@@ -1,4 +1,3 @@
 {
-    "mapSource": "$!encoder.jsEncode( ${mapSourceType} )",
-    "mapDateType": "$!encoder.jsEncode( ${mapDateType} )"
+    "mapDateType": "$!encoder.jsonEncode( ${mapDateType} )"
 }

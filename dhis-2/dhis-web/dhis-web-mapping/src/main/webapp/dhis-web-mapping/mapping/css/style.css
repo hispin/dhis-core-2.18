@@ -110,7 +110,6 @@
 .menu-layeroptions-wmslegend {
     background-image:url(../../../images/wmslegend.png);
 }
-
 .no-icon-menu .x-menu-item-icon {
     display: none;
 }
@@ -250,6 +249,19 @@
     height:14px;
 }
 
+/* Ext FieldSet */
+#boundary_fs {
+    margin-bottom:4px;
+}
+
+/* Ext ComboBox */
+.combo-disabled {
+    opacity:0.75;
+    color:#000000;
+    border-color:#9ca1b8;
+    cursor: default;
+}
+
 /* Ext Loading Mask */
 .x-mask-loading2 div  {
 	padding:5px 11px 6px 32px;
@@ -263,6 +275,12 @@
 	padding:0 0 8px 0;
 	font:normal 11px lucida sans unicode,arial;
 	color:#333;
+}
+.window-info-grey {
+	padding:5px 0px 0px 8px;
+	font:normal 11px lucida sans unicode,arial;
+	color:#333;
+    background-color:#f8f8f8;
 }
 .window-field-label-first {
 	padding:0 0 3px 3px;
@@ -367,4 +385,9 @@
 	padding:4px 0 4px 0;
 	font:normal 11px lucida sans unicode,arial;
 	color:#333;
+}
+
+/* GIS */
+.thematic-br {
+    padding:9px 0 0 0;
 }

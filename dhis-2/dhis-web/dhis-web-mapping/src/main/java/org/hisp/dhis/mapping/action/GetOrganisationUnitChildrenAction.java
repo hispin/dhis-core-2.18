@@ -101,13 +101,20 @@ public class GetOrganisationUnitChildrenAction
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( node );
         
+        int level = organisationUnitService.getLevelOfOrganisationUnit( unit ) + 1;
+        
         if ( unit != null )
         {
             units = new ArrayList<OrganisationUnit>( unit.getChildren() );
+            
+            for ( OrganisationUnit organisationUnit : units )
+            {
+                organisationUnit.setLevel( level );
+            }
 
             Collections.sort( units, organisationUnitComparator );
             
-            displayPropertyHandler.handle( units );            
+            displayPropertyHandler.handle( units );
         }
         
         return SUCCESS;

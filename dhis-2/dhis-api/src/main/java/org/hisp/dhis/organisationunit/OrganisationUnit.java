@@ -48,6 +48,9 @@ public class OrganisationUnit
     extends Source implements DimensionOptionElement
 {
     public static final String FEATURETYPE_NONE = "None";
+    public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
+    public static final String FEATURETYPE_POLYGON = "Polygon";
+    public static final String FEATURETYPE_POINT = "Point";
         
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
     private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
@@ -197,7 +200,7 @@ public class OrganisationUnit
         return list;
     }
     
-    public void setCoordinatesFromList( List<CoordinatesTuple> list )
+    public void setMultiPolygonCoordinatesFromList( List<CoordinatesTuple> list )
     {
         StringBuilder builder = new StringBuilder();
         
@@ -220,6 +223,24 @@ public class OrganisationUnit
             
             builder.deleteCharAt( builder.lastIndexOf( "," ) );
             builder.append( "]" );
+        }
+        
+        this.coordinates = StringUtils.trimToNull( builder.toString() );
+    }
+    
+    public void setPointCoordinatesFromList( List<CoordinatesTuple> list )
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        if ( list != null && list.size() > 0 )
+        {
+            for ( CoordinatesTuple tuple : list )
+            {
+                for ( String coordinates : tuple.getCoordinatesTuple() )
+                {
+                    builder.append( "[" + coordinates + "]" );
+                }
+            }
         }
         
         this.coordinates = StringUtils.trimToNull( builder.toString() );

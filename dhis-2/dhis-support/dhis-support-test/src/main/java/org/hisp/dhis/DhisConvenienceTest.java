@@ -69,7 +69,6 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.olap.OlapURL;
@@ -77,7 +76,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -812,19 +810,6 @@ public abstract class DhisConvenienceTest
         importDataValue.setStatus( status.name() );
 
         return importDataValue;
-    }
-
-    public static Map createMap( char uniqueCharacter, OrganisationUnit unit, OrganisationUnitLevel level )
-    {
-        Map map = new Map();
-
-        map.setName( "Map" + uniqueCharacter );
-        map.setOrganisationUnitLevel( level );
-        map.setMapLayerPath( "MapLayerPath" + uniqueCharacter );
-        map.setNameColumn( "NameColumn" + uniqueCharacter );
-        map.setStaticMapLayerPaths( new HashSet<String>() );
-
-        return map;
     }
 
     public static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )

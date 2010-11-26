@@ -1,6 +1,6 @@
-var GLOBALS = {};
+var GLOBAL = {};
 
-GLOBALS.conf = {
+GLOBAL.conf = {
 
 //  Ajax requests
 
@@ -67,7 +67,7 @@ GLOBALS.conf = {
     classify_by_quantils: 3
 };
 
-GLOBALS.util = {
+GLOBAL.util = {
     
     /* Detect mapview parameter in URL */
     getUrlParam: function(strParam) {
@@ -79,7 +79,7 @@ GLOBALS.util = {
             for (var iParam = 0; iParam < aQueryString.length; iParam++) {
                 if (aQueryString[iParam].indexOf(strParam.toLowerCase() + '=') > -1) {
                     var aParam = aQueryString[iParam].split('=');
-                    output  =aParam[1];
+                    output = aParam[1];
                     break;
                 }
             }
@@ -245,7 +245,7 @@ GLOBALS.util = {
     },
 
     getLegendsJSON: function() {
-        var widget = GLOBALS.vars.activePanel.isPolygon() ? choropleth : proportionalSymbol;
+        var widget = GLOBAL.vars.activePanel.isPolygon() ? choropleth : proportionalSymbol;
         var json = '{';
         json += '"legends":';
         json += '[';
@@ -260,53 +260,62 @@ GLOBALS.util = {
         return json;
     },
     
-    /* Backwards mapview compatibility */
-    mapViewNullSafe: function(mapView) {
-        mapView.mapValueType = GLOBALS.conf.map_value_type_indicator;
-        mapView.organisationUnitSelectionType = GLOBALS.conf.map_selection_type_parent;
-        mapView.mapLegendType = GLOBALS.conf.map_legend_type_automatic;
-        return mapView;
-    }    
+    setCurrentValue: function(cb, mv) {
+        if (cb.getValue() == cb.currentValue) {
+            return true;
+        }
+        else {
+            cb.currentValue = cb.getValue();
+            this.form.findField(mv).clearValue();
+            return false;
+        }
+    },
+    
+    setKeepPosition: function(cb) {
+        if (!cb.keepPosition) {
+            cb.keepPosition = true;
+        }
+    }
 };
 
-GLOBALS.vars = {    
+GLOBAL.vars = {    
     map: null,
     
     mapSourceType: {
         value: null,
         setDatabase: function() {
-            this.value = GLOBALS.conf.map_source_type_database;
+            this.value = GLOBAL.conf.map_source_type_database;
         },
         setGeojson: function() {
-            this.value = GLOBALS.conf.map_source_type_geojson;
+            this.value = GLOBAL.conf.map_source_type_geojson;
         },
         setShapefile: function() {
-            this.value = GLOBALS.conf.map_source_type_shapefile;
+            this.value = GLOBAL.conf.map_source_type_shapefile;
         },
         isDatabase: function() {
-            return this.value == GLOBALS.conf.map_source_type_database;
+            return this.value == GLOBAL.conf.map_source_type_database;
         },
         isGeojson: function() {
-            return this.value == GLOBALS.conf.map_source_type_geojson;
+            return this.value == GLOBAL.conf.map_source_type_geojson;
         },
         isShapefile: function() {
-            return this.value == GLOBALS.conf.map_source_type_shapefile;
+            return this.value == GLOBAL.conf.map_source_type_shapefile;
         }
     },
     
     mapDateType: {
         value: null,
         setFixed: function() {
-            this.value = GLOBALS.conf.map_date_type_fixed;
+            this.value = GLOBAL.conf.map_date_type_fixed;
         },
         setStartEnd: function() {
-            this.value = GLOBALS.conf.map_date_type_start_end;
+            this.value = GLOBAL.conf.map_date_type_start_end;
         },
         isFixed: function() {
-            return this.value == GLOBALS.conf.map_date_type_fixed;
+            return this.value == GLOBAL.conf.map_date_type_fixed;
         },
         isStartEnd: function() {
-            return this.value == GLOBALS.conf.map_date_type_start_end;
+            return this.value == GLOBAL.conf.map_date_type_start_end;
         }
     },
     
@@ -315,22 +324,22 @@ GLOBALS.vars = {
     activePanel: {
         value: null,
         setPolygon: function() {
-            this.value = GLOBALS.conf.thematicMap;
+            this.value = GLOBAL.conf.thematicMap;
         },
         setPoint: function() {
-            this.value = GLOBALS.conf.thematicMap2;
+            this.value = GLOBAL.conf.thematicMap2;
         },
         setAssignment: function() {
-            this.value = GLOBALS.conf.organisationUnitAssignment;
+            this.value = GLOBAL.conf.organisationUnitAssignment;
         },
         isPolygon: function() {
-            return this.value == GLOBALS.conf.thematicMap;
+            return this.value == GLOBAL.conf.thematicMap;
         },
         isPoint: function() {
-            return this.value == GLOBALS.conf.thematicMap2;
+            return this.value == GLOBAL.conf.thematicMap2;
         },
         isAssignment: function() {
-            return this.value == GLOBALS.conf.organisationUnitAssignment;
+            return this.value == GLOBAL.conf.organisationUnitAssignment;
         }
     },
     

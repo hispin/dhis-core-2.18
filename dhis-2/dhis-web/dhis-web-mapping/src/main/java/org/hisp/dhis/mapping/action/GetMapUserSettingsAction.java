@@ -27,9 +27,6 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
-import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_GEOJSON;
-import static org.hisp.dhis.mapping.MappingService.MAP_SOURCE_TYPE_DATABASE;
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
 
@@ -59,13 +56,6 @@ public class GetMapUserSettingsAction
     // Output
     // -------------------------------------------------------------------------
     
-    private String mapSourceType;
-
-    public String getMapSourceType()
-    {
-        return mapSourceType;
-    }
-    
     private String mapDateType;
     
     public String getMapDateType()
@@ -81,8 +71,6 @@ public class GetMapUserSettingsAction
     public String execute()
         throws Exception
     {
-        mapSourceType = (String) userSettingService.getUserSetting( KEY_MAP_SOURCE_TYPE, MAP_SOURCE_TYPE_DATABASE );
-        
         mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
         
         return SUCCESS;

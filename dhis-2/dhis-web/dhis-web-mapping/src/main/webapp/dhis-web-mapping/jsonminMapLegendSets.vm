@@ -3,7 +3,7 @@
 #foreach( $legendSet in $object )
   {
     "id": "$!{legendSet.id}",
-    "name": "$!encoder.jsEncode( ${legendSet.name} )"
+    "name": "$!encoder.jsonEncode( ${legendSet.name} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

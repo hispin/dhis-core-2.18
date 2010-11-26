@@ -31,6 +31,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
@@ -64,19 +66,15 @@ public class MapView
 
     private String endDate;
 
-    private String mapSourceType;
+    private OrganisationUnit parentOrganisationUnit;
 
-    private String organisationUnitSelectionType;
-
-    private String mapSource;
-
-    private transient String organisationUnitSelectionTypeName;
+    private OrganisationUnitLevel organisationUnitLevel;
 
     private String mapLegendType;
 
-    private int method;
+    private Integer method;
 
-    private int classes;
+    private Integer classes;
 
     private String bounds;
 
@@ -98,9 +96,9 @@ public class MapView
 
     public MapView( String name, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
         DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
-        Period period, String startDate, String endDate, String mapSourceType, String organisationUnitSelectionType,
-        String mapSource, String mapLegendType, int method, int classes, String bounds, String colorLow,
-        String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
+        Period period, String startDate, String endDate, OrganisationUnit parentOrganisationUnit,
+        OrganisationUnitLevel organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
+        String colorLow, String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.mapValueType = mapValueType;
@@ -113,9 +111,8 @@ public class MapView
         this.period = period;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.mapSourceType = mapSourceType;
-        this.organisationUnitSelectionType = organisationUnitSelectionType;
-        this.mapSource = mapSource;
+        this.parentOrganisationUnit = parentOrganisationUnit;
+        this.organisationUnitLevel = organisationUnitLevel;
         this.mapLegendType = mapLegendType;
         this.method = method;
         this.classes = classes;
@@ -294,44 +291,24 @@ public class MapView
         this.endDate = endDate;
     }
 
-    public String getMapSourceType()
+    public OrganisationUnit getParentOrganisationUnit()
     {
-        return mapSourceType;
+        return parentOrganisationUnit;
     }
 
-    public void setMapSourceType( String mapSourceType )
+    public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
     {
-        this.mapSourceType = mapSourceType;
+        this.parentOrganisationUnit = parentOrganisationUnit;
     }
 
-    public String getOrganisationUnitSelectionType()
+    public OrganisationUnitLevel getOrganisationUnitLevel()
     {
-        return organisationUnitSelectionType;
+        return organisationUnitLevel;
     }
 
-    public void setOrganisationUnitSelectionType( String organisationUnitSelectionType )
+    public void setOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel )
     {
-        this.organisationUnitSelectionType = organisationUnitSelectionType;
-    }
-
-    public String getMapSource()
-    {
-        return mapSource;
-    }
-
-    public void setMapSource( String mapSource )
-    {
-        this.mapSource = mapSource;
-    }
-
-    public String getOrganisationUnitSelectionTypeName()
-    {
-        return organisationUnitSelectionTypeName;
-    }
-
-    public void setOrganisationUnitSelectionTypeName( String organisationUnitSelectionTypeName )
-    {
-        this.organisationUnitSelectionTypeName = organisationUnitSelectionTypeName;
+        this.organisationUnitLevel = organisationUnitLevel;
     }
 
     public String getMapLegendType()
@@ -344,22 +321,22 @@ public class MapView
         this.mapLegendType = mapLegendType;
     }
 
-    public int getMethod()
+    public Integer getMethod()
     {
         return method;
     }
 
-    public void setMethod( int method )
+    public void setMethod( Integer method )
     {
         this.method = method;
     }
 
-    public int getClasses()
+    public Integer getClasses()
     {
         return classes;
     }
 
-    public void setClasses( int classes )
+    public void setClasses( Integer classes )
     {
         this.classes = classes;
     }

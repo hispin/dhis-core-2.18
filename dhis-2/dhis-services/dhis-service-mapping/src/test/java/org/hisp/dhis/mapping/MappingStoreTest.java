@@ -28,8 +28,6 @@ package org.hisp.dhis.mapping;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -72,10 +70,6 @@ public class MappingStoreTest
 
     private MapLegendSet mapLegendSet;
 
-    private Map mapA;
-
-    private Map mapB;
-
     // -------------------------------------------------------------------------
     // Fixture
     // -------------------------------------------------------------------------
@@ -97,9 +91,6 @@ public class MappingStoreTest
         organisationUnitService.addOrganisationUnit( organisationUnit );
         organisationUnitService.addOrganisationUnitLevel( organisationUnitLevel );
 
-        mapA = createMap( 'A', organisationUnit, organisationUnitLevel );
-        mapB = createMap( 'B', organisationUnit, organisationUnitLevel );
-
         indicatorGroup = createIndicatorGroup( 'A' );
         indicatorService.addIndicatorGroup( indicatorGroup );
 
@@ -118,52 +109,16 @@ public class MappingStoreTest
     }
 
     // -------------------------------------------------------------------------
-    // Map tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddGetMap()
-    {
-        int idA = mappingStore.addMap( mapA );
-        int idB = mappingStore.addMap( mapB );
-
-        assertEquals( mapA, mappingStore.getMap( idA ) );
-        assertEquals( mapB, mappingStore.getMap( idB ) );
-    }
-
-    @Test
-    public void testDeleteMap()
-    {
-        int idA = mappingStore.addMap( mapA );
-        int idB = mappingStore.addMap( mapB );
-
-        assertNotNull( mappingStore.getMap( idA ) );
-        assertNotNull( mappingStore.getMap( idB ) );
-
-        mappingStore.deleteMap( mapA );
-
-        assertNull( mappingStore.getMap( idA ) );
-        assertNotNull( mappingStore.getMap( idB ) );
-
-        mappingStore.deleteMap( mapB );
-
-        assertNull( mappingStore.getMap( idA ) );
-        assertNull( mappingStore.getMap( idB ) );
-    }
-
-    // -------------------------------------------------------------------------
     // MapView tests
     // -------------------------------------------------------------------------
 
     @Test
     public void testAddGetMapView()
     {
-        mappingStore.addMap( mapA );
-
         MapView mapView = new MapView( "MapViewA", MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
             new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
-            MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT, MappingService.MAP_SOURCE_TYPE_SHAPEFILE,
-            "sl_districts", MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, "1", "1", 1 );
+            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
+            mapLegendSet, "1", "1", 1 );
 
         int idA = mappingStore.addMapView( mapView );
 

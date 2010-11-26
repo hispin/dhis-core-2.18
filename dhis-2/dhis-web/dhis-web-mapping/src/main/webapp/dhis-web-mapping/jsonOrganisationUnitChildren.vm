@@ -1,23 +1,29 @@
 [
 #set( $size = $units.size() )
 #foreach( $unit in $units )
-{ 
-  "id": ${unit.id}, 
-  "text": "$encoder.jsEncode( ${unit.name} )",
-  "hasChildrenWithCoordinates":$!{unit.hasChildrenWithCoordinates()},
-  #if( $unit.hasChild() )
+{
+  "id": ${unit.id},
+  "level": ${unit.level},
+  "text": "$encoder.jsonEncode( ${unit.name} )",
+  "hasChildrenWithCoordinates": $!{unit.hasChildrenWithCoordinates()},
+#if( $unit.hasChild() )
   "children": [
   #set( $innerSize = $unit.children.size() )
-  #foreach( $child in $unit.children )
+  #set( $level = $unit.level + 1 )
+#foreach( $child in $unit.children )
   {
     "id": ${child.id},
-    "text": "$encoder.jsEncode( ${child.name} )",
-    "hasChildrenWithCoordinates":$!{child.hasChildrenWithCoordinates()}
+    "level": ${level},
+    "text": "$encoder.jsonEncode( ${child.name} )",
+    "hasChildrenWithCoordinates": $!{child.hasChildrenWithCoordinates()}#if( !$child.hasChild() ),
+    "leaf": true
+#end
+
   }#if( $velocityCount < $innerSize ),#end
-  #end
+#end
   ]
-  #else
-  "leaf": "true"
+#else
+  "leaf": true
   #end
 }#if( $velocityCount < $size ),#end
 #end

@@ -5,7 +5,7 @@
     "id": "$!{period.id}",
     "startDate": "$!format.formatDate( ${period.startDate} )",
     "endDate": "$!format.formatDate( ${period.endDate} )",
-    "name": "$!encoder.jsEncode( $format.formatPeriod($period) )"
+    "name": "$!encoder.jsonEncode( $format.formatPeriod($period) )"
   }#if( $velocityCount < $size ),#end    
 #end
 ] }

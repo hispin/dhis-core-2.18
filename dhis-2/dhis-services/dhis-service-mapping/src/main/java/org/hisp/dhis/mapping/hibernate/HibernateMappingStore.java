@@ -30,19 +30,14 @@ package org.hisp.dhis.mapping.hibernate;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.mapping.Map;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
-import org.hisp.dhis.mapping.MapOrganisationUnitRelation;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
  * @author Jan Henrik Overland
@@ -60,180 +55,6 @@ public class HibernateMappingStore
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
-    }
-
-    // -------------------------------------------------------------------------
-    // Map
-    // -------------------------------------------------------------------------
-
-    public int addMap( Map map )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( map );
-    }
-
-    public void updateMap( Map map )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( map );
-    }
-
-    public void deleteMap( Map map )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( map );
-    }
-
-    public Map getMap( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Map) session.get( Map.class, id );
-    }
-
-    public Map getMapByMapLayerPath( String mapLayerPath )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Map.class );
-
-        criteria.add( Restrictions.eq( "mapLayerPath", mapLayerPath ) );
-
-        return (Map) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Map> getMapsByType( String type )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Map.class );
-
-        criteria.add( Restrictions.eq( "type", type ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Map> getMapsBySourceType( String sourceType )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Map.class );
-
-        criteria.add( Restrictions.eq( "sourceType", sourceType ) );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Map> getAllMaps()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Map.class );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Map> getMapsAtLevel( OrganisationUnitLevel organisationUnitLevel )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Map.class );
-
-        criteria.add( Restrictions.eq( "organisationUnitLevel", organisationUnitLevel ) );
-
-        return criteria.list();
-    }
-
-    // -------------------------------------------------------------------------
-    // MapOrganisationUnitRelation
-    // -------------------------------------------------------------------------
-
-    public int addMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( mapOrganisationUnitRelation );
-    }
-
-    public void updateMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( mapOrganisationUnitRelation );
-    }
-
-    public void deleteMapOrganisationUnitRelation( MapOrganisationUnitRelation mapOrganisationUnitRelation )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( mapOrganisationUnitRelation );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (MapOrganisationUnitRelation) session.get( MapOrganisationUnitRelation.class, id );
-    }
-
-    public MapOrganisationUnitRelation getMapOrganisationUnitRelation( Map map, OrganisationUnit organisationUnit )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
-
-        criteria.add( Restrictions.eq( "map", map ) );
-        criteria.add( Restrictions.eq( "organisationUnit", organisationUnit ) );
-
-        return (MapOrganisationUnitRelation) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<MapOrganisationUnitRelation> getAllMapOrganisationUnitRelations()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
-
-        return criteria.list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<MapOrganisationUnitRelation> getMapOrganisationUnitRelationsByMap( Map map )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MapOrganisationUnitRelation.class );
-
-        criteria.add( Restrictions.eq( "map", map ) );
-
-        return criteria.list();
-    }
-
-    public int deleteMapOrganisationUnitRelations( OrganisationUnit organisationUnit )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session
-            .createQuery( "delete from OrganisationUnitRelation where organisationUnit = :organisationUnit" );
-
-        return query.setParameter( "organisationUnit", organisationUnit ).executeUpdate();
-    }
-
-    public int deleteMapOrganisationUnitRelations( Map map )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "delete from MapOrganisationUnitRelation where map = :map" );
-
-        return query.setParameter( "map", map ).executeUpdate();
     }
 
     // -------------------------------------------------------------------------

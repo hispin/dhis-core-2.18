@@ -37,6 +37,8 @@ public class AggregatedMapValue
     
     private String organisationUnitName;
     
+    private int organisationUnitLevel;
+    
     private int periodId;
     
     private double value;
@@ -99,6 +101,16 @@ public class AggregatedMapValue
     public void setOrganisationUnitName( String organisationUnitName )
     {
         this.organisationUnitName = organisationUnitName;
+    }
+
+    public int getOrganisationUnitLevel()
+    {
+        return organisationUnitLevel;
+    }
+
+    public void setOrganisationUnitLevel( int organisationUnitLevel )
+    {
+        this.organisationUnitLevel = organisationUnitLevel;
     }
 
     public int getPeriodId()

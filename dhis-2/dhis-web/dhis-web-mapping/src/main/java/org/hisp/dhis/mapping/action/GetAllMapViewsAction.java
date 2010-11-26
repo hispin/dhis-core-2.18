@@ -61,13 +61,6 @@ public class GetAllMapViewsAction
         this.mappingService = mappingService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -85,38 +78,9 @@ public class GetAllMapViewsAction
 
     public String execute()
     {
-        object = new ArrayList<MapView>( mappingService.getMapViewsByMapSourceType() );
+        object = new ArrayList<MapView>( mappingService.getAllMapViews() );
 
         Collections.sort( object, new MapViewNameComparator() );
-
-        for ( MapView mapView : object )
-        {
-            if ( mapView != null && mapView.getMapSourceType().equals( MappingService.MAP_SOURCE_TYPE_DATABASE ) )
-            {
-                if ( mapView.getOrganisationUnitSelectionType() == null
-                    || mapView.getOrganisationUnitSelectionType().trim().isEmpty()
-                    || mapView.getOrganisationUnitSelectionType().equals(
-                        MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT ) )
-                {
-                    mapView.setOrganisationUnitSelectionType( MappingService.ORGANISATION_UNIT_SELECTION_TYPE_PARENT );
-                    
-                    OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer
-                        .parseInt( mapView.getMapSource() ) );
-
-                    mapView.setOrganisationUnitSelectionTypeName( organisationUnit.getName() );
-                }
-
-                else if ( mapView.getOrganisationUnitSelectionType().equals(
-                    MappingService.ORGANISATION_UNIT_SELECTION_TYPE_LEVEL ) )
-                {
-                    OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( Integer
-                        .parseInt( mapView.getMapSource() ) );
-
-                    mapView.setOrganisationUnitSelectionTypeName( level.getName() );
-
-                }
-            }
-        }
 
         return SUCCESS;
     }

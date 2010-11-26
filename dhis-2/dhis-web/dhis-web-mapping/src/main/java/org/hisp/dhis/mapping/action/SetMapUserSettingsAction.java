@@ -27,7 +27,6 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_SOURCE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
 
 import org.hisp.dhis.user.UserSettingService;
@@ -55,13 +54,6 @@ public class SetMapUserSettingsAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private String mapSourceType;
-
-    public void setMapSourceType( String mapSourceType )
-    {
-        this.mapSourceType = mapSourceType;
-    }
     
     private String mapDateType;
 
@@ -77,8 +69,6 @@ public class SetMapUserSettingsAction
     public String execute()
         throws Exception
     {
-        userSettingService.saveUserSetting( KEY_MAP_SOURCE_TYPE, mapSourceType );
-        
         userSettingService.saveUserSetting( KEY_MAP_DATE_TYPE, mapDateType );
         
         return SUCCESS;

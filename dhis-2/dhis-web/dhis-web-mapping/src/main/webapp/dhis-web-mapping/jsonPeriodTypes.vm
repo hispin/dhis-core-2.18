@@ -3,7 +3,7 @@
 #foreach( $periodType in $object )
   {
     "id": "$!{periodType.id}",
-    "name": "$!encoder.jsEncode( $i18n.getString($periodType.name) )"
+    "name": "$!encoder.jsonEncode( $i18n.getString($periodType.name) )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }

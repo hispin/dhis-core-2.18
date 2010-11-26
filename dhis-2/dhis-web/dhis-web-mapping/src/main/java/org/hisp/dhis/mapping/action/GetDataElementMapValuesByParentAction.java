@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping;
+package org.hisp.dhis.mapping.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,46 +27,98 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.system.deletion.DeletionHandler;
+import java.util.Collection;
+
+import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.system.util.DateUtils;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Jan Henrik Overland
  * @version $Id$
  */
-public class MapDeletionHandler
-    extends DeletionHandler
+public class GetDataElementMapValuesByParentAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private MappingService mappingService;
 
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
     }
-
-    // -------------------------------------------------------------------------
-    // DeletionHandler implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    protected String getClassName()
-    {
-        return Map.class.getSimpleName();
-    }
     
-    @Override
-    public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        for ( Map map : mappingService.getAllMaps() )
+        this.id = id;
+    }
+
+    private Integer periodId;
+
+    public void setPeriodId( Integer periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private String startDate;
+    
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
+    private String endDate;
+
+    public void setEndDate( String endDate )
+    {
+        this.endDate = endDate;
+    }
+
+    private Integer parentId;    
+
+    public void setParentId( Integer parentId )
+    {
+        this.parentId = parentId;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private Collection<AggregatedMapValue> object;
+
+    public Collection<AggregatedMapValue> getObject()
+    {
+        return object;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
+    public String execute()
+        throws Exception
+    {
+        if ( periodId != null ) // Period
         {
-            if ( map.getOrganisationUnitLevel().equals( level ) )
-            {
-                mappingService.deleteMap( map );
-            }
+            object = mappingService.getDataElementMapValues( id, periodId, parentId );
         }
+        else // Start and end date
+        {
+            object = mappingService.getDataElementMapValues( id, DateUtils.getMediumDate( startDate ), DateUtils.getMediumDate( endDate ), parentId );
+        }
+        
+        return SUCCESS;
     }
 }

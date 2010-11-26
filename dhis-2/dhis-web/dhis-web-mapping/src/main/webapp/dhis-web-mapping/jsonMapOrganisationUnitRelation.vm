@@ -1,9 +1,9 @@
 { "mapOrganisationUnitRelation":
   [{
     "id": "$!{object.id}",
-    "map": "$!encoder.jsEncode( ${object.map.mapLayerPath} )",
-    "organisationUnit": "$!encoder.jsEncode( ${object.organisationUnit.name} )",
+    "map": "$!encoder.jsonEncode( ${object.map.mapLayerPath} )",
+    "organisationUnit": "$!encoder.jsonEncode( ${object.organisationUnit.name} )",
     "organisationUnitId": "$!{object.organisationUnit.id}",
-    "featureId": "$!encoder.jsEncode( ${object.featureId} )"
+    "featureId": "$!encoder.jsonEncode( ${object.featureId} )"
   }]
 }

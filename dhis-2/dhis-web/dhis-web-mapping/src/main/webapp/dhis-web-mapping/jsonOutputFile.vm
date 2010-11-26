@@ -1,1 +1,1 @@
-{ "file": "$!encoder.jsEncode( ${outputFile} )"}
+{ "file": "$!encoder.jsonEncode( ${outputFile} )"}

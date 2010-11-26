@@ -27,10 +27,17 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
+import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
 
-import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -38,7 +45,7 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetIndicatorMapValuesByMapAndFeatureIdAction
+public class InitializeAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -52,47 +59,40 @@ public class GetIndicatorMapValuesByMapAndFeatureIdAction
         this.mappingService = mappingService;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    private UserSettingService userSettingService;
 
-    private int indicatorId;
-
-    public void setIndicatorId( int indicatorId )
+    public void setUserSettingService( UserSettingService userSettingService )
     {
-        this.indicatorId = indicatorId;
-    }
-
-    private Collection<Integer> periodIds;
-
-    public void setPeriodIds( Collection<Integer> periodIds )
-    {
-        this.periodIds = periodIds;
-    }
-
-    private String mapLayerPath;
-
-    public void setMapLayerPath( String mapLayerPath )
-    {
-        this.mapLayerPath = mapLayerPath;
-    }
-    
-    private String featureId;
-
-    public void setFeatureId( String featureId )
-    {
-        this.featureId = featureId;
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Collection<AggregatedMapValue> object;
+    private Integer id;
 
-    public Collection<AggregatedMapValue> getObject()
+    public void setId( Integer id )
     {
-        return object;
+        this.id = id;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private MapView mapView;
+
+    public MapView getMapView()
+    {
+        return mapView;
+    }
+
+    private String mapDateType;
+
+    public String getMapDateType()
+    {
+        return mapDateType;
     }
 
     // -------------------------------------------------------------------------
@@ -102,7 +102,17 @@ public class GetIndicatorMapValuesByMapAndFeatureIdAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getAggregatedIndicatorMapValues( indicatorId, periodIds, mapLayerPath, featureId );
+        if ( id == null )
+        {
+            mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
+        }
+
+        else
+        {
+            mapView = mappingService.getMapView( id );
+            
+            mapDateType = mapView.getMapDateType();
+        }
 
         return SUCCESS;
     }
