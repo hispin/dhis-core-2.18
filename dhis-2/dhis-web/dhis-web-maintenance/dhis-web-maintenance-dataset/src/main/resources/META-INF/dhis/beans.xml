@@ -445,6 +445,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="selectionTreeManager">
 			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction"
