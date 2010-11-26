@@ -324,7 +324,7 @@ public class GenerateDataStatusResultAction
     public String execute()
         throws Exception
     {
-        
+        System.out.println("Inside Normal DtaaStatus Reult Action");
         orgUnitCount = 0;
         dataViewName = "";
 
@@ -440,10 +440,10 @@ public class GenerateDataStatusResultAction
         Period startPeriod = periodService.getPeriod( sDateLB );
         Period endPeriod = periodService.getPeriod( eDateLB );
 
-        PeriodType dataSetPeriodType = selDataSet.getPeriodType();        
-        periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType,
-            startPeriod.getStartDate(), endPeriod.getEndDate() ) );
-
+        PeriodType dataSetPeriodType = selDataSet.getPeriodType(); 
+        periodList = new ArrayList<Period>(periodService.getPeriodsBetweenDates( dataSetPeriodType,
+            startPeriod.getStartDate(), endPeriod.getEndDate() ));
+     
         periodInfo = "-1";
         for ( Period p : periodList )
             periodInfo += "," + p.getId();
@@ -489,6 +489,7 @@ public class GenerateDataStatusResultAction
             List<Integer> dsResults = new ArrayList<Integer>();
             while ( periodIterator.hasNext() )
             {
+                System.out.println("Inside period Iterator Loop");
                 p = (Period) periodIterator.next();
                 periodInfo = "" + p.getId();
 
@@ -508,6 +509,7 @@ public class GenerateDataStatusResultAction
                         query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
                             + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo
                             + ") and value <> 0";
+                        
                     }
                     else
                     {
@@ -515,6 +517,7 @@ public class GenerateDataStatusResultAction
                             + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ")";
                     }
 
+                    System.out.println("Used Query is :::::::" + query );
                     SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
 
                     if ( sqlResultSet.next() )

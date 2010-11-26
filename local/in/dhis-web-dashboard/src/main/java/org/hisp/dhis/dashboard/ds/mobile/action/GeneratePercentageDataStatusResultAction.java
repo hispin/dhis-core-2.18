@@ -1,29 +1,3 @@
-/*
- * Copyright (c) 2004-2010, University of Oslo
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
- *   specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package org.hisp.dhis.dashboard.ds.mobile.action;
 
 import java.util.ArrayList;
@@ -60,17 +34,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.opensymphony.xwork2.Action;
 
-/**
- * @author Mithilesh Kumar Thakur
- *
- * @version GenerateMobileDataStatusResultAction.java Nov 24, 2010 5:17:22 PM
- */
-public class GenerateMobileDataStatusResultAction
+public class GeneratePercentageDataStatusResultAction
 implements Action
 {
-    // ---------------------------------------------------------------
-    // Dependencies
-    // ---------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    //Dependencies
+    //--------------------------------------------------------------------------
     
     private JdbcTemplate jdbcTemplate;
 
@@ -146,9 +115,22 @@ implements Action
     {
         this.userStore = userStore;
     }
-    // ---------------------------------------------------------------
-    // Output Parameters
-    // ---------------------------------------------------------------
+    
+    //--------------------------------------------------------------------------
+    //Input/Output
+    //--------------------------------------------------------------------------
+    
+    private String percentage;
+    
+    public void setPercentage( String percentage )
+    {
+        this.percentage = percentage;
+    }
+
+    public String getPercentage()
+    {
+        return percentage;
+    }
 
     private Map<OrganisationUnit, List<Integer>> ouMapDataStatusResult;
 
@@ -191,7 +173,7 @@ implements Action
     {
         return results;
     }
-
+    
     private Map<DataSet, Map<OrganisationUnit, List<Integer>>> dataStatusResult;
 
     public Map<DataSet, Map<OrganisationUnit, List<Integer>>> getDataStatusResult()
@@ -233,13 +215,8 @@ implements Action
     {
         return userPhoneNo;
     }
+
     
-    // ---------------------------------------------------------------
-    // Input Parameters
-    // ---------------------------------------------------------------
-
-
-
     private String dsId;
 
     public void setDsId( String dsId )
@@ -362,6 +339,18 @@ implements Action
     {
         return periodNameList;
     }
+    
+    public String formLabel;
+
+    public String getFormLabel()
+    {
+        return formLabel;
+    }
+
+    public void setFormLabel( String formLabel )
+    {
+        this.formLabel = formLabel;
+    }
 
     String orgUnitInfo;
 
@@ -372,15 +361,13 @@ implements Action
     int orgUnitCount;
 
     private String dataViewName;
-
-    // ---------------------------------------------------------------
-    // Action Implementation
-    // ---------------------------------------------------------------
-//    @SuppressWarnings( { "deprecation", "unchecked" } )
+    
+    //--------------------------------------------------------------------------
+    //Action Implementation
+    //--------------------------------------------------------------------------
+    
     public String execute()
-        throws Exception
     {
-        System.out.println("Inside Mobile DataStatus Result Action");
         orgUnitCount = 0;
         dataViewName = "";
 
@@ -415,7 +402,6 @@ implements Action
         }
         else
         {
-            //System.out.println( "slectedDataSets is not empty" );
         }
         for ( String ds : selectedDataSets )
         {
@@ -530,6 +516,7 @@ implements Action
 
         while ( orgUnitListIterator.hasNext() )
         {
+            int flag = 1;
             o = (OrganisationUnit) orgUnitListIterator.next();
             
             // user phone no
@@ -546,8 +533,6 @@ implements Action
             }    
             
             ouMapUserPhoneNo.put( o, userPhoneNo );            
-            
-            
             
             orgUnitInfo = "" + o.getId();
 
@@ -575,45 +560,6 @@ implements Action
                 }
                 else if ( !dso.contains( o ) )
                 {
-                    orgUnitInfo = "-1";
-                    orgUnitCount = 0;
-                    getOrgUnitInfo( o, dso );
-
-                    if ( includeZeros == null )
-                    {
-                        query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
-                            + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo
-                            + ") and value <> 0";
-                    }
-                    else
-                    {
-                        query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (" + deInfo
-                            + ") AND sourceid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ")";
-                    }
-
-                    SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
-
-                    if ( sqlResultSet.next() )
-                    {
-                        try
-                        {
-                            //System.out.println( "Result is : \t" + sqlResultSet.getLong( 1 ) );
-                            dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1 * orgUnitCount)) * 100.0;
-                        }
-                        catch ( Exception e )
-                        {
-                            dataStatusPercentatge = 0.0;
-                        }
-                    }
-                    else
-                        dataStatusPercentatge = 0.0;
-
-                    if ( dataStatusPercentatge > 100.0 )
-                        dataStatusPercentatge = 100;
-
-                    dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
-                    dsResults.add( (int) dataStatusPercentatge );
                     continue;
                 }
 
@@ -651,13 +597,19 @@ implements Action
 
                 dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
 
-                dsResults.add( (int) dataStatusPercentatge );
+                if ( dataStatusPercentatge > Double.parseDouble( percentage ) )
+                {
+                    flag = 0;
+                }
             }
 
-            ouMapDataStatusResult.put( o, dsResults );
+            if( flag == 0 )
+            {
+                orgUnitListIterator.remove();
+            }
         }
-
-        // For Level Names
+        
+     // For Level Names
         String ouLevelNames[] = new String[organisationUnitService.getNumberOfOrganisationalLevels() + 1];
         for ( int i = 0; i < ouLevelNames.length; i++ )
         {
@@ -695,12 +647,13 @@ implements Action
         }// finally block end
 
         periodNameList = dashBoardService.getPeriodNamesByPeriodType( dataSetPeriodType, periodList );
-        
-        //System.out.println("OrgUnit Size is :" + ouMapDataStatusResult.size() );
-
+       
+        formLabel = "Data Entered Less than " + percentage + "% For dataset " + selDataSet + " From " + startPeriod.getStartDate() + " To " + endPeriod.getEndDate();
+       
         return SUCCESS;
     }
-
+    
+    
     public void getDataSetAssignedOrgUnitCount( OrganisationUnit organisationUnit, Set<Source> dso )
     {
         Collection<OrganisationUnit> children = organisationUnit.getChildren();
@@ -820,24 +773,6 @@ implements Action
         }
     }
 
-    private void getOrgUnitInfo( OrganisationUnit organisationUnit, Set<Source> dso )
-    {
-        Collection<OrganisationUnit> children = organisationUnit.getChildren();
-
-        Iterator<OrganisationUnit> childIterator = children.iterator();
-        OrganisationUnit child;
-        while ( childIterator.hasNext() )
-        {
-            child = childIterator.next();
-            if ( dso.contains( child ) )
-            {
-                orgUnitInfo += "," + child.getId();
-                orgUnitCount++;
-            }
-            getOrgUnitInfo( child, dso );
-        }
-    }
-
     private String getDEInfo( Collection<DataElement> dataElements )
     {
         StringBuffer deInfo = new StringBuffer( "-1" );
@@ -848,5 +783,4 @@ implements Action
         }
         return deInfo.toString();
     }
-
-}// class end
+}

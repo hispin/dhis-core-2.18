@@ -385,8 +385,8 @@ public class GenerateCommentsResultAction implements Action
                         
             dataSetPeriodType = ds.getPeriodType();
             
-            periodList = periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType,
-                startPeriod.getStartDate(), endPeriod.getEndDate() );
+            periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
+                endPeriod.getEndDate() );
             dataSetPeriods.put( ds, periodList );
 
             Iterator orgUnitListIterator = orgUnitList.iterator();

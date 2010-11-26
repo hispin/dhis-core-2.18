@@ -97,12 +97,12 @@ public class GenerateSurveyAnalysisDataAction
     }
 
     private SurveyDataValueService surveyDataValueService;
-    
+
     public void setSurveyDataValueService( SurveyDataValueService surveyDataValueService )
     {
         this.surveyDataValueService = surveyDataValueService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -110,7 +110,6 @@ public class GenerateSurveyAnalysisDataAction
         this.periodService = periodService;
     }
 
-    
     // ---------------------------------------------------------------
     // Input & Output
     // ---------------------------------------------------------------
@@ -247,14 +246,14 @@ public class GenerateSurveyAnalysisDataAction
     }
 
     private List<Survey> surveyList;
-    
+
     public List<Survey> getSurveyList()
     {
         return surveyList;
     }
 
     private List<SurveyDataValue> surveyDataValueList;
-    
+
     public List<SurveyDataValue> getSurveyDataValueList()
     {
         return surveyDataValueList;
@@ -266,7 +265,7 @@ public class GenerateSurveyAnalysisDataAction
         throws Exception
     {
         statementManager.initialise();
-        
+
         dataList = new ArrayList<List<String>>();
         xseriesList = new ArrayList<String>();
         yseriesList = new ArrayList<String>();
@@ -288,8 +287,8 @@ public class GenerateSurveyAnalysisDataAction
         Period startPeriod = periodService.getPeriod( sDateLB );
         Period endPeriod = periodService.getPeriod( eDateLB );
 
-        monthlyPeriods = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-            new MonthlyPeriodType(), startPeriod.getStartDate(), endPeriod.getEndDate() ) );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( new MonthlyPeriodType(),
+            startPeriod.getStartDate(), endPeriod.getEndDate() ) );
 
         data1 = getServiceValuesByPeriod();
         xAxis_Title = "Period";
@@ -304,17 +303,18 @@ public class GenerateSurveyAnalysisDataAction
 
         data2 = new Double[surveyList.size()][monthlyPeriods.size()];
         series2 = new String[surveyList.size()];
-        for( int i=0; i< data2.length; i++ )            
+        for ( int i = 0; i < data2.length; i++ )
         {
             Survey survey = surveyList.get( i );
-            SurveyDataValue surveyDataValue = surveyDataValueService.getSurveyDataValue( selectedOrgUnit, survey, selectedIndicator );
-            
+            SurveyDataValue surveyDataValue = surveyDataValueService.getSurveyDataValue( selectedOrgUnit, survey,
+                selectedIndicator );
+
             surveyDataValueList.add( surveyDataValue );
-            
+
             series2[i] = survey.getName();
-            for( int j=0; j < data2[i].length; j++ )
-            {                
-                if( surveyDataValue != null )
+            for ( int j = 0; j < data2[i].length; j++ )
+            {
+                if ( surveyDataValue != null )
                 {
                     data2[i][j] = Double.parseDouble( surveyDataValue.getValue() );
                 }
@@ -340,7 +340,7 @@ public class GenerateSurveyAnalysisDataAction
         session.setAttribute( "yAxisTitle", yAxis_Title );
 
         statementManager.destroy();
-        
+
         return SUCCESS;
     }// execute end
 
@@ -352,21 +352,21 @@ public class GenerateSurveyAnalysisDataAction
         int countForPeriodList = 0;
 
         series1 = new String[1];
-        //series2 = new String[1];
+        // series2 = new String[1];
         categories1 = new String[monthlyPeriods.size()];
         categories2 = new String[monthlyPeriods.size()];
 
         List<String> dataValues = new ArrayList<String>();
 
         series1[countForServiceList] = selectedIndicator.getName();
-        //series2[countForServiceList] = selectedIndicator.getName();
+        // series2[countForServiceList] = selectedIndicator.getName();
 
         yseriesList.add( selectedIndicator.getName() );
 
         Iterator<Period> periodListIterator = monthlyPeriods.iterator();
         countForPeriodList = 0;
         while ( periodListIterator.hasNext() )
-        {            
+        {
             Period p = (Period) periodListIterator.next();
 
             serviceValues[countForServiceList][countForPeriodList] = aggregationService.getAggregatedIndicatorValue(

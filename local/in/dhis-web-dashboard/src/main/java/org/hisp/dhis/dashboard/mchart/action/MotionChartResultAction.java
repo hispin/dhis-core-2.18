@@ -262,8 +262,7 @@ public class MotionChartResultAction
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
         PeriodType selPeriodType = periodService.getPeriodTypeByName( periodTypeLB );
-        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-            selPeriodType, sDate, eDate ) );
+        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( selPeriodType, sDate, eDate ));
 
         // Axis Info
         xAxisInd = indicatorService.getIndicator( Integer.parseInt( xaxisIndicator ) );

@@ -293,6 +293,13 @@
             <param name="stylesheets">css/StylesForTags.css</param>
        </action>
 		
+		<action name="percentageDataStatusResult"
+            class="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction">
+            <result name="success" type="velocity">/dhis-web-dashboard/percentageWiseDataStatusResult.vm</result>
+            <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+       </action>
+		
 	 <!--  for Mobile Group wise data status -->			
 	  <action name="groupWiseMobileDataStatusResult"
 		   class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction">
