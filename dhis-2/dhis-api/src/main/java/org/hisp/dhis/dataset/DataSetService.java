@@ -256,4 +256,12 @@ public interface DataSetService
      */
     Collection<FrequencyOverrideAssociation> getFrequencyOverrideAssociationsBySource( Source source );
 
+    int getDataSetCountByName( String name );
+    
+    Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );
+    
+    int getDataSetCount();
+    
+    Collection<DataSet> getDataSetsBetween(int first, int max );
+
 }

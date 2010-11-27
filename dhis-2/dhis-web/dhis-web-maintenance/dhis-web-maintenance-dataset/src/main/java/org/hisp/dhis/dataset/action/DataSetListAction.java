@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,15 +37,14 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Kristian
  * @version $Id: DataSetListAction.java 6256 2008-11-10 17:10:30Z larshelg $
  */
 public class DataSetListAction
-    implements Action
+    extends ActionPagingSupport<DataSet>
 {
     private List<DataSet> dataSets;
 
@@ -80,7 +81,23 @@ public class DataSetListAction
     {
         return dataSets;
     }
+    
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+    
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -88,7 +105,18 @@ public class DataSetListAction
     public String execute()
         throws Exception
     {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( dataSetService.getDataSetCountByName( key ) );
+            
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataSetService.getDataSetCount() );
+            
+            dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
         
         Collections.sort( dataSets, dataSetComparator );
         

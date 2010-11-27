@@ -313,4 +313,28 @@ public class DefaultDataSetService
     {
         return dataSetStore.getFrequencyOverrideAssociationsBySource( source );
     }
+
+    @Override
+    public int getDataSetCount()
+    {
+        return dataSetStore.getDataSetCount();
+    }
+
+    @Override
+    public int getDataSetCountByName( String name )
+    {
+        return dataSetStore.getDataSetCountByName( name );
+    }
+
+    @Override
+    public Collection<DataSet> getDataSetsBetween( int first, int max )
+    {
+        return dataSetStore.getDataSetsBetween( first, max );
+    }
+
+    @Override
+    public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
+    {
+        return dataSetStore.getDataSetsBetweenByName( name, first, max );
+    }
 }
