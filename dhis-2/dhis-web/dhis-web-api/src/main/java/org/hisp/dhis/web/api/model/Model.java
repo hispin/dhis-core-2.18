@@ -31,6 +31,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class Model
     implements DataStreamSerializable
 {
@@ -39,6 +41,7 @@ public class Model
 
     private String name;
 
+    @XmlAttribute
     public int getId()
     {
         return id;
@@ -49,6 +52,7 @@ public class Model
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName()
     {
         return name;

@@ -1,5 +1,9 @@
 package org.hisp.dhis.web.api.model;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -37,11 +41,6 @@ public class DataElement
 
     private ModelList categoryOptionCombos;
 
-    public DataElement()
-    {
-
-    }
-
     public String getType()
     {
         return type;
@@ -70,6 +69,35 @@ public class DataElement
     public void setCompulsory( boolean compulsory )
     {
         this.compulsory = compulsory;
+    }
+
+    public void serializeHack( DataOutputStream dout )
+        throws IOException
+    {
+        dout.writeInt( getId() );
+        dout.writeUTF( getName() );
+        dout.writeUTF( type );
+        dout.writeBoolean( compulsory );
+
+        if ( categoryOptionCombos == null )
+        {
+            dout.writeInt( 0 );
+            return;
+        }
+
+        List<Model> cateOptCombos = categoryOptionCombos.getModels();
+        if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
+        {
+            dout.writeInt( 0 );
+            return;
+        }
+
+        dout.writeInt( cateOptCombos.size() );
+        for ( Model each : cateOptCombos )
+        {
+            dout.writeInt( each.getId() );
+            dout.writeUTF( each.getName() );
+        }
     }
 
 }

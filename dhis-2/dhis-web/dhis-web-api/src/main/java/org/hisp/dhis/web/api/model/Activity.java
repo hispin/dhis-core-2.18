@@ -32,6 +32,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class Activity
     implements DataStreamSerializable
 {
@@ -74,6 +76,7 @@ public class Activity
         this.dueDate = dueDate;
     }
 
+    @XmlAttribute
     public boolean isLate()
     {
         return late;

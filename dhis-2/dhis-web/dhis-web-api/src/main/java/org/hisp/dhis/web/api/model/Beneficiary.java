@@ -34,23 +34,41 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType( XmlAccessType.FIELD )
 public class Beneficiary
     implements DataStreamSerializable
 {
+    @XmlAttribute
     private int id;
 
+    @XmlAttribute
     private String firstName;
 
+    @XmlAttribute
     private String middleName;
 
+    @XmlAttribute
     private String lastName;
 
+    @XmlAttribute
     private int age;
 
+    @XmlElementWrapper(name="attributes")
+    @XmlElement(name="attribute")
     private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;
 
+    @XmlElementWrapper( name = "identifiers" )
+    @XmlElement( name = "identifier" )
     private List<PatientIdentifier> identifiers;
 
     private String gender;

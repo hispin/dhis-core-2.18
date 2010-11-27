@@ -42,6 +42,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -56,8 +58,6 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.DataValue;
-import org.hisp.dhis.web.api.model.Model;
-import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
 import org.springframework.beans.factory.annotation.Required;
@@ -65,6 +65,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class FacilityReportingServiceImpl
     implements FacilityReportingService
 {
+    private static Log log = LogFactory.getLog( FacilityReportingServiceImpl.class );
 
     private DataElementSortOrderComparator dataElementComparator = new DataElementSortOrderComparator();
 
@@ -102,6 +103,12 @@ public class FacilityReportingServiceImpl
             {
                 datasets.add( getDataSetForLocale( dataSet.getId(), locale ) );
             }
+            else
+            {
+                log.warn( "Dataset '" + dataSet.getName()
+                    + "' set to be reported from mobile, but not of a supported period type: "
+                    + dataSet.getPeriodType().getName() );
+            }
         }
 
         return datasets;
@@ -113,24 +120,17 @@ public class FacilityReportingServiceImpl
         dataSet = i18n( i18nService, locale, dataSet );
         Set<org.hisp.dhis.dataset.Section> sections = dataSet.getSections();
 
-        // Collection<org.hisp.dhis.dataelement.DataElement> dataElements =
-        // dataSet.getDataElements();
-
-        // Mobile
         DataSet ds = new DataSet();
 
         ds.setId( dataSet.getId() );
         ds.setName( dataSet.getName() );
         ds.setPeriodType( dataSet.getPeriodType().getName() );
 
-        // Mobile
         List<Section> sectionList = new ArrayList<Section>();
         ds.setSections( sectionList );
 
         if ( sections == null || sections.size() == 0 )
         {
-            // Collection<org.hisp.dhis.dataelement.DataElement> dataElements =
-            // new ArrayList<org.hisp.dhis.dataelement.DataElement>();
             List<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>(
                 dataSet.getDataElements() );
 
@@ -138,88 +138,45 @@ public class FacilityReportingServiceImpl
 
             // Fake Section to store Data Elements
             Section section = new Section();
-
-            sectionList.add( section );
             section.setId( 0 );
             section.setName( "" );
 
-            List<DataElement> dataElementList = new ArrayList<DataElement>();
-            section.setDataElements( dataElementList );
-
-            for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
-            {
-                // Server DataElement
-                dataElement = i18n( i18nService, locale, dataElement );
-                Set<DataElementCategoryOptionCombo> deCatOptCombs = dataElement.getCategoryCombo().getOptionCombos();
-                // Client DataElement
-                ModelList deCateOptCombo = new ModelList();
-                List<Model> listCateOptCombo = new ArrayList<Model>();
-                deCateOptCombo.setModels( listCateOptCombo );
-
-                for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
-                {
-                    Model oneCateOptCombo = new Model();
-                    oneCateOptCombo.setId( oneCatOptCombo.getId() );
-                    oneCateOptCombo.setName( oneCatOptCombo.getName() );
-                    listCateOptCombo.add( oneCateOptCombo );
-                }
-
-                DataElement de = new DataElement();
-                de.setId( dataElement.getId() );
-                de.setName( dataElement.getName() );
-                de.setType( dataElement.getType() );
-                
-                //For facility Reporting, all data element are mandetory
-                de.setCompulsory( true );
-                de.setCategoryOptionCombos( deCateOptCombo );
-                dataElementList.add( de );
-            }
+            section.setDataElements( getDataElements( locale, dataElements ) );
+            sectionList.add( section );
         }
         else
         {
-            for ( org.hisp.dhis.dataset.Section each : sections )
+            for ( org.hisp.dhis.dataset.Section s : sections )
             {
-                List<org.hisp.dhis.dataelement.DataElement> dataElements = each.getDataElements();
-
                 Section section = new Section();
-                section.setId( each.getId() );
-                section.setName( each.getName() );
-                // Mobile
-                List<DataElement> dataElementList = new ArrayList<DataElement>();
+                section.setId( s.getId() );
+                section.setName( s.getName() );
+
+                List<DataElement> dataElementList = getDataElements( locale, s.getDataElements() );
                 section.setDataElements( dataElementList );
-
-                for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
-                {
-                    // Server DataElement
-                    dataElement = i18n( i18nService, locale, dataElement );
-                    Set<DataElementCategoryOptionCombo> deCatOptCombs = dataElement.getCategoryCombo()
-                        .getOptionCombos();
-
-                    // Client DataElement
-                    ModelList deCateOptCombo = new ModelList();
-                    List<Model> listCateOptCombo = new ArrayList<Model>();
-                    deCateOptCombo.setModels( listCateOptCombo );
-
-                    for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
-                    {
-                        Model oneCateOptCombo = new Model();
-                        oneCateOptCombo.setId( oneCatOptCombo.getId() );
-                        oneCateOptCombo.setName( oneCatOptCombo.getName() );
-                        listCateOptCombo.add( oneCateOptCombo );
-                    }
-
-                    DataElement de = new DataElement();
-                    de.setId( dataElement.getId() );
-                    de.setName( dataElement.getName() );
-                    de.setType( dataElement.getType() );
-                    de.setCategoryOptionCombos( deCateOptCombo );
-                    dataElementList.add( de );
-                }
                 sectionList.add( section );
             }
         }
 
         return ds;
+    }
+
+    private List<DataElement> getDataElements( Locale locale, List<org.hisp.dhis.dataelement.DataElement> dataElements )
+    {
+        List<DataElement> dataElementList = new ArrayList<DataElement>();
+
+        for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
+        {
+            dataElement = i18n( i18nService, locale, dataElement );
+
+            DataElement de = Mapping.getDataElement( dataElement );
+
+            // For facility Reporting, no data elements are mandetory
+            de.setCompulsory( false );
+
+            dataElementList.add( de );
+        }
+        return dataElementList;
     }
 
     @Override
@@ -248,17 +205,13 @@ public class FacilityReportingServiceImpl
             dataElementIds.add( dv.getId() );
         }
 
-        // if ( dataElements.size() != dataElementIds.size() )
-        // {
-        // return "INVALID_DATASET";
-        // }
-
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
         for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
         {
             if ( !dataElementIds.contains( dataElement.getId() ) )
             {
-                return "INVALID_DATASET";
+                log.info( "Dataset '" + dataSet.getName() + "' for org unit '" + unit.getName()
+                    + "' missing data element '" + dataElement.getName() + "'" );
             }
             dataElementMap.put( dataElement.getId(), dataElement );
         }
