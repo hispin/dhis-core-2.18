@@ -6,7 +6,7 @@
     <td style="vertical-align:top">
 		<table width="100%">
 			<tr>
-				<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"/></div></form></td>
+				<td>#filterDiv( "dataSet" )</td>
 				<td colspan="9" style="text-align:right">
 					<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataSetForm.action'" style="width:80px"/></a>
 					<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='addDataSetForm.action'" style="width:80px"/></a>
@@ -64,6 +64,9 @@
           </tbody>
 
         </table>
+		<p></p>
+  		#parse( "/dhis-web-commons/paging/paging.vm" )
+  		
     </td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 

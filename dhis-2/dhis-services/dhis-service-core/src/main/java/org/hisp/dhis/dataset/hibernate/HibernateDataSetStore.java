@@ -32,11 +32,11 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
 import org.hisp.dhis.dataset.FrequencyOverrideAssociation;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
@@ -47,18 +47,11 @@ import org.hisp.dhis.system.util.ConversionUtils;
  * @version $Id: HibernateDataSetStore.java 3303 2007-05-14 13:39:34Z larshelg $
  */
 public class HibernateDataSetStore
-    implements DataSetStore
+    extends HibernateGenericStore<DataSet> implements DataSetStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-    
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     private PeriodStore periodStore;
 
@@ -256,6 +249,30 @@ public class HibernateDataSetStore
         criteria.add( Restrictions.eq( "source", source ) );
 
         return criteria.list();
+    }
+
+    @Override
+    public int getDataSetCount()
+    {
+        return getCount();
+    }
+
+    @Override
+    public int getDataSetCountByName( String name )
+    {
+        return getCountByName( name );
+    }
+
+    @Override
+    public Collection<DataSet> getDataSetsBetween( int first, int max )
+    {
+        return getBetween( first, max );
+    }
+
+    @Override
+    public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
+    {
+        return getBetweenByName( name, first, max );
     }
 	
 }

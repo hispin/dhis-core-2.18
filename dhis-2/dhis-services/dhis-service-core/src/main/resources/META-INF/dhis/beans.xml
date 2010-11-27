@@ -85,6 +85,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	</bean>
 
 	<bean id="org.hisp.dhis.dataset.DataSetStore" class="org.hisp.dhis.dataset.hibernate.HibernateDataSetStore">
+		<property name="clazz" value="org.hisp.dhis.dataset.DataSet" />
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="periodStore" ref="org.hisp.dhis.period.PeriodStore" />
 	</bean>
