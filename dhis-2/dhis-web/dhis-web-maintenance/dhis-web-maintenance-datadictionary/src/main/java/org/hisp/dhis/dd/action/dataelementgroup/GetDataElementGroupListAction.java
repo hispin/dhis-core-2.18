@@ -87,7 +87,7 @@ public class GetDataElementGroupListAction
 
     public String execute()
     {
-        if ( isNotBlank( key) )
+        if ( isNotBlank( key ) )
         {
             this.paging = createPaging( dataElementService.getDataElementGroupCountByName( key ) );
             

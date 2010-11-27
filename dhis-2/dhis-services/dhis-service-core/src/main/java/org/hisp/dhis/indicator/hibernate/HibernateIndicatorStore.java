@@ -45,16 +45,6 @@ import org.hisp.dhis.indicator.IndicatorStore;
 public class HibernateIndicatorStore 
     extends HibernateGenericStore<Indicator> implements IndicatorStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // -------------------------------------------------------------------------
     // Indicator
@@ -167,5 +157,25 @@ public class HibernateIndicatorStore
         final String hql = "from Indicator d where d.groups.size = 0";
         
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
+    public int getIndicatorCount()
+    {
+        return getCount();
+    }
+
+    public int getIndicatorCountByName( String name )
+    {
+        return getCountByName( name );
+    }
+
+    public Collection<Indicator> getIndicatorsBetween( int first, int max )
+    {
+        return getBetween( first, max );
+    }
+
+    public Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max )
+    {
+        return getBetweenByName( name, first, max );
     }    
 }

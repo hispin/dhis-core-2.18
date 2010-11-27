@@ -4,10 +4,9 @@
 
 function criteriaChanged()
 {
-    var indicatorGroupId = getListValue( "indicatorGroupList" );
     var dataDictionaryId = getListValue( "dataDictionaryList" );
     
-    var url = "indicator.action?&dataDictionaryId=" + dataDictionaryId + "&indicatorGroupId=" + indicatorGroupId;
+    var url = "indicator.action?&dataDictionaryId=" + dataDictionaryId;
     
     window.location.href = url;
 }

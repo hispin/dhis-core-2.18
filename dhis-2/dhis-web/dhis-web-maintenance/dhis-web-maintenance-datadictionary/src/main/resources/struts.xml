@@ -318,6 +318,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js,javascript/denum.js</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="showSortIndicatorForm"

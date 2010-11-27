@@ -58,4 +58,12 @@ public interface IndicatorStore
     Collection<Indicator> getIndicatorsWithGroupSets();
     
     Collection<Indicator> getIndicatorsWithoutGroups();
+
+    int getIndicatorCountByName( String name );
+    
+    Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max );
+    
+    int getIndicatorCount();
+    
+    Collection<Indicator> getIndicatorsBetween(int first, int max );
 }

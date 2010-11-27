@@ -57,6 +57,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.indicator.IndicatorStore"
 		class="org.hisp.dhis.indicator.hibernate.HibernateIndicatorStore">
+		<property name="clazz" value="org.hisp.dhis.indicator.Indicator"/>
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
