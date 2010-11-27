@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.model;
+package org.hisp.dhis.web.api.service;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,49 +27,52 @@ package org.hisp.dhis.web.api.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import javax.xml.bind.annotation.XmlElement;
+import org.hisp.dhis.web.api.model.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.web.api.model.Model;
+import org.hisp.dhis.web.api.model.ModelList;
 
-public class Section
-    extends Model
+public class Mapping
 {
-
-    private List<DataElement> dataElements;
-
-    @XmlElement(name="dataElement")
-    public List<DataElement> getDataElements()
+    
+    public static DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
     {
-        return dataElements;
+        DataElement de = new DataElement();
+        de.setId( dataElement.getId() );
+        de.setName( dataElement.getName() );
+        de.setType( dataElement.getType() );
+        
+        de.setCategoryOptionCombos( getCategoryOptionCombos( dataElement ) );
+        return de;
     }
-
-    public void setDataElements( List<DataElement> des )
+    
+    public static ModelList getCategoryOptionCombos( org.hisp.dhis.dataelement.DataElement dataElement )
     {
-        this.dataElements = des;
-    }
+        Set<DataElementCategoryOptionCombo> deCatOptCombs = dataElement.getCategoryCombo().getOptionCombos();
 
-    @Override
-    public void serialize( DataOutputStream dout )
-        throws IOException
-    {
-        dout.writeInt( this.getId() );
-        dout.writeUTF( getName() );
+//        if ( deCatOptCombs.size() < 2 )
+//        {
+//            return null;
+//        }
 
-        if ( dataElements == null )
+        // Client DataElement
+        ModelList deCateOptCombo = new ModelList();
+        List<Model> listCateOptCombo = new ArrayList<Model>();
+        deCateOptCombo.setModels( listCateOptCombo );
+
+        for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
         {
-            dout.writeInt( 0 );
+            Model oneCateOptCombo = new Model();
+            oneCateOptCombo.setId( oneCatOptCombo.getId() );
+            oneCateOptCombo.setName( oneCatOptCombo.getName() );
+            listCateOptCombo.add( oneCateOptCombo );
         }
-        else
-        {
-            dout.writeInt( dataElements.size() );
-            for ( int i = 0; i < dataElements.size(); i++ )
-            {
-                DataElement de = (DataElement) dataElements.get( i );
-                de.serializeHack( dout );
-            }
-        }
+        return deCateOptCombo;
     }
 
+    
 }

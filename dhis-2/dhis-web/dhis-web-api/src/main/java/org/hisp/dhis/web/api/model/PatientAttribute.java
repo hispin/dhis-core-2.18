@@ -31,6 +31,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class PatientAttribute implements DataStreamSerializable
 {
     private String name;
@@ -47,6 +49,7 @@ public class PatientAttribute implements DataStreamSerializable
     {   
     }
     
+    @XmlAttribute
     public String getName()
     {
         return name;
@@ -57,6 +60,7 @@ public class PatientAttribute implements DataStreamSerializable
         this.name = name;
     }
 
+    @XmlAttribute
     public String getValue()
     {
         return value;
@@ -79,8 +83,8 @@ public class PatientAttribute implements DataStreamSerializable
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
-        
+        name = dataInputStream.readUTF();
+        value = dataInputStream.readUTF();
     }
 
 }
