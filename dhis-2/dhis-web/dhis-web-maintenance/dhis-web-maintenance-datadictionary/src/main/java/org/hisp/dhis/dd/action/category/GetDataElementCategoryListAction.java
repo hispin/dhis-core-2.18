@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
 
@@ -80,12 +79,11 @@ public class GetDataElementCategoryListAction
 
     public String execute()
     {
-        defaultCategory = dataElementCategoryService
-            .getDataElementCategoryByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
+        defaultCategory = dataElementCategoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
 
         dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
             .getAllDataElementCategories() );
-        
+
         Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
 
         return SUCCESS;

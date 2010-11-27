@@ -66,16 +66,26 @@ public class GetConceptListAction
         return concepts;
     }
 
+    private Concept defaultConcept;
+
+    public Concept getDefaultConcept()
+    {
+        return defaultConcept;
+    }
+
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
+        defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
+        
         concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
 
         Collections.sort( concepts, new ConceptNameComparator() );
 
         return SUCCESS;
     }
+
 }
