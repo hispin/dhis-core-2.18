@@ -845,7 +845,7 @@
                     }
                     
                     if (!GLOBAL.util.validateInputNameLength(mln)) {
-                        Ext.message.msg(false, i18n_name_can_not_longer_than_25);
+                        Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
                         return;
                     }
                     
@@ -1554,8 +1554,8 @@
 						return;
 					}
 					
-					if (GLOBAL.util.validateInputNameLength(mln)) {
-						Ext.message.msg(false, i18n_overlay_name_cannot_be_longer_than_25_characters);
+					if (!GLOBAL.util.validateInputNameLength(mln)) {
+						Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
 						return;
 					}
                     
@@ -1729,8 +1729,8 @@
 						return;
 					}
 					
-					if (GLOBAL.util.validateInputNameLength(mlbn)) {
-						Ext.message.msg(false, i18n_baselayer_name_cannot_be_longer_than_25_characters);
+					if (!GLOBAL.util.validateInputNameLength(mlbn)) {
+						Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
 						return;
 					}
                     
