@@ -6,7 +6,7 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-					<td>$i18n.getString( "filter_by_name" ): <form style="display:inline" action="none" onsubmit="return false"><div style="inline"><input type="text" onkeyup="filterValues( this.value )"></div></form></td>
+					<td>#filterDiv( "indicator" )</td>
 					<td>$i18n.getString( "select_data_dictionary" ):
 						<div style="inline">
 							<select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:140px">
@@ -17,17 +17,7 @@
 							</select>
 						</div>
 					</td>
-                    <td>$i18n.getString( "filter_by_group_view_all" ):
-                        <div style="inline">
-                            <select id="indicatorGroupList" name="indicatorGroupList" onchange="criteriaChanged()" style="min-width:200px">
-                                <option value="null">[ $i18n.getString( "all" ) ]</option>
-                                #foreach( $indicatorGroup in $indicatorGroups )
-                                <option value="$indicatorGroup.id" #if ( $indicatorGroup.id == $indicatorGroupId ) selected="selected"#end>$indicatorGroup.name</option>
-                                #end
-                            </select>
-                        </div>
-                    </td>					
-					<td colspan="4" style="text-align:right">
+					<td style="text-align:right">
                         <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'indicator' );" style="width:80px"/>
 						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortIndicatorForm.action'" style="width:80px"/>
 					    #if ( $dataDictionaryMode == "extended" )
@@ -69,6 +59,8 @@
 				#end
 				</tbody>
 			</table>
+			<p></p>
+	  		#parse( "/dhis-web-commons/paging/paging.vm" )
 
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">

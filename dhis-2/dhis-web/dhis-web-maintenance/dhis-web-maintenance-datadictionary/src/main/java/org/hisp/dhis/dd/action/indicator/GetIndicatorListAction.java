@@ -27,24 +27,21 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -52,7 +49,7 @@ import com.opensymphony.xwork2.Action;
  *          ch_bharath1 $
  */
 public class GetIndicatorListAction
-    implements Action
+extends ActionPagingSupport<Indicator>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -119,13 +116,6 @@ public class GetIndicatorListAction
         return dataDictionaries;
     }
 
-    private List<IndicatorGroup> indicatorGroups;
-
-    public List<IndicatorGroup> getIndicatorGroups()
-    {
-        return indicatorGroups;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -142,16 +132,16 @@ public class GetIndicatorListAction
         this.dataDictionaryId = dataDictionaryId;
     }
 
-    private Integer indicatorGroupId;
-
-    public Integer getIndicatorGroupId()
+    private String key;
+    
+    public String getKey()
     {
-        return indicatorGroupId;
+        return key;
     }
 
-    public void setIndicatorGroupId( Integer indicatorGroupId )
+    public void setKey( String key )
     {
-        this.indicatorGroupId = indicatorGroupId;
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -176,10 +166,6 @@ public class GetIndicatorListAction
             dataDictionaryModeManager.setCurrentDataDictionary( dataDictionaryId );
         }
         
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
 
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
@@ -188,25 +174,25 @@ public class GetIndicatorListAction
         // Criteria
         // -------------------------------------------------------------------------
 
-        if ( dataDictionaryId != null && indicatorGroupId == null )
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else if ( dataDictionaryId != null )
         {
             indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
-        }
-        else if ( dataDictionaryId == null && indicatorGroupId != null )
-        {
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
-        }
-        else if ( dataDictionaryId != null && indicatorGroupId != null )
-        {
-            Collection<Indicator> dictionary = dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators();
-
-            Collection<Indicator> members = indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers();
-
-            indicators = new ArrayList<Indicator>( CollectionUtils.intersection( dictionary, members ) );
+            
+            this.paging = createPaging( indicators.size() );
+            
+            indicators = getBlockElement( indicators, paging.getStartPage(), paging.getEndPos() );
         }
         else
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+            this.paging = createPaging( indicatorService.getIndicatorCount() );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
         Collections.sort( indicators, indicatorComparator );

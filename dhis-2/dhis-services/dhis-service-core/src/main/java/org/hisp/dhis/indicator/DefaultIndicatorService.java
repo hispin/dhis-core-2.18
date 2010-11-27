@@ -175,6 +175,26 @@ public class DefaultIndicatorService
     {
         return i18n( i18nService, indicatorStore.getIndicatorsWithoutGroups() );
     }
+
+    public int getIndicatorCount()
+    {
+        return indicatorStore.getIndicatorCount();
+    }
+
+    public int getIndicatorCountByName( String name )
+    {
+        return indicatorStore.getIndicatorCountByName( name );
+    }
+
+    public Collection<Indicator> getIndicatorsBetween( int first, int max )
+    {
+        return i18n( i18nService, indicatorStore.getIndicatorsBetween( first, max ) );
+    }
+
+    public Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, indicatorStore.getIndicatorsBetweenByName( name, first, max ) );
+    }
     
     // -------------------------------------------------------------------------
     // IndicatorType
@@ -369,4 +389,5 @@ public class DefaultIndicatorService
                 }
             } );     
     }
+
 }
