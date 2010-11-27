@@ -25,7 +25,10 @@ function organisationUnitReceived( unitElement )
     setInnerHTML( 'shortNameField', getElementValue( unitElement, 'shortName' ) );
     setInnerHTML( 'openingDateField', getElementValue( unitElement, 'openingDate' ) );
     
-    var closedDate = getElementValue( unitElement, 'closedDate' );
+    var orgUnitCode = getElementValue( unitElement, 'code' );
+    setInnerHTML( 'codeField', orgUnitCode ? orgUnitCode : '[' + none + ']' );
+	
+	var closedDate = getElementValue( unitElement, 'closedDate' );
     setInnerHTML( 'closedDateField', closedDate ? closedDate : '[' + none + ']' );
 
     var commentValue = getElementValue( unitElement, 'comment' );
