@@ -43,6 +43,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>botswana.png</value>
         </entry>
         <entry>
+          <key><value>burkina_faso</value></key>
+          <value>burkina_faso.png</value>
+        </entry>
+        <entry>
           <key><value>ethiopia</value></key>
           <value>ethiopia.png</value>
         </entry>
@@ -53,6 +57,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>ghana</value></key>
           <value>ghana.png</value>
+        </entry>
+        <entry>
+          <key><value>guinea</value></key>
+          <value>guinea.png</value>
+        </entry>
+        <entry>
+          <key><value>guinea_bissau</value></key>
+          <value>guinea_bissau.png</value>
         </entry>
         <entry>
           <key><value>india</value></key>
@@ -73,6 +85,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>lesotho</value></key>
           <value>lesotho.png</value>
+        </entry>
+        <entry>
+          <key><value>liberia</value></key>
+          <value>liberia.png</value>
         </entry>
         <entry>
           <key><value>malawi</value></key>
@@ -97,6 +113,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>norway</value></key>
           <value>norway.png</value>
+        </entry>
+        <entry>
+          <key><value>rwanda</value></key>
+          <value>rwanda.png</value>
+        </entry>
+        <entry>
+          <key><value>senegal</value></key>
+          <value>senegal.png</value>
         </entry>
         <entry>
           <key><value>sierra_leone</value></key>
@@ -125,6 +149,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>tanzania</value></key>
           <value>tanzania.png</value>
+        </entry>
+        <entry>
+          <key><value>togo</value></key>
+          <value>togo.png</value>
         </entry>
         <entry>
           <key><value>uganda</value></key>
