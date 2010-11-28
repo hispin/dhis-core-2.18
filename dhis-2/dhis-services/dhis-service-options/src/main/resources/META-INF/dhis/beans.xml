@@ -210,10 +210,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>vista/vista.css</value>
         </entry>
         <entry>
-          <key><value>south_africa</value></key>
-          <value>south_africa/south_africa.css</value>
-        </entry>
-        <entry>
           <key><value>india</value></key>
           <value>india/india.css</value>
         </entry>

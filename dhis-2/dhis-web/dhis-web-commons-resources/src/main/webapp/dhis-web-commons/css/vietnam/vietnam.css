@@ -402,6 +402,8 @@ div#menuDropDown3
   padding-bottom: 20px;
   padding-left: 5px;
   padding-right: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 	
 .introItem
@@ -409,6 +411,8 @@ div#menuDropDown3
   padding: 15px;
   cursor: pointer;
   border: 1px solid #d5efd5;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 .introItemHeader
@@ -416,3 +420,4 @@ div#menuDropDown3
   color: #3c533c;
   font-weight: bold;
 }
+
