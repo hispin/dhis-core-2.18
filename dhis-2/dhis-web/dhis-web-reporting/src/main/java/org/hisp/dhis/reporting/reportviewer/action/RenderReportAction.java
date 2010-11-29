@@ -28,6 +28,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  */
 
 import java.io.OutputStream;
+import java.sql.Connection;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,11 +38,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
+import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.StreamActionSupport;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -61,11 +62,11 @@ public class RenderReportAction
         this.reportService = reportService;
     }
 
-    private JdbcTemplate jdbcTemplate;
+    private StatementManager statementManager;
 
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    public void setStatementManager( StatementManager statementManager )
     {
-        this.jdbcTemplate = jdbcTemplate;
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -91,9 +92,23 @@ public class RenderReportAction
         
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
         
-        JasperPrint print = JasperFillManager.fillReport( jasperReport, null, jdbcTemplate.getDataSource().getConnection() );
+        Connection connection = statementManager.getHolder().getConnection();
         
-        JasperExportManager.exportReportToPdfStream( print, out );
+        JasperPrint print = null;
+        
+        try
+        {
+            print = JasperFillManager.fillReport( jasperReport, null, connection );
+        }
+        finally
+        {        
+            connection.close();
+        }
+        
+        if ( print != null )
+        {
+            JasperExportManager.exportReportToPdfStream( print, out );
+        }
                 
         return SUCCESS;
     }

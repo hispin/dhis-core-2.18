@@ -16,6 +16,12 @@ var tempUrl = null;
 
 function runAndViewReport( reportId, reportUrl )
 {
+	if ( $( '#selectionTree' ).length && paramOrganisationUnit == null )
+	{
+		setMessage( i18n_please_select_unit );
+		return false;
+	}
+	
     setWaitMessage( i18n_please_wait );
         
     var url = "createTable.action?id=" + reportId + "&doDataMart=" + getListValue( "doDataMart" ) + "&mode=report";
