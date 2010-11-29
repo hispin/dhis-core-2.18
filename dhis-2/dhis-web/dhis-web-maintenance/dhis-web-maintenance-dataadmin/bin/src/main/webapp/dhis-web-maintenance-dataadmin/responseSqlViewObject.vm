@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sqlViewObject>
-	<name>$!encoder.xmlEncode( $sqlViewObject.name )</name>
-	<description>$!encoder.xmlEncode( $sqlViewObject.description )</description>
-	<sqlquery>$!encoder.xmlEncode( $sqlViewObject.sqlQuery )</sqlquery>
-</sqlViewObject>
