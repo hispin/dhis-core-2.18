@@ -54,12 +54,12 @@
     <!-- OrganisationUnit -->
     
     #if ( $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
-    
+        
 	<tr>
         <th>$i18n.getString( "organisation_unit" )</th>
     </tr>
     <td>
-		<div id="selectionTree" style="width:325px; height:270px"></div>	            
+		<div id="selectionTree" style="width:325px; height:240px"></div>	            
 		<script type="text/javascript">
 			selectionTreeSelection.setMultipleSelectionAllowed( false );
 			selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );

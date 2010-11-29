@@ -374,8 +374,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
 	<property name="reportService" 
 	  ref="org.hisp.dhis.report.ReportService"/>
-    <property name="jdbcTemplate"
-      ref="jdbcTemplate"/>
+    <property name="statementManager"
+      ref="statementManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportDesignAction"

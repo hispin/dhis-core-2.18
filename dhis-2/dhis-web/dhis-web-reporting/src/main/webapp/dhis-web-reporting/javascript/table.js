@@ -12,6 +12,12 @@ function paramOrganisationUnitSet( id )
 
 function createTable( tableId )
 {
+	if ( $( '#selectionTree' ).length && paramOrganisationUnit == null )
+	{
+		setMessage( i18n_please_select_unit );
+		return false;
+	}
+	
     var url = "createTable.action?id=" + tableId + "&doDataMart=" + getListValue( "doDataMart" ) + "&mode=table";
     
     if ( document.getElementById( "reportingPeriod" ) != null )
