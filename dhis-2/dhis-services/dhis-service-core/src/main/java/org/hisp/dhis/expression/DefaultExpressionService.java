@@ -68,6 +68,7 @@ public class DefaultExpressionService
     private static final String NULL_REPLACEMENT = "0";
     private static final String FORMULA_EXPRESSION = "(\\[\\d+\\" + SEPARATOR + "\\d+\\])";
     private static final String DESCRIPTION_EXPRESSION = "\\[.+?\\" + SEPARATOR + ".+?\\]";
+    private static final String SPACE = " ";
     
     private final Pattern FORMULA_PATTERN = Pattern.compile( FORMULA_EXPRESSION );
     private final Pattern DESCRIPTION_PATTERN = Pattern.compile( DESCRIPTION_EXPRESSION );
@@ -354,7 +355,7 @@ public class DefaultExpressionService
                 
                 if ( !categoryOptionCombo.isDefault() )
                 {
-                    replaceString += SEPARATOR + categoryOptionCombo.getName();
+                    replaceString += SPACE + categoryOptionCombo.getName();
                 }
 
                 matcher.appendReplacement( buffer, replaceString );
