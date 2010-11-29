@@ -61,15 +61,7 @@
       <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
-    <action name="sortOrderSection" class="org.hisp.dhis.dataset.action.section.SortOrderSection">
-      <result name="input" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/sortOrderSection.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <result name="success" type="chain">section</result>
-      <param name="javascripts">javascript/dataSet.js</param>
-    </action>
-	  
+    	  
 	<action name="getSection"
       class="org.hisp.dhis.dataset.action.section.GetSectionAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSectionObject.vm</result>
@@ -105,6 +97,19 @@
       class="org.hisp.dhis.dataset.action.section.SaveSectionGreyStatusAction">
       <result name="success" type="velocity">status.vm</result>     
 	  <result name="onExceptionReturn">plainTextError</result>
+    </action>
+    
+    <action name="showSortSectionForm"
+      class="org.hisp.dhis.dataset.action.section.GetSectionListSortOrderAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/sortSectionForm.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+      <param name="javascripts">javascript/dataSet.js,javascript/section.js</param>
+    </action>
+    
+    <action name="saveSectionSortOrder"
+      class="org.hisp.dhis.dataset.action.section.SaveSectionSortOrderAction">
+      <result name="success" type="redirect">section.action</result>
     </action>
 	    
     <!-- Sort order -->

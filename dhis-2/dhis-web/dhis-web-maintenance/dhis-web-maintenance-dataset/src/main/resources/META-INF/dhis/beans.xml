@@ -141,6 +141,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>		
 	</bean>
 	
+	<bean id="org.hisp.dhis.dataset.action.section.SaveSectionSortOrderAction"
+		class="org.hisp.dhis.dataset.action.section.SaveSectionSortOrderAction"
+		scope="prototype">
+		<property name="sectionService">
+			<ref bean="org.hisp.dhis.dataset.SectionService"/>
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.section.GetSectionListSortOrderAction"
+		class="org.hisp.dhis.dataset.action.section.GetSectionListSortOrderAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+	</bean>		
+	
 	<!-- DataSet -->	
 	
 	<bean id="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"

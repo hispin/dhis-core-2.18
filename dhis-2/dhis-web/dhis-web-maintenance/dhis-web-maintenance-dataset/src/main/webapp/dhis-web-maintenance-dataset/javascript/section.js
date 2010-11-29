@@ -26,7 +26,7 @@ function sortOrderSubmit() {
 	if( datasetId == "null" ) {
 		window.alert( i18n_please_select_dataset );
 	} else {
-		window.location = "sortOrderSection.action?dataSetId=" + datasetId;
+		window.location = "showSortSectionForm.action?dataSetId=" + datasetId;
 	}
 }
 
