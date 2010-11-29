@@ -28,9 +28,9 @@ jQuery(document).ready(function()
 						}
 		,rules : {
 			relationshipTypeId  : { required: true },
-			firstName : {required:true,rangelength:[2,30], letterswithbasicpunc: true},
-			middleName : {required:false, letterswithbasicpunc: true},
-			lastName : {required:false, letterswithbasicpunc: true},
+			firstName : {required_group:true,rangelength:[2,30], unicodechars:true},
+			middleName : {required_group:true,rangelength:[2,30], unicodechars:true},
+			lastName : {required_group:true,rangelength:[2,30], unicodechars:true},
 			gender : { required: true },
 			birthDate :{required:false,dateISO:true,datelessthanequaltoday:true}
 		},beforeValidateHandler: function(form)
@@ -158,19 +158,19 @@ jQuery(document).ready(function()
 		</td>
 	</tr>
 	<tr>
-		<th colspan="2">$i18n.getString( "name" )</th>
+		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="firstName" name="firstName" style="width:15em"  maxlength="30"></td>
+		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
+		<td><input type="text" id="firstName" name="firstName" style="width:15em"  maxlength="30" class="required_group"></td>
 	</tr>
 	<tr>
 		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:15em"></td>
+		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:15em" class="required_group"></td>
 	</tr>
 	<tr>
 		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:15em"></td>
+		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:15em" class="required_group"></td>
 	</tr>	
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
@@ -263,12 +263,7 @@ jQuery(document).ready(function()
 </div>
 </div>
 <script>
-Calendar.setup({
-    inputField     :    "birthDate"      // id of the input field
-    ,ifFormat      :    "$i18n.getString('format.date.label')"       // format of the input field
-    ,button        :    "getBirthDate"   // trigger for the calendar (button ID)
-    ,onUpdate 	   :  function(){jQuery("#birthDate").focus();}
-});
+
 var i18n_patient_identifiers = '$encoder.jsEscape( $i18n.getString( "patient_identifiers" ) , "'")';
 var i18n_patient_attributes = '$encoder.jsEscape( $i18n.getString( "patient_attributes" ) , "'")';
 var i18n_patient_fullName = '$encoder.jsEscape( $i18n.getString( "full_name" ) , "'")';
