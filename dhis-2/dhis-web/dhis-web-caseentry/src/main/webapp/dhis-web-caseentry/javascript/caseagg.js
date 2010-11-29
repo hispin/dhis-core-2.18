@@ -18,14 +18,18 @@ function getdSetPeriods()
 {
   var dataSetList = document.getElementById("selectedDataSets");
   var dataSetId = dataSetList.options[ dataSetList.selectedIndex].value;
-
   
-    var url = "getDataSetPeriods.action?id=" + dataSetId;
+  if(dataSetId == '0')
+  {
+	return;
+  }
+  
+	var url = "getDataSetPeriods.action?selectedDataSets=" + dataSetId;
     
     var request = new Request();
-      request.setResponseTypeXML( 'period' );
-      request.setCallbackSuccess( getdSetPeriodsReceived );
-      request.send( url ); 
+    request.setResponseTypeXML( 'period' );
+    request.setCallbackSuccess( getdSetPeriodsReceived );
+    request.send( url ); 
 }	 
 
 

@@ -3,23 +3,3 @@
 <ul>
     <li><a href="caseAggregationForm.action">$i18n.getString( "case_aggregation" )</a></li>     
 </ul>
-
-<br>
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-
-<script type="text/javascript">
-
-function orgUnitHasBeenSelected( orgUnitIds )
-{    
-	if(orgUnitIds == null || orgUnitIds == "" )
-	{
-		return;
-	}
-
-	if(orgUnitIds != null)
-		getOrgUDetails(orgUnitIds);	
-}
-
-selection.setListenerFunction( orgUnitHasBeenSelected );
-
-</script>

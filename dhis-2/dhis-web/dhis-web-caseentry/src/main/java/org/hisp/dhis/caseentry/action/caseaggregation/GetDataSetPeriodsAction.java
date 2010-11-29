@@ -49,7 +49,7 @@ public class GetDataSetPeriodsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -68,11 +68,11 @@ public class GetDataSetPeriodsAction
     // Input & output
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private Integer selectedDataSets;
 
-    public void setId( Integer id )
+    public void setSelectedDataSets( Integer selectedDataSets )
     {
-        this.id = id;
+        this.selectedDataSets = selectedDataSets;
     }
 
     private List<Period> periods;
@@ -92,9 +92,9 @@ public class GetDataSetPeriodsAction
     private SimpleDateFormat simpleDateFormat1;
 
     private SimpleDateFormat simpleDateFormat2;
-	
-	private PeriodType periodType;
-            
+
+    private PeriodType periodType;
+
     public PeriodType getPeriodType()
     {
         return periodType;
@@ -103,29 +103,29 @@ public class GetDataSetPeriodsAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
         periodNameList = new ArrayList<String>();
-        DataSet dSet;
-        dSet = dataSetService.getDataSet( id );
+
+        DataSet dSet = dataSetService.getDataSet( selectedDataSets );
         periodType = dSet.getPeriodType();
 
         periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
 
         Iterator<Period> periodIterator = periods.iterator();
-        while( periodIterator.hasNext() )
+        while ( periodIterator.hasNext() )
         {
             Period p1 = periodIterator.next();
-            
+
             if ( p1.getStartDate().compareTo( new Date() ) > 0 )
             {
-                periodIterator.remove( );
+                periodIterator.remove();
             }
-            
+
         }
-        
+
         Collections.sort( periods, new PeriodComparator() );
 
         if ( periodType.getName().equalsIgnoreCase( "monthly" ) )
@@ -133,8 +133,8 @@ public class GetDataSetPeriodsAction
             simpleDateFormat1 = new SimpleDateFormat( "MMM-yyyy" );
             for ( Period p1 : periods )
             {
-                //if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
-                    periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) );
+                // if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
+                periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) );
 
             }
 
@@ -146,7 +146,7 @@ public class GetDataSetPeriodsAction
 
             for ( Period p1 : periods )
             {
-                //if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
+                // if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
                 {
                     String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - "
                         + simpleDateFormat2.format( p1.getEndDate() );
@@ -167,7 +167,7 @@ public class GetDataSetPeriodsAction
             int year;
             for ( Period p1 : periods )
             {
-                //if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
+                // if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
                 {
                     year = Integer.parseInt( simpleDateFormat1.format( p1.getStartDate() ) ) + 1;
                     periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) + "-" + year );
@@ -179,7 +179,7 @@ public class GetDataSetPeriodsAction
             simpleDateFormat1 = new SimpleDateFormat( "yyyy-mm-dd" );
             for ( Period p1 : periods )
             {
-                //if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
+                // if ( p1.getStartDate().compareTo( new Date() ) <= 0 )
                 {
                     String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() ) + " - "
                         + simpleDateFormat1.format( p1.getEndDate() );
