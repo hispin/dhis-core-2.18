@@ -128,21 +128,29 @@ public class PerformMaintenanceAction
         if ( aggregatedDataValues )
         {
             aggregatedDataValueService.deleteAggregatedDataValues();
+            
+            log.info( "Cleared aggregated data values" );
         }
         
         if ( aggregatedIndicatorValues )
         {
             aggregatedDataValueService.deleteAggregatedIndicatorValues();
+            
+            log.info( "Cleared aggregated indicator values" );
         }
         
         if ( zeroValues )
         {
             maintenanceService.deleteZeroDataValues();
+            
+            log.info( "Cleared zero values" );
         }
         
         if ( dataSetCompleteness )
         {
             completenessStore.deleteDataSetCompleteness();
+            
+            log.info( "Cleared data completeness" );
         }
         
         if ( prunePeriods )
