@@ -32,6 +32,7 @@ import java.util.SortedMap;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -81,6 +82,16 @@ public interface DataIntegrityService
      */
     SortedMap<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
 
+    // -------------------------------------------------------------------------
+    // Section
+    // -------------------------------------------------------------------------
+
+    /**
+     * Gets all section with invalid category combinations. Invalid means that
+     * the data elements in the sections don't have the same category combination.
+     */
+    Collection<Section> getSectionsWithInvalidCategoryCombinations();
+    
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------

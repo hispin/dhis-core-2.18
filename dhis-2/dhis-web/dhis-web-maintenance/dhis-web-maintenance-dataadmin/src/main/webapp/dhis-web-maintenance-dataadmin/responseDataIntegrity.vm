@@ -44,6 +44,7 @@
     #violation( "dataElementsViolatingExclusiveGroupSets" $dataElementsViolatingExclusiveGroupSets ),    
     #violationWithMapList( "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" $dataElementsAssignedToDataSetsWithDifferentPeriodTypes ),    
     #violation( "dataSetsNotAssignedToOrganisationUnits" $dataSetsNotAssignedToOrganisationUnits ),
+    #violation( "sectionsWithInvalidCategoryCombinations" $sectionsWithInvalidCategoryCombinations ),
     #violationWithCollection( "indicatorsWithIdenticalFormulas" $indicatorsWithIdenticalFormulas ),
     #violation( "indicatorsWithoutGroups" $indicatorsWithoutGroups ),    
     #violationWithMap( "invalidIndicatorNumerators" $invalidIndicatorNumerators ),
