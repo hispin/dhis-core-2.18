@@ -76,7 +76,7 @@ public class UpdatePatientIdentifierTypeAction
         {
             identifierType.setName( name );
             identifierType.setDescription( description );
-            identifierType.setFormat( formater );
+            identifierType.setFormat( formater == null ? "" : formater );
             identifierType.setMandatory( mandatory.booleanValue() );
             identifierType.setRelated( related.booleanValue() );
             identifierType.setNoChars( noChars );

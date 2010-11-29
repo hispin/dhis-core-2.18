@@ -73,7 +73,7 @@ public class AddPatientIdentifierTypeAction
         PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
         patientIdentifierType.setName( name );
         patientIdentifierType.setDescription( description );
-        patientIdentifierType.setFormat( formater );
+        patientIdentifierType.setFormat( formater == null ? "" : formater );
         patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );
         patientIdentifierType.setNoChars( noChars );
