@@ -7,7 +7,7 @@ function performMaintenance()
     var dataSetCompleteness = document.getElementById( "dataSetCompleteness" ).checked;
     var prunePeriods = document.getElementById( "prunePeriods" ).checked;
     
-    if ( aggregatedDataValues || aggregatedIndicatorValues || zeroValues ||dataSetCompleteness || prunePeriods )
+    if ( aggregatedDataValues || aggregatedIndicatorValues || zeroValues || dataSetCompleteness || prunePeriods )
     {
         setWaitMessage( i18n_performing_maintenance );
         
