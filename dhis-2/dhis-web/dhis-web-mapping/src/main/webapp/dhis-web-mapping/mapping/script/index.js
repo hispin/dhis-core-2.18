@@ -2117,10 +2117,24 @@
                                                     }
                                                 }
                                                 
-                                                if (feature) {
-                                                    var color = Ext.getCmp('highlightcolor_cf').getValue();
-                                                    layer.drawFeature(feature,{'fillColor':color, 'strokeColor':color});
-                                                }
+                                                var color = Ext.getCmp('highlightcolor_cf').getValue();
+                                                var symbolizer;
+                                                
+                                                if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
+													feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
+                                                    symbolizer = new OpenLayers.Symbolizer.Polygon({
+														'strokeColor': color,
+														'fillColor': color
+													});
+												}
+												else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
+                                                    symbolizer = new OpenLayers.Symbolizer.Point({
+														'pointRadius': 7,
+														'fillColor': color
+													});
+												}
+												
+												layer.drawFeature(feature,symbolizer);
                                             }
                                         }
                                     }
