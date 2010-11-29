@@ -161,7 +161,7 @@ public class DefaultCrossTabService
                     }
                 }
 
-                log.info( "Crosstabulated data for period " + periodId );
+                log.debug( "Crosstabulated data for period " + periodId );
             }
 
             batchHandler.flush();

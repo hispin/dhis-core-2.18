@@ -144,6 +144,7 @@ public class DefaultImportService
         }
         catch ( Exception ex )
         {
+            log.error( ex );
             state.setMessage( "Error processing input stream" );
             throw new ImportException( "Error processing input stream", ex );
         }
