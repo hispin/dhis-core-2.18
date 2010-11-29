@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.comparator;
+package org.hisp.dhis.dataset.action.section;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,15 +27,49 @@ package org.hisp.dhis.dataset.comparator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Comparator;
+import java.util.List;
 
 import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
 
-public class SectionOrderComparator
-    implements Comparator<Section>
+import com.opensymphony.xwork2.Action;
+
+/**
+ * @author Lars Helge Overland
+ * @version $Id$
+ */
+public class SaveSectionSortOrderAction
+    implements Action
 {
-    public int compare( Section o1, Section o2 )
+    private SectionService sectionService;
+
+    public void setSectionService( SectionService sectionService )
     {
-        return o2.getSortOrder() - o1.getSortOrder();
+        this.sectionService = sectionService;
+    }
+
+    private List<String> sections;
+        
+    public void setSections( List<String> sections )
+    {
+        this.sections = sections;
+    }
+
+    @Override
+    public String execute()
+        throws Exception
+    {
+        int sortOrder = 1;
+        
+        for ( String id : sections )
+        {
+            Section section = sectionService.getSection( Integer.parseInt( id ) );
+            
+            section.setSortOrder( sortOrder++ );
+            
+            sectionService.updateSection( section );
+        }
+        
+        return SUCCESS;
     }
 }

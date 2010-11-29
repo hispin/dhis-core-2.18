@@ -28,107 +28,52 @@ package org.hisp.dhis.dataset.action.section;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.dataset.SectionService;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
-public class SortOrderSection
+/**
+ * @author Lars Helge Overland
+ * @version $Id$
+ */
+public class GetSectionListSortOrderAction
     implements Action
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SectionService sectionService;
-
     private DataSetService dataSetService;
-
+    
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-    public void setSectionService( SectionService sectionService )
-    {
-        this.sectionService = sectionService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input & output
-    // -------------------------------------------------------------------------
-
     private Integer dataSetId;
-
-    private List<String> selectedList = new ArrayList<String>();;
-
-    private DataSet dataSet;
-
-    private Set<Section> sections = new HashSet<Section>();
-
-    public Set<Section> getSections()
-    {
-        return sections;
-    }
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    public Integer getDataSetId()
-    {
-        return dataSetId;
-    }
 
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
-    public void setSelectedList( List<String> selectedList )
+    private List<Section> sections;
+
+    public List<Section> getSections()
     {
-        this.selectedList = selectedList;
+        return sections;
     }
 
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
     public String execute()
-        throws Exception
-    {        
-
-        if ( dataSetId != null )
-        {            
-            dataSet = dataSetService.getDataSet( dataSetId.intValue() );           
-            sections = dataSet.getSections();
-
-            return INPUT;
-        }     
+    {
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
-
-        if ( selectedList.size() == 0 )
-        {
-            return INPUT;
-        }
+        sections = new ArrayList<Section>( dataSet.getSections() );
         
-        int i = 0;
+        Collections.sort( sections, new SectionOrderComparator() );
         
-        for ( String id : selectedList )
-        {
-            Section temp = sectionService.getSection( Integer.parseInt( id ) );
-            temp.setSortOrder( i++ );
-            
-            sectionService.updateSection( temp );
-        }
-
         return SUCCESS;
     }
 }
