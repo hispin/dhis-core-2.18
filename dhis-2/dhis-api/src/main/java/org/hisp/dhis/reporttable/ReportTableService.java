@@ -48,14 +48,12 @@ public interface ReportTableService
      * @param mode the mode, can be <l>dataelements</i>, <i>indicators</i>, and <i>datasets</i>.
      * @param reportingPeriod the number of months back in time which will be used
      *        as basis for the generation of relative periods.
-     * @param parentOrganisationUnitId the identifier of the parent organisation
-     *        unit of the report parameter.
      * @param organisationUnitId the identifier of the organisation unit of the
-     *        report parameter.
+     *        report parameter, bot parent organisation unit and organisation unit.
      * @param format the I18nFormat to use.
      */
     void createReportTables( int id, String mode, Integer reportingPeriod, 
-        Integer parentOrganisationUnitId, Integer organisationUnitId, boolean doDataMart, I18nFormat format );
+        Integer organisationUnitId, boolean doDataMart, I18nFormat format );
     
     /**
      * Creates a report table. Exports the relevant data to data mart, updates
