@@ -131,14 +131,22 @@ public class HibernatePatientAttributeValueStore
     public Collection<Patient> searchPatients( PatientAttribute patientAttribute,
         String searchText, int min, int max )
     {
-        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
-            Restrictions.ilike( "value", "'%" + searchText + "%'" ) ).setProjection( Projections.property( "patient" ) ).setFirstResult( min ).setMaxResults( max ).list();
+        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%" + searchText + "%'";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "patientAttribute", patientAttribute );
+        
+        return query.setFirstResult( min ).setMaxResults( max ).list();
     }
     
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> searchPatients( PatientAttribute patientAttribute, String searchText )
     {
-        return getCriteria( Restrictions.eq( "patientAttribute", patientAttribute ),
-            Restrictions.ilike( "value", "'%" + searchText + "%'" ) ).setProjection( Projections.property( "patient" ) ).list();
+        String hql = "select pav.patient from PatientAttributeValue pav where pav.patientAttribute = :patientAttribute and pav.value like '%" + searchText + "%'";
+        
+        Query query = getQuery( hql );
+        query.setEntity( "patientAttribute", patientAttribute );
+        
+        return query.list();
     }
 }
