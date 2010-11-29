@@ -82,7 +82,7 @@ public class GetOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( id.intValue() );
+        organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
         numberOfChildren = organisationUnit.getChildren().size();
 

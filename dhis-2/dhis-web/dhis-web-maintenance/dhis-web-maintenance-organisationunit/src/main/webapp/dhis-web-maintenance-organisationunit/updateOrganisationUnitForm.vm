@@ -10,10 +10,11 @@
             id: $organisationUnit.id            
         });     	
 		
-		datePickerInRange( 'openingDate', 'closedDate', false, false );	
-		
-		
-			
+		#if ( $numberOfChildren == 0 )
+		datePickerInRange( 'openingDate', 'closedDate', false, false );
+		#else
+		datePickerValid( 'openingDate', false );
+		#end			
 	});
 </script>
 
@@ -46,12 +47,13 @@
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em" class="{validate:{required:true}}"/></td>
 		<td></td>
-	</tr>	
-
-	<tr #if( $numberOfChildren != 0 ) style="display:none" #end>
+	</tr>
+	#if( $numberOfChildren == 0 )
+	<tr>
 		<td><label for="closedDate">$i18n.getString( "closed_date" ) ($i18n.getString( "format.date.label" ))</label></td>
 		<td><input type="text" id="closedDate" name="closedDate" value="$!format.formatDate( $organisationUnit.closedDate )" style="width:20em"/></td>
 	</tr>
+	#end
 	<tr>
 		<td><label for="active">$i18n.getString( "registers_date" )</label></td>
 		<td>
@@ -82,7 +84,6 @@
 </form>
 
 <script type="text/javascript">
-
 	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
 	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
 </script>
