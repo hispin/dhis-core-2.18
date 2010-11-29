@@ -59,6 +59,9 @@ GLOBAL.conf = {
     map_date_type_start_end: 'start-end',
     map_selection_type_parent: 'parent',
     map_selection_type_level: 'level',
+    map_feature_type_multipolygon: 'MultiPolygon',
+    map_feature_type_polygon: 'Polygon',
+    map_feature_type_point: 'Point',
     
 //  MapFish
 
