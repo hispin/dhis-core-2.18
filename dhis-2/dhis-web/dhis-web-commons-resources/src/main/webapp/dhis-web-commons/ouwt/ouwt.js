@@ -347,11 +347,11 @@ function Subtree()
 
 function getOrgunitByCode(code)
 {
-	$.getJSON(organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + $( '#searchField' ).val(), function (data){	
+	$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + $.URLEncode( $( '#searchField' ).val() ), function ( data ) {	
 		if ( data.response == "success" ) {
-			window.location.reload();
+			$( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action' );
 		} else {
-			$( '#searchField' ).css( "background-color", "#ffc5c5" );
+			$( '#searchField' ).css( 'background-color', '#ffc5c5' );
 		}
 	} );
 }

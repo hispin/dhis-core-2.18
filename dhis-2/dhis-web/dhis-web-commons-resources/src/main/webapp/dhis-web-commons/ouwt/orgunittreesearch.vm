@@ -1,0 +1,18 @@
+
+<img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="$i18n.getString( 'locate_organisation_unit_by_code_or_name' )">
+<span id="searchSpan" style="display:none"><input type="text" id="searchField" name="key" style="width:130px" onchange="getOrgunitByCode()"><input type="button" value="Find" onclick="getOrgunitByCode()"></span>
+
+<script>
+	
+$(document).ready(function(){
+	$("#searchIcon").click(function(){
+		$("#searchSpan").toggle();
+		$("#searchField").focus();
+	});
+});
+
+</script>
+
+<div id="orgUnitTreeContainer">
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+</div>

@@ -179,6 +179,11 @@ public class DefaultOrganisationUnitService
     {
         return organisationUnitStore.getOrganisationUnitByName( name );
     }
+    
+    public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
+    {
+        return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
+    }
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
     {

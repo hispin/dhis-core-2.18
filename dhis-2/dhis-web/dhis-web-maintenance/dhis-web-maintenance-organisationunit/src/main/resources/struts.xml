@@ -22,7 +22,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnit.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
-			<param name="menuTreeHeight">384</param>
+			<param name="menuTreeHeight">358</param>
 			<param name="javascripts">
 					../dhis-web-commons/ouwt/ouwt.js,
 					javascript/organisationUnit.js
