@@ -148,7 +148,6 @@ extends ActionPagingSupport<Indicator>
     // Action implemantation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
     {
         if ( dataDictionaryId == null ) // None, get current data dictionary
