@@ -200,8 +200,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataValueService">
             <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
         </property>
-        <property name="caseAggregationMappingService">
-            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"/>
+        <property name="caseAggregationConditionService">
+            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"/>
         </property>
     </bean>
 	
@@ -238,8 +238,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="patientAttributeService">
             <ref bean="org.hisp.dhis.patient.PatientAttributeService"/>
         </property>
-        <property name="caseAggregationMappingService">
-            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationMappingService"/>
+        <property name="caseAggregationConditionService">
+            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"/>
         </property>
         <property name="configurationService">
             <ref bean="org.hisp.dhis.config.ConfigurationService"/>
