@@ -28,10 +28,12 @@
 package org.hisp.dhis.patientdatavalue;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -183,6 +185,12 @@ public class DefaultPatientDataValueService
     public Collection<PatientDataValue> getPatientDataValues( DataElement dataElement, boolean providedByAnotherFacility )
     {
         return patientDataValueStore.get( dataElement, providedByAnotherFacility );
+    }
+
+    public Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
+        Date startDate, Date endDate )
+    {
+        return patientDataValueStore.get( patient, dataElements, startDate, endDate );
     }
 
 }

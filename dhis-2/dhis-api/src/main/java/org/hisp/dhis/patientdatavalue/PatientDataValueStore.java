@@ -28,11 +28,13 @@
 package org.hisp.dhis.patientdatavalue;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -84,5 +86,8 @@ public interface PatientDataValueStore
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance, boolean providedByAnotherFacility );
 
     Collection<PatientDataValue> get( DataElement dataElement, boolean providedByAnotherFacility );
+    
+    Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate, Date endDate );
+
 
 }

@@ -37,16 +37,21 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_O
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.MathUtils;
 import org.nfunk.jep.JEP;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +72,12 @@ public class DefaultCaseAggregationConditionService
 
     private CaseAggregationConditionStore aggregationConditionStore;
 
+    private DataElementService dataElementService;
+
+    private PatientService patientService;
+
+    private PatientDataValueService dataValueService;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -74,6 +85,11 @@ public class DefaultCaseAggregationConditionService
     public void setAggregationConditionStore( CaseAggregationConditionStore aggregationConditionStore )
     {
         this.aggregationConditionStore = aggregationConditionStore;
+    }
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -84,6 +100,16 @@ public class DefaultCaseAggregationConditionService
     public int addCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
     {
         return aggregationConditionStore.save( caseAggregationCondition );
+    }
+
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
+
+    public void setDataValueService( PatientDataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
     }
 
     @Override
@@ -121,6 +147,45 @@ public class DefaultCaseAggregationConditionService
     @Override
     public double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
+    {
+        String sql = createSQL( aggregationCondition, orgunit, period );
+
+        Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+
+        return calValue( patientIds, aggregationCondition.getOperator() );
+    }
+
+    @Override
+    public Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition,
+        OrganisationUnit orgunit, Period period )
+    {
+        Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
+
+        String sql = createSQL( aggregationCondition, orgunit, period );
+        
+        Collection<DataElement> dataElements = getDataElementsInExpression( aggregationCondition
+            .getAggregationExpression() );
+
+        Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
+
+        for ( Integer patientId : patientIds )
+        {
+            Patient patient = patientService.getPatient( patientId );
+
+            Collection<PatientDataValue> dataValues = dataValueService.getPatientDataValues( patient, dataElements,
+                period.getStartDate(), period.getEndDate() );
+
+            result.addAll( dataValues );
+        }
+        
+        return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // Support Methods
+    // -------------------------------------------------------------------------
+
+    private String createSQL( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period )
     {
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
@@ -212,8 +277,8 @@ public class DefaultCaseAggregationConditionService
                 {
                     Collection<Integer> patientIds = aggregationConditionStore.executeSQL( condition );
                     value = calValue( patientIds, AGGRERATION_SUM );
-                        
-                    subExp = subExp.replace(  "~", value + "" );
+
+                    subExp = subExp.replace( "~", value + "" );
                 }
 
                 condition = expression[i].replace( match, condition ).replaceAll( "[\\[\\]]", "" );
@@ -222,11 +287,11 @@ public class DefaultCaseAggregationConditionService
             if ( expression[i].contains( "+" ) )
             {
                 final JEP parser = new JEP();
-                
+
                 parser.parseExpression( subExp );
-                
-                String _subExp = (  parser.getValue() == 1.0 ) ? " AND 1 = 1 " : " AND 0 = 1 ";
-                
+
+                String _subExp = (parser.getValue() == 1.0) ? " AND 1 = 1 " : " AND 0 = 1 ";
+
                 int noPlus = expression[i].split( "\\+" ).length - 1;
                 List<String> subOperators = new ArrayList<String>();
                 for ( int j = 0; j < noPlus; j++ )
@@ -240,16 +305,41 @@ public class DefaultCaseAggregationConditionService
             conditions.add( condition );
         }
 
-        String sqlResult = getSQL( conditions, operators );
-        
-        Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sqlResult );
+        return getSQL( conditions, operators );
 
-        return calValue( patientIds, aggregationCondition.getOperator() );
     }
 
-    // -------------------------------------------------------------------------
-    // Support Methods
-    // -------------------------------------------------------------------------
+    private Collection<DataElement> getDataElementsInExpression( String aggregationExpression )
+    {
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
+
+        Collection<DataElement> dataElements = new HashSet<DataElement>();
+
+        // ---------------------------------------------------------------------
+        // parse expressions
+        // ---------------------------------------------------------------------
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( aggregationExpression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+            String[] ids = info[1].split( SEPARATOR_ID );
+
+            int dataElementId = Integer.parseInt( ids[1] );
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+            dataElements.add( dataElement );
+        }
+
+        return dataElements;
+    }
 
     private String getCondititionForDataElement( int programStageId, int dataElementId, int optionComboId,
         int orgunitId, String startDate, String endDate )
@@ -339,13 +429,12 @@ public class DefaultCaseAggregationConditionService
 //
 //        // aggregationCondition.setAggregationExpression(
 //        // "( [DE:1.1.1] + [DE:1.1.1] + [DE:1.1.1] > 0 " );
-//        aggregationCondition
-//            .setAggregationExpression( " [DE:15.116.1]  +  [DE:16.117.1] > 0" );
+//        aggregationCondition.setAggregationExpression( " [DE:15.1.1]  +  [DE:16.2.1] > 0" );
 //        // );
 //
 //        DefaultCaseAggregationConditionService service = new DefaultCaseAggregationConditionService();
 //
-//        service.parseConditition( aggregationCondition, null, null );
+//        service.getDataElementsInExpression( aggregationCondition.getAggregationExpression() );
 //    }
 
 }

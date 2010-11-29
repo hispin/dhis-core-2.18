@@ -28,10 +28,12 @@
 package org.hisp.dhis.patientdatavalue;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -87,6 +89,8 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance, boolean providedByAnotherFacility );
     
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement, boolean providedByAnotherFacility );
+    
+    Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements, Date date, java.util.Date date2 );
 
     Collection<PatientDataValue> getAllPatientDataValues();
 }

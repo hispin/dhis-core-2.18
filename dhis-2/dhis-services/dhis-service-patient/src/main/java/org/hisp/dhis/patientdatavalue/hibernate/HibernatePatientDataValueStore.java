@@ -28,6 +28,7 @@
 package org.hisp.dhis.patientdatavalue.hibernate;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -35,6 +36,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueStore;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -117,7 +119,7 @@ public class HibernatePatientDataValueStore
     {
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
         ProgramStageInstance programStageInstance )
@@ -125,7 +127,7 @@ public class HibernatePatientDataValueStore
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
             Restrictions.eq( "programStageInstance", programStageInstance ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
         Collection<ProgramStageInstance> programStageInstances )
@@ -147,17 +149,16 @@ public class HibernatePatientDataValueStore
     {
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
             Restrictions.eq( "optionCombo", optionCombo ) ).list();
-    }    
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( boolean providedByAnotherFacility )
     {
         return getCriteria( Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
-        boolean providedByAnotherFacility )
+    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit, boolean providedByAnotherFacility )
     {
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
             Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
@@ -176,5 +177,17 @@ public class HibernatePatientDataValueStore
     {
         return getCriteria( Restrictions.eq( "dataElement", dataElement ),
             Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate,
+        Date endDate )
+    {
+        String hql = "From PatientDataValue pdv where pdv.dataElement in ( :dataElements ) "
+            + "AND pdv.programStageInstance.programInstance.patient = :patient "
+            + "AND pdv.programStageInstance.executionDate >= :startDate AND pdv.programStageInstance.executionDate <= :endDate ";
+
+        return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "patient", patient )
+            .setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
     }
 }
