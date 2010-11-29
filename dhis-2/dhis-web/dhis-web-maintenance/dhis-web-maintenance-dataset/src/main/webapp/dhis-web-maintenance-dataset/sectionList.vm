@@ -34,27 +34,29 @@
     <td style="vertical-align:top">
 		<table class="listTable" id="listTable"> 
 			<col/>	
-			<col/>	
-			<col width="150px"/>
+			<col/>
+            <col width="20"/>
+            <col width="20"/>
+            <col width="20"/>
+            <col width="20"/>
+            <col width="20"/>
 			<thead>				
 				<tr>
 					<th>$i18n.getString( "dataset" )</th>	
 					<th>$i18n.getString( "name" )</th>			
-					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th colspan="5" class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>  
 			</thead>
 			<tbody id="list">
 				#foreach( $section in $sections )
 				<tr id="tr${section.id}">
 					<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.dataSet.name )</td> 
-					<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.name )</td> 				
-					<td style="text-align:center">
-						<a href="javascript:translate( '$section.getClass().getSimpleName()', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-						<a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-						<a href="editSectionAction.action?sectionId=$section.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-						<a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'section_grey_field_managment' )"/></a>
-						<a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
-					</td>               
+					<td onclick="showSectionDetails( $section.id )">$encoder.htmlEncode( $section.name )</td>		
+					<td style="text-align:center"><a href="editSectionAction.action?sectionId=$section.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
+					<td style="text-align:center"><a href="javascript:translate( '$section.getClass().getSimpleName()', '$section.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
+					<td style="text-align:center"><a href="javascript:removeSection( '$section.id', '$encoder.jsEncode( $section.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
+					<td style="text-align:center"><a href="greySection.action?sectionId=$section.id" title="$i18n.getString( 'section_grey_field_managment' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'section_grey_field_managment' )"/></a></td>
+					<td style="text-align:center"><a href="javascript:showSectionDetails( $section.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
 				</tr>
 				#end
 			</tbody>
