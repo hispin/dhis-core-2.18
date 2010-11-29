@@ -1,5 +1,4 @@
-<script>
-	
+<script>	
 	jQuery(document).ready(	function()
 	{		
 		validation( 'addSectionForm', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
@@ -7,18 +6,16 @@
 		checkValueIsExist( "sectionName", "validateSection.action", {
 			dataSetId:function(){return jQuery("#dataSetId").val()}
 			,name: function(){return jQuery("#sectionName").val()}					
-		});	
-		
+		});
 	});
-	
 </script>
 
 <h3>$i18n.getString( "add_section" )</h3>
 
-<form id="addSectionForm" name="addSectionForm" action="addSectionAction.action" method="post" >
+<form id="addSectionForm" name="addSectionForm" action="addSection.action" method="post" >
   <table id="detailsList">
-    <col/> ## Labels
-    <col/> ## Input
+    <col/>
+    <col/>
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "section_details" )</th>
@@ -53,33 +50,15 @@
 		<th>$i18n.getString( "selected_data_elements" )</th>
       </tr>
     </thead>
-    <tbody>
-
-      <tr>        
-        <td>
-          <select id="dataElementGroupSelect" name="dataElementGroupSelect" style="min-width:26.5em"
-            onchange="javascript:filterByDataElementGroupForSection( this.options[this.selectedIndex].value )">
-            <option value="ALL" selected="selected">$i18n.getString( "all" )</option>
-            #foreach ( $dataElementGroup in $dataElementGroups )
-            <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
-            #end
-          </select>
-        </td>
-        <td align="center">[$i18n.getString( "group" )]</td>
-        <td></td>        
-      </tr>
-      
+    <tbody>      
       <tr>
       	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:26em"/></td>
       	<td align="center">[$i18n.getString( "name" )]</td>
       	<td><input type="text" id="dataSetSectionMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:26em"/></td>
-      </tr>
-	
+      </tr>	
       <tr>
         <td>
-          <!-- List of all available DataElements -->
           <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, document.getElementById( 'selectedList' ) )">
-            <!-- Show all available DataElements -->
             #foreach ( $availableDataElement in $dataElements )
               <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
             #end
@@ -100,13 +79,6 @@
             <a href="javascript:moveDownSelectedOption( 'selectedList' )"><img src="../images/move_down.png"></a><br/><br/>
         </td>
       </tr>
-
-      <tr>
-        <td colspan="3">
-          <span id="message"></span>
-        </td>
-      </tr>
-
       <tr>
         <td colspan="3">
           <input type="submit" value="$i18n.getString( 'save' )"/>
@@ -116,3 +88,5 @@
     </tbody>
   </table>
 </form>
+
+<span id="message"></span>

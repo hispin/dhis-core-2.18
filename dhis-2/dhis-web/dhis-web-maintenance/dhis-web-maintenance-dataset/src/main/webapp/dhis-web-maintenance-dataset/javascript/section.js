@@ -13,7 +13,6 @@ function showSectionDetails( sectionId )
 function sectionReceived( sectionElement )
 {
   setInnerHTML( 'nameField', getElementValue( sectionElement, 'name' ) );
-  //setInnerHTML( 'titleField', getElementValue( sectionElement, 'title' ) );
   setInnerHTML( 'dataSetField', getElementValue( sectionElement, 'dataSet' ) );
   setInnerHTML( 'categoryComboField', getElementValue( sectionElement, 'categoryCombo' ) );
   setInnerHTML( 'dataElementCountField', getElementValue( sectionElement, 'dataElementCount' ) );  
@@ -43,12 +42,11 @@ function addSectionSubmit() {
 	var dataSetId = document.getElementById('dataSetId').value;
 	var categoryComboId = document.getElementById('categoryComboId').value;
 
-	if (dataSetId == "null" || dataSetId == "" || categoryComboId == "null"
-			|| categoryComboId == "") {
+	if (dataSetId == "null" || dataSetId == "" || categoryComboId == "null"	|| categoryComboId == "") {
 		showWarningMessage( i18n_please_select_dataset_categorycombo );
-	} else {
-		window.location.href = "addSectionAction.action?dataSetId=" + dataSetId
-				+ "&categoryComboId=" + categoryComboId;
+	} 
+	else {
+		window.location.href = "getSectionOptions.action?dataSetId=" + dataSetId + "&categoryComboId=" + categoryComboId;
 	}
 }
 
