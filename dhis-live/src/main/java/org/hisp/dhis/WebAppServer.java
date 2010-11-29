@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,20 +24,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
  *
  * @author Bob Jolliffe
  * @version $$Id$$
  */
+
 package org.hisp.dhis;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 
-import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mortbay.component.LifeCycle;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
@@ -46,12 +52,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
  */
 public class WebAppServer
 {
-
     public static final String DHIS_DIR = "/webapps/dhis";
-
-    public static final String BIRT_DIR = "/webapps/birt";
-
-    public static final String BIRT_CONTEXT_PATH = "/birt";
 
     public static final String JETTY_PORT_CONF = "/conf/jetty.port";
 
@@ -69,46 +70,31 @@ public class WebAppServer
         connector = new SelectChannelConnector();
     }
 
-    public void init()
+    public void init( String installDir, LifeCycle.Listener serverListener )
         throws Exception
     {
-        String installDir = TrayApp.installDir;
         try
         {
-            int portFromConfig = this.getPortFromConfig();
+            int portFromConfig = this.getPortFromConfig( installDir + JETTY_PORT_CONF );
             connector.setPort( portFromConfig );
             log.info( "Loading DHIS 2 on port: " + portFromConfig );
-        } catch ( Exception ex )
+        }
+        catch ( Exception ex )
         {
             log.info( "Couldn't load port number from " + installDir + JETTY_PORT_CONF );
             connector.setPort( DEFAULT_JETTY_PORT );
             log.info( "Loading DHIS 2 on port: " + DEFAULT_JETTY_PORT );
         }
 
-        server.setConnectors( new Connector[]
-            {
-                connector
-            } );
-
-        ContextHandlerCollection handlers = new ContextHandlerCollection();
+        server.setConnectors( new Connector[] { connector } );
 
         WebAppContext dhisWebApp = new WebAppContext();
-        dhisWebApp.setMaxFormContentSize( TrayApp.appConfig.getMaxFormContentSize() );
+        dhisWebApp.setMaxFormContentSize( 5000000 );
         dhisWebApp.setWar( installDir + DHIS_DIR );
-        handlers.addHandler( dhisWebApp );
         log.info( "Setting DHIS 2 web app context to: " + installDir + DHIS_DIR );
 
-        if ( new File( installDir, BIRT_DIR ).exists() )
-        {
-            WebAppContext birtWebApp = new WebAppContext();
-            birtWebApp.setContextPath( BIRT_CONTEXT_PATH );
-            birtWebApp.setWar( installDir + BIRT_DIR );
-            handlers.addHandler( birtWebApp );
-            log.info( "Setting BIRT web app context to: " + installDir + BIRT_DIR );
-        }
-
-        server.setHandler( handlers );
-        server.addLifeCycleListener( TrayApp.getInstance() );
+        server.setHandler( dhisWebApp );
+        server.addLifeCycleListener( serverListener );
     }
 
     public void start()
@@ -129,8 +115,14 @@ public class WebAppServer
         return connector.getPort();
     }
 
-    private int getPortFromConfig()
+    private int getPortFromConfig( String conf )
+        throws FileNotFoundException, IOException
     {
-        return TrayApp.appConfig.getPort();
+        Reader r = new BufferedReader( new FileReader( conf ) );
+        char[] cbuf = new char[10];
+        r.read( cbuf );
+        String numstr = String.copyValueOf( cbuf );
+        Integer port = Integer.valueOf( numstr.trim() );
+        return port.intValue();
     }
 }
