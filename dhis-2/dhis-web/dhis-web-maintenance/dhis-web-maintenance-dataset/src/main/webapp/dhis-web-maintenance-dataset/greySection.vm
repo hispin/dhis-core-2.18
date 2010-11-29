@@ -14,10 +14,6 @@
         <td><b>$section.name</b></td>        
       </tr>
       <tr>
-        <td><label>$i18n.getString( "title" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><b>$section.title</b></td>
-      </tr>
-      <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><b>$section.dataSet.name</b></td>
       </tr>
