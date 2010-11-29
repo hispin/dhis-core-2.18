@@ -80,7 +80,14 @@ public class DataSetImporter
     @Override
     protected DataSet getMatching( DataSet object )
     {
-        return dataSetService.getDataSetByName( object.getName() );
+        DataSet match = dataSetService.getDataSetByName( object.getName() );
+        
+        if ( match == null )
+        {
+            match = dataSetService.getDataSetByShortName( object.getShortName() );
+        }
+        
+        return match;
     }
 
     @Override
