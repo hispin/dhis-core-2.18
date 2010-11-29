@@ -226,6 +226,12 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 		
+		<action name="loadOrganisationUnitTree" 
+			class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="velocity">/dhis-web-commons/ouwt/orgunittree.vm</result>
+			<interceptor-ref name="organisationUnitTreeStack" />
+		</action>
+		
 	</package>
 
 	<!-- Menu -->

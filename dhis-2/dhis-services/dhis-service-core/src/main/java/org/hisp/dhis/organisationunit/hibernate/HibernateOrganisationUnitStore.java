@@ -99,6 +99,13 @@ public class HibernateOrganisationUnitStore
 
         return (OrganisationUnit) query.uniqueResult();
     }
+    
+    public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );        
+        criteria.add( Restrictions.eq( "name", name ).ignoreCase() );
+        return (OrganisationUnit) criteria.uniqueResult();
+    }
 
     public OrganisationUnit getOrganisationUnitByCode( String code )
     {

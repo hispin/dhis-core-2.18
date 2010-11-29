@@ -60,6 +60,14 @@ public interface OrganisationUnitStore
     OrganisationUnit getOrganisationUnitByName( String name );
 
     /**
+     * Returns an OrganisationUnit with a given name. Case is ignored.
+     * 
+     * @param name the name of the OrganisationUnit to return.
+     * @return the OrganisationUnit with the given name, or null if not match.
+     */
+    OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name );
+
+    /**
      * Returns an OrganisationUnit with a given code.
      * 
      * @param code the code of the OrganisationUnit to return.
