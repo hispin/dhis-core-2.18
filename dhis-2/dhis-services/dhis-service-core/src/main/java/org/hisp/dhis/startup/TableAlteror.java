@@ -201,9 +201,9 @@ public class TableAlteror
 
         // prepare aggregateXXXValue tables for offline diffs
 
-        executeSql( "ALTER TABLE aggregateddatavalue ADD COLUMN modified timestamp with time zone not null default now();");
+        executeSql( "ALTER TABLE aggregateddatavalue ADD COLUMN modified timestamp with time zone default now();");
 
-        executeSql( "ALTER TABLE aggregatedindicatorvalue ADD COLUMN modified timestamp with time zone not null default now();");
+        executeSql( "ALTER TABLE aggregatedindicatorvalue ADD COLUMN modified timestamp with time zone default now();");
 
         log.info( "Tables updated" );
     }
