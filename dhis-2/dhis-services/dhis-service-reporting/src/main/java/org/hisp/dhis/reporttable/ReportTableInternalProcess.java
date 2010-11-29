@@ -79,13 +79,6 @@ public class ReportTableInternalProcess
         this.reportingPeriod = reportingPeriod;
     }
 
-    private Integer parentOrganisationUnitId;
-
-    public void setParentOrganisationUnitId( Integer parentOrganisationUnitId )
-    {
-        this.parentOrganisationUnitId = parentOrganisationUnitId;
-    }
-
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -123,6 +116,6 @@ public class ReportTableInternalProcess
     @Override
     public void executeStatements()
     {
-        reportTableService.createReportTables( id, mode, reportingPeriod, parentOrganisationUnitId, organisationUnitId, doDataMart, format );
+        reportTableService.createReportTables( id, mode, reportingPeriod, organisationUnitId, doDataMart, format );
     }
 }

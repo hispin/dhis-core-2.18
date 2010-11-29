@@ -152,7 +152,7 @@ public class DefaultReportTableService
 
     @Transactional
     public void createReportTables( int id, String mode, Integer reportingPeriod, 
-        Integer parentOrganisationUnitId, Integer organisationUnitId, boolean doDataMart, I18nFormat format )
+        Integer organisationUnitId, boolean doDataMart, I18nFormat format )
     {
         for ( ReportTable reportTable : getReportTables( id, mode ) )
         {
@@ -181,7 +181,7 @@ public class DefaultReportTableService
 
             if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
             {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId );
+                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
                 reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
                 
                 log.info( "Parent organisation unit: " + organisationUnit.getName() );

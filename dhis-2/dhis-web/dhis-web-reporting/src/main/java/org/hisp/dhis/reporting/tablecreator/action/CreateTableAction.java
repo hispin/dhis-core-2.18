@@ -96,13 +96,6 @@ public class CreateTableAction
         this.reportingPeriod = reportingPeriod;
     }
 
-    private Integer parentOrganisationUnitId;
-
-    public void setParentOrganisationUnitId( Integer parentOrganisationUnitId )
-    {
-        this.parentOrganisationUnitId = parentOrganisationUnitId;
-    }
-
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -133,7 +126,6 @@ public class CreateTableAction
         process.setId( id );
         process.setMode( mode );
         process.setReportingPeriod( reportingPeriod );
-        process.setParentOrganisationUnitId( parentOrganisationUnitId );
         process.setOrganisationUnitId( organisationUnitId );
         process.setDoDataMart( doDataMart );
         process.setFormat( format );

@@ -1,11 +1,5 @@
 
-var paramParentOrganisationUnit = null;
 var paramOrganisationUnit = null;
-
-function paramParentOrganisationUnitSet( id )
-{
-	paramParentOrganisationUnit = id;
-}
 
 function paramOrganisationUnitSet( id )
 {
@@ -24,12 +18,7 @@ function createTable( tableId )
     {
         url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
     }
-    
-    if ( paramParentOrganisationUnit != null )
-    {
-        url += "&parentOrganisationUnitId=" + paramParentOrganisationUnit;
-    }
-    
+        
     if ( paramOrganisationUnit != null )
     {
         url += "&organisationUnitId=" + paramOrganisationUnit;

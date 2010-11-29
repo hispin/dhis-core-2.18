@@ -51,31 +51,9 @@
     
     #end
     
-    <!-- Parent OrganisationUnit -->
-    
-    #if ( $!reportParams.isParamParentOrganisationUnit() )
-    
-    <tr>
-        <th>$i18n.getString( "parent_organisationunit" )</th>
-    </tr>
-    <td>
-		<div id="selectionTree" style="width:325px; height:270px"></div>	            
-		<script type="text/javascript">
-			selectionTreeSelection.setMultipleSelectionAllowed( false );
-			selectionTreeSelection.setListenerFunction( paramParentOrganisationUnitSet );
-			selectionTree.clearSelectedOrganisationUnits();
-		    selectionTree.buildSelectionTree();
-		</script>
-    </td>
-    <tr>
-        <td colspan="4" style="height:10px"></td>
-    </tr>
-    
-    #end
-    
     <!-- OrganisationUnit -->
     
-    #if ( $!reportParams.isParamOrganisationUnit() )
+    #if ( $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
     
 	<tr>
         <th>$i18n.getString( "organisation_unit" )</th>
