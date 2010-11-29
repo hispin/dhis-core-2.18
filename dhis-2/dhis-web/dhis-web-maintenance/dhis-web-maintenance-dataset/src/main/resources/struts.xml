@@ -43,12 +43,16 @@
       <param name="javascripts">javascript/section.js</param>
     </action>
     
-    <action name="addSectionAction" class="org.hisp.dhis.dataset.action.section.AddSectionAction">
-      <result name="input" type="velocity">/main.vm</result>
+    <action name="getSectionOptions" 
+      class="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction">
+      <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/addSection.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <result name="success" type="redirect">section.action</result>
       <param name="javascripts">javascript/section.js</param>
+    </action>
+    
+    <action name="addSection" class="org.hisp.dhis.dataset.action.section.AddSectionAction">
+      <result name="success" type="redirect">section.action</result>
     </action>
     
     <action name="validateSection"
@@ -72,7 +76,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>  
     
-    <action name="editSectionAction" 
+    <action name="editSection" 
       class="org.hisp.dhis.dataset.action.section.EditSectionAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/editSection.vm</param>
@@ -226,8 +230,6 @@
     
     <!-- DataEntryForm -->
     
-    
-    
     <action name="viewDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.GetSelectedDataElementsAction">
       <result name="success" type="chain">viewDataEntryFormChain</result>
@@ -241,8 +243,6 @@
       javascript/FCK/fckeditor.js, javascript/FCK/editor/js/fckeditorcode_gecko.js, javascript/dataEntryForm.js</param>
       <param name="stylesheets">css/cde.css</param>
     </action>
-    
-    
     
     <action name="saveDataEntryForm"
       class="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction">
@@ -388,15 +388,6 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    <!-- 
-     <action name="exportEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.ExportDataEntryFormAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/octet-stream</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">10240</param>				
-      </result>
-	</action>
-    -->
+    
   </package>
 </struts>

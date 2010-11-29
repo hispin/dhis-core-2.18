@@ -45,8 +45,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
 		</property>
-		<property name="dataElementCategoryService">
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction"
+		class="org.hisp.dhis.dataset.action.section.GetSectionOptionsAction" scope="prototype">
+		<property name="categoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+		</property>	
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 	</bean>
 	

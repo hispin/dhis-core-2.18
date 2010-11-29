@@ -190,7 +190,7 @@ public class EditSectionAction
             {
                 DataElement de = dataElementIterator.next();
                 
-                if ( !de.getCategoryCombo().getName().equalsIgnoreCase( categoryCombo.getName() ) )
+                if ( !de.getCategoryCombo().equals( categoryCombo ) )
                 {
                     dataElementIterator.remove();
                 }
