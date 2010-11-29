@@ -178,13 +178,13 @@ public class UpdatePatientAction
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + identifierType.getId() );
                 }
-                
+
+                identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
+               
                 if ( StringUtils.isNotBlank( value ) )
                 {
                     value = value.trim();
-
-                    identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-
+                    
                     if ( identifier == null )
                     {
                         identifier = new PatientIdentifier();
@@ -198,6 +198,11 @@ public class UpdatePatientAction
                         identifier.setIdentifier( value );
                         patient.getIdentifiers().add( identifier );
                     }
+                }
+                else if ( identifier != null )
+                { 
+                   patient.getIdentifiers().remove( identifier );
+                   patientIdentifierService.deletePatientIdentifier( identifier );
                 }
             }
         }
