@@ -76,8 +76,7 @@ public class ValidateOrganisationUnitAction
     {
         this.code = code;
     }
-    
-    
+        
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -108,7 +107,6 @@ public class ValidateOrganisationUnitAction
 
         if ( name != null )
         {
-
             OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -117,12 +115,10 @@ public class ValidateOrganisationUnitAction
 
                 return ERROR;
             }
-        }  
-        
+        }        
         
         if ( code != null )
         {
-
             OrganisationUnit match = organisationUnitService.getOrganisationUnitByCode( code );
 
             if ( match != null && (id == null || match.getId() != id) )

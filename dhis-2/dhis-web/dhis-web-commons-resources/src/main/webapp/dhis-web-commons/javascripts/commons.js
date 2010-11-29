@@ -754,7 +754,7 @@ function removeItem( itemId, itemName, confirmation, action )
 
 /**
  * Create jQuery datepicker for input text with id * * 
- * @param id the id of input filed which you want enter date *
+ * @param id the id of input field which you want enter date *
  */
 function datePicker( id )
 {
@@ -794,7 +794,7 @@ function datePickerjQuery( jQueryString )
 
 /**
  * Create jQuery datepicker for input text with id * * 
- * @param id the id of input filed which you want enter date *
+ * @param id the id of input field which you want enter date *
  */
 function datePickerValid( id, today )
 {
@@ -822,8 +822,8 @@ function datePickerValid( id, today )
 
 /**
  * Create jQuery datepicker for start date and end ate text with id * * 
- * @param startdate the id of input filed which you want enter start date *
- * @param enddate the id of input filed which you want enter end date *
+ * @param startdate the id of input field which you want enter start date *
+ * @param enddate the id of input field which you want enter end date *
  */
 
 function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrentEndDate )

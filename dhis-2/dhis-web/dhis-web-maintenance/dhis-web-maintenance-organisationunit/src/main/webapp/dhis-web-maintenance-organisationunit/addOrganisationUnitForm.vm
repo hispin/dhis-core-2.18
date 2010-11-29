@@ -5,8 +5,7 @@
 		checkValueIsExist( "name", "validateOrganisationUnit.action");
 		checkValueIsExist( "code", "validateOrganisationUnit.action");
 		
-		datePickerValid( 'openingDate', false );
-			
+		datePickerValid( 'openingDate', false );			
 	});
 </script>
 

@@ -53,9 +53,9 @@ public class PrepareAddOrganisationUnitAction
     public String execute()
     {
         Calendar cal = Calendar.getInstance();
-        //cal.set( Calendar.YEAR, 1990 );
-        //cal.set( Calendar.MONTH, 0 );
-        //cal.set( Calendar.DATE, 1 );
+        cal.set( Calendar.YEAR, 1990 );
+        cal.set( Calendar.MONTH, 0 );
+        cal.set( Calendar.DATE, 1 );
         this.defaultDate = cal.getTime();
         
         return SUCCESS;
