@@ -6,7 +6,7 @@
     <alternativeName>$!encoder.xmlEncode( $indicator.alternativeName )</alternativeName>
     <code>$!encoder.xmlEncode( $indicator.code )</code>
     <description>$!encoder.xmlEncode( $indicator.description )</description>
-    <annualized>$indicator.annualized</annualized>
+    <annualized>$indicator.isAnnualized()</annualized>
     <indicatorTypeId>$indicator.indicatorType.id</indicatorTypeId>
     <indicatorTypeName>$!encoder.xmlEncode( $indicator.indicatorType.name )</indicatorTypeName>
     <numerator>$!encoder.xmlEncode( $indicator.numerator )</numerator>

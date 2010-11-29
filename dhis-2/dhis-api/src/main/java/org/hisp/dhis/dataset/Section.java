@@ -84,6 +84,26 @@ public class Section
 
         return false;
     }
+    
+    public boolean categorComboIsInvalid()
+    {
+        if ( dataElements != null && dataElements.size() > 0 )
+        {
+            DataElementCategoryCombo categoryCombo = null;
+            
+            for ( DataElement element : dataElements )
+            {
+                if ( categoryCombo != null && !categoryCombo.equals( element.getCategoryCombo() ) )
+                {
+                    return true;
+                }
+                
+                categoryCombo = element.getCategoryCombo();
+            }
+        }
+        
+        return false;
+    }
 
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

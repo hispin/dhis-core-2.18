@@ -18,6 +18,7 @@
 #integrityItem( $i18n.getString( "data_elements_violating_exclusive_group_sets" ) "dataElementsViolatingExclusiveGroupSets" )
 #integrityItem( $i18n.getString( "data_elements_assigned_to_period_types_with_different_period_types" ) "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" )
 #integrityItem( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) "dataSetsNotAssignedToOrganisationUnits" )
+#integrityItem( $i18n.getString( "sections_with_invalid_category_combinations" ) "sectionsWithInvalidCategoryCombinations" )
 #integrityItem( $i18n.getString( "indicators_with_identical_formulas" ) "indicatorsWithIdenticalFormulas" )
 #integrityItem( $i18n.getString( "indicators_without_groups" ) "indicatorsWithoutGroups" )
 #integrityItem( $i18n.getString( "invalid_indicator_numerators" ) "invalidIndicatorNumerators" )

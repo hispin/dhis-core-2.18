@@ -37,7 +37,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -104,6 +106,13 @@ public class GetDataIntegrityAction
     public List<DataSet> getDataSetsNotAssignedToOrganisationUnits()
     {
         return dataSetsNotAssignedToOrganisationUnits;
+    }
+
+    private List<Section> sectionsWithInvalidCategoryCombinations;
+    
+    public List<Section> getSectionsWithInvalidCategoryCombinations()
+    {
+        return sectionsWithInvalidCategoryCombinations;
     }
 
     private Map<DataElement, Collection<DataSet>> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
@@ -236,6 +245,9 @@ public class GetDataIntegrityAction
         dataSetsNotAssignedToOrganisationUnits = new ArrayList<DataSet>( dataIntegrityService
             .getDataSetsNotAssignedToOrganisationUnits() );
 
+        sectionsWithInvalidCategoryCombinations = new ArrayList<Section>( dataIntegrityService.
+            getSectionsWithInvalidCategoryCombinations() );
+        
         indicatorsWithIdenticalFormulas = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         indicatorsWithoutGroups = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsWithoutGroups() );
         invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
@@ -267,6 +279,7 @@ public class GetDataIntegrityAction
         Collections.sort( dataElementsViolatingCompulsoryGroupSets, new DataElementNameComparator() );
         Collections.sort( dataElementsViolatingExclusiveGroupSets, new DataElementNameComparator() );
         Collections.sort( dataSetsNotAssignedToOrganisationUnits, new DataSetNameComparator() );
+        Collections.sort( sectionsWithInvalidCategoryCombinations, new SectionOrderComparator() );
         Collections.sort( indicatorsWithoutGroups, new IndicatorNameComparator() );
         Collections.sort( indicatorsViolatingCompulsoryGroupSets, new IndicatorNameComparator() );
         Collections.sort( indicatorsViolatingExclusiveGroupSets, new IndicatorNameComparator() );

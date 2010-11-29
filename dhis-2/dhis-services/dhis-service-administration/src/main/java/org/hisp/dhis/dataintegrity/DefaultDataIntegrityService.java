@@ -43,6 +43,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
@@ -98,6 +100,13 @@ public class DefaultDataIntegrityService
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+    
+    private SectionService sectionService;
+
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -181,7 +190,6 @@ public class DefaultDataIntegrityService
     @Override
     public Collection<DataElement> getDataElementsViolatingCompulsoryGroupSets()
     {
-
         Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
 
         Collection<DataElement> dataElements = dataElementService.getAllDataElements();
@@ -236,6 +244,25 @@ public class DefaultDataIntegrityService
         } );
     }
 
+    // -------------------------------------------------------------------------
+    // Section
+    // -------------------------------------------------------------------------
+
+    public Collection<Section> getSectionsWithInvalidCategoryCombinations()
+    {
+        Collection<Section> sections = new HashSet<Section>();
+        
+        for ( Section section : sectionService.getAllSections() )
+        {
+            if ( section.categorComboIsInvalid() )
+            {
+                sections.add( section );
+            }
+        }
+        
+        return sections;
+    }
+    
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
@@ -382,16 +409,13 @@ public class DefaultDataIntegrityService
 
                     break;
                 }
-                else if ( visited.contains( parent ) ) // Ends in cyclic
-                // reference but not part
-                // of it
+                else if ( visited.contains( parent ) ) // Ends in cyclic ref
                 {
                     break;
                 }
                 else
-                // Remember visited
                 {
-                    visited.add( parent );
+                    visited.add( parent ); // Remember visited
                 }
             }
 

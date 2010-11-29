@@ -55,6 +55,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
+	<property name="sectionService"
+	  ref="org.hisp.dhis.dataset.SectionService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="organisationUnitGroupService"
