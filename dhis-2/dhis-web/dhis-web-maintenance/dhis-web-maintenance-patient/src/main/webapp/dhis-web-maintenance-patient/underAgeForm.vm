@@ -35,12 +35,17 @@ jQuery(document).ready(function()
 			birthDate :{required:false,dateISO:true,datelessthanequaltoday:true}
 		},beforeValidateHandler: function(form)
 			{
-				var birthDate = $('#birthDate').val();
-				var age = $('#age').val();
-				if(age !=''){
-					$( "#memberValidator").val(age);
+				var dobType = $('#dobType').val();
+						
+				if( dobType=='V' || dobType=='D' ) 
+				{
+					var birthDate = $('#birthDate').val();
+					if( birthDate != '' ){
+						$("#memberValidator").val(birthDate);
+					}
 				}else{
-					$( "#memberValidator").val(birthDate);
+					var age = $('#age').val();
+					$("#memberValidator").val(age);
 				}
 			}
 	});
