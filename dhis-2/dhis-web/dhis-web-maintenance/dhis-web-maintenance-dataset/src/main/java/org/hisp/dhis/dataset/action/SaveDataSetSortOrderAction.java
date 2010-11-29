@@ -27,7 +27,6 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
@@ -72,8 +71,6 @@ public class SaveDataSetSortOrderAction
         throws Exception
     {
         int sortOrder = 1;
-        
-        Collections.reverse( dataSets );
         
         for ( String id : dataSets )
         {

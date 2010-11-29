@@ -36,6 +36,6 @@ public class SectionOrderComparator
 {
     public int compare( Section o1, Section o2 )
     {
-        return o2.getSortOrder() - o1.getSortOrder();
+        return o1.getSortOrder() - o2.getSortOrder();
     }
 }
