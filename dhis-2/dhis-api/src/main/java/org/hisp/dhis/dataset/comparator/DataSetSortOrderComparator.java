@@ -50,6 +50,6 @@ public class DataSetSortOrderComparator
             return dataSet0.getName().compareTo( dataSet1.getName() );
         }
         
-        return dataSet1.getSortOrder() - dataSet0.getSortOrder();
+        return dataSet0.getSortOrder() - dataSet1.getSortOrder();
     }
 }
