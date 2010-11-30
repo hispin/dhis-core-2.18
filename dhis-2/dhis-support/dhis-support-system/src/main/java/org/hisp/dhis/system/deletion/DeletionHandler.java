@@ -73,6 +73,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
@@ -627,6 +628,15 @@ public abstract class DeletionHandler
     }
 
     public void deleteValidationCriteria( ValidationCriteria validationCriteria )
+    {
+    }
+    
+    public boolean allowDeleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
+    {
+        return true;
+    }
+
+    public void deleteProgramAttributeValue( ProgramAttributeValue programAttributeValue )
     {
     }
 }
