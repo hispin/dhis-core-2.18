@@ -61,15 +61,14 @@
 <table>
 	<thead>
 		<tr>
-			<th colspan="3">$i18n.getString( "condition_detail" )</th>
+			<th colspan="4">$i18n.getString( "condition_detail" )</th>
 		</tr>
 	</thead>
 	
 	<tbody>
 	
 	<tr>
-	
-	<td>
+		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "program_stage_de" )</legend>
 		
@@ -121,7 +120,7 @@
 		
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
-		<legend>$i18n.getString( "case_attributes" )</legend>
+		<legend>$i18n.getString( "case_properties" )</legend>
 		
 		<table>
 		
@@ -129,7 +128,7 @@
 				<td>
 					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
 						<option value="[CP:gender]">$i18n.getString( "gender" )</option>
-						<option value="[CP:dob]">$i18n.getString( "dob" )</option>
+						<option value="[CP:dobType]">$i18n.getString( "dobType" )</option>
 					</select>
 				</td>
 			</tr>
@@ -151,11 +150,27 @@
 			</tr>
 		</table>
 		</fieldset>
-	
 		</td>
+		
+		<td>
+		<fieldset style="border: 1px solid #3f5d8e; ">
+		<legend>$i18n.getString( "program_properties" )</legend>
+		
+		<table>
+		
+			<tr>
+				<td>
+					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
+						<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		</td>
+		
 	</tr>	
 	<tr>
-		<td colspan='3'>
+		<td colspan='4'>
 			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "<" );' style="cursor:pointer;">
 			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "<=" );' style="cursor:pointer;">
 			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( ">" );' style="cursor:pointer;">
@@ -176,10 +191,10 @@
 	
     </tbody>
 	<tr>
-		<td colspan='3'>
+		<td colspan='4'>
 			<fieldset style="border: 1px solid #3f5d8e; ">
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" style="width:54.5em; height:10em" class="{validate:{required:true}}" ></textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" style="width:72.5em; height:10em" class="{validate:{required:true}}" ></textarea>
 			</fieldset>
 		</td>
 	</tr>
