@@ -52,8 +52,6 @@ public class SectionListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SectionService sectionService;
-
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -61,6 +59,8 @@ public class SectionListAction
         this.dataSetService = dataSetService;
     }
 
+    private SectionService sectionService;
+    
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;

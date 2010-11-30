@@ -45,12 +45,20 @@ import com.opensymphony.xwork2.Action;
 public class GetSectionListSortOrderAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
+
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
     private Integer dataSetId;
 
@@ -66,14 +74,18 @@ public class GetSectionListSortOrderAction
         return sections;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        
+
         sections = new ArrayList<Section>( dataSet.getSections() );
-        
+
         Collections.sort( sections, new SectionOrderComparator() );
-        
+
         return SUCCESS;
     }
 }
