@@ -73,24 +73,21 @@ public class JdbcDataArchiveStore
     {
         // Move data from datavalue to datavaluearchive
         
-        String sql =
-            "INSERT INTO datavaluearchive ( " +
-                "SELECT d.* FROM datavalue AS d " +
-                "JOIN period as p ON ( d.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
+        final String criteria = 
+                    "SELECT d.* FROM datavalue AS d " +
+                    "JOIN period AS p ON ( d.periodid=p.periodid ) " +
+                    "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
+                    "AND p.enddate<='" + getMediumDateString( endDate ) + "'";
+        
+        String sql = "INSERT INTO datavaluearchive ( " + criteria + " );";
+                
 
         log.info( sql );        
         jdbcTemplate.execute( sql );
         
         // Delete data from datavalue
         
-        sql = 
-            "DELETE FROM datavalue WHERE EXISTS ( " +
-                "SELECT d.* FROM datavalue AS d " +
-                "JOIN period AS p ON ( d.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' )";
+        sql = "DELETE FROM datavalue WHERE EXISTS ( " + criteria + " );";
         
         log.info( sql );        
         jdbcTemplate.execute( sql ); 
@@ -99,25 +96,21 @@ public class JdbcDataArchiveStore
     public void unArchiveData( Date startDate, Date endDate )
     {
         // Move data from datavalue to datavaluearchive
+        final String criteria = 
+                    "SELECT a.* FROM datavaluearchive AS a " +
+                    "JOIN period AS p ON ( a.periodid=p.periodid ) " +
+                    "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
+                    "AND p.enddate<='" + getMediumDateString( endDate ) + "'";
         
-        String sql =
-            "INSERT INTO datavalue ( " +
-                "SELECT a.* FROM datavaluearchive AS a " +
-                "JOIN period as p ON ( a.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' );";
+        String sql = "INSERT INTO datavalue ( " + criteria + " );";
+                
 
         log.info( sql );        
         jdbcTemplate.execute( sql ); 
         
         // Delete data from datavalue
 
-        sql = 
-            "DELETE FROM datavaluearchive WHERE EXISTS ( " +
-                "SELECT a.* FROM datavaluearchive AS a " +
-                "JOIN period AS p ON ( a.periodid=p.periodid ) " +
-                "WHERE p.startdate>='" + getMediumDateString( startDate ) + "' " +
-                "AND p.enddate<='" + getMediumDateString( endDate ) + "' )";
+        sql = "DELETE FROM datavaluearchive WHERE EXISTS ( " + criteria + " );";
         
         log.info( sql );        
         jdbcTemplate.execute( sql ); 
