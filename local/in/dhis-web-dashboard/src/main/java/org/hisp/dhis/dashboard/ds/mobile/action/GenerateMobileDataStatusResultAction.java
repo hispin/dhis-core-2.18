@@ -26,6 +26,8 @@
  */
 package org.hisp.dhis.dashboard.ds.mobile.action;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,6 +39,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hibernate.SessionFactory;
 import org.hisp.dhis.dashboard.util.DashBoardService;
@@ -52,11 +57,19 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.reports.ReportService;
+import org.hisp.dhis.reports.Report_inDesign;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
 
@@ -146,6 +159,14 @@ implements Action
     {
         this.userStore = userStore;
     }
+    
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+    
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -162,6 +183,13 @@ implements Action
     public Map<OrganisationUnit, String> getOuMapUserPhoneNo()
     {
         return ouMapUserPhoneNo;
+    }
+    
+    private Map<OrganisationUnit, List<String>> ouMapDataStatusColorList;
+    
+    public Map<OrganisationUnit, List<String>> getOuMapDataStatusColorList()
+    {
+        return ouMapDataStatusColorList;
     }
 
     private Collection<Period> periodList;
@@ -372,6 +400,8 @@ implements Action
     int orgUnitCount;
 
     private String dataViewName;
+    
+    private String raFolderName;
 
     // ---------------------------------------------------------------
     // Action Implementation
@@ -383,10 +413,12 @@ implements Action
         System.out.println("Inside Mobile DataStatus Result Action");
         orgUnitCount = 0;
         dataViewName = "";
-
+        raFolderName = reportService.getRAFolderName();
+        
         // Intialization
         periodNameList = new ArrayList<String>();
         ouMapDataStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
+        ouMapDataStatusColorList = new HashMap<OrganisationUnit, List<String>>();
         ouMapUserPhoneNo = new HashMap<OrganisationUnit,String>();//for User PhoneNo Map
         
         results = new ArrayList<Integer>();
@@ -493,10 +525,13 @@ implements Action
                 orgUnitInfo += "," + ou.getId();
             }
         }
+        
+        List<String> holidayList = getHolidayList();
        
         // Period Related Info
         Period startPeriod = periodService.getPeriod( sDateLB );
         Period endPeriod = periodService.getPeriod( eDateLB );
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         PeriodType dataSetPeriodType = selDataSet.getPeriodType();        
         periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
@@ -547,8 +582,6 @@ implements Action
             
             ouMapUserPhoneNo.put( o, userPhoneNo );            
             
-            
-            
             orgUnitInfo = "" + o.getId();
 
             if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
@@ -563,6 +596,7 @@ implements Action
 
             double dataStatusPercentatge;
             List<Integer> dsResults = new ArrayList<Integer>();
+            List<String> colorList = new ArrayList<String>();
             while ( periodIterator.hasNext() )
             {
                 p = (Period) periodIterator.next();
@@ -652,9 +686,36 @@ implements Action
                 dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
 
                 dsResults.add( (int) dataStatusPercentatge );
+                
+                if( holidayList.contains( simpleDateFormat.format( p.getStartDate() ) ) )
+                {
+                    colorList.add( "#463e41" );
+                }
+                else
+                {
+                    if ( dataStatusPercentatge == 0 )
+                    {
+                        colorList.add( "#ff0000" );
+                    }
+                    else if ( dataStatusPercentatge > 75)
+                    {
+                        colorList.add( "#a0c0a0" );
+                    }
+                    else if ( dataStatusPercentatge > 40 && dataStatusPercentatge <= 75 )
+                    {
+                        colorList.add( "#a0a0ff" );
+                    }
+                    else
+                    {
+                        colorList.add( "#905090" );
+                    }
+                }
+                
             }
 
+            ouMapDataStatusColorList.put( o, colorList );
             ouMapDataStatusResult.put( o, dsResults );
+            
         }
 
         // For Level Names
@@ -847,6 +908,69 @@ implements Action
             deInfo.append( "," ).append( de.getId() );
         }
         return deInfo.toString();
+    }
+    
+    public List<String> getHolidayList()
+    {
+        String fileName = "holidays.xml";
+        String path = System.getProperty( "user.home" ) + File.separator + "dhis" + File.separator + raFolderName
+            + File.separator + fileName;
+
+        List<String> holidayList = new ArrayList<String>();
+        try
+        {
+            String newpath = System.getenv( "DHIS2_HOME" );
+            if ( newpath != null )
+            {
+                path = newpath + File.separator + raFolderName + File.separator + fileName;
+            }
+        }
+        catch ( NullPointerException npe )
+        {
+            System.out.println( "DHIS2 HOME is not set" );
+            // do nothing, but we might be using this somewhere without
+            // USER_HOME set, which will throw a NPE
+        }
+
+        try
+        {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse( new File( path ) );
+            if ( doc == null )
+            {
+                System.out.println( "XML File Not Found at user home" );
+                return null;
+            }
+
+            NodeList listOfholidays = doc.getElementsByTagName( "holiday" );
+            int totalholidays = listOfholidays.getLength();
+            for ( int s = 0; s < totalholidays; s++ )
+            {
+                    Element deCodeElement = (Element) listOfholidays.item( s );
+                    NodeList textDECodeList = deCodeElement.getChildNodes();
+                    String holidayDate = ((Node) textDECodeList.item( 0 )).getNodeValue().trim();
+                    holidayList.add( holidayDate );
+                                    
+            }
+            
+        }// try block end
+        catch ( SAXParseException err )
+        {
+            System.out.println( "** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId() );
+            System.out.println( " " + err.getMessage() );
+        }
+        catch ( SAXException e )
+        {
+            Exception x = e.getException();
+            ((x == null) ? e : x).printStackTrace();
+        }
+        catch ( Throwable t )
+        {
+            t.printStackTrace();
+        }
+
+        return holidayList;
     }
 
 }// class end
