@@ -119,6 +119,18 @@ public interface StatementBuilder
     
     String getDeflatedDataValues( int dataElementId, String dataElementName, int categoryOptionComboId,
     	String periodIds, int organisationUnitId, String organisationUnitName, int lowerBound, int upperBound );
+    	
+    String archiveData( String startDate, String endDate );
+    
+    String unArchiveData( String startDate, String endDate );
+    
+    String deleteRegularOverlappingData();
+    
+    String deleteArchivedOverlappingData();
+    
+    String deleteOldestOverlappingDataValue();
+    
+    String deleteOldestOverlappingArchiveData();
     
     String archivePatientData ( String startDate, String endDate );
     

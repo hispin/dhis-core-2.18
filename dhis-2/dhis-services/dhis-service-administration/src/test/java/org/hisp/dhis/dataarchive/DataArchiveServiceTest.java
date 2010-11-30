@@ -32,6 +32,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -66,6 +67,7 @@ public class DataArchiveServiceTest
      * operation, DataEliminationStrategy strategy );
      */
     @Test
+    @Ignore
     public void testArchiveData()
     {
         /*
