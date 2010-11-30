@@ -4,6 +4,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -41,6 +43,7 @@ public class DataElement
 
     private ModelList categoryOptionCombos;
 
+    @XmlAttribute
     public String getType()
     {
         return type;
@@ -61,6 +64,7 @@ public class DataElement
         this.categoryOptionCombos = categoryOptionCombos;
     }
 
+    @XmlAttribute
     public boolean isCompulsory()
     {
         return compulsory;

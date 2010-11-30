@@ -32,6 +32,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class DataSet
     extends Model
 {
@@ -50,6 +53,8 @@ public class DataSet
         this.periodType = periodType;
     }
 
+    @XmlElementWrapper(name="sections")
+    @XmlElement(name="section")
     public List<Section> getSections()
     {
         return sections;

@@ -37,15 +37,11 @@ public class DataSetValue
     extends Model
 {
 
-    private String pName;
+    private String periodName;
 
     private boolean completed;
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
-
-    public DataSetValue()
-    {
-    }
 
     public boolean isCompleted()
     {
@@ -57,14 +53,14 @@ public class DataSetValue
         this.completed = completed;
     }
 
-    public String getpName()
+    public String getPeriodName()
     {
-        return pName;
+        return periodName;
     }
 
-    public void setpName( String pName )
+    public void setPeriodName( String periodName )
     {
-        this.pName = pName;
+        this.periodName = periodName;
     }
 
     public void setDataValues( List<DataValue> dataValues )
@@ -81,7 +77,7 @@ public class DataSetValue
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
+        // FIXME: Implement..
     }
 
     @Override
@@ -91,7 +87,7 @@ public class DataSetValue
 
         this.setId( din.readInt() );
         this.setName( din.readUTF() );
-        this.setpName( din.readUTF() );
+        this.setPeriodName( din.readUTF() );
         this.setCompleted( din.readBoolean() );
         int size = din.readInt();
 
