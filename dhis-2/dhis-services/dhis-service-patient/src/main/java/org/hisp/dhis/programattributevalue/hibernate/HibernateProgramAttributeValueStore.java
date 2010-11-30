@@ -74,9 +74,9 @@ public class HibernateProgramAttributeValueStore
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<ProgramAttributeValue> get( ProgramInstance progranInstance )
+    public Collection<ProgramAttributeValue> get( ProgramInstance programInstance )
     {
-        return getCriteria( Restrictions.eq( "progranInstance", progranInstance ) ).list();
+        return getCriteria( Restrictions.eq( "programInstance", programInstance ) ).list();
     }
 
     @SuppressWarnings("unchecked")

@@ -34,6 +34,8 @@ import java.util.Set;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
+import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
+import org.hisp.dhis.programattributevalue.ProgramAttributeValueService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -61,13 +63,20 @@ public class ProgramInstanceDeletionHandler
         this.patientDataValueService = patientDataValueService;
     }
 
-    ProgramStageDataElementService programStageDEService;
+    public ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
     {
         this.programStageDEService = programStageDEService;
     }
+    
+    private ProgramAttributeValueService programAttributeValueService;
 
+    public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
+    {
+        this.programAttributeValueService = programAttributeValueService;
+    }
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -86,7 +95,7 @@ public class ProgramInstanceDeletionHandler
         // ---------------------------------------------------------------------
         // Delete Patient data values
         // ---------------------------------------------------------------------
-
+        
         Set<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
 
         for ( ProgramInstance programInstance : programInstances )
@@ -102,11 +111,27 @@ public class ProgramInstanceDeletionHandler
                 patientDataValueService.deletePatientDataValue( dataValue );
             }
         }
+        
+        // ---------------------------------------------------------------------
+        // Delete Program attribute values
+        // ---------------------------------------------------------------------
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
+                .getProgramAttributeValues( programInstance );
+            
+            for ( ProgramAttributeValue attributeValue : attributeValues )
+            {
+                programAttributeValueService.deleteProgramAttributeValue( attributeValue );
+            }
+
+        }
 
         // ---------------------------------------------------------------------
         // Delete Program Instances
         // ---------------------------------------------------------------------
-
+System.out.println("\n\n Delete Program Instances ");
         if ( programInstances != null && programInstances.size() > 0 )
         {
             for ( ProgramInstance programInstance : programInstances )
@@ -114,6 +139,7 @@ public class ProgramInstanceDeletionHandler
                 programInstanceService.deleteProgramInstance( programInstance );
             }
         }
+        
     }
 
     @Override
@@ -130,12 +156,12 @@ public class ProgramInstanceDeletionHandler
         for ( ProgramInstance programInstance : programInstances )
         {
             Collection<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
-            if ( stageInstances != null && stageInstances.size() > 0)
+            if ( stageInstances != null && stageInstances.size() > 0 )
             {
                 dataValues.addAll( patientDataValueService.getPatientDataValues( stageInstances ) );
             }
         }
-       
+
         if ( dataValues != null && dataValues.size() > 0 )
         {
             for ( PatientDataValue dataValue : dataValues )
@@ -144,6 +170,22 @@ public class ProgramInstanceDeletionHandler
             }
         }
 
+        // ---------------------------------------------------------------------
+        // Delete Program attribute values
+        // ---------------------------------------------------------------------
+        
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            Collection<ProgramAttributeValue> attributeValues = programAttributeValueService
+                .getProgramAttributeValues( programInstance );
+
+            for ( ProgramAttributeValue attributeValue : attributeValues )
+            {
+                programAttributeValueService.deleteProgramAttributeValue( attributeValue );
+            }
+
+        }
+        
         // ---------------------------------------------------------------------
         // Delete Program Instances
         // ---------------------------------------------------------------------

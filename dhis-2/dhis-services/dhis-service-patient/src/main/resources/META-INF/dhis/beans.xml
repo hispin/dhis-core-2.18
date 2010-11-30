@@ -298,6 +298,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 		<property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService"/>
 		<property name="programStageDEService" ref="org.hisp.dhis.program.ProgramStageDataElementService"/>
+		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.relationship.RelationshipDeletionHandler" 
@@ -314,6 +315,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.ProgramDeletionHandler">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler" 
+		class="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler">
+		<property name="programAttributeValueService" ref="org.hisp.dhis.programattributevalue.ProgramAttributeValueService"/>
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.PatientDeletionHandler" 
@@ -356,6 +363,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			</list>
 		</property>
 	</bean>
+	
 	<!-- DeletionManager -->
   
   	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -372,6 +380,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			  <ref local="org.hisp.dhis.program.ProgramDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
+			  <ref local="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler"/>
 			</list>
 		  </list>
 		</property>
@@ -410,6 +419,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		      method="intercept"/>
 		  <aop:before 
 		      pointcut="execution( * org.hisp.dhis.program.ProgramInstanceService.delete*(..) )" 
+		      method="intercept"/>
+		  <aop:before 
+		      pointcut="execution( * org.hisp.dhis.programattributevalue.ProgramAttributeValueService.delete*(..) )" 
 		      method="intercept"/>
 		  <aop:before 
 		      pointcut="execution( * org.hisp.dhis.program.ProgramStageService.delete*(..) )" 
