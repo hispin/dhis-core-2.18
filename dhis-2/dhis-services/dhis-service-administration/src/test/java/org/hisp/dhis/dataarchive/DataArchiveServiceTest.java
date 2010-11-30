@@ -32,7 +32,6 @@ import static org.junit.Assert.assertSame;
 
 import java.util.Date;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -67,7 +66,6 @@ public class DataArchiveServiceTest
      * operation, DataEliminationStrategy strategy );
      */
     @Test
-    @Ignore
     public void testArchiveData()
     {
         /*
@@ -101,8 +99,8 @@ public class DataArchiveServiceTest
         archivedValuesNo = dataArchiveService.archiveData( periodD.getStartDate(), periodD.getEndDate(),
             DataArchiveOperation.UNARCHIVE, DataEliminationStrategy.REGULAR );
 
-        assertSame( "6 records from 2005-05-01 to 2005-05-31 have been removed back into datavalue table."
-            + " So now, datavaluearchive contains 48 records only", 48, archivedValuesNo );
+        assertSame( "54 records from 2005-05-01 to 2005-05-31 have been removed back into datavalue table."
+            + " So now, datavaluearchive are empty", 0, archivedValuesNo );
 
         /*
          * STEP 4: Un-archives all datavaluearchive to datavalues from earliest
