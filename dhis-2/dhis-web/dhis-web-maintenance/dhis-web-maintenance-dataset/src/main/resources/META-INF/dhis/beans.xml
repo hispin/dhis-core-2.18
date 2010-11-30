@@ -65,17 +65,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dataset.action.section.SortOrderSection"
-		class="org.hisp.dhis.dataset.action.section.SortOrderSection"
-		scope="prototype">
-		<property name="sectionService">
-			<ref bean="org.hisp.dhis.dataset.SectionService"/>
-		</property>
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-	</bean>
-	
 	<bean id="org.hisp.dhis.dataset.action.section.EditSectionAction"
 		class="org.hisp.dhis.dataset.action.section.EditSectionAction"
 		scope="prototype">
