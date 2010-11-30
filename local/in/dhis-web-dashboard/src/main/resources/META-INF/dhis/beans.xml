@@ -497,6 +497,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
+		<property name="reportService">
+            <ref bean="org.hisp.dhis.reports.ReportService"/>
+        </property>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore">
@@ -518,6 +521,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
+		
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore">

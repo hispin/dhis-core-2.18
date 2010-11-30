@@ -64,6 +64,10 @@
                 <td bgcolor="#ff0000">&nbsp;</td>
                 <td align="left">&nbsp;Not Entered ( 0 )</td>
             </tr>
+            <tr class="TableHeadingCellStyles">
+                <td bgcolor="#463e41">&nbsp;</td>
+                <td align="left">&nbsp;Holidays</td>
+            </tr>
         </table>
     </div>
     #set($count2 = 0)
@@ -102,19 +106,11 @@
                  <td class="TableHeadingCellStyles">$dsValidationPhoneNo</td>
                                
                 #set($dsresultList = $ouMapDataStatusResult.get($chiildorgUnit))
-                    #foreach($result in $dsresultList)
-	                   #set($count2 = $count2 + 1)
-	                    #if($result < 0)
-	                        <td  bgcolor="white">&nbsp;</td>
-		                      #elseif($result == 0)
-		                          <td align="center" bgcolor="#ff0000"><font color="#ffffff">$result</font></td>
-		                      #elseif($result > 75)
-		                          <td align="center" bgcolor="#a0c0a0"><font color="#ffffff">$result</font></td>
-		                      #elseif($result > 40 && $result <= 75 )
-		                           <td align="center" bgcolor="#a0a0ff"><font color="#ffffff">$result</font></td>
-		                      #else
-		                           <td align="center" bgcolor="#905090"><font color="#ffffff">$result</font></td>
-	                  #end
+                #set($dsColorList = $ouMapDataStatusColorList.get($chiildorgUnit))
+                #set($count2 = 0)
+                    #foreach($result in $dsresultList)	                   
+                       <td align="center" bgcolor="$dsColorList.get($count2)"><font color="#ffffff">$result</font></td>
+                       #set($count2 = $count2 + 1)
 	              #end
             </tr>
           #end
