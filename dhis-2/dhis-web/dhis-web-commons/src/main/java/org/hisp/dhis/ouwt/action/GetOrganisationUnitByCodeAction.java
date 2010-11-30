@@ -72,9 +72,9 @@ public class GetOrganisationUnitByCodeAction
         this.code = code;
     }
 
-    private Integer message;
+    private String message;
 
-    public Integer getMessage()
+    public String getMessage()
     {
         return message;
     }
@@ -98,9 +98,11 @@ public class GetOrganisationUnitByCodeAction
         
         if ( unit != null )
         {
+            log.debug( "Found organisation unit: " + unit );
+            
             selectionManager.setSelectedOrganisationUnit( unit );
             
-            message = unit.getId();
+            message = String.valueOf( unit.getId() );
             
             return SUCCESS;
         }

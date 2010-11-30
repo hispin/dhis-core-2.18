@@ -115,6 +115,25 @@ function Selection()
     {
         return 'orgUnit' + unitId;
     }
+    
+	this.findByCode = function()
+	{
+		$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + $.URLEncode( $( '#searchField' ).val() ), function ( data ) {
+			var unitId = data.message;
+			if ( data.response == "success" ) {
+				$( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action', function() {					
+					
+					if ( !listenerFunction ) {
+						return false;
+					}					
+					var unitIds = [unitId];					
+					listenerFunction( unitIds ); 
+				} );			
+			} else {
+				$( '#searchField' ).css( 'background-color', '#ffc5c5' );
+			}
+		} );
+	}
 }
 
 // -----------------------------------------------------------------------------
@@ -343,15 +362,4 @@ function Subtree()
         imgTag.height = '9';
         return imgTag;
     }
-}
-
-function getOrgunitByCode(code)
-{
-	$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + $.URLEncode( $( '#searchField' ).val() ), function ( data ) {	
-		if ( data.response == "success" ) {
-			$( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action' );
-		} else {
-			$( '#searchField' ).css( 'background-color', '#ffc5c5' );
-		}
-	} );
 }
