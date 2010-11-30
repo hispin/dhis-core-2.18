@@ -1,2 +1,6 @@
 <br>
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
+
+<script>
+selection.setListenerFunction( organisationUnitSelected );
+</script>
