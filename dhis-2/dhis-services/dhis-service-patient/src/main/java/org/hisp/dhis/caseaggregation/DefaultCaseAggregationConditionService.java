@@ -30,6 +30,7 @@ package org.hisp.dhis.caseaggregation;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
@@ -162,7 +163,7 @@ public class DefaultCaseAggregationConditionService
         Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
 
         String sql = createSQL( aggregationCondition, orgunit, period );
-        
+
         Collection<DataElement> dataElements = getDataElementsInExpression( aggregationCondition
             .getAggregationExpression() );
 
@@ -177,7 +178,7 @@ public class DefaultCaseAggregationConditionService
 
             result.addAll( dataValues );
         }
-        
+
         return result;
     }
 
@@ -209,7 +210,8 @@ public class DefaultCaseAggregationConditionService
         String[] expression = aggregationCondition.getAggregationExpression().split( "(AND|OR)" );
 
         String regExp = "\\[(" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
-            + OBJECT_PATIENT_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+            + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
+            + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -239,13 +241,13 @@ public class DefaultCaseAggregationConditionService
                 if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
                 {
                     String propertyName = info[1];
-                    condition = getCondititionForPatientProperty( propertyName, orgunitId, startDate, endDate );
+                    condition = getConditionForPatientProperty( propertyName, orgunitId, startDate, endDate );
 
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
                 {
                     int attributeId = Integer.parseInt( info[1] );
-                    condition = getCondititionForPatientAttribute( attributeId, orgunitId, startDate, endDate );
+                    condition = getConditionForPatientAttribute( attributeId, orgunitId, startDate, endDate );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
                 {
@@ -255,7 +257,7 @@ public class DefaultCaseAggregationConditionService
                     int dataElementId = Integer.parseInt( ids[1] );
                     int optionComboId = Integer.parseInt( ids[2] );
 
-                    condition = getCondititionForDataElement( programStageId, dataElementId, optionComboId, orgunitId,
+                    condition = getConditionForDataElement( programStageId, dataElementId, optionComboId, orgunitId,
                         startDate, endDate );
                     if ( !expression[i].contains( "+" ) )
                     {
@@ -265,6 +267,11 @@ public class DefaultCaseAggregationConditionService
                     {
                         subConditions.add( condition );
                     }
+                }
+
+                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_PROPERTY ) )
+                {
+                    condition = getConditionForProgramProperty( orgunitId, startDate, endDate ) + info[1];
                 }
 
                 // -------------------------------------------------------------
@@ -304,7 +311,7 @@ public class DefaultCaseAggregationConditionService
 
             conditions.add( condition );
         }
-
+        
         return getSQL( conditions, operators );
 
     }
@@ -341,20 +348,20 @@ public class DefaultCaseAggregationConditionService
         return dataElements;
     }
 
-    private String getCondititionForDataElement( int programStageId, int dataElementId, int optionComboId,
-        int orgunitId, String startDate, String endDate )
+    private String getConditionForDataElement( int programStageId, int dataElementId, int optionComboId, int orgunitId,
+        String startDate, String endDate )
     {
         return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
             + "WHERE pd.categoryoptioncomboid = " + optionComboId + " AND pd.dataelementid = " + dataElementId + " "
-            + " AND pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
-            + " AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
+            + "AND pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
+            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
 
     }
 
-    private String getCondititionForPatientAttribute( int attributeId, int orgunitId, String startDate, String endDate )
+    private String getConditionForPatientAttribute( int attributeId, int orgunitId, String startDate, String endDate )
     {
         return "distinct(pi.patientid) FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
@@ -366,8 +373,7 @@ public class DefaultCaseAggregationConditionService
             + "AND pav.value ";
     }
 
-    private String getCondititionForPatientProperty( String propertyName, int orgunitId, String startDate,
-        String endDate )
+    private String getConditionForPatientProperty( String propertyName, int orgunitId, String startDate, String endDate )
     {
         return "SELECT distinct(p.patientid) FROM programstageinstance as psi INNER JOIN programstage as ps "
             + "ON psi.programstageid = ps.programstageid INNER JOIN patientdatavalue as pd ON "
@@ -376,6 +382,14 @@ public class DefaultCaseAggregationConditionService
             + "p.patientid = pi.patientid WHERE pd.organisationunitid = " + orgunitId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND p."
             + propertyName + " ";
+    }
+
+    private String getConditionForProgramProperty( int orgunitId, String startDate, String endDate )
+    {
+        return "SELECT distinct(p.patientid) FROM programstageinstance as psi "
+            + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
+            + "INNER JOIN patient as p ON p.patientid = pi.patientid WHERE p.organisationunitid = " + orgunitId + " "
+            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
     }
 
     private String getSQL( List<String> conditions, List<String> operators )
@@ -420,21 +434,27 @@ public class DefaultCaseAggregationConditionService
         return patientIds.size();
     }
 
-//    public static void main( String[] args )
-//    {
-//
-//        CaseAggregationCondition aggregationCondition = new CaseAggregationCondition();
-//
-//        aggregationCondition.setOperator( CaseAggregationCondition.AGGRERATION_COUNT );
-//
-//        // aggregationCondition.setAggregationExpression(
-//        // "( [DE:1.1.1] + [DE:1.1.1] + [DE:1.1.1] > 0 " );
-//        aggregationCondition.setAggregationExpression( " [DE:15.1.1]  +  [DE:16.2.1] > 0" );
-//        // );
-//
-//        DefaultCaseAggregationConditionService service = new DefaultCaseAggregationConditionService();
-//
-//        service.getDataElementsInExpression( aggregationCondition.getAggregationExpression() );
-//    }
+    // public static void main( String[] args )
+    // {
+    //
+    // CaseAggregationCondition aggregationCondition = new
+    // CaseAggregationCondition();
+    //
+    // aggregationCondition.setOperator(
+    // CaseAggregationCondition.AGGRERATION_COUNT );
+    //
+    // // aggregationCondition.setAggregationExpression(
+    // // "( [DE:1.1.1] + [DE:1.1.1] + [DE:1.1.1] > 0 " );
+    // aggregationCondition.setAggregationExpression(
+    // " [DE:15.1.1]  +  [DE:16.2.1] > 0" );
+    // //
+    // aggregationCondition.setAggregationExpression("[PP:enrollmentdate - dateofincident]  > 0");
+    // // );
+    //
+    // DefaultCaseAggregationConditionService service = new
+    // DefaultCaseAggregationConditionService();
+    //
+    // service.parseConditition( aggregationCondition, null, null );
+    // }
 
 }
