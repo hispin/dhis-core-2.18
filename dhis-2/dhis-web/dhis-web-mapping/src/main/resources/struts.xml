@@ -216,6 +216,12 @@
 				/dhis-web-mapping/jsonminMapViews.vm</result>
 		</action>
 
+        <action name="getMapViewsByFeatureType"
+            class="org.hisp.dhis.mapping.action.GetMapViewsByFeatureTypeAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/jsonMapViews.vm
+            </result>
+        </action>
+
 		<action name="addMapViewToDashboard"
 			class="org.hisp.dhis.mapping.action.AddMapViewToDashboardAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm

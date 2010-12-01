@@ -87,34 +87,33 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.createSelectFeatures();
         
         if (GLOBAL.vars.parameter) {
-            this.mapView = GLOBAL.vars.parameter.mapView;
-            this.updateValues = true;
-            this.legend = {
-                value: this.mapView.mapLegendType,
-                method: this.mapView.method || this.legend.method,
-                classes: this.mapView.classes || this.legend.classes
-            };
-            
-            GLOBAL.vars.parameter = false;
-            GLOBAL.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+			if (GLOBAL.vars.parameter.mapView.featureType == GLOBAL.conf.map_feature_type_point) {
+				this.mapView = GLOBAL.vars.parameter.mapView;
+				this.updateValues = true;
+				this.legend = {
+					value: this.mapView.mapLegendType,
+					method: this.mapView.method || this.legend.method,
+					classes: this.mapView.classes || this.legend.classes
+				};
 
-            Ext.getCmp('mapdatetype_cb').setValue(GLOBAL.vars.mapDateType.value);
-            
-            function mapViewStoreCallback() {
-                this.form.findField('mapview').setValue(this.mapView.id);
-                this.valueType.value = this.mapView.mapValueType;
-                this.form.findField('mapvaluetype').setValue(this.valueType.value);
-                this.setMapView();
-            }
-            
-            if (GLOBAL.stores.mapView.isLoaded) {
-                mapViewStoreCallback.call(this);
-            }
-            else {
-                GLOBAL.stores.mapView.load({scope: this, callback: function() {
-                    mapViewStoreCallback.call(this);
-                }});
-            }
+				GLOBAL.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+				
+				function mapViewStoreCallback() {
+					this.form.findField('mapview').setValue(this.mapView.id);
+					this.valueType.value = this.mapView.mapValueType;
+					this.form.findField('mapvaluetype').setValue(this.valueType.value);
+					this.setMapView();
+				}
+				
+				if (GLOBAL.stores.pointMapView.isLoaded) {
+					mapViewStoreCallback.call(this);
+				}
+				else {
+					GLOBAL.stores.pointMapView.load({scope: this, callback: function() {
+						mapViewStoreCallback.call(this);
+					}});
+				}
+			}
         }
         
 		mapfish.widgets.geostat.Symbol.superclass.initComponent.apply(this);
@@ -228,12 +227,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             selectOnFocus: true,
 			labelSeparator: GLOBAL.conf.labelseparator,
             width: GLOBAL.conf.combo_width,
-            store: GLOBAL.stores.mapView,
+            store: GLOBAL.stores.pointMapView,
             listeners: {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        this.mapView = GLOBAL.stores.mapView.getAt(GLOBAL.stores.mapView.find('id', cb.getValue())).data;
+                        this.mapView = GLOBAL.stores.pointMapView.getAt(GLOBAL.stores.pointMapView.find('id', cb.getValue())).data;
                         this.updateValues = true;
                         
                         this.legend.value = this.mapView.mapLegendType;
@@ -241,8 +240,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                         this.legend.classes = this.mapView.classes || this.legend.classes;
 
                         GLOBAL.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-
+                        GLOBAL.vars.mapDateType.value = this.mapView.mapDateType;
                         Ext.getCmp('mapdatetype_cb').setValue(GLOBAL.vars.mapDateType.value);
+
                         this.valueType.value = this.mapView.mapValueType;
                         this.form.findField('mapvaluetype').setValue(this.valueType.value);
                         this.setMapView();
@@ -601,7 +601,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                             var value, rawvalue;
                             var w = new Ext.Window({
                                 id: 'tree_w2',
-                                title: 'Boundary and level',
+                                title: 'Boundary',
                                 closeAction: 'hide',
                                 autoScroll: true,
                                 height: 'auto',
@@ -609,87 +609,32 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                 width: 280,
                                 boxMaxWidth: 280,
                                 items: [
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'fit',
-                                        bodyStyle: 'padding:4px 4px 0px 4px; background-color:#f8f8f8',
-                                        items: [
-                                            {
-                                                xtype: 'fieldset',
-                                                title: '&nbsp;&nbsp;<span class="panel-tab-title">Boundary</span>&nbsp;&nbsp;',
-                                                bodyStyle: 'margin-bottom:3px',
-                                                autoHeight: true,
-                                                items: [
-                                                    {
-                                                        xtype: 'treepanel',
-                                                        height: screen.height / 3,
-                                                        autoScroll: true,
-                                                        loader: new Ext.tree.TreeLoader({
-                                                            dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
-                                                        }),
-                                                        root: {
-                                                            id: GLOBAL.vars.topLevelUnit.id,
-                                                            text: GLOBAL.vars.topLevelUnit.name,
-                                                            hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
-                                                            nodeType: 'async',
-                                                            draggable: false,
-                                                            expanded: true
-                                                        },
-                                                        clickedNode: null,
-                                                        listeners: {
-                                                            'click': {
-                                                                scope: this,
-                                                                fn: function(n) {
-                                                                    this.form.findField('boundary').selectedNode = n;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'fit',
-                                        bodyStyle: 'padding:4px 4px 0px 4px; background-color:#f8f8f8',
-                                        items: [
-                                            {
-                                                xtype: 'fieldset',
-                                                title: '&nbsp;&nbsp;<span class="panel-tab-title">Level</span>&nbsp;&nbsp;',
-                                                autoHeight: true,
-                                                layout: 'anchor',
-                                                items: [
-                                                    {
-                                                        xtype: 'combo',
-                                                        id: 'level_cb2',
-                                                        fieldLabel: i18n_level,
-                                                        typeAhead: true,
-                                                        editable: false,
-                                                        valueField: 'level',
-                                                        displayField: 'name',
-                                                        mode: 'remote',
-                                                        forceSelection: true,
-                                                        triggerAction: 'all',
-                                                        emptyText: GLOBAL.conf.emptytext,
-                                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                                        selectOnFocus: true,
-                                                        width: GLOBAL.conf.combo_width,
-                                                        store: GLOBAL.stores.organisationUnitLevel,
-                                                        listeners: {
-                                                            'select': {
-                                                                scope: this,
-                                                                fn: function(cb) {
-                                                                    this.form.findField('level').level = cb.getValue();
-                                                                    this.form.findField('level').levelName = cb.getRawValue();
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
+									{
+										xtype: 'treepanel',
+										height: screen.height / 3,
+										bodyStyle: 'padding: 8px',
+										autoScroll: true,
+										loader: new Ext.tree.TreeLoader({
+											dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
+										}),
+										root: {
+											id: GLOBAL.vars.topLevelUnit.id,
+											text: GLOBAL.vars.topLevelUnit.name,
+											hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
+											nodeType: 'async',
+											draggable: false,
+											expanded: true
+										},
+										clickedNode: null,
+										listeners: {
+											'click': {
+												scope: this,
+												fn: function(n) {
+													this.form.findField('boundary').selectedNode = n;
+												}
+											}
+										}
+									},
                                     {
                                         xtype: 'panel',
                                         layout: 'table',
@@ -701,21 +646,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                                 scope: this,
                                                 handler: function() {
                                                     var node = this.form.findField('boundary').selectedNode;
-                                                    if (!node || !Ext.getCmp('level_cb2').getValue()) {
-                                                        return;
-                                                    }
-                                                    if (node.attributes.level > this.form.findField('level').level) {
-                                                        Ext.message.msg(false, 'Level is higher than boundary level');
+                                                    if (!node) {
                                                         return;
                                                     }
                                                     
                                                     this.form.findField('mapview').clearValue();
                                                     this.updateValues = true;
-                                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
-                                                        this.form.findField('level').level, this.form.findField('level').levelName);
+                                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level, null, null);
                                                         
                                                     this.form.findField('boundary').setValue(node.attributes.text);
-                                                    this.form.findField('level').setValue(this.form.findField('level').levelName);
                                                     Ext.getCmp('tree_w2').hide();
                                                     
                                                     this.loadGeoJson();
@@ -895,7 +834,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: i18n_bounds,
 			labelSeparator: GLOBAL.conf.labelseparator,
             emptyText: i18n_comma_separated_values,
-            isFormField: true,
             width: GLOBAL.conf.combo_width,
             hidden: true
         },
@@ -937,7 +875,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: i18n_low_color,
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
-            isFormField: true,
             width: GLOBAL.conf.combo_width,
             value: "#FFFF00"
         },
@@ -948,9 +885,28 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: i18n_high_color,
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
-            isFormField: true,
             width: GLOBAL.conf.combo_width,
             value: "#FF0000"
+        },
+        
+        { html: '<div class="thematic-br">' },
+        
+        {
+            xtype: 'numberfield',
+            name: 'radiuslow',
+            fieldLabel: 'Low radius',
+			labelSeparator: GLOBAL.conf.labelseparator,
+            width: GLOBAL.conf.combo_number_width_small,
+            value: 5
+        },
+        
+        {
+            xtype: 'numberfield',
+            name: 'radiushigh',
+            fieldLabel: 'High radius',
+			labelSeparator: GLOBAL.conf.labelseparator,
+            width: GLOBAL.conf.combo_number_width_small,
+            value: 20
         },
         
         { html: '<div class="thematic-br">' },
@@ -959,8 +915,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             xtype: 'button',
             text: i18n_refresh,
             isFormField: true,
-            fieldLabel: '',
-            labelSeparator: '',
+            fieldLabel: GLOBAL.conf.emptytext,
+            labelSeparator: GLOBAL.conf.labelseparator,
             scope: this,
             handler: function() {
                 if (this.formValidation.validateForm(true)) {
@@ -1207,6 +1163,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             this.form.findField('maplegendset').setValue(this.mapView.mapLegendSetId);
             this.applyPredefinedLegend(true);
         }
+        
+        this.form.findField('radiuslow').setValue(this.mapView.radiusLow);
+        this.form.findField('radiushigh').setValue(this.mapView.radiusHigh);
 
         if (this.legend.value == GLOBAL.conf.map_legend_type_automatic) {
             this.form.findField('method').setValue(this.mapView.method);
@@ -1240,6 +1199,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         
         this.form.findField('boundary').setValue(this.mapView.parentOrganisationUnitName);
         this.form.findField('level').setValue(this.mapView.organisationUnitLevelName);
+
+        GLOBAL.vars.activePanel.setPoint();
         this.loadGeoJson();
     },
 	
@@ -1344,6 +1305,13 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 }
             }
             
+            if (!scope.form.findField('radiuslow').getValue() || !scope.form.findField('radiushigh').getValue()) {
+                if (exception) {
+                    Ext.message.msg(false, i18n_form_is_not_complete);
+                }
+                return false;
+            }
+            
             return true;
         },
         
@@ -1372,15 +1340,16 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     getFormValues: function() {
         return {
+			featureType: GLOBAL.conf.map_feature_type_point,
             mapValueType: this.form.findField('mapvaluetype').getValue(),
-            indicatorGroupId: this.form.findField('indicatorgroup').getValue() || null,
-            indicatorId: this.form.findField('indicator').getValue() || null,
-            dataElementGroupId: this.form.findField('dataelementgroup').getValue() || null,
-            dataElementId: this.form.findField('dataelement').getValue() || null,
-            periodTypeId: this.form.findField('periodtype').getValue() || null,
-            periodId: this.form.findField('period').getValue() || null,
-            startDate: this.form.findField('startdate').getValue() || null,
-            endDate: this.form.findField('enddate').getValue() || null,
+            indicatorGroupId: this.form.findField('indicatorgroup').getValue(),
+            indicatorId: this.form.findField('indicator').getValue(),
+            dataElementGroupId: this.form.findField('dataelementgroup').getValue(),
+            dataElementId: this.form.findField('dataelement').getValue(),
+            periodTypeId: this.form.findField('periodtype').getValue(),
+            periodId: this.form.findField('period').getValue(),
+            startDate: this.form.findField('startdate').getValue(),
+            endDate: this.form.findField('enddate').getValue(),
             parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
             organisationUnitLevel: this.organisationUnitSelection.level.level,
             mapLegendType: this.form.findField('maplegendtype').getValue(),
@@ -1389,10 +1358,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             bounds: this.legend.value == GLOBAL.conf.map_legend_type_automatic && this.legend.method == GLOBAL.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
             colorLow: this.legend.value == GLOBAL.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
             colorHigh: this.legend.value == GLOBAL.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
-            mapLegendSetId: this.form.findField('maplegendset').getValue() || null,
+            mapLegendSetId: this.form.findField('maplegendset').getValue(),
+            radiusLow: this.form.findField('radiuslow').getValue(),
+            radiusHigh: this.form.findField('radiushigh').getValue(),
             longitude: GLOBAL.vars.map.getCenter().lon,
             latitude: GLOBAL.vars.map.getCenter().lat,
-            zoom: parseInt(GLOBAL.vars.map.getZoom())
+            zoom: parseFloat(GLOBAL.vars.map.getZoom())
         };
     },
     
@@ -1480,16 +1451,19 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             }
         }
     },
-    
+
     applyValues: function() {
-        var options = {
+		var options = {
             indicator: 'value',
             method: this.form.findField('method').getValue(),
             numClasses: this.form.findField('classes').getValue(),
-            colors: this.getColors()
-        };
-       
-        this.coreComp.applyClassification(options);
+            colors: this.getColors(),
+            minSize: parseInt(this.form.findField('radiuslow').getValue()),
+            maxSize: parseInt(this.form.findField('radiushigh').getValue())
+		};
+
+		this.coreComp.updateOptions(options);       
+        this.coreComp.applyClassification();
         this.classificationApplied = true;
         
         GLOBAL.vars.mask.hide();
@@ -1515,6 +1489,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         };
 
         this.coreComp = new mapfish.GeoStat.Symbol(this.map, coreOptions);
+        
+        if (GLOBAL.vars.parameter) {
+			choropleth.collapse();
+			this.expand();
+			GLOBAL.vars.parameter = false;
+		}
     }
 });
 

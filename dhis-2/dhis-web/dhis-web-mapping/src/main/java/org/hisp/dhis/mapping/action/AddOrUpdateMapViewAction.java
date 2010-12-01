@@ -60,6 +60,13 @@ public class AddOrUpdateMapViewAction
         this.name = name;
     }
 
+    private String featureType;
+
+    public void setFeatureType( String featureType )
+    {
+        this.featureType = featureType;
+    }
+
     private String mapValueType;
 
     public void setMapValueType( String mapValueType )
@@ -186,6 +193,20 @@ public class AddOrUpdateMapViewAction
         this.mapLegendSetId = mapLegendSetId;
     }
 
+    private Integer radiusLow;
+
+    public void setRadiusLow( Integer radiusLow )
+    {
+        this.radiusLow = radiusLow;
+    }
+
+    private Integer radiusHigh;
+
+    public void setRadiusHigh( Integer radiusHigh )
+    {
+        this.radiusHigh = radiusHigh;
+    }
+
     private String longitude;
 
     public void setLongitude( String longitude )
@@ -214,9 +235,10 @@ public class AddOrUpdateMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMapView( name, mapValueType, indicatorGroupId, indicatorId, dataElementGroupId,
-            dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId, organisationUnitLevel,
-            mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId, longitude, latitude, zoom );
+        mappingService.addOrUpdateMapView( name, featureType, mapValueType, indicatorGroupId, indicatorId,
+            dataElementGroupId, dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId,
+            organisationUnitLevel, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId,
+            radiusLow, radiusHigh, longitude, latitude, zoom );
 
         return SUCCESS;
     }

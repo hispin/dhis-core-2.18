@@ -34,7 +34,7 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 	
 	minSize: 3,
 	
-	maxSize: 15,
+	maxSize: 20,
 	
 	minVal: null,
 	
@@ -79,9 +79,7 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 
     setClassification: function() {
         var values = [];
-
         for (var i = 0; i < this.layer.features.length; i++) {
-            // values.push(this.layer.features[i].attributes[this.colorIndicator]);
             values.push(this.layer.features[i].attributes.value);
         }
         
@@ -90,34 +88,32 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
         };
         var dist = new mapfish.GeoStat.Distribution(values, distOptions);
 
-		// this.minVal = dist.minVal;
-        // this.maxVal = dist.maxVal;
+		this.minVal = dist.minVal;
+        this.maxVal = dist.maxVal;
 
         this.classification = dist.classify(
             this.method,
             this.numClasses,
             null
         );
+
         this.createColorInterpolation();
     },
 
     applyClassification: function(options) {
         this.updateOptions(options);
-
-		// var calculateRadius = OpenLayers.Function.bind(
-            // function(feature) {
-                // var value = feature.attributes[this.sizeIndicator];
-                // var size = (value - this.minVal) / (this.maxVal - this.minVal) *
-                           // (this.maxSize - this.minSize) + this.minSize;
-                // return size;
-            // }, this
-        // );
-        // this.extendStyle(null,
-            // {'pointRadius': '${calculateRadius}'},
-            // {'calculateRadius': calculateRadius}
-        // );   
+        
+		var calculateRadius = OpenLayers.Function.bind(
+			function(feature) {
+				var value = feature.attributes[this.indicator];
+                var size = (value - this.minVal) / (this.maxVal - this.minVal) *
+					(this.maxSize - this.minSize) + this.minSize;
+                return size;
+            },	this
+		);
+		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});
     
-        var boundsArray = this.classification.getBoundsArray();        
+        var boundsArray = this.classification.getBoundsArray();
         var rules = new Array(boundsArray.length-1);
         for (var i = 0; i < boundsArray.length-1; i++) {
             var rule = new OpenLayers.Rule({
@@ -131,6 +127,7 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
             });
             rules[i] = rule;
         }
+
         this.extendStyle(rules);
         mapfish.GeoStat.prototype.applyClassification.apply(this, arguments);
     },

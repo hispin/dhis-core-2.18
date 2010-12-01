@@ -2,6 +2,7 @@
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsonEncode( ${object.name} )",
+    "featureType": "$!encoder.jsonEncode( ${object.featureType} )",
     "mapValueType": "$!encoder.jsonEncode( ${object.mapValueType} )",
     "indicatorGroupId": "$!{object.indicatorGroup.id}",
     "indicatorId": "$!{object.indicator.id}",
@@ -24,6 +25,8 @@
     "colorLow": "$!encoder.jsonEncode( ${object.colorLow} )",
     "colorHigh": "$!encoder.jsonEncode( ${object.colorHigh} )",
     "mapLegendSetId": "$!{object.mapLegendSet.id}",
+    "radiusLow": "$!{object.radiusLow}",
+    "radiusHigh": "$!{object.radiusHigh}",
     "longitude": "$!encoder.jsonEncode( ${object.longitude} )",
     "latitude": "$!encoder.jsonEncode( ${object.latitude} )",
     "zoom": "$!{object.zoom}"

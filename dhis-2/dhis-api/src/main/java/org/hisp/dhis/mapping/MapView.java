@@ -46,6 +46,8 @@ public class MapView
 
     private String name;
 
+    private String featureType;
+
     private String mapValueType;
 
     private IndicatorGroup indicatorGroup;
@@ -84,6 +86,10 @@ public class MapView
 
     private MapLegendSet mapLegendSet;
 
+    private Integer radiusLow;
+
+    private Integer radiusHigh;
+
     private String longitude;
 
     private String latitude;
@@ -94,13 +100,15 @@ public class MapView
     {
     }
 
-    public MapView( String name, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
-        DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
-        Period period, String startDate, String endDate, OrganisationUnit parentOrganisationUnit,
-        OrganisationUnitLevel organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
-        String colorLow, String colorHigh, MapLegendSet mapLegendSet, String longitude, String latitude, int zoom )
+    public MapView( String name, String featureType, String mapValueType, IndicatorGroup indicatorGroup,
+        Indicator indicator, DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType,
+        PeriodType periodType, Period period, String startDate, String endDate,
+        OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel, String mapLegendType,
+        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, MapLegendSet mapLegendSet,
+        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
+        this.featureType = featureType;
         this.mapValueType = mapValueType;
         this.indicatorGroup = indicatorGroup;
         this.indicator = indicator;
@@ -120,6 +128,8 @@ public class MapView
         this.colorLow = colorLow;
         this.colorHigh = colorHigh;
         this.mapLegendSet = mapLegendSet;
+        this.radiusLow = radiusLow;
+        this.radiusHigh = radiusHigh;
         this.longitude = longitude;
         this.latitude = latitude;
         this.zoom = zoom;
@@ -189,6 +199,16 @@ public class MapView
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public String getFeatureType()
+    {
+        return featureType;
+    }
+
+    public void setFeatureType( String featureType )
+    {
+        this.featureType = featureType;
     }
 
     public String getMapValueType()
@@ -379,6 +399,26 @@ public class MapView
     public void setMapLegendSet( MapLegendSet mapLegendSet )
     {
         this.mapLegendSet = mapLegendSet;
+    }
+
+    public Integer getRadiusLow()
+    {
+        return radiusLow;
+    }
+
+    public void setRadiusLow( Integer radiusLow )
+    {
+        this.radiusLow = radiusLow;
+    }
+
+    public Integer getRadiusHigh()
+    {
+        return radiusHigh;
+    }
+
+    public void setRadiusHigh( Integer radiusHigh )
+    {
+        this.radiusHigh = radiusHigh;
     }
 
     public String getLongitude()
