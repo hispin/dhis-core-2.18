@@ -48,4 +48,6 @@ public interface PatientIdentifierTypeService
     
     PatientIdentifierType getPatientIdentifierType( String name );
     
+    Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
+    
 }

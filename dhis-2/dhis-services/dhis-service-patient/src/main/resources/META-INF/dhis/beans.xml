@@ -60,7 +60,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="org.hisp.dhis.patient.PatientIdentifierTypeStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+	<bean id="org.hisp.dhis.patient.PatientIdentifierTypeStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientIdentifierTypeStore">
 		<property name="clazz" value="org.hisp.dhis.patient.PatientIdentifierType" />
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

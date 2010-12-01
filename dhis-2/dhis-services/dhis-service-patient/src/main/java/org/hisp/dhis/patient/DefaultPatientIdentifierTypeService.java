@@ -43,9 +43,9 @@ public class DefaultPatientIdentifierTypeService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<PatientIdentifierType> patientIdentifierTypeStore;
+    private PatientIdentifierTypeStore patientIdentifierTypeStore;
 
-    public void setPatientIdentifierTypeStore( GenericIdentifiableObjectStore<PatientIdentifierType> patientIdentifierTypeStore )
+    public void setPatientIdentifierTypeStore( PatientIdentifierTypeStore patientIdentifierTypeStore )
     {
         this.patientIdentifierTypeStore = patientIdentifierTypeStore;
     }
@@ -78,9 +78,14 @@ public class DefaultPatientIdentifierTypeService
     {
         patientIdentifierTypeStore.update( patientIdentifierType );
     }
-    
+
     public PatientIdentifierType getPatientIdentifierType( String name )
     {
         return patientIdentifierTypeStore.getByName( name );
+    }
+
+    public Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory )
+    {
+        return patientIdentifierTypeStore.get( mandatory );
     }
 }
