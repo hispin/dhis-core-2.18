@@ -71,6 +71,11 @@ public class UploadExcelFileAction
     public String execute()
         throws Exception
     {
+        if ( upload == null )
+        {
+            return ERROR;
+        }
+        
         // ---------------------------------------------------------------------
         // Get template-file
         // ---------------------------------------------------------------------
@@ -79,13 +84,12 @@ public class UploadExcelFileAction
 
         if ( path != null )
         {
-            path += File.separator + "temp" + File.separator 
-                    + upload.getName() + (Math.random() * 1000) + ".xls";
+            path += File.separator + "temp" + File.separator + upload.getName() + (Math.random() * 1000) + ".xls";
         }
         else
         {
-            path = System.getenv( "user.home" ) + File.separator + "dhis" + "temp" + File.separator 
-                    + upload.getName() + (Math.random() * 1000) + ".xls";
+            path = System.getenv( "user.home" ) + File.separator + "dhis" + "temp" + File.separator + upload.getName()
+                + (Math.random() * 1000) + ".xls";
         }
 
         output = new File( path );

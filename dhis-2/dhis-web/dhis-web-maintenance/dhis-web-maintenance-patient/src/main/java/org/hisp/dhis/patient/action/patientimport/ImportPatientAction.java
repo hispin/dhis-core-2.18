@@ -29,12 +29,15 @@ package org.hisp.dhis.patient.action.patientimport;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -302,6 +305,13 @@ public class ImportPatientAction
             // Get common-information from XML-template-file
             // -----------------------------------------------------------------
 
+            // Get Mandatory attributes
+            Collection<PatientAttribute> attributes = patientAttributeService.getPatientAttributesByMandatory( true );
+
+            // Get Mandatory identifiers
+            Collection<PatientIdentifierType> identifiers = patientIdentifierTypeService
+                .getPatientIdentifierTypes( true );
+
             // Get organisation-unit
             HSSFSheet sheet = wb.getSheetAt( xmlOrgunit.getSheet() );
             String value = readValue( xmlOrgunit.getRow(), xmlOrgunit.getColumn(), sheet );
@@ -328,286 +338,90 @@ public class ImportPatientAction
 
             for ( int row = startRow; row <= endRow; row++ )
             {
-                Patient patient = new Patient();
-                patient.setMiddleName( "" );
-                patient.setLastName( "" );
-                patient.setOrganisationUnit( orgunit );
-                patient.setOrganisationUnit( orgunit );
-                patient.setRegistrationDate( new Date() );
-                patient.setUnderAge( false );
-
-                // ---------------------------------------------------------
-                // Create Patient
-                // ---------------------------------------------------------
-
-                for ( XMLItem xmlItem : itemProperty )
-                {
-                    sheet = wb.getSheetAt( xmlItem.getSheet() );
-                    
-                    value = readValue( row, xmlItem.getColumn(), sheet );
-
-                    // ---------------------------------------------------------
-                    // Import identifier values
-                    // ---------------------------------------------------------
-
-                    if ( xmlItem.isType( XMLItem.IDENTIFIER_TYPE ) )
-                    {
-                        int objectId = Integer.parseInt( xmlItem.getValue() );
-                        PatientIdentifierType identifierType = patientIdentifierTypeService
-                            .getPatientIdentifierType( objectId );
-
-                        PatientIdentifier identifier = new PatientIdentifier();
-                        identifier.setIdentifierType( identifierType );
-                        identifier.setPatient( patient );
-                        identifier.setIdentifier( value.trim() );
-                        patient.getIdentifiers().add( identifier );
-                    }
-
-                    // ---------------------------------------------------------
-                    // Import property values
-                    // ---------------------------------------------------------
-                    else if ( xmlItem.isType( XMLItem.PROPERTY_TYPE ) )
-                    {
-                        if ( !value.isEmpty() )
-                        {
-                            if ( xmlItem.getValue().equalsIgnoreCase( XMLItem.BIRTH_DATE_FROM_VALUE ) )
-                            {
-                                patient.setBirthDateFromAge( Integer.parseInt( value ), ageType );
-                            }
-                            else
-                            {
-                                setObject( patient, xmlItem.getValue(), value );
-                            }
-                        }
-                    }
-                }
-
                 // -------------------------------------------------------------
-                // Generate system id with this format :
-                // (BirthDate)(Gender)(XXXXXX)(checkdigit)
-                // PatientIdentifierType will be null
+                // Get patient and patient-attribute-values from Excel file
                 // -------------------------------------------------------------
 
-                String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
-                    .getGender() );
+                Patient patient = getPatient( row, orgunit, wb );
 
-                PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
-                while ( systemGenerateIdentifier != null )
+                Collection<PatientAttributeValue> attributeValues = getAttributes( patient, row, wb );
+
+                // -------------------------------------------------------------
+                // Validate data of patient is right, continue to get
+                // information into excel file
+                // -------------------------------------------------------------
+                
+                ProgramInstance programInstance = null;
+                List<ProgramStageInstance> programStageInstances = null;
+                Collection<PatientDataValue> patientDataValues = null;
+                
+                if ( validatePatient( patient, identifiers, row )
+                    && validatePatientAttribute( patient, attributes, attributeValues, row ) )
                 {
-                    systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
-                        .getGender() );
-                    systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
-                }
+                    try
+                    {
+                        // -------------------------------------------------------------
+                        // Get Information of EnrollProgram
+                        // -------------------------------------------------------------
 
-                systemGenerateIdentifier = new PatientIdentifier();
-                systemGenerateIdentifier.setIdentifier( systemIdentifier );
-                systemGenerateIdentifier.setPatient( patient );
+                        // Get programInstance for patient
+                        programInstance = getProgramInstance( patient, program, row, wb );
 
-                patient.getIdentifiers().add( systemGenerateIdentifier );
+                        // Get programStageInstance for patient
+                        programStageInstances = getProgramStageInstances( programInstance, row, wb );
 
-                if ( validatePatient( patient, row ) )
-                {
-                    // Save patient
+                        
+                    }
+                    catch ( Exception ex )
+                    {
+                        errPatients.put( row, patient );
+                        errMessage.put( row, i18n.getString( "get_data_error" ) );
+                        ex.printStackTrace();
+                        continue;
+                    }
+
+                    // save new Patient
                     patientService.savePatient( patient );
-                }
-                else
-                {
-                    continue;
-                }
-
-                // -------------------------------------------------------------
-                // Import Information of Registration
-                // -------------------------------------------------------------
-
-                Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
-
-                for ( XMLItem xmlItem : itemAttribute )
-                {
-                    sheet = wb.getSheetAt( xmlItem.getSheet() );
-
-                    // ---------------------------------------------------------
-                    // Get value into Excel-file
-                    // ---------------------------------------------------------
-
-                    value = readValue( row, xmlItem.getColumn(), sheet );
-
-                    // ---------------------------------------------------------
-                    // Import attribute value
-                    // ---------------------------------------------------------
-
-                    int objectId = Integer.parseInt( xmlItem.getValue() );
-                    PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
-
-                    attributes.add( attribute );
-                    PatientAttributeValue attributeValue = new PatientAttributeValue();
-                    attributeValue.setPatient( patient );
-                    attributeValue.setPatientAttribute( attribute );
-
-                    // Attribute is combo-type
-                    if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                    // save patient-attribute-values
+                    for ( PatientAttributeValue attributeValue : attributeValues )
                     {
-                        // value is the id of the option
-                        PatientAttributeOption option = patientAttributeOptionService.get( Integer.parseInt( value
-                            .split( ":" )[1] ) );
-
-                        if ( option != null )
-                        {
-                            attributeValue.setPatientAttributeOption( option );
-                            attributeValue.setValue( option.getName() );
-                        }
-                    }// end Attribute is combo-type
-                    else
-                    {
-                        attributeValue.setValue( value.trim() );
+                        patientAttributeValueService.savePatientAttributeValue( attributeValue );
                     }
 
-                    patientAttributeValueService.savePatientAttributeValue( attributeValue );
+                    // patientService.updatePatient( patient );
 
-                }
-
-                patient.setAttributes( attributes );
-                patientService.updatePatient( patient );
-
-                // -------------------------------------------------------------
-                // Import Information of EnrollProgram
-                // -------------------------------------------------------------
-
-                ProgramInstance programInstance = new ProgramInstance();
-
-                for ( XMLItem xmlItem : itemEnrollProgram )
-                {
-                    sheet = wb.getSheetAt( xmlItem.getSheet() );
-
-                    // Get value into Excel-file
-                    value = readValue( row, xmlItem.getColumn(), sheet );
-
-                    // ---------------------------------------------------------
-                    // Create programInstance
-                    // ---------------------------------------------------------
-
-                    Date date = format.parseDate( value );
-
-                    ProgramInstance.class.getMethod( "set" + StringUtils.capitalize( xmlItem.getValue() ), Date.class )
-                        .invoke( programInstance, date );
-
-                }
-
-                // -------------------------------------------------------------
-                // Enroll program
-                // -------------------------------------------------------------
-
-                programInstance.setProgram( program );
-                programInstance.setPatient( patient );
-                programInstance.setCompleted( false );
-
-                programInstanceService.addProgramInstance( programInstance );
-
-                patient.getPrograms().add( program );
-                patientService.updatePatient( patient );
-
-                for ( ProgramStage programStage : program.getProgramStages() )
-                {
-                    ProgramStageInstance programStageInstance = new ProgramStageInstance();
-                    programStageInstance.setProgramInstance( programInstance );
-                    programStageInstance.setProgramStage( programStage );
-                    programStageInstance.setStageInProgram( programStage.getStageInProgram() );
-
-                    Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(), programStage
-                        .getMinDaysFromStart() );
-
-                    programStageInstance.setDueDate( dueDate );
-
-                    programStageInstanceService.addProgramStageInstance( programStageInstance );
-                }
-
-                // -------------------------------------------------------------
-                // Import Information of EnrollProgram
-                // -------------------------------------------------------------
-
-                for ( XMLItem xmlItem : itemProgramStage )
-                {
-                    sheet = wb.getSheetAt( xmlItem.getSheet() );
-
-                    // Get value into Excel-file
-                    value = readValue( row, xmlItem.getColumn(), sheet );
-
-                    // ---------------------------------------------------------
-                    // Create PatientDataValue
-                    // ---------------------------------------------------------
-
-                    String[] infor = xmlItem.getValue().split( "\\." );
-
-                    ProgramStage stage = programStageService.getProgramStage( Integer.parseInt( infor[0] ) );
-
-                    DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( infor[1] ) );
-
-                    int optionComboId = Integer.parseInt( infor[2] );
-                    DataElementCategoryOptionCombo optionCombo = null;
-
-                    if ( optionComboId == 0 )
+                    // save program-instance
+                    programInstanceService.addProgramInstance( programInstance );
+                    // update Patient
+                    patientService.updatePatient( patient );
+                    // save programStageInstances
+                    for ( ProgramStageInstance programStageInstance : programStageInstances )
                     {
-                        String[] temp = value.trim().split( ":" );
-                        if ( temp.length == 2 )
-                        {
-                            optionComboId = Integer.parseInt( temp[1] );
-                        }
-                        else
-                        {
-                            value = (value.equalsIgnoreCase( "yes" )) ? "true" : "false";
-                            optionComboId = dataElement.getCategoryCombo().getOptionCombos().iterator().next().getId();
-                        }
+                        programStageInstanceService.addProgramStageInstance( programStageInstance );
                     }
 
-                    Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-                    if ( options != null && options.size() > 0 )
+                    // -------------------------------------------------------------
+                    // Get PatientDataValue
+                    // -------------------------------------------------------------
+
+                    patientDataValues = getPatientDataValue( orgunit, programInstance, programStageInstances, row,
+                        wb );
+                    // save dataValue
+                    for ( PatientDataValue patientDataValue : patientDataValues )
                     {
-                        Iterator<DataElementCategoryOptionCombo> i = options.iterator();
-                        while ( i.hasNext() )
-                        {
-                            DataElementCategoryOptionCombo tmpOption = i.next();
-                            if ( tmpOption.getId() == optionComboId )
-                            {
-                                optionCombo = tmpOption;
-                            }
-                        }
+                        patientDataValueService.savePatientDataValue( patientDataValue );
                     }
 
-                    if ( stage != null && dataElement != null && optionCombo != null )
-                    {
-                        ProgramStageInstance stageInstance = programStageInstanceService.getProgramStageInstance(
-                            programInstance, stage );
-
-                        PatientDataValue dataValue = patientDataValueService.getPatientDataValue( stageInstance,
-                            dataElement, orgunit );
-                        if ( dataValue == null )
-                        {
-                            dataValue = new PatientDataValue();
-
-                            dataValue.setDataElement( dataElement );
-                            dataValue.setOptionCombo( optionCombo );
-                            dataValue.setOrganisationUnit( orgunit );
-                            dataValue.setProgramStageInstance( stageInstance );
-                            dataValue.setTimestamp( new Date() );
-                            dataValue.setValue( value );
-
-                            patientDataValueService.savePatientDataValue( dataValue );
-                        }
-                        else
-                        {
-
-                            // dataValue.setDataElement(dataElement);
-                            // dataValue.setOptionCombo(optionCombo);
-                            // dataValue.setOrganisationUnit(orgunit);
-                            // dataValue.setProgramStageInstance(stageInstance);
-                            dataValue.setTimestamp( new Date() );
-                            dataValue.setValue( value );
-
-                            patientDataValueService.updatePatientDataValue( dataValue );
-                        }
-                    }
+                    // else
+                    // {
+                    // dataValue.setTimestamp( new Date() );
+                    // dataValue.setValue( value );
+                    //
+                    // patientDataValueService.updatePatientDataValue( dataValue
+                    // );
+                    // }
 
                 }
-
             }
 
         }
@@ -621,6 +435,391 @@ public class ImportPatientAction
 
     // -------------------------------------------------------------------------
     // Support methods
+    // -------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------
+    // Get data from Excel file
+    // -------------------------------------------------------------------------
+
+    private Patient getPatient( int row, OrganisationUnit orgunit, HSSFWorkbook wb )
+        throws Exception
+    {
+        Patient patient = new Patient();
+        patient.setMiddleName( "" );
+        patient.setLastName( "" );
+        patient.setOrganisationUnit( orgunit );
+        patient.setRegistrationDate( new Date() );
+        patient.setUnderAge( false );
+
+        // ---------------------------------------------------------
+        // Create Patient
+        // ---------------------------------------------------------
+
+        for ( XMLItem xmlItem : itemProperty )
+        {
+            HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
+
+            String value = readValue( row, xmlItem.getColumn(), sheet );
+
+            // ---------------------------------------------------------
+            // Import identifier values
+            // ---------------------------------------------------------
+
+            if ( xmlItem.isType( XMLItem.IDENTIFIER_TYPE ) )
+            {
+                int objectId = Integer.parseInt( xmlItem.getValue() );
+                PatientIdentifierType identifierType = patientIdentifierTypeService.getPatientIdentifierType( objectId );
+
+                PatientIdentifier identifier = new PatientIdentifier();
+                identifier.setIdentifierType( identifierType );
+                identifier.setPatient( patient );
+                identifier.setIdentifier( value.trim() );
+                patient.getIdentifiers().add( identifier );
+            }
+
+            // -----------------------------------------------------------------
+            // Import property values
+            // -----------------------------------------------------------------
+
+            else if ( xmlItem.isType( XMLItem.PROPERTY_TYPE ) )
+            {
+                if ( !value.isEmpty() )
+                {
+                    if ( xmlItem.getValue().equalsIgnoreCase( XMLItem.BIRTH_DATE_FROM_VALUE ) )
+                    {
+                        patient.setBirthDateFromAge( Integer.parseInt( value ), ageType );
+                    }
+                    else
+                    {
+                        setObject( patient, xmlItem.getValue(), value );
+                    }
+                }
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Generate system id with this format :
+        // (BirthDate)(Gender)(XXXXXX)(checkdigit)
+        // PatientIdentifierType will be null
+        // -------------------------------------------------------------
+
+        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
+            .getGender() );
+
+        PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
+        while ( systemGenerateIdentifier != null )
+        {
+            systemIdentifier = PatientIdentifierGenerator
+                .getNewIdentifier( patient.getBirthDate(), patient.getGender() );
+            systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
+        }
+
+        systemGenerateIdentifier = new PatientIdentifier();
+        systemGenerateIdentifier.setIdentifier( systemIdentifier );
+        systemGenerateIdentifier.setPatient( patient );
+
+        patient.getIdentifiers().add( systemGenerateIdentifier );
+
+        return patient;
+    }
+
+    private Collection<PatientAttributeValue> getAttributes( Patient patient, int row, HSSFWorkbook wb )
+    {
+        // ---------------------------------------------------------------------
+        // Import Information of attributes of patient
+        // ---------------------------------------------------------------------
+
+        Collection<PatientAttributeValue> attributeValues = new HashSet<PatientAttributeValue>();
+
+        Set<PatientAttribute> attributes = new HashSet<PatientAttribute>();
+
+        for ( XMLItem xmlItem : itemAttribute )
+        {
+            HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
+
+            // -----------------------------------------------------------------
+            // Get value into Excel-file
+            // -----------------------------------------------------------------
+
+            String value = readValue( row, xmlItem.getColumn(), sheet );
+
+            // -----------------------------------------------------------------
+            // Import attribute value
+            // -----------------------------------------------------------------
+
+            int objectId = Integer.parseInt( xmlItem.getValue() );
+            PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
+
+            attributes.add( attribute );
+            PatientAttributeValue attributeValue = new PatientAttributeValue();
+            attributeValue.setPatient( patient );
+            attributeValue.setPatientAttribute( attribute );
+
+            // Attribute is combo-type
+            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+            {
+                // value is the id of the option
+                PatientAttributeOption option = patientAttributeOptionService.get( Integer
+                    .parseInt( value.split( ":" )[1] ) );
+
+                if ( option != null )
+                {
+                    attributeValue.setPatientAttributeOption( option );
+                    attributeValue.setValue( option.getName() );
+                }
+            }// end Attribute is combo-type
+            else
+            {
+                attributeValue.setValue( value.trim() );
+            }
+
+            attributeValues.add( attributeValue );
+
+            // patientAttributeValueService.savePatientAttributeValue(
+            // attributeValue );
+
+        }
+
+        patient.setAttributes( attributes );
+        // patientService.updatePatient( patient );
+
+        return attributeValues;
+    }
+
+    private ProgramInstance getProgramInstance( Patient patient, Program program, int row, HSSFWorkbook wb )
+        throws IllegalArgumentException, SecurityException, IllegalAccessException, InvocationTargetException,
+        NoSuchMethodException
+    {
+        ProgramInstance programInstance = new ProgramInstance();
+
+        for ( XMLItem xmlItem : itemEnrollProgram )
+        {
+            HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
+
+            // Get value into Excel-file
+            String value = readValue( row, xmlItem.getColumn(), sheet );
+
+            // ---------------------------------------------------------
+            // Create programInstance
+            // ---------------------------------------------------------
+
+            Date date = format.parseDate( value );
+
+            ProgramInstance.class.getMethod( "set" + StringUtils.capitalize( xmlItem.getValue() ), Date.class ).invoke(
+                programInstance, date );
+
+        }
+
+        // -------------------------------------------------------------
+        // Enroll program
+        // -------------------------------------------------------------
+
+        programInstance.setProgram( program );
+        programInstance.setPatient( patient );
+        programInstance.setCompleted( false );
+
+        // programInstanceService.addProgramInstance( programInstance );
+
+        patient.getPrograms().add( program );
+        // patientService.updatePatient( patient );
+
+        return programInstance;
+    }
+    
+
+    private List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int row,
+        HSSFWorkbook wb )
+    {
+
+        List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+
+        Program program = programInstance.getProgram();
+
+        for ( ProgramStage programStage : program.getProgramStages() )
+        {
+            ProgramStageInstance programStageInstance = new ProgramStageInstance();
+            programStageInstance.setProgramInstance( programInstance );
+            programStageInstance.setProgramStage( programStage );
+            programStageInstance.setStageInProgram( programStage.getStageInProgram() );
+
+            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(), programStage
+                .getMinDaysFromStart() );
+
+            programStageInstance.setDueDate( dueDate );
+
+            programStageInstances.add( programStageInstance );
+            // programStageInstanceService.addProgramStageInstance(
+            // programStageInstance );
+        }
+
+        return programStageInstances;
+    }
+
+    private Collection<PatientDataValue> getPatientDataValue( OrganisationUnit orgunit,
+        ProgramInstance programInstance, List<ProgramStageInstance> stageInstances, int row, HSSFWorkbook wb )
+    {
+
+        Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
+
+        for ( XMLItem xmlItem : itemProgramStage )
+        {
+            HSSFSheet sheet = wb.getSheetAt( xmlItem.getSheet() );
+
+            // Get value into Excel-file
+            String value = readValue( row, xmlItem.getColumn(), sheet );
+
+            // ---------------------------------------------------------
+            // Create PatientDataValue
+            // ---------------------------------------------------------
+
+            String[] infor = xmlItem.getValue().split( "\\." );
+
+            ProgramStage stage = programStageService.getProgramStage( Integer.parseInt( infor[0] ) );
+
+            DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( infor[1] ) );
+
+            int optionComboId = Integer.parseInt( infor[2] );
+            DataElementCategoryOptionCombo optionCombo = null;
+
+            if ( optionComboId == 0 )
+            {
+                String[] temp = value.trim().split( ":" );
+                if ( temp.length == 2 )
+                {
+                    optionComboId = Integer.parseInt( temp[1] );
+                }
+                else
+                {
+                    value = (value.equalsIgnoreCase( "yes" )) ? "true" : "false";
+                    optionComboId = dataElement.getCategoryCombo().getOptionCombos().iterator().next().getId();
+                }
+            }
+
+            Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
+            if ( options != null && options.size() > 0 )
+            {
+                Iterator<DataElementCategoryOptionCombo> i = options.iterator();
+                while ( i.hasNext() )
+                {
+                    DataElementCategoryOptionCombo tmpOption = i.next();
+                    if ( tmpOption.getId() == optionComboId )
+                    {
+                        optionCombo = tmpOption;
+                    }
+                }
+            }
+
+            if ( stage != null && dataElement != null && optionCombo != null )
+            {
+                ProgramStageInstance stageInstance = programStageInstanceService.getProgramStageInstance(
+                    programInstance, stage );
+
+                PatientDataValue dataValue = new PatientDataValue();
+
+                dataValue.setDataElement( dataElement );
+                dataValue.setOptionCombo( optionCombo );
+                dataValue.setProgramStageInstance( stageInstance );
+                dataValue.setOrganisationUnit( orgunit );
+                dataValue.setTimestamp( new Date() );
+                dataValue.setValue( value );
+
+                dataValues.add( dataValue );
+
+                // patientDataValueService.savePatientDataValue( dataValue
+                // );
+
+                // else
+                // {
+                // dataValue.setTimestamp( new Date() );
+                // dataValue.setValue( value );
+                //                
+                // patientDataValueService.updatePatientDataValue( dataValue );
+                // }
+            }
+
+        }
+
+        return dataValues;
+    }
+
+    // -------------------------------------------------------------------------
+    // Validate data from Excel file
+    // -------------------------------------------------------------------------
+
+    private boolean validatePatient( Patient patient, Collection<PatientIdentifierType> identifiers, int row )
+    {
+        // ---------------------------------------------------------------------
+        // Validation information of the patient
+        // ---------------------------------------------------------------------
+
+        if ( patient.getFirstName() == null && patient.getMiddleName() == null && patient.getLastName() == null )
+        {
+            errPatients.put( row, patient );
+            errMessage.put( row, i18n.getString( "patient_name_is_null" ) );
+            return false;
+        }
+
+        if ( patient.getBirthDate() == null )
+        {
+            errPatients.put( row, patient );
+            errMessage.put( row, i18n.getString( "birthday_is_null" ) );
+            return false;
+        }
+
+        // Check duplication name, birthdate, gender
+        Collection<Patient> patients = patientService.getPatient( patient.getFirstName(), patient.getMiddleName(),
+            patient.getLastName(), patient.getBirthDate(), patient.getGender() );
+
+        if ( patients != null && patients.size() > 0 )
+        {
+            errPatients.put( row, patient );
+            errMessage.put( row, i18n.getString( "duplicate" ) );
+            return false;
+        }
+
+        // ---------------------------------------------------------------------
+        // Validation identifiers of the patient
+        // ---------------------------------------------------------------------
+
+        Collection<PatientIdentifierType> patientIdentifierTypes = new HashSet<PatientIdentifierType>();
+
+        for ( PatientIdentifier patientIdentifier : patient.getIdentifiers() )
+        {
+            patientIdentifierTypes.add( patientIdentifier.getIdentifierType() );
+        }
+
+        if ( !patientIdentifierTypes.containsAll( identifiers ) )
+        {
+            errPatients.put( row, patient );
+            errMessage.put( row, i18n.getString( "not_enough_mandatory_identifier" ) );
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validatePatientAttribute( Patient patient, Collection<PatientAttribute> attributes,
+        Collection<PatientAttributeValue> attributeValues, int row )
+    {
+        Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+
+        for ( PatientAttributeValue attributeValue : attributeValues )
+        {
+            patientAttributes.add( attributeValue.getPatientAttribute() );
+        }
+
+        if ( !patientAttributes.containsAll( attributes ) )
+        {
+            errPatients.put( row, patient );
+            errMessage.put( row, i18n.getString( "not_enough_madatory_attribute" ) );
+            return false;
+        }
+
+        return true;
+    }
+
+    // -------------------------------------------------------------------------
+    // Read template file
     // -------------------------------------------------------------------------
 
     private void readXMLTemplateFile()
@@ -728,36 +927,6 @@ public class ImportPatientAction
 
     }
 
-    private boolean validatePatient( Patient patient, int row )
-    {
-        if ( patient.getFirstName() == null && patient.getMiddleName() == null && patient.getLastName() == null )
-        {
-            errPatients.put( row, patient );
-            errMessage.put( row, i18n.getString( "patient_name_is_null" ) );
-            return false;
-        }
-
-        if ( patient.getBirthDate() == null )
-        {
-            errPatients.put( row, patient );
-            errMessage.put( row, i18n.getString( "birthday_is_null" ) );
-            return false;
-        }
-
-        // Check duplication name, birthdate, gender
-        Collection<Patient> patients = patientService.getPatient( patient.getFirstName(), patient.getMiddleName(),
-            patient.getLastName(), patient.getBirthDate(), patient.getGender() );
-
-        if ( patients != null && patients.size() > 0 )
-        {
-            errPatients.put( row, patient );
-            errMessage.put( row, i18n.getString( "duplicate" ) );
-            return false;
-        }
-
-        return true;
-    }
-
     private String readValue( int row, int column, Sheet sheet )
     {
         Cell cell = sheet.getRow( row ).getCell( column );
@@ -802,7 +971,7 @@ public class ImportPatientAction
         throws Exception
     {
         Type type = Patient.class.getMethod( "get" + StringUtils.capitalize( property ) ).getReturnType();
-       
+
         // Get value
         if ( type == Integer.class || type == Integer.TYPE )
         {
@@ -831,6 +1000,6 @@ public class ImportPatientAction
         {
             Patient.class.getMethod( "set" + StringUtils.capitalize( property ), String.class ).invoke( patient, value );
         }
-        
+
     }
 }
