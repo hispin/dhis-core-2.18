@@ -671,6 +671,25 @@ public class DefaultDataElementService
         } );
     }
 
+    public int getDataElementGroupSetCount()
+    {
+        return dataElementGroupSetStore.getCount();
+    }
+
+    public int getDataElementGroupSetCountByName( String name )
+    {
+        return dataElementGroupSetStore.getCountByName( name );
+    }
+
+    public Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max )
+    {
+        return dataElementGroupSetStore.getBetween( first, max );
+    }
+
+    public Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max )
+    {
+        return dataElementGroupSetStore.getBetweenByName( name, first, max );
+    }
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
@@ -684,4 +703,6 @@ public class DefaultDataElementService
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
     }
+
+
 }

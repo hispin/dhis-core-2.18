@@ -27,22 +27,24 @@ package org.hisp.dhis.dd.action.dataelementgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
 public class ListDataElementGroupSetAction
-    implements Action
+    extends ActionPagingSupport<DataElementGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +58,7 @@ public class ListDataElementGroupSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<DataElementGroupSet> dataElementGroupSets;
@@ -66,13 +68,37 @@ public class ListDataElementGroupSetAction
         return dataElementGroupSets;
     }
 
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( dataElementService.getDataElementGroupSetCountByName( key ) );
+            
+            dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getDataElementGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataElementService.getDataElementGroupSetCount() );
+            
+            dataElementGroupSets = new ArrayList<DataElementGroupSet>( dataElementService.getDataElementGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
         
         Collections.sort( dataElementGroupSets, new DataElementGroupSetNameComparator() );
 
