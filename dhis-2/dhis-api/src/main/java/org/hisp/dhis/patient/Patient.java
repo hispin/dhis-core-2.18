@@ -352,10 +352,9 @@ public class Patient
             age--;
         }
 
-        if ( age <= 1 )
+        if ( age < 1 )
         {
             return "( < 1 yr )";
-
         }
 
         else
