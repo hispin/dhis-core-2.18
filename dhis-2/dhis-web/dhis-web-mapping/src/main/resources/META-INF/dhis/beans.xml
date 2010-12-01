@@ -20,12 +20,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- OrganisationUnit -->
 
-	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
-		class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction"
+	<bean id="org.hisp.dhis.mapping.action.GetAllOrganisationUnitLevelsAction"
+		class="org.hisp.dhis.mapping.action.GetAllOrganisationUnitLevelsAction"
 		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+
+    <bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsByFeatureTypeAction"
+        class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsByFeatureTypeAction"
+        scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"
 		class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction"

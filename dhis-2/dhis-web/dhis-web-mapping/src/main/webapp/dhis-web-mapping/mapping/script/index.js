@@ -231,7 +231,30 @@
     });
     
 	var organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitLevels' + GLOBAL.conf.type,
+        url: GLOBAL.conf.path_mapping + 'getAllOrganisationUnitLevels' + GLOBAL.conf.type,
+        root: 'organisationUnitLevels',
+        fields: ['id', 'level', 'name'],
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': function(store) {
+                store.isLoaded = true;
+                
+                if (!symbol.form.findField('level').getValue()) {
+					if (this.isLoaded) {
+						var data = this.getAt(this.getTotalCount()-1).data;
+						symbol.organisationUnitSelection.setValues(null, null, null, data.level, data.name);
+						symbol.form.findField('level').setValue(data.name);
+					}
+				}
+                // Ext.getCmp('level_cb').mode = 'local';
+            }
+        }
+    });
+    
+	var polygonOrganisationUnitLevelStore = new Ext.data.JsonStore({
+        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitLevelsByFeatureType' + GLOBAL.conf.type,
+        baseParams: {featureType: GLOBAL.conf.map_feature_type_multipolygon},
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: false,
@@ -348,6 +371,7 @@
         predefinedMapLegend: predefinedMapLegendStore,
         predefinedMapLegendSet: predefinedMapLegendSetStore,
         organisationUnitLevel: organisationUnitLevelStore,
+        polygonOrganisationUnitLevel: polygonOrganisationUnitLevelStore,
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
         wmsCapabilities: wmsCapabilitiesStore,
@@ -2081,7 +2105,7 @@
             Ext.getCmp('vectorlayeroptions_w').destroy();
         }
         
-        var data = [];        
+        var data = [];
         for (var i = 0; i < layer.features.length; i++) {
             data.push([layer.features[i].data.id || i, layer.features[i].data.name]);
         }
