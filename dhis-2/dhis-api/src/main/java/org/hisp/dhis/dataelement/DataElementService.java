@@ -512,6 +512,14 @@ public interface DataElementService
     Collection<DataElementGroupSet> getAllDataElementGroupSets();
 
     Collection<DataElementGroupSet> getDataElementGroupSets( Collection<Integer> identifiers );
+    
+    Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max );
+    
+    Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max );
+    
+    int getDataElementGroupSetCount();
+    
+    int getDataElementGroupSetCountByName( String name );
 
     // -------------------------------------------------------------------------
     // DataElementOperand
