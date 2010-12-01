@@ -1,4 +1,4 @@
-package org.hisp.dhis.mapping;
+package org.hisp.dhis.mapping.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,85 +27,66 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public interface MappingStore
+public class GetMapViewsByFeatureTypeAction
+    implements Action
 {
-    String ID = MappingStore.class.getName();
-
     // -------------------------------------------------------------------------
-    // MapLegend
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    int addMapLegend( MapLegend legend );
+    private MappingService mappingService;
 
-    void updateMapLegend( MapLegend legend );
-
-    void deleteMapLegend( MapLegend legend );
-
-    MapLegend getMapLegend( int id );
-
-    MapLegend getMapLegendByName( String name );
-
-    Collection<MapLegend> getAllMapLegends();
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
+    }
 
     // -------------------------------------------------------------------------
-    // MapLegendSet
+    // Input
     // -------------------------------------------------------------------------
 
-    int addMapLegendSet( MapLegendSet legendSet );
+    private String featureType;
 
-    void updateMapLegendSet( MapLegendSet legendSet );
-
-    void deleteMapLegendSet( MapLegendSet legendSet );
-
-    MapLegendSet getMapLegendSet( int id );
-
-    MapLegendSet getMapLegendSetByName( String name );
-
-    Collection<MapLegendSet> getMapLegendSetsByType( String type );
-
-    Collection<MapLegendSet> getAllMapLegendSets();
+    public void setFeatureType( String featureType )
+    {
+        this.featureType = featureType;
+    }
 
     // -------------------------------------------------------------------------
-    // MapView
+    // Output
     // -------------------------------------------------------------------------
 
-    int addMapView( MapView mapView );
+    private List<MapView> object;
 
-    void updateMapView( MapView mapView );
-
-    void deleteMapView( MapView view );
-
-    MapView getMapView( int id );
-
-    MapView getMapViewByName( String name );
-
-    Collection<MapView> getAllMapViews();
-
-    Collection<MapView> getMapViewsByFeatureType( String featureType );
+    public List<MapView> getObject()
+    {
+        return object;
+    }
 
     // -------------------------------------------------------------------------
-    // MapLayer
+    // Action implementation
     // -------------------------------------------------------------------------
 
-    int addMapLayer( MapLayer mapLayer );
+    public String execute()
+    {
+        object = new ArrayList<MapView>( mappingService.getMapViewsByFeatureType( featureType ) );
 
-    void updateMapLayer( MapLayer mapLayer );
+        Collections.sort( object, new MapViewNameComparator() );
 
-    void deleteMapLayer( MapLayer mapLayer );
-
-    MapLayer getMapLayer( int id );
-
-    MapLayer getMapLayerByName( String name );
-
-    Collection<MapLayer> getMapLayersByType( String type );
-
-    MapLayer getMapLayerByMapSource( String mapSource );
-
-    Collection<MapLayer> getAllMapLayers();
+        return SUCCESS;
+    }
 }

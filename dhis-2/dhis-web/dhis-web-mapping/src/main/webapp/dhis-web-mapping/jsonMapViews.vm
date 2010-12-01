@@ -4,6 +4,7 @@
   {
     "id": "$!{mapView.id}",
     "name": "$!encoder.jsonEncode( ${mapView.name} )",
+    "featureType": "$!encoder.jsonEncode( ${mapView.featureType} )",
     "mapValueType": "$!encoder.jsonEncode( ${mapView.mapValueType} )",
     "indicatorGroupId": "$!{mapView.indicatorGroup.id}",
     "indicatorId": "$!{mapView.indicator.id}",
@@ -26,6 +27,8 @@
     "colorLow": "$!encoder.jsonEncode( ${mapView.colorLow} )",
     "colorHigh": "$!encoder.jsonEncode( ${mapView.colorHigh} )",
     "mapLegendSetId": "$!{mapView.mapLegendSet.id}",
+    "radiusLow": "$!{mapView.radiusLow}",
+    "radiusHigh": "$!{mapView.radiusHigh}",
     "longitude": "$!encoder.jsonEncode( ${mapView.longitude} )",
     "latitude": "$!encoder.jsonEncode( ${mapView.latitude} )",
     "zoom": "$!{mapView.zoom}"

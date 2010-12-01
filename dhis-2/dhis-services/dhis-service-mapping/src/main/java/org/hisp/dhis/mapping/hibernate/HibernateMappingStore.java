@@ -240,6 +240,18 @@ public class HibernateMappingStore
         return criteria.list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<MapView> getMapViewsByFeatureType( String featureType )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( MapView.class );
+
+        criteria.add( Restrictions.eq( "featureType", featureType ) );
+
+        return criteria.list();
+    }
+
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------

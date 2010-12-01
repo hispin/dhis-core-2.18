@@ -23,10 +23,48 @@
     var mapViewStore = new Ext.data.JsonStore({
         url: GLOBAL.conf.path_mapping + 'getAllMapViews' + GLOBAL.conf.type,
         root: 'mapViews',
-        fields: [ 'id', 'name', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
+            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
+            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
+        ],
+        sortInfo: {field: 'name', direction: 'ASC'},
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': function(store) {
+                store.isLoaded = true;
+            }
+        }
+    });
+    
+    var polygonMapViewStore = new Ext.data.JsonStore({
+        url: GLOBAL.conf.path_mapping + 'getMapViewsByFeatureType' + GLOBAL.conf.type,
+        baseParams: {featureType: GLOBAL.conf.map_feature_type_multipolygon},
+        root: 'mapViews',
+        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'
+        ],
+        sortInfo: {field: 'name', direction: 'ASC'},
+        autoLoad: false,
+        isLoaded: false,
+        listeners: {
+            'load': function(store) {
+                store.isLoaded = true;
+            }
+        }
+    });
+    
+    var pointMapViewStore = new Ext.data.JsonStore({
+        url: GLOBAL.conf.path_mapping + 'getMapViewsByFeatureType' + GLOBAL.conf.type,
+        baseParams: {featureType: GLOBAL.conf.map_feature_type_point},
+        root: 'mapViews',
+        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
+            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
+            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
         ],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
@@ -162,20 +200,6 @@
                 store.isLoaded = true;
             }
         }
-    });  
-        
-    var mapStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllMaps' + GLOBAL.conf.type,
-        root: 'maps',
-        fields: ['id', 'name', 'mapLayerPath', 'organisationUnitLevel', 'nameColumn'],
-        idProperty: 'mapLayerPath',
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
-        }
     });
     
 	var predefinedMapLegendStore = new Ext.data.JsonStore({
@@ -215,6 +239,14 @@
         listeners: {
             'load': function(store) {
                 store.isLoaded = true;
+                
+                if (!symbol.form.findField('level').getValue()) {
+					if (this.isLoaded) {
+						var data = this.getAt(this.getTotalCount()-1).data;
+						symbol.organisationUnitSelection.setValues(null, null, null, data.level, data.name);
+						symbol.form.findField('level').setValue(data.name);
+					}
+				}
                 // Ext.getCmp('level_cb').mode = 'local';
             }
         }
@@ -302,7 +334,9 @@
     });	
     
     GLOBAL.stores = {
-        mapView: mapViewStore,
+		mapView: mapViewStore,
+        polygonMapView: polygonMapViewStore,
+        pointMapView: pointMapViewStore,
         indicatorGroup: indicatorGroupStore,
         indicatorsByGroup: indicatorsByGroupStore,
         indicator: indicatorStore,
@@ -311,7 +345,6 @@
         dataElement: dataElementStore,
         periodType: periodTypeStore,
         periodsByTypeStore: periodsByTypeStore,
-        map: mapStore,
         predefinedMapLegend: predefinedMapLegendStore,
         predefinedMapLegendSet: predefinedMapLegendSetStore,
         organisationUnitLevel: organisationUnitLevelStore,
@@ -436,6 +469,7 @@
                         method: 'POST',
                         params: {
                             name: vn,
+							featureType: formValues.featureType,
                             mapValueType: formValues.mapValueType,
                             indicatorGroupId: formValues.indicatorGroupId,
                             indicatorId: formValues.indicatorId,
@@ -454,6 +488,8 @@
                             colorLow: formValues.colorLow,
                             colorHigh: formValues.colorHigh,
                             mapLegendSetId: formValues.mapLegendSetId,
+                            radiusLow: formValues.radiusLow,
+                            radiusHigh: formValues.radiusHigh,
                             longitude: formValues.longitude,
                             latitude: formValues.latitude,
                             zoom: formValues.zoom
@@ -461,6 +497,12 @@
                         success: function(r) {
                             Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + i18n_registered);
                             GLOBAL.stores.mapView.load();
+                            if (formValues.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
+								GLOBAL.stores.polygonMapView.load();
+							}
+							else if (formValues.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
+								GLOBAL.stores.pointMapView.load();
+							}
                             Ext.getCmp('viewname_tf').reset();
                         }
                     });
@@ -500,6 +542,8 @@
 						success: function(r) {
 							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + name + '</span> ' + i18n_deleted);
                             GLOBAL.stores.mapView.load();
+                            Ext.getCmp('view_cb').clearValue();
+                            Ext.getCmp('view2_cb').clearValue();
                             if (v == choropleth.form.findField('mapview').getValue()) {
                                 choropleth.form.findField('mapview').clearValue();
                             }
@@ -1840,7 +1884,7 @@
                         mode: 'local',
                         value: GLOBAL.conf.map_date_type_fixed,
                         triggerAction: 'all',
-						width: GLOBAL.conf.combo_width_fieldset,
+						width: GLOBAL.vars.mapDateType.value,
 						minListWidth: GLOBAL.conf.combo_width_fieldset,
                         store: new Ext.data.ArrayStore({
                             fields: ['value', 'text'],
@@ -2384,6 +2428,12 @@
         listeners: {
             'expand': function() {
                 GLOBAL.vars.activePanel.setPoint();
+                
+                if (!this.form.findField('level').getValue()) {
+					if (!GLOBAL.stores.organisationUnitLevel.isLoaded) {
+						GLOBAL.stores.organisationUnitLevel.load();
+					}
+				}
             }
         }
     });
@@ -2659,8 +2709,6 @@
         ]
     });
 	
-	GLOBAL.vars.activePanel.setPolygon();
-
 	GLOBAL.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 

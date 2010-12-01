@@ -13,6 +13,8 @@
 	
 		<property name="name" unique="true"/>
 		
+		<property name="featureType"/>
+		
 		<property name="mapValueType"/>
 		
 		<many-to-one name="indicatorGroup" class="org.hisp.dhis.indicator.IndicatorGroup" 
@@ -59,6 +61,10 @@
 		
 		<many-to-one name="mapLegendSet" class="org.hisp.dhis.mapping.MapLegendSet"
 			column="maplegendsetid" foreign-key="fk_mapview_maplegendsetid"/>
+			
+		<property name="radiusLow"/>
+		
+		<property name="radiusHigh"/>
 		
 		<property name="longitude"/>
         

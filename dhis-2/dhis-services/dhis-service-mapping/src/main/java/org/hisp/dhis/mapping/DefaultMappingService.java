@@ -536,10 +536,11 @@ public class DefaultMappingService
         mappingStore.updateMapView( mapView );
     }
 
-    public void addOrUpdateMapView( String name, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
-        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
-        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+    public void addOrUpdateMapView( String name, String featureType, String mapValueType, Integer indicatorGroupId,
+        Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
+        Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
+        Integer organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
+        String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow, Integer radiusHigh,
         String longitude, String latitude, int zoom )
     {
         IndicatorGroup indicatorGroup = null;
@@ -579,6 +580,7 @@ public class DefaultMappingService
         if ( mapView != null )
         {
             mapView.setName( name );
+            mapView.setFeatureType( featureType );
             mapView.setMapValueType( mapValueType );
             mapView.setIndicatorGroup( indicatorGroup );
             mapView.setIndicator( indicator );
@@ -598,6 +600,8 @@ public class DefaultMappingService
             mapView.setColorLow( colorLow );
             mapView.setColorHigh( colorHigh );
             mapView.setMapLegendSet( mapLegendSet );
+            mapView.setRadiusLow( radiusLow );
+            mapView.setRadiusHigh( radiusHigh );
             mapView.setLongitude( longitude );
             mapView.setLatitude( latitude );
             mapView.setZoom( zoom );
@@ -606,9 +610,9 @@ public class DefaultMappingService
         }
         else
         {
-            mapView = new MapView( name, mapValueType, indicatorGroup, indicator, dataElementGroup, dataElement,
-                mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method, classes,
-                bounds, colorLow, colorHigh, mapLegendSet, longitude, latitude, zoom );
+            mapView = new MapView( name, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
+                dataElement, mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method,
+                classes, bounds, colorLow, colorHigh, mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom );
 
             addMapView( mapView );
         }
@@ -622,7 +626,7 @@ public class DefaultMappingService
     public MapView getMapView( int id )
     {
         MapView mapView = mappingStore.getMapView( id );
-        
+
         mapView.getParentOrganisationUnit().setLevel(
             organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
 
@@ -643,7 +647,20 @@ public class DefaultMappingService
             mapView.getParentOrganisationUnit().setLevel(
                 organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
         }
-        
+
+        return mapViews;
+    }
+
+    public Collection<MapView> getMapViewsByFeatureType( String featureType )
+    {
+        Collection<MapView> mapViews = mappingStore.getMapViewsByFeatureType( featureType );
+
+        for ( MapView mapView : mapViews )
+        {
+            mapView.getParentOrganisationUnit().setLevel(
+                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+        }
+
         return mapViews;
     }
 

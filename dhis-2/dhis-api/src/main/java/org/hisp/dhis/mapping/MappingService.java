@@ -70,7 +70,8 @@ public interface MappingService
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
         int parentOrganisationUnitId );
 
-    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId, int level );
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId,
+        int level );
 
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
         int parentOrganisationUnitId, int level );
@@ -150,10 +151,11 @@ public interface MappingService
 
     void updateMapView( MapView mapView );
 
-    void addOrUpdateMapView( String name, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
-        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
-        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevelId, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+    void addOrUpdateMapView( String name, String featureType, String mapValueType, Integer indicatorGroupId,
+        Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
+        Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
+        Integer organisationUnitLevelId, String mapLegendType, Integer method, Integer classes, String bounds,
+        String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow, Integer radiusHigh,
         String longitude, String latitude, int zoom );
 
     void deleteMapView( MapView view );
@@ -163,6 +165,8 @@ public interface MappingService
     MapView getMapViewByName( String name );
 
     Collection<MapView> getAllMapViews();
+
+    Collection<MapView> getMapViewsByFeatureType( String featureType );
 
     // -------------------------------------------------------------------------
     // MapLayer

@@ -347,7 +347,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
                 }
 			}
 			
-			method = GLOBAL.vars.activePanel.isAssignment() ? mapfish.GeoStat.Distribution.CLASSIFY_BY_EQUAL_INTERVALS : mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
+			method = mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS;
 		}
         
         var classification = null;

@@ -35,6 +35,7 @@ GLOBAL.conf = {
 	combo_width_fieldset: 112,
 	combo_list_width_fieldset: 112 + 17,
 	combo_number_width: 65,
+	combo_number_width_small: 30,
 	
 	emptytext: '',
 	labelseparator: '',
@@ -332,17 +333,11 @@ GLOBAL.vars = {
         setPoint: function() {
             this.value = GLOBAL.conf.thematicMap2;
         },
-        setAssignment: function() {
-            this.value = GLOBAL.conf.organisationUnitAssignment;
-        },
         isPolygon: function() {
             return this.value == GLOBAL.conf.thematicMap;
         },
         isPoint: function() {
             return this.value == GLOBAL.conf.thematicMap2;
-        },
-        isAssignment: function() {
-            return this.value == GLOBAL.conf.organisationUnitAssignment;
         }
     },
     
