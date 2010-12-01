@@ -26,6 +26,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.ActivityReportingService" class="org.hisp.dhis.web.api.service.ActivityReportingServiceImpl">

@@ -81,6 +81,8 @@ public class FacilityReportingServiceImpl
     private org.hisp.dhis.dataset.DataSetService dataSetService;
 
     private org.hisp.dhis.i18n.I18nService i18nService;
+    
+    private org.hisp.dhis.datalock.DataSetLockService dataSetLockService;
 
     // -------------------------------------------------------------------------
     // Service methods
@@ -124,6 +126,7 @@ public class FacilityReportingServiceImpl
 
         ds.setId( dataSet.getId() );
         ds.setName( dataSet.getName() );
+//        ds.setVersionDataSet( dataSet.getVersionDataSet() );
         ds.setPeriodType( dataSet.getPeriodType().getName() );
 
         List<Section> sectionList = new ArrayList<Section>();
@@ -196,6 +199,10 @@ public class FacilityReportingServiceImpl
         {
             return "INVALID_PERIOD";
         }
+        
+        if (isDataSetLocked(unit, dataSet, selectedPeriod)){
+            return "DATASET_LOCKED";
+        }
 
         Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
         Collection<Integer> dataElementIds = new ArrayList<Integer>( dataSetValue.getDataValues().size() );
@@ -228,6 +235,13 @@ public class FacilityReportingServiceImpl
     // Supportive method
     // -------------------------------------------------------------------------
 
+    private boolean isDataSetLocked(OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet, Period selectedPeriod){
+        if(dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, unit )!=null)
+            return true;
+            return false;        
+    }
+        
+    
     private void saveDataValues( DataSetValue dataSetValue,
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap, Period period, OrganisationUnit orgUnit,
         DataElementCategoryOptionCombo optionCombo )
@@ -266,9 +280,12 @@ public class FacilityReportingServiceImpl
             }
             else
             {
+                if ( value != null )
+                {
                 dataValue.setValue( value );
                 dataValue.setTimestamp( new Date() );
                 dataValueService.updateDataValue( dataValue );
+                }
             }
 
         }
@@ -327,5 +344,13 @@ public class FacilityReportingServiceImpl
     {
         this.i18nService = i18nService;
     }
+    
+    @Required
+    public void setDataSetLockService( org.hisp.dhis.datalock.DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
+    }
+    
+    
 
 }
