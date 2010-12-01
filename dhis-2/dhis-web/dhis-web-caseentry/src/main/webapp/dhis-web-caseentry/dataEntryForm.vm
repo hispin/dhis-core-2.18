@@ -1,7 +1,7 @@
 <script>
 function setupDataEntryCalendar( id )
 {
-	datePicker( id );
+	datePicker( id,  false);
 }
 </script>
 #parse( "/dhis-web-caseentry/dataRecordingSelect.vm" )
@@ -86,8 +86,8 @@ function setupDataEntryCalendar( id )
                         <option value="$optionValue.id" #if( $patientDataValue.value == $optionValue.id ) selected="selected" #end>$encoder.htmlEncode( $optionValue.name )</option>
                     #end
                 </select>
-            #elseif( $programStageDataElement.dataElement.type == "date" )
-                <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
+            #elseif( $programStageDataElement.dataElement.type == "date" ) 
+                <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode($patientDataValue.value)" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
                     <script type="text/javascript">
 						setupDataEntryCalendar('value\\[$programStageDataElement.dataElement.id\\]\\.date');
                     </script>  					
