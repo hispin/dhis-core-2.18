@@ -131,7 +131,7 @@ public class ProgramInstanceDeletionHandler
         // ---------------------------------------------------------------------
         // Delete Program Instances
         // ---------------------------------------------------------------------
-System.out.println("\n\n Delete Program Instances ");
+        
         if ( programInstances != null && programInstances.size() > 0 )
         {
             for ( ProgramInstance programInstance : programInstances )
