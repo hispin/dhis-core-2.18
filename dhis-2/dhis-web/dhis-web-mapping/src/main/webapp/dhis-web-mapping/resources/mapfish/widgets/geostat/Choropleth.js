@@ -676,7 +676,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                                         labelSeparator: GLOBAL.conf.labelseparator,
                                                         selectOnFocus: true,
                                                         width: GLOBAL.conf.combo_width,
-                                                        store: GLOBAL.stores.organisationUnitLevel,
+                                                        store: GLOBAL.stores.polygonOrganisationUnitLevel,
                                                         listeners: {
                                                             'select': {
                                                                 scope: this,

@@ -40,11 +40,17 @@
 
 		<!-- OrganisationUnit -->
 
-		<action name="getOrganisationUnitLevels"
-			class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsAction">
+		<action name="getAllOrganisationUnitLevels"
+			class="org.hisp.dhis.mapping.action.GetAllOrganisationUnitLevelsAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
 		</action>
+
+        <action name="getOrganisationUnitLevelsByFeatureType"
+            class="org.hisp.dhis.mapping.action.GetOrganisationUnitLevelsByFeatureTypeAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsonOrganisationUnitLevels.vm</result>
+        </action>
 
 		<action name="getOrganisationUnitsAtLevel"
 			class="org.hisp.dhis.mapping.action.GetOrganisationUnitsAtLevelAction">
