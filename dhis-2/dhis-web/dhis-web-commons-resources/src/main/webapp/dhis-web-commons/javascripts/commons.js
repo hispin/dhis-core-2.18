@@ -774,6 +774,29 @@ function datePicker( id )
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
 
+function datePicker( id, today )
+{
+	$("#" + id).datepicker(
+	{
+		dateFormat:dateFormat,
+		changeMonth: true,
+		changeYear: true,			
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'both',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true,
+		constrainInput: true		
+	});
+	
+	if( today == undefined ) today = false;
+	
+	if( today ){
+		s = jQuery("#" + id );		
+		if( s.val()=='' ) s.val( getCurrentDate() );		
+	}		
+}
+
 function datePickerjQuery( jQueryString )
 {
 	jQuery( jQueryString ).datepicker(
