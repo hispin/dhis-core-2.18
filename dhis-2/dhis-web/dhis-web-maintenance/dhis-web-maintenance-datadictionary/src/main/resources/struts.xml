@@ -481,6 +481,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/indicatorGroup.js</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>	
 		</action>
 
 		<action name="removeIndicatorGroup"
