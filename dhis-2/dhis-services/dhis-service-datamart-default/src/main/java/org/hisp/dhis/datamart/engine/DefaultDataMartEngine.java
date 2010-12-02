@@ -33,7 +33,6 @@ import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,6 +53,7 @@ import org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMar
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
 import org.hisp.dhis.datamart.indicator.IndicatorDataMart;
+import org.hisp.dhis.datamart.util.ParserUtil;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -228,13 +228,14 @@ public class DefaultDataMartEngine
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<CalculatedDataElement> calculatedDataElements = dataElementService.getCalculatedDataElements( dataElementIds );
+        Collection<DataElement> nonCalculatedDataElements = dataElementService.getDataElements( dataElementIds );
+        nonCalculatedDataElements.removeAll( calculatedDataElements );
         
         // ---------------------------------------------------------------------
         // Filter and get operands
         // ---------------------------------------------------------------------
 
-        final Set<Integer> nonCalculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, false );
-
+        final Collection<Integer> nonCalculatedDataElementIds = ConversionUtils.getIdentifiers( DataElement.class, nonCalculatedDataElements );
         final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicators );
         final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElements );
 
@@ -252,13 +253,13 @@ public class DefaultDataMartEngine
         final Collection<DataElementOperand> nonCalculatedDataElementOperands = categoryService
             .getOperandsByIds( nonCalculatedDataElementIds );
 
-        final Collection<DataElementOperand> sumIntDataElementOperands = filterOperands(
+        final Collection<DataElementOperand> sumIntDataElementOperands = ParserUtil.filterOperands(
             nonCalculatedDataElementOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
-        final Collection<DataElementOperand> averageIntDataElementOperands = filterOperands(
+        final Collection<DataElementOperand> averageIntDataElementOperands = ParserUtil.filterOperands(
             nonCalculatedDataElementOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
-        final Collection<DataElementOperand> sumBoolDataElementOperands = filterOperands(
+        final Collection<DataElementOperand> sumBoolDataElementOperands = ParserUtil.filterOperands(
             nonCalculatedDataElementOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_SUM );
-        final Collection<DataElementOperand> averageBoolDataElementOperands = filterOperands(
+        final Collection<DataElementOperand> averageBoolDataElementOperands = ParserUtil.filterOperands(
             nonCalculatedDataElementOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_AVERAGE );
 
         log.info( "Filtered data elements: " + TimeUtils.getHMS() );
@@ -399,27 +400,6 @@ public class DefaultDataMartEngine
     // -------------------------------------------------------------------------
 
     /**
-     * Sorts calculated data elements from non-calculated based on the given
-     * collection of identifiers and flag.
-     */
-    private Set<Integer> filterCalculatedDataElementIds( final Collection<Integer> dataElementIds, boolean calculated )
-    {
-        final Set<Integer> identifiers = new HashSet<Integer>();
-
-        for ( final Integer id : dataElementIds )
-        {
-            final DataElement element = dataElementService.getDataElement( id );
-
-            if ( (element instanceof CalculatedDataElement) == calculated )
-            {
-                identifiers.add( id );
-            }
-        }
-
-        return identifiers;
-    }
-
-    /**
      * Returns all data element identifiers included in the indicators in the
      * given identifier collection.
      */
@@ -455,25 +435,5 @@ public class DefaultDataMartEngine
         }
 
         return identifiers;
-    }
-
-    /**
-     * Filters the data element operands based on the value type.
-     */
-    private Collection<DataElementOperand> filterOperands( Collection<DataElementOperand> operands, String valueType,
-        String aggregationOperator )
-    {
-        final Collection<DataElementOperand> filtered = new ArrayList<DataElementOperand>();
-
-        for ( DataElementOperand operand : operands )
-        {
-            if ( operand.getValueType().equals( valueType )
-                && operand.getAggregationOperator().equals( aggregationOperator ) )
-            {
-                filtered.add( operand );
-            }
-        }
-
-        return filtered;
     }
 }

@@ -29,6 +29,8 @@ package org.hisp.dhis.datamart.util;
 
 import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -118,5 +120,28 @@ public class ParserUtil
         {
             throw new RuntimeException( "Illegal data element or category combo id", ex );
         }
+    }
+
+    /**
+     * Filters the data element operands based on the value type.
+     * 
+     * @param valueType the value type to filter.
+     * @param aggregationOperator the aggregation operator to filter.
+     */
+    public static Collection<DataElementOperand> filterOperands( Collection<DataElementOperand> operands, String valueType,
+        String aggregationOperator )
+    {
+        final Collection<DataElementOperand> filtered = new ArrayList<DataElementOperand>();
+
+        for ( DataElementOperand operand : operands )
+        {
+            if ( operand.getValueType().equals( valueType )
+                && operand.getAggregationOperator().equals( aggregationOperator ) )
+            {
+                filtered.add( operand );
+            }
+        }
+
+        return filtered;
     }
 }
