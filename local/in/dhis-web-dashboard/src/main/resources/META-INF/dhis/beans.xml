@@ -899,8 +899,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- OrganisationUnit Profile -->
 	
 	<!-- Ajax -->
+	<!-- GetWeekly Period List for Tabular Analysis -->
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetDataElementsAction"
+	<bean id="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction"
+        class="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction"
+        scope="prototype">
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+		</property>
+    </bean>
+	
+	
+	<bean id="org.hisp.dhis.dashboard.action.GetDataElementsAction"
 		class="org.hisp.dhis.dashboard.action.GetDataElementsAction"
 		scope="prototype">
         <property name="dataElementService">

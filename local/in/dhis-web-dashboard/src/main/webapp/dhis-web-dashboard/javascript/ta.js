@@ -286,7 +286,8 @@ function getDataElementsReceived( xmlObject )
         }
     }
     
-}// getDataElementsReceived end
+}
+// getDataElementsReceived end
 
 function getIndicators()
 {
@@ -345,12 +346,16 @@ function getIndicatorsReceived( xmlObject )
 //addOptionPlaceHolder( availableIndicators );
 }
 
-
+// getting period List
 function getPeriods()
 {
     var periodTypeList = document.getElementById( "periodTypeLB" );
     var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
 	
+    var yearLB = document.getElementById("yearLB");
+    
+    
+   // alert( periodTypeId );
     var periodLB = document.getElementById( "periodLB" );
 	
     periodLB.disabled = false;
@@ -362,6 +367,16 @@ function getPeriods()
         for( i= 0; i < monthNames.length; i++ )
         {
             periodLB.options[i] = new Option(monthNames[i],i,false,false);
+        }
+    }
+    
+    else if( periodTypeId == dailyPeriodTypeName )
+    {
+       // alert( monthDays.length );
+    	//alert( days.length );
+    	for( i= 0; i < days.length; i++ )
+        {
+            periodLB.options[i] = new Option(days[i],days[i],false,false);
         }
     }
     else if( periodTypeId == quarterlyPeriodTypeName )
@@ -382,7 +397,117 @@ function getPeriods()
     {
         periodLB.disabled = true;
     }
+    
+    else if( periodTypeId == weeklyPeriodTypeName )
+    {
+    	//alert(periodTypeId);
+    	
+        if( yearLB.selectedIndex < 0 ) 
+        {
+            alert("Please select Year(s) First");
+            return false;
+        }
+        else
+        {
+        	getWeeks();
+        }
+        /*
+    	for( i= 0; i < weeks.length; i++ )
+        {
+    		periodLB.options[i] = new Option(weeks[i],weeks[i],false,false);
+        }
+    	getWeeks();*/
+    }
+
 }
+
+//getting weekly Period
+function getWeeklyPeriod()
+{
+    var periodTypeList = document.getElementById( "periodTypeLB" );
+    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
+    
+    if( periodTypeId == weeklyPeriodTypeName )
+    {
+    	getWeeks();
+    }
+    
+}
+//singleSelectionOption yearList
+/*
+function selectSingleOptionYearList()
+{
+	var periodTypeObj = document.getElementById( 'periodTypeLB' );
+	
+    var periodTypeVal = periodTypeObj.options[ periodTypeObj.selectedIndex ].value;
+    if( periodTypeVal == weeklyPeriodTypeName  )
+    {
+        var yearListObj = document.getElementById('yearLB');
+	
+        for( var i = 0; i < yearListObj.length; i++ )
+        {
+            if( i != yearListObj.selectedIndex )
+            {
+            	yearListObj.options[i].selected = false;
+            }
+        }
+    }
+}
+*/
+//get week period Ajax calling
+function getWeeks()
+{
+	//var periodTypeName = weeklyPeriodTypeName;
+	var yearListObj = document.getElementById('yearLB');
+	var yearListval = yearListObj.options[ yearListObj.selectedIndex ].value;
+	//alert(yearListval); 
+	var year = yearListval.split( "-" )[0] ;
+	var yearList = "" ;
+	
+	var yearLB = document.getElementById("yearLB");
+    for(k = 0; k < yearLB.options.length; k++)
+    {
+    	if ( yearLB.options[k].selected == true )
+    	{
+    		yearList += yearLB.options[k].value + ";" ;
+    	}
+     //yearLB.add[yearLB.selectedIndex];
+    }
+    // alert( "Year List is : " +yearList );
+	
+	$.post("getWeeklyPeriod.action",
+			{
+			 //periodTypeName:weeklyPeriodTypeName,
+				yearList:yearList
+			},
+			function (data)
+			{
+				getWeeklyPeriodReceived(data);
+			},'xml');
+}
+
+// week rang received
+function getWeeklyPeriodReceived( xmlObject )
+{	
+	//alert("Inside Result");
+	
+	var periodList = document.getElementById( "periodLB" );
+	
+	clearList( periodList );
+	
+	var weeklyperiodList = xmlObject.getElementsByTagName( "weeklyPeriod" );
+	
+	for ( var i = 0; i < weeklyperiodList.length; i++ )
+	{
+	    var weeklyPeriodName = weeklyperiodList[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		
+	        var option = document.createElement( "option" );
+	        option.value = weeklyPeriodName;
+	        option.text = weeklyPeriodName;
+	        option.title = weeklyPeriodName;
+	        periodList.add( option, null );
+	}
+}	
 
 /*
 function getPeriods()

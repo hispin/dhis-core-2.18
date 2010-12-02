@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,17 +70,17 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
+import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
 import com.opensymphony.xwork2.Action;
-
-import java.util.Collections;
 
 public class GenerateTabularAnalysisResultAction
     implements Action
@@ -304,7 +305,7 @@ public class GenerateTabularAnalysisResultAction
         String endD = "";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-
+       // SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat( "yyyy-MM-dd" );
        
         periodNames = new ArrayList<String>();
 
@@ -317,10 +318,16 @@ public class GenerateTabularAnalysisResultAction
 
                 startD = "" + selYear + "-04-01";
                 endD = "" + (selYear + 1) + "-03-31";
-
+                
+                System.out.println( " Start Peroid  : " + format.parseDate( startD ) + " , End Peroid : " + format.parseDate( endD ) );
+                
                 selStartPeriodList.add( format.parseDate( startD ) );
                 selEndPeriodList.add( format.parseDate( endD ) );
-
+                
+                System.out.println( "Size of Start Peroid List : " + selStartPeriodList.size() + " , Size of End Peroid List : " + selEndPeriodList.size() );
+                
+                System.out.println( " Start Peroid List : " + selStartPeriodList + " , End Peroid List : " + selEndPeriodList );
+                
                 periodNames.add( "" + selYear + "-" + (selYear + 1) );
 
                 continue;
@@ -328,10 +335,11 @@ public class GenerateTabularAnalysisResultAction
 
             for ( String periodStr : periodLB )
             {
-                int period = Integer.parseInt( periodStr );
+               // int period = Integer.parseInt( periodStr );
 
                 if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
                 {
+                    int period = Integer.parseInt( periodStr );
                     simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
                     if ( period >= 9 )
@@ -339,7 +347,8 @@ public class GenerateTabularAnalysisResultAction
                         startD = "" + (selYear + 1) + "-" + monthOrder[period] + "-01";
                         endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + monthDays[period];
 
-                        if ( (selYear + 1) % 4 == 0 && period == 10 )
+                        //( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))
+                        if ( ((selYear + 1) % 400 == 0 ) || ((( selYear+1) % 100 != 0 && ( selYear+1 ) % 4 == 0)) && period == 10 )
                         {
                             endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
                         }
@@ -350,12 +359,25 @@ public class GenerateTabularAnalysisResultAction
                         endD = "" + selYear + "-" + monthOrder[period] + "-" + monthDays[period];
                     }
 
+                   
+                    System.out.println( "Start Date : " + startD + " , End Date : " + endD );
+                    
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
+                    
+                    System.out.println( "Size of Start Date List : " + selStartPeriodList.size() + " , Size of End Date List : " + selEndPeriodList.size() );
+                    
                     periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
+                    
+                    System.out.println( "Size of Period Name List  : " + periodNames.size() );
+                    //Date startDate = simpleDateFormat1.parse( startD );
+                    //Date endDate = simpleDateFormat1.parse( tempEndDate );
+                    //periodNames.add( startD );
+                    
                 }
                 else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
                 {
+                    int period = Integer.parseInt( periodStr );
                     if ( period == 0 )
                     {
                         startD = "" + selYear + "-04-01";
@@ -385,6 +407,7 @@ public class GenerateTabularAnalysisResultAction
                 }
                 else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
                 {
+                    int period = Integer.parseInt( periodStr );
                     if ( period == 0 )
                     {
                         startD = "" + selYear + "-04-01";
@@ -400,13 +423,79 @@ public class GenerateTabularAnalysisResultAction
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
                 }
-
-                // selStartPeriodList.add( format.parseDate( startD ) );
-                // selEndPeriodList.add( format.parseDate( endD ) );
-                // System.out.println( startD + " : " + endD );
+                else if ( periodTypeLB.equalsIgnoreCase( DailyPeriodType.NAME ) )
+                {
+                    //int month = Integer.parseInt( periodStr.split( "-" )[0] );
+                   String  month = periodStr.split( "-" )[0] ;
+                   //System.out.println( " Month : " + month );
+                   String  date = periodStr.split( "-" )[1] ;
+                    //int day = Integer.parseInt( periodStr.split( "-" )[1] );
+                   // System.out.println( " Day : " + date );
+                    
+                    startD = selYear + "-" + periodStr;
+                    endD = selYear + "-" + periodStr ;
+                   
+                   // System.out.println( "selectedYear" + " : " + selYear );
+                   // System.out.println( "selectedYear+1" + " : " + ( selYear + 1 ) );
+                   
+                   // if( year%400 ==0 || (year%100 != 0 && year%4 == 0))// leap year for centure year
+                    
+                    if ( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
+                    {
+                       // System.out.println( " Inside Non-leap Year " );
+                        startD = selYear + "-" + month + "-" + date;
+                        endD = selYear + "-" + month + "-" + date;
+                       // selStartPeriodList.remove( format.parseDate( startD ));
+                        //selEndPeriodList.remove( format.parseDate( endD ));
+                        continue;
+                        
+                       // endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
+                    }
+                    
+                    
+                    if ( (( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))) && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) ); 
+                    {
+                       // System.out.println( " Inside Leap Year " );
+                        startD = selYear + "-" + month + "-" + date;
+                        endD = selYear  + "-" + month + "-" + date;
+                       // endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
+                    }
+                    
+                   
+                    
+                    selStartPeriodList.add( format.parseDate( startD ) );
+                    selEndPeriodList.add( format.parseDate( endD ) );
+                    
+                    periodNames.add( startD );
+                    System.out.println( startD + " : " + endD );
+                }
             }
         }
-
+        
+        // for weekly period
+        
+        if ( periodTypeLB.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
+        {
+            for ( String periodStr : periodLB )
+            {
+                String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
+                String  endWeekDate = periodStr.split( "To" )[1] ; //for end week
+                
+                startD = startWeekDate.trim();
+                endD = endWeekDate.trim();
+                
+                selStartPeriodList.add( format.parseDate( startD ) );
+                selEndPeriodList.add( format.parseDate( endD ) );
+                
+                periodNames.add( periodStr );
+                System.out.println( startD + " : " + endD );
+            }
+        }
+        
+        
+ // calling diffrent functions       
+        
+        
         if ( ouRadio.equalsIgnoreCase( ORGUNITSELECTED ) )
         {
             System.out.println( "Report Generation Start Time is : \t" + new Date() );
