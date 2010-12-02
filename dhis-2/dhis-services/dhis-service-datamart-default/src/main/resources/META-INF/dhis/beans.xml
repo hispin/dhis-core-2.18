@@ -149,8 +149,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.datamart.dataelement.DefaultDataElementDataMart">
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="crossTabService"
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
@@ -162,10 +160,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.datamart.indicator.IndicatorDataMart"
     class="org.hisp.dhis.datamart.indicator.DefaultIndicatorDataMart">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="sumIntAggregator"
@@ -187,8 +181,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.datamart.calculateddataelement.CalculatedDataElementDataMart"
     class="org.hisp.dhis.datamart.calculateddataelement.DefaultCalculatedDataElementDataMart">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="sumIntAggregator"
