@@ -19,10 +19,11 @@ import org.hisp.dhis.web.api.service.ActivityReportingService;
 import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
 import org.hisp.dhis.web.api.service.IProgramService;
+import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
 
 @Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
-@Consumes( DhisMediaType.MOBILE_SERIALIZED )
+@Consumes( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
 public class OrgUnitResource
 {
 
@@ -69,18 +70,16 @@ public class OrgUnitResource
 
     @POST
     @Path( "dataSets" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String saveDataSetValues( DataSetValue dataSetValue )
+    public void saveDataSetValues( DataSetValue dataSetValue ) throws NotAllowedException
     {
-        return facilityReportingService.saveDataSetValues( unit, dataSetValue );
+        facilityReportingService.saveDataSetValues( unit, dataSetValue );
     }
 
     @POST
     @Path( "activities" )
-    @Produces( MediaType.TEXT_PLAIN )
-    public String saveActivityReport( ActivityValue activityValue )
+    public void saveActivityReport( ActivityValue activityValue ) throws NotAllowedException
     {
-        return activityReportingService.saveActivityReport( unit, activityValue );
+        activityReportingService.saveActivityReport( unit, activityValue );
     }
 
     // Setters...

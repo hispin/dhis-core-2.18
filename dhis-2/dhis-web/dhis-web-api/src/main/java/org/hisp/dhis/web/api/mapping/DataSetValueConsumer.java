@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.provider;
+package org.hisp.dhis.web.api.mapping;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -30,7 +30,7 @@ package org.hisp.dhis.web.api.provider;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ext.Provider;
 
-import org.hisp.dhis.web.api.model.ActivityValue;
+import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.resources.DhisMediaType;
 
 import com.sun.jersey.spi.resource.Singleton;
@@ -38,7 +38,7 @@ import com.sun.jersey.spi.resource.Singleton;
 @Provider
 @Singleton
 @Consumes( DhisMediaType.MOBILE_SERIALIZED )
-public class ActivityValueConsumer
-    extends AbstractDataSerializableConsumer<ActivityValue>
+public class DataSetValueConsumer
+    extends AbstractDataSerializableConsumer<DataSetValue>
 {
 }

@@ -9,6 +9,6 @@ public interface ActivityReportingService
 
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
 
-    public String saveActivityReport( OrganisationUnit unit, ActivityValue activityValue );
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue ) throws NotAllowedException;
 
 }
