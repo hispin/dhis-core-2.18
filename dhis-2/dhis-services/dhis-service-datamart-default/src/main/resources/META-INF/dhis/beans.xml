@@ -191,8 +191,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
     <property name="crossTabService"
       ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="aggregationCache"

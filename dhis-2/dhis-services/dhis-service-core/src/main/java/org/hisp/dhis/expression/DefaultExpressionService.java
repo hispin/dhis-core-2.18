@@ -152,16 +152,9 @@ public class DefaultExpressionService
         return expressionString != null ? calculateExpression( expressionString ) : null;
     }    
     
-    public Set<DataElement> getDataElementsInCalculatedDataElement( int id )
+    public Set<DataElement> getDataElementsInCalculatedDataElement( CalculatedDataElement calculatedDataElement )
     {
-        final DataElement dataElement = dataElementService.getDataElement( id );
-        
-        if ( dataElement != null && dataElement instanceof CalculatedDataElement )
-        {
-            return getDataElementsInExpression( ((CalculatedDataElement) dataElement).getExpression().getExpression() );
-        }
-        
-        return null;
+        return calculatedDataElement != null ? getDataElementsInExpression( calculatedDataElement.getExpression().getExpression() ) : null;
     }
 
     public Set<DataElement> getDataElementsInExpression( String expression )

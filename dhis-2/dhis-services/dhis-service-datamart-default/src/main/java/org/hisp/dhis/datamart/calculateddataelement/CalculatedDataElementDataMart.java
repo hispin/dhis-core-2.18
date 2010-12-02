@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart.calculateddataelement;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -39,6 +40,6 @@ import org.hisp.dhis.period.Period;
  */
 public interface CalculatedDataElementDataMart
 {
-    int exportCalculatedDataElements( Collection<Integer> calculatedDataElementIds, 
+    int exportCalculatedDataElements( Collection<CalculatedDataElement> calculatedDataElements, 
         Collection<Period> periods, Collection<OrganisationUnit> organisationUnits, Collection<DataElementOperand> operands, String key );
 }

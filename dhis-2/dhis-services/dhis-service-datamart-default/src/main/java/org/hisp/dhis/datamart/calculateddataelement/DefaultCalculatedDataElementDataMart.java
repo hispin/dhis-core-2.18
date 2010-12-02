@@ -43,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
@@ -101,13 +100,6 @@ public class DefaultCalculatedDataElementDataMart
     {
         this.crossTabService = crossTabService;
     }    
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
     
     private DataElementCategoryService categoryService;
 
@@ -134,12 +126,10 @@ public class DefaultCalculatedDataElementDataMart
     // CalculatedDataElementDataMart implementation
     // -------------------------------------------------------------------------
 
-    public int exportCalculatedDataElements( final Collection<Integer> calculatedDataElementIds, final Collection<Period> periods,
+    public int exportCalculatedDataElements( final Collection<CalculatedDataElement> calculatedDataElements, final Collection<Period> periods,
         final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
     {
         final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
-        
-        final Collection<DataElement> calculatedDataElements = dataElementService.getDataElements( calculatedDataElementIds );
         
         final DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
