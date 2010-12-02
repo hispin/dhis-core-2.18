@@ -182,6 +182,15 @@ public interface PeriodService
     Collection<Period> getIntersectingPeriods( Date startDate, Date endDate );
     
     /**
+     * Returns Periods where at least one its days are between each of the Periods
+     * start date and end date in the given collection.
+     * 
+     * @param periods the collection of Periods.
+     * @return a collection of Periods.
+     */
+    Collection<Period> getIntersectionPeriods( Collection<Period> periods );
+    
+    /**
      * Returns all Periods from the given collection of Periods which span the border of either the
      * start date OR end date of the given Period. 
      * 

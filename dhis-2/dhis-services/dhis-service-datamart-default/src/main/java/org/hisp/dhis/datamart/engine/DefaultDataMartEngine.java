@@ -287,8 +287,10 @@ public class DefaultDataMartEngine
         Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
             organisationUnitIds );
 
+        Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
+        
         final Collection<DataElementOperand> emptyOperands = crossTabService.populateCrossTabTable(
-            allDataElementOperands, getIntersectingIds( periodIds ), childrenIds, key );
+            allDataElementOperands, intersectingPeriodIds, childrenIds, key );
         
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
@@ -450,27 +452,6 @@ public class DefaultDataMartEngine
             {
                 identifiers.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
             }
-        }
-
-        return identifiers;
-    }
-
-    /**
-     * Returns the identifiers of the periods in the given collection including
-     * all intersecting periods.
-     */
-    private Collection<Integer> getIntersectingIds( final Collection<Integer> periodIds )
-    {
-        final Set<Integer> identifiers = new HashSet<Integer>( periodIds.size() );
-
-        for ( final Integer id : periodIds )
-        {
-            final Period period = periodService.getPeriod( id );
-
-            final Collection<Period> periods = periodService.getIntersectingPeriods( period.getStartDate(), period
-                .getEndDate() );
-
-            identifiers.addAll( ConversionUtils.getIdentifiers( Period.class, periods ) );
         }
 
         return identifiers;
