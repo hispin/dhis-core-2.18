@@ -45,14 +45,12 @@ import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 
@@ -72,20 +70,6 @@ public class DefaultIndicatorDataMart
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -146,18 +130,14 @@ public class DefaultIndicatorDataMart
     // IndicatorDataMart implementation
     // -------------------------------------------------------------------------
     
-    public int exportIndicatorValues( final Collection<Integer> indicatorIds, final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds, final Collection<DataElementOperand> operands, String key )
+    public int exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
+        final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
     {
         final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
-        final Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );        
-        final Collection<Period> periods = periodService.getPeriods( periodIds );
-        final Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-
         final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
 
-        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnitIds );
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
         
         int count = 0;
         

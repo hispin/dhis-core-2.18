@@ -55,11 +55,15 @@ public class Indicator
 
     private String numeratorAggregationOperator;
 
+    private String explodedNumerator;
+    
     private String denominator;
 
     private String denominatorDescription;
 
     private String denominatorAggregationOperator;
+    
+    private String explodedDenominator;
     
     private ExtendedDataElement extended;
     
@@ -211,6 +215,16 @@ public class Indicator
         this.numeratorAggregationOperator = numeratorAggregationOperator;
     }
 
+    public String getExplodedNumerator()
+    {
+        return explodedNumerator;
+    }
+
+    public void setExplodedNumerator( String explodedNumerator )
+    {
+        this.explodedNumerator = explodedNumerator;
+    }
+
     public String getDenominator()
     {
         return denominator;
@@ -239,6 +253,16 @@ public class Indicator
     public void setDenominatorAggregationOperator( String denominatorAggregationOperator )
     {
         this.denominatorAggregationOperator = denominatorAggregationOperator;
+    }
+
+    public String getExplodedDenominator()
+    {
+        return explodedDenominator;
+    }
+
+    public void setExplodedDenominator( String explodedDenominator )
+    {
+        this.explodedDenominator = explodedDenominator;
     }
 
     public ExtendedDataElement getExtended()

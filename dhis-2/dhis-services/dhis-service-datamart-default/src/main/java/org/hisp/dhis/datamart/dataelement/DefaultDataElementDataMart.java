@@ -30,9 +30,7 @@ package org.hisp.dhis.datamart.dataelement;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import org.amplecode.quick.BatchHandler;
@@ -47,7 +45,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
 /**
@@ -68,13 +65,6 @@ public class DefaultDataElementDataMart
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
     
     private BatchHandlerFactory batchHandlerFactory;
@@ -102,18 +92,14 @@ public class DefaultDataElementDataMart
     // DataMart functionality
     // -------------------------------------------------------------------------
     
-    public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Integer> periodIds, 
-        final Collection<Integer> organisationUnitIds, final DataElementAggregator dataElementAggregator, String key )
+    public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Period> periods, 
+        final Collection<OrganisationUnit> organisationUnits, final DataElementAggregator dataElementAggregator, String key )
     {
         final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
         
-        final Collection<Period> periods = getPeriods( periodIds );
-
-        final Collection<OrganisationUnit> organisationUnits = getOrganisationUnits( organisationUnitIds );
-
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
         
-        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnitIds );
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
         
         int count = 0;
         
@@ -156,33 +142,5 @@ public class DefaultDataElementDataMart
         batchHandler.flush();
         
         return count;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Id-to-object methods
-    // -------------------------------------------------------------------------
-
-    private Collection<Period> getPeriods( final Collection<Integer> periodIds )
-    {
-        final Set<Period> periods = new HashSet<Period>( periodIds.size() );
-        
-        for ( Integer id : periodIds )
-        {
-            periods.add( periodService.getPeriod( id ) );
-        }
-        
-        return periods;
-    }
-    
-    private Collection<OrganisationUnit> getOrganisationUnits( final Collection<Integer> organisationUnitIds )
-    {
-        final Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>( organisationUnitIds.size() );
-        
-        for ( Integer id : organisationUnitIds )
-        {
-            organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
-        }
-        
-        return organisationUnits;
     }
 }

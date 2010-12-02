@@ -55,19 +55,19 @@ public class OrganisationUnitHierarchy
         this.relationships = relationships;
     }
     
-    public OrganisationUnitHierarchy prepareChildren( Collection<Integer> parentIds )
+    public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents )
     {
-        for ( Integer id : parentIds )
+        for ( OrganisationUnit unit : parents )
         {
-            prepareChildren( id );
+            prepareChildren( unit );
         }
         
         return this;
     }
     
-    public OrganisationUnitHierarchy prepareChildren( int parentId )
+    public OrganisationUnitHierarchy prepareChildren( OrganisationUnit unit )
     {
-        preparedRelationships.put( parentId, getChildren( parentId ) );
+        preparedRelationships.put( unit.getId(), getChildren( unit.getId() ) );
         
         return this;
     }
