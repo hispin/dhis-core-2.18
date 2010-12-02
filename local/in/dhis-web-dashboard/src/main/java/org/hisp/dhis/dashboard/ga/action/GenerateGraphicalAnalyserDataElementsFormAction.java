@@ -41,6 +41,7 @@ import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.FinancialAprilPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.Period;
@@ -198,7 +199,7 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
             String pTName = ptIterator.next().getName();
             if ( pTName.equalsIgnoreCase( DailyPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
                 || pTName.equalsIgnoreCase( OnChangePeriodType.NAME )
-                || pTName.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
+                || pTName.equalsIgnoreCase( WeeklyPeriodType.NAME ) || pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME) )
             {
                 ptIterator.remove();
             }

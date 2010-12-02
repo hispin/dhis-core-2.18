@@ -573,6 +573,15 @@
 		
 		<!-- Ajax requests -->
 		
+		<!-- Getting Weekly Period -->
+		<action name="getWeeklyPeriod"
+            class="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction">
+            <result name="success" type="velocity-xml">/dhis-web-dashboard/responseWeeklyPeriods.vm</result>
+            <!--<interceptor-ref name="transactionStack"/>-->
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+		
+		
 		<action name="getDataElements"
 			class="org.hisp.dhis.dashboard.action.GetDataElementsAction">
 			<result name="success" type="velocity-xml">

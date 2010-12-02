@@ -79,23 +79,33 @@ function getPeriods() {
 
 	clearList(periodLB);
 
-	if (periodTypeId == monthlyPeriodTypeName) {
-		for (i = 0; i < monthNames.length; i++) {
+	if (periodTypeId == monthlyPeriodTypeName) 
+	{
+		for (i = 0; i < monthNames.length; i++) 
+		{
 			periodLB.options[i] = new Option(monthNames[i], i, false, false);
 		}
-	} else if (periodTypeId == quarterlyPeriodTypeName) {
-		for (i = 0; i < quarterNames.length; i++) {
+	}
+	else if (periodTypeId == quarterlyPeriodTypeName)
+	{
+		for (i = 0; i < quarterNames.length; i++) 
+		{
 			periodLB.options[i] = new Option(quarterNames[i], i, false, false);
 		}
-	} else if (periodTypeId == sixmonthPeriodTypeName) {
-		for (i = 0; i < halfYearNames.length; i++) {
+	} 
+	else if (periodTypeId == sixmonthPeriodTypeName) 
+	{
+		for (i = 0; i < halfYearNames.length; i++)
+		{
 			periodLB.options[i] = new Option(halfYearNames[i], i, false, false);
 		}
-	} else if (periodTypeId == yearlyPeriodTypeName) {
+	} 
+	else if (periodTypeId == yearlyPeriodTypeName) 
+	{
 		periodLB.disabled = true;
 	}
 }
-//function for getting periods ends
+// function for getting periods ends
 
 // OrgUnit GroupSet Change Function
 /*

@@ -46,6 +46,7 @@ import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
+import org.hisp.dhis.period.FinancialAprilPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.Period;
@@ -158,6 +159,20 @@ public class GenerateTabularAnalysisFormAction
         return simpleDateFormat;
     }
 
+    private String dailyPeriodTypeName;
+   
+    public String getDailyPeriodTypeName()
+    {
+    return dailyPeriodTypeName;
+    }
+    
+    private String weeklyPeriodTypeName;
+    
+    public String getWeeklyPeriodTypeName()
+    {
+        return weeklyPeriodTypeName;
+    }
+
     private String monthlyPeriodTypeName;
 
     public String getMonthlyPeriodTypeName()
@@ -233,7 +248,7 @@ public class GenerateTabularAnalysisFormAction
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
         Iterator<PeriodType> ptIterator = periodTypes.iterator();
-        while ( ptIterator.hasNext() )
+/*        while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
             if ( pTName.equalsIgnoreCase( DailyPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
@@ -243,11 +258,24 @@ public class GenerateTabularAnalysisFormAction
                 ptIterator.remove();
             }
         }
-
+*/        
+        while ( ptIterator.hasNext() )
+        {
+            String pTName = ptIterator.next().getName();
+            if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
+                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+            {
+                ptIterator.remove();
+            }
+        }
+        
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         periodNameList = new ArrayList<String>();
         Collections.sort( monthlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+        
+        dailyPeriodTypeName = DailyPeriodType.NAME;
+        weeklyPeriodTypeName = WeeklyPeriodType.NAME;
         monthlyPeriodTypeName = MonthlyPeriodType.NAME;
         quarterlyPeriodTypeName = QuarterlyPeriodType.NAME;
         sixMonthPeriodTypeName = SixMonthlyPeriodType.NAME;
@@ -268,6 +296,7 @@ public class GenerateTabularAnalysisFormAction
         Collections.sort( yearlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy" );
         //System.out.println( monthlyPeriodTypeName );
+       // System.out.println( dailyPeriodTypeName );
         int year;
         for ( Period p1 : yearlyPeriods )
         {
