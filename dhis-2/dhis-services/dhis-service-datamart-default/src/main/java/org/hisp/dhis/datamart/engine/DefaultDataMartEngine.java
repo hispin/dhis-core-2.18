@@ -221,13 +221,21 @@ public class DefaultDataMartEngine
         log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
+        // Get objects
+        // ---------------------------------------------------------------------
+
+        Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
+        Collection<Period> periods = periodService.getPeriods( periodIds );
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
+
+        // ---------------------------------------------------------------------
         // Filter and get operands
         // ---------------------------------------------------------------------
 
         final Set<Integer> nonCalculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, false );
         final Set<Integer> calculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, true );
 
-        final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicatorIds );
+        final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicators );
         final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElementIds );
 
         final Set<Integer> allDataElementIds = new HashSet<Integer>();
@@ -294,14 +302,6 @@ public class DefaultDataMartEngine
         log.info( "Trimmed crosstab table: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
-        // Get objects
-        // ---------------------------------------------------------------------
-
-        Collection<Period> periods = periodService.getPeriods( periodIds );
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-        Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
-
-        // ---------------------------------------------------------------------
         // Data element export
         // ---------------------------------------------------------------------
 
@@ -330,8 +330,7 @@ public class DefaultDataMartEngine
             count += dataElementDataMart.exportDataValues( averageIntDataElementOperands, periods,
                 organisationUnits, averageIntSingleValueAggregator, key );
 
-            log
-                .info( "Exported values for data element operands with average aggregation operator with single value of type number ("
+            log.info( "Exported values for data element operands with average aggregation operator with single value of type number ("
                     + averageIntDataElementOperands.size() + "): " + TimeUtils.getHMS() );
         }
 
@@ -364,7 +363,7 @@ public class DefaultDataMartEngine
             count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits,
                 dataElementInIndicatorOperands, key );
 
-            log.info( "Exported values for indicators (" + indicatorIds.size() + "): " + TimeUtils.getHMS() );
+            log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
         }
 
         state.setMessage( "exporting_data_for_calculated_data_elements" );
@@ -422,14 +421,12 @@ public class DefaultDataMartEngine
      * Returns all data element identifiers included in the indicators in the
      * given identifier collection.
      */
-    private Set<Integer> getDataElementIdsInIndicators( final Collection<Integer> indicatorIds )
+    private Set<Integer> getDataElementIdsInIndicators( final Collection<Indicator> indicators )
     {
-        final Set<Integer> identifiers = new HashSet<Integer>( indicatorIds.size() );
+        final Set<Integer> identifiers = new HashSet<Integer>( indicators.size() );
 
-        for ( final Integer id : indicatorIds )
+        for ( final Indicator indicator : indicators )
         {
-            final Indicator indicator = indicatorService.getIndicator( id );
-
             identifiers.addAll( getDataElementIdsInExpression( indicator.getNumerator() ) );
             identifiers.addAll( getDataElementIdsInExpression( indicator.getDenominator() ) );
         }
