@@ -430,4 +430,24 @@ public class DefaultIndicatorService
             } );     
     }
 
+    public int getIndicatorGroupSetCountByName( String name )
+    {
+        return indicatorGroupSetStore.getCountByName( name );
+    }
+
+    public int getIndicatorGroupSetCount()
+    {
+        return indicatorGroupSetStore.getCount();
+    }
+
+    public Collection<IndicatorGroupSet> getIndicatorGroupSetsBetween( int first, int max )
+    {
+        return i18n( i18nService, indicatorGroupSetStore.getBetween( first, max ) );
+    }
+
+    public Collection<IndicatorGroupSet> getIndicatorGroupSetsBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, indicatorGroupSetStore.getBetweenByName( name, first, max ) );
+    }
+
 }
