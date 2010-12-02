@@ -99,7 +99,7 @@ public class DefaultProgramService
 
                 org.hisp.dhis.dataelement.DataElement dataElement = programStagedataElement.getDataElement();
 
-                DataElement de = Mapping.getDataElement( dataElement );
+                DataElement de = ModelMapping.getDataElement( dataElement );
 
                 de.setCompulsory( programStagedataElement.isCompulsory() );
 

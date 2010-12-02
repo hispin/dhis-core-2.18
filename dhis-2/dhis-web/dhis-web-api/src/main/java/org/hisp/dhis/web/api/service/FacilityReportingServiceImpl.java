@@ -180,7 +180,7 @@ public class FacilityReportingServiceImpl
         {
             dataElement = i18n( i18nService, locale, dataElement );
 
-            DataElement de = Mapping.getDataElement( dataElement );
+            DataElement de = ModelMapping.getDataElement( dataElement );
 
             // For facility Reporting, no data elements are mandatory
             de.setCompulsory( false );
