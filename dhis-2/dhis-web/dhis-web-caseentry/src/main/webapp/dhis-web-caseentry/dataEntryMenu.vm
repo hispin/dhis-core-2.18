@@ -8,3 +8,6 @@
 <br>
 #parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
 
+<script type="text/javascript">    
+    var formatter = '$encoder.jsEscape( $i18n.getString( "format.date.label" ) , "'")';
+</script>
