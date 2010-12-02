@@ -1,9 +1,8 @@
 
 <img id="searchIcon" src="../images/search.png" style="cursor: pointer" title="$i18n.getString( 'locate_organisation_unit_by_code_or_name' )">
-<span id="searchSpan" style="display:none"><input type="text" id="searchField" name="key" style="width:130px"><input type="button" value="Find" onclick="selection.findByCode()"></span>
+<span id="searchSpan" style="display:none"><input type="text" id="searchField" name="key" style="width:130px" onchange="selection.findByCode()"><input type="button" value="Find" onclick="selection.findByCode()"></span>
 
 <script>
-	
 $(document).ready(function(){
 	$("#searchIcon").click(function(){
 		$("#searchSpan").toggle();
@@ -11,6 +10,7 @@ $(document).ready(function(){
 	});
 });
 
+var i18n_find = '$encoder.jsEscape( $i18n.getString( "find" ) , "'")';
 </script>
 
 <div id="orgUnitTreeContainer">
