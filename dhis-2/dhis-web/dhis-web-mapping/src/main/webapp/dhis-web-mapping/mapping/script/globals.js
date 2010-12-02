@@ -249,7 +249,7 @@ GLOBAL.util = {
     },
 
     getLegendsJSON: function() {
-        var widget = GLOBAL.vars.activePanel.isPolygon() ? choropleth : proportionalSymbol;
+        var widget = GLOBAL.vars.activePanel.isPolygon() ? choropleth : symbol;
         var json = '{';
         json += '"legends":';
         json += '[';

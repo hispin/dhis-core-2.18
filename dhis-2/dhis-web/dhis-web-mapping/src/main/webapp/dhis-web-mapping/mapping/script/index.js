@@ -262,15 +262,6 @@
         listeners: {
             'load': function(store) {
                 store.isLoaded = true;
-                
-                if (!symbol.form.findField('level').getValue()) {
-					if (this.isLoaded) {
-						var data = this.getAt(this.getTotalCount()-1).data;
-						symbol.organisationUnitSelection.setValues(null, null, null, data.level, data.name);
-						symbol.form.findField('level').setValue(data.name);
-					}
-				}
-                // Ext.getCmp('level_cb').mode = 'local';
             }
         }
     });
@@ -474,7 +465,7 @@
                         if (!choropleth.formValidation.validateForm(true)) {
                             return;
                         }
-                        formValues = choropleth.getFormValues();
+                        formValues = choropleth.formValues.getAllValues.call(choropleth);
                     }
                     else if (GLOBAL.vars.activePanel.isPoint()) {
                         if (!symbol.formValidation.validateForm(true)) {
@@ -724,58 +715,57 @@
 				cls: 'window-button',
 				text: i18n_export,
 				handler: function() {
-                    var vcb, period;
+                    var values, svgElement;
                     if (GLOBAL.vars.activePanel.isPolygon()) {
                         if (choropleth.formValidation.validateForm()) {
-                            vcb = choropleth.form.findField('mapvaluetype').getValue() == GLOBAL.conf.map_value_type_indicator ? choropleth.form.findField('indicator').getValue() : choropleth.form.findField('dataelement').getValue();
-                            period = GLOBAL.vars.mapDateType.isFixed() ? choropleth.form.findField('period').getRawValue() : new Date(choropleth.form.findField('startdate').getRawValue()).format('Y M j') + ' - ' + new Date(choropleth.form.findField('enddate').getRawValue()).format('Y M j');
-                    
-                            var svgElement = document.getElementsByTagName('svg')[0];
-                            var parentSvgElement = svgElement.parentNode;                            
-                            var svg = parentSvgElement.innerHTML;                            
-                            var viewBox = svgElement.getAttribute('viewBox');
-                            var title = Ext.getCmp('exportimagetitle_tf').getValue();
-                            
-                            if (!title) {
-                                Ext.message.msg(false, i18n_form_is_not_complete);
-                            }
-                            else {
-                                var q = Ext.getCmp('exportimagequality_cb').getValue();
-                                var w = svgElement.getAttribute('width') * q;
-                                var h = svgElement.getAttribute('height') * q;
-                                var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
-                                
-                                Ext.getCmp('exportimagetitle_tf').reset();
-                                
-                                var exportForm = document.getElementById('exportForm');
-                                exportForm.action = '../exportImage.action';
-                                exportForm.target = '_blank';
-                                
-                                document.getElementById('titleField').value = title;   
-                                document.getElementById('viewBoxField').value = viewBox;  
-                                document.getElementById('svgField').value = svg;  
-                                document.getElementById('widthField').value = w;  
-                                document.getElementById('heightField').value = h;  
-                                document.getElementById('includeLegendsField').value = includeLegend;  
-                                document.getElementById('periodField').value = period;  
-                                document.getElementById('indicatorField').value = vcb;
-                                document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
+							values = choropleth.formValues.getImageExportValues.call(choropleth);
+							svgElement = document.getElementsByTagName('svg')[0];
+						}
+						else {
+							Ext.message.msg(false, i18n_please_render_map_first);
+						}
+					}
+					else if (GLOBAL.vars.activePanel.isPoint()) {
+                        if (symbol.formValidation.validateForm()) {
+							values = symbol.formValues.getImageExportValues.call(symbol);
+							svgElement = document.getElementsByTagName('svg')[1];
+						}
+						else {
+							Ext.message.msg(false, i18n_please_render_map_first);
+						}
+					}
 
-                                exportForm.submit();
-                            }
-                        }
-                        else {
-                            Ext.message.msg(false, i18n_please_render_map_first);
-                        }
-                    }
-                    else if (GLOBAL.vars.activePanel.isPoint()) {
-                        Ext.message.msg(false, 'Please use <span class="x-msg-hl">polygon layer</span> for printing');
-                        return;
-                    }
-                    else {
-                        Ext.message.msg(false, i18n_please_expand_layer_panel);
-                        return;
-                    }                    
+					var svg = svgElement.parentNode.innerHTML;
+					var viewBox = svgElement.getAttribute('viewBox');
+					var title = Ext.getCmp('exportimagetitle_tf').getValue();
+					
+					if (!title) {
+						Ext.message.msg(false, i18n_form_is_not_complete);
+					}
+					else {
+						var q = Ext.getCmp('exportimagequality_cb').getValue();
+						var w = svgElement.getAttribute('width') * q;
+						var h = svgElement.getAttribute('height') * q;
+						var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
+						
+						Ext.getCmp('exportimagetitle_tf').reset();
+						
+						var exportForm = document.getElementById('exportForm');
+						exportForm.action = '../exportImage.action';
+						exportForm.target = '_blank';
+						
+						document.getElementById('titleField').value = title;   
+						document.getElementById('viewBoxField').value = viewBox;  
+						document.getElementById('svgField').value = svg;  
+						document.getElementById('widthField').value = w;  
+						document.getElementById('heightField').value = h;  
+						document.getElementById('includeLegendsField').value = includeLegend;  
+						document.getElementById('periodField').value = values.dateValue;  
+						document.getElementById('indicatorField').value = values.mapValueTypeValue;
+						document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
+
+						exportForm.submit();
+					}
 				}
 			}	
 		]
