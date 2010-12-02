@@ -153,6 +153,7 @@ public class AverageIntSingleValueAggregator
                                 "', for data element with id: '" + entry.getKey() +
                                 "', for period with id: '" + crossTabValue.getPeriodId() +
                                 "', for source with id: '" + crossTabValue.getSourceId() + "'" );
+                            continue;
                         }
     
                         if ( currentStartDate.compareTo( endDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 ) // Value is intersecting

@@ -155,6 +155,7 @@ public class SumIntAggregator
                                 "', for data element with id: '" + entry.getKey() +
                                 "', for period with id: '" + crossTabValue.getPeriodId() +
                                 "', for source with id: '" + crossTabValue.getSourceId() + "'" );
+                            continue;
                         }
                         
                         if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 ) // Value is within period
