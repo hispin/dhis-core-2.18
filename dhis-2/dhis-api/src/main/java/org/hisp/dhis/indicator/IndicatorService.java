@@ -148,4 +148,12 @@ public interface IndicatorService
     Collection<IndicatorGroupSet> getAllIndicatorGroupSets();
     
     Collection<IndicatorGroupSet> getIndicatorGroupSets( Collection<Integer> identifiers );
+    
+    Collection<IndicatorGroupSet> getIndicatorGroupSetsBetween( int first, int max );
+    
+    Collection<IndicatorGroupSet> getIndicatorGroupSetsBetweenByName( String name, int first, int max );
+    
+    int getIndicatorGroupSetCount();
+    
+    int getIndicatorGroupSetCountByName( String name );
 }

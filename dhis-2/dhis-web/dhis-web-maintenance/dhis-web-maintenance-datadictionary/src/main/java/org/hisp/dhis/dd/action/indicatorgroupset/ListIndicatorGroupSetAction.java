@@ -27,13 +27,17 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class ListIndicatorGroupSetAction
-    implements Action
+    extends ActionPagingSupport<IndicatorGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +60,7 @@ public class ListIndicatorGroupSetAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<IndicatorGroupSet> indicatorGroupSets;
@@ -64,6 +68,18 @@ public class ListIndicatorGroupSetAction
     public List<IndicatorGroupSet> getIndicatorGroupSets()
     {
         return indicatorGroupSets;
+    }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -73,8 +89,19 @@ public class ListIndicatorGroupSetAction
     public String execute()
         throws Exception
     {
-        indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
-
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( indicatorService.getIndicatorGroupSetCountByName( key ) );
+            
+            indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getIndicatorGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( indicatorService.getIndicatorGroupSetCount() );
+            
+            indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getIndicatorGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+        
         Collections.sort( indicatorGroupSets, new IndicatorGroupSetNameComparator() );
 
         return SUCCESS;
