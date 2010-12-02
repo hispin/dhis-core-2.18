@@ -123,6 +123,14 @@ public interface IndicatorService
     
     Collection<IndicatorGroup> getGroupsContainingIndicator( Indicator indicator );
 
+    Collection<IndicatorGroup> getIndicatorGroupsBetween( int first, int max );
+    
+    Collection<IndicatorGroup> getIndicatorGroupsBetweenByName( String name, int first, int max );
+    
+    int getIndicatorGroupCount();
+    
+    int getIndicatorGroupCountByName( String name );
+
     // -------------------------------------------------------------------------
     // IndicatorGroupSet
     // -------------------------------------------------------------------------

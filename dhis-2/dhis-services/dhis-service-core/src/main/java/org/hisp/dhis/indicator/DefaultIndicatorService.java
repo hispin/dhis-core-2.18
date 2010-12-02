@@ -355,6 +355,26 @@ public class DefaultIndicatorService
         return groups;       
     }
 
+    public int getIndicatorGroupCount()
+    {
+        return indicatorGroupStore.getCount();
+    }
+
+    public int getIndicatorGroupCountByName( String name )
+    {
+        return indicatorGroupStore.getCountByName( name );
+    }
+
+    public Collection<IndicatorGroup> getIndicatorGroupsBetween( int first, int max )
+    {
+        return i18n( i18nService, indicatorGroupStore.getBetween( first, max ) );
+    }
+
+    public Collection<IndicatorGroup> getIndicatorGroupsBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, indicatorGroupStore.getBetweenByName( name, first, max ) );
+    }
+
     // -------------------------------------------------------------------------
     // IndicatorGroupSet
     // -------------------------------------------------------------------------
