@@ -786,7 +786,7 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
 
 function isDateFormat( value )
 {
-    return 	/^\d{4}-\d{2}-\d{2}$/.test( value );
+	return isDate(value, formatter);
 }
 
 /**
@@ -927,7 +927,7 @@ function saveDate( dataElementId , dataElementName )
     if( !isDateFormat( field.value ) )
     {
         field.style.backgroundColor = '#ffcc00';
-        window.alert('Incorrect format for date value. The correct format should be yyyy-mm-d \n\n '+dataElementName );
+        window.alert('Incorrect format for date value. The correct format should be ' + formatter + '\n\n '+dataElementName );
 		  
         field.select();
         field.focus();
@@ -952,13 +952,13 @@ function saveDateCustom(  this_ )
     var providedByAnotherFacility = document.getElementById( data.programStageId+'_'+data.dataElementId+'_facility' ).checked;
 
     if(jQuery(this_).val()!="")
-    {
+    { 
         if( !isDateFormat( jQuery(this_).val() ) )
         {
             jQuery(this_).css({
                 "background-color":"#ffcc00"
             });
-            window.alert('Incorrect format for date value. The correct format should be yyyy-mm-d \n\n '+data.dataElementName );
+            window.alert('Incorrect format for date value. The correct format should be ' + formatter +' \n\n '+data.dataElementName );
 		  
             jQuery(this_).focus();
 
