@@ -394,6 +394,10 @@ public class Patient
     public void setBirthDateFromAge( int age, char ageType )
     {
         Calendar todayCalendar = Calendar.getInstance();
+        todayCalendar.clear( Calendar.MILLISECOND );
+        todayCalendar.clear( Calendar.SECOND );
+        todayCalendar.clear( Calendar.MINUTE );
+        todayCalendar.set( Calendar.HOUR_OF_DAY, 0 );
 
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
