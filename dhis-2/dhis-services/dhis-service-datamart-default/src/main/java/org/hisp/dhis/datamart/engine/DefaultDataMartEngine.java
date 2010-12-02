@@ -227,16 +227,16 @@ public class DefaultDataMartEngine
         Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-
+        Collection<CalculatedDataElement> calculatedDataElements = dataElementService.getCalculatedDataElements( dataElementIds );
+        
         // ---------------------------------------------------------------------
         // Filter and get operands
         // ---------------------------------------------------------------------
 
         final Set<Integer> nonCalculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, false );
-        final Set<Integer> calculatedDataElementIds = filterCalculatedDataElementIds( dataElementIds, true );
 
         final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicators );
-        final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElementIds );
+        final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElements );
 
         final Set<Integer> allDataElementIds = new HashSet<Integer>();
         allDataElementIds.addAll( nonCalculatedDataElementIds );
@@ -374,12 +374,12 @@ public class DefaultDataMartEngine
         // Calculated data element export
         // ---------------------------------------------------------------------
 
-        if ( calculatedDataElementIds != null && calculatedDataElementIds.size() > 0 )
+        if ( calculatedDataElements != null && calculatedDataElements.size() > 0 )
         {
-            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElementIds, periods,
+            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods,
                 organisationUnits, dataElementInCalculatedDataElementOperands, key );
 
-            log.info( "Exported values for calculated data elements (" + calculatedDataElementIds.size() + "): "
+            log.info( "Exported values for calculated data elements (" + calculatedDataElements.size() + "): "
                 + TimeUtils.getHMS() );
         }
 
@@ -440,13 +440,13 @@ public class DefaultDataMartEngine
      * Returns all data element identifiers included in the calculated data
      * elements in the given identifier collection.
      */
-    private Set<Integer> getDataElementIdsInCalculatedDataElements( final Collection<Integer> calculatedDataElementIds )
+    private Set<Integer> getDataElementIdsInCalculatedDataElements( final Collection<CalculatedDataElement> calculatedDataElements )
     {
         final Set<Integer> identifiers = new HashSet<Integer>();
 
-        for ( final Integer id : calculatedDataElementIds )
+        for ( final CalculatedDataElement calculatedDataElement : calculatedDataElements )
         {
-            final Set<DataElement> dataElements = expressionService.getDataElementsInCalculatedDataElement( id );
+            final Set<DataElement> dataElements = expressionService.getDataElementsInCalculatedDataElement( calculatedDataElement );
 
             if ( dataElements != null )
             {
