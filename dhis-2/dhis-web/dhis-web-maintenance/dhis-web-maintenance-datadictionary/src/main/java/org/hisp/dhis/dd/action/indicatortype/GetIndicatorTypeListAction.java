@@ -27,13 +27,17 @@ package org.hisp.dhis.dd.action.indicatortype;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id: GetIndicatorTypeListAction.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public class GetIndicatorTypeListAction
-    extends ActionSupport
+extends ActionPagingSupport<IndicatorType>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +60,7 @@ public class GetIndicatorTypeListAction
     }
     
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<IndicatorType> indicatorTypes;
@@ -65,6 +69,18 @@ public class GetIndicatorTypeListAction
     {
         return indicatorTypes;
     }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     // -------------------------------------------------------------------------
     // Action implemantation
@@ -72,7 +88,18 @@ public class GetIndicatorTypeListAction
 
     public String execute()
     {
-        indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( indicatorService.getIndicatorTypeCountByName( key ) );
+            
+            indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getIndicatorTypesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( indicatorService.getIndicatorTypeCount() );
+            
+            indicatorTypes = new ArrayList<IndicatorType>( indicatorService.getIndicatorTypesBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
 
         Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
 

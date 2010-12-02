@@ -605,7 +605,8 @@
 			class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-datadictionary/indicatorType.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>			
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>		
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>	
 		</action>
 
 		<action name="getIndicatorType"

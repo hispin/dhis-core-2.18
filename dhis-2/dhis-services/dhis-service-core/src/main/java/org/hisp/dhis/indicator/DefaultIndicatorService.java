@@ -251,6 +251,26 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorTypeStore.getByName( name ) );
     }    
 
+    public int getIndicatorTypeCount()
+    {
+        return indicatorTypeStore.getCount();
+    }
+
+    public int getIndicatorTypeCountByName( String name )
+    {
+        return indicatorTypeStore.getCountByName( name );
+    }
+
+    public Collection<IndicatorType> getIndicatorTypesBetween( int first, int max )
+    {
+        return i18n( i18nService, indicatorTypeStore.getBetween( first, max ) );
+    }
+
+    public Collection<IndicatorType> getIndicatorTypesBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, indicatorTypeStore.getBetweenByName( name, first, max ) );
+    }
+
     // -------------------------------------------------------------------------
     // IndicatorGroup
     // -------------------------------------------------------------------------
