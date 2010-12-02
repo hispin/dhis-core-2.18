@@ -29,6 +29,8 @@ package org.hisp.dhis.indicator;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -90,6 +92,14 @@ public interface IndicatorService
     Collection<IndicatorType> getAllIndicatorTypes();
 
     IndicatorType getIndicatorTypeByName( String name );
+
+    Collection<IndicatorType> getIndicatorTypesBetween( int first, int max );
+    
+    Collection<IndicatorType> getIndicatorTypesBetweenByName( String name, int first, int max );
+    
+    int getIndicatorTypeCount();
+    
+    int getIndicatorTypeCountByName( String name );
 
     // -------------------------------------------------------------------------
     // IndicatorGroup
