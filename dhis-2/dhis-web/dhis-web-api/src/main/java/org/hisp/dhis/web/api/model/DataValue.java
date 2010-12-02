@@ -31,6 +31,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 public class DataValue
     implements DataStreamSerializable
 {
@@ -39,8 +41,9 @@ public class DataValue
 
     private int categoryOptComboID;
 
-    private String val;
+    private String value;
 
+    @XmlAttribute
     public int getId()
     {
         return id;
@@ -51,16 +54,18 @@ public class DataValue
         this.id = id;
     }
 
-    public String getVal()
+    @XmlAttribute
+    public String getValue()
     {
-        return val;
+        return value;
     }
 
-    public void setVal( String val )
+    public void setValue( String value )
     {
-        this.val = val;
+        this.value = value;
     }
 
+    @XmlAttribute
     public int getCategoryOptComboID()
     {
         return categoryOptComboID;
@@ -85,7 +90,7 @@ public class DataValue
     {
         setId( din.readInt() );
         setCategoryOptComboID( din.readInt() );
-        setVal( din.readUTF() );
+        setValue( din.readUTF() );
     }
 
 }

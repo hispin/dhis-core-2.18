@@ -39,8 +39,14 @@ public class PeriodUtil
 
         if ( periodType instanceof WeeklyPeriodType )
         {
-            int week = Integer.parseInt( periodName.substring( 0, periodName.indexOf( '-' ) ) );
-            int year = Integer.parseInt( periodName.substring( periodName.indexOf( '-' ) + 1, periodName.length() ) );
+            int dashIndex = periodName.indexOf( '-' );
+
+            if (dashIndex < 0) {
+                return null;
+            }
+
+            int week = Integer.parseInt( periodName.substring( 0, dashIndex ) );
+            int year = Integer.parseInt( periodName.substring( dashIndex + 1, periodName.length() ) );
 
             Calendar cal = Calendar.getInstance();
             cal.set( Calendar.YEAR, year );
@@ -53,8 +59,14 @@ public class PeriodUtil
 
         if ( periodType instanceof MonthlyPeriodType )
         {
-            int month = Integer.parseInt( periodName.substring( 0, periodName.indexOf( '-' ) ) );
-            int year = Integer.parseInt( periodName.substring( periodName.indexOf( '-' ) + 1, periodName.length() ) );
+            int dashIndex = periodName.indexOf( '-' );
+
+            if (dashIndex < 0) {
+                return null;
+            }
+
+            int month = Integer.parseInt( periodName.substring( 0, dashIndex ) );
+            int year = Integer.parseInt( periodName.substring( dashIndex + 1, periodName.length() ) );
 
             Calendar cal = Calendar.getInstance();
             cal.set( Calendar.YEAR, year );

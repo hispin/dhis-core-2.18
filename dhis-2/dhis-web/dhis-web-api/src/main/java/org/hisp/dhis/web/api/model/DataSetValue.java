@@ -33,6 +33,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DataSetValue
     extends Model
 {
@@ -43,6 +48,7 @@ public class DataSetValue
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
 
+    @XmlAttribute
     public boolean isCompleted()
     {
         return completed;
@@ -53,6 +59,7 @@ public class DataSetValue
         this.completed = completed;
     }
 
+    @XmlAttribute
     public String getPeriodName()
     {
         return periodName;
@@ -68,6 +75,7 @@ public class DataSetValue
         this.dataValues = dataValues;
     }
 
+    @XmlElement(name="dataValue")
     public List<DataValue> getDataValues()
     {
         return dataValues;
@@ -96,7 +104,7 @@ public class DataSetValue
             DataValue dv = new DataValue();
             dv.setId( din.readInt() );
             dv.setCategoryOptComboID( din.readInt() );
-            dv.setVal( din.readUTF() );
+            dv.setValue( din.readUTF() );
             this.dataValues.add( dv );
         }
 

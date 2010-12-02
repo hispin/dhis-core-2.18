@@ -66,6 +66,8 @@ public class FacilityReportingServiceImpl
 {
     private static Log log = LogFactory.getLog( FacilityReportingServiceImpl.class );
 
+    private static boolean DEBUG = log.isDebugEnabled();
+    
     private DataElementSortOrderComparator dataElementComparator = new DataElementSortOrderComparator();
 
     // -------------------------------------------------------------------------
@@ -94,6 +96,9 @@ public class FacilityReportingServiceImpl
         List<DataSet> datasets = new ArrayList<DataSet>();
         Locale locale = LocaleUtil.getLocale( localeString );
 
+        if (DEBUG)
+            log.debug( "Getting data sets for unit " + unit.getName() );
+        
         for ( org.hisp.dhis.dataset.DataSet dataSet : dataSetService.getDataSetsForMobile( unit ) )
         {
             PeriodType periodType = dataSet.getPeriodType();
@@ -103,6 +108,9 @@ public class FacilityReportingServiceImpl
                 || periodType instanceof YearlyPeriodType
                 || periodType instanceof QuarterlyPeriodType )
             {
+                if (DEBUG)
+                    log.debug( "Found data set " + dataSet.getName() );
+
                 datasets.add( getDataSetForLocale( dataSet.getId(), locale ) );
             }
             else
@@ -183,25 +191,25 @@ public class FacilityReportingServiceImpl
     }
 
     @Override
-    public String saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
+    public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue ) throws NotAllowedException
     {
 
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetValue.getId() );
 
         if ( !dataSetService.getDataSetsBySource( unit ).contains( dataSet ) )
         {
-            return "INVALID_DATASET_ASSOCIATION";
+            throw new NotAllowedException( "INVALID_DATASET_ASSOCIATION" );
         }
 
         Period selectedPeriod = getPeriod( dataSetValue.getPeriodName(), dataSet.getPeriodType() );
 
         if ( selectedPeriod == null )
         {
-            return "INVALID_PERIOD";
+            throw new NotAllowedException("INVALID_PERIOD");
         }
         
         if (isDataSetLocked(unit, dataSet, selectedPeriod)){
-            return "DATASET_LOCKED";
+            throw new NotAllowedException("DATASET_LOCKED");
         }
 
         Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
@@ -227,8 +235,6 @@ public class FacilityReportingServiceImpl
         saveDataValues( dataSetValue, dataElementMap, selectedPeriod, unit,
             categoryService.getDefaultDataElementCategoryOptionCombo() );
 
-        return "SUCCESS";
-
     }
 
     // -------------------------------------------------------------------------
@@ -252,7 +258,7 @@ public class FacilityReportingServiceImpl
 
         for ( DataValue dv : dataSetValue.getDataValues() )
         {
-            value = dv.getVal();
+            value = dv.getValue();
             DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
                 .getCategoryOptComboID() );
             if ( value != null && value.trim().length() == 0 )

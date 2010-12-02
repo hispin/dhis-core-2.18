@@ -46,14 +46,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Jax-RS serialization writers and readers -->
 
-  <bean id="org.hisp.dhis.web.api.provider.DataSerializableProvider" class="org.hisp.dhis.web.api.provider.DataStreamSerializableProvider"
+  <bean id="org.hisp.dhis.web.api.mapping.DataSerializableProvider" class="org.hisp.dhis.web.api.mapping.DataStreamSerializableProvider"
     scope="singleton" />
 	
-  <bean id="org.hisp.dhis.web.api.consumer.DataSetValueConsumer" class="org.hisp.dhis.web.api.provider.DataSetValueConsumer"
+  <bean id="org.hisp.dhis.web.api.mapping.DataSetValueConsumer" class="org.hisp.dhis.web.api.mapping.DataSetValueConsumer"
     scope="singleton" />
 
-  <bean id="org.hisp.dhis.web.api.consumer.ActivityValueConsumer" class="org.hisp.dhis.web.api.provider.ActivityValueConsumer"
+  <bean id="org.hisp.dhis.web.api.mapping.ActivityValueConsumer" class="org.hisp.dhis.web.api.mapping.ActivityValueConsumer"
     scope="singleton" />
+
+  <bean id="org.hisp.dhis.web.api.mapping.StringSerializedProvider" class="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper"
+    scope="singleton" />
+
 
   <!-- ImportDataValue beans -->
 

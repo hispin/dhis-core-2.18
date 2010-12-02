@@ -290,7 +290,7 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
 
     @Override
-    public String saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue ) throws NotAllowedException
     {
 
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( activityValue
@@ -298,7 +298,7 @@ public class ActivityReportingServiceImpl
 
         if ( programStageInstance == null )
         {
-            return "INVALID_PROGRAM_STAGE";
+            throw new NotAllowedException( "INVALID_PROGRAM_STAGE");
         }
 
         programStageInstance.getProgramStage();
@@ -319,7 +319,7 @@ public class ActivityReportingServiceImpl
 
         if ( dataElements.size() != dataElementIds.size() )
         {
-            return "INVALID_PROGRAM_STAGE";
+            throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
         }
 
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
@@ -327,7 +327,7 @@ public class ActivityReportingServiceImpl
         {
             if ( !dataElementIds.contains( dataElement.getId() ) )
             {
-                return "INVALID_PROGRAM_STAGE";
+                throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
             }
             dataElementMap.put( dataElement.getId(), dataElement );
         }
@@ -338,8 +338,6 @@ public class ActivityReportingServiceImpl
         // Everything is fine, hence save
         saveDataValues( activityValue, programStageInstance, dataElementMap, unit,
             categoryService.getDefaultDataElementCategoryOptionCombo() );
-
-        return "SUCCESS";
 
     }
 
@@ -356,7 +354,7 @@ public class ActivityReportingServiceImpl
 
         for ( DataValue dv : activityValue.getDataValues() )
         {
-            value = dv.getVal();
+            value = dv.getValue();
             DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
                 .getCategoryOptComboID() );
             if ( value != null && value.trim().length() == 0 )

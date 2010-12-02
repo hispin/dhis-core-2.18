@@ -41,6 +41,6 @@ public interface FacilityReportingService
 
     public DataSet getDataSetForLocale( int dataSetId, Locale locale );
 
-    public String saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue );
+    public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue ) throws NotAllowedException;
 
 }
