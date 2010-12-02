@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -148,6 +150,18 @@ public class DefaultPeriodService
     public Collection<Period> getIntersectingPeriods( Date startDate, Date endDate )
     {
         return periodStore.getIntersectingPeriods( startDate, endDate );
+    }
+    
+    public Collection<Period> getIntersectionPeriods( Collection<Period> periods )
+    {
+        Set<Period> intersecting = new HashSet<Period>();
+        
+        for ( Period period : periods )
+        {
+            intersecting.addAll( getIntersectingPeriods( period.getStartDate(), period.getEndDate() ) );
+        }
+        
+        return intersecting;
     }
 
     public Collection<Period> getBoundaryPeriods( Period period, Collection<Period> periods )
