@@ -27,6 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -91,10 +92,7 @@ public class GetOrganisationUnitLevelsByFeatureTypeAction
         
         else if ( featureType.equals( OrganisationUnit.FEATURETYPE_POINT ) )
         {
-            while ( object.size() > 1 )
-            {
-                object.remove( 0 );
-            }
+            object = Arrays.asList( object.get( object.size() - 1 ) );
         }
         
         return SUCCESS;

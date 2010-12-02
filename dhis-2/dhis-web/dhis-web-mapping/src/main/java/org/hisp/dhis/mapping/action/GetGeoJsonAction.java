@@ -93,6 +93,11 @@ public class GetGeoJsonAction
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
+        if ( level == null )
+        {
+            level = organisationUnitService.getLevelOfOrganisationUnit( parent );
+        }
+        
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
         
         FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
