@@ -36,7 +36,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.web.api.model.Model;
 import org.hisp.dhis.web.api.model.ModelList;
 
-public class Mapping
+public class ModelMapping
 {
     
     public static DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
