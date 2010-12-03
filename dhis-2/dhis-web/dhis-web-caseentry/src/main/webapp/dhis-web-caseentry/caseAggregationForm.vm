@@ -1,11 +1,26 @@
 
 <script>
-	//Global Variables
-	var curPeriodType="";
+	var isSubmit = true;
+	jQuery(document).ready(	function(){
+			validation( 'caseAggregationForm', function(form){
+				if(isSubmit) form.submit();
+			}, function(){
+				var periodFrom = $( '#sDateLB' ).val();
+				var periodTo = $( '#eDateLB' ).val();
+				
+				if(periodFrom > periodTo){
+					var i18n_greater_then_from_date = '$encoder.jsEscape( $i18n.getString( "greater_then_from_date" ) , "'" )';
+					byId('warningMessage').innerHTML = i18n_greater_then_from_date;
+					isSubmit = false;
+				}else{
+					isSubmit = true;
+				}
+			})
+	}); 
 </script>
 
 <h1> $i18n.getString( "case_aggregation_form" )</h1>
-<hr />
+<hr/>
 <form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 	<table>
 	
@@ -14,8 +29,8 @@
 				$i18n.getString( "dataset_list" )
 			</td>
 			<td>
-				<select id="selectedDataSets" name="selectedDataSets" onchange="getdSetPeriods()" style="width: 30em">
-					<option value='0'>[$i18n.getString('please_select')]</option>
+				<select id="dataSetId" name="dataSetId" onchange="dataSetSelected()" style="width: 30em" class="{validate:{required:true}}">
+					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach ( $dataSet in $datasets )
 						<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
 					#end
@@ -28,7 +43,7 @@
 				$i18n.getString( "from" )
 			</td>
 			<td>
-				<select id="sDateLB" name="sDateLB" style="width: 30em"></select>
+				<select id="sDateLB" name="sDateLB" style="width: 30em" class="{validate:{required:true}}"></select>
 			</td>
 		</tr>
 		
@@ -37,8 +52,10 @@
 				$i18n.getString( "to" )
 			</td>
 			<td>
-				<select id="eDateLB" name="eDateLB" style="width: 30em"></select>
+				<select id="eDateLB" name="eDateLB" style="width: 30em" class="{validate:{required:true}}"></select>
+				<i><span id='warningMessage' style="color:red"></span></i>
 			</td>
+				
 		</tr>
 		<tr>
 			<td>
@@ -72,5 +89,5 @@
 </form>
 
 <script>
-	window.onload=getdSetPeriods;
+	var i18n_please_select = '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'" )';
 </script>
