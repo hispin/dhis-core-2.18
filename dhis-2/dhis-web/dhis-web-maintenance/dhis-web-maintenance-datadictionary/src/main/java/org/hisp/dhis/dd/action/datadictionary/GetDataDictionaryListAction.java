@@ -36,18 +36,14 @@ import java.util.List;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.paging.ActionPagingSupport;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetDataDictionaryListAction
-    extends ActionPagingSupport<IndicatorGroup>
+    extends ActionPagingSupport<DataDictionary>
 {
     // -------------------------------------------------------------------------
     // Dependencies
