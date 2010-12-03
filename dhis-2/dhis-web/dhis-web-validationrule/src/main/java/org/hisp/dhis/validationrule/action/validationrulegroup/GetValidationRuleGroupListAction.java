@@ -27,10 +27,14 @@ package org.hisp.dhis.validationrule.action.validationrulegroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.comparator.ValidationRuleGroupNameComparator;
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.Action;
 * @version $Id$
 */
 public class GetValidationRuleGroupListAction
-    implements Action
+    extends ActionPagingSupport<ValidationRuleGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +60,7 @@ public class GetValidationRuleGroupListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<ValidationRuleGroup> validationRuleGroups;
@@ -65,14 +69,37 @@ public class GetValidationRuleGroupListAction
     {
         return validationRuleGroups;
     }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
 
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( validationRuleService.getValidationRuleGroupCountByName( key ) );
+            
+            validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getValidationRuleGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( validationRuleService.getValidationRuleGroupCount() );
+            
+            validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getValidationRuleGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
         
         Collections.sort( validationRuleGroups, new ValidationRuleGroupNameComparator() );
         
