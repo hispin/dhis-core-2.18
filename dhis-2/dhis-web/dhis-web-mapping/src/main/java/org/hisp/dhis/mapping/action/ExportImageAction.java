@@ -89,11 +89,32 @@ public class ExportImageAction
         this.title = title;
     }
 
-    private Integer indicator;
+    private Integer layer;
 
-    public void setIndicator( Integer indicator )
+    public void setLayer( Integer layer )
+    {
+        this.layer = layer;
+    }
+    
+    private Integer imageLegendRows;
+
+    public void setImageLegendRows( Integer imageLegendRows )
+    {
+        this.imageLegendRows = imageLegendRows;
+    }
+
+    private String indicator;
+
+    public void setIndicator( String indicator )
     {
         this.indicator = indicator;
+    }
+    
+    private String indicator2;
+
+    public void setIndicator2( String indicator2 )
+    {
+        this.indicator2 = indicator2;
     }
 
     private String period;
@@ -103,11 +124,25 @@ public class ExportImageAction
         this.period = period;
     }
 
+    private String period2;
+
+    public void setPeriod2( String period2 )
+    {
+        this.period2 = period2;
+    }
+
     private String legends;
 
     public void setLegends( String legends )
     {
         this.legends = legends;
+    }
+
+    private String legends2;
+
+    public void setLegends2( String legends2 )
+    {
+        this.legends2 = legends2;
     }
 
     private boolean includeLegends;
@@ -137,10 +172,6 @@ public class ExportImageAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        log.info( "Exporting image, title: " + title + ", indicator: " + indicator + ", period: " + period + ", width: " + width + ", height: " + height );
-        
-        log.info( "Legends: " + legends );
-        
         if ( svg == null || title == null || indicator == null || period == null || width == null || height == null )
         {
             log.info( "Export map from session" );
@@ -151,37 +182,30 @@ public class ExportImageAction
         {
             log.info( "Export map from request" );
             
-            Indicator _indicator = indicatorService.getIndicator( indicator );
-            
-            DataElement _dataElement = dataElementService.getDataElement( indicator );
-            
             svgDocument = new SVGDocument();
             
-            svgDocument.setTitle( title );
-            svgDocument.setSvg( svg );
+            svgDocument.setTitle( this.title );
+            svgDocument.setSvg( this.svg );
+            svgDocument.setLayer( this.layer );
+            svgDocument.setIndicator( this.indicator );
+            svgDocument.setPeriod( this.period );
+            svgDocument.setLegends( this.legends );
+            svgDocument.setIncludeLegends( this.includeLegends );
+            svgDocument.setWidth( this.width );
+            svgDocument.setHeight( this.height );
             
-            if ( _indicator != null )
+            if ( this.layer == 3 )
             {
-                svgDocument.setIndicator( _indicator );
-                svgDocument.setDataElement( null );
+                svgDocument.setImageLegendRows( this.imageLegendRows );
+                svgDocument.setPeriod2( this.period2 );
+                svgDocument.setIndicator2( this.indicator2 );
+                svgDocument.setLegends2( this.legends2 );
             }
             
-            else
-            {
-                svgDocument.setIndicator( null );
-                svgDocument.setDataElement( _dataElement );
-            }
-            
-            svgDocument.setPeriod( period );
-            svgDocument.setLegends( legends );
-            svgDocument.setIncludeLegends( includeLegends );
-            svgDocument.setWidth( width );
-            svgDocument.setHeight( height );
-
             SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
         }
         
-        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
+        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, this.width, this.height );
 
         return SUCCESS;
     }

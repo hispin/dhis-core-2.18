@@ -1404,7 +1404,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 		getImageExportValues: function() {
 			return {
 				mapValueTypeValue: this.form.findField('mapvaluetype').getValue() == GLOBAL.conf.map_value_type_indicator ?
-					this.form.findField('indicator').getValue() : this.form.findField('dataelement').getValue(),
+					this.form.findField('indicator').getRawValue() : this.form.findField('dataelement').getRawValue(),
 				dateValue: GLOBAL.vars.mapDateType.isFixed() ?
 					this.form.findField('period').getRawValue() : new Date(this.form.findField('startdate').getRawValue()).format('Y M j') + ' - ' + new Date(this.form.findField('enddate').getRawValue()).format('Y M j')
 			};

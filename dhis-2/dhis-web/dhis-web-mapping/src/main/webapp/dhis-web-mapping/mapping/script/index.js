@@ -681,12 +681,12 @@
 			},
 			{
 				xtype: 'combo',
-				id: 'exportimagequality_cb',
-				fieldLabel: i18n_image_resolution,
+				id: 'exportimagelayers_cb',
+				fieldLabel: 'Layers',
 				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: false,
 				valueField: 'id',
-				displayField: 'text',
+				displayField: 'layer',
 				isFormField: true,
 				width: GLOBAL.conf.combo_width_fieldset,
 				minListWidth: GLOBAL.conf.combo_width_fieldset,
@@ -694,9 +694,47 @@
 				triggerAction: 'all',
 				value: 1,
 				store: new Ext.data.ArrayStore({
-					fields: ['id', 'text'],
-					data: [[1, i18n_medium], [2, i18n_large]]
+					fields: ['id', 'layer'],
+					data: [[1, 'Polygon layer'], [2, 'Point layer'], [3, 'Both']]
 				})					
+			},
+			{
+				xtype: 'combo',
+				id: 'exportimagewidth_cb',
+				fieldLabel: 'Width',
+				labelSeparator: GLOBAL.conf.labelseparator,
+				editable: true,
+				emptyText: 'Type custom px',
+				valueField: 'width',
+				displayField: 'text',
+				isFormField: true,
+				width: GLOBAL.conf.combo_width_fieldset,
+				minListWidth: GLOBAL.conf.combo_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				store: new Ext.data.ArrayStore({
+					fields: ['width', 'text'],
+					data: [[800, 'Small'], [1190, 'Medium'], [1920, 'Large']]
+				})
+			},
+			{
+				xtype: 'combo',
+				id: 'exportimageheight_cb',
+				fieldLabel: 'Height',
+				labelSeparator: GLOBAL.conf.labelseparator,
+				editable: true,
+				emptyText: 'Type custom px',
+				valueField: 'height',
+				displayField: 'text',
+				isFormField: true,
+				width: GLOBAL.conf.combo_width_fieldset,
+				minListWidth: GLOBAL.conf.combo_width_fieldset,
+				mode: 'local',
+				triggerAction: 'all',
+				store: new Ext.data.ArrayStore({
+					fields: ['height', 'text'],
+					data: [[600, 'Small'], [880, 'Medium'], [1200, 'Large']]
+				})
 			},
 			{
 				xtype: 'checkbox',
@@ -715,56 +753,90 @@
 				cls: 'window-button',
 				text: i18n_export,
 				handler: function() {
-                    var values, svgElement;
-                    if (GLOBAL.vars.activePanel.isPolygon()) {
-                        if (choropleth.formValidation.validateForm()) {
+                    var values, svgElement, svg;
+                    if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
+						if (choropleth.formValidation.validateForm()) {
 							values = choropleth.formValues.getImageExportValues.call(choropleth);
+							document.getElementById('layerField').value = 1;
+							document.getElementById('periodField').value = values.dateValue;
+							document.getElementById('indicatorField').value = values.mapValueTypeValue;
+							document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(choropleth);
 							svgElement = document.getElementsByTagName('svg')[0];
+							svg = svgElement.parentNode.innerHTML;
 						}
 						else {
-							Ext.message.msg(false, i18n_please_render_map_first);
+							Ext.message.msg(false, 'Polygon layer not rendered');
+							return;
 						}
 					}
-					else if (GLOBAL.vars.activePanel.isPoint()) {
-                        if (symbol.formValidation.validateForm()) {
+					else if (Ext.getCmp('exportimagelayers_cb').getValue() == 2) {
+						if (symbol.formValidation.validateForm()) {
 							values = symbol.formValues.getImageExportValues.call(symbol);
+							document.getElementById('layerField').value = 2;
+							document.getElementById('periodField').value = values.dateValue;  
+							document.getElementById('indicatorField').value = values.mapValueTypeValue;
+							document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(symbol);
 							svgElement = document.getElementsByTagName('svg')[1];
+							svg = svgElement.parentNode.innerHTML;
 						}
 						else {
-							Ext.message.msg(false, i18n_please_render_map_first);
+							Ext.message.msg(false, 'Point layer not rendered');
+							return;
+						}
+					}
+					else if (Ext.getCmp('exportimagelayers_cb').getValue() == 3) {
+						if (choropleth.formValidation.validateForm()) {
+							if (symbol.formValidation.validateForm()) {
+								document.getElementById('layerField').value = 3;
+								document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
+								
+								values = choropleth.formValues.getImageExportValues.call(choropleth);
+								document.getElementById('periodField').value = values.dateValue;
+								document.getElementById('indicatorField').value = values.mapValueTypeValue;
+								document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(choropleth);
+								
+								values = symbol.formValues.getImageExportValues.call(symbol);
+								document.getElementById('periodField2').value = values.dateValue;
+								document.getElementById('indicatorField2').value = values.mapValueTypeValue;
+								document.getElementById('legendsField2').value = GLOBAL.util.getLegendsJSON.call(symbol);
+								
+								svgElement = document.getElementsByTagName('svg')[0];
+								var str1 = svgElement.parentNode.innerHTML;
+								str1 = svgElement.parentNode.innerHTML.replace('</svg>');
+								var str2 = document.getElementsByTagName('svg')[1].parentNode.innerHTML;
+								str2 = str2.substring(str2.indexOf('>')+1);
+								svg = str1 + str2;
+							}
+							else {
+								Ext.message.msg(false, 'Point layer not rendered');
+								return;
+							}
+						}
+						else {
+							Ext.message.msg(false, 'Polygon layer not rendered');
+							return;
 						}
 					}
 
-					var svg = svgElement.parentNode.innerHTML;
-					var viewBox = svgElement.getAttribute('viewBox');
 					var title = Ext.getCmp('exportimagetitle_tf').getValue();
 					
 					if (!title) {
 						Ext.message.msg(false, i18n_form_is_not_complete);
 					}
 					else {
-						var q = Ext.getCmp('exportimagequality_cb').getValue();
-						var w = svgElement.getAttribute('width') * q;
-						var h = svgElement.getAttribute('height') * q;
-						var includeLegend = Ext.getCmp('exportimageincludelegend_chb').getValue();
-						
-						Ext.getCmp('exportimagetitle_tf').reset();
-						
 						var exportForm = document.getElementById('exportForm');
 						exportForm.action = '../exportImage.action';
 						exportForm.target = '_blank';
 						
-						document.getElementById('titleField').value = title;   
-						document.getElementById('viewBoxField').value = viewBox;  
+						document.getElementById('titleField').value = title;
+						document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
 						document.getElementById('svgField').value = svg;  
-						document.getElementById('widthField').value = w;  
-						document.getElementById('heightField').value = h;  
-						document.getElementById('includeLegendsField').value = includeLegend;  
-						document.getElementById('periodField').value = values.dateValue;  
-						document.getElementById('indicatorField').value = values.mapValueTypeValue;
-						document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
+						document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
+						document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
+						document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
 
 						exportForm.submit();
+						Ext.getCmp('exportimagetitle_tf').reset();
 					}
 				}
 			}	
@@ -859,11 +931,11 @@
                         Ext.message.msg(false, i18n_please_render_map_first);
                     }
 				}
-			}	
+			}
 		]
 	});
 	
-	var exportImageWindow=new Ext.Window({id:'exportimage_w',title:'<span id="window-image-title">' + i18n_export_map_as_image + '</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:250,height:158,items:[{xtype:'panel',items:[exportImagePanel]}]});
+	var exportImageWindow=new Ext.Window({id:'exportimage_w',title:'<span id="window-image-title">' + i18n_export_map_as_image + '</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:250,height:210,items:[{xtype:'panel',items:[exportImagePanel]}]});
 	var exportExcelWindow=new Ext.Window({id:'exportexcel_w',title:'<span id="window-excel-title">' + i18n_export_excel + '</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:260,height:157,items:[{xtype:'panel',items:[exportExcelPanel]}]});
 	
 	/* Section: predefined map legend set */
@@ -871,7 +943,7 @@
         id: 'newpredefinedmaplegend_p',
 		bodyStyle: 'border:0px solid #fff',
         items:
-        [   
+        [
             { html: '<div class="window-field-label-first">'+i18n_display_name+'</div>' },
             new Ext.form.TextField({id:'predefinedmaplegendname_tf',isFormField:true,hideLabel:true,emptyText:GLOBAL.conf.emptytext,width:GLOBAL.conf.combo_width}),
             { html: '<div class="window-field-label">'+i18n_start_value+'</div>' },

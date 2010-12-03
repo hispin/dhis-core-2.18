@@ -147,9 +147,9 @@ public class ExportExcelAction
         this.title = title;
     }
 
-    private Integer indicator;
+    private String indicator;
 
-    public void setIndicator( Integer indicator )
+    public void setIndicator( String indicator )
     {
         this.indicator = indicator;
     }
@@ -206,8 +206,6 @@ public class ExportExcelAction
     {
         log.info( "Exporting workbook, width: " + width + ", height: " + height );
         
-        Indicator i = indicatorService.getIndicator( indicator );
-
         // ---------------------------------------------------------------------
         // Write map image to byte array
         // ---------------------------------------------------------------------
@@ -217,7 +215,7 @@ public class ExportExcelAction
         svgDocument.setTitle( this.title );
         svgDocument.setSvg( this.svg );
         svgDocument.setPeriod( period );
-        svgDocument.setIndicator( i );        
+        svgDocument.setIndicator( indicator );        
         svgDocument.setLegends( this.legends );        
         svgDocument.setIncludeLegends( this.includeLegends );        
 
@@ -231,7 +229,7 @@ public class ExportExcelAction
 
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( out );
 
-        WritableSheet sheet = outputReportWorkbook.createSheet( i.getName(), 1 );
+        WritableSheet sheet = outputReportWorkbook.createSheet( indicator, 1 );
 
         // ---------------------------------------------------------------------
         // Write map image to workbook
@@ -270,7 +268,7 @@ public class ExportExcelAction
         sheet.addCell( new Label( titlePositionCol, titlePositionRow, i18n.getString( "Title" ), header ) );
         sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow, this.title, headerContent ) );
         sheet.addCell( new Label( titlePositionCol, titlePositionRow + 1, i18n.getString( "Indicator" ), header ) );
-        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, i.getName(), headerContent ) );
+        sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 1, indicator, headerContent ) );
         sheet.addCell( new Label( titlePositionCol, titlePositionRow + 2, i18n.getString( "Period" ), header ) );
         sheet.addCell( new Label( titlePositionCol + 2, titlePositionRow + 2, period, headerContent ) );
 
