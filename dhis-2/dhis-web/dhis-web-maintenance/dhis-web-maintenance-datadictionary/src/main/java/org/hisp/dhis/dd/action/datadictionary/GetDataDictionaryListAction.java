@@ -27,6 +27,8 @@ package org.hisp.dhis.dd.action.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +36,9 @@ import java.util.List;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +47,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class GetDataDictionaryListAction
-    implements Action
+    extends ActionPagingSupport<IndicatorGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +61,7 @@ public class GetDataDictionaryListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<DataDictionary> dataDictionaries;
@@ -64,7 +69,20 @@ public class GetDataDictionaryListAction
     public List<DataDictionary> getDataDictionaries()
     {
         return dataDictionaries;
-    }    
+    }  
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -72,7 +90,18 @@ public class GetDataDictionaryListAction
 
     public String execute()
     {
-        dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( dataDictionaryService.getDataDictionaryCountByName( key ) );
+            
+            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionarysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataDictionaryService.getDataDictionaryCount() );
+            
+            dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionarysBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
         
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );        
         

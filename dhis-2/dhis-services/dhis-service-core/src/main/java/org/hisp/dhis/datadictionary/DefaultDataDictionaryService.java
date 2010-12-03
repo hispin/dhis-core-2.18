@@ -110,4 +110,24 @@ public class DefaultDataDictionaryService
     {
         return i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() );
     }
+
+    public int getDataDictionaryCount()
+    {
+        return dataDictionaryStore.getCount();
+    }
+
+    public int getDataDictionaryCountByName( String name )
+    {
+        return dataDictionaryStore.getCountByName( name );
+    }
+
+    public Collection<DataDictionary> getDataDictionarysBetween( int first, int max )
+    {
+        return i18n( i18nService, dataDictionaryStore.getBetween( first, max ) );
+    }
+
+    public Collection<DataDictionary> getDataDictionarysBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, dataDictionaryStore.getBetweenByName( name, first, max ) );
+    }
 }
