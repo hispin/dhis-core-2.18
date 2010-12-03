@@ -296,9 +296,13 @@ public class GenerateTabularAnalysisResultAction
 
         ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
 
-        String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
-        int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
+      //  String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
+       // int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
 
+        String monthOrder[] = {  "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+        int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        
+        
         /* Period Info */
 
         String startD = "";
@@ -308,174 +312,11 @@ public class GenerateTabularAnalysisResultAction
        // SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat( "yyyy-MM-dd" );
        
         periodNames = new ArrayList<String>();
-
-        for ( String year : yearLB )
-        {
-            int selYear = Integer.parseInt( year.split( "-" )[0] );
-
-            if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
-            {
-
-                startD = "" + selYear + "-04-01";
-                endD = "" + (selYear + 1) + "-03-31";
-                
-                System.out.println( " Start Peroid  : " + format.parseDate( startD ) + " , End Peroid : " + format.parseDate( endD ) );
-                
-                selStartPeriodList.add( format.parseDate( startD ) );
-                selEndPeriodList.add( format.parseDate( endD ) );
-                
-                System.out.println( "Size of Start Peroid List : " + selStartPeriodList.size() + " , Size of End Peroid List : " + selEndPeriodList.size() );
-                
-                System.out.println( " Start Peroid List : " + selStartPeriodList + " , End Peroid List : " + selEndPeriodList );
-                
-                periodNames.add( "" + selYear + "-" + (selYear + 1) );
-
-                continue;
-            }
-
-            for ( String periodStr : periodLB )
-            {
-               // int period = Integer.parseInt( periodStr );
-
-                if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
-                {
-                    int period = Integer.parseInt( periodStr );
-                    simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-
-                    if ( period >= 9 )
-                    {
-                        startD = "" + (selYear + 1) + "-" + monthOrder[period] + "-01";
-                        endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + monthDays[period];
-
-                        //( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))
-                        if ( ((selYear + 1) % 400 == 0 ) || ((( selYear+1) % 100 != 0 && ( selYear+1 ) % 4 == 0)) && period == 10 )
-                        {
-                            endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
-                        }
-                    }
-                    else
-                    {
-                        startD = "" + selYear + "-" + monthOrder[period] + "-01";
-                        endD = "" + selYear + "-" + monthOrder[period] + "-" + monthDays[period];
-                    }
-
-                   
-                    System.out.println( "Start Date : " + startD + " , End Date : " + endD );
-                    
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                    
-                    System.out.println( "Size of Start Date List : " + selStartPeriodList.size() + " , Size of End Date List : " + selEndPeriodList.size() );
-                    
-                    periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
-                    
-                    System.out.println( "Size of Period Name List  : " + periodNames.size() );
-                    //Date startDate = simpleDateFormat1.parse( startD );
-                    //Date endDate = simpleDateFormat1.parse( tempEndDate );
-                    //periodNames.add( startD );
-                    
-                }
-                else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
-                {
-                    int period = Integer.parseInt( periodStr );
-                    if ( period == 0 )
-                    {
-                        startD = "" + selYear + "-04-01";
-                        endD = "" + selYear + "-06-30";
-                        periodNames.add( selYear + "-Q1" );
-                    }
-                    else if ( period == 1 )
-                    {
-                        startD = "" + selYear + "-07-01";
-                        endD = "" + selYear + "-09-30";
-                        periodNames.add( selYear + "-Q2" );
-                    }
-                    else if ( period == 2 )
-                    {
-                        startD = "" + selYear + "-10-01";
-                        endD = "" + selYear + "-12-31";
-                        periodNames.add( selYear + "-Q3" );
-                    }
-                    else
-                    {
-                        startD = "" + (selYear + 1) + "-01-01";
-                        endD = "" + (selYear + 1) + "-03-31";
-                        periodNames.add( (selYear) + "-Q4" );
-                    }
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                }
-                else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
-                {
-                    int period = Integer.parseInt( periodStr );
-                    if ( period == 0 )
-                    {
-                        startD = "" + selYear + "-04-01";
-                        endD = "" + selYear + "-09-30";
-                        periodNames.add( selYear + "-HY1" );
-                    }
-                    else
-                    {
-                        startD = "" + selYear + "-10-01";
-                        endD = "" + (selYear + 1) + "-03-31";
-                        periodNames.add( selYear + "-HY2" );
-                    }
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                }
-                else if ( periodTypeLB.equalsIgnoreCase( DailyPeriodType.NAME ) )
-                {
-                    //int month = Integer.parseInt( periodStr.split( "-" )[0] );
-                   String  month = periodStr.split( "-" )[0] ;
-                   //System.out.println( " Month : " + month );
-                   String  date = periodStr.split( "-" )[1] ;
-                    //int day = Integer.parseInt( periodStr.split( "-" )[1] );
-                   // System.out.println( " Day : " + date );
-                    
-                    startD = selYear + "-" + periodStr;
-                    endD = selYear + "-" + periodStr ;
-                   
-                   // System.out.println( "selectedYear" + " : " + selYear );
-                   // System.out.println( "selectedYear+1" + " : " + ( selYear + 1 ) );
-                   
-                   // if( year%400 ==0 || (year%100 != 0 && year%4 == 0))// leap year for centure year
-                    
-                    if ( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
-                    {
-                       // System.out.println( " Inside Non-leap Year " );
-                        startD = selYear + "-" + month + "-" + date;
-                        endD = selYear + "-" + month + "-" + date;
-                       // selStartPeriodList.remove( format.parseDate( startD ));
-                        //selEndPeriodList.remove( format.parseDate( endD ));
-                        continue;
-                        
-                       // endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
-                    }
-                    
-                    
-                    if ( (( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))) && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) ); 
-                    {
-                       // System.out.println( " Inside Leap Year " );
-                        startD = selYear + "-" + month + "-" + date;
-                        endD = selYear  + "-" + month + "-" + date;
-                       // endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
-                    }
-                    
-                   
-                    
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                    
-                    periodNames.add( startD );
-                    System.out.println( startD + " : " + endD );
-                }
-            }
-        }
-        
         // for weekly period
         
         if ( periodTypeLB.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
         {
+            System.out.println( " Inside  weekly" );
             for ( String periodStr : periodLB )
             {
                 String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
@@ -488,37 +329,177 @@ public class GenerateTabularAnalysisResultAction
                 selEndPeriodList.add( format.parseDate( endD ) );
                 
                 periodNames.add( periodStr );
-                System.out.println( startD + " : " + endD );
+                //System.out.println( startD + " : " + endD );
             }
         }
         
+        else
+        {
+            System.out.println( " Inside other than weekly" );
+            for ( String year : yearLB )
+            {
+                //int selYear = Integer.parseInt( year.split( "-" )[0] );
+                
+                int selYear = Integer.parseInt( year );
+        
+                if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
+                {
+        
+                   // startD = "" + selYear + "-04-01";
+                   // endD = "" + (selYear + 1) + "-03-31";
+                    
+                    
+                    startD = "" + selYear + "-01-01";
+                    endD = "" + selYear  + "-12-31";
+                    
+                   // System.out.println( " Start Peroid  : " + format.parseDate( startD ) + " , End Peroid : " + format.parseDate( endD ) );
+                    
+                    selStartPeriodList.add( format.parseDate( startD ) );
+                    selEndPeriodList.add( format.parseDate( endD ) );
+                    
+                   // System.out.println( "Size of Start Peroid List : " + selStartPeriodList.size() + " , Size of End Peroid List : " + selEndPeriodList.size() );
+                    
+                    //System.out.println( " Start Peroid List : " + selStartPeriodList + " , End Peroid List : " + selEndPeriodList );
+                    
+                   // periodNames.add( "" + selYear + "-" + (selYear + 1) );
+                    
+                    periodNames.add( "" + selYear );
+        
+                    continue;
+                }
+        
+                for ( String periodStr : periodLB )
+                {
+                   // int period = Integer.parseInt( periodStr );
+        
+                    if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+                        
+                        startD = "" + selYear + "-" + monthOrder[period] + "-01";
+                        endD = "" + selYear  + "-" + monthOrder[period] + "-" + monthDays[period];
+                    
+                        //check for leapYear
+                        if ( ((( selYear ) % 400 == 0 ) || ((( selYear) % 100 != 0 && ( selYear ) % 4 == 0))) && period == 1 )
+                        {
+                            endD = "" + selYear  + "-" + monthOrder[period] + "-" + ( monthDays[period] + 1 );
+                        } 
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        
+                       // System.out.println( "Size of Start Date List : " + selStartPeriodList.size() + " , Size of End Date List : " + selEndPeriodList.size() );
+                        
+                        periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
+                        
+                    }
+                    else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        if ( period == 0 )
+                        {
+                            startD = "" + selYear + "-01-01";
+                            endD = "" + selYear + "-03-31";
+                            periodNames.add( selYear + "-Q1" );
+                        }
+                        else if ( period == 1 )
+                        {
+                            startD = "" + selYear + "-04-01";
+                            endD = "" + selYear + "-06-30";
+                            periodNames.add( selYear + "-Q2" );
+                        }
+                        else if ( period == 2 )
+                        {
+                            startD = "" + selYear + "-07-01";
+                            endD = "" + selYear + "-09-30";
+                            periodNames.add( selYear + "-Q3" );
+                        }
+                        else
+                        {
+                            startD = "" + selYear + "-10-01";
+                            endD = "" + selYear + "-12-31";
+                            periodNames.add( (selYear) + "-Q4" );
+                        }
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
+                    }
+                    else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        if ( period == 0 )
+                        {
+                            startD = "" + selYear + "-01-01";
+                            endD = "" + selYear + "-06-30";
+                            periodNames.add( selYear + "-HY1" );
+                        }
+                        else
+                        {
+                            startD = "" + selYear + "-07-01";
+                            endD = "" + selYear + "-12-31";
+                            periodNames.add( selYear + "-HY2" );
+                        }
+                       
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
+                    }
+                    else if ( periodTypeLB.equalsIgnoreCase( DailyPeriodType.NAME ) )
+                    {
+                       String  month = periodStr.split( "-" )[0] ;
+                       String  date = periodStr.split( "-" )[1] ;
+                      
+                       startD = selYear + "-" + periodStr;
+                       endD = selYear + "-" + periodStr ;
+                       
+                       if ( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
+                       {
+                            startD = selYear + "-" + month + "-" + date;
+                            endD = selYear + "-" + month + "-" + date;
+                            continue;
+                       }
+                       if ( (( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))) && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) ); 
+                       {
+                            startD = selYear + "-" + month + "-" + date;
+                            endD = selYear  + "-" + month + "-" + date;
+                       }
+                       selStartPeriodList.add( format.parseDate( startD ) );
+                       selEndPeriodList.add( format.parseDate( endD ) );
+                        
+                       periodNames.add( startD );
+                       // System.out.println( startD + " : " + endD );
+                    }
+                }
+            }
+      }
+        
         
  // calling diffrent functions       
-        
-        
-        if ( ouRadio.equalsIgnoreCase( ORGUNITSELECTED ) )
-        {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
-            generateOrgUnitSelected();
+    
+    
+    if ( ouRadio.equalsIgnoreCase( ORGUNITSELECTED ) )
+    {
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+        generateOrgUnitSelected();
 
-        }
-        else if ( ouRadio.equalsIgnoreCase( ORGUNITGRP ) )
-        {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
-            generateOrgUnitGroup();
+    }
+    else if ( ouRadio.equalsIgnoreCase( ORGUNITGRP ) )
+    {
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+        generateOrgUnitGroup();
 
-        }
-        else if ( ouRadio.equalsIgnoreCase( ORGUNITLEVEL ) )
-        {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
-            generateOrgUnitLevel();
+    }
+    else if ( ouRadio.equalsIgnoreCase( ORGUNITLEVEL ) )
+    {
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+        generateOrgUnitLevel();
 
-        }
+    }
 
-        statementManager.destroy();
-        System.out.println( "Report Generation End Time is : \t" + new Date() );
+    statementManager.destroy();
+    System.out.println( "Report Generation End Time is : \t" + new Date() );
 
-        return SUCCESS;
+    return SUCCESS;
     }
 
     // -------------------------------------------------------------------------

@@ -316,7 +316,7 @@ public class GenerateChartAction1
             {
                // System.out.println(objData[i][j]);
                 data[i][j] = objData[i][j].doubleValue();
-                System.out.print(categories1[j]+": "+data[i][j]+", ");                
+                //System.out.print(categories1[j]+": "+data[i][j]+", ");                
             }
             //System.out.println("");
         }

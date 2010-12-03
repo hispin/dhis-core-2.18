@@ -68,13 +68,17 @@ function getOUDetailsForGARecevied(xmlObject)
     		
 }
 
+
 // function for getting periods
-function getPeriods() {
+function getPeriods()
+{
 	var periodTypeList = document.getElementById("periodTypeLB");
 	var periodTypeId = periodTypeList.options[periodTypeList.selectedIndex].value;
 
 	var periodLB = document.getElementById("periodLB");
-
+	
+	var yearLB = document.getElementById("yearLB");
+	 
 	periodLB.disabled = false;
 
 	clearList(periodLB);
@@ -86,6 +90,15 @@ function getPeriods() {
 			periodLB.options[i] = new Option(monthNames[i], i, false, false);
 		}
 	}
+    else if( periodTypeId == dailyPeriodTypeName )
+    {
+       // alert( monthDays.length );
+    	//alert( days.length );
+    	for( i= 0; i < days.length; i++ )
+        {
+            periodLB.options[i] = new Option(days[i],days[i],false,false);
+        }
+    }
 	else if (periodTypeId == quarterlyPeriodTypeName)
 	{
 		for (i = 0; i < quarterNames.length; i++) 
@@ -104,9 +117,89 @@ function getPeriods() {
 	{
 		periodLB.disabled = true;
 	}
+    else if( periodTypeId == weeklyPeriodTypeName )
+    {
+    	
+        if( yearLB.selectedIndex < 0 ) 
+        {
+            alert("Please select Year(s) First");
+            return false;
+        }
+        else
+        {
+        	getWeeks();
+        }
+
+    }
 }
 // function for getting periods ends
 
+//getting weekly Period
+function getWeeklyPeriod()
+{
+    var periodTypeList = document.getElementById( "periodTypeLB" );
+    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
+    
+    if( periodTypeId == weeklyPeriodTypeName )
+    {
+    	getWeeks();
+    }
+    
+}
+
+//get week period Ajax calling
+function getWeeks()
+{
+	//var periodTypeName = weeklyPeriodTypeName;
+	var yearListObj = document.getElementById('yearLB');
+	var yearListval = yearListObj.options[ yearListObj.selectedIndex ].value;
+	//alert(yearListval); 
+	var year = yearListval.split( "-" )[0] ;
+	var yearList = "" ;
+	
+	var yearLB = document.getElementById("yearLB");
+    for(k = 0; k < yearLB.options.length; k++)
+    {
+    	if ( yearLB.options[k].selected == true )
+    	{
+    		yearList += yearLB.options[k].value + ";" ;
+    	}
+    	//yearLB.add[yearLB.selectedIndex];
+    }
+   
+    	// alert( "Year List is : " +yearList );
+	
+	$.post("getWeeklyPeriod.action",
+			{
+			 //periodTypeName:weeklyPeriodTypeName,
+				yearList:yearList
+			},
+			function (data)
+			{
+				getWeeklyPeriodReceived(data);
+			},'xml');
+}
+
+// week rang received
+function getWeeklyPeriodReceived( xmlObject )
+{	
+	var periodList = document.getElementById( "periodLB" );
+	
+	clearList( periodList );
+	
+	var weeklyperiodList = xmlObject.getElementsByTagName( "weeklyPeriod" );
+	
+	for ( var i = 0; i < weeklyperiodList.length; i++ )
+	{
+	    var weeklyPeriodName = weeklyperiodList[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue;
+		
+	        var option = document.createElement( "option" );
+	        option.value = weeklyPeriodName;
+	        option.text = weeklyPeriodName;
+	        option.title = weeklyPeriodName;
+	        periodList.add( option, null );
+	}
+}	
 // OrgUnit GroupSet Change Function
 /*
 function orgUnitGroupSetCB1() {
@@ -122,6 +215,7 @@ function orgUnitGroupSetCB1() {
 	clearList(orgUnitList);
 }
 */
+
 function getOrgUnitGroupsDataElements() 
 {
 	var checked = byId('ougGroupSetCB').checked;
@@ -146,17 +240,15 @@ function getOrgUnitGroupsDataElements()
 	}
 	else
 	{
-		//document.getElementById( "ougGroupSetCB" ).disabled = true;
+	//document.getElementById( "ougGroupSetCB" ).disabled = true;
 	}
 	//clearList( ouGroupId );
 }
 
-
-
- //Category ListBox Change function
+//Category ListBox Change function
 function categoryChangeFunction1(evt)
 {
-        selCategory = $("select#categoryLB").val();
+    selCategory = $("select#categoryLB").val();
 
 	if(selCategory == "period" || selCategory == "children" )
 	{
@@ -165,9 +257,10 @@ function categoryChangeFunction1(evt)
 	}
 	else
 	{
-           // $('#facilityLB').removeAttr('disabled');
+           	// $('#facilityLB').removeAttr('disabled');
 	}
-} // categoryChangeFunction end
+} 	
+	// categoryChangeFunction end
 			          
 //Removes slected orgunits from the Organisation List
 function remOUFunction()
@@ -179,12 +272,13 @@ function remOUFunction()
 		if (document.ChartGenerationForm.orgUnitListCB.options[i].selected)
 			document.ChartGenerationForm.orgUnitListCB.options[i] = null;
 	}
-}// remOUFunction end
+}	
+	// remOUFunction end
 
 // singleSelectionOption OrgUnitGroup
 function selectSingleOptionOrgUnitGroup()
 {
-	//alert("inside single selection");
+	 //alert("inside single selection");
 	var categoryObj = document.getElementById( 'categoryLB' );// view by
     var categoryVal = categoryObj.options[ categoryObj.selectedIndex ].value;
 	
@@ -205,7 +299,6 @@ function selectSingleOptionOrgUnitGroup()
         }
     }
 }
-
 
 //  singleSelectionOption OrgUnit
 /*
@@ -241,7 +334,6 @@ function selButtonFunction1(selButton)
 //Graphical Analysis Form Validations
 function formValidationsDataElement()
 {
-		
 	//var selectedServices = document.getElementById("selectedServices");
 
 	var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
@@ -330,13 +422,11 @@ function formValidationsDataElement()
     window.open('','chartWindowDataElement','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
   	return true;
 } 
-// formValidations Function DataElements End 
+ // formValidations Function DataElements End 
 
-
-//Graphical Analysis Form Indicators
+//Graphical Analysis Form Validation Indicators
 function formValidationsIndicator()
 {
-		
 	//var selectedServices = document.getElementById("selectedServices");
 
 	var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
@@ -426,4 +516,5 @@ function formValidationsIndicator()
   	
   	return true;
 } 
+
 // formValidations Function Indicators End

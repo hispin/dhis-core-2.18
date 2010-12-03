@@ -7,6 +7,8 @@
 	
     
     // Global Variables
+    var dailyPeriodTypeName = '$dailyPeriodTypeName';
+    var weeklyPeriodTypeName = '$weeklyPeriodTypeName';
     var monthlyPeriodTypeName = '$monthlyPeriodTypeName';
     var quarterlyPeriodTypeName = '$quarterlyPeriodTypeName';
     var sixmonthPeriodTypeName = '$sixMonthPeriodTypeName';
@@ -17,10 +19,48 @@
     var currentOrgUnitId;
     var currentOrgUnitName;
     
-    var monthNames = new Array("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar");
+  
+  
+    var monthDays = new Array(31,29,31,30,31,30,31,31,30,31,30,31); // for daily Period
+    var days = new Array();
+    
+  //var monthNames = new Array("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar");
+    var monthNames = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
     var quarterNames = new Array("Q1","Q2","Q3","Q4");
     var halfYearNames = new Array("HY1","HY2");
 
+    k = 0;
+
+    for( i = 0; i< monthDays.length; i++ )
+    {
+        var curMonthDays = monthDays[i];
+     
+        for( j = 1; j<=curMonthDays; j++ )
+        {
+            if( (i+1) <= 9 )
+            {
+               // i = "0"+(i+1);
+               days[k]=  "0"+ (i+1);
+               
+            }
+            else
+            {
+            days[k]=  i+1;
+            }
+            if( j <= 9 )
+            {
+                days[k] += "-0"+j;
+            }
+            else
+            {
+            days[k] +=  "-"+j;
+            }    
+        
+            //days[k]= (i+1)+"-"+j;
+            //  days[k]=  i+"-"+j;
+            k++;
+         }
+    }
    
     var orgUnitGroupIds = new Array();
     var orgUnitGroupNames = new Array();
@@ -149,7 +189,7 @@
         <table>
           <tr>
             <td class="NormalB"> $i18n.getString( "year" )<br>
-              <select id="yearLB" name="yearLB" size="5" multiple style="width: 150px;">                                                                                
+              <select id="yearLB" name="yearLB" onchange="getWeeklyPeriod()" size="5" multiple style="width: 150px;">                                                                                
                     #foreach($periodName in $periodNameList)
                     <option value="$periodName">$periodName</option>                                
                     #end
@@ -159,7 +199,7 @@
             </td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td class="NormalB"> $i18n.getString( "period" )<br>
-            <select id="periodLB" name="periodLB" size="5" multiple style="width: 150px;">                              
+            <select id="periodLB" name="periodLB" size="5" multiple style="width: 175px;">                              
             </select>
               <br />
               <br />

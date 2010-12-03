@@ -345,7 +345,6 @@ function getIndicatorsReceived( xmlObject )
 // If the list of available indicators is empty, an empty placeholder will be added
 //addOptionPlaceHolder( availableIndicators );
 }
-
 // getting period List
 function getPeriods()
 {
@@ -420,7 +419,6 @@ function getPeriods()
     }
 
 }
-
 //getting weekly Period
 function getWeeklyPeriod()
 {
@@ -485,7 +483,6 @@ function getWeeks()
 				getWeeklyPeriodReceived(data);
 			},'xml');
 }
-
 // week rang received
 function getWeeklyPeriodReceived( xmlObject )
 {	
@@ -508,7 +505,6 @@ function getWeeklyPeriodReceived( xmlObject )
 	        periodList.add( option, null );
 	}
 }	
-
 /*
 function getPeriods()
 {

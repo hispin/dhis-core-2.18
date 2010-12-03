@@ -124,7 +124,7 @@ public class GetWeeklyPeriodAction implements Action
         simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
         weeklyPeriodList = new ArrayList<String>();
         
-        System.out.println( "selected Year  size : " + yearList.length());
+       // System.out.println( "selected Year  size : " + yearList.length());
         
         //tempYearList = new ArrayList<String>();
         
@@ -148,11 +148,11 @@ public class GetWeeklyPeriodAction implements Action
             
             periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( periodType, startDate, endDate ) );
             
-            System.out.println( "Period  size : " + periods.size());
+          //  System.out.println( "Period  size : " + periods.size());
             for ( Period period : periods )
             {
                 String tempPeriodName = simpleDateFormat1.format( period.getStartDate() ) + " To " + simpleDateFormat2.format( period.getEndDate() );
-                System.out.println( "tempPeriodName : " + tempPeriodName );
+               // System.out.println( "tempPeriodName : " + tempPeriodName );
                 weeklyPeriodList.add( tempPeriodName );
                // System.out.println( "weekly period is  : " + weeklyPeriodList );
             }
