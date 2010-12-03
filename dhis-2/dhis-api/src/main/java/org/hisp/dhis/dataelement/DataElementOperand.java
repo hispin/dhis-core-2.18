@@ -216,6 +216,16 @@ public class DataElementOperand
     {
         return COLUMN_PREFIX + dataElementId + COLUMN_SEPARATOR + optionComboId;
     }
+    
+    public String getPrettyName()
+    {
+        if ( dataElement == null || categoryOptionCombo == null )
+        {
+            return null;
+        }
+        
+        return categoryOptionCombo.isDefault() ? dataElement.getName() : dataElement.getName() + SPACE + categoryOptionCombo.getName();
+    }
 
     public void updateProperties()
     {
@@ -223,19 +233,15 @@ public class DataElementOperand
         {
             throw new NullPointerException( "Data Element or Category Option Combo is null" );
         }
-        else
-        {
-            this.dataElementId = this.dataElement.getId();
-            this.optionComboId = this.categoryOptionCombo.getId();
-            this.operandId = this.dataElementId + SEPARATOR + this.optionComboId;
-            this.operandName = this.dataElement.getName() + this.categoryOptionCombo.getName();
-            this.aggregationOperator = this.dataElement.getAggregationOperator();
-            this.frequencyOrder = this.dataElement.getFrequencyOrder();
-            this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
-            this.valueType = this.dataElement.getType();            
-
-        }
-
+        
+        this.dataElementId = this.dataElement.getId();
+        this.optionComboId = this.categoryOptionCombo.getId();
+        this.operandId = this.dataElementId + SEPARATOR + this.optionComboId;
+        this.operandName = getPrettyName();
+        this.aggregationOperator = this.dataElement.getAggregationOperator();
+        this.frequencyOrder = this.dataElement.getFrequencyOrder();
+        this.aggregationLevels = new ArrayList<Integer>( this.dataElement.getAggregationLevels() );
+        this.valueType = this.dataElement.getType();
     }
 
     // -------------------------------------------------------------------------
