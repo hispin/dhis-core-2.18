@@ -316,6 +316,14 @@ public interface DataElementCategoryService
     void generateOptionCombos( DataElementCategoryCombo categoryCombo );
 
     /**
+     * Populates all transient properties on each Operand in the given collection.
+     * 
+     * @param operands the collection of Operands.
+     * @return a collection of Operands.
+     */
+    public Collection<DataElementOperand> populateOperands( Collection<DataElementOperand> operands );
+    
+    /**
      * 
      * @param dataElementIdentifiers
      * @return
