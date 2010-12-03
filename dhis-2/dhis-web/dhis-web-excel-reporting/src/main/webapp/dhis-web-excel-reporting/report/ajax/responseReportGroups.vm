@@ -1,3 +1,0 @@
-#foreach($g in $groups)
-$g|$g|$g
-#end

@@ -36,6 +36,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -63,8 +65,15 @@ public class GetOperandsAction
         this.dataElementCategoryService = dataElementCategoryService;
     }
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     // -------------------------------------------------------------------------
-    // Output
+    // Output & Input
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -72,6 +81,13 @@ public class GetOperandsAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
     }
 
     private String aggregationOperator;
@@ -96,13 +112,20 @@ public class GetOperandsAction
     {
         List<DataElement> dataElements = new ArrayList<DataElement>();
 
-        if ( id == null )        {
-            
+        if ( id == null )
+        {
             dataElements = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
         }
         else
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( id ) );
+        }
+
+        if ( dataSetId != null )
+        {
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+            dataElements.retainAll( dataSet.getDataElements() );
         }
 
         if ( aggregationOperator != null )

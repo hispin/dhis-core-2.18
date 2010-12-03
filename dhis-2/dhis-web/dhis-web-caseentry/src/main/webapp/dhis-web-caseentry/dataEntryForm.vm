@@ -1,8 +1,22 @@
 <script>
 function setupDataEntryCalendar( id )
-{
-	datePicker( id,  false);
+{	
+	jQuery("#" + id).datepicker(
+	{
+		dateFormat:dateFormat,
+		changeMonth: true,
+		changeYear: true,			
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'button',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true		
+	});	
+	
+	jQuery( "<label>" + formatter + "</label>" ).insertAfter( jQuery("#" + id) );
 }
+
+var formatter = dateFormat.replace( 'yy',  'yyyy');
 </script>
 #parse( "/dhis-web-caseentry/dataRecordingSelect.vm" )
 

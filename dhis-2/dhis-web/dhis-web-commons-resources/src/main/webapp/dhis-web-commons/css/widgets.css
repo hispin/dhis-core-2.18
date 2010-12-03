@@ -275,11 +275,10 @@ div#selectionTree a.locked
 span#message 
 {
   display: none;
-  padding: 1em;
-  margin: 1em;
+  padding: 0.5em; 
   background-color: #ffffbf;
   border: 1px solid #cccc00;
-  width: 500px;
+  position:absolute;	
 }
 
 span#info
@@ -743,6 +742,7 @@ div.success { background: url(../images/success.png) no-repeat 10px 10px }
 div.warning { background: url(../images/warning.png) no-repeat 10px 10px }
 div.growlUI h1, div.growlUI h2 { color: white; padding: 5px 5px 5px 75px; text-align: left;font-size:medium }
 div.growlUI h2 { font-size: small }
+.ui-autocomplete-loading { background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat; }
 
 span.error {
 	background: url('../images/invalid.png') no-repeat;

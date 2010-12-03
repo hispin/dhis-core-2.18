@@ -74,12 +74,7 @@
     <action name="updateValidationRule" class="org.hisp.dhis.validationrule.action.UpdateValidationRuleAction">
       <result name="success" type="redirect">showValidationRuleForm.action</result>
       <param name="requiredAuthorities">F_VALIDATIONRULE_UPDATE</param>
-    </action>
-    
-    <action name="showEditExpressionForm" class="org.hisp.dhis.validationrule.action.GetExpressionAction">
-      <result name="success" type="velocity">/dhis-web-validationrule/editExpressionForm.vm</result>
-      <param name="requiredAuthorities">F_VALIDATIONRULE_UPDATE</param>
-    </action>
+    </action>  
     
     <action name="getFilteredDataElements" class="org.hisp.dhis.validationrule.action.GetFilteredDataElementsAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonOperands.vm</result>			

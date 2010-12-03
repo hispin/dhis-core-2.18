@@ -1,4 +1,3 @@
-    
 <h3>$i18n.getString( "chart" )</h3>
 
 <table class="mainPageTable">
@@ -15,24 +14,23 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="20">
-                <col width="20">
-                <col width="20">
-                <col width="20">
+                <col width="110px">              
                 <thead>              
                 <tr>
                     <th>$i18n.getString( "title" )</th>
-                    <th colspan="5" class="{sorter: false}">$i18n.getString( "operations" )</th>
+                    <th class="{sorter: false}">$i18n.getString( "operations" )</th>
                 </tr>
                 </thead>
                 <tbody id="list">
                 #foreach ( $chart in $charts )
                 <tr id="tr${chart.id}">
                     <td onclick="showChartDetails( $chart.id )">$encoder.htmlEncode( $chart.title )</td>
-                    <td style="text-align:center"><a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a></td>
-                    <td style="text-align:center"><a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:showChartDetails( $chart.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+                    <td style="text-align:right">
+						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
+						<a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+						<a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+						<a href="javascript:showChartDetails( $chart.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+					</td>
                 </tr>
                 #end
                 </tbody>

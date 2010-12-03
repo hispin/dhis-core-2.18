@@ -276,10 +276,7 @@
 		<action name="i18n" class="org.hisp.dhis.i18n.action.I18nAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-commons/i18n/translate.vm</param>
-			<param name="javascripts">../dhis-web-commons/i18n/i18n.js,../dhis-web-commons/lists/lists.js
-				,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js
-				,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js
-			</param>
+			<param name="javascripts">../dhis-web-commons/i18n/i18n.js</param>
 		</action>
 
 		<action name="translate" class="org.hisp.dhis.i18n.action.TranslateAction">

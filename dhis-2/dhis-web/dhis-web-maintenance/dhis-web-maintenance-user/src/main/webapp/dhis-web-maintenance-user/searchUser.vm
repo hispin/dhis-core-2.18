@@ -1,5 +1,3 @@
-<script type="text/javascript" src="/dhis-web-maintenance-user/javascript/jquery.bpopup-0.4.1.min.js"></script>
-
 <table style="width:100%">
 	<tr>
 		<td>
@@ -33,14 +31,12 @@
 			</table>
 			<table class="listTable" id="userList" width='100%'>
 				<col/>
-				<col/>
-				<col/>
-				<col width="20"/>
+				<col/>				
 				<thead>				
 				<tr>
 					<th>$i18n.getString( "username" )</th>
 					<th>$i18n.getString( "name" )</th>
-					<th colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th class="{sorter: false}" style="width:80px;">$i18n.getString( "operations" )</th>
 				</tr>
 				</thead>
 				<tbody id="list">
@@ -49,18 +45,15 @@
 				<tr id="tr${userCredentials.id}" #alternate( $mark )>
 					<td>$encoder.htmlEncode( $userCredentials.username )</td>
 					<td>$encoder.htmlEncode( $userCredentials.user.surname ), $encoder.htmlEncode( $userCredentials.user.firstName )</td>
-					<td style="text-align:center">
-					<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
-
-                    #if($currentUserName != $userCredentials.username)
-                        <td style="text-align:center">
-                            <a href="javascript:removeUser( $userCredentials.id, '$encoder.jsEncode( $userCredentials.username )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-                        </td>
-                    #else
-                        <td style="text-align:center">
-                        </td>
-                    #end
-					<td style="text-align:center"><a href="javascript:showUserDetails( $userCredentials.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+					<td style="text-align:right">
+					<a href="showUpdateUserForm.action?id=$userCredentials.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>					
+					#if($currentUserName != $userCredentials.username)
+						<a href="javascript:removeUser( $userCredentials.id, '$encoder.jsEncode( $userCredentials.username )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+					#else
+						<img src="../images/delete-denied.png" alt="$i18n.getString( 'remove' )"/>
+					#end
+					<a href="javascript:showUserDetails( $userCredentials.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
 				</tr>
 					#if( $mark )
 						#set( $mark = false )
@@ -99,3 +92,10 @@
 		</td>
 	</tr>
 </table>
+
+
+<script>
+	jQuery(document).ready(function(){	
+		tableSorter( 'userList' );
+	});
+</script>

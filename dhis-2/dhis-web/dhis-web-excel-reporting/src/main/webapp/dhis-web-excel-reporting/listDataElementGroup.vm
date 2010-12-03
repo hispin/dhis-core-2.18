@@ -38,32 +38,32 @@
 #end
 </ul> 
 
-<form name="dataElementGroups" method="post">
+
+
+<div id="dataElementGroups">	
+<form name="dataElementGroups" id="dataElementGroupsForm" method="POST">
 <input type="hidden" name="id" value="$report.id"/>
 <input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
-<div id="dataElementGroups" style="position:fixed;display:none;width:700px;z-index:10001;background-color: white;border: medium solid silver;height:310px;padding:20px;">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('dataElementGroups');deleteDivEffect();">[x]</div>	
 	<table>
 		<tr>
 			<td>$i18n.getString('name')</td>
-			<td><input type="text" style="width:400px" id="name" name="name"/></td>
+			<td><input type="text" style="width:400px" id="name" name="name" class="{validate:{required:true}}"/></td>
 		</tr>
 		<tr>
 			<td>$i18n.getString('code')</td>
-			<td><input type="text" style="width:400px" id="code" name="code"/></td>
+			<td><input type="text" style="width:400px" id="code" name="code" class="{validate:{required:true}}"/></td>
 		</tr>
 	</table>		
-	<br/>	
-	<div style="width:100%;overflow:auto">
+	<br/>		
 	<table width="100%">		
 		<tr>
 			<td colspan="4">
-				<select id="availableDataElementGroups" onchange="getDataElementsByGroup(this.value)" style="width:300px"></select>
+				<select id="availableDataElementGroups" onchange="loadDataElementsByGroup( this.value , '#availableDataElements' )" style="width:300px"></select>
 			</td>			
 		</tr>
 		<tr>
 		  <td width="23%">
-			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');showText('dataElementIds')" onMouseOut="javascript: hideToolTip();"></select>
+			<select id="availableDataElements" name="availableDataElements" multiple size=13 style="width:300px" ondblclick="moveSelectedById('availableDataElements','dataElementIds');"></select>
 			</td>
 			<td width="7%" align="center">
 				<input type="button" value=">" onclick="moveSelectedById('availableDataElements','dataElementIds');" style="width:50px"/><br>
@@ -72,7 +72,8 @@
 				<input type="button" value="<<" onclick="moveAllById('dataElementIds' , 'availableDataElements' );" style="width:50px"/>
 			</td>
 			<td width="23%">
-				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' ); showText('availableDataElements');" onMouseOut="javascript: hideToolTip();"></select>
+				<select id="dataElementIds" name="dataElementIds" multiple size=13 style="width:300px" ondblclick="moveSelectedById('dataElementIds' , 'availableDataElements' );"/>
+				<select id="dataElementIdsValidate"  style="display:none" class="{validate:{required:true}}"/>
 			</td>
 		    <td width="47%"><a href="javascript:moveSelectedOptionToTop( 'dataElementIds' );"><img src="../images/move_top.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a><br><br>			
 			<a href="javascript:moveUpSelectedOption( 'dataElementIds' );"><img src="../images/move_up.png" style="cursor: pointer; width: 20px;" align="absmiddle"></a><br><br>		
@@ -81,15 +82,13 @@
 		</td>
 		</tr>
 	</table>
-	</div>
-	
+		
 	<p align=center>
-		<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitDataElementGroupOrder()">		
+		<input type="submit" value="$i18n.getString( 'save' )" style="width:130px"/>		
+		<input type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="jQuery('#dataElementGroups').dialog('close')"/>		
 	</p>
-</div>	
 </form>
-
-<span id="message" style="top:100px;right:5px;position:fixed;width:200px;z-index:10002" onclick="javascript:hideById(this.id);"></span>
+</div>	
 
 
 <script>
@@ -103,6 +102,13 @@
 		$("#sortable").disableSelection();
 		
 	});
+	
+	jQuery("#dataElementGroups").dialog({autoOpen:false,width:720,title:"$i18n.getString('dataelement_groups')"});
+	
+	validation( "dataElementGroupsForm", function( form ){ form.submit() }, function(){
+		listValidator( 'dataElementIdsValidate', 'dataElementIds' );
+	});
+	
 </script>
 
 

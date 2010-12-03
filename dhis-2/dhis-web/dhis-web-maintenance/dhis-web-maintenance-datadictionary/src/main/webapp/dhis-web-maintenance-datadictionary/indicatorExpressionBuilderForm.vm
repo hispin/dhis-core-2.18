@@ -1,6 +1,6 @@
 <div id="indicator-expression-container">
 <form id="indicator-expression-form">
-<table width="750">
+<table width="750" style="text-align:left">
 	<colgroup>
 		<col width="250"/>
 		<col width="50"/>

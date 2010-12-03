@@ -13,14 +13,11 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col>
-                <col width="20">
-                <col width="20">
-                <col width="20">
-                <col width="20">              
+                <col width="110px">                       
                 <thead>               
                 <tr>
                     <th>$i18n.getString( "name" )</th>
-                    <th colspan="4" class="{sorter: false}">$i18n.getString( "operations" )</th>
+                    <th class="{sorter: false}">$i18n.getString( "operations" )</th>
                 </tr>
                 </thead>
                 <tbody id="list">
@@ -33,13 +30,11 @@
                     	#else
                     	   <a href="javascript:window.location.href='loadDocument.action?id=$document.id'" title="$i18n.getString( 'view_report' )">
                     	#end
-                    	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>
-                    </td>
-                    <td style="text-align:center">
+                    	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>                    
                     	<a href="displayAddDocumentForm.action?id=$!document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+						<a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
+						<a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
 					</td>
-                    <td style="text-align:center"><a href="javascript:addDocumentToDashboard( '$document.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeDocument( $document.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a></td>
                 </tr>
                 #end
                 </tbody>

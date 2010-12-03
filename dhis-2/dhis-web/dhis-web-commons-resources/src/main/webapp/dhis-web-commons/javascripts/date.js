@@ -299,3 +299,14 @@ function parseDate(val) {
 		}
 	return null;
 }
+
+function isValidDate( value )
+{
+	try{        
+		jQuery.datepicker.parseDate( dateFormat, value, null);		
+    }
+    catch(error){
+        return false;
+    }	
+	return true;	
+}

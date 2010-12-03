@@ -458,14 +458,7 @@
 			class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction">
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/underAgeForm.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js,
-				../dhis-web-commons/javascripts/date.js,
-				../dhis-web-commons/javascripts/jQuery/jquery.metadata.js,
-				javascript/underage.js
-				,javascript/commons.js
-			</param>
-			<param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css, style/tabs.css</param>
+			<param name="javascripts">javascript/underage.js,javascript/commons.js	</param>			
 		</action>
 
 		<action name="searchPerson"

@@ -16,15 +16,7 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col>
-				<col width="20">
-				<col width="20">
-                <col width="20">
-				<col width="20">
-                <col width="20">
-                <col width="20">
-                <col width="20">
-                <col width="20">
-                <col width="20">
+				<col width="256">				
                 <thead>		       
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -35,15 +27,17 @@
 				#foreach ( $table in $tables )
 				<tr id="tr${table.id}">
 					<td onclick="showTableDetails( $table.id )">$encoder.htmlEncode( $table.name )</td>
-					<td style="text-align:center"><a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a></td>
-                    <td style="text-align:center"><a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&dimension=$table.isDimensional()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a></td>
-                    <td style="text-align:center"><a href="displayTable.action?id=$table.id" title="$i18n.getString( "display" )"><img src="../images/display.png" alt="$i18n.getString( "display" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:exportToExcel( $table.id )" title="$i18n.getString( "export_to_excel" )"><img src="../images/excel.png" alt="$i18n.getString( "export_to_excel" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:exportToHtml( $table.id )" title="$i18n.getString( "export_to_html" )"><img src="../images/html.png" alt="$i18n.getString( "export_to_html" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:exportToCsv( $table.id )" title="$i18n.getString( "export_to_csv" )"><img src="../images/csv.png" alt="$i18n.getString( "export_to_csv" )"></a></td>
-                    <td style="text-align:center"><a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></td>
-					<td style="text-align:center"><a href="javascript:showTableDetails( $table.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+					<td style="text-align:right">
+						<a href="getReportParams.action?id=$table.id&mode=table" title="$i18n.getString( "create" )"><img src="../images/start_process.png" alt="$i18n.getString( "create" )"></a>
+						<a href="displayAddTableForm.action?id=$table.id&mode=$table.mode&dimension=$table.isDimensional()" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+						<a href="displayTable.action?id=$table.id" title="$i18n.getString( "display" )"><img src="../images/display.png" alt="$i18n.getString( "display" )"></a>
+						<a href="javascript:exportToExcel( $table.id )" title="$i18n.getString( "export_to_excel" )"><img src="../images/excel.png" alt="$i18n.getString( "export_to_excel" )"></a>
+						<a href="javascript:exportToHtml( $table.id )" title="$i18n.getString( "export_to_html" )"><img src="../images/html.png" alt="$i18n.getString( "export_to_html" )"></a>
+						<a href="javascript:exportToCsv( $table.id )" title="$i18n.getString( "export_to_csv" )"><img src="../images/csv.png" alt="$i18n.getString( "export_to_csv" )"></a>
+						<a href="javascript:addReportTableToDashboard( '$table.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
+						<a href="javascript:removeTable( $table.id, '$encoder.jsEncode( $table.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+						<a href="javascript:showTableDetails( $table.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+					</td>
 				</tr>
 				#end
 				</tbody>

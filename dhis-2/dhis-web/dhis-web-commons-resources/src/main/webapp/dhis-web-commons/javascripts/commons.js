@@ -898,7 +898,12 @@ function tableSorter( tableId, sortList )
 {
 	if(sortList==undefined) sortList = [[0,0]];
 	
-	$("#" + tableId ).tablesorter({sortList:sortList}); 
+	jQuery("#" + tableId ).tablesorter(); 
+	
+	if($("#" + tableId ).find("tbody").children().size() > 0 )
+	{
+		jQuery("#" + tableId ).trigger("sorton",[sortList]);
+	}
 }
 
 function setSelectionRange( input, selectionStart, selectionEnd ) 

@@ -21,7 +21,6 @@
 <h3>$encoder.htmlEncode( $i18n.getString( "create_new_validation_rule" ) )</h3>
 
 <form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="enable('periodTypeName');">
-
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
@@ -32,14 +31,15 @@
 	</tr>
 	<tr>
 		<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}"></textarea></td>
+		<td><textarea name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" >
-					#foreach ( $periodType in $periodTypes )
-             		 <option value="$periodType.name" #if( $periodType.name.equals($monthlyPeriodTypeName ) ) selected #end>$i18n.getString($periodType.name)</option>
-            		#end						
+		<td>
+			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" >
+				#foreach ( $periodType in $periodTypes )
+				 <option value="$periodType.name" #if( $periodType.name.equals($monthlyPeriodTypeName ) ) selected #end>$i18n.getString($periodType.name)</option>
+				#end						
 			</select>
 			<img title="$i18n.getString('clear_expression')" onclick='setNullExpression();' src='images/edit-clear.png' style='width: 20px;cursor:pointer' />
 		</td>
@@ -61,27 +61,26 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="showEditLeftSideExpressionForm();">
-				<input type="hidden" id="leftSideDescription" name="leftSideDescription">
-				<input type="hidden" id="leftSideExpression" name="leftSideExpression" class="{validate:{required:true}}">
-				<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
-		    <input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="showEditRightSideExpressionForm();"></td>
-				<input type="hidden" id="rightSideDescription" name="rightSideDescription">
-				<input type="hidden" id="rightSideExpression" name="rightSideExpression" class="{validate:{required:true}}">
-				<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
+			<input type="button" value="$i18n.getString( 'edit_left_side' )" style="width:10em" onclick="editLeftExpression();">
+			<input type="hidden" id="leftSideDescription" name="leftSideDescription">
+			<input type="hidden" id="leftSideExpression" name="leftSideExpression" class="{validate:{required:true}}">
+			<input type="hidden" id="leftSideTextualExpression" name="leftSideTextualExpression">
+			<input type="button" value="$i18n.getString( 'edit_right_side' )" style="width:10em" onclick="editRightExpression();"></td>
+			<input type="hidden" id="rightSideDescription" name="rightSideDescription">
+			<input type="hidden" id="rightSideExpression" name="rightSideExpression" class="{validate:{required:true}}">
+			<input type="hidden" id="rightSideTextualExpression" name="rightSideTextualExpression">
+		</td>	
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"><input 
-				   type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='showValidationRuleForm.action'" style="width:10em"></td>		
+		<td>
+			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em">
+			<input type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='showValidationRuleForm.action'" style="width:10em"></td>		
 	</tr>
 </table>
 
-<div id="dynamicContent"></div>
-
 </form>
 
-<script>
-	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
-	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
-</script>
+#parse( "/dhis-web-validationrule/expressionBuilderForm.vm" )
+
+

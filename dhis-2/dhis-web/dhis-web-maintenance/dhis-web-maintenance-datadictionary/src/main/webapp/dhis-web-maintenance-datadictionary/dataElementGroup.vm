@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroup" )</h3>
 
 <table class="mainPageTable">
@@ -11,26 +10,26 @@
 				</tr>
 			</table>
 			<div id="content">
-			<table class="listTable" id="dataElementGroupList">
+			<table class="listTable" id="dataElementGroupList">			
 				<col/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
+				<col width="112px"/>
 				<thead>				
+					
 					<tr>
 						<th>$i18n.getString( "name" )</th>
-						<th colspan="4" class="{sorter: false}">$i18n.getString( "operations" )</th>
+						<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 					</tr>
 				</thead>
 				<tbody id="list">
 				#foreach( $dataElementGroup in $dataElementGroups )
 				<tr id="tr${dataElementGroup.id}">
 					<td onclick="showDataElementGroupDetails( $dataElementGroup.id )">$encoder.htmlEncode( $dataElementGroup.name )</td>
-					<td style="text-align:center"><a href="showUpdateDataElementGroupForm.action?id=$dataElementGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:translate( 'DataElementGroup', '$dataElementGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:removeDataElementGroup( $dataElementGroup.id, '$encoder.jsEncode( $dataElementGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:showDataElementGroupDetails( $dataElementGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+					<td align="right">
+						<a href="showUpdateDataElementGroupForm.action?id=$dataElementGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<a href="javascript:translate( 'DataElementGroup', '$dataElementGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+						<a href="javascript:removeDataElementGroup( $dataElementGroup.id, '$encoder.jsEncode( $dataElementGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:showDataElementGroupDetails( $dataElementGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
 				</tr>
 				#end
 				</tbody>

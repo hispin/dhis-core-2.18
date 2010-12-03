@@ -924,7 +924,7 @@ function saveDate( dataElementId , dataElementName )
 	
     field.style.backgroundColor = '#ffffcc';
 	
-    if( !isDateFormat( field.value ) )
+    if( !isValidDate( field.value ) )
     {
         field.style.backgroundColor = '#ffcc00';
         window.alert('Incorrect format for date value. The correct format should be ' + formatter + '\n\n '+dataElementName );
@@ -953,7 +953,7 @@ function saveDateCustom(  this_ )
 
     if(jQuery(this_).val()!="")
     { 
-        if( !isDateFormat( jQuery(this_).val() ) )
+        if( !isValidDate( jQuery(this_).val() ) )
         {
             jQuery(this_).css({
                 "background-color":"#ffcc00"

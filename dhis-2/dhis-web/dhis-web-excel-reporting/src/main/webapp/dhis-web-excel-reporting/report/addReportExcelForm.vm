@@ -2,21 +2,29 @@
 	jQuery(document).ready(	function(){
 		validation( 'addReportExcelForm', function( form ){ form.submit() } );
 
-		checkValueIsExist( "name", "validateReportExcelAction.action" );	
+		checkValueIsExist( "name", "validateReportExcelAction.action" );			
 		
-		jQuery("#group").autocomplete("getReportExcelGroups.action", {
-            width: 260,
-            formatItem:function (row){
-                return row[0];
-            },
-            formatResult:function (row){
-                return row[0];
-            },
-            selectFirst: true
-		});	
+		var cache = {},	lastXhr;
+		jQuery( "#group" ).autocomplete({
+			minLength: 2,
+			source: function( request, response ) {
+				var term = request.term;
+				if ( term in cache ) {
+					response( cache[ term ] );
+					return;
+				}
+
+				lastXhr = jQuery.postJSON( "getReportExcelGroups.action", request, function( data, status, xhr ) {
+					cache[ term ] = data;
+					if ( xhr === lastXhr ) {
+						response( data );
+					}
+				});
+			}
+		});
+
 	});	
 </script>
-
 <h3>$i18n.getString('reports') : $i18n.getString('add')</h3>
 
 <form id="addReportExcelForm" method="POST" action="addReportExcel.action">
