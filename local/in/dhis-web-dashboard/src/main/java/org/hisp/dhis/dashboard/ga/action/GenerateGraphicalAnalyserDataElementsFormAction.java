@@ -112,6 +112,20 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         return periodTypes;
     }
    
+    private String dailyPeriodTypeName;
+    
+    public String getDailyPeriodTypeName()
+    {
+        return dailyPeriodTypeName;
+    }
+
+    private String weeklyPeriodTypeName;
+
+    public String getWeeklyPeriodTypeName()
+    {
+        return weeklyPeriodTypeName;
+    }
+    
     private List<Period> monthlyPeriods;
 
     public List<Period> getMonthlyPeriods()
@@ -194,6 +208,7 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
         
         Iterator<PeriodType> ptIterator = periodTypes.iterator();
+       /*
         while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
@@ -204,8 +219,19 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
                 ptIterator.remove();
             }
         }
-
+        */
+        while ( ptIterator.hasNext() )
+        {
+            String pTName = ptIterator.next().getName();
+            if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
+                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
+            {
+                ptIterator.remove();
+            }
+        }
         
+        dailyPeriodTypeName = DailyPeriodType.NAME;
+        weeklyPeriodTypeName = WeeklyPeriodType.NAME;
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         periodNameList = new ArrayList<String>();
         Collections.sort( monthlyPeriods, new PeriodComparator() );
@@ -227,14 +253,17 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
             }
             
         }
+        
         Collections.sort( yearlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy" );
         //System.out.println( monthlyPeriodTypeName );
-        int year;
+       // int year;
         for ( Period p1 : yearlyPeriods )
         {
-            year = Integer.parseInt( simpleDateFormat.format( p1.getStartDate() ) ) + 1;
-            periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) + "-" + year );
+           // year = Integer.parseInt( simpleDateFormat.format( p1.getStartDate() ) ) + 1;
+           // periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) + "-" + year );
+            
+            periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) );
         }
         
         /* Organisationunit Group */

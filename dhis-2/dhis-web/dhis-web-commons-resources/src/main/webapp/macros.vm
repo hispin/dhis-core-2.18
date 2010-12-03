@@ -108,21 +108,21 @@ Formats a boolean into a readable value
 
 #macro( organisationUnitSelectionTree $cleanAll $multipleSelectionAllowed $requied )
 #if( $multipleSelectionAllowed ==true )
-	#parse( "/dhis-web-commons/oust/selectionTreeMultipleSelect.vm" )		
+	#parse( "/dhis-web-commons/oust/selectionTreeMultipleSelect.vm" )
 #else
 	#parse( "/dhis-web-commons/oust/selectionTreeSingleSelect.vm" )
 #end	
 #end
 
 #macro( filterDiv $action )
-$i18n.getString( "filter_by_name" ):	
-<div style="inline">
-	<input type="text" id="key" value="$!{key}">
-	<input type="button" value="$i18n.getString( 'filter' )" onclick="filterInternal()"/>	
-	<input type="button" value="$i18n.getString( 'clear' )" onclick="clearInternal()"/>		
-</div>
-<script>
-function filterInternal() { window.location.href="${action}.action?key=" + $( '#key' ).val(); }
-function clearInternal() { window.location.href="${action}.action"; }
-</script>
+$i18n.getString( "filter_by_name" ):
+<form action="${action}.action" method="POST">
+	<div style="inline">
+		#set ($value = $encoder.htmlEncode( ${key} ))
+		<input type="text" id="key" name="key" value="$!value"/>
+		<input type="submit" value="$i18n.getString( 'filter' )"/>
+		<input type="button" value="$i18n.getString( 'clear' )" 
+		onclick="window.location.href='${action}.action'"/>
+	</div>
+</form>
 #end

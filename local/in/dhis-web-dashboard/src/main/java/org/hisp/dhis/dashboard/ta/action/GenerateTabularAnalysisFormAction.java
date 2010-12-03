@@ -297,11 +297,12 @@ public class GenerateTabularAnalysisFormAction
         simpleDateFormat = new SimpleDateFormat( "yyyy" );
         //System.out.println( monthlyPeriodTypeName );
        // System.out.println( dailyPeriodTypeName );
-        int year;
+       // int year;
         for ( Period p1 : yearlyPeriods )
         {
-            year = Integer.parseInt( simpleDateFormat.format( p1.getStartDate() ) ) + 1;
-            periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) + "-" + year );
+            //year = Integer.parseInt( simpleDateFormat.format( p1.getStartDate() ) ) + 1;
+           // periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) + "-" + year );
+            periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) );
         }
 
         /* Organisationunit Levels */

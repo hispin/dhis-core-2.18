@@ -51,9 +51,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
+import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reports.ReportService;
 
@@ -336,8 +338,11 @@ public class GenerateChartIndicatorAction
 
         // ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
 
-        String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
-        int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
+       // String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
+        //int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
+        
+        String monthOrder[] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+        int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
         /* Period Info */
 
@@ -347,105 +352,154 @@ public class GenerateChartIndicatorAction
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
         periodNames = new ArrayList<String>();
-
-        for ( String year : yearLB )
+        
+        // for weekly period
+        if ( periodTypeLB.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
         {
-            int selYear = Integer.parseInt( year.split( "-" )[0] );
-
-            if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
-            {
-
-                startD = "" + selYear + "-04-01";
-                endD = "" + (selYear + 1) + "-03-31";
-
-                selStartPeriodList.add( format.parseDate( startD ) );
-                selEndPeriodList.add( format.parseDate( endD ) );
-
-                periodNames.add( "" + selYear + "-" + (selYear + 1) );
-
-                continue;
-
-            }
-
+          //  System.out.println( " Inside  weekly" );
             for ( String periodStr : periodLB )
             {
-                int period = Integer.parseInt( periodStr );
-
-                if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
-                {
-                    simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-
-                    if ( period >= 9 )
-                    {
-                        startD = "" + (selYear + 1) + "-" + monthOrder[period] + "-01";
-                        endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + monthDays[period];
-
-                        if ( (selYear + 1) % 4 == 0 && period == 10 )
-                        {
-                            endD = "" + (selYear + 1) + "-" + monthOrder[period] + "-" + (monthDays[period] + 1);
-                        }
-                    }
-                    else
-                    {
-                        startD = "" + selYear + "-" + monthOrder[period] + "-01";
-                        endD = "" + selYear + "-" + monthOrder[period] + "-" + monthDays[period];
-                    }
-
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                    periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
-                }
-                else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
-                {
-                    if ( period == 0 )
-                    {
-                        startD = "" + selYear + "-04-01";
-                        endD = "" + selYear + "-06-30";
-                        periodNames.add( selYear + "-Q1" );
-                    }
-                    else if ( period == 1 )
-                    {
-                        startD = "" + selYear + "-07-01";
-                        endD = "" + selYear + "-09-30";
-                        periodNames.add( selYear + "-Q2" );
-                    }
-                    else if ( period == 2 )
-                    {
-                        startD = "" + selYear + "-10-01";
-                        endD = "" + selYear + "-12-31";
-                        periodNames.add( selYear + "-Q3" );
-                    }
-                    else
-                    {
-                        startD = "" + (selYear + 1) + "-01-01";
-                        endD = "" + (selYear + 1) + "-03-31";
-                        periodNames.add( (selYear) + "-Q4" );
-                    }
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                }
-                else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
-                {
-                    if ( period == 0 )
-                    {
-                        startD = "" + selYear + "-04-01";
-                        endD = "" + selYear + "-09-30";
-                        periodNames.add( selYear + "-HY1" );
-                    }
-                    else
-                    {
-                        startD = "" + selYear + "-10-01";
-                        endD = "" + (selYear + 1) + "-03-31";
-                        periodNames.add( selYear + "-HY2" );
-                    }
-                    selStartPeriodList.add( format.parseDate( startD ) );
-                    selEndPeriodList.add( format.parseDate( endD ) );
-                }
-
-                System.out.println( startD + " : " + endD );
+                String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
+                String  endWeekDate = periodStr.split( "To" )[1] ; //for end week
+                
+                startD = startWeekDate.trim();
+                endD = endWeekDate.trim();
+                
+                selStartPeriodList.add( format.parseDate( startD ) );
+                selEndPeriodList.add( format.parseDate( endD ) );
+                
+                periodNames.add( periodStr );
+                //System.out.println( startD + " : " + endD );
             }
-
         }
+        else
+        {
+            for ( String year : yearLB )
+            {
+               // int selYear = Integer.parseInt( year.split( "-" )[0] );
+                int selYear = Integer.parseInt( year );
+        
+                if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
+                {
+                    startD = "" + selYear + "-01-01";
+                    endD = "" + selYear  + "-12-31";
+                    
+                    selStartPeriodList.add( format.parseDate( startD ) );
+                    selEndPeriodList.add( format.parseDate( endD ) );
+        
+                    //periodNames.add( "" + selYear + "-" + (selYear + 1) );
+                    
+                    periodNames.add( "" + selYear );
+        
+                    continue;
+        
+                }
+        
+                for ( String periodStr : periodLB )
+                {
+                    //int period = Integer.parseInt( periodStr );
+        
+                    if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
+                        
+                        startD = "" + selYear + "-" + monthOrder[period] + "-01";
+                        endD = "" + selYear  + "-" + monthOrder[period] + "-" + monthDays[period];
+                        
+                        //check for leapYear
+                        if ( ((( selYear ) % 400 == 0 ) || ((( selYear) % 100 != 0 && ( selYear ) % 4 == 0))) && period == 1 )
+                        {
+                            endD = "" + selYear  + "-" + monthOrder[period] + "-" + ( monthDays[period] + 1 );
+                        } 
+                        
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
+                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
+                    }
+                    else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        if ( period == 0 )
+                        {
+                            startD = "" + selYear + "-01-01";
+                            endD = "" + selYear + "-03-31";
+                            periodNames.add( selYear + "-Q1" );
+                        }
+                        else if ( period == 1 )
+                        {
+                            startD = "" + selYear + "-04-01";
+                            endD = "" + selYear + "-06-30";
+                            periodNames.add( selYear + "-Q2" );
+                        }
+                        else if ( period == 2 )
+                        {
+                            startD = "" + selYear + "-07-01";
+                            endD = "" + selYear + "-09-30";
+                            periodNames.add( selYear + "-Q3" );
+                        }
+                        else
+                        {
+                            startD = "" + selYear + "-10-01";
+                            endD = "" + selYear + "-12-31";
+                            periodNames.add( (selYear) + "-Q4" );
+                        }
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
+                    }
+                    else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
+                    {
+                        int period = Integer.parseInt( periodStr );
+                        if ( period == 0 )
+                        {
+                            startD = "" + selYear + "-01-01";
+                            endD = "" + selYear + "-06-30";
+                            periodNames.add( selYear + "-HY1" );
+                        }
+                        else
+                        {
+                            startD = "" + selYear + "-07-01";
+                            endD = "" + selYear + "-12-31";
+                            periodNames.add( selYear + "-HY2" );
+                        }
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                    }
+                    
+                    else if ( periodTypeLB.equalsIgnoreCase( DailyPeriodType.NAME ) )
+                    {
+                       String  month = periodStr.split( "-" )[0] ;
+                      
+                       String  date = periodStr.split( "-" )[1] ;
+                        
+                        startD = selYear + "-" + periodStr;
+                        endD = selYear + "-" + periodStr ;
+                      
+                        if ( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
+                        {
+                            startD = selYear + "-" + month + "-" + date;
+                            endD = selYear + "-" + month + "-" + date;
+                            continue;
+                        }
+                        if ( (( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))) && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) ); 
+                        {
+                            startD = selYear + "-" + month + "-" + date;
+                            endD = selYear  + "-" + month + "-" + date;
+                        }
+                        
+                        selStartPeriodList.add( format.parseDate( startD ) );
+                        selEndPeriodList.add( format.parseDate( endD ) );
+                        
+                        periodNames.add( startD );
+                       // System.out.println( startD + " : " + endD );
+                    }
+                    System.out.println( startD + " : " + endD );
+                }
+        
+            }
+    }
         // Indicator Information
         List<Indicator> indicatorList = new ArrayList<Indicator>();
         Iterator deIterator = selectedIndicators.iterator();
@@ -474,8 +528,7 @@ public class GenerateChartIndicatorAction
         {
 
             System.out.println( "Inside PeriodWise Chart Data and group not selected" );
-            System.out.println( "\n\nsize of OrgUnit List : " + selOUList.size() + " , size of Indicator List : "
-                + indicatorList.size() );
+            //System.out.println( "\n\nsize of OrgUnit List : " + selOUList.size() + " , size of Indicator List : " + indicatorList.size() );
             System.out.println( "Chart Generation Start Time is : \t" + new Date() );
             indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList, selEndPeriodList, periodNames,
                 indicatorList, selOUList.iterator().next() );
@@ -543,7 +596,7 @@ public class GenerateChartIndicatorAction
                 .getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
 
             // int groupCount = 0;
-            System.out.println( "\n\n ++++++++++++++++++++++ \n orgUnitGroup : " + orgUnitGroupList );
+           // System.out.println( "\n\n ++++++++++++++++++++++ \n orgUnitGroup : " + orgUnitGroupList );
             for ( String orgUnitGroupId : orgUnitGroupList )
             {
                 OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer
@@ -667,22 +720,6 @@ public class GenerateChartIndicatorAction
                 Double aggIndicatorDenumValue = 0.0;
                 if ( aggDataCB != null )
                 {
-
-                    System.out.println( "aggDataCB checked " + aggDataCB );
-                    System.out.println( "inside aggIndicatorValue" );
-
-                    // System.out.println( "\n\nsize of OrgUnit List : " +
-                    // selOUList.size()+ " , size of Indicator List : " +
-                    // indicatorList.size() + "\n\nStart date : " + startDate +
-                    // " , End date : " + endDate );
-
-                    System.out.println( "\n\norgUnit : " + orgUnit );
-                    System.out.println( "\n\nStart Date : " + startDate );
-                    System.out.println( "\n\nEnd date : " + endDate );
-
-                    System.out.println( "\n\nIndicator : " + indicator );
-                    System.out.println( "\n\nIndicator Name : " + indicator.getName() );
-
                     aggIndicatorValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
                         orgUnit );
 
@@ -700,12 +737,12 @@ public class GenerateChartIndicatorAction
                     aggIndicatorValue = dashBoardService.getIndividualIndicatorValue( indicator, orgUnit, startDate,
                         endDate );
 
-                    System.out.println( " \nIndicator Numerator value  : " + indicator.getNumerator()
-                        + ", Start Date :- " + startDate + ", End Date :- " + endDate + ", Org Unit :- " + orgUnit );
+                   // System.out.println( " \nIndicator Numerator value  : " + indicator.getNumerator()
+                      //  + ", Start Date :- " + startDate + ", End Date :- " + endDate + ", Org Unit :- " + orgUnit );
 
                     String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(), startDate,
                         endDate, orgUnit, "" );
-                    System.out.println( " \nIndicatorNumerator valu is " + tempStr );
+                   // System.out.println( " \nIndicatorNumerator valu is " + tempStr );
 
                     try
                     {
@@ -963,7 +1000,6 @@ public class GenerateChartIndicatorAction
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                         }
-
                     }
                     else
                     {
