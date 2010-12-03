@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
@@ -235,5 +236,22 @@ public interface ValidationRuleService
      * 
      * @param name the name of the ValidationRuleGroup.
      */
-    ValidationRuleGroup getValidationRuleGroupByName( String name );    
+    ValidationRuleGroup getValidationRuleGroupByName( String name );  
+    
+    Collection<ValidationRule> getValidationRulesBetween( int first, int max );
+    
+    Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max );
+    
+    int getValidationRuleCount();
+    
+    int getValidationRuleCountByName( String name );
+    
+    Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max );
+    
+    Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max );
+    
+    int getValidationRuleGroupCount();
+    
+    int getValidationRuleGroupCountByName( String name );
+
 }

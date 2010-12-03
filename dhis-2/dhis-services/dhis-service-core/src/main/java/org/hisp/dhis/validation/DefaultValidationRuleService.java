@@ -443,5 +443,45 @@ public class DefaultValidationRuleService
     {
         return validationRuleGroupStore.getByName( name );
     }
+
+    public int getValidationRuleCount()
+    {
+        return validationRuleStore.getCount();
+    }
+
+    public int getValidationRuleCountByName( String name )
+    {
+        return validationRuleStore.getCountByName( name );
+    }
+
+    public Collection<ValidationRule> getValidationRulesBetween( int first, int max )
+    {
+        return validationRuleStore.getBetween( first, max );
+    }
+
+    public Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max )
+    {
+        return validationRuleStore.getBetweenByName( name, first, max );
+    }
+
+    public int getValidationRuleGroupCount()
+    {
+        return validationRuleGroupStore.getCount();
+    }
+
+    public int getValidationRuleGroupCountByName( String name )
+    {
+        return validationRuleGroupStore.getCountByName( name );
+    }
+
+    public Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max )
+    {
+        return validationRuleGroupStore.getBetween( first, max );
+    }
+
+    public Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max )
+    {
+        return validationRuleGroupStore.getBetweenByName( name, first, max );
+    }
     
 }
