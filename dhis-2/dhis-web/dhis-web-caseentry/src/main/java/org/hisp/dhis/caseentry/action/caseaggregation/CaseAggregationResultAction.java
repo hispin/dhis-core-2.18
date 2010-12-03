@@ -30,8 +30,10 @@ package org.hisp.dhis.caseentry.action.caseaggregation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,13 +45,14 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -105,6 +108,20 @@ public class CaseAggregationResultAction
         this.currentUserService = currentUserService;
     }
 
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // ---------------------------------------------------------------
     // Input & Output Parameters
     // ---------------------------------------------------------------
@@ -130,78 +147,95 @@ public class CaseAggregationResultAction
         this.facilityLB = facilityLB;
     }
 
-    private String selectedDataSets;
+    private List<Period> periods;
 
-    public void setSelectedDataSets( String selectedDataSets )
+    public List<Period> getPeriods()
     {
-        this.selectedDataSets = selectedDataSets;
+        return periods;
     }
 
-    private String resultMessage;
-
-    public String getResultMessage()
+    public void setPeriods( List<Period> periods )
     {
-        return resultMessage;
+        this.periods = periods;
     }
 
-    private DataSet selDataSet;
+    private Integer dataSetId;
 
-    private OrganisationUnit selOrgUnit;
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
 
-    private List<OrganisationUnit> orgUnitList;
+    private Map<DataValue, String> mapDataValues;
 
-    private List<DataElement> dataElementList;
+    public Map<DataValue, String> getMapDataValues()
+    {
+        return mapDataValues;
+    }
 
-    private List<Period> periodList;
-
-    private String storedBy;
-
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Action Implementation
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
-        storedBy = currentUserService.getCurrentUsername() + "_CAE";
+        mapDataValues = new HashMap<DataValue, String>();
 
-        resultMessage = "";
+        String storedBy = currentUserService.getCurrentUsername() + "_CAE";
+        // ---------------------------------------------------------------------
+        // Get selected orgunits
+        // ---------------------------------------------------------------------
 
-        // DataSet and DataElement
-        selDataSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets ) );
-        dataElementList = new ArrayList<DataElement>( selDataSet.getDataElements() );
+        OrganisationUnit selectedOrgunit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
 
-        selOrgUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
+        if ( selectedOrgunit == null )
+        {
+            return SUCCESS;
+        }
 
-        orgUnitList = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
         if ( facilityLB.equals( "children" ) )
         {
-            orgUnitList = getChildOrgUnitTree( selOrgUnit );
+            orgUnitList = getChildOrgUnitTree( selectedOrgunit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
-            orgUnitList.add( selOrgUnit );
-            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selOrgUnit.getChildren() );
+            orgUnitList.add( selectedOrgunit );
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selectedOrgunit.getChildren() );
             Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
             orgUnitList.addAll( organisationUnits );
         }
         else
         {
-            orgUnitList.add( selOrgUnit );
+            orgUnitList.add( selectedOrgunit );
         }
 
-        // Period Related Info
-        Period startPeriod = periodService.getPeriod( sDateLB );
-        Period endPeriod = periodService.getPeriod( eDateLB );
+        // ---------------------------------------------------------------------
+        // Get DataElement list of selected dataset
+        // ---------------------------------------------------------------------
 
-        PeriodType dataSetPeriodType = selDataSet.getPeriodType();
-        periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dataSetPeriodType,
-            startPeriod.getStartDate(), endPeriod.getEndDate() ) );
+        DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
 
-        // Orgunit Iteration for Aggregation
+        List<DataElement> dataElementList = new ArrayList<DataElement>( selectedDataSet.getDataElements() );
+
+        // ---------------------------------------------------------------------
+        // Get selected periods list
+        // ---------------------------------------------------------------------
+
+        List<Period> periodList = new ArrayList<Period>();
+
+        if ( sDateLB != -1 && eDateLB != -1 )
+        {
+            periodList = periods.subList( sDateLB, eDateLB + 1 );
+        }
+        
+        // ---------------------------------------------------------------------
+        // Aggregation
+        // ---------------------------------------------------------------------
 
         for ( OrganisationUnit orgUnit : orgUnitList )
         {
-
             for ( DataElement dElement : dataElementList )
             {
                 List<DataElementCategoryOptionCombo> deCOCList = new ArrayList<DataElementCategoryOptionCombo>(
@@ -217,21 +251,22 @@ public class CaseAggregationResultAction
 
                     for ( Period period : periodList )
                     {
+                        String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );
+
                         double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
-                        
+
                         if ( resultValue != 0 )
                         {
-                            String tempStr = "" + orgUnit.getName() + "_" + dElement.getName() + "_"
-                                + period.getStartDate() + "_";
                             DataValue dataValue = dataValueService
                                 .getDataValue( orgUnit, dElement, period, optionCombo );
+
                             if ( dataValue == null )
                             {
                                 dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, storedBy,
                                     new Date(), null, optionCombo );
 
                                 dataValueService.addDataValue( dataValue );
-                                tempStr += resultValue + "Added.";
+                                mapDataValues.put( dataValue, i18n.getString( "added" ) + " " + message );
                             }
                             else
                             {
@@ -240,11 +275,10 @@ public class CaseAggregationResultAction
                                 dataValue.setStoredBy( storedBy );
 
                                 dataValueService.updateDataValue( dataValue );
-                                tempStr += resultValue + "Updated.";
+
+                                mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
                             }
 
-                            System.out.println( tempStr );
-                            resultMessage += "<br>" + tempStr;
                         }
 
                     }// PeriodList end

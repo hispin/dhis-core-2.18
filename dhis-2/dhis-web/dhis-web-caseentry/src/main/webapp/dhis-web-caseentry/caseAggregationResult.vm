@@ -1,2 +1,31 @@
+<div>
+    <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='caseAggregationForm.action'" style="width:10em">
+</div>
+<p></p>
+<div>
+#if( $mapDataValues.keySet().size() > 0 )
+	<table width='100%'>
+		<tr>
+			<th>#</th>
+			<th>$i18n.getString('name')</th>
+			<th>$i18n.getString('value')</th>
+			<th>$i18n.getString('status')</th>
+		</tr>
+	#set ( $keys = $mapDataValues.keySet() )
+	#set ($index = 1)
+	#foreach( $key in $keys)
+		<tr id="tr${key.dataElement.id}">
+			<td>$index</td>
+			<td>$key.dataElement.getName()</td>
+			<td>$key.getValue()</td>
+			<td>$mapDataValues.get($key)</td>
+		</tr>
+		#set ($index = $index + 1)
+	#end
+	</table>
 
-<div align="center">$resultMessage</div>
+#else
+	$i18n.getString('no_value_added_or_update')
+#end
+
+</div>

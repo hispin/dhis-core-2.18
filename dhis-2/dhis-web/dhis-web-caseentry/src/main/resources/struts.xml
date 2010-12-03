@@ -223,18 +223,16 @@
       <param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>    
       <param name="javascripts">javascript/caseagg.js,javascript/date.js</param>      
     </action>
-    
-	<action name="getOrgUnitDetails" class="org.hisp.dhis.caseentry.action.caseaggregation.GetOrgUnitsAction">
-		<result name="success" type="velocity">/dhis-web-caseentry/responseOrgUnit.vm</result>			
-		<param name="onExceptionReturn">plainTextError</param>
+	
+	<action name="loadPeriods" class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
+		<result name="success" type="velocity-json">/dhis-web-caseentry/responsePeriods.vm</result>
 	</action>
 	
-	<action name="getDataSetPeriods" class="org.hisp.dhis.caseentry.action.caseaggregation.GetDataSetPeriodsAction">
-		<result name="success" type="velocity">/dhis-web-caseentry/dSetResponsePeriod.vm</result>
-		<param name="onExceptionReturn">plainTextError</param>
+	<action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
+		<result name="success" type="chain">caseAggregationResultChain</result>
 	</action>
-
-    <action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction">                 
+	
+    <action name="caseAggregationResultChain" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction">                 
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
       <param name="menu">/dhis-web-caseentry/menu.vm</param>      
