@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
@@ -44,6 +46,13 @@ public class AddUserAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -59,11 +68,14 @@ public class AddUserAction
 
         int userRoles[] = { 0, 1, 1, 3, 4, 6, 5 };
 //        int orgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
-        for ( int i = 4; i <= 4; i++ )
+        //for ( int i = 4; i <= 4; i++ )
         {
-            List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService
-                .getOrganisationUnitsAtLevel( i ) );
+           // List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService
+           //     .getOrganisationUnitsAtLevel( i ) );
 
+            //Hard Coded with orgunitgroupid for Himachal
+            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( 7 );
+            List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
             for ( OrganisationUnit orgU : ouList )
             {
                 username = orgU.getShortName();
@@ -107,7 +119,8 @@ public class AddUserAction
                 userCredentials.setUsername( username );
                 userCredentials.setPassword( passwordManager.encodePassword( username, rawPassword ) );
 
-                UserAuthorityGroup group = userStore.getUserAuthorityGroup( userRoles[i] );
+                //Hard Coded with the Subcenter UserRole Id
+                UserAuthorityGroup group = userStore.getUserAuthorityGroup( 8 );
                 userCredentials.getUserAuthorityGroups().add( group );
 
                 userStore.addUser( user );
@@ -116,7 +129,7 @@ public class AddUserAction
             }// OrgUnit For Loop End
 
             System.out.println( "**********************************************" );
-            System.out.println( "User Creation for Level " + i + " is completed" );
+            //System.out.println( "User Creation for Level " + i + " is completed" );
         }// OrgUnitLevel for loop end
 
         System.out.println( "**********************************************" );

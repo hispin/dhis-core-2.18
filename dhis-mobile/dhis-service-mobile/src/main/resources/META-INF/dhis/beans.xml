@@ -105,6 +105,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
    </bean>
  -->
 
+<!-- CheckDataStatus Job -->
+    <bean id="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob"
+        class="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob">
+    </bean>
+
+    <bean name="schedulerForCheckDataStatusJob"
+        class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob" />
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="smsService" value-ref="org.hisp.dhis.mobile.SmsService"/>
+                <entry key="reportService" value-ref="org.hisp.dhis.reports.ReportService"/>
+				<entry key="dataSetService" value-ref="org.hisp.dhis.dataset.DataSetService"/>
+				<entry key="organisationUnitService" value-ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+				<entry key="periodService" value-ref="org.hisp.dhis.period.PeriodService"/>
+				<entry key="userStore" value-ref="org.hisp.dhis.user.UserStore"/>
+            </map>
+        </property>
+   </bean>
+
+   <bean id="cronTriggerForCheckDataStatusJob"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="schedulerForCheckDataStatusJob" />
+        <property name="cronExpression" value="0 38 18 * * ?" />
+   </bean>
+
 <!-- Scheduler for all Jobs -->
 
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -115,8 +141,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		-->
 		<property name="triggers">
 			<list>
-				<!--<ref bean="cronTriggerForSMSImport" />-->
-				<ref bean="simpleTriggerForSendSMS" />
+				<ref bean="cronTriggerForCheckDataStatusJob" />
+				<!--<ref bean="simpleTriggerForSendSMS" />-->
 			</list>
 		</property>
    </bean>

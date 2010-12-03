@@ -17,22 +17,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.reports.ReportService"
 		class="org.hisp.dhis.reports.DefaultReportService">
 		<property name="reportStore" ref="org.hisp.dhis.reports.ReportStore"/>
-		<property name="configurationService"
-			ref="org.hisp.dhis.config.ConfigurationService"/>
+		<property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService"/>
 		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
-		<property name="dataSetService"
-			ref="org.hisp.dhis.dataset.DataSetService"/>
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
-		</property>
-		<property name="dataElementCategoryOptionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
-		</property>
-		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
-		</property>
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
-		</property>
-		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
-		</property>
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryOptionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 	
 	<!-- DeletionHandlers -->

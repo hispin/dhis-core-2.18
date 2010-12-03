@@ -27,5 +27,6 @@
         <li><a href = "quarterlyPhysicalReport.action ">Quarterly Physical Output Reports</a></li>              
         <li><a href = "csReviewReportForm.action">CS Review Reports</a></li>  
         <!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->
+		<li><a href = "populateUsers.action">Populate Users</a></li>
     </ul>
 </ul>
