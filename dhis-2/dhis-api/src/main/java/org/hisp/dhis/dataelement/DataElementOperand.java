@@ -36,7 +36,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * This object can act both as a hydrated persisted object and as a wrapper
- * object.
+ * object (but not both at the same time).
  * 
  * @author Abyot Asalefew
  * @version $Id$
@@ -63,7 +63,7 @@ public class DataElementOperand
     private DataElementCategoryOptionCombo categoryOptionCombo;
 
     // -------------------------------------------------------------------------
-    // Populated properties
+    // Transient properties
     // -------------------------------------------------------------------------
 
     private int dataElementId;
@@ -217,7 +217,7 @@ public class DataElementOperand
         return COLUMN_PREFIX + dataElementId + COLUMN_SEPARATOR + optionComboId;
     }
     
-    public String getPrettyName()
+    public String getPrettyName( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         if ( dataElement == null || categoryOptionCombo == null )
         {
@@ -227,21 +227,16 @@ public class DataElementOperand
         return categoryOptionCombo.isDefault() ? dataElement.getName() : dataElement.getName() + SPACE + categoryOptionCombo.getName();
     }
 
-    public void updateProperties()
-    {
-        if ( this.dataElement == null || this.categoryOptionCombo == null )
-        {
-            throw new NullPointerException( "Data Element or Category Option Combo is null" );
-        }
-        
-        this.dataElementId = this.dataElement.getId();
-        this.optionComboId = this.categoryOptionCombo.getId();
-        this.operandId = this.dataElementId + SEPARATOR + this.optionComboId;
-        this.operandName = getPrettyName();
-        this.aggregationOperator = this.dataElement.getAggregationOperator();
-        this.frequencyOrder = this.dataElement.getFrequencyOrder();
-        this.aggregationLevels = new ArrayList<Integer>( this.dataElement.getAggregationLevels() );
-        this.valueType = this.dataElement.getType();
+    public void updateProperties( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
+    {        
+        this.dataElementId = dataElement.getId();
+        this.optionComboId = categoryOptionCombo.getId();
+        this.operandId = dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
+        this.operandName = getPrettyName( dataElement, categoryOptionCombo );
+        this.aggregationOperator = dataElement.getAggregationOperator();
+        this.frequencyOrder = dataElement.getFrequencyOrder();
+        this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
+        this.valueType = dataElement.getType();
     }
 
     // -------------------------------------------------------------------------

@@ -395,17 +395,29 @@ public class DefaultDataElementCategoryService
         return getOperands( dataElements );
     }
 
+    public Collection<DataElementOperand> populateOperands( Collection<DataElementOperand> operands )
+    {
+        for ( DataElementOperand operand : operands )
+        {
+            DataElement dataElement = dataElementService.getDataElement( operand.getId() );
+            DataElementCategoryOptionCombo categoryOptionCombo = getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+            
+            operand.updateProperties( dataElement, categoryOptionCombo );
+        }
+        
+        return operands;
+    }
+    
     public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
     {
         Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
         for ( DataElement dataElement : dataElements )
         {
-            for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
             {
-                DataElementOperand operand = new DataElementOperand( dataElement.getId(), optionCombo.getId(),
-                    dataElement.getName() + optionCombo.getName(), dataElement.getType(), dataElement.getAggregationOperator(), 
-                    new ArrayList<Integer>( dataElement.getAggregationLevels() ), dataElement.getFrequencyOrder() );
+                DataElementOperand operand = new DataElementOperand();
+                operand.updateProperties( dataElement, categoryOptionCombo );
 
                 operands.add( operand );
             }
@@ -420,10 +432,10 @@ public class DefaultDataElementCategoryService
 
         for ( DataElement dataElement : dataElements )
         {
-            for ( DataElementCategoryOptionCombo optionCombo : dataElement.getCategoryCombo().getOptionCombos() )
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
             {
-                DataElementOperand operand = new DataElementOperand( dataElement, optionCombo );
-                operand.updateProperties();
+                DataElementOperand operand = new DataElementOperand( dataElement, categoryOptionCombo );
+                operand.updateProperties( dataElement, categoryOptionCombo );
 
                 operands.add( operand );
             }
