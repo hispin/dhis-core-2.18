@@ -28,6 +28,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -121,6 +122,14 @@ public class DefaultReportService
     {
         this.dataValueService = dataValueService;
     }
+    
+    private OrganisationUnitService organisationUnitService;
+    
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // Report_in
     // -------------------------------------------------------------------------
@@ -1382,6 +1391,100 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
             t.printStackTrace();
         }
         return reportDesignList;
+    }
+    
+    
+    // -------------------------------------------------------------------------
+    // Get List of Orgunits that are not submiteed data for selected dataset and period 
+    // -------------------------------------------------------------------------
+    public List<OrganisationUnit> getDataNotSentOrgUnits( DataSet dataSet, Period period, OrganisationUnit rootOrgunit )
+    {
+        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgunit.getId() ) );
+                
+        Iterator<OrganisationUnit> orgUnitIterator = orgUnitList.iterator();
+        while( orgUnitIterator.hasNext() )
+        {
+            OrganisationUnit orgUnit = orgUnitIterator.next();
+            
+            if( !dataSetService.getDataSetsBySource( orgUnit ).contains( dataSet ) )
+            {
+                orgUnitIterator.remove();
+            }
+        }
+        
+        String deInfoAndCount = getDataSetMembersUsingQuery( dataSet.getId() );
+        
+        String deInfo = deInfoAndCount.split( ":" )[0];
+        
+        int dataSetMemberCount = Integer.parseInt( deInfoAndCount.split( ":" )[1] );
+        
+        orgUnitIterator = orgUnitList.iterator();
+        while( orgUnitIterator.hasNext() )            
+        {
+            OrganisationUnit orgUnit = orgUnitIterator.next();
+            
+            String query = "SELECT COUNT(*) FROM datavalue WHERE dataelementid IN (" + deInfo + ") AND sourceid = " + orgUnit.getId() + " AND periodid = " + period.getId();
+            
+            SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+
+            double dataStatusPercentatge = 0.0;
+
+            if ( sqlResultSet.next() )
+            {
+                try
+                {
+                    dataStatusPercentatge = ( (double) sqlResultSet.getInt( 1 ) / (double) dataSetMemberCount) * 100.0;
+                }
+                catch( Exception e )
+                {
+                    dataStatusPercentatge = 0.0;
+                }
+            }
+            
+            if( dataStatusPercentatge > 0 )
+            {
+                orgUnitIterator.remove();
+            }
+        }
+        
+        return orgUnitList;
+    }
+    
+    
+    String getDataSetMembersUsingQuery( int dataSetId )
+    {
+        String query = "SELECT dataelementid FROM datasetmembers WHERE datasetid =" + dataSetId;
+        
+        StringBuffer deInfo = new StringBuffer( "-1" );
+
+        SqlRowSet result = jdbcTemplate.queryForRowSet( query );
+        
+        int dataSetMemberCount = 0;
+        if ( result != null )
+        {
+            result.beforeFirst();
+
+            while ( result.next() )
+            {
+                int deId = result.getInt( 1 );
+                deInfo.append( "," ).append( deId );
+                
+                String query1 = "SELECT COUNT(*) FROM categorycombos_optioncombos WHERE categorycomboid IN ( SELECT categorycomboid FROM dataelement WHERE dataelementid = "+ deId +")";
+                
+                SqlRowSet result1 = jdbcTemplate.queryForRowSet( query1 );
+                
+                if( result1 != null )
+                {
+                    result1.beforeFirst();
+                    result1.next();
+                    dataSetMemberCount += result1.getInt( 1 );
+                }
+            }
+        }
+        
+        deInfo.append( ":"+dataSetMemberCount );
+        
+        return deInfo.toString();
     }
     
 }

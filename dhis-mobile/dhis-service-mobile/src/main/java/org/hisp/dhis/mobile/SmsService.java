@@ -36,6 +36,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -213,16 +214,21 @@ public class SmsService implements MessageService
         {
             serv.createGroup( groupName );
             
+            //Collection<OutboundMessage> messages = new ArrayList<OutboundMessage>();
             for( String recepient : recepients )
             {
+                //OutboundMessage message = new OutboundMessage( recepient, msg );
+                //System.out.println("Phone:"+recepient);
+                //messages.add( message );
                 serv.addToGroup( groupName, recepient );
             }
-            
-            OutboundMessage message = new OutboundMessage( groupName, msg );
 
+            OutboundMessage message = new OutboundMessage( groupName, msg );
+            
             try
             {
-                serv.sendMessage( message );
+               serv.sendMessage( message );
+                //serv.sendMessages( messages );
                 getService().getLogger().logInfo( "Message Sent to Group: " + groupName, null, null );
                 return "SUCCESS";
             } 
