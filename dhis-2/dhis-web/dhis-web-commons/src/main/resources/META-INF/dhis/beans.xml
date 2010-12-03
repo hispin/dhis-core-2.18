@@ -691,6 +691,7 @@
 		scope="prototype">
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>		
         <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService"/>
 	</bean>
 
     <bean id="org.hisp.dhis.commons.action.GetOrganisationUnitAction"

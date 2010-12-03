@@ -14,82 +14,17 @@ function addOptionToListWithToolTip( list, optionValue, optionText )
 * 	Open Add Data Element Group Order 
 */
 
-function openAddDataElementGroupOrder(){
-	getALLDataElementGroups();
-	document.forms['dataElementGroups'].action = "addDataElementGroupOrder.action";
+function openAddDataElementGroupOrder()
+{
+	loadDataElementGroups( "#availableDataElementGroups" );
+	
+	loadDataElementsByGroup( "" , "#availableDataElements" );	
+		
+	jQuery("#dataElementGroups").dialog("open");
+	
+	jQuery( "#dataElementGroupsForm" ).attr( "action","addDataElementGroupOrder.action");
 }
 
-function getALLDataElementGroups(){
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getALLDataElementGroupsReceived );
-	
-	var url = "getAllDataElementGroups.action";
-	
-	request.send(url);
-
-}
-
-function getALLDataElementGroupsReceived(xmlObject){
-	
-	var availableDataElementGroups = byId('availableDataElementGroups');
-	availableDataElementGroups.options.length = 0;
-	var dataElementGroups = xmlObject.getElementsByTagName('dataElementGroup');
-	availableDataElementGroups.options.add(new Option("ALL", null));
-	for(var i=0;i<dataElementGroups.length;i++){
-		var id = getElementValue(dataElementGroups.item(i), 'id');
-		var name = getElementValue(dataElementGroups.item(i), 'name');
-		availableDataElementGroups.options.add(new Option(name, id));			
-	}			
-	getDataElementsByGroup(byId("availableDataElementGroups").value);
-}
-/*
-* 	Get Data Elements By Data Element Group
-*/
-function getDataElementsByGroup( id ){
-
-	var url = "../dhis-web-commons-ajax/getDataElements.action?id=" + id;
-
-	var request = new Request();
-	request.setResponseTypeXML( 'datalement' );
-	request.setCallbackSuccess( getDataElementsByGroupReceived );	
-	request.send( url );	
-}
-
-function getDataElementsByGroupReceived( datalement ){
-	var dataElements = datalement.getElementsByTagName( "dataElement" );
-	var listDataElement = byId('availableDataElements');
-	listDataElement.options.length = 0;
-	for ( var i = 0; i < dataElements.length; i++ )
-    {
-        var id = getElementValue(dataElements[i], 'id');
-        var name = getElementValue(dataElements[i], 'name');
-		addOptionToListWithToolTip( listDataElement, id, name );
-    }
-	
-	var availableDataElements = byId('availableDataElements');
-	var selectedDataElements = byId('dataElementIds');
-	for(var i=0;i<availableDataElements.options.length;i++){
-		for(var j=0;j<selectedDataElements.options.length;j++){				
-			if(availableDataElements.options[i].value==selectedDataElements.options[j].value){					
-				availableDataElements.options[i].style.display='none';			
-			}
-		}
-	}		
-	
-	$("#dataElementGroups").showAtCenter( true );	
-}
-/*
-* 	Add Data Element Group Order
-*/
-function submitDataElementGroupOrder(){
-	if(byId("name").value =='') setMessage(i18n_name_is_null);	
-	else{
-		selectAllById('dataElementIds');
-		document.forms['dataElementGroups'].submit();
-	}
-}
 
 /*
 * 	Delete Data Element Order
@@ -115,9 +50,10 @@ function deleteDataElementOrderReceived(datalement){
 * 	Open Update Data Element Order
 */
 
-function openUpdateDataElementOrder( id ){
+function openUpdateDataElementOrder( id )
+{
 	
-	byId("dataElementGroupOrderId").value = id;
+	setFieldValue("dataElementGroupOrderId", id );
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
@@ -128,20 +64,27 @@ function openUpdateDataElementOrder( id ){
 
 function openUpdateDataElementOrderReceived(xmlObject)
 {
-		var listDataElement = byId('dataElementIds');
-		listDataElement.options.length = 0;
-		byId("name").value = getElementValue(xmlObject, 'name');
-		byId("code").value = getElementValue(xmlObject, 'code');
-		var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+	var listDataElement = jQuery('#dataElementIds');
+	listDataElement.empty();
+	byId("name").value = getElementValue(xmlObject, 'name');
+	byId("code").value = getElementValue(xmlObject, 'code');
+	var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
+	
+	for(var i=0;i<dataElements.length;i++)
+	{
+		var name = getElementValue(dataElements[i], 'name');
+		var id = getElementValue(dataElements[i], 'id');
+		listDataElement.append('<option value="' + id + '">' + name + '</option>');
+	}
+	
+	loadDataElementGroups( "#availableDataElementGroups" );
+	
+	loadDataElementsByGroup( "" , "#availableDataElements" );	
 		
-		for(var i=0;i<dataElements.length;i++){
-			var name = getElementValue(dataElements[i], 'name');
-			var id = getElementValue(dataElements[i], 'id');
-			addOptionToListWithToolTip( listDataElement, id, name );
-		}
-		
-		document.forms['dataElementGroups'].action = "updateDataElementGroupOrder.action";		
-		getALLDataElementGroups();
+	jQuery("#dataElementGroups").dialog("open");
+	
+	jQuery( "#dataElementGroupsForm" ).attr( "action","updateDataElementGroupOrder.action");
+	
 }
 /*
 * 	Update Sorted Data Element 

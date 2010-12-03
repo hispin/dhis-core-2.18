@@ -11,24 +11,23 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
+				<col width="110px"/>				
                 <thead>				
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-					<th colspan="4" class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>
                 </thead>
 				<tbody id="list">
 				#foreach( $indicatorType in $indicatorTypes )
 				<tr id="tr${indicatorType.id}">
 					<td onclick="javascript:showIndicatorTypeDetails( $indicatorType.id )">$encoder.htmlEncode( $indicatorType.name )</td>
-					<td style="text-align:center"><a href="showUpdateIndicatorTypeForm.action?id=$indicatorType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:translate( 'IndicatorType', '$indicatorType.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:removeIndicatorType( $indicatorType.id, '$encoder.jsEncode( $indicatorType.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:showIndicatorTypeDetails( $indicatorType.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+					<td style="text-align:right">
+						<a href="showUpdateIndicatorTypeForm.action?id=$indicatorType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<a href="javascript:translate( 'IndicatorType', '$indicatorType.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+						<a href="javascript:removeIndicatorType( $indicatorType.id, '$encoder.jsEncode( $indicatorType.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:showIndicatorTypeDetails( $indicatorType.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
 				</tr>
 				#end
 				</tbody>

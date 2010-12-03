@@ -259,8 +259,7 @@
     <action name="displayTable" class="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/displayTableForm.vm</param>
-      <param name="javascripts">javascript/table.js,../dhis-web-commons/util/jquery-tablednd.js,javascript/ui.core.js,javascript/ui.sortable.js</param>
-	  <param name="stylesheets">css/ui.theme.css</param>
+      <param name="javascripts">javascript/table.js</param>	  
     </action>
     
     <action name="saveDisplayTable" class="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction">

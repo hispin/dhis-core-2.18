@@ -37,13 +37,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/configuration.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
-			<param name="javascripts">
-				../dhis-web-commons/util/validate/jquery.validate.js,
-				../dhis-web-commons/util/jquery.metadata.js,
-				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/util/validate/messages_locale.js
-      		</param>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>			
 		</action>
 
 		<action name="setConfiguration"
@@ -107,8 +101,7 @@
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/addReportExcelForm.vm</param>
-			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
-			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="javascripts">javascript/reports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -131,9 +124,7 @@
 
 		<action name="getReportExcelGroups"
 			class="org.hisp.dhis.reportexcel.action.GetReportExcelGroupsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/report/ajax/responseReportGroups.vm
-			</result>
+			<result name="success" type="velocity-json">/dhis-web-excel-reporting/report/ajax/jsonReportGroups.vm</result>
 		</action>
 
 		<action name="listReportExcel"
@@ -141,8 +132,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/reports.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/reports.js</param>
-			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="javascripts">javascript/reports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -157,8 +147,7 @@
 			class="org.hisp.dhis.reportexcel.filemanager.action.ExcelTemplateListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/report/updateReportExcelForm.vm</param>
-			<param name="javascripts">javascript/reports.js,javascript/jquery.autocomplete.js</param>
-			<param name="stylesheets">style/jquery.autocomplete.css</param>
+			<param name="javascripts">javascript/reports.js</param>			
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -186,13 +175,10 @@
 			<param name="page">/dhis-web-excel-reporting/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">
-				javascript/commons.js,
-				javascript/ui.core.js,
-				javascript/ui.sortable.js,
+				javascript/commons.js,			
 				javascript/dataElementGroup.js
 			</param>
-			<param name="stylesheets">
-				style/ui.theme.css,
+			<param name="stylesheets">			
 				style/basic.css,
 				style/style.css
 			</param>
@@ -227,8 +213,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/ui.core.js,javascript/ui.core.js,javascript/ui.sortable.js,javascript/dataElementGroup.js,javascript/commons.js</param>
-			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+			<param name="javascripts">javascript/dataElementGroup.js,javascript/commons.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="updateSortedDataElements"
@@ -430,14 +416,11 @@
 			<param name="page">/dhis-web-excel-reporting/reportparams.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menuWithTree.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="stylesheets">style/previewStyle.css,
-				style/ui.all.css</param>
+			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,				
-				javascript/preview.js,
-				../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js,
-				../dhis-web-commons/javascripts/jQuery/jquery.jqprint.0.3.js
+				javascript/preview.js				
 			</param>
 		</action>
 
@@ -652,14 +635,12 @@
 			<param name="page">/dhis-web-excel-reporting/advancedReport.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="menuTreeHeight">250</param>
-			<param name="stylesheets">style/previewStyle.css,
-				style/ui.all.css</param>
+			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
 				javascript/export.js,
 				javascript/commons.js,
-				javascript/preview.js,
-				../dhis-web-commons/util/jquery-ui.js
+				javascript/preview.js				
 			</param>
 		</action>
 
@@ -901,10 +882,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/listDataElementGroup.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
-			<param name="javascripts">javascript/ui.core.js,javascript/ui.sortable.js,
-				javascript/sortedDataElementGroup.js</param>
-			<param name="stylesheets">style/ui.theme.css,
-				style/basic.css, style/style.css</param>
+			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
+			<param name="stylesheets">style/basic.css, style/style.css</param>
 		</action>
 
 		<action name="addDataElementGroupOrderForCategory"
@@ -939,7 +918,7 @@
 			<param name="page">/dhis-web-excel-reporting/import/sortDataElements.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
 			<param name="javascripts">javascript/sortedDataElementGroup.js</param>
-			<param name="stylesheets">style/ui.theme.css,style/basic.css</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="updateSortedDataElementsForCategory"
@@ -1237,11 +1216,7 @@
 			<param name="javascripts">
 				javascript/commons.js,
 				javascript/exceltemplate.js,
-				javascript/ajaxfileupload.js,
-				../dhis-web-commons/util/validate/jquery.validate.js,
-				../dhis-web-commons/util/jquery.metadata.js,
-				../dhis-web-commons/util/validate/additional-methods.js,
-				../dhis-web-commons/util/validate/messages_locale.js
+				javascript/ajaxfileupload.js			
 			</param>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>

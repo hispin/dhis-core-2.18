@@ -11,17 +11,12 @@
 					<td colspan="4" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddRoleForm.action'"/></td>
 				</tr>
 			</table>
-			<table class="listTable" id="listTable">  
-				<col/>
-				<col/>
-				<col width="20"/>
-				<col width="20"/>
-                <col width="20"/>
+			<table class="listTable" id="listTable">  				
                 <thead>				
 				<tr>
 					<th>$i18n.getString( "role" )</th>
 					<th>$i18n.getString( "description" )</th>
-					<th colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>
 				</thead>
 				<tbody id="list">
@@ -29,13 +24,11 @@
 				<tr id="tr${userAuthorityGroup.id}">
 					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.name )</td>
 					<td onclick="showRoleDetails( $userAuthorityGroup.id )">$!encoder.htmlEncode( $userAuthorityGroup.description )</td>
-					<td style="text-align:center">
-						<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-					</td>
-					<td style="text-align:center">
+					<td style="text-align:right">
+						<a href="showUpdateRoleForm.action?id=$userAuthorityGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>					
 						<a href="javascript:removeRole( $userAuthorityGroup.id, '$encoder.jsEncode( $userAuthorityGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
-                    <td style="text-align:center"><a href="javascript:showRoleDetails( $userAuthorityGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
 				</tr>
 				#end
 				</tbody>

@@ -3,18 +3,16 @@
 // -----------------------------------------------------------------------------
 function searchUserName()
 {
-	var params = 'key=' + getFieldValue( 'key' );
+	var key = getFieldValue( 'key' );
     
-    var url = 'searchUser.action?' + params;
-    
-    if( getFieldValue( 'key' ) != null && getFieldValue( 'key' ) != '' ) 
+    if( key != '' ) 
     {
-		$( '#content' ).load( url, null, unLockScreen );
+		jQuery( '#userForm' ).load( "searchUser.action", {key:key}, unLockScreen );
     	lockScreen();
     }
     else 
     {
-    	window.location.href='alluser.action?' + params;
+    	jQuery("#userForm").submit();
     }
 }
 

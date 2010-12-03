@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "indicator_management" ) #openHelp( "indicator" )</h3>
 
 <table class="mainPageTable">
@@ -18,7 +17,7 @@
 						</div>
 					</td>
 					<td style="text-align:right">
-                        <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'indicator' );" style="width:80px"/>
+                        <input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'indicator' );" style="width:80px"/><br>
 						<input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortIndicatorForm.action'" style="width:80px"/>
 					    #if ( $dataDictionaryMode == "extended" )
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddExtendedIndicatorForm.action'" style="width:80px"/>
@@ -29,32 +28,28 @@
 				</tr>
 			</table>
 			<table class="listTable" id="listTable">				
-				<col/>
-				<col/>
-				<col/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
+				<col/>				
+				<col width="120px"/>
 				<thead>	
-				
 				<tr>
-					<th colspan="3">$i18n.getString( "name" )</th>
-					<th colspan="4" class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th>$i18n.getString( "name" )</th>
+					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>
 				</thead>
 				<tbody id="list">
 				#foreach( $indicator in $indicators )
 				<tr id="tr${indicator.id}">
-					<td colspan="3" onclick="showIndicatorDetails( $indicator.id )">$encoder.htmlEncode( $indicator.name )</td>
+					<td onclick="showIndicatorDetails( $indicator.id )">$encoder.htmlEncode( $indicator.name )</td>
+					<td style="text-align:right">
 					#if ( $dataDictionaryMode == "extended" )
-						<td style="text-align:center"><a href="showUpdateExtendedIndicatorForm.action?id=$indicator.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
+						<a href="showUpdateExtendedIndicatorForm.action?id=$indicator.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 					#else
-						<td style="text-align:center"><a href="showUpdateIndicatorForm.action?id=$indicator.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
+						<a href="showUpdateIndicatorForm.action?id=$indicator.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 					#end
-					<td style="text-align:center"><a href="javascript:translate( 'Indicator', '$indicator.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:showIndicatorDetails( $indicator.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+						<a href="javascript:translate( 'Indicator', '$indicator.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+						<a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:showIndicatorDetails( $indicator.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
 				</tr>
 				#end
 				</tbody>

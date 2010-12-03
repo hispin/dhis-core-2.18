@@ -1,4 +1,3 @@
-
 <h3>$encoder.htmlEncode( $i18n.getString( "validation_rule_management" ) ) #openHelp( "validationRule" )</h3>
 
 <table class="mainPageTable">
@@ -11,15 +10,14 @@
 				</tr>	
 			</table>
 			<table class="listTable" id="listTable"> 
-				<col>
-				<col width="20">
-				<col width="20">
-				<col width="20">
+				<col/>
+				<col/>
+				<col width="96px">				
 				<thead>							
 				<tr>
 					<th>$i18n.getString( "name" )</th>
 					<th  width="100px">$i18n.getString('periodtype')</th>
-					<th colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>	
+					<th class="{sorter: false}">$i18n.getString( "operations" )</th>	
 				</tr>
 				</thead>			
 				<tbody id="list">
@@ -27,9 +25,11 @@
 				<tr id="tr${validationRule.id}">
 					<td onclick="showValidationRuleDetails( $validationRule.id )">$!encoder.htmlEncode( $validationRule.name )</td>
 					<td onclick="showValidationRuleDetails( $validationRule.id )">$i18n.getString($!validationRule.periodType.name) </td>
-					<td style="text-align:center"><a href="showUpdateValidationRuleForm.action?id=$validationRule.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a></td>
-					<td style="text-align:center"><a href="javascript:removeValidationRule( $validationRule.id, '$encoder.jsEncode( $validationRule.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a></td>
-					<td style="text-align:center"><a href="javascript:showValidationRuleDetails( $validationRule.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a></td>
+					<td style="text-align:right">
+						<a href="showUpdateValidationRuleForm.action?id=$validationRule.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+						<a href="javascript:removeValidationRule( $validationRule.id, '$encoder.jsEncode( $validationRule.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+						<a href="javascript:showValidationRuleDetails( $validationRule.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+					</td>
 				</tr>
 				#end
 				</tbody>               

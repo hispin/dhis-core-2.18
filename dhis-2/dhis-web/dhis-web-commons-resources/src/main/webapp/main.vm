@@ -4,10 +4,9 @@
     <title>DHIS 2</title>
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}">
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/ui.datepicker.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/ui.thickbox.css">
-	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery.cluetip.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery-ui-1.8.6.css">	
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/ui.thickbox.css">
+	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/theme/jquery.cluetip.css">
 	
     <link type="image/png" rel="icon" href="../images/favicon.png">    
     
@@ -18,15 +17,15 @@
     #end
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.js"></script>
+    <script type="text/javascript">
+		var dateFormat = '$encoder.jsEscape($i18n.getString( 'format.date.label.jquery' ) , "'")';
+	</script>    
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.datepicker.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.js"></script>	
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.urlencode.js"></script>	
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js"></script>		
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.block.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/ui.thickbox.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
@@ -35,6 +34,7 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
 	
 	
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>

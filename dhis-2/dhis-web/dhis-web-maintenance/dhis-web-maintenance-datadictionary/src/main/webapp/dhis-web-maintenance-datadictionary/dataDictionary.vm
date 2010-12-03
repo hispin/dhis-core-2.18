@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "data_dictionary_management" ) #openHelp( "dataDictionary" )</h3>
 
 <table class="mainPageTable">
@@ -12,22 +11,22 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col/>
-				<col width="20"/>
-				<col width="20"/>
-				<col width="20"/>
+				<col width="110px"/>				
                 <thead>			
 				<tr>
 					<th>$i18n.getString( "name" )</th>
-					<th colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>
+					<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 				</tr>
                 </thead>
 				<tbody id="list">
 				#foreach( $dataDictionary in $dataDictionaries )
 				<tr id="tr${dataDictionary.id}">
 					<td onclick="showDataDictionaryDetails( $dataDictionary.id )">$encoder.htmlEncode( $dataDictionary.name )</td>
-					<td style="text-align:center"><a href="showUpdateDataDictionaryForm.action?id=$dataDictionary.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:removeDataDictionary( $dataDictionary.id, '$encoder.jsEncode( $dataDictionary.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-					<td style="text-align:center"><a href="javascript:showDataDictionaryDetails( $dataDictionary.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+					<td style="text-align:right">
+						<a href="showUpdateDataDictionaryForm.action?id=$dataDictionary.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<a href="javascript:removeDataDictionary( $dataDictionary.id, '$encoder.jsEncode( $dataDictionary.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:showDataDictionaryDetails( $dataDictionary.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
 				</tr>
 				#end
 				</tbody>

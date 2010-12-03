@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "data_element_group_set" ) #openHelp( "dataElementGroupSet" )</h3>
 
 <table class="mainPageTable">
@@ -11,11 +10,8 @@
 				</tr>
 			</table>
 			<table class="listTable" id="groupSetList">
-                <col/>
-                <col width="20"/>
-                <col width="20"/>    
-                <col width="20"/>
-                <col width="20"/>
+                <col/>              
+                <col width="120"/>
                 <thead>  
 					<tr>
 						<th>$i18n.getString( "name" )</th>
@@ -26,10 +22,12 @@
 					#foreach( $dataElementGroupSet in $dataElementGroupSets )
 					<tr id="tr${dataElementGroupSet.id}">
 						<td onclick="showDataElementGroupSetDetails( $dataElementGroupSet.id )">$encoder.htmlEncode( $dataElementGroupSet.name )</td>
-						<td style="text-align:center"><a href="openUpdateDataElementGroupSet.action?id=$dataElementGroupSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a></td>
-						<td style="text-align:center"><a href="javascript:translate( 'DataElementGroupSet', '$dataElementGroupSet.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a></td>
-						<td style="text-align:center"><a href="javascript:deleteDataElementGroupSet( $dataElementGroupSet.id, '$encoder.jsEncode( $dataElementGroupSet.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-						<td style="text-align:center"><a href="javascript:showDataElementGroupSetDetails( $dataElementGroupSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+						<td style="text-align:right">
+							<a href="openUpdateDataElementGroupSet.action?id=$dataElementGroupSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+							<a href="javascript:translate( 'DataElementGroupSet', '$dataElementGroupSet.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
+							<a href="javascript:deleteDataElementGroupSet( $dataElementGroupSet.id, '$encoder.jsEncode( $dataElementGroupSet.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+							<a href="javascript:showDataElementGroupSetDetails( $dataElementGroupSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+						</td>
 					</tr>
 					#end
 				</tbody>
