@@ -233,26 +233,6 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
         // Filter and get operands
         // ---------------------------------------------------------------------
-
-        /*
-        final Collection<Integer> nonCalculatedDataElementIds = ConversionUtils.getIdentifiers( DataElement.class, nonCalculatedDataElements );
-        final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicators );
-        final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElements );
-
-        final Set<Integer> allDataElementIds = new HashSet<Integer>();
-        allDataElementIds.addAll( nonCalculatedDataElementIds );
-        allDataElementIds.addAll( dataElementInIndicatorIds );
-        allDataElementIds.addAll( dataElementInCalculatedDataElementIds );
-
-        final Collection<DataElementOperand> allDataElementOperands = categoryService
-            .getOperandsByIds( allDataElementIds );
-        final Collection<DataElementOperand> dataElementInIndicatorOperands = categoryService
-            .getOperandsByIds( dataElementInIndicatorIds );
-        final Collection<DataElementOperand> dataElementInCalculatedDataElementOperands = categoryService
-            .getOperandsByIds( dataElementInCalculatedDataElementIds );
-        final Collection<DataElementOperand> nonCalculatedDataElementOperands = categoryService
-            .getOperandsByIds( nonCalculatedDataElementIds );
-            */
         
         Collection<DataElementOperand> nonCalculatedOperands = categoryService.getOperands( nonCalculatedDataElements );
         Collection<DataElementOperand> indicatorOperands = categoryService.populateOperands( getOperandsInIndicators( indicators ) );
