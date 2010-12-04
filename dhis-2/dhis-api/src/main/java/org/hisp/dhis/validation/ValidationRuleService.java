@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;

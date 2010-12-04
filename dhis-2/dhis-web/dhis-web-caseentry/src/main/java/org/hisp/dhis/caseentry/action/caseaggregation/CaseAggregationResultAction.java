@@ -52,7 +52,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -71,13 +70,6 @@ public class CaseAggregationResultAction
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
         this.selectionTreeManager = selectionTreeManager;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private DataSetService dataSetService;
