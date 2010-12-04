@@ -98,8 +98,8 @@ public class SaveCompulsoryDataElementsAction
         dataSet.getCompulsoryDataElementOperands().clear();
         
         for ( String id : selectedOperands )
-        {        
-            DataElementOperand temp = DataElementOperand.generateOperand( id );
+        {
+            DataElementOperand temp = DataElementOperand.getOperand( id );
             
             DataElementOperand operand = new DataElementOperand( 
                 dataElementService.getDataElement( temp.getDataElementId() ),
