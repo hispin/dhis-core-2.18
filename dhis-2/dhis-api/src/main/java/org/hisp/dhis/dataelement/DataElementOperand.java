@@ -181,8 +181,10 @@ public class DataElementOperand
      * @param formula the formula.
      * @return a DataElementOperand.
      */
-    public static DataElementOperand generateOperand( String formula )
+    public static DataElementOperand getOperand( String formula )
     {
+        formula = formula.replaceAll( "[\\[\\]]", "" ); //TODO fix
+        
         final int dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
         final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1,
             formula.length() ) );
