@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.period.Period;
@@ -108,14 +107,6 @@ public interface ExpressionService
      *         DataElement, Source, and Period.
      */
     Double getExpressionValue( Expression expression, Period period, Source source, boolean nullIfNoValues, boolean aggregate );
-    
-    /**
-     * Returns all DataElements associated with the CalculatedDataElement.
-     * 
-     * @param id the CalculatedDataElement identifier.
-     * @return a Set of DataElements.
-     */
-    Set<DataElement> getDataElementsInCalculatedDataElement( CalculatedDataElement calculatedDataElement );
     
     /**
      * Returns all DataElements included in the given expression string.

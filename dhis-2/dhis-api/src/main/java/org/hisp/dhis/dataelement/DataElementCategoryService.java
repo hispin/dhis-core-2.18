@@ -324,13 +324,6 @@ public interface DataElementCategoryService
     public Collection<DataElementOperand> populateOperands( Collection<DataElementOperand> operands );
     
     /**
-     * 
-     * @param dataElementIdentifiers
-     * @return
-     */
-    Collection<DataElementOperand> getOperandsByIds( Collection<Integer> dataElementIdentifiers );
-
-    /**
      * Gets the Operands for the given Collection of DataElements.
      * 
      * @param dataElements the Collection of DataElements.

@@ -388,18 +388,11 @@ public class DefaultDataElementCategoryService
         return categoryCombo.getOptionCombos().iterator().next();
     }
 
-    public Collection<DataElementOperand> getOperandsByIds( Collection<Integer> dataElementIdentifiers )
-    {
-        Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIdentifiers );
-
-        return getOperands( dataElements );
-    }
-
     public Collection<DataElementOperand> populateOperands( Collection<DataElementOperand> operands )
     {
         for ( DataElementOperand operand : operands )
         {
-            DataElement dataElement = dataElementService.getDataElement( operand.getId() );
+            DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
             DataElementCategoryOptionCombo categoryOptionCombo = getDataElementCategoryOptionCombo( operand.getOptionComboId() );
             
             operand.updateProperties( dataElement, categoryOptionCombo );
