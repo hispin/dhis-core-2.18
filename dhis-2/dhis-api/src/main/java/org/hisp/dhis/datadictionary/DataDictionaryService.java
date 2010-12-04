@@ -30,7 +30,6 @@ package org.hisp.dhis.datadictionary;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
 
 /**
  * @author Lars Helge Overland

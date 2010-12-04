@@ -39,8 +39,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Tran Thanh Tri
  * @version $Id$

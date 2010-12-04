@@ -287,4 +287,41 @@ public class ValidationRuleStoreTest
         assertTrue( rules.contains( ruleA ) );
         assertTrue( rules.contains( ruleB ) );
     }
+
+    @Test
+    public void testGetValidationRuleCount()
+    {
+        Set<DataElement> dataElementsA = new HashSet<DataElement>();
+        dataElementsA.add( dataElementA );
+        dataElementsA.add( dataElementB );
+
+        Set<DataElement> dataElementsB = new HashSet<DataElement>();
+        dataElementsB.add( dataElementC );
+        dataElementsB.add( dataElementD );
+
+        Set<DataElement> dataElementsC = new HashSet<DataElement>();
+        
+        Set<DataElement> dataElementsD = new HashSet<DataElement>();
+        dataElementsD.addAll( dataElementsA );
+        dataElementsD.addAll( dataElementsB );        
+        
+        Expression expression1 = new Expression( "Expression1", "Expression1", dataElementsA );
+        Expression expression2 = new Expression( "Expression2", "Expression2", dataElementsB );
+        Expression expression3 = new Expression( "Expression3", "Expression3", dataElementsC );
+        
+        expressionService.addExpression( expression1 );
+        expressionService.addExpression( expression2 );
+        expressionService.addExpression( expression3 );
+        
+        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, expression1, expression3, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, expression2, expression3, periodType );
+        ValidationRule ruleC = createValidationRule( 'C', ValidationRule.OPERATOR_EQUAL, expression3, expression3, periodType );
+
+        validationRuleStore.saveValidationRule( ruleA );
+        validationRuleStore.saveValidationRule( ruleB );
+        validationRuleStore.saveValidationRule( ruleC );
+        
+        assertNotNull( validationRuleStore.getNumberOfValidationRules().intValue() );
+        assertEquals( 3, validationRuleStore.getNumberOfValidationRules().intValue() );
+    }
 }

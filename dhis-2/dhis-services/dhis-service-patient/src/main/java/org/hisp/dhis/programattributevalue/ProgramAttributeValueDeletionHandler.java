@@ -29,7 +29,6 @@ package org.hisp.dhis.programattributevalue;
 
 import java.util.Collection;
 
-import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramAttribute;
 import org.hisp.dhis.program.ProgramInstance;

@@ -29,8 +29,6 @@ package org.hisp.dhis.indicator;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$

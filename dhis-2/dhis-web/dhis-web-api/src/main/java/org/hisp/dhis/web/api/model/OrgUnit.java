@@ -31,24 +31,23 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import javax.xml.bind.annotation.XmlAttachmentRef;
 import javax.xml.bind.annotation.XmlAttribute;
 
-
-public class OrgUnit implements DataStreamSerializable {
-
+public class OrgUnit
+    implements DataStreamSerializable
+{
     private int id;
 
     private String name;
 
     private String downloadAllUrl;
-    
+
     private String downloadActivityPlanUrl;
-    
+
     private String uploadFacilityReportUrl;
-    
+
     private String uploadActivityReportUrl;
-    
+
     @XmlAttribute
     public int getId()
     {
@@ -120,7 +119,6 @@ public class OrgUnit implements DataStreamSerializable {
         dataOutputStream.writeUTF( this.downloadActivityPlanUrl );
         dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
         dataOutputStream.writeUTF( this.uploadActivityReportUrl );
-        
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -133,5 +131,4 @@ public class OrgUnit implements DataStreamSerializable {
         this.uploadFacilityReportUrl = dataInputStream.readUTF();
         this.uploadActivityReportUrl = dataInputStream.readUTF();
     }
-
 }

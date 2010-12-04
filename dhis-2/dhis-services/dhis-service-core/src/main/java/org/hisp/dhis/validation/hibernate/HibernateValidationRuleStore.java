@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -107,9 +106,10 @@ public class HibernateValidationRuleStore
         
         return validationRules;
     }
-    
+
+    @Override
     public Integer getNumberOfValidationRules()
     {
-        return (Integer) getSqlQuery( "select count(*) as no from validationrule" ).addScalar( "no", Hibernate.INTEGER ).uniqueResult();
+        return getCount();
     }
 }

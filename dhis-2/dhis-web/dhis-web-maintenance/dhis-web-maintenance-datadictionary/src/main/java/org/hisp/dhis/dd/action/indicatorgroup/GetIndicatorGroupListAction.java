@@ -35,11 +35,8 @@ import java.util.List;
 
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
