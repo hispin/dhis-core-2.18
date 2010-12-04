@@ -31,7 +31,6 @@ import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.datamart.util.ParserUtil.getDataElementIdsInExpression;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -235,6 +234,7 @@ public class DefaultDataMartEngine
         // Filter and get operands
         // ---------------------------------------------------------------------
 
+        /*
         final Collection<Integer> nonCalculatedDataElementIds = ConversionUtils.getIdentifiers( DataElement.class, nonCalculatedDataElements );
         final Set<Integer> dataElementInIndicatorIds = getDataElementIdsInIndicators( indicators );
         final Set<Integer> dataElementInCalculatedDataElementIds = getDataElementIdsInCalculatedDataElements( calculatedDataElements );
@@ -252,15 +252,25 @@ public class DefaultDataMartEngine
             .getOperandsByIds( dataElementInCalculatedDataElementIds );
         final Collection<DataElementOperand> nonCalculatedDataElementOperands = categoryService
             .getOperandsByIds( nonCalculatedDataElementIds );
+            */
+        
+        Collection<DataElementOperand> nonCalculatedOperands = categoryService.getOperands( nonCalculatedDataElements );
+        Collection<DataElementOperand> indicatorOperands = categoryService.populateOperands( getOperandsInIndicators( indicators ) );
+        Collection<DataElementOperand> calculatedOperands = categoryService.populateOperands( getOperandsInCalculatedDataElements( calculatedDataElements ) );
+        
+        Set<DataElementOperand> allOperands = new HashSet<DataElementOperand>();
+        allOperands.addAll( nonCalculatedOperands );
+        allOperands.addAll( indicatorOperands );
+        allOperands.addAll( calculatedOperands );
 
         final Collection<DataElementOperand> sumIntDataElementOperands = ParserUtil.filterOperands(
-            nonCalculatedDataElementOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
+            nonCalculatedOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_SUM );
         final Collection<DataElementOperand> averageIntDataElementOperands = ParserUtil.filterOperands(
-            nonCalculatedDataElementOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
+            nonCalculatedOperands, VALUE_TYPE_INT, AGGREGATION_OPERATOR_AVERAGE );
         final Collection<DataElementOperand> sumBoolDataElementOperands = ParserUtil.filterOperands(
-            nonCalculatedDataElementOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_SUM );
+            nonCalculatedOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_SUM );
         final Collection<DataElementOperand> averageBoolDataElementOperands = ParserUtil.filterOperands(
-            nonCalculatedDataElementOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_AVERAGE );
+            nonCalculatedOperands, VALUE_TYPE_BOOL, AGGREGATION_OPERATOR_AVERAGE );
 
         log.info( "Filtered data elements: " + TimeUtils.getHMS() );
 
@@ -270,9 +280,9 @@ public class DefaultDataMartEngine
 
         String key = RandomStringUtils.randomAlphanumeric( 8 );
 
-        if ( crossTabService.validateCrossTabTable( allDataElementOperands ) != 0 )
+        if ( crossTabService.validateCrossTabTable( allOperands ) != 0 )
         {
-            int excess = crossTabService.validateCrossTabTable( allDataElementOperands );
+            int excess = crossTabService.validateCrossTabTable( allOperands );
 
             log.warn( "Cannot crosstabulate since the number of data elements exceeded maximum columns: " + excess );
 
@@ -291,7 +301,7 @@ public class DefaultDataMartEngine
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         
         final Collection<DataElementOperand> emptyOperands = crossTabService.populateCrossTabTable(
-            allDataElementOperands, intersectingPeriodIds, childrenIds, key );
+            allOperands, intersectingPeriodIds, childrenIds, key );
         
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
@@ -363,8 +373,7 @@ public class DefaultDataMartEngine
 
         if ( indicators != null && indicators.size() > 0 )
         {
-            count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits,
-                dataElementInIndicatorOperands, key );
+            count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, key );
 
             log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
         }
@@ -377,11 +386,9 @@ public class DefaultDataMartEngine
 
         if ( calculatedDataElements != null && calculatedDataElements.size() > 0 )
         {
-            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods,
-                organisationUnits, dataElementInCalculatedDataElementOperands, key );
+            count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods, organisationUnits, calculatedOperands, key );
 
-            log.info( "Exported values for calculated data elements (" + calculatedDataElements.size() + "): "
-                + TimeUtils.getHMS() );
+            log.info( "Exported values for calculated data elements (" + calculatedDataElements.size() + "): " + TimeUtils.getHMS() );
         }
 
         crossTabService.dropCrossTabTable( key );
@@ -399,41 +406,35 @@ public class DefaultDataMartEngine
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    /**
-     * Returns all data element identifiers included in the indicators in the
-     * given identifier collection.
-     */
-    private Set<Integer> getDataElementIdsInIndicators( final Collection<Indicator> indicators )
+    private Set<DataElementOperand> getOperandsInIndicators( Collection<Indicator> indicators )
     {
-        final Set<Integer> identifiers = new HashSet<Integer>( indicators.size() );
-
-        for ( final Indicator indicator : indicators )
+        final Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        
+        for ( Indicator indicator : indicators )
         {
-            identifiers.addAll( getDataElementIdsInExpression( indicator.getNumerator() ) );
-            identifiers.addAll( getDataElementIdsInExpression( indicator.getDenominator() ) );
+            Set<DataElementOperand> temp = expressionService.getOperandsInExpression( indicator.getNumerator() );
+            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
+            
+            temp = expressionService.getOperandsInExpression( indicator.getDenominator() );            
+            operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
         }
-
-        return identifiers;
+        
+        return operands;
     }
-
-    /**
-     * Returns all data element identifiers included in the calculated data
-     * elements in the given identifier collection.
-     */
-    private Set<Integer> getDataElementIdsInCalculatedDataElements( final Collection<CalculatedDataElement> calculatedDataElements )
+    
+    private Set<DataElementOperand> getOperandsInCalculatedDataElements( final Collection<CalculatedDataElement> calculatedDataElements )
     {
-        final Set<Integer> identifiers = new HashSet<Integer>();
-
+        final Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+        
         for ( final CalculatedDataElement calculatedDataElement : calculatedDataElements )
         {
-            final Set<DataElement> dataElements = expressionService.getDataElementsInCalculatedDataElement( calculatedDataElement );
-
-            if ( dataElements != null )
+            if ( calculatedDataElement != null && calculatedDataElement.getExpression() != null )
             {
-                identifiers.addAll( ConversionUtils.getIdentifiers( DataElement.class, dataElements ) );
+                Set<DataElementOperand> temp = expressionService.getOperandsInExpression( calculatedDataElement.getExpression().getExpression() );
+                operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
             }
         }
-
-        return identifiers;
+        
+        return operands;
     }
 }
