@@ -176,7 +176,6 @@ public class IndicatorConverter
             
             final IndicatorType type = new IndicatorType();
             indicator.setIndicatorType( type );
-            
             indicator.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             indicator.setUuid( values.get( FIELD_UUID ) );
             indicator.setName( values.get( FIELD_NAME ) );

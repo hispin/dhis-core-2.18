@@ -73,11 +73,9 @@ public class DefaultExpressionService
     private static final String NULL_REPLACEMENT = "0";
     private static final String SPACE = " ";
     
-    private static final String FORMULA_EXPRESSION = "(\\[\\d+\\" + SEPARATOR + "\\d+\\])";
-    private static final String DESCRIPTION_EXPRESSION = "\\[.+?\\" + SEPARATOR + ".+?\\]";
+    private static final String FORMULA_EXPRESSION = "\\[.+?\\]";
     
     private final Pattern FORMULA_PATTERN = Pattern.compile( FORMULA_EXPRESSION );
-    private final Pattern DESCRIPTION_PATTERN = Pattern.compile( DESCRIPTION_EXPRESSION );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -193,7 +191,7 @@ public class DefaultExpressionService
             while ( matcher.find() )
             {
                 String match = matcher.group();
-
+                
                 final DataElementOperand operand = DataElementOperand.getOperand( match );
                 
                 final Integer mappedDataElementId = dataElementMapping.get( operand.getDataElementId() );
@@ -253,7 +251,7 @@ public class DefaultExpressionService
         
         StringBuffer buffer = new StringBuffer();
         
-        final Matcher matcher = DESCRIPTION_PATTERN.matcher( formula );
+        final Matcher matcher = FORMULA_PATTERN.matcher( formula );
 
         int dataElementId = -1;
         int categoryOptionComboId = -1;
@@ -321,7 +319,7 @@ public class DefaultExpressionService
         {
             buffer = new StringBuffer();
 
-            final Matcher matcher = DESCRIPTION_PATTERN.matcher( formula );
+            final Matcher matcher = FORMULA_PATTERN.matcher( formula );
 
             while ( matcher.find() )
             {
