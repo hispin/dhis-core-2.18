@@ -197,7 +197,7 @@ public class DefaultCrossTabService
 
         for ( DataElementOperand operand : operands )
         {
-            final String col = operand.getSimpleName();
+            final String col = operand.getColumnName();
 
             if ( columnNameIndexMap.containsKey( col ) )
             {

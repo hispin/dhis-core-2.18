@@ -35,7 +35,7 @@ function saveCompulsoryDataElements()
         <td>
             <select id="selectedOperands" name="selectedOperands" size="15" style="width:325px" multiple="multiple" ondblclick="moveSelectedById( 'selectedOperands', 'availableOperands' )">
             #foreach( $operand in $selectedOperands )
-                <option value="${operand.persistedId}">$encoder.htmlEncode( $!operand.persistedName )</option>
+                <option value="${operand.persistedId}">$encoder.htmlEncode( $!operand.getPrettyName() )</option>
             #end
             </select>
         </td>        
