@@ -574,9 +574,9 @@
             <description>DescriptionA</description>
             <type>absolute</type>
             <operator>equal_to</operator>
-            <leftSideExpression>[A.65]+[B.65]</leftSideExpression>
+            <leftSideExpression>[65.65]+[66.65]</leftSideExpression>
             <leftSideDescription>DescriptionA</leftSideDescription>
-            <rightSideExpression>[A.65]+[B.65]</rightSideExpression>
+            <rightSideExpression>[65.65]+[66.65]</rightSideExpression>
             <rightSideDescription>DescriptionA</rightSideDescription>
         </validationRule>
         <validationRule>
@@ -584,9 +584,9 @@
             <description>DescriptionB</description>
             <type>absolute</type>
             <operator>equal_to</operator>
-            <leftSideExpression>[A.65]+[B.65]</leftSideExpression>
+            <leftSideExpression>[65.65]+[66.65]</leftSideExpression>
             <leftSideDescription>DescriptionA</leftSideDescription>
-            <rightSideExpression>[A.65]+[B.65]</rightSideExpression>
+            <rightSideExpression>[65.65]+[66.65]</rightSideExpression>
             <rightSideDescription>DescriptionA</rightSideDescription>
         </validationRule>
         <validationRule>
@@ -594,9 +594,9 @@
             <description>DescriptionC</description>
             <type>absolute</type>
             <operator>equal_to</operator>
-            <leftSideExpression>[A.65]+[B.65]</leftSideExpression>
+            <leftSideExpression>[65.65]+[66.65]</leftSideExpression>
             <leftSideDescription>DescriptionA</leftSideDescription>
-            <rightSideExpression>[A.65]+[B.65]</rightSideExpression>
+            <rightSideExpression>[65.65]+[66.65]</rightSideExpression>
             <rightSideDescription>DescriptionA</rightSideDescription>
         </validationRule>
     </validationRules>
