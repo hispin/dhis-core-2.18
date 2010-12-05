@@ -45,11 +45,12 @@ public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {
     public static final String SEPARATOR = ".";
-
+    
+    private static final String TYPE_VALUE = "value";
+    private static final String TYPE_TOTAL = "total";
+    
     private static final String SPACE = "";
-
     private static final String COLUMN_PREFIX = "de";
-
     private static final String COLUMN_SEPARATOR = "_";
 
     // -------------------------------------------------------------------------
@@ -81,6 +82,8 @@ public class DataElementOperand
     private List<Integer> aggregationLevels = new ArrayList<Integer>();
 
     private int frequencyOrder;
+    
+    private String operandType;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -175,29 +178,12 @@ public class DataElementOperand
     }
 
     /**
-     * Generates a DataElementOperand based on the given formula. The formula
-     * needs to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
-     * 
-     * @param formula the formula.
-     * @return a DataElementOperand.
-     */
-    public static DataElementOperand getOperand( String formula )
-    {
-        formula = formula.replaceAll( "[\\[\\]]", "" ); //TODO fix
-        
-        final int dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
-        final int categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1,
-            formula.length() ) );
-
-        return new DataElementOperand( dataElementId, categoryOptionComboId );
-    }
-
-    /**
      * Returns a name based on the DataElement and the
      * DataElementCategoryOptionCombo.
      * 
      * @return the name.
      */
+    //TODO remove?
     public String getPersistedName()
     {
         return dataElement.getName() + SPACE + categoryOptionCombo.getName();
@@ -214,11 +200,25 @@ public class DataElementOperand
         return dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
     }
 
+    /**
+     * Returns a database-friendly name.
+     * 
+     * @return the name.
+     */
+    //TODO rename
     public String getSimpleName()
     {
         return COLUMN_PREFIX + dataElementId + COLUMN_SEPARATOR + optionComboId;
     }
     
+    /**
+     * Returns a pretty-print name based on the given data element and category
+     * option combo.
+     * 
+     * @param dataElement the data element.
+     * @param categoryOptionCombo the category option combo.
+     * @return the name.
+     */
     public String getPrettyName( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         if ( dataElement == null || categoryOptionCombo == null )
@@ -228,7 +228,22 @@ public class DataElementOperand
         
         return categoryOptionCombo.isDefault() ? dataElement.getName() : dataElement.getName() + SPACE + categoryOptionCombo.getName();
     }
+    
+    /**
+     * Indicators whether this operand represents a total value or not.
+     * 
+     * @return true or false.
+     */
+    public boolean isTotal()
+    {
+        return operandType != null && operandType.equals( TYPE_TOTAL );
+    }
 
+    /**
+     * Updates all transient 
+     * @param dataElement
+     * @param categoryOptionCombo
+     */
     public void updateProperties( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {        
         this.dataElementId = dataElement.getId();
@@ -239,6 +254,44 @@ public class DataElementOperand
         this.frequencyOrder = dataElement.getFrequencyOrder();
         this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
         this.valueType = dataElement.getType();
+    }
+
+    /**
+     * Generates a DataElementOperand based on the given formula. The formula
+     * needs to be on the form "[<dataelementid>,<categoryoptioncomboid>]".
+     * 
+     * @param formula the formula.
+     * @return a DataElementOperand.
+     */
+    public static DataElementOperand getOperand( String formula )
+        throws NumberFormatException
+    {
+        formula = formula.replaceAll( "[\\[\\]]", "" );
+        
+        int dataElementId = 0;
+        int categoryOptionComboId = 0;
+        String operandType = null;
+        
+        if ( formula.contains( SEPARATOR ) ) // Value
+        {
+            dataElementId = Integer.parseInt( formula.substring( 0, formula.indexOf( SEPARATOR ) ) );
+            categoryOptionComboId = Integer.parseInt( formula.substring( formula.indexOf( SEPARATOR ) + 1, formula.length() ) );
+            
+            operandType = TYPE_VALUE;
+        }
+        else // Total
+        {
+            dataElementId = Integer.parseInt( formula );
+            
+            operandType = TYPE_TOTAL;
+        }
+
+        DataElementOperand operand = new DataElementOperand();
+        operand.setDataElementId( dataElementId );
+        operand.setOptionComboId( categoryOptionComboId );
+        operand.setOperandType( operandType );
+        
+        return operand;
     }
 
     // -------------------------------------------------------------------------
@@ -353,6 +406,16 @@ public class DataElementOperand
     public void setFrequencyOrder( int frequencyOrder )
     {
         this.frequencyOrder = frequencyOrder;
+    }
+
+    public String getOperandType()
+    {
+        return operandType;
+    }
+
+    public void setOperandType( String operandType )
+    {
+        this.operandType = operandType;
     }
 
     // -------------------------------------------------------------------------

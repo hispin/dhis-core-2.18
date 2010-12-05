@@ -216,11 +216,11 @@ public class ExpressionServiceTest
     	
     	expressionA = "[" + "foo" + SEPARATOR + categoryOptionComboId + "] + 12";
     	
-    	assertEquals( ExpressionService.DATAELEMENT_ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
+    	assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
     	
     	expressionA = "[" + dataElementIdA + SEPARATOR + "foo" + "] + 12";
     	
-    	assertEquals( ExpressionService.CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
+    	assertEquals( ExpressionService.ID_NOT_NUMERIC, expressionService.expressionIsValid( expressionA ) );
     	
     	expressionA = "[" + 999 + SEPARATOR + categoryOptionComboId + "] + 12";
     	
