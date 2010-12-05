@@ -249,56 +249,39 @@ public class DefaultExpressionService
             return EXPRESSION_IS_EMPTY;
         }
         
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         
         final Matcher matcher = FORMULA_PATTERN.matcher( formula );
 
-        int dataElementId = -1;
-        int categoryOptionComboId = -1;
-
         while ( matcher.find() )
         {
-            String match = matcher.group();
-
-            match = match.replaceAll( "[\\[\\]]", "" );
-
-            final String dataElementIdString = match.substring( 0, match.indexOf( SEPARATOR ) );
-            final String categoryOptionComboIdString = match.substring( match.indexOf( SEPARATOR ) + 1, match.length() );
-
+            DataElementOperand operand = null;
+            
             try
             {
-                dataElementId = Integer.parseInt( dataElementIdString );
+                operand = DataElementOperand.getOperand( matcher.group() );
             }
             catch ( NumberFormatException ex )
             {
-                return DATAELEMENT_ID_NOT_NUMERIC;
+                return ID_NOT_NUMERIC;
             }
 
-            try
-            {
-                categoryOptionComboId = Integer.parseInt( categoryOptionComboIdString );
-            }
-            catch ( NumberFormatException ex )
-            {
-                return CATEGORYOPTIONCOMBO_ID_NOT_NUMERIC;
-            }
-
-            if ( !dataElementService.dataElementExists( dataElementId  ) )
+            if ( !dataElementService.dataElementExists( operand.getDataElementId()  ) )
             {
                 return DATAELEMENT_DOES_NOT_EXIST;
             }
 
-            if ( !dataElementService.dataElementCategoryOptionComboExists( categoryOptionComboId ) )
+            if ( !operand.isTotal() && !dataElementService.dataElementCategoryOptionComboExists( operand.getOptionComboId() ) )
             {
                 return CATEGORYOPTIONCOMBO_DOES_NOT_EXIST;
             }
 
             // -----------------------------------------------------------------
-            // Replacing the operand with 1 in order to later be able to verify
+            // Replacing the operand with 1.1 in order to later be able to verify
             // that the formula is mathematically valid
             // -----------------------------------------------------------------
 
-            matcher.appendReplacement( buffer, "1.0" );
+            matcher.appendReplacement( buffer, "1.1" );
         }
         
         matcher.appendTail( buffer );

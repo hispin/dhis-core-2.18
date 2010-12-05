@@ -35,7 +35,16 @@ import org.hisp.dhis.dataelement.DataElement;
 /**
  * An Expression is the expression of e.g. a validation rule. It consist of a
  * String representation of the rule as well as references to the data elements
- * included in the expression.
+ * and category option combos included in the expression.
+ * 
+ * The expression can contain numbers and mathematical operators and contain references
+ * to data elements and category option combos on the form: 
+ * 
+ * i) [1.2] where 1 refers to the data element identifier and 2 refers to the 
+ * category option combo identifier.
+ * 
+ * ii) [1] where 1 refers to the data element identifier, in this case the formula
+ * represents the total value for all category option combos for that data element. 
  * 
  * @author Margrethe Store
  * @version $Id: Expression.java 5011 2008-04-24 20:41:28Z larshelg $
