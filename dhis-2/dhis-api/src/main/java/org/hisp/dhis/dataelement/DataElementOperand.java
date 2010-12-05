@@ -178,18 +178,6 @@ public class DataElementOperand
     }
 
     /**
-     * Returns a name based on the DataElement and the
-     * DataElementCategoryOptionCombo.
-     * 
-     * @return the name.
-     */
-    //TODO remove?
-    public String getPersistedName()
-    {
-        return dataElement.getName() + SPACE + categoryOptionCombo.getName();
-    }
-
-    /**
      * Returns an id based on the DataElement and the
      * DataElementCategoryOptionCombo.
      * 
@@ -205,8 +193,7 @@ public class DataElementOperand
      * 
      * @return the name.
      */
-    //TODO rename
-    public String getSimpleName()
+    public String getColumnName()
     {
         return COLUMN_PREFIX + dataElementId + COLUMN_SEPARATOR + optionComboId;
     }
@@ -240,7 +227,8 @@ public class DataElementOperand
     }
 
     /**
-     * Updates all transient 
+     * Updates all transient properties.
+     * 
      * @param dataElement
      * @param categoryOptionCombo
      */
