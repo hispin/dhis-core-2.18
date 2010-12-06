@@ -151,16 +151,9 @@ public class TrayApp
 
         appServer = new WebAppServer();
         appServer.init( installDir, this );
+
+        appServer.start();
         
-        try
-        {
-            appServer.start();
-        }
-        catch ( Exception ex )
-        {
-            String message = "Web server failed to start: \n" + ex.toString();
-            JOptionPane.showMessageDialog( (JFrame) null, message );
-        }
     }
 
     // -------------------------------------------------------------------------
@@ -182,7 +175,8 @@ public class TrayApp
         trayIcon.displayMessage( "Started", "DHIS 2 is running. Your browser will\n be pointed to " + getUrl() + ".",
             TrayIcon.MessageType.INFO );
         trayIcon.setToolTip( "DHIS 2 Server running" );
-        trayIcon.setImage( createImage( RUNNING_ICON, "Running icon" ) );        
+        trayIcon.setImage( createImage( RUNNING_ICON, "Running icon" ) );
+        
         launchBrowser();
     }
 
@@ -242,7 +236,7 @@ public class TrayApp
         log.info( "Graceful shutdown..." );
         try
         {
-            appServer.stop();
+            appServer.shutdown();
         }
         catch ( Exception ex )
         {
