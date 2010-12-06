@@ -876,7 +876,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
             width: GLOBAL.conf.combo_width,
-            value: "#FFFF00"
+            value: "#FFFF00",
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }
+            }
         },
         
         {
@@ -886,7 +894,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
             width: GLOBAL.conf.combo_width,
-            value: "#FF0000"
+            value: "#FF0000",
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }
+            }
         },
         
         { html: '<div class="thematic-br">' },
@@ -897,7 +913,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: 'Low radius',
 			labelSeparator: GLOBAL.conf.labelseparator,
             width: GLOBAL.conf.combo_number_width_small,
-            value: 5
+            value: 5,
+            listeners: {
+                'change': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }                
+            }
         },
         
         {
@@ -906,26 +930,21 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: 'High radius',
 			labelSeparator: GLOBAL.conf.labelseparator,
             width: GLOBAL.conf.combo_number_width_small,
-            value: 20
-        },
-        
-        { html: '<div class="thematic-br">' },
-
-        {
-            xtype: 'button',
-            text: i18n_refresh,
-            isFormField: true,
-            fieldLabel: GLOBAL.conf.emptytext,
-            labelSeparator: GLOBAL.conf.labelseparator,
-            scope: this,
-            handler: function() {
-                if (this.formValidation.validateForm(true)) {
-                    this.layer.setVisibility(true);
-                    this.classify(true, true);
+            value: 20,
+            listeners: {
+                'change': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                },
+                'specialkey': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
                 }
-                else {
-                    Ext.message.msg(false, i18n_form_is_not_complete);
-                }
+                
             }
         }
 
