@@ -36,7 +36,7 @@ GLOBAL.conf = {
 	combo_list_width_fieldset: 112 + 17,
 	combo_number_width: 65,
 	combo_number_width_small: 30,
-	
+    
 	emptytext: '',
 	labelseparator: '',
 	

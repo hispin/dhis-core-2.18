@@ -164,25 +164,6 @@
     filter:alpha(opacity=100);
 }
 
-/* Ext Grid */
-.row-assigned  {
-	background-color:#90ee90;
-}
-.row-unassigned  {
-	background-color:#FFFFFF;
-}
-#grid_gp .x-grid3-cell-inner {
-	color:#333;
-}
-.x-grid3-cell-inner, .x-grid3-hd-inner  {
-	font:normal 10px lucida sans unicode,ubuntu,arial;
-	color:#777;
-}
-.x-grid3-hd-inner, .x-grid3-hd-organisationUnitId  {
-	font-family:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#333;
-}
-
 /* Ext Button */
 .x-btn-icon .x-btn-small .x-btn-text {
     height:14px;
@@ -223,6 +204,9 @@
 }
 .x-btn .icon-help {
 	background-image:url(../../../images/help2.png);
+}
+.x-btn .icon-admin {
+	background-image:url(../../../images/settings.png);
 }
 .aa_med button {
 	color:#333;
@@ -339,6 +323,12 @@
 	font:bold 11px arial;
 	color:#111;
 }
+#window-admin-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/settings.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
 #window-maplayer-title {
 	padding:0 0 3px 0px;
 	font:bold 11px arial;
@@ -363,6 +353,9 @@
 .panel-tab-title {
 	font:normal 11px lucida sans unicode,ubuntu,arial;
 	color:#333;
+}
+.x-panel-header {
+    font-family:lucida sans unicode,ubuntu,arial,tahoma;
 }
 
 /* Msg */
