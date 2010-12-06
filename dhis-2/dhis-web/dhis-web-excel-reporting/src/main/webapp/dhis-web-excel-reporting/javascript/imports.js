@@ -333,49 +333,52 @@ function validateUploadExcelImport ( fileName, columnIndex ) {
 
 function validateUploadExcelImport(){
 
-		$.ajaxFileUpload
-        (
+	$.ajaxFileUpload
+	(
+		{
+			url:'validateUploadExcelImport.action',
+			secureuri:false,
+			fileElementId:'upload',
+			dataType: 'json',
+			success: function (data, status)
 			{
-				url:'validateUploadExcelImport.action',
-				secureuri:false,
-				fileElementId:'upload',
-				dataType: 'xml',
-				success: function (data, status)
+				if ( typeof( data.response ) != 'undefined' )
 				{
-					data = data.getElementsByTagName('message')[0];
-					var type = data.getAttribute("type");
-					if(type=='error'){                    
-						setMessage(data.firstChild.nodeValue);
-					}else{
-						//document.forms['importingParam'].submit();
+					if( data.response != 'success' )
+					{
+						setMessage( data.message );
+					}
+					else
+					{
 						uploadExcelImport();
 					}
-				},
-				error: function (data, status, e)
-				{
-				
 				}
-			}
-        );
-	}
-	
-	function uploadExcelImport(){
-
-		$.ajaxFileUpload
-        (
+			},
+			error: function (data, status, e)
 			{
-				url:'uploadExcelImport.action',
-				secureuri:false,
-				fileElementId:'upload',
-				dataType: 'xml',
-				success: function (data, status)
-				{
-					window.location.reload();
-				},
-				error: function (data, status, e)
-				{
-				
-				}
+				alert(e);
 			}
-        );
-	}
+		}
+	);
+}
+	
+function uploadExcelImport(){
+
+	$.ajaxFileUpload
+	(
+		{
+			url:'uploadExcelImport.action',
+			secureuri:false,
+			fileElementId:'upload',
+			dataType: 'json',
+			success: function (data, status)
+			{
+				window.location.reload();
+			},
+			error: function (data, status, e)
+			{
+				alert(e);
+			}
+		}
+	);
+}

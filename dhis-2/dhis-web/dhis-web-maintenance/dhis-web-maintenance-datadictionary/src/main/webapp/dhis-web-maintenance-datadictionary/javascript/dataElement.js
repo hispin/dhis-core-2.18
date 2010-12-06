@@ -173,13 +173,13 @@ function removeDataElement( dataElementId, dataElementName )
  */
 function addCDEDataElements()
 {
-	var alvailableList = jQuery("#availableDataElements option");
+	var availableList = jQuery("#availableDataElements option");
 	
 	jQuery("#selectedDataElements tr.placeholder").remove();
 	
 	var selectedList = jQuery("#selectedDataElements")
 	
-	jQuery.each( alvailableList, function(i, item){
+	jQuery.each( availableList, function(i, item){
 		if( item.selected ){
 			var id = item.value;
 			var name = item.firstChild.nodeValue;
@@ -254,7 +254,7 @@ function updateValidatorRulesForFactors()
 {
 	var inputs = jQuery("#selectedDataElements input[name|=factors]");
 	
-	jQuery.each(inputs, function(i, item ){				
+	jQuery.each(inputs, function(i, item ){
 		removeValidatorRules( item );
 		addValidatorRules( item, {required:true, number:true});			
 	});
@@ -296,8 +296,7 @@ function toggleCDEForm()
 		hideById( id );
 		removeValidatorRulesById("selectedDEValidator");
 		removeValidatorRulesForFactors();
-    } 
-   
+    }
 }
 
 function getFactors()
