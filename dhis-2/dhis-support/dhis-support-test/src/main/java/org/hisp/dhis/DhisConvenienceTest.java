@@ -440,6 +440,25 @@ public abstract class DhisConvenienceTest
 
         return categoryOptionCombo;
     }
+    
+    /**
+     * @param categoryCombo the category combo.
+     * @param categoryOptions the category options.
+     * @return
+     */
+    public static DataElementCategoryOptionCombo createCategoryOptionCombo( DataElementCategoryCombo categoryCombo, DataElementCategoryOption... categoryOptions )
+    {
+        DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
+        
+        categoryOptionCombo.setCategoryCombo( categoryCombo );
+        
+        for ( DataElementCategoryOption categoryOption : categoryOptions )
+        {
+            categoryOptionCombo.getCategoryOptions().add( categoryOption );
+        }
+        
+        return categoryOptionCombo;
+    }
 
     /**
      * @param uniqueCharacter A unique character to identify the object.

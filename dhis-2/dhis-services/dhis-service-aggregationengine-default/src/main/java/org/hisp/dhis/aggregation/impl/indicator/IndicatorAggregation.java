@@ -27,7 +27,6 @@ package org.hisp.dhis.aggregation.impl.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
 import static org.hisp.dhis.system.util.DateUtils.DAYS_IN_YEAR;
 import static org.hisp.dhis.system.util.DateUtils.getDays;
 import static org.hisp.dhis.system.util.MathUtils.INVALID;
@@ -41,7 +40,9 @@ import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -51,9 +52,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
  */
 public class IndicatorAggregation
 {
-    private static final String NULL_REPLACEMENT = "0";
-
-    private static final Pattern OPERAND_PATTERN = Pattern.compile( "(\\[\\d+\\" + SEPARATOR + "\\d+\\])" );
+    private static final Pattern FORMULA_PATTERN = Pattern.compile( ExpressionService.FORMULA_EXPRESSION );
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -156,36 +155,25 @@ public class IndicatorAggregation
     {    	
         try
         {        	
-            Matcher matcher = OPERAND_PATTERN.matcher( formula );
+            Matcher matcher = FORMULA_PATTERN.matcher( formula );
             
             StringBuffer buffer = new StringBuffer();            
             
             while ( matcher.find() )
             {
-                String replaceString = matcher.group().replaceAll( "[\\[\\]]", "" );
+                String match = matcher.group();
                 
-                String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );                
-                String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
+                DataElementOperand operand = DataElementOperand.getOperand( match );
                 
-                int dataElementId = Integer.parseInt( dataElementIdString );
-                int optionComboId = Integer.parseInt( optionComboIdString );             
+                DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
                 
-                DataElement dataElement = dataElementService.getDataElement( dataElementId );
-                
-                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+                DataElementCategoryOptionCombo optionCombo = !operand.isTotal() ? categoryService.getDataElementCategoryOptionCombo( operand.getOptionComboId() ) : null;
 
-                Double aggregatedValue = aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );                
+                Double aggregatedValue = aggregationCache.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );   
                 
-                if ( aggregatedValue == null )
-                {
-                    replaceString = NULL_REPLACEMENT;
-                }
-                else
-                {
-                    replaceString = String.valueOf( aggregatedValue );
-                }
-
-                matcher.appendReplacement( buffer, replaceString );
+                match = aggregatedValue == null ? ExpressionService.NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                
+                matcher.appendReplacement( buffer, match );
             }
 
             matcher.appendTail( buffer );

@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.expression.Expression.SEPARATOR;
+import static org.hisp.dhis.expression.Expression.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,6 +41,9 @@ import java.util.Set;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -61,19 +64,31 @@ public class ExpressionServiceTest
 {        
     private SourceStore sourceStore;
     
+    private DataElementCategoryOption categoryOptionA;
+    private DataElementCategoryOption categoryOptionB;
+    private DataElementCategoryOption categoryOptionC;
+    private DataElementCategoryOption categoryOptionD;
+    
+    private DataElementCategory categoryA;
+    private DataElementCategory categoryB;
+    
+    private DataElementCategoryCombo categoryCombo;
+    
     private DataElement dataElementA;
     private DataElement dataElementB;
     private DataElement dataElementC;
     private DataElement dataElementD;
+    private DataElement dataElementE;
     
     private Period period;
     
     private Source source;
     
-    private int dataElementIdA;    
-    private int dataElementIdB;    
-    private int dataElementIdC;    
+    private int dataElementIdA;
+    private int dataElementIdB;
+    private int dataElementIdC;
     private int dataElementIdD;
+    private int dataElementIdE;
 
     private DataElementCategoryOptionCombo categoryOptionCombo;
     
@@ -81,6 +96,7 @@ public class ExpressionServiceTest
     
     private String expressionA;
     private String expressionB;
+    private String expressionC;
     
     private String descriptionA;
     private String descriptionB;
@@ -105,15 +121,44 @@ public class ExpressionServiceTest
         
         sourceStore = (SourceStore) getBean( SourceStore.ID );
         
+        categoryOptionA = new DataElementCategoryOption( "Under 5" );
+        categoryOptionB = new DataElementCategoryOption( "Over 5" );
+        categoryOptionC = new DataElementCategoryOption( "Male" );
+        categoryOptionD = new DataElementCategoryOption( "Female" );
+        
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+        categoryService.addDataElementCategoryOption( categoryOptionC );
+        categoryService.addDataElementCategoryOption( categoryOptionD );
+                
+        categoryA = new DataElementCategory( "Age" );
+        categoryB = new DataElementCategory( "Gender" );
+        
+        categoryA.getCategoryOptions().add( categoryOptionA );
+        categoryA.getCategoryOptions().add( categoryOptionB );
+        categoryB.getCategoryOptions().add( categoryOptionC );
+        categoryB.getCategoryOptions().add( categoryOptionD );
+        
+        categoryService.addDataElementCategory( categoryA );
+        categoryService.addDataElementCategory( categoryB );
+                
+        categoryCombo = new DataElementCategoryCombo( "Age and gender" );
+        categoryCombo.getCategories().add( categoryA );
+        categoryCombo.getCategories().add( categoryB );
+        
+        categoryService.addDataElementCategoryCombo( categoryCombo );
+        
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
         dataElementC = createDataElement( 'C' );
-        dataElementD = createDataElement( 'D' );        
+        dataElementD = createDataElement( 'D' );  
+        dataElementE = createDataElement( 'E', categoryCombo );        
         
         dataElementIdA = dataElementService.addDataElement( dataElementA );
         dataElementIdB = dataElementService.addDataElement( dataElementB );
         dataElementIdC = dataElementService.addDataElement( dataElementC );
         dataElementIdD = dataElementService.addDataElement( dataElementD );
+        dataElementIdE = dataElementService.addDataElement( dataElementE );
         
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
@@ -125,8 +170,9 @@ public class ExpressionServiceTest
         
         sourceStore.addSource( source );
         
-        expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "] + [" + dataElementIdB + SEPARATOR + categoryOptionComboId + "]";
-        expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "] - [" + dataElementIdD + SEPARATOR + categoryOptionComboId + "]";
+        expressionA = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdB + SEPARATOR + categoryOptionComboId + "]";
+        expressionB = "[" + dataElementIdC + SEPARATOR + categoryOptionComboId + "]-[" + dataElementIdD + SEPARATOR + categoryOptionComboId + "]";
+        expressionC = "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]+[" + dataElementIdE + "]-10";
         
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -135,11 +181,12 @@ public class ExpressionServiceTest
         dataElements.add( dataElementB );
         dataElements.add( dataElementC );
         dataElements.add( dataElementD );
+        dataElements.add( dataElementE );
 
         dataValueService.addDataValue( createDataValue( dataElementA, period, source, "10", categoryOptionCombo ) );
         dataValueService.addDataValue( createDataValue( dataElementB, period, source, "5", categoryOptionCombo ) );        
     }
-
+    
     @Override
     public boolean emptyDatabaseAfterTest()
     {
@@ -149,6 +196,23 @@ public class ExpressionServiceTest
     // -------------------------------------------------------------------------
     // Business logic tests
     // -------------------------------------------------------------------------
+
+    @Test
+    public void testExplodeExpression()
+    {
+        categoryService.generateOptionCombos( categoryCombo );
+        
+        String actual = expressionService.explodeExpression( expressionC );
+        
+        Set<DataElementCategoryOptionCombo> categoryOptionCombos = categoryCombo.getOptionCombos();
+        
+        assertTrue( actual.contains( "[" + dataElementIdA + SEPARATOR + categoryOptionComboId + "]" ) );
+        
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
+        {
+            assertTrue( actual.contains( "[" + dataElementIdE + SEPARATOR + categoryOptionCombo.getId() + "]" ) );
+        }
+    }
 
     @Test
     public void testGetExpressionValue()
@@ -202,8 +266,8 @@ public class ExpressionServiceTest
         categoryOptionComboMapping.put( 1, 6 );
         categoryOptionComboMapping.put( 2, 7);
         
-        String expression = "[1.1] + 2 + [2.2]";
-        String expected = "[4.6] + 2 + [5.7]";
+        String expression = "[1.1]+2+[2.2]";
+        String expected = "[4.6]+2+[5.7]";
         
         assertEquals( expected, expressionService.convertExpression( expression, dataElementMapping, categoryOptionComboMapping ) );
     }
@@ -244,7 +308,7 @@ public class ExpressionServiceTest
     {
         String description = expressionService.getExpressionDescription( expressionA );        
         
-        assertEquals( "DataElementA + DataElementB", description );
+        assertEquals( "DataElementA+DataElementB", description );
     }
 
     @Test
@@ -252,11 +316,11 @@ public class ExpressionServiceTest
     {
         String expression = expressionService.generateExpression( expressionA, period, source, false, false );
         
-        assertEquals( "10 + 5", expression );
+        assertEquals( "10+5", expression );
         
         expression = expressionService.generateExpression( expressionB, period, source, false, false );
         
-        assertEquals( "0 - 0", expression );
+        assertEquals( "0-0", expression );
     }
     
     // -------------------------------------------------------------------------

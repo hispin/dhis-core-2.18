@@ -47,6 +47,8 @@ public interface AggregationService
      * in the given dataelement.
      * 
      * @param dataElement the DataElement to aggregate over.
+     * @param optionCombo the DataElementCategoryOptionCombo to aggregate over.
+     *        If null, the total value for the DataElement will be used.
      * @param startDate the start date of the aggregation period.
      * @param endDate the end date of the aggregation period.
      * @param organisationUnit the OrganisationUnit to aggregate over.
