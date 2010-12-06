@@ -674,7 +674,6 @@
 				editable: true,
 				valueField: 'id',
 				displayField: 'text',
-				isFormField: true,
 				width: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
 				triggerAction: 'all'
@@ -687,7 +686,6 @@
 				editable: false,
 				valueField: 'id',
 				displayField: 'layer',
-				isFormField: true,
 				width: GLOBAL.conf.combo_width_fieldset,
 				minListWidth: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
@@ -707,7 +705,6 @@
 				emptyText: 'Type custom px',
 				valueField: 'width',
 				displayField: 'text',
-				isFormField: true,
 				width: GLOBAL.conf.combo_width_fieldset,
 				minListWidth: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
@@ -726,7 +723,6 @@
 				emptyText: 'Type custom px',
 				valueField: 'height',
 				displayField: 'text',
-				isFormField: true,
 				width: GLOBAL.conf.combo_width_fieldset,
 				minListWidth: GLOBAL.conf.combo_width_fieldset,
 				mode: 'local',
@@ -1945,69 +1941,59 @@
         ]
     });
 	
-    /* Section: administrator */
-    var adminPanel = new Ext.form.FormPanel({
-        id: 'admin_p',
-        title: '<span class="panel-title">' + i18n_administrator + '</span>',
-        items:
-        [
-			{
-				xtype:'fieldset',
-				columnWidth: 0.5,
-				title: '&nbsp;<span class="panel-tab-title">' + i18n_date_type + '</span>&nbsp;',
-				collapsible: true,
-				animCollapse: true,
-				autoHeight:true,
-				items: [
-                    {
-                        xtype: 'combo',
-                        id: 'mapdatetype_cb',
-                        fieldLabel: i18n_date_type,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        editable: false,
-                        valueField: 'value',
-                        displayField: 'text',
-                        mode: 'local',
-                        value: GLOBAL.conf.map_date_type_fixed,
-                        triggerAction: 'all',
-						width: GLOBAL.vars.mapDateType.value,
-						minListWidth: GLOBAL.conf.combo_width_fieldset,
-                        store: new Ext.data.ArrayStore({
-                            fields: ['value', 'text'],
-                            data: [
-                                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
-                                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
-                            ]
-                        }),
-                        listeners: {
-                            'select': function(cb) {
-                                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
-                                    GLOBAL.vars.mapDateType.value = cb.getValue();
-                                    Ext.Ajax.request({
-                                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
-                                        method: 'POST',
-                                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
-                                        success: function() {
-                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
-                                            choropleth.prepareMapViewDateType();
-                                            symbol.prepareMapViewDateType();
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        ],
+    /* Section: administrator settings */
+    var adminDateTypeCombo = new Ext.form.ComboBox({
+        id: 'mapdatetype_cb',
+        fieldLabel: i18n_date_type,
+        labelSeparator: GLOBAL.conf.labelseparator,
+        editable: false,
+        valueField: 'value',
+        displayField: 'text',
+        mode: 'local',
+        value: GLOBAL.conf.map_date_type_fixed,
+        triggerAction: 'all',
+        width: GLOBAL.conf.combo_width_fieldset,
+        minListWidth: GLOBAL.conf.combo_width_fieldset,
+        store: new Ext.data.ArrayStore({
+            fields: ['value', 'text'],
+            data: [
+                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
+                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
+            ]
+        }),
         listeners: {
-            expand: function() {					
-                GLOBAL.vars.activePanel.value = GLOBAL.conf.administration;
-            },
-			collapse: function() {
-                GLOBAL.vars.activePanel.value = null;
-			}
+            'select': function(cb) {
+                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
+                    GLOBAL.vars.mapDateType.value = cb.getValue();
+                    Ext.Ajax.request({
+                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
+                        method: 'POST',
+                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
+                        success: function() {
+                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
+                            choropleth.prepareMapViewDateType();
+                            symbol.prepareMapViewDateType();
+                        }
+                    });
+                }
+            }
         }
+    });
+        
+    var adminPanel = new Ext.form.FormPanel({
+        title: 'Date type',
+        items: [adminDateTypeCombo]
+    });
+    
+    var adminWindow = new Ext.Window({
+        id: 'admin_w',
+        title: '<span id="window-admin-title">Administrator settings</span>',
+        layout: 'accordion',
+        defaults: {bodyStyle:'padding:8px; border:0px'},
+        width: 250,
+        height: 93,
+        closeAction: 'hide',
+        items: [adminPanel]        
     });
 	
 	/* Section: layers */
@@ -2623,7 +2609,7 @@
 		tooltip: i18n_create_predefined_legend_sets,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;    
+			var y = Ext.getCmp('center').y + 41;
 			predefinedMapLegendSetWindow.setPosition(x,y);
 		
 			if (predefinedMapLegendSetWindow.visible) {
@@ -2641,6 +2627,17 @@
                     GLOBAL.stores.dataElement.load();
                 }                
 			}
+		}
+	});
+	
+	var adminButton = new Ext.Button({
+		iconCls: 'icon-admin',
+		tooltip: 'Administrator settings',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;
+			adminWindow.setPosition(x,y);
+			adminWindow.show();
 		}
 	});
 	
@@ -2680,6 +2677,7 @@
             predefinedMapLegendSetButton, ' ',
 			exportImageButton,
 			'-',
+            adminButton,
 			helpButton,
 			'->',
 			exitButton, ' ',' '
@@ -2777,8 +2775,7 @@
                 },
                 items: [
                     choropleth,
-                    symbol,
-					adminPanel
+                    symbol
                 ]
             },
             {
