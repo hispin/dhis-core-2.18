@@ -118,7 +118,7 @@ function Selection()
     
 	this.findByCode = function()
 	{
-		$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + $.URLEncode( $( '#searchField' ).val() ), function ( data ) {
+		$.getJSON( organisationUnitTreePath + 'getOrganisationUnitByCode.action?code=' + encodeURI( $( '#searchField' ).val() ), function ( data ) {
 			var unitId = data.message;
 			if ( data.response == "success" ) {
 				$( '#orgUnitTreeContainer' ).load( organisationUnitTreePath + 'loadOrganisationUnitTree.action', function() {					
