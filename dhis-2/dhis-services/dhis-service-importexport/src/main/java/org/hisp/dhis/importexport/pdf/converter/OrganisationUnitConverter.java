@@ -27,7 +27,9 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -35,6 +37,7 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -70,7 +73,8 @@ public class OrganisationUnitConverter
 
         PDFUtils.printOrganisationUnitFrontPage( document, params.getOrganisationUnits(), i18n, format );
 
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() );
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() ) );
+        Collections.sort( units, new OrganisationUnitNameComparator() );
 
         BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
         Font ITALIC = new Font( bf, 9, Font.ITALIC );
@@ -79,8 +83,7 @@ public class OrganisationUnitConverter
 
         for ( OrganisationUnit unit : units )
         {
-            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true,
-                0.40f, 0.60f ) );
+            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
         }
     }
 }
