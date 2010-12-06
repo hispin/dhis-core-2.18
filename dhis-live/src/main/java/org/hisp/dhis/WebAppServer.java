@@ -50,7 +50,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
 /**
  * @author Bob Jolliffe
  */
-public class WebAppServer
+public class WebAppServer extends Thread
 {
     public static final String DHIS_DIR = "/webapps/dhis";
 
@@ -87,24 +87,35 @@ public class WebAppServer
         }
 
         server.setConnectors( new Connector[] { connector } );
+        server.addLifeCycleListener( serverListener );
 
+        loadDHISContext(installDir+DHIS_DIR);
+    }
+
+    public void loadDHISContext(String webappPath)
+    {
         WebAppContext dhisWebApp = new WebAppContext();
         dhisWebApp.setMaxFormContentSize( 5000000 );
-        dhisWebApp.setWar( installDir + DHIS_DIR );
-        log.info( "Setting DHIS 2 web app context to: " + installDir + DHIS_DIR );
+        dhisWebApp.setWar( webappPath );
+        log.info( "Setting DHIS 2 web app context to: " + webappPath );
 
         server.setHandler( dhisWebApp );
-        server.addLifeCycleListener( serverListener );
     }
 
-    public void start()
-        throws Exception
+    public void run()
     {
-        server.start();
-        server.join();
+        try
+        {
+            log.debug("Server thread starting");
+            server.start();
+            log.debug("Server thread exiting");
+        } catch ( Exception ex )
+        {
+            log.error( "Server wouldn't start : " + ex);
+        }
     }
 
-    public void stop()
+    public void shutdown()
         throws Exception
     {
         server.stop();
