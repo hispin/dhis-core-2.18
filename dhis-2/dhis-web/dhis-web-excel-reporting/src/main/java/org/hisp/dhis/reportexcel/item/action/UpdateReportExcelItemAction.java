@@ -125,7 +125,6 @@ public class UpdateReportExcelItemAction
     public String execute()
         throws Exception
     {
-
         ReportExcelItem reportItem = reportService.getReportExcelItem( id );
         reportItem.setName( name );
         reportItem.setItemType( itemType );

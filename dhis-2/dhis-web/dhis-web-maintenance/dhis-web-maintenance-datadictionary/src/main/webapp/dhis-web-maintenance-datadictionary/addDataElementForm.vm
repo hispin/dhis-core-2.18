@@ -1,7 +1,7 @@
 <script>
 	
 	jQuery(document).ready(	function(){
-		validation( 'addDataElementForm', function( form ){			
+		validation( 'addDataElementForm', function( form ){
 			form.submit();
 		},function(){
 			getDataElementIdsForValidate();
@@ -152,7 +152,7 @@
     </tr>    
     <tr>
         <th>$i18n.getString( "selected_dataelements" )</th>
-		<td><select id="selectedDEValidator" multiple="multiple"  name="selectedDEValidator" style="display:none"></select></td>
+		<td><select id="selectedDEValidator" multiple="multiple" name="selectedDEValidator" style="display:none"></select></td>
     </tr>
     <tr>
 		<td>
