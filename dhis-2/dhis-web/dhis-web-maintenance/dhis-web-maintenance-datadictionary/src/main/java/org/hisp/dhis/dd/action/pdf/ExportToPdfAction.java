@@ -140,7 +140,7 @@ public class ExportToPdfAction
 
             if ( type.equals( TYPE_DATAELEMENT ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                if ( ( activeIds != null) && !activeIds.isEmpty() )
                 {
                     params.setDataElements( activeIds );
                 }
@@ -155,7 +155,7 @@ public class ExportToPdfAction
             }
             else if ( type.equals( TYPE_INDICATOR ) )
             {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
+                if ( ( activeIds != null) && !activeIds.isEmpty() )
                 {
                     params.setIndicators( activeIds );
                 }

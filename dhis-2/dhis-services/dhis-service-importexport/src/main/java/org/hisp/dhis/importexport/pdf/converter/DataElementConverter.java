@@ -27,10 +27,13 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
@@ -69,8 +72,9 @@ public class DataElementConverter
 
         PDFUtils.printDataElementFrontPage( document, params.getDataElements(), i18n, format );
 
-        Collection<DataElement> elements = dataElementService.getDataElements( params.getDataElements() );
-
+        List<DataElement> elements = new ArrayList<DataElement>( dataElementService.getDataElements( params.getDataElements() ) );
+        Collections.sort( elements, new DataElementNameComparator() );
+        
         BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
         Font TEXT = new Font( bf, 9, Font.NORMAL );
         Font ITALIC = new Font( bf, 9, Font.ITALIC );
