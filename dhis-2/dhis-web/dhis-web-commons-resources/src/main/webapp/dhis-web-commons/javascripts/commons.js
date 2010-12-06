@@ -1340,13 +1340,3 @@ function isZeroNumber( value )
 {
 	return isNumber( value ) && parseFloat( value ) == 0;
 }
-
-function getValueTrimById( valueId )
-{
-	return getValueTrim( getFieldValue( valueId ) );
-}
-
-function getValueTrim( value )
-{
-	return trim( value ).replace(/\s+/g, ' ');
-}
