@@ -102,6 +102,7 @@
       <param name="page">/dhis-web-maintenance-user/allRole.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
       <param name="javascripts">javascript/role.js,javascript/filterTable.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="getRole" class="org.hisp.dhis.user.action.GetRoleAction">

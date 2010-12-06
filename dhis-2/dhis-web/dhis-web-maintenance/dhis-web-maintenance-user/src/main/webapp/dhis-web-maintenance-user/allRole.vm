@@ -7,7 +7,7 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-					<td>$i18n.getString( "filter_by_role_name" ): <form style="display:inline" action="none" onsubmit="return false"><input type="text" onkeyup="filterValues( this.value )"/></form></td>					
+					<td>#filterDiv( "allRole" )</td>					
 					<td colspan="4" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddRoleForm.action'"/></td>
 				</tr>
 			</table>
@@ -33,6 +33,11 @@
 				#end
 				</tbody>
 			</table>
+			<p></p>
+	  		<div class="paging-container">
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
+			
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 

@@ -1,31 +1,9 @@
 <table style="width:100%">
 	<tr>
-		<td>
-			<table width='100%'>
-				<tr>
-				<td colspan='5'>
-					<div class="paging-container">
-						#parse( "/dhis-web-commons/paging/paging.vm" )
-					</div>
-				</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
 		<td style="vertical-align:top">
 			<table width='100%'>
 				<tr>
-					<td>$i18n.getString( "filter_by_username" ): 
-						<form style="display:inline" action="none" onsubmit="return false">
-							<div style="inline">
-								<input type="text" id='key' value="$!key">
-								<input type="button" value="$i18n.getString( "go" )" onclick="searchUserName();" />
-							</div>
-						</form>
-					</td>
-					<td></td>
-					<td></td>
+					<td>#filterDiv( "alluser" )</td>
 					<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddUserForm.action'"/></td>
 				</tr>
 			</table>
