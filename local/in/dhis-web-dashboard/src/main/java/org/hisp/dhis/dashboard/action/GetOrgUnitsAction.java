@@ -67,11 +67,15 @@ public class GetOrgUnitsAction implements Action
         throws Exception
     {
         /* OrganisationUnit */
+        
+     //   System.out.println("org Id is : " + orgUnitId );
+        
         if ( orgUnitId != null )
         {
             orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         }
-
+        
+        System.out.println(" orgUnit Id is : " + orgUnit.getId() + " , orgUnit Name is : " + orgUnit.getName() );
         orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
         maxOrgUnitLevel = organisationUnitService.getNumberOfOrganisationalLevels();
         

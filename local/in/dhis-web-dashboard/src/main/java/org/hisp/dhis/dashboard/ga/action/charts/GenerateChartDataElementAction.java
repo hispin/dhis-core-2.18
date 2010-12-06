@@ -626,6 +626,7 @@ public class GenerateChartDataElementAction implements Action
             }
             
         }
+       
         //Collections.sort( dataElementList, dataElementComparator );
         selectedServiceList = new ArrayList<Object>( dataElementList );
         
@@ -848,9 +849,30 @@ public class GenerateChartDataElementAction implements Action
        
        int serviceCount = 0;     
      
+     
        for( DataElement dataElement : dataElementList )
        {
            DataElementCategoryOptionCombo decoc;
+          /*
+           if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) && dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+           {
+               System.out.println( " inside value type : - INT and Number Type : - INT"  );
+               System.out.println( " DataElementName : "+ dataElement.getName() );
+           }
+           if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) && !dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+           {
+               System.out.println( " inside value type : - INT and Number Type : - other than INT"  );
+               System.out.println( " DataElementName : "+ dataElement.getName() );
+           }
+           */
+           // if( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+          // {
+             // System.out.println( " DataElement VALUE_TYPE_INT  is : " + DataElement.VALUE_TYPE_INT );
+          // }
+           //else
+          // {
+              // System.out.println( " DataElementName : "+ dataElement.getName() +" , DataElement Value Type  is : " + dataElement.getType() + ", DataElement Number Type  is : " + dataElement.getNumberType() );
+          // }
           
            if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
            
@@ -906,6 +928,17 @@ public class GenerateChartDataElementAction implements Action
                
                data[serviceCount][periodCount] = aggDataValue;
                
+               if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+               {
+                  if ( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                  {
+                      data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                  }
+                  else
+                  {
+                      data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                  }
+               }
                periodCount++;
            }
            
@@ -966,7 +999,6 @@ public class GenerateChartDataElementAction implements Action
            int childCount = 0;
            for( OrganisationUnit orgChild : childOrgUnitList )
            {
-                          
                categories[childCount] = orgChild.getName();
                
                Double aggDataValue = 0.0;
@@ -980,7 +1012,6 @@ public class GenerateChartDataElementAction implements Action
                    
                    for( Period period : periods )
                    {
-                           
                        if( aggDataCB != null )
                        {
                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgChild );
@@ -991,25 +1022,35 @@ public class GenerateChartDataElementAction implements Action
                        }
                        else
                        {
-                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
+                           DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
+                           
+                           try
+                           {
+                               aggDataValue += Double.parseDouble( dataValue.getValue() );
+                           }
+                           catch( Exception e )
+                           {
                                
-                               try
-                               {
-                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
-                               }
-                               catch( Exception e )
-                               {
-                                   
-                               }
-                        
+                           }
                        }
                    }
                    periodCount++;
                }
  
                data[serviceCount][childCount] = aggDataValue;
+               
+               if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+               {
+                  if ( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                  {
+                      data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                  }
+                  else
+                  {
+                      data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                  }
+               }
                childCount++;
-            
            }
            
            serviceCount++;          
@@ -1081,7 +1122,6 @@ public class GenerateChartDataElementAction implements Action
                    
                    for( Period period : periods )
                    {
-                           
                        if( aggDataCB != null )
                        {
                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgunit );
@@ -1092,24 +1132,34 @@ public class GenerateChartDataElementAction implements Action
                        }
                        else
                        {
-                         
-                               DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period, decoc );
+                           DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period, decoc );
+                           
+                           try
+                           {
+                               aggDataValue += Double.parseDouble( dataValue.getValue() );
+                           }
+                           catch( Exception e )
+                           {
                                
-                               try
-                               {
-                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
-                               }
-                               catch( Exception e )
-                               {
-                                   
-                               }
-                          
+                           }
                        }
                    }
                    periodCount++;
                }
  
                data[serviceCount][orgUnitCount] = aggDataValue;
+               
+               if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+               {
+                  if ( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                  {
+                      data[serviceCount][orgUnitCount] = Math.round( data[serviceCount][orgUnitCount] * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                  }
+                  else
+                  {
+                      data[serviceCount][orgUnitCount] = Math.round( data[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                  }
+               }
                orgUnitCount++;
              
            }
@@ -1191,26 +1241,35 @@ public class GenerateChartDataElementAction implements Action
                            }
                        else
                        {
-                       
-                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                           DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                           
+                           try
+                           {
+                               aggDataValue += Double.parseDouble( dataValue.getValue() );
+                           }
+                           catch( Exception e )
+                           {
                                
-                               try
-                               {
-                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
-                               }
-                               catch( Exception e )
-                               {
-                                   
-                               }
-                          
+                           }
                        }
                           orgGroupCount++;
                    }
                    
-                   
                }
    
                data[serviceCount][periodCount] = aggDataValue;
+               
+               if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+               {
+                  if ( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                  {
+                      data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                  }
+                  else
+                  {
+                      data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                  }
+               }
                periodCount++;    
            }
            
@@ -1300,7 +1359,6 @@ public class GenerateChartDataElementAction implements Action
                                                                   
                                       for( Period period : periods )
                                       {
-                                      
                                            if( aggDataCB != null )
                                            {
                                                Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgUnit );
@@ -1311,25 +1369,34 @@ public class GenerateChartDataElementAction implements Action
                                            }
                                            else
                                            {
-                                                   DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                                               
+                                               try
+                                               {
+                                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                               }
+                                               catch( Exception e )
+                                               {
                                                    
-                                                   try
-                                                   {
-                                                       aggDataValue += Double.parseDouble( dataValue.getValue() );
-                                                   }
-                                                   catch( Exception e )
-                                                   {
-                                                       
-                                                   }
+                                               }
                                            }
-                               
                                       }
                           periodCount++;  
                  }  
-                      
                }
-                   
                data[serviceCount][orgGroupCount] = aggDataValue;
+               
+               if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+               {
+                  if ( dataElement.getNumberType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                  {
+                      data[serviceCount][orgGroupCount] = Math.round( data[serviceCount][orgGroupCount] * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                  }
+                  else
+                  {
+                      data[serviceCount][orgGroupCount] = Math.round( data[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                  }
+               }
               
                orgGroupCount++;
            }

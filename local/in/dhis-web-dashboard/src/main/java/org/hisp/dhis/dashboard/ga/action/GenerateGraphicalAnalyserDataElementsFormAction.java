@@ -200,6 +200,21 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
     
         /* DataElements and Groups */
         dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
+        System.out.println(" dataElements size = "+dataElements.size());
+        // take only those dataElement which are VALUE_TYPE_INT and DOMAIN_TYPE_AGGREGATE
+        Iterator<DataElement> alldeIterator = dataElements.iterator();
+        while ( alldeIterator.hasNext() )
+        {
+            DataElement de1 = alldeIterator.next();
+            if ( !de1.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) && !de1.getType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+            {
+                alldeIterator.remove();
+            }
+        }
+        System.out.println(" dataElements size = "+dataElements.size());
+       // Collections.sort( dataElements, dataElementComparator );
+        
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
         Collections.sort( dataElements, new DataElementNameComparator() );
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
