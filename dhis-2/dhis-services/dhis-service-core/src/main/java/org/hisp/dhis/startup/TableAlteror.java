@@ -199,12 +199,12 @@ public class TableAlteror
 
         executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
 
-        // prepare aggregateXXXValue tables for offline diffs
+       // revert prepare aggregateXXXValue tables for offline diffs
 
-        executeSql( "ALTER TABLE aggregateddatavalue ADD COLUMN modified timestamp with time zone default now();");
+        executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified");
 
-        executeSql( "ALTER TABLE aggregatedindicatorvalue ADD COLUMN modified timestamp with time zone default now();");
-
+        executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified ");
+        
         log.info( "Tables updated" );
     }
 
