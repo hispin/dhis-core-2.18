@@ -766,13 +766,15 @@ public class GenerateChartIndicatorAction
                     }
 
                 }
+                // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][periodCount] = aggIndicatorValue;
-                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )
-                    / Math.pow( 10, 1 );
+                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 numDataArray[serviceCount][periodCount] = aggIndicatorNumValue;
+                numDataArray[serviceCount][periodCount] = Math.round( numDataArray[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 denumDataArray[serviceCount][periodCount] = aggIndicatorDenumValue;
-
+                denumDataArray[serviceCount][periodCount] = Math.round( denumDataArray[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
                 // numeratorValueList.add( aggIndicatorNumValue );
                 // denumeratorValueList.add( aggIndicatorDenumValue );
 
@@ -785,8 +787,7 @@ public class GenerateChartIndicatorAction
             serviceCount++;
         }
 
-        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
-            chartTitle, xAxis_Title, yAxis_Title );
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,chartTitle, xAxis_Title, yAxis_Title );
         return indicatorChartResult;
 
     }
@@ -914,13 +915,15 @@ public class GenerateChartIndicatorAction
                 {
                     aggIndicatorValue = 0.0;
                 }
-
+                // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][childCount] = aggIndicatorValue;
-                data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) )
-                    / Math.pow( 10, 1 );
+                data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 numDataArray[serviceCount][childCount] = aggIndicatorNumValue;
+                numDataArray[serviceCount][childCount] = Math.round( numDataArray[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 denumDataArray[serviceCount][childCount] = aggIndicatorDenumValue;
+                denumDataArray[serviceCount][childCount] = Math.round( denumDataArray[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
                 // data[serviceCount][childCount] = aggDataValue;
                 childCount++;
             }
@@ -928,8 +931,7 @@ public class GenerateChartIndicatorAction
             serviceCount++;
         }
 
-        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
-            chartTitle, xAxis_Title, yAxis_Title );
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,chartTitle, xAxis_Title, yAxis_Title );
         return indicatorChartResult;
     }
 
@@ -1061,13 +1063,15 @@ public class GenerateChartIndicatorAction
                 {
                     aggIndicatorValue = 0.0;
                 }
-
+                // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][orgUnitCount] = aggIndicatorValue;
-                data[serviceCount][orgUnitCount] = Math.round( data[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) )
-                    / Math.pow( 10, 1 );
+                data[serviceCount][orgUnitCount] = Math.round( data[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 numDataArray[serviceCount][orgUnitCount] = aggIndicatorNumValue;
+                numDataArray[serviceCount][orgUnitCount] = Math.round( numDataArray[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 denumDataArray[serviceCount][orgUnitCount] = aggIndicatorDenumValue;
+                denumDataArray[serviceCount][orgUnitCount] = Math.round( denumDataArray[serviceCount][orgUnitCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 // data[serviceCount][orgUnitCount] = aggDataValue;
                 orgUnitCount++;
@@ -1077,8 +1081,7 @@ public class GenerateChartIndicatorAction
             serviceCount++;
         }
 
-        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,
-            chartTitle, xAxis_Title, yAxis_Title );
+        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray, chartTitle, xAxis_Title, yAxis_Title );
         return indicatorChartResult;
     }
 
@@ -1210,13 +1213,16 @@ public class GenerateChartIndicatorAction
                 {
                     aggIndicatorValue = 0.0;
                 }
-
+                // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][periodCount] = aggIndicatorValue;
-                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )
-                    / Math.pow( 10, 1 );
+                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 numDataArray[serviceCount][periodCount] = aggIndicatorNumValue;
+                numDataArray[serviceCount][periodCount] = Math.round( numDataArray[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 denumDataArray[serviceCount][periodCount] = aggIndicatorDenumValue;
+                denumDataArray[serviceCount][periodCount] = Math.round( denumDataArray[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 periodCount++;
             }
 
@@ -1379,23 +1385,16 @@ public class GenerateChartIndicatorAction
                 {
                     aggIndicatorValue = 0.0;
                 }
-
+                // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][orgGroupCount] = aggIndicatorValue;
-
-                // System.out.println(
-                // " \nAgg Indicator Value Before Rounding : " +
-                // data[serviceCount][orgGroupCount] );
-
-                data[serviceCount][orgGroupCount] = Math.round( data[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) )
-                    / Math.pow( 10, 1 );
-
-                // System.out.println(
-                // " \nAgg Indicator Value After Rounding : " +
-                // data[serviceCount][orgGroupCount] );
+                data[serviceCount][orgGroupCount] = Math.round( data[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
 
                 numDataArray[serviceCount][orgGroupCount] = aggIndicatorNumValue;
+                numDataArray[serviceCount][orgGroupCount] = Math.round( numDataArray[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 denumDataArray[serviceCount][orgGroupCount] = aggIndicatorDenumValue;
-
+                denumDataArray[serviceCount][orgGroupCount] = Math.round( denumDataArray[serviceCount][orgGroupCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                
                 orgGroupCount++;
             }
 

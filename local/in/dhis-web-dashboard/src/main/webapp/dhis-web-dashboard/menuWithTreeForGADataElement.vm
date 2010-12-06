@@ -11,12 +11,14 @@
         <a href="index.action">
           <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
 </div>
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-
+<!--#parse( "/dhis-web-commons/ouwt/orgunittree.vm" ) -->
+#parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" ) 
 <!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
 
 selection.setListenerFunction( orgUnitHasBeenSelected );
+
+//selection.setListenerFunction( organisationUnitSelected );
 
 function orgUnitHasBeenSelected( orgUnitIds )
 {
@@ -26,13 +28,15 @@ function orgUnitHasBeenSelected( orgUnitIds )
      return;
     }
 */    
+   // alert(orgUnitIds);
+    
     if(orgUnitIds == null || orgUnitIds == "" )
     {
         return;
     }
-    if(orgUnitIds != null)
+    if( orgUnitIds != null )
     {
-        getOUDeatilsForGADataElements(orgUnitIds);
+        getOUDeatilsForGADataElements( orgUnitIds );
     }       
 }
 

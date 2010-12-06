@@ -1,8 +1,17 @@
 
-function getOUDeatilsForGADataElements(orgUnitIds)
+function getOUDeatilsForGADataElements( orgUnitIds )
 {
+	//alert( orgUnitIds );
 	document.getElementById( "ougGroupSetCB" ).disabled = false;
 	document.getElementById( "orgUnitGroupList" ).disabled = false;
+	
+	var request = new Request();
+	request.setResponseTypeXML( 'orgunit' );
+	request.setCallbackSuccess( getOUDetailsForGARecevied );
+	request.send( 'getOrgUnitDetails.action?orgUnitId=' + orgUnitIds ); 
+	
+	
+	/*
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -10,7 +19,7 @@ function getOUDeatilsForGADataElements(orgUnitIds)
 		function (data)
 		{
 			getOUDetailsForGARecevied(data);
-		},'xml');
+		},'xml');*/
 }
 
 function getOUDetailsForGARecevied(xmlObject)
@@ -32,7 +41,7 @@ function getOUDetailsForGARecevied(xmlObject)
 
          currentOrgUnitId = id;
          currentOrgUnitName = orgUnitName;
-
+        // alert("orgUnit Id is : " + id + ", name is :" + orgUnitName );
         if(document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "period" || document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "children" )
         {
             index = document.ChartGenerationForm.orgUnitListCB.options.length;
