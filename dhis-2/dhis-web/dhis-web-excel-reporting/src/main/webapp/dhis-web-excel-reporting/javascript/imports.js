@@ -370,7 +370,7 @@ function uploadExcelImport(){
 			url:'uploadExcelImport.action',
 			secureuri:false,
 			fileElementId:'upload',
-			dataType: 'json',
+			dataType: 'xml',
 			success: function (data, status)
 			{
 				window.location.reload();
