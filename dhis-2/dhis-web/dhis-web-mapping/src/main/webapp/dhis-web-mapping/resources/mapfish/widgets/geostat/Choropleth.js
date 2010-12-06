@@ -938,7 +938,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
             width: GLOBAL.conf.combo_width,
-            value: "#FFFF00"
+            value: "#FFFF00",
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }
+            }
         },
         
         {
@@ -948,25 +956,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBAL.conf.labelseparator,
             allowBlank: false,
             width: GLOBAL.conf.combo_width,
-            value: "#FF0000"
-        },
-        
-        { html: '<div class="thematic-br">' },
-
-        {
-            xtype: 'button',
-            text: i18n_refresh,
-            isFormField: true,
-            fieldLabel: GLOBAL.conf.emptytext,
-            labelSeparator: GLOBAL.conf.labelseparator,
-            scope: this,
-            handler: function() {
-                if (this.formValidation.validateForm(true)) {
-                    this.layer.setVisibility(true);
-                    this.classify(true, true);
-                }
-                else {
-                    Ext.message.msg(false, i18n_form_is_not_complete);
+            value: "#FF0000",
+            listeners: {
+                'select': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
                 }
             }
         }

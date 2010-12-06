@@ -132,6 +132,7 @@ Ext.ux.ColorField = Ext.extend(Ext.form.TriggerField,  {
     menuListeners : {
         select: function(e, c){
             this.setValue(c);
+            this.fireEvent('select', this, c);
         },
         show : function(){ // retain focus styling
             this.onFocus();
