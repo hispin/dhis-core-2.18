@@ -53,6 +53,8 @@ public class Expression
     implements Serializable
 {
     public static final String SEPARATOR = ".";
+    public static final String EXP_OPEN = "[";
+    public static final String EXP_CLOSE = "]";
     
     /**
      * The unique identifier for this Expression.

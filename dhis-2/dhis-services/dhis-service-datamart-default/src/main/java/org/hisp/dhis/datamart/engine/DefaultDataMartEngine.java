@@ -218,7 +218,7 @@ public class DefaultDataMartEngine
         aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
 
         log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
-
+        
         // ---------------------------------------------------------------------
         // Get objects
         // ---------------------------------------------------------------------
@@ -229,6 +229,16 @@ public class DefaultDataMartEngine
         Collection<CalculatedDataElement> calculatedDataElements = dataElementService.getCalculatedDataElements( dataElementIds );
         Collection<DataElement> nonCalculatedDataElements = dataElementService.getDataElements( dataElementIds );
         nonCalculatedDataElements.removeAll( calculatedDataElements );
+
+        // ---------------------------------------------------------------------
+        // Explode indicator expressions
+        // ---------------------------------------------------------------------
+
+        for ( Indicator indicator : indicators )
+        {
+            indicator.setExplodedNumerator( expressionService.explodeExpression( indicator.getNumerator() ) );
+            indicator.setExplodedDenominator( expressionService.explodeExpression( indicator.getDenominator() ) );
+        }
         
         // ---------------------------------------------------------------------
         // Filter and get operands
@@ -392,10 +402,10 @@ public class DefaultDataMartEngine
         
         for ( Indicator indicator : indicators )
         {
-            Set<DataElementOperand> temp = expressionService.getOperandsInExpression( indicator.getNumerator() );
+            Set<DataElementOperand> temp = expressionService.getOperandsInExpression( indicator.getExplodedNumerator() );
             operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
             
-            temp = expressionService.getOperandsInExpression( indicator.getDenominator() );            
+            temp = expressionService.getOperandsInExpression( indicator.getExplodedDenominator() );            
             operands.addAll( temp != null ? temp : new HashSet<DataElementOperand>() );
         }
         

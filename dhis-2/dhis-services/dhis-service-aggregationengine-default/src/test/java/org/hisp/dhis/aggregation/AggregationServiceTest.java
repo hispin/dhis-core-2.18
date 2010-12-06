@@ -28,14 +28,15 @@ package org.hisp.dhis.aggregation;
  */
 
 import static junit.framework.Assert.assertEquals;
+import static org.hisp.dhis.expression.Expression.SEPARATOR;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -43,7 +44,9 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -63,17 +66,31 @@ public class AggregationServiceTest
     private final String F = "false";
     
     private AggregationService aggregationService;
+
+    private DataElementCategoryOption categoryOptionA;
+    private DataElementCategoryOption categoryOptionB;
     
+    private DataElementCategory category;
+
     private DataElementCategoryCombo categoryCombo;
     
-    private DataElementCategoryOptionCombo categoryOptionCombo;
-
-    private Collection<Integer> dataElementIds;
-    private Collection<Integer> periodIds;
-    private Collection<Integer> organisationUnitIds;
+    private DataElementCategoryOptionCombo categoryOptionComboA;
+    private DataElementCategoryOptionCombo categoryOptionComboB;    
+    
+    private int categoryOptionComboIdA;
     
     private DataElement dataElementA;
     private DataElement dataElementB;
+    private DataElement dataElementC;
+    
+    private int dataElementIdA;
+    private int dataElementIdB;
+    private int dataElementIdC;
+    
+    private IndicatorType indicatorType;
+    
+    private Indicator indicatorA;
+    private Indicator indicatorB;
     
     private DataSet dataSet;
     
@@ -118,29 +135,66 @@ public class AggregationServiceTest
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
         expressionService = (ExpressionService) getBean( ExpressionService.ID );
-        
-        categoryCombo = categoryService.getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
-        
-        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+
         // ---------------------------------------------------------------------
-        // Setup identifier Collections
+        // Setup Dimensions
         // ---------------------------------------------------------------------
 
-        dataElementIds = new HashSet<Integer>();
-        periodIds = new HashSet<Integer>();
-        organisationUnitIds = new HashSet<Integer>();
+        categoryOptionA = new DataElementCategoryOption( "Male" );
+        categoryOptionB = new DataElementCategoryOption( "Female" );
         
+        categoryService.addDataElementCategoryOption( categoryOptionA );
+        categoryService.addDataElementCategoryOption( categoryOptionB );
+
+        category = new DataElementCategory( "Gender" );
+        category.getCategoryOptions().add( categoryOptionA );
+        category.getCategoryOptions().add( categoryOptionB );
+
+        categoryService.addDataElementCategory( category );
+
+        categoryCombo = new DataElementCategoryCombo( "Gender" );
+        categoryCombo.getCategories().add( category );        
+        
+        categoryService.addDataElementCategoryCombo( categoryCombo );
+        
+        categoryOptionComboA = createCategoryOptionCombo( categoryCombo, categoryOptionA );
+        categoryOptionComboB = createCategoryOptionCombo( categoryCombo, categoryOptionB );
+        
+        categoryOptionComboIdA = categoryService.addDataElementCategoryOptionCombo( categoryOptionComboA );
+        categoryService.addDataElementCategoryOptionCombo( categoryOptionComboB );
+
         // ---------------------------------------------------------------------
         // Setup DataElements
         // ---------------------------------------------------------------------
 
         dataElementA = createDataElement( 'A', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
         dataElementB = createDataElement( 'B', DataElement.VALUE_TYPE_BOOL, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
+        dataElementC = createDataElement( 'C', DataElement.VALUE_TYPE_INT, DataElement.AGGREGATION_OPERATOR_SUM, categoryCombo );
 
-        dataElementIds.add( dataElementService.addDataElement( dataElementA ) );
-        dataElementIds.add( dataElementService.addDataElement( dataElementB ) );
+        dataElementIdA = dataElementService.addDataElement( dataElementA );
+        dataElementIdB = dataElementService.addDataElement( dataElementB );
+        dataElementIdC = dataElementService.addDataElement( dataElementC );
 
+        // ---------------------------------------------------------------------
+        // Setup Indicators
+        // ---------------------------------------------------------------------
+
+        indicatorType = createIndicatorType( 'A' );
+        indicatorType.setFactor( 100 );
+        
+        indicatorService.addIndicatorType( indicatorType );
+        
+        indicatorA = createIndicator( 'A', indicatorType );
+        indicatorA.setNumerator( "[" + dataElementIdA + SEPARATOR + categoryOptionComboIdA + "]+150" );
+        indicatorA.setDenominator( "[" + dataElementIdB + SEPARATOR + categoryOptionComboIdA + "]" );
+        
+        indicatorB = createIndicator( 'B', indicatorType );
+        indicatorB.setNumerator( "[" + dataElementIdC + "]" );
+        indicatorB.setDenominator( "1" );
+        
+        indicatorService.addIndicator( indicatorA );
+        indicatorService.addIndicator( indicatorB );
+        
         // ---------------------------------------------------------------------
         // Setup DataSets (to get correct PeriodType for DataElements)
         // ---------------------------------------------------------------------
@@ -151,8 +205,10 @@ public class AggregationServiceTest
         dataSetService.addDataSet( dataSet );
         dataElementA.getDataSets().add( dataSet );
         dataElementB.getDataSets().add( dataSet );
+        dataElementC.getDataSets().add( dataSet );
         dataElementService.updateDataElement( dataElementA );
         dataElementService.updateDataElement( dataElementB );
+        dataElementService.updateDataElement( dataElementC );
         
         // ---------------------------------------------------------------------
         // Setup Periods
@@ -164,9 +220,9 @@ public class AggregationServiceTest
         periodB = createPeriod( monthly, apr01, apr30 );
         periodC = createPeriod( monthly, may01, may31 );
         
-        periodIds.add( periodService.addPeriod( periodA ) );
-        periodIds.add( periodService.addPeriod( periodB ) );
-        periodIds.add( periodService.addPeriod( periodC ) );
+        periodService.addPeriod( periodA );
+        periodService.addPeriod( periodB );
+        periodService.addPeriod( periodC );
         
         // ---------------------------------------------------------------------
         // Setup OrganisationUnits
@@ -182,62 +238,65 @@ public class AggregationServiceTest
         unitH = createOrganisationUnit( 'H', unitF );
         unitI = createOrganisationUnit( 'I' );
 
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitA ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitB ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitC ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitD ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitE ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitF ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitG ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitH ) );
-        organisationUnitIds.add( organisationUnitService.addOrganisationUnit( unitI ) );
+        organisationUnitService.addOrganisationUnit( unitA );
+        organisationUnitService.addOrganisationUnit( unitB );
+        organisationUnitService.addOrganisationUnit( unitC );
+        organisationUnitService.addOrganisationUnit( unitD );
+        organisationUnitService.addOrganisationUnit( unitE );
+        organisationUnitService.addOrganisationUnit( unitF );
+        organisationUnitService.addOrganisationUnit( unitG );
+        organisationUnitService.addOrganisationUnit( unitH );
+        organisationUnitService.addOrganisationUnit( unitI );
         
         // ---------------------------------------------------------------------
         // Setup DataValues
         // ---------------------------------------------------------------------
 
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "90", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitD, "10", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitE, "35", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitF, "25", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitG, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitH, "60", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "90", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitD, "10", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitE, "35", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitF, "25", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitG, "20", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitH, "60", categoryOptionComboA ) );
         
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "70", categoryOptionCombo ) );        
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitD, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, "65", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitF, "55", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitG, "20", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitH, "15", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "70", categoryOptionComboA ) );        
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitD, "40", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitE, "65", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitF, "55", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitG, "20", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitH, "15", categoryOptionComboA ) );
         
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, "95", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitD, "40", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, "45", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitF, "30", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitG, "50", categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitH, "70", categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitC, "95", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitD, "40", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitE, "45", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitF, "30", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitG, "50", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodC, unitH, "70", categoryOptionComboA ) );
         
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitC, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitD, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitE, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitG, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitH, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitC, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitD, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitE, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitF, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitG, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodA, unitH, T, categoryOptionComboA ) );
         
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitC, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitD, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitE, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitG, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitH, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitC, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitD, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitE, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitF, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitG, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodB, unitH, T, categoryOptionComboA ) );
         
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitC, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitD, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitE, F, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitF, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitG, T, categoryOptionCombo ) );
-        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionCombo ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitC, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitD, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitE, F, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitF, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitG, T, categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementB, periodC, unitH, T, categoryOptionComboA ) );
         
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, unitB, "30", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementC, periodA, unitB, "20", categoryOptionComboB ) );
+                
         aggregationService.clearCache();
     }
 
@@ -248,27 +307,39 @@ public class AggregationServiceTest
     }
 
     @Test
+    public void indicator()
+    {
+        assertEquals( 10000.0, aggregationService.getAggregatedIndicatorValue( indicatorA, mar01, mar31, unitB ) );
+        
+        assertEquals( 30.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboA, mar01, mar31, unitB ) );
+        assertEquals( 20.0, aggregationService.getAggregatedDataValue( dataElementC, categoryOptionComboB, mar01, mar31, unitB ) );
+        assertEquals( 50.0, aggregationService.getAggregatedDataValue( dataElementC, null, mar01, mar31, unitB ) );
+        
+        assertEquals( 5000.0, aggregationService.getAggregatedIndicatorValue( indicatorB, mar01, mar31, unitB ) );
+    }
+    
+    @Test
     public void sumIntDataElement()
     {
-        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitC ) );
-        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitF ) );
-        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitB ) );
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ) );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ) );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ) );
 
-        assertEquals( 255.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitC ) );
-        assertEquals( 345.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitF ) );
-        assertEquals( 580.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitB ) );
+        assertEquals( 255.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ) );
+        assertEquals( 345.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ) );
+        assertEquals( 580.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitB ) );
     }
     
     @Test
     public void sumBoolDataElement()
     {
-        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitC ) );
-        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitF ) );
-        assertEquals( 3.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitB ) );
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ) );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ) );
+        assertEquals( 3.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ) );
 
-        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitC ) );
-        assertEquals( 7.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitF ) );
-        assertEquals( 10.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitB ) );
+        assertEquals( 2.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ) );
+        assertEquals( 7.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ) );
+        assertEquals( 10.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ) );
     }
     
     @Test
@@ -277,14 +348,13 @@ public class AggregationServiceTest
         dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         dataElementService.updateDataElement( dataElementA );
         
-        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitC ) );
-        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitF ) );
-        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, mar31, unitB ) );
+        assertEquals( 90.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitC ) );
+        assertEquals( 105.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitF ) );
+        assertEquals( 150.0, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, mar31, unitB ) );
 
-        assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitC ), 0.1 );
-        assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitF ), 0.1 );
-        // assertEquals( 193.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionCombo, mar01, may31, unitB ), 0.1 );
-        // got 193.80681818181816
+        assertEquals( 85.2, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitC ), 0.1 );
+        assertEquals( 115.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitF ), 0.1 );
+        assertEquals( 193.3, aggregationService.getAggregatedDataValue( dataElementA, categoryOptionComboA, mar01, may31, unitB ), 0.6 );
     }
     
     @Test
@@ -293,12 +363,12 @@ public class AggregationServiceTest
         dataElementB.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_AVERAGE );
         dataElementService.updateDataElement( dataElementB );
         
-        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitC ) );
-        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitF ), 0.01 );
-        assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, mar31, unitB ) );
+        assertEquals( 1.0, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitC ) );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitF ), 0.01 );
+        assertEquals( 0.6, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, mar31, unitB ) );
         
-        assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitC ), 0.01 );
-        assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitF ), 0.01 );
-        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionCombo, mar01, may31, unitB ), 0.01 );
+        assertEquals( 0.66, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitC ), 0.01 );
+        assertEquals( 0.78, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitF ), 0.01 );
+        assertEquals( 0.67, aggregationService.getAggregatedDataValue( dataElementB, categoryOptionComboA, mar01, may31, unitB ), 0.01 );
     }
 }

@@ -172,8 +172,8 @@ public class DefaultIndicatorDataMart
                 
                 for ( final Indicator indicator : indicators )
                 {
-                    final double numeratorValue = calculateExpression( generateExpression( indicator.getNumerator(), valueMap ) );                    
-                    final double denominatorValue = calculateExpression( generateExpression( indicator.getDenominator(), valueMap ) );
+                    final double numeratorValue = calculateExpression( generateExpression( indicator.getExplodedNumerator(), valueMap ) );                    
+                    final double denominatorValue = calculateExpression( generateExpression( indicator.getExplodedDenominator(), valueMap ) );
 
                     // ---------------------------------------------------------
                     // AggregatedIndicatorValue
