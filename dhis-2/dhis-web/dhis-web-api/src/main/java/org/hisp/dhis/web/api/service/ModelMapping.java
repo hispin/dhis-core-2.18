@@ -43,7 +43,13 @@ public class ModelMapping
     {
         DataElement de = new DataElement();
         de.setId( dataElement.getId() );
-        de.setName( dataElement.getName() );
+
+        // Name defaults to alternative name with fallback to name if empty
+        String name = dataElement.getAlternativeName();
+        if (name == null || name.trim().isEmpty()) {
+            name = dataElement.getName();
+        }
+        de.setName( name );
         de.setType( dataElement.getType() );
         
         de.setCategoryOptionCombos( getCategoryOptionCombos( dataElement ) );
