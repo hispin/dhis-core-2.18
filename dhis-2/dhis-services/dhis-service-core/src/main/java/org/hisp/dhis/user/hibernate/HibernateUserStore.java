@@ -38,6 +38,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
@@ -75,6 +77,18 @@ public class HibernateUserStore
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+    
+    private GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore;
+    
+    public GenericIdentifiableObjectStore<UserAuthorityGroup> getUserRoleStore()
+    {
+        return userRoleStore;
+    }
+    
+    public void setUserRoleStore( GenericIdentifiableObjectStore<UserAuthorityGroup> userRoleStore )
+    {
+        this.userRoleStore = userRoleStore;
     }
 
     // -------------------------------------------------------------------------
@@ -120,14 +134,6 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         return session.createQuery( "from User" ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<User> getAllUsers( int from, int to )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createQuery( "from User" ).setFirstResult( from ).setMaxResults( to ).list();
     }
 
     public Collection<User> getUsersByOrganisationUnit( OrganisationUnit organisationUnit )
@@ -187,17 +193,6 @@ public class HibernateUserStore
             AuditLogUtil.ACTION_DELETE , 
             User.class.getSimpleName(), 
             user.getName()) );
-    }
-
-    public int countAllUsers()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        
-        Query query = session.createQuery( "select count(*) from User" );
-        
-        Number rs = (Number) query.uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
     }
     // -------------------------------------------------------------------------
     // UserCredentials
@@ -367,33 +362,70 @@ public class HibernateUserStore
         return criteria.list();
     }
     
-    @SuppressWarnings( "unchecked" )
-    public Collection<UserCredentials> searchUsersByName( String key, int from, int to ){
-        
+    public int getUserCount()
+    {
         Session session = sessionFactory.getCurrentSession();
+        
+        Query query = session.createQuery( "select count(*) from User" );
+        
+        Number rs = (Number) query.uniqueResult();
 
-        Criteria criteria = session.createCriteria( UserCredentials.class );
-      
-        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
-        criteria.addOrder( Order.asc( "username" ) );
-        criteria.setFirstResult( from );
-        criteria.setMaxResults( to );
-
-        return criteria.list();
+        return rs != null ? rs.intValue() : 0;
     }
-    
-    public int countNumberOfSearchUsersByName( String key )
+
+    public int getUserCountByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( UserCredentials.class );
       
-        criteria.add( Restrictions.ilike( "username", "%" + key + "%" ) );
+        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
         
         criteria.setProjection( Projections.rowCount() ).uniqueResult();
 
         Number rs = (Number) criteria.uniqueResult();
         
         return rs != null ? rs.intValue() : 0;
+    }
+
+    public Collection<UserCredentials> getUsersBetween( int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery( "from UserCredentials" ).setFirstResult( first ).setMaxResults( max ).list();
+    }
+
+    public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( UserCredentials.class );
+      
+        criteria.add( Restrictions.ilike( "username", "%" + name + "%" ) );
+        criteria.addOrder( Order.asc( "username" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+
+        return criteria.list();
+    }
+
+    public int getUserRoleCount()
+    {
+        return userRoleStore.getCount();
+    }
+
+    public int getUserRoleCountByName( String name )
+    {
+        return userRoleStore.getCountByName( name );
+    }
+
+    public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
+    {
+        return userRoleStore.getBetween( first, max );
+    }
+
+    public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
+    {
+        return userRoleStore.getBetweenByName( name, first, max );
     }
 }

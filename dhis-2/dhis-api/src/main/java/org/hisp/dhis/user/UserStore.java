@@ -29,6 +29,7 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -103,15 +104,16 @@ public interface UserStore
      */
     void deleteUser( User user );
     
-    Collection<User> getAllUsers( int from, int to );
-  
     Collection<UserCredentials> searchUsersByName( String key );
   
-    Collection<UserCredentials> searchUsersByName( String key, int from, int to );
+    Collection<UserCredentials> getUsersBetween( int first, int max );
     
-    int countNumberOfSearchUsersByName( String key );
+    Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max );
     
-    int countAllUsers();
+    int getUserCount();
+    
+    int getUserCountByName( String name );
+
 
     // -------------------------------------------------------------------------
     // UserCredentials
@@ -253,5 +255,13 @@ public interface UserStore
      * @param userSetting the UserSetting to delete.
      */
     void deleteUserSetting( UserSetting userSetting );
+
+    Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max );
     
+    Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max );
+    
+    int getUserRoleCount();
+    
+    int getUserRoleCountByName( String name );
+
 }

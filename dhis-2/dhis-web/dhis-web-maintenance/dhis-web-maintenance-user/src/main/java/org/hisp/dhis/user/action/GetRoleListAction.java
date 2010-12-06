@@ -27,10 +27,15 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
@@ -40,7 +45,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id: GetRoleListAction.java 4079 2007-11-20 11:42:23Z larshelg $
  */
 public class GetRoleListAction
-    implements Action
+    extends ActionPagingSupport<UserAuthorityGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -54,7 +59,7 @@ public class GetRoleListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<UserAuthorityGroup> userAuthorityGroups;
@@ -62,6 +67,18 @@ public class GetRoleListAction
     public List<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
+    }
+    
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    public String getKey()
+    {
+        return key;
     }
 
     // -------------------------------------------------------------------------
@@ -71,7 +88,19 @@ public class GetRoleListAction
     public String execute()
         throws Exception
     {
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+        
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( userStore.getUserRoleCountByName( key ) );
+            
+            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getUserRolesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( userStore.getUserRoleCount() );
+            
+            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getUserRolesBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
 
         return SUCCESS;
     }

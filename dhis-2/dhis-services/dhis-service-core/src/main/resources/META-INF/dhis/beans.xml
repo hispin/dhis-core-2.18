@@ -186,6 +186,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.user.UserStore" class="org.hisp.dhis.user.hibernate.HibernateUserStore">
 		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="userRoleStore" ref="org.hisp.dhis.user.UserAuthorityGroupStore" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
@@ -203,6 +204,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedDataValueStore">
 		<property name="statementManager" ref="statementManager"/>
 	</bean>
+	
+	<bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+		<property name="clazz" value="org.hisp.dhis.user.UserAuthorityGroup" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 
 	<!-- Service definitions -->
 
