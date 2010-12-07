@@ -401,12 +401,20 @@ public class DefaultDataElementCategoryService
         return operands;
     }
     
-    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
+    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals )
     {
         Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();
 
         for ( DataElement dataElement : dataElements )
         {
+            if ( !dataElement.getCategoryCombo().isDefault() && includeTotals )
+            {
+                DataElementOperand operand = new DataElementOperand();
+                operand.updateProperties( dataElement );
+                
+                operands.add( operand );
+            }
+            
             for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
             {
                 DataElementOperand operand = new DataElementOperand();
@@ -417,6 +425,11 @@ public class DefaultDataElementCategoryService
         }
 
         return operands;
+    }
+    
+    public Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements )
+    {
+        return getOperands( dataElements, false );
     }
 
     public Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements )

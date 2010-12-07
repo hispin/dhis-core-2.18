@@ -45,11 +45,12 @@ public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>
 {
     public static final String SEPARATOR = ".";
+    public static final String NAME_TOTAL = "(Total)";
     
     private static final String TYPE_VALUE = "value";
     private static final String TYPE_TOTAL = "total";
     
-    private static final String SPACE = "";
+    private static final String SPACE = " ";
     private static final String COLUMN_PREFIX = "de";
     private static final String COLUMN_SEPARATOR = "_";
 
@@ -208,9 +209,14 @@ public class DataElementOperand
      */
     public String getPrettyName( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        if ( dataElement == null || categoryOptionCombo == null )
+        if ( dataElement == null ) // Invalid
         {
             return null;
+        }
+        
+        if ( categoryOptionCombo == null ) // Total
+        {
+            return dataElement.getName() + SPACE + NAME_TOTAL;
         }
         
         return categoryOptionCombo.isDefault() ? dataElement.getName() : dataElement.getName() + SPACE + categoryOptionCombo.getName();
@@ -242,6 +248,23 @@ public class DataElementOperand
         this.frequencyOrder = dataElement.getFrequencyOrder();
         this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
         this.valueType = dataElement.getType();
+    }
+
+    /**
+     * Updates all transient properties.
+     * 
+     * @param dataElement
+     * @param categoryOptionCombo
+     */
+    public void updateProperties( DataElement dataElement )
+    {
+        this.dataElementId = dataElement.getId();
+        this.operandId = String.valueOf( dataElement.getId() );
+        this.operandName = dataElement.getName() + SPACE + NAME_TOTAL;
+        this.aggregationOperator = dataElement.getAggregationOperator();
+        this.frequencyOrder = dataElement.getFrequencyOrder();
+        this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
+        this.valueType = dataElement.getType();        
     }
 
     /**
