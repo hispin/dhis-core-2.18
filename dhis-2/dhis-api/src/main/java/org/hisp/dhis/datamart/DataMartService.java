@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.period.RelativePeriods;
 
 /**
@@ -115,4 +116,12 @@ public interface DataMartService
      * @return the DataMartExport.
      */
     DataMartExport getDataMartExportByName( String name );    
+
+    Collection<DataMartExport> getDataMartExportsBetween( int first, int max );
+    
+    Collection<DataMartExport> getDataMartExportsBetweenByName( String name, int first, int max );
+    
+    int getDataMartExportCount();
+    
+    int getDataMartExportCountByName( String name );
 }

@@ -6,7 +6,8 @@
         <td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-                    <td colspan="6" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='getOptions.action'"/></td>
+					<td>#filterDiv( "getDataMartExports" )</td>
+                    <td colspan="5" style="text-align:right"><input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='getOptions.action'"/></td>
                 </tr>
 			</table>
             <table class="listTable" id="listTable">
@@ -36,7 +37,8 @@
                 #end
                 </tbody>
             </table>
-
+			<p></p>
+	  		#parse( "/dhis-web-commons/paging/paging.vm" )
         </td>        
         <td style="width:20em; padding-left:2em; vertical-align:top">
 
