@@ -27,22 +27,24 @@ package org.hisp.dhis.datamart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.comparator.DataMartExportComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetAllDataMartExportsAction
-    implements Action
+    extends ActionPagingSupport<DataMartExport>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +58,7 @@ public class GetAllDataMartExportsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<DataMartExport> exports;
@@ -66,13 +68,38 @@ public class GetAllDataMartExportsAction
         return exports;
     }
 
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        exports = new ArrayList<DataMartExport>( dataMartService.getAllDataMartExports() );
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( dataMartService.getDataMartExportCountByName( key ) );
+            
+            exports = new ArrayList<DataMartExport>( dataMartService.getDataMartExportsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataMartService.getDataMartExportCount() );
+
+            exports = new ArrayList<DataMartExport>( dataMartService.getDataMartExportsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+
+//        exports = new ArrayList<DataMartExport>( dataMartService.getAllDataMartExports() );
         
         Collections.sort( exports, new DataMartExportComparator() );
         

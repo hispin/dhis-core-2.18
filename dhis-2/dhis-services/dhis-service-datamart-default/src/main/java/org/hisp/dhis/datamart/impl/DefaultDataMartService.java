@@ -152,4 +152,24 @@ public class DefaultDataMartService
     {
         return dataMartExportStore.getByName( name );
     }
+
+    public int getDataMartExportCount()
+    {
+        return dataMartExportStore.getCount();
+    }
+
+    public int getDataMartExportCountByName( String name )
+    {
+        return dataMartExportStore.getCountByName( name );
+    }
+
+    public Collection<DataMartExport> getDataMartExportsBetween( int first, int max )
+    {
+        return dataMartExportStore.getBetween( first, max );
+    }
+
+    public Collection<DataMartExport> getDataMartExportsBetweenByName( String name, int first, int max )
+    {
+        return dataMartExportStore.getBetweenByName( name, first, max );
+    }
 }

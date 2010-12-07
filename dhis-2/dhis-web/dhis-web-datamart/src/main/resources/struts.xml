@@ -50,6 +50,7 @@
       <param name="page">/dhis-web-datamart/viewExportForm.vm</param>
       <param name="menu">/dhis-web-datamart/menu.vm</param>
       <param name="javascripts">javascript/datamart.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="addDataMartExportToDashboard" class="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction">
