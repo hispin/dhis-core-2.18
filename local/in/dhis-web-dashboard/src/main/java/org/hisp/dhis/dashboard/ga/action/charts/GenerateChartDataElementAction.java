@@ -42,6 +42,8 @@ import javax.servlet.http.HttpSession;
 import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dashboard.util.DataElementChartResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -143,6 +145,13 @@ public class GenerateChartDataElementAction implements Action
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
+    }
+    
+    private CaseAggregationConditionService caseAggregationConditionService;
+    
+    public void setCaseAggregationConditionService( CaseAggregationConditionService caseAggregationConditionService )
+    {
+        this.caseAggregationConditionService = caseAggregationConditionService;
     }
 /*    
     private DashBoardService dashBoardService;
@@ -368,6 +377,21 @@ public class GenerateChartDataElementAction implements Action
         return yseriesList;
     }
     
+    private List<String> selectedValues;
+    
+    public List<String> getSelectedValues()
+    {
+        return selectedValues;
+    }
+
+    private List<String> selectedStatus;
+    
+    public List<String> getSelectedStatus()
+    {
+        return selectedStatus;
+    }
+
+   
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -398,6 +422,9 @@ public class GenerateChartDataElementAction implements Action
         selEndPeriodList = new ArrayList<Date>();
         
         yseriesList = new ArrayList<String>();
+        
+        selectedValues = new ArrayList<String>();//for DrillDown
+        selectedStatus = new ArrayList<String>();
       //  DataElement dElement = new DataElement();
         
        // DataElementCategoryOptionCombo decoc1 = new DataElementCategoryOptionCombo();
@@ -881,13 +908,40 @@ public class GenerateChartDataElementAction implements Action
                decoc = decocList.get( serviceCount );
                    
                series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
+               
+               CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService.getCaseAggregationCondition( dataElement, decoc );
+
+               //CaseAggregationMapping caseAggMapping = caseAggregationMappingService.getCaseAggregationMappingByOptionCombo( dElement, decoc1 );
+               
+               if( caseAggregationCondition == null )
+               {
+                   selectedStatus.add( "no" );
+               }
+               else
+               {
+                   selectedStatus.add( "yes" );
+               }
+
+               //System.out.println( "selectedStatus  : " + selectedStatus );
                yseriesList.add( dataElement.getName() + " : " + decoc.getName() );
            }
            else
            {
                decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                series[serviceCount] = dataElement.getName();
+
+               CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService.getCaseAggregationCondition( dataElement, decoc );
                
+               if( caseAggregationCondition == null )
+               {
+                   selectedStatus.add( "no" );
+               }
+               else
+               {
+                   selectedStatus.add( "yes" );
+               }
+               
+               //System.out.println( "selectedStatus  : " + selectedStatus );
                yseriesList.add( dataElement.getName() );
            }
            
@@ -895,8 +949,16 @@ public class GenerateChartDataElementAction implements Action
            for( Date startDate : selStartPeriodList )
            {
                Date endDate = selEndPeriodList.get( periodCount );
-                              
+               //format.formatDate( date )
+               String tempStartDate = format.formatDate( startDate );
+               String tempEndDate   = format.formatDate( endDate );
+               
                categories[periodCount] = periodNames.get( periodCount );
+               PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+               
+               String values = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":"  + periodType + ":" + tempStartDate + ":" + tempEndDate;
+               selectedValues.add(values);
+             //  System.out.println( "selectedValues Size  : " + selectedValues.size() );
                
                Double aggDataValue = 0.0;
                if( aggDataCB != null )
@@ -908,12 +970,17 @@ public class GenerateChartDataElementAction implements Action
                }
                else
                {
-                   PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                 //  PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
                    Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
                    
                    for( Period period : periods )
                    {
                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                      
+                      // String values = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":" + period.getId();
+                      // selectedValues.add(values);
+                       
+                      // System.out.println( "selectedValues  : " + selectedValues );
                        
                        try
                        {
@@ -944,7 +1011,8 @@ public class GenerateChartDataElementAction implements Action
            
            serviceCount++;          
        }
-    
+       
+       
        dataElementChartResult = new DataElementChartResult( series, categories, data, chartTitle, xAxis_Title, yAxis_Title );
        return dataElementChartResult;
     }
