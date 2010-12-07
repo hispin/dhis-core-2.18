@@ -180,8 +180,13 @@ function exportToExcelFunction2( summaryOption )
 		                <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><a href="#" onclick="javascript:drillDownResult( event, '$selectedValues.get($count3)' )" target="_blank">$data</a></td>                                    
 		                #set( $count3 = $count3 + 1 )
 		            #else-->
+		            #if( $categoryLB.equals( "period" ) && !$ougGroupSetCB && $selectedStatus.get($count1).equals("yes") )
+                         <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><a href="#" onclick="javascript:drillDownResult( event, '$selectedValues.get($count3)' )" target="_blank">$data</a></td>                                    
+                    #set( $count3 = $count3 + 1 ) 
+                    #else
 		                <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$data</td>
 		            #end
+		          #end
 		        #end
 		        #set( $count1 = $count1 + 1 )
 		      </tr>    

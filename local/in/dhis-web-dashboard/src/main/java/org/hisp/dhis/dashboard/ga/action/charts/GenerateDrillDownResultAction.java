@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
 import jxl.write.Label;
-import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -39,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -54,6 +55,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.w3c.dom.Document;
@@ -207,7 +209,7 @@ public class GenerateDrillDownResultAction
 
     private String outputReportPath;
 
-    private Period startDate;
+   // private Period startDate;
 
     private OrganisationUnit selectedOrgUnit;
 
@@ -230,7 +232,21 @@ public class GenerateDrillDownResultAction
     private String deCodesXMLFileName;
 
     private String reportFileNameTB;
-
+    
+    private I18nFormat format;
+    
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+    
+    private Date tempStartDate;
+    
+    private Date tempEndDate;
+    
+    private PeriodType periodTypeName;
+    
+    private Collection<Period> periods;
     // </editor-fold>
 
     public String execute()
@@ -239,15 +255,29 @@ public class GenerateDrillDownResultAction
 
         values = selectedValues.split( ":" );
         int orgunit = Integer.parseInt( values[0] );
-        int periodid = Integer.parseInt( values[3] );
+       // int periodid = Integer.parseInt( values[3] );
         int deid = Integer.parseInt( values[1] );
         int cocid = Integer.parseInt( values[2] );
-
-        startDate = periodService.getPeriod( periodid );
+        
+        //06/12/2010
+        String periodType = values[3];
+        //Date  startDate = values[4];
+       // String endDate = values[5];
+        
+        tempStartDate = format.parseDate( values[4] );
+        tempEndDate   = format.parseDate( values[5] );
+        
+        
+        periodTypeName = periodService.getPeriodTypeByName( periodType );
+        periods = periodService.getPeriodsBetweenDates( periodTypeName, tempStartDate, tempEndDate );
+        
+        
+       // startDate = periodService.getPeriod( periodid );
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( orgunit );
         de = dataElementService.getDataElement( deid );
         coc = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( cocid );
-        System.out.println( "orgunit is " + orgunit + " de is " + deid + " coc is " + cocid + " period is " + periodid );
+        
+        System.out.println( "orgunit is " + orgunit + " de is " + deid + " coc is " + cocid + " periodType is " + periodType + " tempStartDate is " + tempStartDate + " tempEndDate is  " + tempEndDate );
 
         statementManager.initialise();
         raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
@@ -314,7 +344,12 @@ public class GenerateDrillDownResultAction
 
             List<PatientDataValue> patientDataValues = new ArrayList<PatientDataValue>();
             
-            patientDataValues.addAll( caseAggregationConditionService.getPatientDataValues( caseAggregationCondition, ou, startDate ) );
+            for( Period period : periods )
+            {
+                patientDataValues.addAll( caseAggregationConditionService.getPatientDataValues( caseAggregationCondition, ou, period ) );
+            }
+            
+           // patientDataValues.addAll( caseAggregationConditionService.getPatientDataValues( caseAggregationCondition, ou, startDate ) );
            // patientDataValues = caseAggregationMappingService.getCaseAggregatePatientDataValue( ou, startDate,
            //     caseAggMapping );
             if ( patientDataValues != null )
@@ -477,7 +512,7 @@ public class GenerateDrillDownResultAction
                     int tempColNo = colList.get( rowCount );
                     int sheetNo = sheetList.get( rowCount );
                     sheet0 = outputReportWorkbook.getSheet( sheetNo );
-                    WritableCell cell = sheet0.getWritableCell( tempColNo, rowNo );
+                   // WritableCell cell = sheet0.getWritableCell( tempColNo, rowNo );
                     // System.out.println(
                     // "_______________________ count = "+rowCount
                     // +"tempColNo = " + tempColNo + " rowNo = " + rowNo +

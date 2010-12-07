@@ -164,9 +164,13 @@ public class GetDataElementsAction
         Iterator<DataElement> alldeIterator = dataElements.iterator();
         while ( alldeIterator.hasNext() )
         {
+            
             DataElement de1 = alldeIterator.next();
-            if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) && !de1.getType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+           // de1.getDomainType()
+            //if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) || !de1.getType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )
+            if ( !de1.getType().equals( DataElement.VALUE_TYPE_INT ) || !de1.getDomainType().equals( DataElement.DOMAIN_TYPE_AGGREGATE ) )    
             {
+                
                 alldeIterator.remove();
             }
         }

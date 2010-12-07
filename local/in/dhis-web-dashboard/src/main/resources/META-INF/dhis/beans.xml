@@ -60,6 +60,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
 		</property>
+		<property name="caseAggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService">
+        </property>
     </bean>
     
 	<!-- for Chart Display -->	
