@@ -322,13 +322,8 @@ public class DefaultExpressionService
                         + operand.getOptionComboId() );
                 }
 
-                match = dataElement.getName();
+                match = operand.getPrettyName( dataElement, categoryOptionCombo );
                 
-                if ( !categoryOptionCombo.isDefault() )
-                {
-                    match += SPACE + categoryOptionCombo.getName();
-                }
-
                 matcher.appendReplacement( buffer, match );
             }
 

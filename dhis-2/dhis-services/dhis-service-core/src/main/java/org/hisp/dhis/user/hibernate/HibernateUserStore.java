@@ -39,7 +39,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
@@ -388,6 +387,7 @@ public class HibernateUserStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getUsersBetween( int first, int max )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -395,6 +395,7 @@ public class HibernateUserStore
         return session.createQuery( "from UserCredentials" ).setFirstResult( first ).setMaxResults( max ).list();
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<UserCredentials> getUsersBetweenByName( String name, int first, int max )
     {
         Session session = sessionFactory.getCurrentSession();

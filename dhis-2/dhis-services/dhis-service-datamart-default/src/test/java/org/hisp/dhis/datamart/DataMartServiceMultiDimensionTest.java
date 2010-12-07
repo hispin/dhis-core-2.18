@@ -212,6 +212,11 @@ public class DataMartServiceMultiDimensionTest
         // Setup OrganisationUnits
         // ---------------------------------------------------------------------
 
+        // ---------------------------------------------------------------------
+        //              A
+        //      B               C
+        // ---------------------------------------------------------------------
+
         unitA = createOrganisationUnit( 'A' );
         unitB = createOrganisationUnit( 'B', unitA );
         unitC = createOrganisationUnit( 'C', unitA );
@@ -505,6 +510,89 @@ public class DataMartServiceMultiDimensionTest
         assertEquals( 38000.0, aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitA ) );   
     }
 
+    @Ignore
+    @Test
+    public void testIndicatorTotal()
+    {
+        dataElementA.setType( DataElement.VALUE_TYPE_INT );
+        dataElementA.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );        
+        dataElementService.updateDataElement( dataElementA );
+        
+        // ---------------------------------------------------------------------
+        // Setup DataValues
+        // ---------------------------------------------------------------------
+
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, "9", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitB, "3", categoryOptionComboB ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "1", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodA, unitC, "5", categoryOptionComboB ) );
+        
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitB, "3", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitB, "2", categoryOptionComboB ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "7", categoryOptionComboA ) );
+        dataValueService.addDataValue( createDataValue( dataElementA, periodB, unitC, "9", categoryOptionComboB ) );
+        
+        // ---------------------------------------------------------------------
+        // Setup Indicators
+        // ---------------------------------------------------------------------
+
+        IndicatorType indicatorType = createIndicatorType( 'A' ); // Factor = 100
+        
+        indicatorService.addIndicatorType( indicatorType );
+        
+        Indicator indicatorA = createIndicator( 'A', indicatorType );
+
+        String suffixA = Expression.SEPARATOR + categoryOptionComboA.getId();
+        String suffixB = Expression.SEPARATOR + categoryOptionComboB.getId();
+        
+        indicatorA.setNumerator( "[" + dataElementA.getId() + suffixA + "]+[" + dataElementA.getId() + suffixB + "]" );
+        indicatorA.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+        
+        indicatorA.setDenominator( "100" );
+        indicatorA.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+
+        Indicator indicatorB = createIndicator( 'B', indicatorType );
+
+        indicatorB.setNumerator( "[" + dataElementA.getId() + "]" );
+        indicatorB.setNumeratorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+        
+        indicatorB.setDenominator( "100" );
+        indicatorB.setDenominatorAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
+
+        indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
+        indicatorIds.add( indicatorService.addIndicator( indicatorB ) );
+
+        // ---------------------------------------------------------------------
+        // Test
+        // ---------------------------------------------------------------------
+
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+
+        assertEquals( 12.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitB ) );
+        assertEquals( 5.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitB ) );
+        assertEquals( 17.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitB ) );
+        
+        assertEquals( 6.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitC ) );
+        assertEquals( 16.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitC ) );
+        assertEquals( 22.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitC ) );
+        
+        assertEquals( 18.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitA ) );
+        assertEquals( 21.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitA ) );
+        assertEquals( 39.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitA ) );
+        
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitB ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitB ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitB ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodB, unitB ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitB ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitB ) );
+        
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitC ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitC ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitC ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodB, unitC ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitC ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitC ) );
+        
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitA ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitA ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitA ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodB, unitA ) );
+        assertEquals( aggregatedDataValueService.getAggregatedValue( indicatorB, periodC, unitA ), aggregatedDataValueService.getAggregatedValue( indicatorA, periodC, unitA ) );
+    }
+    
     @Ignore
     @Test
     public void testAnnualizedIndicator()

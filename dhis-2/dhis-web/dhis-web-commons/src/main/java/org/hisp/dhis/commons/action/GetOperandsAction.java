@@ -97,6 +97,13 @@ public class GetOperandsAction
         this.aggregationOperator = aggregationOperator;
     }
 
+    private boolean includeTotals = false;
+    
+    public void setIncludeTotals( boolean includeTotals )
+    {
+        this.includeTotals = includeTotals;
+    }
+
     public List<DataElementOperand> operands;
 
     public List<DataElementOperand> getOperands()
@@ -133,7 +140,7 @@ public class GetOperandsAction
             dataElements.retainAll( dataElementService.getDataElementsByAggregationOperator( aggregationOperator ) );
         }
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements, includeTotals ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
