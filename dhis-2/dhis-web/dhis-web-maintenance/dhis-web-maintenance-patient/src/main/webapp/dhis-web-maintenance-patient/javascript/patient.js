@@ -154,7 +154,31 @@ function showPatientDetails( patientId )
 
 function patientReceived( patientElement )
 {   
-    var identifiers = patientElement.getElementsByTagName( "identifier" );   
+	// ----------------------------------------------------------------------------
+	// Get common-information
+    // ----------------------------------------------------------------------------
+	
+	var id = patientElement.getElementsByTagName( "id" )[0].firstChild.nodeValue;
+	var fullName = patientElement.getElementsByTagName( "fullName" )[0].firstChild.nodeValue;   
+	var gender = patientElement.getElementsByTagName( "gender" )[0].firstChild.nodeValue;   
+	var dobType = patientElement.getElementsByTagName( "dobType" )[0].firstChild.nodeValue;   
+	var birthDate = patientElement.getElementsByTagName( "dateOfBirth" )[0].firstChild.nodeValue;   
+	var bloodGroup= patientElement.getElementsByTagName( "bloodGroup" )[0].firstChild.nodeValue;   
+    
+	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
+					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
+					+ '<strong>' + i18n_gender + ':</strong> ' + gender+ "<br>" 
+					+ '<strong>' + i18n_dob_type + ':</strong> ' + dobType+ "<br>" 
+					+ '<strong>' + i18n_date_of_birth + ':</strong> ' + birthDate+ "<br>" 
+					+ '<strong>' + i18n_blood_group  + ':</strong> ' + bloodGroup;
+	
+	setInnerHTML( 'commonInfoField', commonInfo );
+	
+	// ----------------------------------------------------------------------------
+	// Get identifier
+    // ----------------------------------------------------------------------------
+	
+	var identifiers = patientElement.getElementsByTagName( "identifier" );   
     
     var identifierText = '';
 	
@@ -164,6 +188,12 @@ function patientReceived( patientElement )
 	}
 	
 	setInnerHTML( 'identifierField', identifierText );
+	
+	
+	
+	// ----------------------------------------------------------------------------
+	// Get attribute
+    // ----------------------------------------------------------------------------
 	
 	var attributes = patientElement.getElementsByTagName( "attribute" );   
     
