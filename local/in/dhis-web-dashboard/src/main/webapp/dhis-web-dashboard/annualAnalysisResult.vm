@@ -36,12 +36,30 @@
      iframeForChart.location.href = "generateChart.action?currentChart="+chartNamesToView[chartType][indexForChart];     
    }   
    
+   // Chart Display Option change start
+
+  function chartTypeOptionChange(evt)
+   {
+     var chartTypeOptionList = document.getElementById("chartTypeOption");
+     var chartTypeOptionValue = chartTypeOptionList.options[ chartTypeOptionList.selectedIndex ].value;
+     iframeForChart.location.href = "generateChart.action?currentChart="+chartTypeOptionValue;
+     
+   }
 </script>
 </head>
 <body >
     <div align="right">
-        			<input type="button" name="prevChartButton" id="prevChartButton" style="width: 40; height: 35; background-image: url('images/moveLeft.gif'); background-repeat: no-repeat; background-position: center; " onClick="prevCharttoView()" title="Previous">
-		        	<input type="button" name="nextChartButton" id="nextChartButton" style="width: 40; height: 35; background-image: url('images/moveRight.gif'); background-repeat: no-repeat; background-position: center;" onClick="nextCharttoView()" title="Next">						            				        
+<!--        	    <input type="button" name="prevChartButton" id="prevChartButton" style="width: 40; height: 35; background-image: url('images/moveLeft.gif'); background-repeat: no-repeat; background-position: center; " onClick="prevCharttoView()" title="Previous">
+		        	<input type="button" name="nextChartButton" id="nextChartButton" style="width: 40; height: 35; background-image: url('images/moveRight.gif'); background-repeat: no-repeat; background-position: center;" onClick="nextCharttoView()" title="Next">	-->					            				        
+                    <select id="chartTypeOption" name="chartTypeOption" onchange="chartTypeOptionChange(event)">
+                        <option value="Vertical3DBarChart">Vertical 3D BarChart</option>
+                        <option value="Horizontal3DBarChart">Horizontal 3D BarChart</option>
+                        <option value="LineChart">Line Chart</option>
+                        <option value="LineAndBarChart">Line And BarChart</option>
+                         <option value="AreaChart" >Area Chart</option>
+                    </select>
+   
+   
     </div> 
     <br /><br />
     

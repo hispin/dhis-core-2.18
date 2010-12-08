@@ -1,6 +1,4 @@
-
-
-<h2>$i18n.getString( "dashboard" )</h2>
+<h2>$i18n.getString( "dataanalyser" )</h2>
     <ul>
         <li>$i18n.getString( "graphical_analysis" )</li>
         <ul>

@@ -4,8 +4,8 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-    <bean id="org.hisp.dhis.dashboard.action.DashBoardHomePageAction"
-		class="org.hisp.dhis.dashboard.action.DashBoardHomePageAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction"
+		class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction"
 		scope="prototype">
         <property name="aggregationService">
             <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
@@ -26,8 +26,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 <!-- Graphical Analyser DataElements -->
-	 <bean id="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
-        class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
+	 <bean id="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
+        class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
         scope="prototype">
 		<property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -41,8 +41,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
     </bean>
 <!-- Graphical Analyser DataElements Result -->
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
-        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction"
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataElementAction"
+        class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataElementAction"
         scope="prototype">
 		
 		<property name="statementManager" ref="statementManager"/>
@@ -65,34 +65,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
     
 	<!-- for Chart Display -->	
-	<bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1"
-        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1"
+	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction1"
+        class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction1"
         scope="prototype">
     </bean>
 	
 <!-- sorting DataElement data -->    
-    <bean id="org.hisp.dhis.dashboard.action.GetSortedDataElementAction"
-        class="org.hisp.dhis.dashboard.action.GetSortedDataElementAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetSortedDataElementAction"
+        class="org.hisp.dhis.dataanalyser.action.GetSortedDataElementAction"
         scope="prototype">
     </bean>	
 <!-- Export Data Elements to Excel -->
-    <bean id="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
-        class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportDataElementToExcelAction"
+        class="org.hisp.dhis.dataanalyser.action.ExportDataElementToExcelAction"
         scope="prototype">
 
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
         </property>
     </bean>
 	
-
-	
-	
 <!-- Graphical Analyser DataElements End -->
 		
 <!-- Graphical Analyser Indicators Start-->
     
-     <bean id="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction"
-        class="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction"
+     <bean id="org.hisp.dhis.dataanalyser.ga.action.IndicatorwiseGAFormAction"
+        class="org.hisp.dhis.dataanalyser.ga.action.IndicatorwiseGAFormAction"
         scope="prototype">
         <property name="indicatorService">
             <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -107,12 +104,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 	   <!-- Graphical Analyser Indicator Result -->
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
-        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction"
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartIndicatorAction"
+        class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartIndicatorAction"
         scope="prototype">
         
         <property name="statementManager" ref="statementManager"/>
-        <property name="dashBoardService" ref="org.hisp.dhis.dashboard.util.DashBoardService">
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
         </property>
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
         </property>
@@ -130,13 +127,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>-->
     </bean>
 <!-- sorting Indiacator data -->	
-	<bean id="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction"
-        class="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction"
+	<bean id="org.hisp.dhis.dataanalyser.action.GetSortedIndicatorDataAction"
+        class="org.hisp.dhis.dataanalyser.action.GetSortedIndicatorDataAction"
         scope="prototype">
     </bean>
 <!-- Export Indicator to Excel -->
-    <bean id="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction"
-        class="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportIndicatorToExcelAction"
+        class="org.hisp.dhis.dataanalyser.action.ExportIndicatorToExcelAction"
         scope="prototype">
 
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
@@ -148,8 +145,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Graphical Analyser -->
 	
     <bean
-		id="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserFormAction"
-		class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserFormAction"
+		id="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserFormAction"
+		class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserFormAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -169,8 +166,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataAction"
-		class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataAction"
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction"
+		class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction"
 		scope="prototype">
         <property name="dataElementCategoryService">
             <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
@@ -188,7 +185,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
         </property>
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
 
         <property name="aggregationService">
@@ -207,13 +204,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction"
-		class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction"
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction"
+		class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction"
 		scope="prototype">
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.ga.action.charts.GenerateDrillDownResultAction"
-        class="org.hisp.dhis.dashboard.ga.action.charts.GenerateDrillDownResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownResultAction"
+        class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownResultAction"
         scope="prototype">
         <property name="statementManager" ref="statementManager"/>
         <property name="organisationUnitService">
@@ -250,8 +247,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Annual Analyser -->
 	
-    <bean id="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalyserFormAction"
-		class="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalyserFormAction"
+    <bean id="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalyserFormAction"
+		class="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalyserFormAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -267,14 +264,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalysisDataAction"
-		class="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalysisDataAction"
+    <bean id="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalysisDataAction"
+		class="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalysisDataAction"
 		scope="prototype">
         <property name="aggregationService">
             <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
         </property>
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -292,8 +289,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Motion Chart -->
 	
-    <bean id="org.hisp.dhis.dashboard.mchart.action.MotionChartFormAction"
-		class="org.hisp.dhis.dashboard.mchart.action.MotionChartFormAction"
+    <bean id="org.hisp.dhis.dataanalyser.mchart.action.MotionChartFormAction"
+		class="org.hisp.dhis.dataanalyser.mchart.action.MotionChartFormAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -310,8 +307,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.mchart.action.MotionChartResultAction"
-		class="org.hisp.dhis.dashboard.mchart.action.MotionChartResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.mchart.action.MotionChartResultAction"
+		class="org.hisp.dhis.dataanalyser.mchart.action.MotionChartResultAction"
 		scope="prototype">
         <property name="aggregationService">
             <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
@@ -341,8 +338,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- Survey Analyser -->
 	
-    <bean id="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisFormAction"
-    class="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisFormAction"
+    <bean id="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisFormAction"
+    class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisFormAction"
     scope="prototype">
         <property name="indicatorService">
             <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -356,8 +353,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	  
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisDataAction"
-		class="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisDataAction"
+    <bean id="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction"
+		class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction"
 		scope="prototype">
         <property name="aggregationService">
             <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
@@ -383,8 +380,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DataStatus -->
 	
-    <bean id="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusFormAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusFormAction"
 		scope="prototype">
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -395,8 +392,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 	<!--  
-	<bean id="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusFormAction"
-	class="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusFormAction"
+	<bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusFormAction"
+	class="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusFormAction"
 	scope="prototype">
 	<property name="dataSetService">
 	<ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -407,11 +404,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	-->
 	
-    <bean id="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusResultAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusResultAction"
 		scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -428,8 +425,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DataStatus For Mobile start  -->
 
-	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateDataStatusMobileFormAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateDataStatusMobileFormAction"
+	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateDataStatusMobileFormAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateDataStatusMobileFormAction"
         scope="prototype">
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -440,11 +437,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>	
 	
 	<!-- for Mobile Validation Status -->
-    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateValidationMobileStatusResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateValidationMobileStatusResultAction"
         scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -462,11 +459,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
    
 	<!--  for Mobile summary data status -->
 	
-	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
+	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction"
         scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -484,11 +481,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!--  for Mobile  dataStatus result -->
-    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateMobileDataStatusResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateMobileDataStatusResultAction"
         scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -508,11 +505,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>	
 	
-	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction"
+	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GeneratePercentageDataStatusResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GeneratePercentageDataStatusResultAction"
         scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -531,11 +528,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>	
 	
 	<!--  for Mobile Group wise data status -->    
-    <bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction"
         scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -556,12 +553,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>	
 	
     <!-- for Mobile Last Updated Status -->    	
-	<bean id="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
-        class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
+	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
+        class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction"
         scope="prototype">
 
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -584,11 +581,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	
     <bean
-		id="org.hisp.dhis.dashboard.ds.action.GenerateSummaryDataStatusResultAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateSummaryDataStatusResultAction"
+		id="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction"
 		scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -604,11 +601,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
     <bean
-		id="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusResultAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusResultAction"
+		id="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusResultAction"
 		scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -626,19 +623,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.ds.action.ExportToExcelAction"
-		class="org.hisp.dhis.dashboard.ds.action.ExportToExcelAction"
+    <bean id="org.hisp.dhis.dataanalyser.ds.action.ExportToExcelAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.ExportToExcelAction"
 		scope="prototype">
     </bean>
 
     <!-- DataStatus based on data entry Validation Pass-->
 
 	<bean
-		id="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction"
+		id="org.hisp.dhis.dataanalyser.ds.action.GenerateValidationStatusResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateValidationStatusResultAction"
 		scope="prototype">
 		<property name="dashBoardService">
-			<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+			<ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
 		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -655,12 +652,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <!-- Data Status based on last updation in selected data set-->
 
 	<bean
-		id="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction"
-		class="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction"
+		id="org.hisp.dhis.dataanalyser.ds.action.GenerateLastUpdatedDataSetResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateLastUpdatedDataSetResultAction"
 		scope="prototype">
 
 		<property name="dashBoardService">
-			<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+			<ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
 		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -681,8 +678,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- DataStatus Orgnisationunit GroupSet Wise-->
 	
     <bean
-		id="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
-		class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
+		id="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
+		class="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction"
 		scope="prototype">
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -697,11 +694,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
     <bean
-		id="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
-		class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
+		id="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction"
 		scope="prototype">
         <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
         </property>
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -721,8 +718,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DataSatus Null Reporter -->
 	
-    <bean id="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterFormAction"
-		class="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterFormAction"
+    <bean id="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterFormAction"
+		class="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterFormAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -735,8 +732,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterResultAction"
-		class="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterResultAction"
+    <bean id="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterResultAction"
+		class="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterResultAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -759,42 +756,42 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="statementManager" ref="statementManager"/>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.nr.action.ExportToExcelAction"
-		class="org.hisp.dhis.dashboard.nr.action.ExportToExcelAction"
+    <bean id="org.hisp.dhis.dataanalyser.nr.action.ExportToExcelAction"
+		class="org.hisp.dhis.dataanalyser.nr.action.ExportToExcelAction"
 		scope="prototype">
     </bean>
 	
 	<!-- Maintenance 
-	<bean id="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsFormAction"
-	class="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsFormAction"
+	<bean id="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsFormAction"
+	class="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsFormAction"
 	scope="prototype">
 	<property name="dashBoardService">
-	<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+	<ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
 	</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsResultAction"
-	class="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsResultAction"
+	<bean id="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsResultAction"
+	class="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsResultAction"
 	scope="prototype">
 	<property name="dashBoardService">
-	<ref bean="org.hisp.dhis.dashboard.util.DashBoardService"/>
+	<ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
 	</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dashboard.maintenance.action.TakeMySqlBackupAction"
-	class="org.hisp.dhis.dashboard.maintenance.action.TakeMySqlBackupAction"
+	<bean id="org.hisp.dhis.dataanalyser.maintenance.action.TakeMySqlBackupAction"
+	class="org.hisp.dhis.dataanalyser.maintenance.action.TakeMySqlBackupAction"
 	scope="prototype">
 	</bean>
 	
-	<bean id="org.hisp.dhis.dashboard.maintenance.action.StreamMySqlBackupAction"
-	class="org.hisp.dhis.dashboard.maintenance.action.StreamMySqlBackupAction"
+	<bean id="org.hisp.dhis.dataanalyser.maintenance.action.StreamMySqlBackupAction"
+	class="org.hisp.dhis.dataanalyser.maintenance.action.StreamMySqlBackupAction"
 	scope="prototype">
 	</bean>
 	-->
 	<!-- DashBoard Matrix 
 	
-	<bean id="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixFormAction"
-	class="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixFormAction"
+	<bean id="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixFormAction"
+	class="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixFormAction"
 	scope="prototype">		
 	<property name="indicatorService">
 	<ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -810,8 +807,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixResultAction"
-	class="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixResultAction"
+	<bean id="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixResultAction"
+	class="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixResultAction"
 	scope="prototype">		
 	<property name="aggregationService">
 	<ref bean="org.hisp.dhis.aggregation.AggregationService"/>
@@ -842,8 +839,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Tabular Analyser -->
 	
     <bean
-		id="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisFormAction"
-		class="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisFormAction"
+		id="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisFormAction"
+		class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisFormAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -864,8 +861,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
     <bean
-		id="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisResultAction"
-		class="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisResultAction"
+		id="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
+		class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction"
 		scope="prototype">
         <property name="statementManager" ref="statementManager"/>
 		
@@ -903,16 +900,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- Ajax -->
 	<!-- GetWeekly Period List for Tabular Analysis -->
 	
-	<bean id="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction"
-        class="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction"
+	<bean id="org.hisp.dhis.dataanalyser.action.GetWeeklyPeriodAction"
+        class="org.hisp.dhis.dataanalyser.action.GetWeeklyPeriodAction"
         scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
 		</property>
     </bean>
 	
 	
-	<bean id="org.hisp.dhis.dashboard.action.GetDataElementsAction"
-		class="org.hisp.dhis.dashboard.action.GetDataElementsAction"
+	<bean id="org.hisp.dhis.dataanalyser.action.GetDataElementsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetDataElementsAction"
 		scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -922,8 +919,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 
-    <bean id="org.hisp.dhis.dashboard.action.GetDataElementsForTabularAnalysisAction"
-        class="org.hisp.dhis.dashboard.action.GetDataElementsForTabularAnalysisAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetDataElementsForTabularAnalysisAction"
+        class="org.hisp.dhis.dataanalyser.action.GetDataElementsForTabularAnalysisAction"
         scope="prototype">
         <property name="dataElementService">
             <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
@@ -935,8 +932,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 		
     <bean
-		id="org.hisp.dhis.dashboard.action.GetDataElementsGroupAndDataSetAction"
-		class="org.hisp.dhis.dashboard.action.GetDataElementsGroupAndDataSetAction"
+		id="org.hisp.dhis.dataanalyser.action.GetDataElementsGroupAndDataSetAction"
+		class="org.hisp.dhis.dataanalyser.action.GetDataElementsGroupAndDataSetAction"
 		scope="prototype">
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -946,8 +943,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetIndicatorsAction"
-		class="org.hisp.dhis.dashboard.action.GetIndicatorsAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetIndicatorsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetIndicatorsAction"
 		scope="prototype">
         <property name="indicatorService">
             <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
@@ -957,8 +954,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetOrgUnitGroupsAction"
-		class="org.hisp.dhis.dashboard.action.GetOrgUnitGroupsAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetOrgUnitGroupsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetOrgUnitGroupsAction"
 		scope="prototype">
         <property name="organisationUnitGroupService">
             <ref
@@ -966,24 +963,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetOrgUnitsAction"
-		class="org.hisp.dhis.dashboard.action.GetOrgUnitsAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction"
 		scope="prototype">
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetPeriodsAction"
-		class="org.hisp.dhis.dashboard.action.GetPeriodsAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetPeriodsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetPeriodsAction"
 		scope="prototype">
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetDataSetPeriodsAction"
-		class="org.hisp.dhis.dashboard.action.GetDataSetPeriodsAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetDataSetPeriodsAction"
+		class="org.hisp.dhis.dataanalyser.action.GetDataSetPeriodsAction"
 		scope="prototype">
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -995,8 +992,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DashBoard Utilities -->
 	
-    <bean id="org.hisp.dhis.dashboard.util.DashBoardService"
-		class="org.hisp.dhis.dashboard.util.DashBoardService" scope="prototype">
+    <bean id="org.hisp.dhis.dataanalyser.util.DashBoardService"
+		class="org.hisp.dhis.dataanalyser.util.DashBoardService" scope="prototype">
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
@@ -1006,14 +1003,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<!-- DashBoard Utilities DataElementChartResult-->
 	
-	<bean id="org.hisp.dhis.dashboard.util.DataElementChartResult"
-		class="org.hisp.dhis.dashboard.util.DataElementChartResult" scope="prototype">
+	<bean id="org.hisp.dhis.dataanalyser.util.DataElementChartResult"
+		class="org.hisp.dhis.dataanalyser.util.DataElementChartResult" scope="prototype">
 	</bean>
   
 	<!-- TopTen Disease Analysis -->
     <bean
-		id="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalyserFormAction"
-		class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalyserFormAction"
+		id="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalyserFormAction"
+		class="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalyserFormAction"
 		scope="prototype">
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -1027,8 +1024,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
     <bean
-		id="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalysisDataAction"
-		class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalysisDataAction"
+		id="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalysisDataAction"
+		class="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalysisDataAction"
 		scope="prototype">
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
@@ -1048,8 +1045,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.topten.action.GetOptionCombosAction"
-		class="org.hisp.dhis.dashboard.topten.action.GetOptionCombosAction"
+    <bean id="org.hisp.dhis.dataanalyser.topten.action.GetOptionCombosAction"
+		class="org.hisp.dhis.dataanalyser.topten.action.GetOptionCombosAction"
 		scope="prototype">
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
@@ -1057,8 +1054,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 	<!-- Export to Excel -->
-    <bean id="org.hisp.dhis.dashboard.action.ExportToExcelAction"
-		class="org.hisp.dhis.dashboard.action.ExportToExcelAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
+		class="org.hisp.dhis.dataanalyser.action.ExportToExcelAction"
 		scope="prototype">
  <!--   <property name="locationManager">
             <ref bean="org.hisp.dhis.external.location.LocationManager"/>
@@ -1067,8 +1064,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
     </bean>
 	
-    <bean id="org.hisp.dhis.dashboard.action.GetSortedDataAction"
-		class="org.hisp.dhis.dashboard.action.GetSortedDataAction"
+    <bean id="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"
+		class="org.hisp.dhis.dataanalyser.action.GetSortedDataAction"
 		scope="prototype">
     </bean>
 	

@@ -64,7 +64,7 @@
 					#set($indicatorName = $indicator.name)
 					<td class="TableHeadingCellStyles" align="left">$indicatorName</td>
 					#set ($targetValue = $targetValues.get($count))
-					#if ($targetValue == 0.0)
+					#if ($targetValue == 0)
 						<td class="TableHeadingCellStyles" align="center" ></td>
 						#else
 							<td class="TableHeadingCellStyles" align="center" >$targetValue</td>

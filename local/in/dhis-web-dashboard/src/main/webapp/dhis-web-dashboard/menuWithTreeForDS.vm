@@ -1,8 +1,8 @@
-<h2>DashBoard</h2>
+<h2>$i18n.getString( "dataanalyser" )</h2>
 	<ul>
-		<li>Data Status</li>
+		<li>$i18n.getString( "ds_datastatus" )</li>
 		<ul>
-		 	<li>Data Status</li>
+		 	<li>$i18n.getString( "ds_datastatus" )</li>
 		 </ul>
 	</ul>
 <div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-20px; ">

@@ -1,4 +1,4 @@
-<h2>DashBoard</h2>
+<h2>$i18n.getString( "dataanalyser" )</h2>
     <ul>
         <li>Data Status</li>
         <ul>
@@ -9,7 +9,9 @@
         <a href="index.action">
           <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
 </div>
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+#parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
 
 <!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
@@ -25,6 +27,7 @@ function orgUnitHasBeenSelected( orgUnitIds )
         getOUDetails(orgUnitIds);   
 }
            
+//selection.setListenerFunction( orgUnitHasBeenSelected );
 selection.setListenerFunction( orgUnitHasBeenSelected );
 
 </script>

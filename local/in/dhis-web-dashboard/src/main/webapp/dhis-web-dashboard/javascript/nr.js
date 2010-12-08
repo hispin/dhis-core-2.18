@@ -26,6 +26,19 @@ function ouSelCBChange()
 
 function getOUDeatilsForNR( orgUnitIds )
 {
+	
+    var request = new Request();
+    request.setResponseTypeXML( 'orgunit' );
+    request.setCallbackSuccess( getOUDetailsForNRRecevied );
+    //request.send( url );
+
+    var requestString = "getOrgUnitDetails.action";
+    var params = "orgUnitId=" + orgUnitIds+"&type=ta";
+    request.sendAsPost( params );
+    request.send( requestString ); 
+	
+	
+	/*
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds,
@@ -35,6 +48,7 @@ function getOUDeatilsForNR( orgUnitIds )
 		{
 			getOUDetailsForNRRecevied(data);
 		},'xml');
+		*/
 }
 
 function getOUDetailsForNRRecevied(xmlObject)
