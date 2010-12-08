@@ -9,17 +9,27 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @XmlRootElement
-public class OrgUnits implements DataStreamSerializable
+public class OrgUnits
+    implements DataStreamSerializable
 {
     private List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
-    
-    @XmlElement(name="orgUnit")
-    public List<OrgUnit> getOrgUnits() {
+
+    public OrgUnits()
+    {
+    }
+
+    public OrgUnits( List<OrgUnit> unitList )
+    {
+        this.orgUnits = unitList;
+    }
+
+    @XmlElement( name = "orgUnit" )
+    public List<OrgUnit> getOrgUnits()
+    {
         return orgUnits;
     }
-    
+
     public void setOrgUnits( List<OrgUnit> orgUnits )
     {
         this.orgUnits = orgUnits;

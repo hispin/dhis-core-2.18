@@ -45,12 +45,13 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.model.OrgUnits;
+import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.core.ResourceContext;
 
 @Path( "/" )
-@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
+@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 public class MobileResource
 {
 
@@ -66,59 +67,60 @@ public class MobileResource
     @Context
     private ResourceContext rc;
 
+    /**
+     * Get the units associated with the currently logged in user
+     * 
+     * @throws NotAllowedException if no user is logged in
+     */
     @GET
     @Path( "mobile" )
     public OrgUnits getOrgUnitsForUser()
+        throws NotAllowedException
     {
         User user = currentUserService.getCurrentUser();
 
+        if ( user == null )
+        {
+            throw new NotAllowedException( "NO_USER", "No user is logged in." );
+        }
+
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        OrgUnits orgUnits = new OrgUnits();
-
         List<OrgUnit> unitList = new ArrayList<OrgUnit>();
-        
         for ( OrganisationUnit unit : units )
         {
             unitList.add( getOrgUnit( unit ) );
         }
 
-        orgUnits.setOrgUnits( unitList );
-
-        return orgUnits;
+        return new OrgUnits( unitList );
     }
 
     @Path( "orgUnits/{id}" )
     public OrgUnitResource getOrgUnit( @PathParam( "id" ) int id )
     {
-
         OrgUnitResource resource = rc.getResource( OrgUnitResource.class );
-
         resource.setOrgUnit( organisationUnitService.getOrganisationUnit( id ) );
-
         return resource;
     }
 
     private OrgUnit getOrgUnit( OrganisationUnit unit )
     {
-        OrgUnit m = new OrgUnit();
+        OrgUnit orgUnit = new OrgUnit();
 
-        m.setId( unit.getId() );
-        m.setName( unit.getShortName() );
+        orgUnit.setId( unit.getId() );
+        orgUnit.setName( unit.getShortName() );
 
-        m.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" ).build( unit.getId() )
+        orgUnit.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" ).build( unit.getId() )
             .toString() );
-        m.setDownloadActivityPlanUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activitiyplan" )
+        orgUnit.setDownloadActivityPlanUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activitiyplan" )
             .build( unit.getId() ).toString() );
-        m.setUploadFacilityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "dataSets" )
+        orgUnit.setUploadFacilityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "dataSets" )
             .build( unit.getId() ).toString() );
-        m.setUploadActivityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activities" )
+        orgUnit.setUploadActivityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activities" )
             .build( unit.getId() ).toString() );
 
-        return m;
+        return orgUnit;
     }
-
-    // Setters...
 
     @Required
     public void setCurrentUserService( CurrentUserService currentUserService )
