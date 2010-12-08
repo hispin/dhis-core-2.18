@@ -227,7 +227,7 @@ public class GetDataRecordsAction
         for ( Patient patient : patientListByOrgUnit )
         {
             Collection<ProgramInstance> _programInstances = programInstanceService.getProgramInstances( patient,
-                program, true );
+                program, false );
 
             if ( _programInstances == null || _programInstances.size() == 0 )
             {

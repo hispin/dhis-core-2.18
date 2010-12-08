@@ -1,9 +1,24 @@
+function setupDataEntryCalendar( id )
+{	
+	jQuery("#" + id).datepicker(
+	{
+		dateFormat:dateFormat,
+		changeMonth: true,
+		changeYear: true,			
+		monthNamesShort: monthNames,
+		dayNamesMin: dayNamesMin,
+		showOn: 'button',
+		buttonImage: '../images/calendar.png',
+		buttonImageOnly: true
+	});	
+	
+}
 
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
 	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
 	$('#contentDataRecord').dialog('destroy').remove();
-    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
+    $('<div id="contentDataRecord">' ).load(url).dialog({
         title: 'ProgramStage',
 		maximize: true, 
 		closable: true,
@@ -74,42 +89,71 @@ function showPatientDetails( patientId )
 }
 
 function patientReceived( patientElement )
-{
-    var identifiers = patientElement.getElementsByTagName( "identifier" );
- 
+{   
+	// ----------------------------------------------------------------------------
+	// Get common-information
+    // ----------------------------------------------------------------------------
+	
+	var id = patientElement.getElementsByTagName( "id" )[0].firstChild.nodeValue;
+	var fullName = patientElement.getElementsByTagName( "fullName" )[0].firstChild.nodeValue;   
+	var gender = patientElement.getElementsByTagName( "gender" )[0].firstChild.nodeValue;   
+	var dobType = patientElement.getElementsByTagName( "dobType" )[0].firstChild.nodeValue;   
+	var birthDate = patientElement.getElementsByTagName( "dateOfBirth" )[0].firstChild.nodeValue;   
+	var bloodGroup= patientElement.getElementsByTagName( "bloodGroup" )[0].firstChild.nodeValue;   
+    
+	var commonInfo =  '<strong>'  + i18n_id + ':</strong> ' + id + "<br>" 
+					+ '<strong>' + i18n_full_name + ':</strong> ' + fullName + "<br>" 
+					+ '<strong>' + i18n_gender + ':</strong> ' + gender+ "<br>" 
+					+ '<strong>' + i18n_dob_type + ':</strong> ' + dobType+ "<br>" 
+					+ '<strong>' + i18n_date_of_birth + ':</strong> ' + birthDate+ "<br>" 
+					+ '<strong>' + i18n_blood_group  + ':</strong> ' + bloodGroup;
+	
+	setInnerHTML( 'commonInfoField', commonInfo );
+	
+	// ----------------------------------------------------------------------------
+	// Get identifier
+    // ----------------------------------------------------------------------------
+	
+	var identifiers = patientElement.getElementsByTagName( "identifier" );   
+    
     var identifierText = '';
 	
-    for ( var i = 0; i < identifiers.length; i++ )
-    {
-        identifierText = identifierText + identifiers[ i ].getElementsByTagName( "identifierText" )[0].firstChild.nodeValue + '<br>';
-    }
+	for ( var i = 0; i < identifiers.length; i++ )
+	{		
+		identifierText = identifierText + identifiers[ i ].getElementsByTagName( "identifierText" )[0].firstChild.nodeValue + '<br>';		
+	}
 	
-    setInnerHTML( 'identifierField', identifierText );
+	setInnerHTML( 'identifierField', identifierText );
 	
-    var attributes = patientElement.getElementsByTagName( "attribute" );
- 
+	
+	
+	// ----------------------------------------------------------------------------
+	// Get attribute
+    // ----------------------------------------------------------------------------
+	
+	var attributes = patientElement.getElementsByTagName( "attribute" );   
+    
     var attributeValues = '';
 	
-    for ( var i = 0; i < attributes.length; i++ )
-    {
-        attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';
-    }
+	for ( var i = 0; i < attributes.length; i++ )
+	{	
+		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
+	}
 	
-    setInnerHTML( 'attributeField', attributeValues );
- 
-    var programs = patientElement.getElementsByTagName( "program" );
- 
+	setInnerHTML( 'attributeField', attributeValues );
+    
+    var programs = patientElement.getElementsByTagName( "program" );   
+    
     var programName = '';
 	
-    for ( var i = 0; i < programs.length; i++ )
-    {
-        programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';
-    }
+	for ( var i = 0; i < programs.length; i++ )
+	{		
+		programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';		
+	}
 	
-    setInnerHTML( 'programField', programName );
-
+	setInnerHTML( 'programField', programName );
+   
     showDetails();
- 
 }
 
 //------------------------------------------------------------------------------
@@ -784,11 +828,6 @@ function CustomValueSaver( dataElementId_, value_, providedByAnotherFacility_, r
     }
 }
 
-function isDateFormat( value )
-{
-	return isDate(value, formatter);
-}
-
 /**
 * Display data element name in selection display when a value field recieves
 * focus.
@@ -927,7 +966,7 @@ function saveDate( dataElementId , dataElementName )
     if( !isValidDate( field.value ) )
     {
         field.style.backgroundColor = '#ffcc00';
-        window.alert('Incorrect format for date value. The correct format should be ' + formatter + '\n\n '+dataElementName );
+        window.alert('Incorrect format for date value. The correct format should be ' + dateFormat.replace('yy', 'yyyy') + '\n\n '+dataElementName );
 		  
         field.select();
         field.focus();
@@ -958,7 +997,7 @@ function saveDateCustom(  this_ )
             jQuery(this_).css({
                 "background-color":"#ffcc00"
             });
-            window.alert('Incorrect format for date value. The correct format should be ' + formatter +' \n\n '+data.dataElementName );
+            window.alert('Incorrect format for date value. The correct format should be ' + dateFormat.replace('yy', 'yyyy') +' \n\n '+data.dataElementName );
 		  
             jQuery(this_).focus();
 
