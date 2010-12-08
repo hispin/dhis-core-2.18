@@ -98,18 +98,15 @@ public class ParserUtil
             
             while ( matcher.find() )
             {
-                String replaceString = matcher.group().replaceAll( "[\\[\\]]", "" );
+                String match = matcher.group();
                 
-                int dataElementId = Integer.parseInt( replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) ) );
-                int categoryOptionComboId = Integer.parseInt( replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1 ) );
-                
-                final DataElementOperand operand = new DataElementOperand( dataElementId, categoryOptionComboId );
+                final DataElementOperand operand = DataElementOperand.getOperand( match );
                 
                 Double aggregatedValue = valueMap.get( operand );
                 
-                replaceString = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
+                match = ( aggregatedValue == null ) ? NULL_REPLACEMENT : String.valueOf( aggregatedValue );
                 
-                matcher.appendReplacement( buffer, replaceString );
+                matcher.appendReplacement( buffer, match );
             }
 
             matcher.appendTail( buffer );
