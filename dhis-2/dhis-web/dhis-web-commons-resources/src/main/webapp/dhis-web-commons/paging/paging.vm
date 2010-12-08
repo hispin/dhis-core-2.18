@@ -7,65 +7,63 @@
 	
 	<input type="hidden" id="baseLink" value="$!baseLink"/>
 	<input type="hidden" id="currentPage" value="$!currentPage"/>
-	#if ( $numberOfPages > 1 )
-		<table style="background-color: #ebf0f6;" width='100%'>
-			<tr>
-				<td>
-					<span>$i18n.getString("no_of_pages"):</span> $numberOfPages
-				</td>
-				<td>
-					<span>$i18n.getString("size_of_page"):</span>
-					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onchange="changePageSize('$baseLink');">
-				</td>
-				<td>
-					<span>$i18n.getString("jump_to_page"):</span>					
-					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onchange="jumpToPage('$baseLink');">
-				</td>
-				<td>
-					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="jumpToPage('$baseLink');">
-				</td>				
-			</tr>		
-			<tr>
-				<td colspan="4"><hr/></td>
-			</tr>		
-			<tr>
-			<td colspan="4">
-			<div class="paging">
-			#if ($currentPage > 1)
-				#set ( $prev = $currentPage - 1 )
-				<a href="${baseLink}currentPage=1&pageSize=${pageSize}" class="first" title="First">&laquo;&laquo;</a>
-				<a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}" class="prev" title="Previous">&laquo;</a>
-			#else
-				<span class="first" title="First">&laquo;&laquo;</span>
-				<span class="prev" title="Previous">&laquo;</span>
-			#end
-			
-			#foreach( $i in [0..4]   )
-				#set( $p = $startPage + $i )
-				#if ( $p <= $numberOfPages )
-					#if( $i > 0 )
-						<span class="seperator">|</span>
-					#end
-					#if( $p != $currentPage )
-						<a href="${baseLink}currentPage=${p}&pageSize=${pageSize}" class="page" title="Page $p">$p</a>
-					#else
-						<span class="page" title="Page $p">$p</span>
-					#end
+	<table style="background-color: #ebf0f6;" width='100%'>
+		<tr>
+			<td>
+				<span>$i18n.getString("no_of_pages"):</span> $numberOfPages
+			</td>
+			<td>
+				<span>$i18n.getString("size_of_page"):</span>
+				<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onchange="changePageSize('$baseLink');">
+			</td>
+			<td>
+				<span>$i18n.getString("jump_to_page"):</span>					
+				<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onchange="jumpToPage('$baseLink');">
+			</td>
+			<td>
+				<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="jumpToPage('$baseLink');">
+			</td>				
+		</tr>		
+		<tr>
+			<td colspan="4"><hr/></td>
+		</tr>		
+		<tr>
+		<td colspan="4">
+		<div class="paging">
+		#if ($currentPage > 1)
+			#set ( $prev = $currentPage - 1 )
+			<a href="${baseLink}currentPage=1&pageSize=${pageSize}" class="first" title="First">&laquo;&laquo;</a>
+			<a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}" class="prev" title="Previous">&laquo;</a>
+		#else
+			<span class="first" title="First">&laquo;&laquo;</span>
+			<span class="prev" title="Previous">&laquo;</span>
+		#end
+		
+		#foreach( $i in [0..4]   )
+			#set( $p = $startPage + $i )
+			#if ( $p <= $numberOfPages )
+				#if( $i > 0 )
+					<span class="seperator">|</span>
+				#end
+				#if( $p != $currentPage )
+					<a href="${baseLink}currentPage=${p}&pageSize=${pageSize}" class="page" title="Page $p">$p</a>
+				#else
+					<span class="page" title="Page $p">$p</span>
 				#end
 			#end
-			
-			#if ( $currentPage < $numberOfPages )
-				#set ( $next = $currentPage + 1 )
-				<a href="${baseLink}currentPage=${next}&pageSize=${pageSize}" class="next" title="Next">&raquo;</a>
-				<a href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}" class="last" title="Last">&raquo;&raquo;</a>
-			#else
-				<span class="next" title="Next">&raquo; </span>
-				<span class="last" title="Last">&raquo;&raquo;</span>
-			#end
-			</div>
-			
-			</td>
-			</tr>
-		</table>
-	#end
+		#end
+		
+		#if ( $currentPage < $numberOfPages )
+			#set ( $next = $currentPage + 1 )
+			<a href="${baseLink}currentPage=${next}&pageSize=${pageSize}" class="next" title="Next">&raquo;</a>
+			<a href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}" class="last" title="Last">&raquo;&raquo;</a>
+		#else
+			<span class="next" title="Next">&raquo; </span>
+			<span class="last" title="Last">&raquo;&raquo;</span>
+		#end
+		</div>
+		
+		</td>
+		</tr>
+	</table>
 </div>
