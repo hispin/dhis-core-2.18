@@ -2147,8 +2147,8 @@
         baseLayerOptionsWindow.show();
     }
     
-    
-    function showVectorLayerOptions(layer) {
+
+    function showVectorLayerOptions(layer, type) {
         if (Ext.getCmp('vectorlayeroptions_w')) {
             Ext.getCmp('vectorlayeroptions_w').destroy();
         }
@@ -2171,91 +2171,86 @@
             id: 'locatefeature_w',
             title: 'Locate features',
             layout: 'fit',
-            defaults: {layout: 'fit', bodyStyle:'padding:8px; border:0px'},
+            defaults: {bodyStyle:'padding:8px; border:0px'},
             width: 250,
             height: GLOBAL.util.getMultiSelectHeight() + 145,
             items: [
                 {
                     xtype: 'panel',
                     items: [
+                        { html: '<div class="window-field-label-first">' + i18n_highlight_color + '</div>' },
                         {
-                            xtype: 'panel',
-                            items: [
-                                { html: '<div class="window-field-label-first">' + i18n_highlight_color + '</div>' },
-                                {
-                                    xtype: 'colorfield',
-                                    labelSeparator: GLOBAL.conf.labelseparator,
-                                    id: 'highlightcolor_cf',
-                                    allowBlank: false,
-                                    isFormField: true,
-                                    width: GLOBAL.conf.combo_width,
-                                    value: "#0000FF"
-                                },
-                                { html: '<div class="window-field-label">' + i18n_feature_filter + '</div>' },
-                                {
-                                    xtype: 'textfield',
-                                    id: 'locatefeature_tf',
-                                    enableKeyEvents: true,
-                                    listeners: {
-                                        'keyup': {
-                                            fn: function() {
-                                                var p = Ext.getCmp('locatefeature_tf').getValue();
-                                                featureStore.filter('name', p, true, false);
-                                            }
-                                        }
-                                    }
-                                },
-                                { html: '<div class="window-field-nolabel"></div>' },
-                                {
-                                    xtype: 'grid',
-                                    id: 'featuregrid_gp',
-                                    height: GLOBAL.util.getMultiSelectHeight(),
-                                    store: featureStore,
-                                    cm: new Ext.grid.ColumnModel({
-                                        columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
-                                    }),
-                                    sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
-                                    viewConfig: {forceFit: true},
-                                    sortable: true,
-                                    autoExpandColumn: 'name',
-                                    listeners: {
-                                        'cellclick': {
-                                            fn: function(g, ri, ci) {
-                                                layer.redraw();
-                                                
-                                                var id, feature, backupF, backupS;
-                                                id = g.getStore().getAt(ri).data.id;
-                                                
-                                                for (var i = 0; i < layer.features.length; i++) {
-                                                    if (layer.features[i].data.id == id) {
-                                                        feature = layer.features[i];
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                var color = Ext.getCmp('highlightcolor_cf').getValue();
-                                                var symbolizer;
-                                                
-                                                if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
-													feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
-                                                    symbolizer = new OpenLayers.Symbolizer.Polygon({
-														'strokeColor': color,
-														'fillColor': color
-													});
-												}
-												else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
-                                                    symbolizer = new OpenLayers.Symbolizer.Point({
-														'pointRadius': 7,
-														'fillColor': color
-													});
-												}
-												
-												layer.drawFeature(feature,symbolizer);
-                                            }
-                                        }
+                            xtype: 'colorfield',
+                            labelSeparator: GLOBAL.conf.labelseparator,
+                            id: 'highlightcolor_cf',
+                            allowBlank: false,
+                            isFormField: true,
+                            width: GLOBAL.conf.combo_width,
+                            value: "#0000FF"
+                        },
+                        { html: '<div class="window-field-label">' + i18n_feature_filter + '</div>' },
+                        {
+                            xtype: 'textfield',
+                            id: 'locatefeature_tf',
+                            enableKeyEvents: true,
+                            listeners: {
+                                'keyup': {
+                                    fn: function() {
+                                        var p = Ext.getCmp('locatefeature_tf').getValue();
+                                        featureStore.filter('name', p, true, false);
                                     }
                                 }
-                            ]
+                            }
+                        },
+                        { html: '<div class="window-field-nolabel"></div>' },
+                        {
+                            xtype: 'grid',
+                            id: 'featuregrid_gp',
+                            height: GLOBAL.util.getMultiSelectHeight(),
+                            store: featureStore,
+                            cm: new Ext.grid.ColumnModel({
+                                columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
+                            }),
+                            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+                            viewConfig: {forceFit: true},
+                            sortable: true,
+                            autoExpandColumn: 'name',
+                            listeners: {
+                                'cellclick': {
+                                    fn: function(g, ri, ci) {
+                                        layer.redraw();
+                                        
+                                        var id, feature, backupF, backupS;
+                                        id = g.getStore().getAt(ri).data.id;
+                                        
+                                        for (var i = 0; i < layer.features.length; i++) {
+                                            if (layer.features[i].data.id == id) {
+                                                feature = layer.features[i];
+                                                break;
+                                            }
+                                        }
+                                        
+                                        var color = Ext.getCmp('highlightcolor_cf').getValue();
+                                        var symbolizer;
+                                        
+                                        if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
+                                            feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
+                                            symbolizer = new OpenLayers.Symbolizer.Polygon({
+                                                'strokeColor': color,
+                                                'fillColor': color
+                                            });
+                                        }
+                                        else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
+                                            symbolizer = new OpenLayers.Symbolizer.Point({
+                                                'pointRadius': 7,
+                                                'fillColor': color
+                                            });
+                                        }
+                                        
+                                        layer.drawFeature(feature,symbolizer);
+                                    }
+                                }
+                            }
                         }
                     ]
                 }
@@ -2289,13 +2284,15 @@
                             listeners: {
                                 'click': {
                                     fn: function() {
-                                        if (layer.features.length > 0) {
-                                            locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 272, Ext.getCmp('center').y + 50);
-                                            locateFeatureWindow.show();
-                                            vectorLayerOptionsWindow.hide();
-                                        }
-                                        else {
-                                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
+                                        if (type != GLOBAL.conf.map_layer_type_overlay) {
+                                            if (layer.features.length > 0) {
+                                                locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 272, Ext.getCmp('center').y + 50);
+                                                locateFeatureWindow.show();
+                                                vectorLayerOptionsWindow.hide();
+                                            }
+                                            else {
+                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
+                                            }
                                         }
                                     }
                                 }
@@ -2308,26 +2305,28 @@
                             listeners: {
                                 'click': {
                                     fn: function() {
-                                        if (layer.features.length > 0) {
-                                            if (layer.name == 'Polygon layer') {
-                                                if (GLOBAL.vars.activePanel.isPolygon()) {
-                                                    GLOBAL.util.toggleFeatureLabels(choropleth);
+                                        if (type != GLOBAL.conf.map_layer_type_overlay) {
+                                            if (layer.features.length > 0) {
+                                                if (layer.name == 'Polygon layer') {
+                                                    if (GLOBAL.vars.activePanel.isPolygon()) {
+                                                        GLOBAL.util.toggleFeatureLabels(choropleth);
+                                                    }
+                                                    else {
+                                                        Ext.message.msg(false, 'Please use <span class="x-msg-hl">Point layer</span> options');
+                                                    }
                                                 }
-                                                else {
-                                                    Ext.message.msg(false, 'Please use <span class="x-msg-hl">Point layer</span> options');
+                                                else if (layer.name == 'Point layer') {
+                                                    if (GLOBAL.vars.activePanel.isPoint()) {
+                                                        GLOBAL.util.toggleFeatureLabels(symbol);
+                                                    }
+                                                    else {
+                                                        Ext.message.msg(false, 'Please use <span class="x-msg-hl">Polygon layer</span> options');
+                                                    }
                                                 }
                                             }
-                                            else if (layer.name == 'Point layer') {
-                                                if (GLOBAL.vars.activePanel.isPoint()) {
-                                                    GLOBAL.util.toggleFeatureLabels(symbol);
-                                                }
-                                                else {
-                                                    Ext.message.msg(false, 'Please use <span class="x-msg-hl">Polygon layer</span> options');
-                                                }
+                                            else {
+                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
                                             }
-                                        }
-                                        else {
-                                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
                                         }
                                     }
                                 }
@@ -2433,7 +2432,7 @@
 						showWMSLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0]);
 					}
                     else if (n.parentNode.attributes.text == 'Overlays') {
-                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0]);
+                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0], GLOBAL.conf.map_layer_type_overlay);
                     }
 					else if (n.isLeaf()) {
                         showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer)[0]);
@@ -2696,7 +2695,7 @@
                 region: 'north',
                 id: 'north',
                 el: 'north',
-                height: GLOBAL.conf.north_height
+                height: 0
             }),
             {
                 region: 'east',

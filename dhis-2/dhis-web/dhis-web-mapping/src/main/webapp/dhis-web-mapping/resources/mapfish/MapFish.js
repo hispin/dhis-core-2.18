@@ -92,7 +92,7 @@
       
     if(!singleFile) {
         var jsfiles = new Array(
-            "lang/en.js",
+			//"lang/en.js",
             "core/Color.js",
             "core/GeoStat.js",
             "core/GeoStat/Choropleth.js",

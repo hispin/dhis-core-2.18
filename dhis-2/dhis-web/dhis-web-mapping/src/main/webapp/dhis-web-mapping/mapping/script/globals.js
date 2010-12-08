@@ -27,7 +27,6 @@ GLOBAL.conf = {
 
 //  Layout
 
-    north_height: 0, // viewport north
     west_width: 270, // viewport west
     gridpanel_width: 270 - 15,
     multiselect_width: 210,
@@ -54,6 +53,7 @@ GLOBAL.conf = {
 	map_legend_type_predefined: 'predefined',
     map_layer_type_baselayer: 'baselayer',
     map_layer_type_overlay: 'overlay',
+    map_layer_type_thematic: 'thematic',
 	map_value_type_indicator: 'indicator',
 	map_value_type_dataelement: 'dataelement',
     map_date_type_fixed: 'fixed',
@@ -325,7 +325,7 @@ GLOBAL.vars = {
     parameter: null,
     
     activePanel: {
-        value: null,
+        value: GLOBAL.conf.thematicMap,
         setPolygon: function() {
             this.value = GLOBAL.conf.thematicMap;
         },
