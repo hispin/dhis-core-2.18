@@ -3,9 +3,10 @@
   <id>$patient.id</id>  
   <fullName>$encoder.xmlEncode( $patient.getFullName() )</fullName>
   <gender>$encoder.xmlEncode( $patient.gender )</gender>
-  <dateOfBirth>$format.formatDate( $patient.birthDate )</dateOfBirth>
+  <dobType>#if($!patient.dobType) $encoder.xmlEncode( $!patient.dobType )#else $i18n.getString('none') #end</dobType>
+  <dateOfBirth>$format.formatDate( $!patient.birthDate )</dateOfBirth>
   <age>$encoder.xmlEncode( $patient.getAge() )</age>
-  <bloodGroup>$encoder.xmlEncode( $patient.getBloodGroup() )</bloodGroup>
+  <bloodGroup>#if($!patient.bloodGroup) $patient.bloodGroup #else $i18n.getString('none') #end</bloodGroup>
   #foreach( $patientIdentifier in $patient.identifiers )
     <identifier>        
         <identifierText>$encoder.xmlEncode( $patientIdentifier.identifier )</identifierText>
