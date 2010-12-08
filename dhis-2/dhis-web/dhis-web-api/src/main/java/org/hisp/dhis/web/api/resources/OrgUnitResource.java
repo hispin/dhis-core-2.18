@@ -22,8 +22,8 @@ import org.hisp.dhis.web.api.service.IProgramService;
 import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
 
-@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
-@Consumes( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML } )
+@Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Consumes( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 public class OrgUnitResource
 {
 
@@ -45,9 +45,12 @@ public class OrgUnitResource
         this.unit = unit;
     }
 
+    /** Get activity plan, program forms and facility forms wrapped in a {@link MobileModel}
+     * @param locale - localize for the given locale
+     */
     @GET
     @Path( "all" )
-    public MobileModel getAllDataForUser( @HeaderParam( "accept-language" ) String locale )
+    public MobileModel getAllDataForOrgUnit( @HeaderParam( "accept-language" ) String locale )
     {
         MobileModel mobileModel = new MobileModel();
 
@@ -61,6 +64,9 @@ public class OrgUnitResource
         return mobileModel;
     }
 
+    /**
+     * Get a localized representation of the current activity plan 
+     */
     @GET
     @Path( "activitiyplan" )
     public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
@@ -68,6 +74,11 @@ public class OrgUnitResource
         return activityReportingService.getCurrentActivityPlan( unit, locale );
     }
 
+    /**
+     * Save a facility report for unit 
+     * @param dataSetValue - the report to save
+     * @throws NotAllowedException if the {@link DataSetValue} is invalid
+     */
     @POST
     @Path( "dataSets" )
     public void saveDataSetValues( DataSetValue dataSetValue ) throws NotAllowedException
@@ -75,14 +86,17 @@ public class OrgUnitResource
         facilityReportingService.saveDataSetValues( unit, dataSetValue );
     }
 
+    /**
+     * Save activity report for unit
+     * @param activityValue - the report to save
+     * @throws NotAllowedException if the {@link ActivityValue activity value} is invalid
+     */
     @POST
     @Path( "activities" )
     public void saveActivityReport( ActivityValue activityValue ) throws NotAllowedException
     {
         activityReportingService.saveActivityReport( unit, activityValue );
     }
-
-    // Setters...
 
     @Required
     public void setProgramService( IProgramService programService )

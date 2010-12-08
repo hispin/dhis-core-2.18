@@ -44,7 +44,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
-  <!-- Jax-RS serialization writers and readers -->
+  <!-- Jax-RS providers for (de-)serialization, exception mapping, json configuration -->
 
   <bean id="org.hisp.dhis.web.api.mapping.DataSerializableProvider" class="org.hisp.dhis.web.api.mapping.DataStreamSerializableProvider"
     scope="singleton" />
@@ -55,9 +55,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.web.api.mapping.ActivityValueConsumer" class="org.hisp.dhis.web.api.mapping.ActivityValueConsumer"
     scope="singleton" />
 
-  <bean id="org.hisp.dhis.web.api.mapping.StringSerializedProvider" class="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper"
+  <bean id="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper" class="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper"
     scope="singleton" />
 
+  <bean id="JacksonJaxbJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" scope="singleton" />
 
   <!-- ImportDataValue beans -->
 
