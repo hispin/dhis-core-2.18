@@ -1,6 +1,14 @@
 
 function getOUDeatilsForAA(orgUnitIds)
 {
+	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
+	var request = new Request();
+	request.setResponseTypeXML( 'orgunit' );
+	request.setCallbackSuccess( getOUDetailsForAARecevied );
+	request.send( url );	    
+	
+	/*
+	
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -9,6 +17,7 @@ function getOUDeatilsForAA(orgUnitIds)
 		{
 			getOUDetailsForAARecevied(data);
 		},'xml');
+		*/
 }
 
 /*
@@ -55,6 +64,20 @@ function getOUDeatilsForGA(orgUnitIds)
 {
 	//document.getElementById( "ougGroupSetCB" ).disabled = false;
 	//document.getElementById( "orgUnitGroup" ).disabled = false;
+	
+	
+	var request = new Request();
+    request.setResponseTypeXML( 'orgunit' );
+    request.setCallbackSuccess( getOUDetailsForGARecevied );
+    //request.send( url );
+
+    var requestString = "getOrgUnitDetails.action";
+    var params = "orgUnitId=" + orgUnitIds+"&type=ta";
+    request.sendAsPost( params );
+    request.send( requestString ); 
+	
+	
+	/*
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -63,6 +86,7 @@ function getOUDeatilsForGA(orgUnitIds)
 		{
 			getOUDetailsForGARecevied(data);
 		},'xml');
+		*/
 }
 
 function getOUDetailsForGARecevied(xmlObject)
@@ -103,6 +127,16 @@ function getOUDetailsForGARecevied(xmlObject)
 
 function getOUDetails(orgUnitIds)
 {
+    var request = new Request();
+    request.setResponseTypeXML( 'orgunit' );
+    request.setCallbackSuccess( getOUDetailsRecevied );
+
+    var requestString = "getOrgUnitDetails.action";
+    var params = "orgUnitId=" + orgUnitIds;
+    request.sendAsPost( params );
+    request.send( requestString );
+
+	/*
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds
@@ -111,11 +145,11 @@ function getOUDetails(orgUnitIds)
 		{
 			getOUDetailsRecevied(data);
 		},'xml');
+	*/
 }
 
 function getOUDetailsRecevied(xmlObject)
 {
-
     var categoryIndex = document.ChartGenerationForm.categoryLB.selectedIndex;
     var facilityIndex =  document.ChartGenerationForm.facilityLB.selectedIndex;
     var index = 0;		

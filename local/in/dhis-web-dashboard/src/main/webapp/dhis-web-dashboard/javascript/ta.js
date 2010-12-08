@@ -563,7 +563,7 @@ function getPeriodsReceived( xmlObject )
 function getOUDeatilsForTA( orgUnitIds )
 {
 	showOverlay();
-    /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
+     //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
 	
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
@@ -573,8 +573,9 @@ function getOUDeatilsForTA( orgUnitIds )
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
-    request.send( requestString ); */
+    request.send( requestString ); 
 	
+	/*
 	$.post("getOrgUnitDetails.action",
 		{
 			orgUnitId:orgUnitIds,
@@ -583,12 +584,12 @@ function getOUDeatilsForTA( orgUnitIds )
 		function (data)
 		{
 			getOUDetailsForTARecevied(data);
-		},'xml');
+		},'xml'); */
 }
 
 function getOUDetailsForTARecevied(xmlObject)
 {
-   // var ouSelCBId = document.getElementById( "ouSelCB" );
+    // var ouSelCBId = document.getElementById( "ouSelCB" );
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
     var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
@@ -621,8 +622,6 @@ function getOUDetailsForTARecevied(xmlObject)
                 	break;
                 }
             }
-            
-            
             if( flag == 0 )
             {
             	ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName, id, false, false);

@@ -9,7 +9,7 @@
 		namespace="/dhis-web-dashboard">
 		
 		<action name="index"
-			class="org.hisp.dhis.dashboard.action.DashBoardHomePageAction">
+			class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/welcome.vm</param>
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
@@ -17,7 +17,7 @@
 		
 <!-- GraphicalAnalyser  DataElements -->
 		 <action name="graphicalAnalyserDataElement"
-            class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserDataElementsFormAction">
+            class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserDataElementsFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementFront.vm</param>
             <param name="menu">/dhis-web-dashboard/menuWithTreeForGADataElement.vm</param>
@@ -33,7 +33,7 @@
 		
 		      
 		<action name="generateChartDataElement"
-            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataElementAction">
+            class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataElementAction">
 			<result name="success" type="velocity">/popup.vm</result>      
 			 <param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>    
            <!--<result name="success" type="velocity">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>-->
@@ -43,7 +43,7 @@
         </action>
 		<!-- for Chart data -->
 	   <action name="generateChart1"
-            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction1">
+            class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction1">
             <result name="success" type="chart">
                 <param name="width">700</param>
                 <param name="height">500</param>
@@ -52,14 +52,14 @@
 		
 		<!-- sorting DataElement data -->        
         <action name="getSortedDataElement"
-            class="org.hisp.dhis.dashboard.action.GetSortedDataElementAction">
+            class="org.hisp.dhis.dataanalyser.action.GetSortedDataElementAction">
             <result name="success" type="velocity-xml">/dhis-web-dashboard/responseSortedData.vm</result>
             <!--<interceptor-ref name="transactionStack"/>-->
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 		<!-- Export Data Elements to Excel -->
         <action name="exportDataElementsToExcel"
-            class="org.hisp.dhis.dashboard.action.ExportDataElementToExcelAction">
+            class="org.hisp.dhis.dataanalyser.action.ExportDataElementToExcelAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">inputStream</param>
@@ -71,7 +71,7 @@
 			
 <!-- GraphicalAnalyser  Indicators -->
          <action name="graphicalAnalyserIndicator"
-            class="org.hisp.dhis.dashboard.ga.action.IndicatorwiseGAFormAction">
+            class="org.hisp.dhis.dataanalyser.ga.action.IndicatorwiseGAFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-dashboard/graphicalAnalysisIndicatorFront.vm</param>
             <param name="menu">/dhis-web-dashboard/menuWithTreeForGAIndicator.vm</param>
@@ -81,7 +81,7 @@
          </action> 
 		
 		 <action name="generateChartIndicator"
-            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartIndicatorAction">
+            class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartIndicatorAction">
             <result name="success" type="velocity">/popup.vm</result>      
              <param name="page">/dhis-web-dashboard/graphicalAnalysisIndicatorResult.vm</param>    
            <!--<result name="success" type="velocity">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>-->
@@ -91,14 +91,14 @@
         </action>
 <!-- sorting Indiacator data -->		
 		<action name="getSortedIndicatorData"
-            class="org.hisp.dhis.dashboard.action.GetSortedIndicatorDataAction">
+            class="org.hisp.dhis.dataanalyser.action.GetSortedIndicatorDataAction">
             <result name="success" type="velocity-xml">/dhis-web-dashboard/responseSortedData.vm</result>
             <!--<interceptor-ref name="transactionStack"/>-->
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 <!-- Export Indicator data to Excel -->
         <action name="exportIndicatorToExcel"
-            class="org.hisp.dhis.dashboard.action.ExportIndicatorToExcelAction">
+            class="org.hisp.dhis.dataanalyser.action.ExportIndicatorToExcelAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">inputStream</param>
@@ -112,7 +112,7 @@
 		<!-- GraphicalAnalyser Module Stuff -->
 		
 		<action name="graphicalAnalyser"
-			class="org.hisp.dhis.dashboard.ga.action.GenerateGraphicalAnalyserFormAction">
+			class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-dashboard/graphicalAnalysisFront.vm</param>
@@ -124,7 +124,7 @@
 		</action>
 		
 		<action name="generateChartData"
-			class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartDataAction">
+			class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/graphicalAnalysisResult.vm</result>
 			<param name="javascripts">
@@ -135,7 +135,7 @@
 		
 		<!--		
 		<action name="generateChart"
-		class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction">
+		class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction">
 		<result name="success">/dhis-web-dashboard/viewChart.vm</result>	
 		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,
 		javascript/ga.js, 
@@ -146,7 +146,7 @@
 		-->
 		
 		<action name="generateChart"
-			class="org.hisp.dhis.dashboard.ga.action.charts.GenerateChartAction">
+			class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction">
 			<result name="success" type="chart">
 				<param name="width">700</param>
 				<param name="height">500</param>
@@ -154,7 +154,7 @@
 		</action>
 		
 		<action name="getSortedData"
-			class="org.hisp.dhis.dashboard.action.GetSortedDataAction">
+			class="org.hisp.dhis.dataanalyser.action.GetSortedDataAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseSortedData.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -162,7 +162,7 @@
 		</action>
 		
 		<action name="drillDownResult"
-            class="org.hisp.dhis.dashboard.ga.action.charts.GenerateDrillDownResultAction">
+            class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownResultAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">inputStream</param>
@@ -174,7 +174,7 @@
 		<!-- AnnualAnalyser Module Stuff -->
 		
 		<action name="annualAnalyser"
-			class="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalyserFormAction">
+			class="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/annualAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForTTA.vm</param>
@@ -185,7 +185,7 @@
 		</action>
 		
 		<action name="generateAnnualData"
-			class="org.hisp.dhis.dashboard.aa.action.GenerateAnnualAnalysisDataAction">
+			class="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalysisDataAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/annualAnalysisResult.vm</result>
 			<param name="javascripts">
@@ -197,7 +197,7 @@
 		<!-- Motion Chart -->
 
 		<action name="motionChartForm"
-			class="org.hisp.dhis.dashboard.mchart.action.MotionChartFormAction">
+			class="org.hisp.dhis.dataanalyser.mchart.action.MotionChartFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/motionChartForm.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForMC.vm</param>
@@ -208,14 +208,14 @@
 		</action>
 					
 		<action name="generateMotionChart"
-			class="org.hisp.dhis.dashboard.mchart.action.MotionChartResultAction">
+			class="org.hisp.dhis.dataanalyser.mchart.action.MotionChartResultAction">
 			<result name="success" type="velocity">/dhis-web-dashboard/motionChartResult.vm</result>
 		</action>
 			
 		<!-- SurveyAnalyser Module Stuff -->
 		
 		<action name="surveyAnalyser"
-			class="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisFormAction">
+			class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/surveyAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForSA.vm</param>
@@ -226,7 +226,7 @@
 		</action>
 		
 		<action name="viewSurveyAnalysisResult"
-			class="org.hisp.dhis.dashboard.sa.action.GenerateSurveyAnalysisDataAction">
+			class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/surveyAnalysisResult.vm</result>
 			<param name="javascripts">
@@ -237,7 +237,7 @@
 		<!-- DataStatus Module Stuff -->
 		
 		<action name="dataStatusForm"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/dataStatusFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForDS.vm</param>
@@ -248,7 +248,7 @@
 		</action>
 		
 		<action name="dataStatusResult"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusResultAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusResultAction">
 			
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/dataStatusResult.vm</result>
@@ -260,7 +260,7 @@
 		<!-- DataStatus For Mobile start-->
 		
         <action name="dataStatusMobileForm"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateDataStatusMobileFormAction">
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateDataStatusMobileFormAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-dashboard/dataStatusMobileFront.vm</param>
             <param name="menu">/dhis-web-dashboard/menuWithTreeForDSMobile.vm</param>
@@ -271,7 +271,7 @@
 				
 		<!-- for Mobile Validation Status -->
        <action name="validationMobileStatusResult"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateValidationMobileStatusResultAction">
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateValidationMobileStatusResultAction">
             <result name="success" type="velocity">/dhis-web-dashboard/validationMobileSatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
@@ -279,7 +279,7 @@
 		
 		<!--  for Mobile summary data status -->
        <action name="summaryMobileStatusResult"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction">        
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateSummaryMobileDataStatusResultAction">        
             <result name="success" type="velocity">/dhis-web-dashboard/summaryMobileSatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
@@ -287,14 +287,14 @@
 		
 		<!--  for Mobile  dataStatus result -->
        <action name="mobileDataStatusResult"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateMobileDataStatusResultAction">
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateMobileDataStatusResultAction">
             <result name="success" type="velocity">/dhis-web-dashboard/mobileDataStatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
        </action>
 		
 		<action name="percentageDataStatusResult"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GeneratePercentageDataStatusResultAction">
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GeneratePercentageDataStatusResultAction">
             <result name="success" type="velocity">/dhis-web-dashboard/percentageWiseDataStatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
@@ -302,7 +302,7 @@
 		
 	 <!--  for Mobile Group wise data status -->			
 	  <action name="groupWiseMobileDataStatusResult"
-		   class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction">
+		   class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateGroupWiseMobileDataStatusResultAction">
 	       <result name="success" type="velocity">/dhis-web-dashboard/groupWiseMobileDataStatusResult.vm</result>
 	       <param name="javascripts">javascript/ds.js,javascript/hashtable.js,javascript/date.js</param>
 	       <param name="stylesheets">css/StylesForTags.css</param>
@@ -310,7 +310,7 @@
 		
      <!-- for Mobile Last Updated Status -->    
      <action name="lastUpdatedMobileDataSetResult"
-            class="org.hisp.dhis.dashboard.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction">
+            class="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateLastUpdatedMobileDataSetResultAction">
             <result name="success" type="velocity">/dhis-web-dashboard/lastUpdatedMobileDataSetSatusResult.vm</result>
             <param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
@@ -318,7 +318,7 @@
         <!-- DataStatus For Mobile end  -->	
 			
 		<action name="summaryStatusResult"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateSummaryDataStatusResultAction">		
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction">		
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/summarySatusResult.vm</result>
 			<param name="javascripts">
@@ -327,7 +327,7 @@
 		</action>
 		
 		<action name="groupWiseDataStatusResult"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateGroupWiseDataStatusResultAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusResultAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/groupWiseDataStatusResult.vm</result>
 			<param name="javascripts">
@@ -336,14 +336,14 @@
 		</action>
 
         <action name="validationStatusResult"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateValidationStatusResultAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateValidationStatusResultAction">
 			<result name="success" type="velocity">/dhis-web-dashboard/validationSatusResult.vm</result>
 			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>
 
 		<action name="lastUpdatedDataSetResult"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateLastUpdatedDataSetResultAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateLastUpdatedDataSetResultAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/lastUpdatedDataSetSatusResult.vm</result>
 			<param name="javascripts">
@@ -352,7 +352,7 @@
 		</action>
 		
 		<action name="exportDataStatusToExcel"
-			class="org.hisp.dhis.dashboard.ds.action.ExportToExcelAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.ExportToExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -362,7 +362,7 @@
 		</action>
 		
 		<action name="commentsForm"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/commentsFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForDS.vm</param>
@@ -375,7 +375,7 @@
 		<!-- Data Status OrgUnit Gropset Wise Stuff -->
 		
 		<action name="dataStatusOrgnisationunitGroupSetWiseForm"
-			class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction">
+			class="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-dashboard/dataStatusOrgnisationunitGroupSetWiseFront.vm</param>
@@ -387,7 +387,7 @@
 		</action>
 		
 		<action name="dataStatusOrgnisationunitGroupSetWiseResult"
-			class="org.hisp.dhis.dashboard.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction">
+			class="org.hisp.dhis.dataanalyser.ds.orgunitgroupsetwise.action.GenerateDataStatusOrgnisationunitGroupSetWiseResultAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/dataStatusOrgnisationunitGroupSetWiseResult.vm</result>
 			<param name="javascripts">
@@ -396,7 +396,7 @@
 		</action>
 		
 		<action name="exportDataStatusToExcel"
-			class="org.hisp.dhis.dashboard.ds.action.ExportToExcelAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.ExportToExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -407,7 +407,7 @@
 		</action>
 		
 		<action name="commentsForm"
-			class="org.hisp.dhis.dashboard.ds.action.GenerateDataStatusFormAction">
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateDataStatusFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/commentsFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForDS.vm</param>
@@ -420,7 +420,7 @@
 		<!-- DataStatus Null Reporting Module -->
 		
 		<action name="NullReporter"
-			class="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterFormAction">
+			class="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/nullReporterFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForNR.vm</param>
@@ -431,7 +431,7 @@
 		</action>
 		
 		<action name="NullReporterResult"
-			class="org.hisp.dhis.dashboard.nr.action.GenerateNullReporterResultAction">
+			class="org.hisp.dhis.dataanalyser.nr.action.GenerateNullReporterResultAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/nullReporterResult.vm</result>
 			<param name="javascripts">
@@ -440,7 +440,7 @@
 		</action>
 		<!--
 		<action name="exportNullReporterToExcel"
-			class="org.hisp.dhis.dashboard.nr.action.ExportToExcelAction">
+			class="org.hisp.dhis.dataanalyser.nr.action.ExportToExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -452,7 +452,7 @@
       -->
 		
     <action name="exportNullReporterToExcel"
-			class="org.hisp.dhis.dashboard.nr.action.ExportToExcelAction">
+			class="org.hisp.dhis.dataanalyser.nr.action.ExportToExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -463,7 +463,7 @@
     
 		<!-- Maintenance 
 		<action name="maintenanceForm"
-			class="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsFormAction">
+			class="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-dashboard/mysqlPathConfuration.vm</param>
@@ -474,7 +474,7 @@
 		</action>
 		
 		<action name="maintenanceResult"
-			class="org.hisp.dhis.dashboard.maintenance.action.InConfigurationsResultAction">
+			class="org.hisp.dhis.dataanalyser.maintenance.action.InConfigurationsResultAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/welcome.vm</param>
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
@@ -484,7 +484,7 @@
 		</action>
 		
 		<action name="takeMysqlBackupForm"
-			class="org.hisp.dhis.dashboard.action.DashBoardHomePageAction">
+			class="org.hisp.dhis.dataanalyser.action.dataanalyserHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/takeMysqlBackupForm.vm</param>
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
@@ -494,7 +494,7 @@
 		</action>
 		
 		<action name="takeMysqlBackupResult"
-			class="org.hisp.dhis.dashboard.maintenance.action.TakeMySqlBackupAction">
+			class="org.hisp.dhis.dataanalyser.maintenance.action.TakeMySqlBackupAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-dashboard/takeMysqlBackupResult.vm</param>
@@ -506,7 +506,7 @@
 		</action>
 		
 		<action name="streamMySQLBackup"
-			class="org.hisp.dhis.dashboard.maintenance.action.StreamMySqlBackupAction">
+			class="org.hisp.dhis.dataanalyser.maintenance.action.StreamMySqlBackupAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -519,7 +519,7 @@
 		<!-- DashBoard Matrix
 		
 		<action name="dashBoardMatrixForm"
-		class="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixFormAction">
+		class="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixFormAction">
 		<result name="success" type="velocity">/main.vm</result>						
 		<param name="page">/dhis-web-dashboard/dashBoardMatrixFront.vm</param>
 		<param name="menu">/dhis-web-dashboard/menuWithTreeForDM.vm</param>
@@ -528,7 +528,7 @@
 		</action>
 		
 		<action name="dashBoardMatrixResult"
-		class="org.hisp.dhis.dashboard.dm.action.DashBoardMatrixResultAction">
+		class="org.hisp.dhis.dataanalyser.dm.action.dataanalyserMatrixResultAction">
 		<result name="success" type="velocity">/dhis-web-dashboard/dashBoardMatrixResult.vm</result>			
 		<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/dmfr.js,javascript/db.js,javascript/hashtable.js</param>
 		<param name="stylesheets">css/StylesForTags.css</param>
@@ -539,10 +539,9 @@
 		<!-- TabularAnalysis Module Stuff -->
 		
 		<action name="tabularAnalysisForm"
-			class="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisFormAction">
+			class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">
-				/dhis-web-dashboard/tabularAnalysisFront.vm</param>
+			<param name="page">/dhis-web-dashboard/tabularAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForTA.vm</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ta.js,javascript/hashtable.js</param>
@@ -552,7 +551,7 @@
 		
 		<!--
 		<action name="tabularAnalysisResult"
-			class="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisResultAction">
+			class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/tabularAnalysisResult.vm</result>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForTA.vm</param>
@@ -560,7 +559,7 @@
 			-->
 		
 		<action name="tabularAnalysisResult"
-			class="org.hisp.dhis.dashboard.ta.action.GenerateTabularAnalysisResultAction">
+			class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisResultAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>
@@ -575,7 +574,7 @@
 		
 		<!-- Getting Weekly Period -->
 		<action name="getWeeklyPeriod"
-            class="org.hisp.dhis.dashboard.action.GetWeeklyPeriodAction">
+            class="org.hisp.dhis.dataanalyser.action.GetWeeklyPeriodAction">
             <result name="success" type="velocity-xml">/dhis-web-dashboard/responseWeeklyPeriods.vm</result>
             <!--<interceptor-ref name="transactionStack"/>-->
             <param name="onExceptionReturn">plainTextError</param>
@@ -583,7 +582,7 @@
 		
 		
 		<action name="getDataElements"
-			class="org.hisp.dhis.dashboard.action.GetDataElementsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetDataElementsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseDataElement.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -591,13 +590,13 @@
 		</action>
 
         <action name="getDataElementsForTA"
-            class="org.hisp.dhis.dashboard.action.GetDataElementsForTabularAnalysisAction">
+            class="org.hisp.dhis.dataanalyser.action.GetDataElementsForTabularAnalysisAction">
             <result name="success" type="velocity-xml">/dhis-web-dashboard/responseDataElement.vm</result>
             <param name="onExceptionReturn">plainTextError</param>
         </action>
 				
 		<action name="getOrgUnitDetails"
-			class="org.hisp.dhis.dashboard.action.GetOrgUnitsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetOrgUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOrgUnit.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -605,7 +604,7 @@
 		</action>
 		
 		<action name="getIndicators"
-			class="org.hisp.dhis.dashboard.action.GetIndicatorsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetIndicatorsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseIndicator.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -613,7 +612,7 @@
 		</action>
 		
 		<action name="getOrgUnitGroups"
-			class="org.hisp.dhis.dashboard.action.GetOrgUnitGroupsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetOrgUnitGroupsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOrgUnitGroup.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -621,7 +620,7 @@
 		</action>
 		
 		<action name="getPeriods"
-			class="org.hisp.dhis.dashboard.action.GetPeriodsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responsePeriod.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -629,7 +628,7 @@
 		</action>
 		
 		<action name="getDataSetPeriods"
-			class="org.hisp.dhis.dashboard.action.GetDataSetPeriodsAction">
+			class="org.hisp.dhis.dataanalyser.action.GetDataSetPeriodsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/dSetResponsePeriod.vm</result>
 			<!--<interceptor-ref name="transactionStack"/>-->
@@ -638,7 +637,7 @@
 		
 		<!-- TopTen Desease Analysis -->
 		<action name="topTenAnalyser"
-			class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalyserFormAction">
+			class="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalyserFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/topTenAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForTTA.vm</param>
@@ -649,7 +648,7 @@
 		</action>
 		
 		<action name="generateTopTenChartData"
-			class="org.hisp.dhis.dashboard.topten.action.GenerateTopTenAnalysisDataAction">
+			class="org.hisp.dhis.dataanalyser.topten.action.GenerateTopTenAnalysisDataAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/topTenAnalysisResult.vm</result>
 			<param name="javascripts">
@@ -658,7 +657,7 @@
 		</action>
 		
 		<action name="getOptionCombos"
-			class="org.hisp.dhis.dashboard.topten.action.GetOptionCombosAction">
+			class="org.hisp.dhis.dataanalyser.topten.action.GetOptionCombosAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-dashboard/responseOptionCombo.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
@@ -666,7 +665,7 @@
 		
 		<!-- Export To Excel -->
 		<action name="exportToExcel"
-			class="org.hisp.dhis.dashboard.action.ExportToExcelAction">
+			class="org.hisp.dhis.dataanalyser.action.ExportToExcelAction">
 			<result name="success" type="stream">
 				<param name="contentType">application/vnd.ms-excel</param>
 				<param name="inputName">inputStream</param>

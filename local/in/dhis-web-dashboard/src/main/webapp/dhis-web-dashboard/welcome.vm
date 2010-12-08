@@ -1,7 +1,7 @@
 
-<h3>$i18n.getString( "dashboard" )</h3>
+<h3>$i18n.getString( "dataanalyser" )</h3>
 
-<p>$i18n.getString( "dashboard_intro" )</p>
+<p>$i18n.getString( "dataanalyser_intro" )</p>
 
 <!--
 <div style="top: 570;left: 260;position: absolute;z-index: 1;visibility: show;">

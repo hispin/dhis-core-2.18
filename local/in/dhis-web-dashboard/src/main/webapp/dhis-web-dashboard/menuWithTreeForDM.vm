@@ -1,4 +1,4 @@
-<h2>DashBoard</h2>
+<h2>$i18n.getString( "dataanalyser" )</h2>
 	<ul>
 		<li>Data Analysis</li>
 		<ul>
