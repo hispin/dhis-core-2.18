@@ -897,7 +897,15 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: GLOBAL.conf.labelseparator,
             emptyText: i18n_comma_separated_values,
             width: GLOBAL.conf.combo_width,
-            hidden: true
+            hidden: true,
+            listeners: {
+                'change': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }                
+            }
         },
         
         {

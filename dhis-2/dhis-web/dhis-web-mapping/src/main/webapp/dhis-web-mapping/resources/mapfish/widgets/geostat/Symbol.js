@@ -937,14 +937,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     fn: function() {
                         this.classify(false, true);
                     }
-                },
-                'specialkey': {
-                    scope: this,
-                    fn: function() {
-                        this.classify(false, true);
-                    }
-                }
-                
+                }                
             }
         }
 
