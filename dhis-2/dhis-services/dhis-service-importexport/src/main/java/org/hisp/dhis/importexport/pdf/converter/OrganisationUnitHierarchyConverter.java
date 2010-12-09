@@ -72,7 +72,7 @@ public class OrganisationUnitHierarchyConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printOrganisationUnitHierarchyFrontPage( document, params.getOrganisationUnits(), i18n, format );
+        PDFUtils.printObjectFrontPage( document, params.getOrganisationUnits(), i18n, format, "organisation_unit_hierarchy" );
 
         if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
         {

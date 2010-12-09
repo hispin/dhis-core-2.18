@@ -74,7 +74,7 @@ public class IndicatorConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printIndicatorFrontPage( document, params.getIndicators(), i18n, format );
+        PDFUtils.printObjectFrontPage( document, params.getIndicators(), i18n, format, "indicators" );
 
         List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getIndicators( params.getIndicators() ) );
         Collections.sort( indicators, new IndicatorNameComparator() );

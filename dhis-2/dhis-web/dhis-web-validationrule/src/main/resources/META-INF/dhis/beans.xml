@@ -299,5 +299,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" 
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>	
+
+  <!-- PDF -->
+
+  <bean id="org.hisp.dhis.validationrule.action.pdf.ExportToPdfAction" 
+	  class="org.hisp.dhis.validationrule.action.pdf.ExportToPdfAction" 
+	  scope="prototype">
+	  <property name="serviceProvider">
+		<ref bean="exportServiceProvider" />
+	  </property>
+  </bean>
   
 </beans>

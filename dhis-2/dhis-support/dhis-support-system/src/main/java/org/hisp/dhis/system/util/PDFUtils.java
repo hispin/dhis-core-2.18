@@ -41,6 +41,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.validation.ValidationRule;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -593,92 +594,12 @@ public class PDFUtils
      * @param format The i18nFormat object
      * 
      */
-    public static void printDataElementFrontPage( Document document, Collection<Integer> dataElementIds, I18n i18n,
-        I18nFormat format )
+    public static void printObjectFrontPage( Document document, Collection<?> objectIds, I18n i18n,
+        I18nFormat format, String frontPageLabel )
     {
-        if ( dataElementIds == null || dataElementIds.size() > 0 )
+        if ( objectIds == null || objectIds.size() > 0 )
         {
-            String title = i18n.getString( "data_elements" );
-
-            printFrontPage( document, title, i18n, format );
-        }
-    }
-
-    /**
-     * Writes a "Indicators" title in front of page
-     * 
-     * @param document The document
-     * @param indicatorIds the identifier list of Indicators
-     * @param i18n The i18n object
-     * @param format The i18nFormat object
-     * 
-     */
-    public static void printIndicatorFrontPage( Document document, Collection<Integer> indicatorIds, I18n i18n,
-        I18nFormat format )
-    {
-        if ( indicatorIds == null || indicatorIds.size() > 0 )
-        {
-            String title = i18n.getString( "indicators" );
-
-            printFrontPage( document, title, i18n, format );
-        }
-    }
-
-    /**
-     * Writes a "Data element concepts" title in front of page
-     * 
-     * @param document The document
-     * @param indicatorIds the identifier list of Indicators
-     * @param i18n The i18n object
-     * @param format The i18nFormat object
-     * 
-     */
-    public static void printDataElementConceptFrontPage( Document document, Collection<Integer> indicatorIds,
-        I18n i18n, I18nFormat format )
-    {
-        if ( indicatorIds == null || indicatorIds.size() > 0 )
-        {
-            String title = i18n.getString( "data_element_concepts" );
-
-            printFrontPage( document, title, i18n, format );
-        }
-    }
-
-    /**
-     * Writes a "Organization unit hierarchy" title in front of page
-     * 
-     * @param document The document
-     * @param unitIds the identifier list of organization units
-     * @param i18n The i18n object
-     * @param format The i18nFormat object
-     * 
-     */
-    public static void printOrganisationUnitHierarchyFrontPage( Document document, Collection<Integer> unitIds,
-        I18n i18n, I18nFormat format )
-    {
-        if ( unitIds == null || unitIds.size() > 0 )
-        {
-            String title = i18n.getString( "organisation_unit_hierarchy" );
-
-            printFrontPage( document, title, i18n, format );
-        }
-    }
-
-    /**
-     * Writes a "Organization units" title in front of page
-     * 
-     * @param document The document
-     * @param unitIds the identifier list of organization units
-     * @param i18n The i18n object
-     * @param format The i18nFormat object
-     * 
-     */
-    public static void printOrganisationUnitFrontPage( Document document, Collection<Integer> unitIds, I18n i18n,
-        I18nFormat format )
-    {
-        if ( unitIds == null || unitIds.size() > 0 )
-        {
-            String title = i18n.getString( "organisation_units" );
+            String title = i18n.getString( frontPageLabel );
 
             printFrontPage( document, title, i18n, format );
         }
@@ -821,13 +742,13 @@ public class PDFUtils
         {
             table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
             table.addCell( getTextCell( indicator.getCode() ) );
-        }        
+        }
         if ( nullIfEmpty( indicator.getDescription() ) != null )
         {
             table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
             table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
         }
-        
+
         table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
 
@@ -883,13 +804,13 @@ public class PDFUtils
 
         table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
         table.addCell( getTextCell( unit.getShortName(), TEXT ) );
-        
+
         if ( nullIfEmpty( unit.getCode() ) != null )
         {
             table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
             table.addCell( getTextCell( unit.getCode() ) );
         }
-        
+
         table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
         table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : "" ) );
 
@@ -898,7 +819,7 @@ public class PDFUtils
             table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
             table.addCell( getTextCell( unit.getClosedDate() != null ? format.formatDate( unit.getClosedDate() ) : "" ) );
         }
-        
+
         table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
         table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
 
@@ -907,7 +828,64 @@ public class PDFUtils
             table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
             table.addCell( getTextCell( unit.getComment(), TEXT ) );
         }
-        
+
+        table.addCell( getCell( 2, 30 ) );
+
+        return table;
+    }
+
+    /**
+     * Creates a table with the given validation rule
+     * 
+     * @param validationRule The validation rule
+     * @param i18n i18n object
+     * @param expressionService The expression service
+     * @param HEADER3 The header3 font
+     * @param ITALIC The italic font
+     * @param TEXT The text font
+     * @param keepTogether Indicates whether the table could be broken across
+     *        multiple pages or should be kept at one page.
+     * @param columnWidths The column widths.
+     */
+    public static PdfPTable printValidationRule( ValidationRule validationRule, I18n i18n,
+        ExpressionService expressionService, Font HEADER3, Font ITALIC, Font TEXT, boolean keepTogether,
+        float... columnWidths )
+    {
+        PdfPTable table = getPdfPTable( keepTogether, columnWidths );
+
+        table.addCell( getHeader3Cell( validationRule.getName(), 2, HEADER3 ) );
+
+        table.addCell( getCell( 2, 15 ) );
+
+        if ( nullIfEmpty( validationRule.getDescription() ) != null )
+        {
+            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
+            table.addCell( getTextCell( validationRule.getDescription(), TEXT ) );
+        }
+
+        table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getType() ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "operator" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getOperator() ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "left_side_of_expression" ), 1, ITALIC ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( validationRule.getLeftSide()
+            .getExpression() ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "left_side_description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( validationRule.getLeftSide().getDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "right_side_of_expression" ), 1, ITALIC ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( validationRule.getRightSide()
+            .getExpression() ), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "right_side_description" ), 1, ITALIC ) );
+        table.addCell( getTextCell( validationRule.getRightSide().getDescription(), TEXT ) );
+
+        table.addCell( getItalicCell( i18n.getString( "period_type" ), 1, ITALIC ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getPeriodType().getName() ), TEXT ) );
+
         table.addCell( getCell( 2, 30 ) );
 
         return table;
