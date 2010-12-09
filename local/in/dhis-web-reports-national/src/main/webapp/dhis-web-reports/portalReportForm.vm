@@ -103,12 +103,12 @@
                             <td class="NormalB">
                                 <label for="startDate" id="lblStartDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
                                 <input type="text" id="startDate" name="startDate" style="width:20em">
-                                <img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+                                
                             </td>
                             <td class="NormalB">
                                 <label for="endDate" id="lblEndDate">$i18n.getString( 'end_date' ) ($i18n.getString( "format.date.label" ))</label><br />
                                 <input type="text" id="endDate" name="endDate" style="width:20em">
-                                <img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+                               
                             </td>
                         </tr>
                         <tr>
@@ -135,18 +135,9 @@
 		</form>
 
 <script type="text/javascript">
-
-    Calendar.setup({
-        inputField     :    "startDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getStartDate"   // trigger for the calendar (button ID)
-    });
-
-    Calendar.setup({
-        inputField     :    "endDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getEndDate"   // trigger for the calendar (button ID)
-    });
+	jQuery( function(){
+			datePickerInRange( "startDate", "endDate", false, false );
+	});		
 </script>
 
 
