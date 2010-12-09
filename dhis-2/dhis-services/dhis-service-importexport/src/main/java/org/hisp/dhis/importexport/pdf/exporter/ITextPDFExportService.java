@@ -45,8 +45,10 @@ import org.hisp.dhis.importexport.pdf.converter.ExtendedDataElementConverter;
 import org.hisp.dhis.importexport.pdf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
+import org.hisp.dhis.importexport.pdf.converter.ValidationRuleConverter;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
@@ -94,6 +96,13 @@ public class ITextPDFExportService
         this.expressionService = expressionService;
     }
 
+    private ValidationRuleService validationRuleService;
+
+    public void setValidationRuleService( ValidationRuleService validationRuleService )
+    {
+        this.validationRuleService = validationRuleService;
+    }
+
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -127,6 +136,7 @@ public class ITextPDFExportService
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
                 organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
+            thread.setValidationRuleConverter( new ValidationRuleConverter( validationRuleService, expressionService ) );
 
             thread.start();
 
@@ -137,4 +147,5 @@ public class ITextPDFExportService
             throw new RuntimeException( "Error occured during PDF export", ex );
         }
     }
+
 }

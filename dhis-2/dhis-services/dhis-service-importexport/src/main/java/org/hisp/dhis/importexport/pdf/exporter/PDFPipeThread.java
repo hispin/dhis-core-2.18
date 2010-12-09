@@ -94,6 +94,13 @@ public class PDFPipeThread
         this.organisationUnitConverter = organisationUnitConverter;
     }
 
+    private PDFConverter validationRuleConverter;
+
+    public void setValidationRuleConverter( PDFConverter validationRuleConverter )
+    {
+        this.validationRuleConverter = validationRuleConverter;
+    }
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -131,6 +138,8 @@ public class PDFPipeThread
             organisationUnitHierarchyConverter.write( document, exportParams );
 
             organisationUnitConverter.write( document, exportParams );
+            
+            validationRuleConverter.write( document, exportParams );
 
             PDFUtils.closeDocument( document );
         }

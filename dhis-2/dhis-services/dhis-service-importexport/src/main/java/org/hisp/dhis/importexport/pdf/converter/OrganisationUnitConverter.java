@@ -71,7 +71,7 @@ public class OrganisationUnitConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printOrganisationUnitFrontPage( document, params.getOrganisationUnits(), i18n, format );
+        PDFUtils.printObjectFrontPage( document, params.getOrganisationUnits(), i18n, format, "organisation_units" );
 
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() ) );
         Collections.sort( units, new OrganisationUnitNameComparator() );

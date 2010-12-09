@@ -49,7 +49,8 @@ import org.hisp.dhis.validation.ValidationRuleService;
  * @version $Id: ValidationRuleConverter.java 6455 2008-11-24 08:59:37Z larshelg $
  */
 public class ValidationRuleConverter
-    extends ValidationRuleImporter implements XMLConverter
+    extends ValidationRuleImporter
+    implements XMLConverter
 {
     public static final String COLLECTION_NAME = "validationRules";
     public static final String ELEMENT_NAME = "validationRule";
@@ -68,8 +69,9 @@ public class ValidationRuleConverter
     // -------------------------------------------------------------------------
 
     private Map<Object, Integer> dataElementMapping;
+
     private Map<Object, Integer> categoryOptionComboMapping;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
@@ -78,10 +80,19 @@ public class ValidationRuleConverter
      * Constructor for write operations.
      */
     public ValidationRuleConverter( ValidationRuleService validationRuleService )
-    {   
+    {
         this.validationRuleService = validationRuleService;
     }
-    
+
+    /**
+     * Constructor for write operations.
+     */
+    public ValidationRuleConverter( ValidationRuleService validationRuleService, ExpressionService expressionService )
+    {
+        this.validationRuleService = validationRuleService;
+        this.expressionService = expressionService;
+    }
+
     /**
      * Constructor for read operations.
      * 
@@ -90,11 +101,9 @@ public class ValidationRuleConverter
      * @param expressionService the expressionService to use.
      * @param dataElementMapping the data element mapping to use.
      */
-    public ValidationRuleConverter( ImportObjectService importObjectService, 
-        ValidationRuleService validationRuleService,
-        ExpressionService expressionService,
-        Map<Object, Integer> dataElementMapping,
-        Map<Object, Integer> categoryOptionComboMapping )
+    public ValidationRuleConverter( ImportObjectService importObjectService,
+        ValidationRuleService validationRuleService, ExpressionService expressionService,
+        Map<Object, Integer> dataElementMapping, Map<Object, Integer> categoryOptionComboMapping )
     {
         this.importObjectService = importObjectService;
         this.validationRuleService = validationRuleService;
@@ -109,16 +118,17 @@ public class ValidationRuleConverter
 
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<ValidationRule> validationRules = validationRuleService.getValidationRules( params.getValidationRules() );
-        
+        Collection<ValidationRule> validationRules = validationRuleService.getValidationRules( params
+            .getValidationRules() );
+
         if ( validationRules != null && validationRules.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
-            
+
             for ( ValidationRule rule : validationRules )
             {
                 writer.openElement( ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_NAME, rule.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, rule.getDescription() );
                 writer.writeElement( FIELD_TYPE, rule.getType() );
@@ -127,47 +137,50 @@ public class ValidationRuleConverter
                 writer.writeElement( FIELD_LEFTSIDE_DESCRIPTION, rule.getLeftSide().getDescription() );
                 writer.writeElement( FIELD_RIGHTSIDE_EXPRESSION, rule.getRightSide().getExpression() );
                 writer.writeElement( FIELD_RIGHTSIDE_DESCRIPTION, rule.getRightSide().getDescription() );
-                
+
                 writer.closeElement();
             }
-            
+
             writer.closeElement();
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
-            
+
             final ValidationRule validationRule = new ValidationRule();
-            
+
             final Expression leftSide = new Expression();
             final Expression rightSide = new Expression();
-            
+
             validationRule.setLeftSide( leftSide );
             validationRule.setRightSide( rightSide );
-            
+
             validationRule.setName( values.get( FIELD_NAME ) );
             validationRule.setDescription( values.get( FIELD_DESCRIPTION ) );
             validationRule.setType( values.get( FIELD_TYPE ) );
             validationRule.setOperator( values.get( FIELD_OPERATOR ) );
-            
-            validationRule.getLeftSide().setExpression( expressionService.convertExpression( 
-                values.get( FIELD_LEFTSIDE_EXPRESSION ), dataElementMapping, categoryOptionComboMapping ) );
+
+            validationRule.getLeftSide().setExpression(
+                expressionService.convertExpression( values.get( FIELD_LEFTSIDE_EXPRESSION ), dataElementMapping,
+                    categoryOptionComboMapping ) );
             validationRule.getLeftSide().setDescription( values.get( FIELD_LEFTSIDE_DESCRIPTION ) );
-            validationRule.getLeftSide().setDataElementsInExpression( 
+            validationRule.getLeftSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getLeftSide().getExpression() ) );
-            
-            validationRule.getRightSide().setExpression( expressionService.convertExpression( 
-                values.get( FIELD_RIGHTSIDE_EXPRESSION ), dataElementMapping, categoryOptionComboMapping ) );  
-            validationRule.getRightSide().setDescription( values.get( FIELD_RIGHTSIDE_DESCRIPTION ) );            
+
+            validationRule.getRightSide().setExpression(
+                expressionService.convertExpression( values.get( FIELD_RIGHTSIDE_EXPRESSION ), dataElementMapping,
+                    categoryOptionComboMapping ) );
+            validationRule.getRightSide().setDescription( values.get( FIELD_RIGHTSIDE_DESCRIPTION ) );
             validationRule.getRightSide().setDataElementsInExpression(
                 expressionService.getDataElementsInExpression( validationRule.getRightSide().getExpression() ) );
-            
-            validationRule.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) ); //TODO Intermediate hack!
-            
+
+            // TODO Intermediate hack!
+            validationRule.setPeriodType( PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME ) );
+
             importObject( validationRule, params );
         }
     }

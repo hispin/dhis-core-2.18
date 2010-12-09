@@ -1,4 +1,4 @@
-package org.hisp.dhis.dd.action.pdf;
+package org.hisp.dhis.validationrule.action.pdf;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -38,12 +38,11 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 public class ExportToPdfAction
@@ -53,11 +52,9 @@ public class ExportToPdfAction
 
     private static final String EXPORT_FORMAT_PDF = "PDF";
 
-    private static final String TYPE_DATAELEMENT = "dataelement";
-    private static final String TYPE_INDICATOR = "indicator";
+    private static final String TYPE_VALIDATION_RULE = "validationrule";
 
-    private static final String FILENAME_DATAELEMENT = "DataElements.zip";
-    private static final String FILENAME_INDICATOR = "Indicators.zip";
+    private static final String FILENAME_VALIDATION_RULE = "ValidationRules.zip";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -106,13 +103,6 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String dataDictionaryMode;
-
-    public void setDataDictionaryMode( String dataDictionaryMode )
-    {
-        this.dataDictionaryMode = dataDictionaryMode;
-    }
-
     private String type;
 
     public void setType( String type )
@@ -138,39 +128,22 @@ public class ExportToPdfAction
         {
             ExportParams params = new ExportParams();
 
-            if ( type.equals( TYPE_DATAELEMENT ) )
+            if ( type.equals( TYPE_VALIDATION_RULE ) )
             {
                 if ( (activeIds != null) && !activeIds.isEmpty() )
                 {
-                    params.setDataElements( activeIds );
+                    params.setValidationRules( activeIds );
                 }
                 else
                 {
-                    params.setDataElements( null );
+                    params.setValidationRules( null );
                 }
 
-                fileName = FILENAME_DATAELEMENT;
-
-                log.info( "Exporting to PDF for object type: " + TYPE_DATAELEMENT );
-            }
-            else if ( type.equals( TYPE_INDICATOR ) )
-            {
-                if ( (activeIds != null) && !activeIds.isEmpty() )
-                {
-                    params.setIndicators( activeIds );
-                }
-                else
-                {
-                    params.setIndicators( null );
-                }
-
-                fileName = FILENAME_INDICATOR;
-
-                log.info( "Exporting to PDF for object type: " + TYPE_INDICATOR );
+                fileName = FILENAME_VALIDATION_RULE;
+                
+                log.info( "Exporting to PDF for object type: " + TYPE_VALIDATION_RULE );
             }
 
-            params.setExtendedMode( dataDictionaryMode != null
-                && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
             params.setIncludeDataValues( false );
             params.setI18n( i18n );
             params.setFormat( format );

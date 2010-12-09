@@ -70,7 +70,7 @@ public class DataElementConverter
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
 
-        PDFUtils.printDataElementFrontPage( document, params.getDataElements(), i18n, format );
+        PDFUtils.printObjectFrontPage( document, params.getDataElements(), i18n, format, "data_elements" );
 
         List<DataElement> elements = new ArrayList<DataElement>( dataElementService.getDataElements( params.getDataElements() ) );
         Collections.sort( elements, new DataElementNameComparator() );
