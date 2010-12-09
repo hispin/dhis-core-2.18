@@ -7,7 +7,7 @@
 	
 	<input type="hidden" id="baseLink" value="$!baseLink"/>
 	<input type="hidden" id="currentPage" value="$!currentPage"/>
-	#if ( $numberOfPages > 1 )
+	#if ( $numberOfPages > 0 )
 		<table style="background-color: #ebf0f6;" width='100%'>
 			<tr>
 				<td>
