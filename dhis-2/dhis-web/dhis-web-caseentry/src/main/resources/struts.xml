@@ -156,7 +156,7 @@
     </action>
 
     <action name="completeProgramStageDataEntry" class="org.hisp.dhis.caseentry.action.caseentry.CompleteDataEntryAction">
-        <result name="success" type="chain">viewProgramStageRecords</result>
+        <result name="success" type="redirect">getDataRecords.action?programId=${programId}</result>
     </action>
 	    
     <!-- Visit Plan -->
