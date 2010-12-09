@@ -1,7 +1,9 @@
 <script>
 	jQuery(document).ready(	function(){
 		jQuery("#name").focus();
-		validation( 'addRoleForm', function( form ){ 			
+		validation( 'addRoleForm', function( form ){
+			selectAllById( 'selectedList' );
+			selectAllById( 'selectedListAuthority' );
 			form.submit();			
 		});					
 		checkValueIsExist( "name", "validateRole.action");
