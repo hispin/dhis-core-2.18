@@ -2,6 +2,8 @@
 	jQuery(document).ready(	function(){
 		jQuery("#name").focus();
 		validation( 'updateRoleForm', function( form ){
+			selectAllById( 'selectedList' );
+			selectAllById( 'selectedListAuthority' );
 			form.submit();			
 		});
 		checkValueIsExist( "name", "validateRole.action", {id:getFieldValue('id')});				
