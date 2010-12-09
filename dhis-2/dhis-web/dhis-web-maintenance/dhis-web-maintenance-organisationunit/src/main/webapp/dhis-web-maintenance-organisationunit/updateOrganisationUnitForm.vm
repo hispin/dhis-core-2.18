@@ -19,7 +19,7 @@
 </script>
 
 
-<h3>$i18n.getString( "edit_org_unit" )</h3>
+<h3>$i18n.getString( "edit_org_unit" ) #openHelp( "ou_edit" )</h3>
 
 <form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
 

@@ -7,7 +7,7 @@
 	});	
 </script>
 
-<h3>$i18n.getString( "edit_org_unit_group" )</h3>
+<h3>$i18n.getString( "edit_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
 
 <form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
 	<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>

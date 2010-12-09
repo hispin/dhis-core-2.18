@@ -1,4 +1,4 @@
-  <h3>$i18n.getString( "section_grey_field_managment" )</h3>
+  <h3>$i18n.getString( "section_grey_field_managment" ) #openHelp( "grey_field" )</h3>
   
   <table id="detailsList">
     <col/> ## Labels

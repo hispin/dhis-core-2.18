@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "org_unit_group_management" )</h3>
+<h3>$i18n.getString( "org_unit_group_management" ) #openHelp( "ou_groups" )</h3>
 
 <table class="mainPageTable">
 	<tr>

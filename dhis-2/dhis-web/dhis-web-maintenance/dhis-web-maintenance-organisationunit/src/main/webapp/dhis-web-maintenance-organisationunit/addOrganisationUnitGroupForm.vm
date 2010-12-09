@@ -8,7 +8,7 @@
 </script>
 
 
-<h3>$i18n.getString( "crease_new_org_unit_group" )</h3>
+<h3>$i18n.getString( "crease_new_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
 
 <form name="addOrganisationUnitGroupForm" id="addOrganisationUnitGroupForm" action="addOrganisationUnitGroup.action" method="POST">
 

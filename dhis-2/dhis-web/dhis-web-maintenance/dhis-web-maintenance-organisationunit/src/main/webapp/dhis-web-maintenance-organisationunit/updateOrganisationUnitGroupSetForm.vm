@@ -10,7 +10,7 @@
 	
 </script>
 
-<h3>$i18n.getString( "edit_org_unit_group_set" )</h3>
+<h3>$i18n.getString( "edit_org_unit_group_set" ) #openHelp( "ou_groupsets_edit" )</h3>
 
 <form id="updateOrganisationUnitGroupSetForm" action="updateOrganisationUnitGroupSet.action" method="post" >
 
