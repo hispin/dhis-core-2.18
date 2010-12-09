@@ -88,17 +88,17 @@ public class SVGDocument
 
         if ( this.layer != 3 ) // Polygon or point layer
         {
-            String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"35\" font-size=\"12\"><tspan>"
+            String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"40\" font-size=\"12\"><tspan>"
                 + StringEscapeUtils.escapeXml( this.indicator ) + "</tspan></text></g>";
     
-            String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"50\" font-size=\"12\"><tspan>"
+            String period_ = "<g id=\"period\" style=\"display: block; visibility: visible;\"><text id=\"period\" x=\"30\" y=\"55\" font-size=\"12\"><tspan>"
                 + StringEscapeUtils.escapeXml( this.period ) + "</tspan></text></g>";
     
             svg_ = svg_.replaceFirst( "</svg>", title_ + indicator_ + period_ + "</svg>" );
 
             if ( this.includeLegends )
             {
-                svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 30, 45 ) + "</svg>" );
+                svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript( 30, 50 ) + "</svg>" );
             }
         }
         
