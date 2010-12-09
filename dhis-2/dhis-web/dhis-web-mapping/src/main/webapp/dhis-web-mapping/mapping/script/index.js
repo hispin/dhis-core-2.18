@@ -450,24 +450,129 @@
 	addOverlaysToMap(true);
 			
 	/* Section: mapview */
-	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptytext:'',width:GLOBAL.conf.combo_width,hideLabel:true,autoCreate:{tag:'input',type:'text',size:'20',autocomplete:'off', maxlength:'35'}});
-	var deleteMapViewComboBox=new Ext.form.ComboBox({id:'view_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.mapView});
-	var dashboardMapViewComboBox=new Ext.form.ComboBox({id:'view2_cb',isFormField:true,hideLabel:true,typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.mapView});
-    
     var newViewPanel = new Ext.form.FormPanel({
         id: 'newview_p',
 		bodyStyle: 'border:0px solid #fff',
+        items: [
+            new Ext.form.TextField({
+                id: 'viewname_tf',
+                emptytext: GLOBAL.conf.emptytext,
+                labelSeparator: GLOBAL.conf.labelseparator,
+                fieldLabel: i18n_display_name,
+                width: GLOBAL.conf.combo_width_fieldset,
+                autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
+            })
+        ]
+    });
+    
+    var deleteViewPanel = new Ext.form.FormPanel({   
+        id: 'deleteview_p',
+		bodyStyle: 'border:0px solid #fff',
+        items: [
+            new Ext.form.ComboBox({
+                id: 'view_cb',
+                editable: false,
+                valueField: 'id',
+                displayField: 'name',
+                mode: 'remote',
+                forceSelection: true,
+                triggerAction: 'all',
+                emptyText: GLOBAL.conf.emptytext,
+                labelSeparator: GLOBAL.conf.labelseparator,
+                fieldLabel: i18n_favorite,
+                selectOnFocus: true,
+                width: GLOBAL.conf.combo_width_fieldset,
+                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                store:GLOBAL.stores.mapView
+            })
+        ]
+    });
+    
+    var dashboardViewPanel = new Ext.form.FormPanel({   
+        id: 'dashboardview_p',
+		bodyStyle: 'border:0px solid #fff',
+        items: [
+            new Ext.form.ComboBox({
+                id: 'view2_cb',
+                editable: false,
+                valueField: 'id',
+                displayField: 'name',
+                mode: 'remote',
+                forceSelection: true,
+                triggerAction: 'all',
+                emptyText: GLOBAL.conf.emptytext,
+                labelSeparator: GLOBAL.conf.labelseparator,
+                fieldLabel: i18n_favorite,
+                selectOnFocus: true,
+                width: GLOBAL.conf.combo_width_fieldset,
+                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                store: GLOBAL.stores.mapView
+            })
+        ]
+    });
+    
+	var viewWindow = new Ext.Window({
+        id: 'view_w',
+        title: '<span id="window-favorites-title">' + i18n_favorite + '</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: 251,
+        height: 125,
         items:
         [
-            {html: '<div class="window-info">' + i18n_saving_current_thematic_map_selection + '</div>'},
-            {html: '<div class="window-field-label-first">' + i18n_display_name + '</div>'},
-			viewNameTextField,
-			{
-				xtype: 'button',
+            {
+                xtype: 'tabpanel',
+                activeTab: 0,
+				layoutOnTabChange: true,
+                deferredRender: false,
+                plain: true,
+                defaults: {
+                    bodyStyle: 'padding:8px; border:0px'
+                },
+                listeners: {
+                    tabchange: function(panel, tab)
+                    {
+                        if (tab.id == 'view0') {
+                            Ext.getCmp('newview_b').show();
+                            Ext.getCmp('deleteview_b').hide();
+                            Ext.getCmp('dashboardview_b').hide();
+                        }
+                        else if (tab.id == 'view1') {
+                            Ext.getCmp('newview_b').hide();
+                            Ext.getCmp('deleteview_b').show();
+                            Ext.getCmp('dashboardview_b').hide();
+                        }
+                        else if (tab.id == 'view2') {
+                            Ext.getCmp('newview_b').hide();
+                            Ext.getCmp('deleteview_b').hide();
+                            Ext.getCmp('dashboardview_b').show();
+                        }
+                    }
+                },
+                items: [
+                    {
+                        title: '<span class="panel-tab-title">' + i18n_new + '</span>',
+                        id: 'view0',
+                        items: [newViewPanel]
+                    },
+                    {
+                        title: '<span class="panel-tab-title">' + i18n_delete + '</span>',
+                        id: 'view1',
+                        items: [deleteViewPanel]
+                    },
+                    {
+                        title: '<span class="panel-tab-title">' + i18n_dhis_dashboard + '</span>',
+                        id: 'view2',
+                        items: [dashboardViewPanel]
+                    }
+                ]
+            }
+        ],
+        bbar: [
+            '->',            
+            new Ext.Button({
                 id: 'newview_b',
-				isFormField: true,
 				hideLabel: true,
-				cls: 'window-button',
 				text: i18n_register,
 				handler: function() {
 					var vn = Ext.getCmp('viewname_tf').getValue();
@@ -540,24 +645,11 @@
                         }
                     });
 				}
-			}
-        ]
-    });
-    
-    var deleteViewPanel = new Ext.form.FormPanel({   
-        id: 'deleteview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items:
-        [
-            { html: '<div class="window-field-label-first">' + i18n_view + '</div>' },
-			deleteMapViewComboBox,
-			{
-				xtype: 'button',
+			}),
+            new Ext.Button({
                 id: 'deleteview_b',
-				isFormField: true,
 				hideLabel: true,
 				text: i18n_delete,
-				cls: 'window-button',
 				handler: function() {
 					var v = Ext.getCmp('view_cb').getValue();
 					
@@ -586,24 +678,12 @@
 						}
 					});
 				}
-			}
-        ]
-    });
-    
-    var dashboardViewPanel = new Ext.form.FormPanel({   
-        id: 'dashboardview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items:
-        [   
-            { html: '<div class="window-field-label-first">'+i18n_view+'</div>' },
-			dashboardMapViewComboBox,
-			{
-				xtype: 'button',
+			}),
+            new Ext.Button({
                 id: 'dashboardview_b',
 				isFormField: true,
 				hideLabel: true,
 				text: i18n_add,
-				cls: 'window-button',
 				handler: function() {
 					var v = Ext.getCmp('view2_cb').getValue();
 					var rv = Ext.getCmp('view2_cb').getRawValue();
@@ -622,60 +702,7 @@
 						}
 					});
 				}
-			}
-        ]
-    });
-    
-	var viewWindow = new Ext.Window({
-        id: 'view_w',
-        title: '<span id="window-favorites-title">' + i18n_favorite + '</span>',
-		layout: 'fit',
-        closeAction: 'hide',
-		width: 223,
-        items:
-        [
-            {
-                xtype: 'tabpanel',
-                activeTab: 0,
-				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {
-                    layout: 'fit',
-                    bodyStyle: 'padding:8px; border:0px'
-                },
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        if (tab.id == 'view0') { 
-                            viewWindow.setHeight(188);
-                        }
-                        else if (tab.id == 'view1') {
-                            viewWindow.setHeight(150);
-                        }
-                        else if (tab.id == 'view2') {
-                            viewWindow.setHeight(150);
-                        }
-                    }
-                },
-                items: [
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_new + '</span>',
-                        id: 'view0',
-                        items: [newViewPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_delete + '</span>',
-                        id: 'view1',
-                        items: [deleteViewPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_dhis_dashboard + '</span>',
-                        id: 'view2',
-                        items: [dashboardViewPanel]
-                    }
-                ]
-            }
+            })
         ]
     });
 	
@@ -720,7 +747,7 @@
 				fieldLabel: 'Width',
 				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: true,
-				emptyText: 'Type custom px',
+				emptyText: 'Custom px',
 				valueField: 'width',
 				displayField: 'text',
 				width: GLOBAL.conf.combo_width_fieldset,
@@ -738,7 +765,7 @@
 				fieldLabel: 'Height',
 				labelSeparator: GLOBAL.conf.labelseparator,
 				editable: true,
-				emptyText: 'Type custom px',
+				emptyText: 'Custom px',
 				valueField: 'height',
 				displayField: 'text',
 				width: GLOBAL.conf.combo_width_fieldset,
@@ -757,14 +784,25 @@
 				labelSeparator: '',				
 				isFormField: true,
 				checked: true
-			},
-			{
-				xtype: 'button',
+			}
+		]
+	});
+	
+	var exportImageWindow = new Ext.Window({
+        id: 'exportimage_w',
+        title: '<span id="window-image-title">' + i18n_export_map_as_image + '</span>',
+        layout: 'fit',
+        closeAction: 'hide',
+        defaults: {bodyStyle:'padding:8px; border:0px'},
+        width: 251,
+        height: 200,
+        items: [exportImagePanel],
+        bbar: [
+            '->',
+            new Ext.Button({
                 id: 'exportimage_b',
-				isFormField: true,
 				labelSeparator: GLOBAL.conf.labelseparator,
 				hideLabel: false,
-				cls: 'window-button',
 				text: i18n_export,
 				handler: function() {
                     var values, svgElement, svg;
@@ -853,102 +891,9 @@
 						Ext.getCmp('exportimagetitle_tf').reset();
 					}
 				}
-			}	
-		]
-	});
-	
-	var exportExcelPanel = new Ext.form.FormPanel({
-        id: 'export_excel_p',        
-        items:
-        [
-			{
-				xtype: 'textfield',
-				id: 'exportexceltitle_ft',
-				fieldLabel: i18n_title,
-				labelSeparator: GLOBAL.conf.labelseparator,
-				editable: true,
-				valueField: 'id',
-				displayField: 'text',
-				isFormField: true,
-				width: GLOBAL.conf.combo_width_fieldset,
-				minListWidth: GLOBAL.conf.combo_list_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all'
-			},	
-			{
-				xtype: 'checkbox',
-				id: 'exportexcelincludelegend_chb',
-				fieldLabel: i18n_include_legend,
-				labelSeparator: '',
-				isFormField: true,
-				checked: true
-			},	
-			{
-				xtype: 'checkbox',
-				id: 'exportexcelincludevalue_chb',
-				fieldLabel: i18n_include_values,
-				labelSeparator: '',
-				isFormField: true,
-				checked: true
-			},
-			{
-				xtype: 'button',
-                id: 'exportexcel_b',
-				isFormField: true,
-				labelSeparator: GLOBAL.conf.labelseparator,
-				hideLabel: false,
-				cls: 'window-button',
-				text: i18n_export_excel,
-				handler: function() {
-                    var indicatorOrDataElement, period, mapOrOrganisationUnit;
-					if (GLOBAL.vars.activePanel.isPolygon()) {
-                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBAL.conf.map_value_type_indicator ?
-                            Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
-                        period = Ext.getCmp('period_cb').getValue();
-                        organisationUnit = Ext.getCmp('boundary_tf').getValue();
-                    }
-                    else if (GLOBAL.vars.activePanel.isPoint()) {
-                        indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == GLOBAL.conf.map_value_type_indicator ?
-                            Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
-                        period = Ext.getCmp('period_cb2').getValue();
-                        organisationUnit = Ext.getCmp('map_tf2').getValue();
-                    }
-                    
-                    if (indicatorOrDataElement && period && organisationUnit) {
-                        var title = Ext.getCmp('exportexceltitle_ft').getValue();
-                        var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
-                        var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();
-                        var includeValues = Ext.getCmp('exportexcelincludevalue_chb').getValue();
-                        var indicator = Ext.getCmp('indicator_cb').getValue();
-                        
-                        Ext.getCmp('exportexceltitle_ft').clearValue();
-                                            
-                        var exportForm = document.getElementById('exportForm');
-                        exportForm.action = '../exportExcel.action';
-                        
-                        document.getElementById('titleField').value = title;
-                        document.getElementById('svgField').value = svg;  
-                        document.getElementById('widthField').value = 500;  
-                        document.getElementById('heightField').value = 500;  
-                        document.getElementById('includeLegendsField').value = includeLegend;  
-                        document.getElementById('includeValuesField').value = includeValues; 
-                        document.getElementById('periodField').value = period;  
-                        document.getElementById('indicatorField').value = indicator;   
-                        document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON();
-                        document.getElementById('dataValuesField').value = GLOBAL.vars.exportValues;
-
-                        exportForm.submit();
-                    }
-                    else {
-                        Ext.message.msg(false, i18n_please_render_map_first);
-                    }
-				}
-			}
-		]
-	});
-	
-	var exportImageWindow=new Ext.Window({id:'exportimage_w',title:'<span id="window-image-title">' + i18n_export_map_as_image + '</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:250,height:210,items:[{xtype:'panel',items:[exportImagePanel]}]});
-	var exportExcelWindow=new Ext.Window({id:'exportexcel_w',title:'<span id="window-excel-title">' + i18n_export_excel + '</span>',layout:'fit',closeAction:'hide',defaults:{layout:'fit',bodyStyle:'padding:8px; border:0px'},width:260,height:157,items:[{xtype:'panel',items:[exportExcelPanel]}]});
+            })
+        ]    
+    });
 	
 	/* Section: predefined map legend set */
 	var newPredefinedMapLegendPanel = new Ext.form.FormPanel({
@@ -2800,7 +2745,6 @@
                 height: 1000,
                 width: 800,
                 map: GLOBAL.vars.map,
-                title: '',
                 zoom: 3,
 				tbar: mapToolbar
             }

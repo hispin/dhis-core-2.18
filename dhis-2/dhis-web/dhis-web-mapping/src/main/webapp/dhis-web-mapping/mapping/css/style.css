@@ -1,4 +1,4 @@
-/* Gray-extend theme overrides */
+32/* Gray-extend theme overrides */
 .ext-gecko .x-window-body .x-form-item {
 	overflow:hidden;
 }
@@ -40,7 +40,7 @@
 }
 .x-toolbar .xtb-sep {
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
-    height:23px;
+    height:24px;
 }
 #map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
     border:1px solid #bbbbbb;
@@ -356,6 +356,11 @@
 }
 .x-panel-header {
     font-family:lucida sans unicode,ubuntu,arial,tahoma;
+}
+
+/* Ext TabPanel */
+.x-tab-panel-body {
+    border-color:#ffffff;
 }
 
 /* Msg */
