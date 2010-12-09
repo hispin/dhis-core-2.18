@@ -67,7 +67,7 @@
                     formValidations();
                   }
         });
-        jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
+        ///jQuery.validator.loadLocaled( jQuery("#curLocaleCode").val() );
         jQuery("#name").focus();
       }
   );
@@ -81,12 +81,12 @@
           <td class="NormalB">
                         <label for="startDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
                         <input type="text" id="startDate" name="startDate" onchange="if(!checkStartDate( this.value )) this.value='';" style="width:15em" class="{validate:{required:true,dateISO:true}}">
-                        <img src="../images/calendar_icon.gif" width="16" height="16" id="getStartDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+                        
                     </td>
            <td class="NormalB">
                         <label for="endDate">$i18n.getString( 'end_date' ) ($i18n.getString( "format.date.label" ))</label><br />
                         <input type="text" id="endDate" name="endDate" onchange="if(!checkEndDate( this.value )) this.value='';"  style="width:15em" class="{validate:{required:true,dateISO:true}}">
-                        <img src="../images/calendar_icon.gif" width="16" height="16" id="getEndDate" cursor: pointer;" title="$i18n.getString( "date_selector" )" onmouseover="this.style.background='orange';" onmouseout="this.style.background=''">
+                        
                     </td>
         </tr>
         <tr>
@@ -132,19 +132,9 @@
                </tr>
             </table>
     </form>
-
 <script type="text/javascript">
-  
-  Calendar.setup({
-        inputField     :    "startDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getStartDate"   // trigger for the calendar (button ID)
-    });
-  
-  Calendar.setup({
-        inputField     :    "endDate",      // id of the input field
-        ifFormat       :    "$i18n.getString("format.date.label")",       // format of the input field
-        button         :    "getEndDate"   // trigger for the calendar (button ID)
-    });
+	jQuery( function(){
+			datePickerInRange( "startDate", "endDate", false, false );
+	});		
 </script>
 
