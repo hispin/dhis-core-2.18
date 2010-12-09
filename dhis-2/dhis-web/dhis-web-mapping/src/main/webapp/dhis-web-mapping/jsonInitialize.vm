@@ -1,3 +1,5 @@
+#set( $baseLaysersSize = $baseLayers.size() )
+#set( $overlaysSize = $overlays.size() )
 {
   "mapView": { 
     "id": "$!{mapView.id}",
@@ -33,5 +35,39 @@
   },
   "userSettings": {
     "mapDateType": "$!encoder.jsonEncode( ${mapDateType} )"
-  }
+  },
+  "baseLayers": [
+#foreach( $baseLayer in $baseLayers )
+    {
+      "data": {
+        "id": "$!{baseLayer.id}",
+        "name": "$!encoder.jsonEncode( ${baseLayer.name} )",
+        "type": "$!encoder.jsonEncode( ${baseLayer.type} )",
+        "mapSource": "$!encoder.jsonEncode( ${baseLayer.mapSource} )",
+        "layer": "$!encoder.jsonEncode( ${baseLayer.layer} )",
+        "fillColor": "$!encoder.jsonEncode( ${baseLayer.fillColor} )",
+        "fillOpacity": "$!{baseLayer.fillOpacity}",
+        "strokeColor": "$!encoder.jsonEncode( ${baseLayer.strokeColor} )",
+        "strokeWidth": "$!{baseLayer.strokeWidth}"
+      }
+    }#if( $velocityCount < $baseLaysersSize ),#end
+#end
+  ],
+  "overlays": [
+#foreach( $overlay in $overlays )
+    {
+      "data": {
+        "id": "$!{overlay.id}",
+        "name": "$!encoder.jsonEncode( ${overlay.name} )",
+        "type": "$!encoder.jsonEncode( ${overlay.type} )",
+        "mapSource": "$!encoder.jsonEncode( ${overlay.mapSource} )",
+        "layer": "$!encoder.jsonEncode( ${overlay.layer} )",
+        "fillColor": "$!encoder.jsonEncode( ${overlay.fillColor} )",
+        "fillOpacity": "$!{overlay.fillOpacity}",
+        "strokeColor": "$!encoder.jsonEncode( ${overlay.strokeColor} )",
+        "strokeWidth": "$!{overlay.strokeWidth}"
+      }
+    }#if( $velocityCount < $overlaysSize ),#end
+#end
+  ]
 }

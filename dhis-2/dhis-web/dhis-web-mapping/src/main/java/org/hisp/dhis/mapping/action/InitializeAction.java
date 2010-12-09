@@ -30,10 +30,16 @@ package org.hisp.dhis.mapping.action;
 import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
 import static org.hisp.dhis.mapping.MappingService.MAP_DATE_TYPE_FIXED;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.comparator.MapLayerNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -95,6 +101,20 @@ public class InitializeAction
         return mapDateType;
     }
 
+    private List<MapLayer> baseLayers;
+
+    public List<MapLayer> getBaseLayers()
+    {
+        return baseLayers;
+    }
+
+    private List<MapLayer> overlays;
+
+    public List<MapLayer> getOverlays()
+    {
+        return overlays;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -113,6 +133,14 @@ public class InitializeAction
             
             mapDateType = mapView.getMapDateType();
         }
+        
+        baseLayers = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_BASELAYER ) );
+        
+        Collections.sort( baseLayers, new MapLayerNameComparator() );
+        
+        overlays = new ArrayList<MapLayer>( mappingService.getMapLayersByType( MappingService.MAP_LAYER_TYPE_OVERLAY ) );
+        
+        Collections.sort( overlays, new MapLayerNameComparator() );        
 
         return SUCCESS;
     }

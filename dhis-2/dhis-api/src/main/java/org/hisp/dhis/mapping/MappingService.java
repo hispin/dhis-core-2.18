@@ -60,6 +60,10 @@ public interface MappingService
     final String ORGANISATION_UNIT_SELECTION_TYPE_PARENT = "parent";
 
     final String ORGANISATION_UNIT_SELECTION_TYPE_LEVEL = "level";
+    
+    final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
+    
+    final String MAP_LAYER_TYPE_OVERLAY = "overlay";
 
     // -------------------------------------------------------------------------
     // IndicatorMapValue

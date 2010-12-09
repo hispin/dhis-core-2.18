@@ -6,7 +6,7 @@
 	
 	GLOBAL.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
 	GLOBAL.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
-    GLOBAL.vars.parameter = GLOBAL.util.getUrlParam('view') ? {id: GLOBAL.util.getUrlParam('view')} : false;
+    GLOBAL.vars.parameter = GLOBAL.util.getUrlParam('view') ? {id: GLOBAL.util.getUrlParam('view')} : {id: null};
 
     Ext.Ajax.request({
         url: GLOBAL.conf.path_mapping + 'initialize' + GLOBAL.conf.type,
@@ -14,10 +14,10 @@
         params: {id: GLOBAL.vars.parameter.id || null},
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
-            if (GLOBAL.vars.parameter) {
-                GLOBAL.vars.parameter.mapView = init.mapView;
-            }
-            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;
+            GLOBAL.vars.parameter.mapView = init.mapView;
+            GLOBAL.vars.parameter.baseLayers = init.baseLayers;
+            GLOBAL.vars.parameter.overlays = init.overlays;
+            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;            
                         
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
@@ -371,24 +371,35 @@
     };
 	
 	/* Add base layers */	
-	function addBaseLayersToMap() {
+	function addBaseLayersToMap(init) {
 		GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
 		GLOBAL.vars.map.layers[0].setVisibility(false);
-		
-		GLOBAL.stores.baseLayer.load({callback: function(r) {
-			if (r.length) {
-				for (var i = 0; i < r.length; i++) {
-					GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
+        
+        if (init) {
+            var layers = GLOBAL.vars.parameter.baseLayers || [];
+			if (layers.length) {
+				for (var i = 0; i < layers.length; i++) {
+					GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(layers[i].data.name, layers[i].data.mapSource, {layers: layers[i].data.layer})]);
 					GLOBAL.vars.map.layers[GLOBAL.vars.map.layers.length-1].setVisibility(false);
 				}
 			}
-		}});
-	}	
-	addBaseLayersToMap();	
+        }
+        else {
+            GLOBAL.stores.baseLayer.load({callback: function(r) {
+                if (r.length) {
+                    for (var i = 0; i < r.length; i++) {
+                        GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
+                        GLOBAL.vars.map.layers[GLOBAL.vars.map.layers.length-1].setVisibility(false);
+                    }
+                }
+            }});
+        }
+	}
+	addBaseLayersToMap(true);
     
-	function addOverlaysToMap() {
-		GLOBAL.stores.overlay.load({callback: function(r) {
-			if (r.length) {
+	function addOverlaysToMap(init) {
+        function add(r) {
+            if (r.length) {
                 var loadStart = function() {
                     GLOBAL.vars.mask.msg = i18n_loading;
                     GLOBAL.vars.mask.show();
@@ -397,39 +408,46 @@
                     GLOBAL.vars.mask.hide();
                 };
                 
-				for (var i = 0; i < r.length; i++) {
-					var url = GLOBAL.vars.mapSourceType.isShapefile() ? GLOBAL.conf.path_geoserver + GLOBAL.conf.wfs + r[i].data.mapSource + GLOBAL.conf.output : GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource;
-					var fillColor = r[i].data.fillColor;
-					var fillOpacity = parseFloat(r[i].data.fillOpacity);
-					var strokeColor = r[i].data.strokeColor;
-					var strokeWidth = parseFloat(r[i].data.strokeWidth);
-					
-					var overlay = new OpenLayers.Layer.Vector(r[i].data.name, {
-						'visibility': false,
-						'styleMap': new OpenLayers.StyleMap({
-							'default': new OpenLayers.Style(
-								OpenLayers.Util.applyDefaults(
-									{'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
-									OpenLayers.Feature.Vector.style['default']
-								)
-							)
-						}),
-						'strategies': [new OpenLayers.Strategy.Fixed()],
-						'protocol': new OpenLayers.Protocol.HTTP({
-							'url': url,
-							'format': new OpenLayers.Format.GeoJSON()
-						})
-					});
-					
-					overlay.events.register('loadstart', null, loadStart);					
-					overlay.events.register('loadend', null, loadEnd);
+                for (var i = 0; i < r.length; i++) {
+                    var overlay = new OpenLayers.Layer.Vector(r[i].data.name, {
+                        'visibility': false,
+                        'styleMap': new OpenLayers.StyleMap({
+                            'default': new OpenLayers.Style(
+                                OpenLayers.Util.applyDefaults({
+                                        'fillColor': r[i].data.fillColor,
+                                        'fillOpacity': parseFloat(r[i].data.fillOpacity),
+                                        'strokeColor': r[i].data.strokeColor,
+                                        'strokeWidth': parseFloat(r[i].data.strokeWidth)
+                                    },
+                                    OpenLayers.Feature.Vector.style['default']
+                                )
+                            )
+                        }),
+                        'strategies': [new OpenLayers.Strategy.Fixed()],
+                        'protocol': new OpenLayers.Protocol.HTTP({
+                            'url': GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource,
+                            'format': new OpenLayers.Format.GeoJSON()
+                        })
+                    });
+                    
+                    overlay.events.register('loadstart', null, loadStart);					
+                    overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
-					GLOBAL.vars.map.addLayer(overlay);
-				}
-			}
-		}});
+                    GLOBAL.vars.map.addLayer(overlay);
+                }
+            }
+        }
+        
+        if (init) {
+            add(GLOBAL.vars.parameter.overlays);
+        }
+        else {
+            GLOBAL.stores.overlay.load({callback: function(r) {
+                add(r);
+            }});
+        }
 	}
-	addOverlaysToMap();
+	addOverlaysToMap(true);
 			
 	/* Section: mapview */
 	var viewNameTextField=new Ext.form.TextField({id:'viewname_tf',emptytext:'',width:GLOBAL.conf.combo_width,hideLabel:true,autoCreate:{tag:'input',type:'text',size:'20',autocomplete:'off', maxlength:'35'}});
@@ -887,18 +905,16 @@
                         indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb').getValue() == GLOBAL.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb').getValue() : Ext.getCmp('dataelement_cb').getValue();
                         period = Ext.getCmp('period_cb').getValue();
-                        mapOrOrganisationUnit = GLOBAL.vars.mapSourceType.isDatabase() ?
-                            Ext.getCmp('boundary_tf').getValue() : Ext.getCmp('map_cb').getValue();
+                        organisationUnit = Ext.getCmp('boundary_tf').getValue();
                     }
                     else if (GLOBAL.vars.activePanel.isPoint()) {
                         indicatorOrDataElement = Ext.getCmp('mapvaluetype_cb2').getValue() == GLOBAL.conf.map_value_type_indicator ?
                             Ext.getCmp('indicator_cb2').getValue() : Ext.getCmp('dataelement_cb2').getValue();
                         period = Ext.getCmp('period_cb2').getValue();
-                        mapOrOrganisationUnit = GLOBAL.vars.mapSourceType.isDatabase() ?
-                            Ext.getCmp('map_tf2').getValue() : Ext.getCmp('map_cb2').getValue();
+                        organisationUnit = Ext.getCmp('map_tf2').getValue();
                     }
                     
-                    if (indicatorOrDataElement && period && mapOrOrganisationUnit) {
+                    if (indicatorOrDataElement && period && organisationUnit) {
                         var title = Ext.getCmp('exportexceltitle_ft').getValue();
                         var svg = document.getElementById('OpenLayers.Layer.Vector_17').innerHTML;	
                         var includeLegend = Ext.getCmp('exportexcelincludelegend_chb').getValue();

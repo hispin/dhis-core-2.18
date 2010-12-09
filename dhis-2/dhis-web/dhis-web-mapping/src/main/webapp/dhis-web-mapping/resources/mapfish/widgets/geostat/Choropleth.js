@@ -86,7 +86,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         this.createSelectFeatures();
 
-        if (GLOBAL.vars.parameter) {
+        if (GLOBAL.vars.parameter.id) {
 			if (GLOBAL.vars.parameter.mapView.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
 				this.mapView = GLOBAL.vars.parameter.mapView;
 				this.updateValues = true;
