@@ -85,8 +85,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.createItems();
         
         this.createSelectFeatures();
-        
-        if (GLOBAL.vars.parameter) {
+
+        if (GLOBAL.vars.parameter.id) {
 			if (GLOBAL.vars.parameter.mapView.featureType == GLOBAL.conf.map_feature_type_point) {
 				this.mapView = GLOBAL.vars.parameter.mapView;
 				this.updateValues = true;
@@ -998,8 +998,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.selectFeatures = new OpenLayers.Control.newSelectFeature(
             this.layer, {
                 onHoverSelect: onHoverSelect,
-                onHoverUnselect: onHoverUnselect,
-                onClickSelect: onClickSelect
+                onHoverUnselect: onHoverUnselect
+                //onClickSelect: onClickSelect
             }
         );
         
@@ -1513,7 +1513,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
         this.coreComp = new mapfish.GeoStat.Symbol(this.map, coreOptions);
         
-        if (GLOBAL.vars.parameter) {
+        if (GLOBAL.vars.parameter.id) {
 			choropleth.collapse();
 			this.expand();
 			GLOBAL.vars.parameter = false;

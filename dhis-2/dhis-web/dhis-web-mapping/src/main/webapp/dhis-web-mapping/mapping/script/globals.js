@@ -284,6 +284,8 @@ GLOBAL.util = {
 GLOBAL.vars = {    
     map: null,
     
+    parameter: null,
+    
     mapSourceType: {
         value: null,
         setDatabase: function() {
@@ -321,8 +323,6 @@ GLOBAL.vars = {
             return this.value == GLOBAL.conf.map_date_type_start_end;
         }
     },
-    
-    parameter: null,
     
     activePanel: {
         value: GLOBAL.conf.thematicMap,
