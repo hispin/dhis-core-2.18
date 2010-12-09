@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "user_management" )</h3>
+<h3>$i18n.getString( "user_management" ) #openHelp( "users" )</h3>
 
 <form id="userForm" method="POST">
 #parse( "/dhis-web-maintenance-user/searchUser.vm" )

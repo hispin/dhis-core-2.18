@@ -9,7 +9,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "create_new_org_unit" )</h3>
+<h3>$i18n.getString( "create_new_org_unit" ) #openHelp( "ou_edit" )</h3>
 
 <form id="addOrganisationUnitForm" action="addOrganisationUnit.action" method="post">
 

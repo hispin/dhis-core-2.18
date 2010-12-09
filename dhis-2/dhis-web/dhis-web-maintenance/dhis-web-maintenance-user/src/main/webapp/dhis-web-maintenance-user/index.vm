@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "dhis-web-maintenance-user" )</h3>
+<h3>$i18n.getString( "dhis-web-maintenance-user" ) #openHelp( "users" )</h3>
 
 <ul class="introList">
     #introListImgItem( "alluser.action" "user" "user" )
