@@ -511,7 +511,7 @@
     
 	var viewWindow = new Ext.Window({
         id: 'view_w',
-        title: '<span id="window-favorites-title">' + i18n_favorite + '</span>',
+        title: '<span id="window-favorites-title">' + i18n_favorites + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: GLOBAL.conf.window_width,
@@ -1476,13 +1476,13 @@
     });
 			
     /* Section: help */
-	function getHelpText(topic, tab) {
+	function setHelpText(topic, tab) {
 		Ext.Ajax.request({
 			url: '../../dhis-web-commons-about/getHelpContent.action',
 			method: 'POST',
 			params: {id: topic},
 			success: function(r) {
-				Ext.getCmp(tab).body.update('<div id="help">' + r.responseText + '</div>');
+				tab.body.update('<div id="help">' + r.responseText + '</div>');
 			}
 		});
 	}
@@ -1492,10 +1492,9 @@
         title: '<span id="window-help-title">'+i18n_help+'</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 500,
-		height: 380, 
-        items:
-        [
+		width: 556,
+		height: 236, 
+        items: [
             {
                 xtype: 'tabpanel',
                 activeTab: 0,
@@ -1504,53 +1503,65 @@
                 plain: true,
                 defaults: {layout: 'fit'},
                 listeners: {
-                    tabchange: function(panel, tab)
-                    {
+                    tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
-							getHelpText(GLOBAL.conf.setup, tab.id);
+							setHelpText(GLOBAL.conf.thematicMap, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 242:223);
                         }
                         else if (tab.id == 'help1') {
-							getHelpText(GLOBAL.conf.thematicMap, tab.id);
+							setHelpText(GLOBAL.conf.favorites, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 146:135);
                         }
                         else if (tab.id == 'help2') {
-                            getHelpText(GLOBAL.conf.overlayRegistration, tab.id);
+                            setHelpText(GLOBAL.conf.legendSets, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 161:150);
                         }
 						if (tab.id == 'help3') { 
-                            getHelpText(GLOBAL.conf.administration, tab.id);
+                            setHelpText(GLOBAL.conf.imageExport, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 235:215);
                         }
                         else if (tab.id == 'help4') {
-                            getHelpText(GLOBAL.conf.favorites, tab.id);
+                            setHelpText(GLOBAL.conf.administration, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 161:149);
                         }
                         else if (tab.id == 'help5') {
-                            getHelpText(GLOBAL.conf.legendSets, tab.id);
+                            setHelpText(GLOBAL.conf.overlayRegistration, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 398:367);
+                        }
+                        else if (tab.id == 'help6') {
+                            setHelpText(GLOBAL.conf.setup, tab);
+                            helpWindow.setHeight(Ext.isChrome ? 537:485);
                         }
                     }
                 },
-                items:
-                [
+                items: [
                     {
-                        title: '<span class="panel-tab-title">Setup</span>',
-                        id: 'help0'
+                        id: 'help0',
+                        title: '<span class="panel-tab-title">' + i18n_thematic_map + '</span>'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_thematic_map + '</span>',
-                        id: 'help1'
+                        id: 'help1',
+                        title: '<span class="panel-tab-title">' + i18n_favorites + '</span>'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_overlays + '</span>',
-                        id: 'help2'
+                        id: 'help2',
+                        title: '<span class="panel-tab-title">' + i18n_legendset + '</span>'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_administrator + '</span>',
-                        id: 'help3'
+                        id: 'help3',
+                        title: '<span class="panel-tab-title">' + i18n_image_export + '</span>'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_favorite + '</span>',
-                        id: 'help4'
+                        id: 'help4',
+                        title: '<span class="panel-tab-title">' + i18n_administrator + '</span>'
                     },
                     {
-                        title: '<span class="panel-tab-title">' + i18n_legendset + '</span>',
-                        id: 'help5'
+                        id: 'help5',
+                        title: '<span class="panel-tab-title">' + i18n_overlays + '</span>'
+                    },
+                    {
+                        id: 'help6',
+                        title: '<span class="panel-tab-title">' + i18n_setup + '</span>'
                     }
                 ]
             }
