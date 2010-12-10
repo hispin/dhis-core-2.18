@@ -31,7 +31,7 @@
 	
 	<tr>
 		<td><label>$i18n.getString( "identifier_format" ) </label></td> 
-		<td><input type="checkbox" name="formater" id="formater" value="State Format" #if($!patientIdentifierType.format) checked="checked" #end >$i18n.getString('state_format')</td>
+		<td><input type="checkbox" name="formater" id="formater" value="State Format" #if(!$!patientIdentifierType.format.isEmpty()) checked="checked" #end >$i18n.getString('state_format')</td>
 		<td></td>
 	</tr>	
 	

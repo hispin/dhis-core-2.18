@@ -168,16 +168,16 @@ td.error {padding-left:1em}
 		<td><label>$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
 
         #if($identifierType.format == "State Format")
-            <td style="padding-left:1.1em"><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
+            <td><input type="hidden" id="iden$identifierType.id" name="iden$identifierType.id"/>
             #if($organisationUnit.code == "null")
                 #set($organisationUnit.code = "" );
             #end
 				<table>
-					<tr align="center" valign="top">
-						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$organisationUnit.code" maxlength="9" size="10"/> <br/> <font color="red">OrgUnit<br>Code</font></td>
-						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="1" class='idfield  #validate( "default"  $identifierType.mandatory ) '/> <br/> <font color="red">Prg<br>Code</font></td>
-						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="2" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <font color="red">Year</font></td>
-						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="4" class="{validate:{required:true,minlength:4}}"/> <br/> <font color="red">Benificiary<br>Code</font></td>
+					<tr valign="top">
+						<td><input type="text" id="orgunitcode" name="orgunitcode" disabled="disabled" value="$organisationUnit.code" maxlength="9" size="10"/> <br/> <div class='stateformat'>$i18n.getString('registering_unit')<br>$i18n.getString('code')</div></td>
+						<td> - <input type="text" id="progcode" name="progcode" maxlength="1" size="6" class='idfield  #validate( "default"  $identifierType.mandatory ) ' /> <br/> <div class='stateformat'>$i18n.getString('program')<br>$i18n.getString('code')</div></td>
+						<td> - <input type="text" id="yearcode" name="yearcode" maxlength="2" size="6" value="$year" class="{validate:{required:true,minlength:2}}"/> <br/> <div class='stateformat'>$i18n.getString('year')</div></td>
+						<td> - <input type="text" id="benicode" name="benicode" maxlength="4" size="9" class="{validate:{required:true,number:true,minlength:4}}"/> <br/> <div class='stateformat'>$i18n.getString('patient')<br>$i18n.getString('code')</div></td>
 						
 					</tr>
 				</table>
