@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataElementGroup>	
-	<name>$encoder.xmlEncode( $dataElementGroup.name )</name>	
-	#foreach( $member in $!dataElementGroup.members )
-		<dataElement id="$member.id">$encoder.xmlEncode( $member.name )</dataElement>
-	#end	
-</dataElementGroup>

@@ -73,7 +73,7 @@
 		#if($reportExcel.isCategory()) 
 		getDataElementCategoryOptionCombos();
 		#else
-		loadDataElementGroups("#dataelement select[id=groupSelect]") ;	
+		dataDictionary.loadDataElementGroups("#dataelement select[id=groupSelect]") ;	
 		#end
 		
 		setFieldValue( 'dataelement textarea[id=formula]', getFieldValue('expression') );
@@ -87,15 +87,15 @@
 	function getDataElements( id, target )
 	{
 		#if($reportExcel.isCategory()) 
-		loadDataElementsByGroup( id, target);
+		dataDictionary.loadDataElementsByGroup( id, target);
 		#else 		
-		loadOperands( target, {id:id} );
+		dataDictionary.loadOperands( target, {id:id} );
 		#end
 	}
 	
 	function getOptionCombos( id, targetId )
 	{
-		loadCategoryOptionComboByDE( id, targetId );
+		dataDictionary.loadCategoryOptionComboByDE( id, targetId );
 	}
 	
 	function getDataElementCategoryOptionCombos()

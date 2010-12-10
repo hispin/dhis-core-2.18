@@ -68,7 +68,7 @@ var left = true;
 function loadDataElements( dataSetId )
 {
 	var dataElements = jQuery("#dataElementId");
-	loadOperands( dataElements, {dataSetId: dataSetId});
+	dataDictionary.loadOperands( dataElements, {dataSetId: dataSetId});
 }
 
 function loadDataSets()

@@ -102,67 +102,43 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>		
 
-		<!-- DataElementGroup Editor -->
-
+		<!-- DataElementGroup Editor -->		
+		
 		<action name="dataElementGroupEditor"
-			class="org.hisp.dhis.dd.action.SwitchGroupEditorViewAction">
-			<result name="view1" type="chain">dataElementGroupEditorView1
-			</result>
-			<result name="view2" type="chain">dataElementGroupEditorView2
-			</result>
+			class="org.hisp.dhis.commons.action.GetDataElementsAction">
+			<result name="success" type="chain">dataElementGroupEditorChain1</result>			
+		</action>
+		
+		<action name="dataElementGroupEditorChain1"
+			class="org.hisp.dhis.commons.action.GetDataElementGroupsAction">
+			<result name="success" type="chain">dataElementGroupEditorChain2</result>			
 		</action>
 
-		<action name="dataElementGroupEditorView1"
-			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
+		<action name="dataElementGroupEditorChain2"
+			class="org.hisp.dhis.dd.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView1.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupEditorView1.js</param>
-		</action>
-
-		<action name="dataElementGroupEditorView2"
-			class="org.hisp.dhis.dd.action.dataelement.GetDataElementListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView2.vm</param>
-			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-			<param name="javascripts">javascript/dataElementGroupEditorView2.js</param>
-		</action>
+			<param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupEditorView.vm</param>
+			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>			
+		</action>	
 
 		<action name="getAssignedDataElementGroups"
 			class="org.hisp.dhis.dd.action.dataelementgroup.GetAssignedGroupsByDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElementGroups.vm
-			</result>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroups.vm</result>
 		</action>
 
 		<action name="asignGroupsForDataElement"
 			class="org.hisp.dhis.dd.action.dataelementgroup.AssignGroupsForDataElementAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm
-			</result>
-		</action>
-
-		<action name="getDataElementGroupEditor"
-			class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseDataElementGroupSuccess.vm
-			</result>
-		</action>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>	
 
 		<action name="addDataElementGroupEditor"
 			class="org.hisp.dhis.dd.action.dataelementgroup.AddDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm
-			</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_ADD</param>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>			
 		</action>
 
 		<action name="renameDataElementGroupEditor"
 			class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseAddDataElementGroupSuccess.vm
-			</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
 		</action>
 
 		<action name="deleteDataElemenGroupEditor"
@@ -171,15 +147,12 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_DELETE</param>
+			<param name="onExceptionReturn">plainTextError</param>			
 		</action>
 
 		<action name="updateDataElementGroupEditor"
 			class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-datadictionary/responseSuccess.vm</result>
-			<param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
+			<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<!-- DataElementGroup -->	

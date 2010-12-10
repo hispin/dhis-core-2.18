@@ -58,7 +58,7 @@
 	<table width="100%">		
 		<tr>
 			<td colspan="4">
-				<select id="availableDataElementGroups" onchange="loadDataElementsByGroup( this.value , '#availableDataElements' )" style="width:300px"></select>
+				<select id="availableDataElementGroups" onchange="dataDictionary.loadDataElementsByGroup( this.value , '#availableDataElements' )" style="width:300px"></select>
 			</td>			
 		</tr>
 		<tr>
