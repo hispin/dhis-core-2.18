@@ -79,7 +79,6 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setColumn( "organisationunitid" );
         statementBuilder.setColumn( "level" );
         statementBuilder.setColumn( "value" );
-        statementBuilder.setColumn( "modified" );
     }
     
     protected void setValues( AggregatedDataValue value )
@@ -91,6 +90,5 @@ public class AggregatedDataValueBatchHandler
         statementBuilder.setValue( value.getOrganisationUnitId() );
         statementBuilder.setValue( value.getLevel() );
         statementBuilder.setValue( value.getValue() );
-        statementBuilder.setValue( value.getModified() );
     }    
 }
