@@ -183,6 +183,7 @@ public class DefaultReportTableService
             {
                 OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
                 reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
+                reportTable.setOrganisationUnitName( organisationUnit.getName() );
                 
                 log.info( "Parent organisation unit: " + organisationUnit.getName() );
             }
@@ -198,6 +199,7 @@ public class DefaultReportTableService
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
                 organisationUnits.add( organisationUnit );
                 reportTable.getRelativeUnits().addAll( organisationUnits );
+                reportTable.setOrganisationUnitName( organisationUnit.getName() );
                 
                 log.info( "Organisation unit: " + organisationUnit.getName() );
             }
@@ -477,10 +479,16 @@ public class DefaultReportTableService
                         }
                         
                         // -----------------------------------------------------
-                        // Reporting month name
+                        // Param reporting month name
                         // -----------------------------------------------------
 
                         grid.addValue( reportTable.getReportingMonthName() );
+
+                        // -----------------------------------------------------
+                        // Param organisation unit name
+                        // -----------------------------------------------------
+
+                        grid.addValue( reportTable.getOrganisationUnitName() );
                         
                         // -----------------------------------------------------
                         // Values

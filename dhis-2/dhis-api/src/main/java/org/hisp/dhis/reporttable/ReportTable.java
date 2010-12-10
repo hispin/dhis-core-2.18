@@ -74,6 +74,7 @@ public class ReportTable
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
 
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
+    public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     
     public static final String SEPARATOR = "_";
     public static final String SPACE = " ";
@@ -290,9 +291,14 @@ public class ReportTable
     private transient I18nFormat i18nFormat;
     
     /**
-     * The name of the reporting month.
+     * The name of the reporting month based on the report param.
      */
     private String reportingMonthName;
+    
+    /**
+     * The name of the (parent) organisation unit based on the report param. 
+     */
+    private String organisationUnitName;
 
     /**
      * The category option combos derived from the dimension set.
@@ -1376,6 +1382,16 @@ public class ReportTable
         this.reportingMonthName = reportingMonthName;
     }
     
+    public String getOrganisationUnitName()
+    {
+        return organisationUnitName;
+    }
+
+    public void setOrganisationUnitName( String organisationUnitName )
+    {
+        this.organisationUnitName = organisationUnitName;
+    }
+
     public List<DimensionOption> getDimensionOptions()
     {
         return dimensionOptions;
