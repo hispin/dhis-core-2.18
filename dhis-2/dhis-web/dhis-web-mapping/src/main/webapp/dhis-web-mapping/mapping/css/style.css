@@ -1,4 +1,4 @@
-32/* Gray-extend theme overrides */
+/* Gray-extend theme overrides */
 .ext-gecko .x-window-body .x-form-item {
 	overflow:hidden;
 }
@@ -51,7 +51,7 @@
 }
 .ux-mselect-item {
 	font:10px lucida sans unicode,ubuntu,tahoma,arial,helvetica,sans-serif;
-	padding:1px;
+	padding:1px 1px 1px 3px;
 }
 .x-box-mc {
 	font-family:ubuntu,arial,tahoma,helvetica;
@@ -208,6 +208,25 @@
 .x-btn .icon-admin {
 	background-image:url(../../../images/settings.png);
 }
+.x-btn .icon-exit {
+	background-image:url(../../../images/exit.png);
+}
+.x-btn .icon-add {
+	background-image:url(../../../images/add.png);
+    padding-left:
+}
+.x-btn .icon-remove {
+	background-image:url(../../../images/remove.png);
+}
+.x-btn .icon-assign {
+	background-image:url(../../../images/assign2.png);
+}
+.x-btn .icon-assign {
+	background-image:url(../../../images/accept.png);
+}
+.x-btn .icon-export {
+	background-image:url(../../../images/export2.png);
+}
 .aa_med button {
 	color:#333;
     padding-bottom:2px;
@@ -218,7 +237,7 @@
 }
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
     padding-bottom:2px;
-    padding-left:17px;
+    padding-left:19px;
 }
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
     height:15px;
@@ -257,24 +276,27 @@
 /* Ext Window */
 .window-info {
 	padding:0 0 8px 0;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#333;
+	font:bold 11px lucida sans unicode,arial;
+	color:#444;
 }
 .window-info-grey {
 	padding:5px 0px 0px 8px;
-	font:normal 11px lucida sans unicode,ubuntu,arial;
+	font:normal 11px lucida sans unicode,arial;
 	color:#333;
     background-color:#f8f8f8;
+}
+.window-p {
+    padding:4px 0;
 }
 .window-field-label-first {
 	padding:0 0 3px 3px;
 	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#888;
+	color:#777;
 }
 .window-field-label {
-	padding:6px 0 2px 3px;
+	padding:6px 0 3px 4px;
 	font:normal 11px lucida sans unicode,ubuntu,arial;
-	color:#888;	
+	color:#777;	
 }
 .window-field-nolabel {
 	padding:14px 0 0 0;
@@ -375,7 +397,7 @@
 }
 #help h3 {
 	padding:8px 0 0 0;
-	font:bold 11px ubuntu,arial;
+	font:bold 11px arial;
 	color:#333;
 	letter-spacing:0px;
 }

@@ -14,27 +14,26 @@ GLOBAL.conf = {
 	output: '&outputformat=json&version=1.0.0',
 	
 //	Help strings
-
+    
+    setup: 'gisSetup',
 	thematicMap: 'gisThematicMap',
-    thematicMap2: 'gisThematicMap2',
-	mapRegistration: 'gisMap',
-	organisationUnitAssignment: 'gisMapOrganisationUnitRelation',
     overlayRegistration: 'gisOverlay',
 	administration: 'gisAdministration',
 	favorites: 'gisFavoriteMapView',
 	legendSets: 'gisLegendSet',
-	pdfprint: 'gisPdfPrint',
+    imageExport: 'gisImageExport',
 
 //  Layout
 
     west_width: 270, // viewport west
     gridpanel_width: 270 - 15,
-    multiselect_width: 210,
+    multiselect_width: 219,
 	combo_width: 150,
 	combo_width_fieldset: 112,
 	combo_list_width_fieldset: 112 + 17,
 	combo_number_width: 65,
-	combo_number_width_small: 30,
+	combo_number_width_small: 40,
+    window_width: 251,
     
 	emptytext: '',
 	labelseparator: '',
@@ -106,8 +105,7 @@ GLOBAL.util = {
     validateInputNameLength: function(name) {
         return (name.length <= 25);
     },
-
-    /* Decide multiselect height based on screen resolution */
+    
     getMultiSelectHeight: function() {
         var h = screen.height;
         return h <= 800 ? 220 :
