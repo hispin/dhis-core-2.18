@@ -196,33 +196,15 @@ function removeLLRecord( delRecordNo )
 function showEmployeePostForm( sancPos, dataValueMapKey ) 
 {
 	var reportingDate = document.getElementById( "reportingDate" ).value;
-	var url = 'showEmployeePostForm.action?reportingDate=' + reportingDate + '&dataValue=' + sancPos + '&dataValueMapKey=' + dataValueMapKey;
-	$('#contentDataRecord').dialog('destroy').remove();
-    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
-    title: 'Employee Post Detail',
-	maximize: true, 
-	closable: true,
-	modal:true,
-	overlay:{background:'#000000', opacity:0.1},
-	width: 420,
-    height: 330
-    });
+	var url = 'showEmployeePostForm.action?reportingDate=' + reportingDate + '&dataValue=' + sancPos + '&dataValueMapKey=' + dataValueMapKey;	
+    $('#contentDataRecord' ).load(url).dialog("open");
 }
 
 function showUpdateEmployeePostForm( pdsCode ) 
 {
 	var reportingDate = document.getElementById( "reportingDate" ).value;
 	var url = 'showEditEmployeePostForm.action?id=' + pdsCode + '&reportingDate=' + reportingDate;
-	$('#contentDataRecord').dialog('destroy').remove();
-    $('<div id="contentDataRecord" style="z-index: 1;">' ).load(url).dialog({
-    title: 'Edit Employee Post Detail',
-	maximize: true, 
-	closable: true,
-	modal:true,
-	overlay:{background:'#000000', opacity:0.1},
-	width: 420,
-    height: 380
-	});
+	$('#contentDataRecord' ).load(url).dialog("open");
 }
 
 function keyPress( event, field )

@@ -68,6 +68,17 @@
 
 <hr style="clear:both;">
 
+<div id="contentDataRecord"></div>
+
 <script type="text/javascript">
-    datePickerValid( 'reportingDate', false );
+	jQuery( function(){
+		datePickerValid( 'reportingDate', false );
+	});    
+	jQuery("#contentDataRecord").dialog({
+		autoOpen:false,
+		title:"Edit Employee Post Detail",
+		modal:true,
+		width:400
+		});
 </script>
+

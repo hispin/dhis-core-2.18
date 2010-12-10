@@ -56,8 +56,8 @@
 				<tr id="tr${employee.pdsCode}">
 					<td#alternate( $mark )>$encoder.htmlEncode( $employee.name ) - $encoder.htmlEncode( $employee.pdsCode )</td>
 					<td style="text-align:center"#alternate( $mark )>
-						<a href="javascript:showUpdateEmployeePostForm( '$employee.pdsCode' )" title="$i18n.getString( "edit" )">
-							<img src="../images/edit.png" alt="$i18n.getString( "edit" )" />
+						<a href="javascript:showUpdateEmployeePostForm( '$employee.pdsCode' )" title="$i18n.getString( 'edit' )">
+							<img src="../images/edit.png" alt="$i18n.getString( 'edit' )" />
 						</a>
 					</td>
 				</tr>	

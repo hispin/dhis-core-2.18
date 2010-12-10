@@ -1,4 +1,3 @@
-
 <form id="employeePostForm" action="saveEmployeePost.action" method="post" >
 	
 	<table align="center">
@@ -43,7 +42,11 @@
 					##set($fordate = $lineListElement.shortName)						
 					<td>
 					  <input type="text" id="$lineListElement.shortName" name="$lineListElement.shortName" style="width:10em" onkeypress="return keyPress(event, this)">
-					  <script>datePickerValid( '$lineListElement.shortName', false );</script>
+						<script>
+							jQuery(function(){
+								datePickerValid( '$lineListElement.shortName', false );
+							});						
+						</script>
 					</td>
 				#end
 			</tr>
