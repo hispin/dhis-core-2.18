@@ -1,4 +1,0 @@
-
-#parse( "/dhis-web-maintenance-patient/menu.vm" )
-
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
