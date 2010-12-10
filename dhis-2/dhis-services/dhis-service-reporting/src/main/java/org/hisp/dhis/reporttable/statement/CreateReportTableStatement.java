@@ -82,11 +82,17 @@ public class CreateReportTableStatement
         }
 
         // ---------------------------------------------------------------------
-        // Reporting month name
+        // Param reporting month name
         // ---------------------------------------------------------------------
 
         buffer.append( ReportTable.REPORTING_MONTH_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
 
+        // ---------------------------------------------------------------------
+        // Param organisation unit name
+        // ---------------------------------------------------------------------
+
+        buffer.append( ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+        
         // ---------------------------------------------------------------------
         // Crosstab
         // ---------------------------------------------------------------------
