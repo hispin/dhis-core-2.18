@@ -6,3 +6,8 @@
 	display: none;
 	position:absolute;
 }
+
+.stateformat {
+	color:red;
+	text-align:center;
+}

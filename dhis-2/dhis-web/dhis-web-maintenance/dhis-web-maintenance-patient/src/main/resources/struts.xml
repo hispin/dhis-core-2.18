@@ -411,7 +411,8 @@
 				,../dhis-web-commons/javascripts/date.js				
 				,javascript/patient.js
 				,javascript/commons.js				
-			</param>			
+			</param>	
+			<param name="stylesheets">style/basic.css</param>		
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -430,7 +431,7 @@
 				,javascript/patient.js
 				,javascript/commons.js						
 			</param>
-			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css,javascript/jquery/cluetip/jquery.cluetip.css</param>
+			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css,javascript/jquery/cluetip/jquery.cluetip.css,style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
 		</action>
 
