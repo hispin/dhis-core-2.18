@@ -72,8 +72,14 @@
 		</td>		
 		<td></td>				
 	</tr>
-	
-      <tr>
+	<tr>
+		<td width="30em"><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
+		<td>
+			<input type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" style="min-width:30em" value="$!patientAttribute.noChars">
+		</td>		
+		<td></td>				
+	</tr>
+    <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
             <select id="valueType" name="valueType" style="min-width:30.5em" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
@@ -84,7 +90,7 @@
                 <option value="COMBO" #if( $patientAttribute.valueType == 'COMBO' ) selected="selected" #end>$i18n.getString( "attribute_combo_type" )</option>
             </select>
         </td>
-      </tr>
+    </tr>
       <tr>
     	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
     	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>

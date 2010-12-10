@@ -9,28 +9,7 @@
 #end
 
 <script>
-	/* jQuery(document).ready(	function(){
-		validation( 'updatePatientForm', validateUpdatePatient );		
-		datePickerValid( 'birthDate' );
-		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});		
-		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});	
-	}); */
-
-	/* jQuery(document).ready(	function(){
-
-		jQuery("#birthDate").rules("add",{required:true,dateISO:true,datelessthanequaltoday:true});		
-		jQuery("#btnRepresentativeInfo").cluetip({local:"#representativeInfo"});
-		
-		jQuery("#updatePatientForm").validate({
-				 meta:"validate"
-				,errorElement:"span"
-				,submitHandler: function(form)
-					{
-						validateUpdatePatient();
-					}
-			});
-	});		*/
-
+	
 	jQuery(document).ready(	function(){
 
 		datePickerValid( 'birthDate' );	
@@ -191,10 +170,11 @@
 	#set( $identifier = "" )
 	#set( $identifier = $identiferMap.get( $identifierType.id ) )
 	<tr>
-			<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-			<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
+		<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+		<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
 	</tr>
 	#end
+	<tr><td>&nbsp;</td></tr>
 	<tr><td>&nbsp;</td></tr>
 	
 	<!-- ATTRIBUTES IN GROUPS -->
@@ -228,7 +208,7 @@
 							#end
 							</select>
 						#else 
-							<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"   value="$!attributeValue" class=' #validate( $attribute.valueType  $attribute.mandatory )'  >
+							<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"   value="$!attributeValue" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 						#end
 					</td>		
 				</tr>
@@ -265,8 +245,8 @@
 							<option value="$option.id" #if($attributeValue == $option.name) selected="selected" #end>$option.name</option>
 						#end
 						</select>
-					#else 
-						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" style="width:30em" class=' #validate( $attribute.valueType  $attribute.mandatory )'>
+					#else
+						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" value="$!attributeValue" style="width:30em" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 					#end
 				</td>		
 			</tr>

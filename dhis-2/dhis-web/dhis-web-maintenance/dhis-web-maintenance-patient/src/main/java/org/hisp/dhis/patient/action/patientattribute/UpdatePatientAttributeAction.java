@@ -121,6 +121,13 @@ public class UpdatePatientAttributeAction
         this.attrOptions = attrOptions;
     }
 
+    private Integer noChars;
+
+    public void setNoChars( Integer noChars )
+    {
+        this.noChars = noChars;
+    }
+    
     private boolean groupBy;
 
     public void setGroupBy( boolean groupBy )
@@ -142,8 +149,9 @@ public class UpdatePatientAttributeAction
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );
         patientAttribute.setInheritable( inheritable );
-
-        if ( groupBy == true )
+        patientAttribute.setNoChars( noChars );
+        
+        if ( groupBy )
         {
             PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
             if ( patientAtt != null )
@@ -154,6 +162,8 @@ public class UpdatePatientAttributeAction
             patientAttribute.setMandatory( true );
         }
         patientAttribute.setGroupBy( groupBy );
+        
+        
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );
