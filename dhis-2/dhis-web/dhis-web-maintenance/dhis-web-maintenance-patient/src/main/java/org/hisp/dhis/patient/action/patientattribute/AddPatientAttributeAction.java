@@ -107,6 +107,13 @@ public class AddPatientAttributeAction
         this.attrOptions = attrOptions;
     }
 
+    private Integer noChars;
+
+    public void setNoChars( Integer noChars )
+    {
+        this.noChars = noChars;
+    }
+
     private boolean groupBy;
 
     public void setGroupBy( boolean groupBy )
@@ -128,8 +135,10 @@ public class AddPatientAttributeAction
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );
         patientAttribute.setInheritable( inheritable );
+        patientAttribute.setNoChars (noChars);
+        
         patientAttribute.setGroupBy( groupBy );
-        if ( groupBy == true )
+        if ( groupBy )
         {
             PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
             if ( patientAtt != null )

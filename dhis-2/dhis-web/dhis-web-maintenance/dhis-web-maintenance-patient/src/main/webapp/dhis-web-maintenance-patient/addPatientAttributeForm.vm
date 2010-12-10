@@ -70,7 +70,13 @@
 		</td>		
 		<td></td>				
 	</tr>
-    
+    <tr>
+		<td width="30em"><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
+		<td>
+			<input type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" style="min-width:30em" >
+		</td>		
+		<td></td>				
+	</tr>
     <tr>
         <td width="20em"><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td>

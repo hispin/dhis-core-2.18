@@ -219,7 +219,7 @@ td.error {padding-left:1em}
 							#end
 						</select>
 					#else 
-						<input type="text"  id="attr$attribute.id"  name="attr$attribute.id"  class=' #validate( $attribute.valueType  $attribute.mandatory )'   >
+						<input type="text"  id="attr$attribute.id"  name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 					#end
 				</td>		
 			</tr>
@@ -255,7 +255,7 @@ td.error {padding-left:1em}
 							#end
 						</select>
 					#else 
-						<input type="text"  id="attr$attribute.id" name="attr$attribute.id"   class=' #validate( $attribute.valueType  $attribute.mandatory )'    >
+						<input type="text"  id="attr$attribute.id" name="attr$attribute.id" class="{validate:{required:$attribute.mandatory #if($!attribute.noChars),maxlength:$attribute.noChars #end #if($attribute.valueType=='NUMBER'),number:true #end }}" >
 					#end
 				</td>		
 			</tr>

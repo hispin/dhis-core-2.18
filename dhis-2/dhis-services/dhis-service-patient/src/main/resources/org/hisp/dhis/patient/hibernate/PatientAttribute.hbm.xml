@@ -19,6 +19,8 @@
 	
 	<property name="inheritable" column="inheritable" />
 	
+	<property name="noChars"/>
+	
 	<property name="groupBy" column="groupby" />
 	
 	<many-to-one name="patientMobileSetting" column="patientMobileSettingId" foreign-key="fk_patient_mobile_setting"/>
