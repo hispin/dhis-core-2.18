@@ -16,9 +16,9 @@ function addOptionToListWithToolTip( list, optionValue, optionText )
 
 function openAddDataElementGroupOrder()
 {
-	loadDataElementGroups( "#availableDataElementGroups" );
+	dataDictionary.loadDataElementGroups( "#availableDataElementGroups" );
 	
-	loadDataElementsByGroup( "" , "#availableDataElements" );	
+	dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );	
 		
 	jQuery("#dataElementGroups").dialog("open");
 	
@@ -77,9 +77,9 @@ function openUpdateDataElementOrderReceived(xmlObject)
 		listDataElement.append('<option value="' + id + '">' + name + '</option>');
 	}
 	
-	loadDataElementGroups( "#availableDataElementGroups" );
+	dataDictionary.loadDataElementGroups( "#availableDataElementGroups" );
 	
-	loadDataElementsByGroup( "" , "#availableDataElements" );	
+	dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );	
 		
 	jQuery("#dataElementGroups").dialog("open");
 	

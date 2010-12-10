@@ -21,8 +21,8 @@ function changeItemType()
 function openExpressionBuild() {
 	
 	byId("formula").value = byId("expression").value;
-	loadDataElementGroups( "#divExpression select[id=dataElementGroup]" );
-	loadAllDataElements( "#divExpression select[id=availableDataElements]" );
+	dataDictionary.loadDataElementGroups( "#divExpression select[id=dataElementGroup]" );
+	dataDictionary.loadAllDataElements( "#divExpression select[id=availableDataElements]" );
 	$( "#availableDataElements" ).change(getOptionCombos);		
 	
 	showPopupWindowById( 'divExpression', 600, 300 );
@@ -30,7 +30,7 @@ function openExpressionBuild() {
 
 // Get option combos for selected dataelement
 function getOptionCombos() {
-	loadCategoryOptionComboByDE( byId("availableDataElements").value, "#divExpression select[id=optionCombos]" );
+	dataDictionary.loadCategoryOptionComboByDE( byId("availableDataElements").value, "#divExpression select[id=optionCombos]" );
 }
 
 // Insert operand into the Formular textbox
@@ -62,8 +62,8 @@ function updateNormalExpression()
 // Open Expression Form
 function caExpressionBuilderForm()
 {
-	loadDataElementGroups( "#divCategory select[id=dataElementGroup]" );
-	loadAllDataElements( "#divCategory select[id=availableDataElements]" );
+	dataDictionary.loadDataElementGroups( "#divCategory select[id=dataElementGroup]" );
+	dataDictionary.loadAllDataElements( "#divCategory select[id=availableDataElements]" );
 	
 	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue('expression') );
 	showPopupWindowById( 'divCategory', 600, 320 );				
@@ -87,7 +87,7 @@ function updateCaExpression()
 
 // Get option combos for selected dataelement
 function getOptionCombos(id, target) {
-	loadCategoryOptionComboByDE( id, target);
+	dataDictionary.loadCategoryOptionComboByDE( id, target);
 }
 
 // -----------------------------------------------------------------------
@@ -96,7 +96,7 @@ function getOptionCombos(id, target) {
 
 function getDataElements( id, target )
 {
-	loadDataElementsByGroup( id, target );
+	dataDictionary.loadDataElementsByGroup( id, target );
 }
 
 // -----------------------------------------------------------------------

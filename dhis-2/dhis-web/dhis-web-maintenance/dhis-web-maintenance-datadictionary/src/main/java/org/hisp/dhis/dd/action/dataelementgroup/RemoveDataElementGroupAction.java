@@ -104,6 +104,8 @@ public class RemoveDataElementGroupAction
                 return ERROR;
             }
         }
+        
+        message = i18n.getString( "item_deleted_successfully" );
 
         return SUCCESS;
     }

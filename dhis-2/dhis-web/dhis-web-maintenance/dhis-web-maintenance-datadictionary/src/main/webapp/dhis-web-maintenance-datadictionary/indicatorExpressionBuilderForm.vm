@@ -92,7 +92,7 @@
 	{
 		numerator = true;
 		
-		loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
+		dataDictionary.loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
 		
 		validator.resetForm();
 		
@@ -113,7 +113,7 @@
 	{
 		numerator = false;
 		
-		loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
+		dataDictionary.loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
 		
 		validator.resetForm();
 		
@@ -135,10 +135,10 @@
 	{
 		var aggregationOperator = getRadioValue( 'aggregationOperator' );
 		
-		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");
-		
-		loadOperands( "#indicator-expression-container select[id=dataElementId]", {"id": id, "aggregationOperator": aggregationOperator, "includeTotals":true} );	
-		
+		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");	
+
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator} );	
+
 		checkAggregationOperator();
 	}	
 	

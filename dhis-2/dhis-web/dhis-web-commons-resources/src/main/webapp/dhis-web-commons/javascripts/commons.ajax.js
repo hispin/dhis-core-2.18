@@ -18,8 +18,10 @@ function DataDictionary()
 	
 	var operandsByDataElementGroup = new Array();
 	
-	this.loadDataElementGroups = function( target )
+	this.loadDataElementGroups = function( jQuerySelectionString )
 	{
+		var target = jQuery( jQuerySelectionString );
+		
 		target.children().remove();
 		
 		if( dataElementsGroups.length == 0 )
@@ -40,13 +42,15 @@ function DataDictionary()
 		}
 	}
 	
-	this.loadAllDataElements = function( target )
+	this.loadAllDataElements = function( jQuerySelectionString )
 	{
-		this.loadDataElementsByGroup( ALL_KEY, target);
+		this.loadDataElementsByGroup( ALL_KEY, jQuerySelectionString);
 	}
 	
-	this.loadDataElementsByGroup = function( id,target )
+	this.loadDataElementsByGroup = function( id, jQuerySelectionString )
 	{
+		var target = jQuery( jQuerySelectionString );
+		
 		target.children().remove();
 		
 		var des = dataElementGroupList[id];
@@ -72,8 +76,10 @@ function DataDictionary()
 	}
 	
 	
-	this.loadIndicatorGroups = function( target )
+	this.loadIndicatorGroups = function( jQuerySelectionString )
 	{
+		var target = jQuery( jQuerySelectionString );
+		
 		target.children().remove();
 		
 		if( indicatorGroups.length == 0 )
@@ -94,13 +100,15 @@ function DataDictionary()
 		}	
 	}
 	
-	this.loadAllIndicators = function( target )
-	{
-		this.loadIndicatorsByGroup( ALL_KEY, target);
+	this.loadAllIndicators = function( jQuerySelectionString )
+	{		
+		this.loadIndicatorsByGroup( ALL_KEY, jQuerySelectionString );
 	}
 	
-	this.loadIndicatorsByGroup = function( id,target )
+	this.loadIndicatorsByGroup = function( id, jQuerySelectionString )
 	{
+		var target = jQuery( jQuerySelectionString );
+		
 		target.children().remove();
 		
 		var ins = indicatorGroupList[id];
@@ -125,8 +133,10 @@ function DataDictionary()
 		}
 	}	
 	
-	this.loadCategoryOptionComboByDE = function( id, target )
+	this.loadCategoryOptionComboByDE = function( id, jQuerySelectionString )
 	{
+		var target = jQuery( jQuerySelectionString );
+		
 		target.children().remove();
 		
 		var options = categoryOptionComboList[id];
@@ -152,8 +162,9 @@ function DataDictionary()
 		
 	}	
 	
-	this.loadOperands = function (target, params )
+	this.loadOperands = function ( jQuerySelectionString, params )
 	{
+		var target = jQuery( jQuerySelectionString );
 		target.children().remove();	
 		
 		jQuery.getJSON('../dhis-web-commons-ajax-json/getOperands.action'	
@@ -168,7 +179,7 @@ function DataDictionary()
 	
 }
 
-var DataDictionary = new DataDictionary();
+var dataDictionary = new DataDictionary();
 
 function DataElementGroup( id_, name_ )
 {

@@ -1,0 +1,465 @@
+<h3>
+	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
+</h3>
+<script>
+	jQuery(function(){
+		jQuery("#tabs").tabs();
+	});
+</script>
+
+<div id="tabs" style="position:absolute">
+	<ul>
+		<li><a href="#view_1">$i18n.getString( "view_1" )</a></li>
+		<li><a href="#view_2">$i18n.getString( "view_2" )</a></li>
+	</ul>
+	<div id="view_1">
+	<table >
+		<tr>
+			<th>$i18n.getString( "data_element_group" )</th>
+			<th></th>
+			<td rowspan="2"></td>
+			<th>$i18n.getString( "available_dataelements" )</th>
+
+		</tr>
+
+		<tr>
+			<td><input id="dataElementGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'dataElementGroups');"/></td>
+			<td><input id="selecteDataElementsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'selectedDataElements');"/></td>
+			<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="loadAvailableDataElements()"/></td>
+		</tr>
+
+		<tr>
+			<td>
+				<select class="select" id="dataElementGroups" size="30" onchange="getDataElementsByGroup()"/>
+			</td>
+			<td>
+				<select class="select" id="selectedDataElements" multiple="multiple" size="30"  ondblclick="moveSelectedById(this.id, 'availableDataElements');" />			
+			</td>
+
+			<td>
+				<input type="button" value="&lt;" onclick="moveSelectedById('availableDataElements', 'selectedDataElements');" style="width:42px"/><br/><br/>
+				<input type="button" value="&gt;" onclick="moveSelectedById('selectedDataElements', 'availableDataElements');" style="width:42px"/>
+			</td>
+			<td>
+				<select class="select" id="availableDataElements" multiple="multiple" size="30" ondblclick="moveSelectedById(this.id, 'selectedDataElements');"/>			
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="javascript:sortList( 'dataElementGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'dataElementGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<input type="button" value="$i18n.getString( 'new' )" onclick="showAddGroup()" style="width:70px"/>
+				<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroup()" style="width:70px"/>
+				<input type="button" value="$i18n.getString( 'delete' )" onclick="deleteDataElemenGroup()" style="width:70px"/>
+			</td>
+			<td>
+				<a href="javascript:sortList( 'selectedDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'selectedDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<input type="button" value="$i18n.getString( 'update_dataelement_group_members' )" onclick="updateGroupMembers()"/>
+			</td>
+			<td></td>
+			<td>
+				<a href="javascript:sortList( 'availableDataElements', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'availableDataElements', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+			</td>
+
+
+		</tr>
+	</table>
+	</div>
+	<div id="view_2">
+		<table>
+			<tr>
+				<th>$i18n.getString( "available_dataelements" )</th>		
+				<th></th>
+				<td rowspan="2"></td>
+				<th>$i18n.getString( "available_groups" )</th>
+			</tr>
+
+			<tr>		
+				<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableDataElements');"/></td>		
+				<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'assignedGroups');"/></td>
+				<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableGroups');"/></td>		
+			</tr>
+
+			<tr>
+				<td>
+					<select class="select" id="availableDataElements2" size="30" onclick="getAssignedDataElementGroups()"/>
+				</td>
+				<td>
+					<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="moveSelectedById(this.id, 'availableGroups');"/>
+				</td>
+				<td>
+					<input type="button" value="&lt;" onclick="moveSelectedById('availableGroups', 'assignedGroups');" style="width:42px"/><br/><br/>
+					<input type="button" value="&gt;" onclick="moveSelectedById('assignedGroups', 'availableGroups');" style="width:42px"/>
+				</td>	
+				<td>
+				  <select name="select" size="30" multiple="multiple" class="select" id="availableGroups" ondblclick="moveSelectedById(this.id, 'assignedGroups');"/>
+			</td>		
+			</tr>
+			<tr>
+				<td></td>
+				<td>			
+					<input type="button" value="$i18n.getString( 'assign_groups_for_dataelement' )" onclick="assignGroupsForDataElement()"/>
+				</td>
+				<td></td>
+				<td>		
+					<input type="button" value="$i18n.getString( 'new' )" onclick="showAddGroupView2()" style="width:70px"/>
+					<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroupView2()" style="width:70px"/>
+					<input type="button" value="$i18n.getString( 'delete' )" onclick="deleteDataElemenGroupView2()" style="width:70px"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="addDataElementGroupForm">
+	<label>$i18n.getString( "name" )</label>	
+	<input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true}}"/>	
+</div>
+
+<style>
+#addDataElementGroupForm{
+	width:300px;
+}
+#addDataElementGroupForm div{
+	float:left;
+}
+.select{
+	min-width:300px;
+}
+</style>
+
+
+
+<script type="text/javascript">
+	var i18n_select_dataelement_group = '$encoder.jsEscape( $i18n.getString( "select_dataelement_group" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
+	var i18n_member_of = '$encoder.jsEscape( $i18n.getString( "member_of" ) , "'")';
+	var i18n_update_success = '$encoder.jsEscape( $i18n.getString( "update_success" ) , "'")';
+
+	var dataElementGroups = new Array();
+	#foreach( $dataElementGroup in $dataElementGroups )
+        dataElementGroups['$dataElementGroup.id'] = '$encoder.jsEscape( $dataElementGroup.name, "'" )';
+	#end
+
+	var availableDataElements = new Array();
+	#foreach( $dataElement in $dataElements )
+		availableDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
+	#end
+	var selectedDataElements = new Array();
+
+		
+	jQuery(function(){
+		loadAvailableGroups();
+		getDataElementsByGroup();
+		loadAvailableDataElements();
+		getAssignedDataElementGroups();
+		
+		jQuery( "#addDataElementGroupForm" ).dialog({autoOpen:false, modal:true});		
+	});
+	
+	function loadAvailableDataElements()
+	{
+		var filter_1 = jQuery( '#view_1 #availableDataElementsFilter' ).val();
+		var filter_2 = jQuery( '#view_2 #availableDataElementsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #availableDataElements" );
+		var list_2 = jQuery( "#view_2 #availableDataElements2" );
+		list_1.empty();
+		list_2.empty();
+		
+		for( var id in availableDataElements)
+		{
+			var text = availableDataElements[id];
+			if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+			{				
+				list_1.append('<option value="' + id + '">' + text + '</option>' );
+				list_2.append('<option value="' + id + '">' + text + '</option>' );
+			}
+		}
+		
+		list_1.find(":first").attr("selected", "selected");		
+		list_2.find(":first").attr("selected", "selected");		
+		
+	}	
+	
+	function loadAvailableGroups()
+	{
+		var filter_1 = jQuery( '#view_1 #dataElementGroupsFilter' ).val();
+		var filter_2 = jQuery( '#view_2 #dataElementGroupsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #dataElementGroups" );
+		var list_2 = jQuery( "#view_2 #availableGroups" );			
+		list_1.empty();				
+		list_2.empty();				
+		for( var id in dataElementGroups)
+		{
+			var text = dataElementGroups[id];
+			if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+			{
+				list_1.append('<option value="' + id + '">' + text + '</option>' );
+				list_2.append('<option value="' + id + '">' + text + '</option>' );
+			}
+		}
+		list_1.find(":first").attr("selected", "selected");		
+		list_2.find(":first").attr("selected", "selected");		
+	}
+	
+	function getDataElementsByGroup()
+	{
+		
+		loadAvailableDataElements();
+		
+		var filter_1 = jQuery( '#view_1 #selecteDataElementsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #selectedDataElements" );
+		list_1.empty();				
+		
+		jQuery.postJSON( "../dhis-web-commons-ajax-json/getDataElements.action", {
+			id: jQuery( '#view_1 #dataElementGroups' ).val()
+		}, function( json ){
+			jQuery.each( json.dataElements, function(i, item){				
+				var text = item.name;
+				if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+				{
+					list_1.append('<option value="' + item.id + '">' + text + '</option>' );
+				}
+				jQuery( "#view_1 #availableDataElements" ).children().each( function(k, it){
+					if( item.id == it.value )
+					{
+						jQuery(it).remove();
+					}
+				});
+			});
+		});
+	}
+	
+	function showAddGroup()
+	{
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "new" ) , "'")');
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){				
+				jQuery.postJSON( "validateDataElementGroup.action", {					
+					name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "addDataElementGroupEditor.action", {
+							name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }					
+						}, function( json ){
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();		
+							loadAvailableDataElements();
+							jQuery( "#view_1 #selectedDataElements" ).empty();
+							jQuery( '#addDataElementGroupForm' ).dialog('close');
+						} );
+					}else{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				});	
+			}
+		}]);
+		jQuery( '#addDataElementGroupForm' ).dialog('open');		
+		
+	}
+	
+	function showAddGroupView2()
+	{
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "new" ) , "'")');
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){				
+				jQuery.postJSON( "validateDataElementGroup.action", {					
+					name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "addDataElementGroupEditor.action", {
+							name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }					
+						}, function( json ){
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();							
+							jQuery( '#addDataElementGroupForm' ).dialog('close');
+						} );
+					}else{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				});	
+			}
+		}]);
+		jQuery( '#addDataElementGroupForm' ).dialog('open');		
+		
+	}
+	
+	function showUpdateGroup()
+	{
+		var id = jQuery( "#view_1 #dataElementGroups" ).val();		
+		var text = jQuery( "#view_1 #dataElementGroups option[value=" + id + "]" ).text();
+		jQuery( '#addDataElementGroupForm #name' ).val( text );
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){
+				
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					id: id,
+					name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "renameDataElementGroupEditor.action", {
+							name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); },
+							id: id
+						}, function( json ){
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();			
+							jQuery( '#addDataElementGroupForm' ).dialog('close');
+							showSuccessMessage( i18n_update_success );
+						} );
+					}else{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				});				
+			}
+		}]);
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "rename" ) , "'")');
+		jQuery( '#addDataElementGroupForm' ).dialog('open');		
+		
+	}
+	
+	function showUpdateGroup2()
+	{
+		var id = jQuery( "#view_2 #availableGroups" ).val();		
+		var text = jQuery( "#view_2 #availableGroups option[value=" + id + "]" ).text();
+		jQuery( '#addDataElementGroupForm #name' ).val( text );
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){
+				
+				jQuery.postJSON( "validateDataElementGroup.action", {
+					id: id,
+					name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "renameDataElementGroupEditor.action", {
+							name: function(){ return jQuery( '#addDataElementGroupForm #name' ).val(); },
+							id: id
+						}, function( json ){
+							dataElementGroups[json.dataElementGroup.id] = json.dataElementGroup.name;
+							loadAvailableGroups();							
+							jQuery( '#addDataElementGroupForm' ).dialog('close');
+							showSuccessMessage( i18n_update_success );
+						} );
+					}else{
+						markInvalid( "addDataElementGroupForm #name", json.message );
+					}
+				});				
+			}
+		}]);
+		
+		jQuery( '#addDataElementGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "rename" ) , "'")');
+		jQuery( '#addDataElementGroupForm' ).dialog('open');		
+		
+	}
+	
+	function deleteDataElemenGroup()
+	{
+		if ( window.confirm( i18n_confirm_delete + '\n\n' + name ) )
+        {
+			var id = jQuery( "#view_1 #dataElementGroups" ).val();
+			
+			jQuery.postJSON( "deleteDataElemenGroupEditor.action",{
+				id: id
+			}, function( json ){
+				if( json.response == 'success'){
+					dataElementGroups.splice(id, 1);
+					loadAvailableGroups();		
+					showSuccessMessage( json.message );
+				}else{
+					showErrorMessage( json.message );
+				}
+			});
+		}
+	}
+	
+	function deleteDataElemenGroupView2()
+	{
+		if ( window.confirm( i18n_confirm_delete + '\n\n' + name ) )
+        {
+			var id = jQuery( "#view_2 #availableGroups" ).val()[0];		
+			
+			jQuery.postJSON( "deleteDataElemenGroupEditor.action",{
+				id: id
+			}, function( json ){
+				if( json.response == 'success'){
+					dataElementGroups.splice(id, 1);
+					loadAvailableGroups();							
+					showSuccessMessage( json.message );
+				}else{
+					showErrorMessage( json.message );
+				}
+			});
+		}
+	}
+	
+	function updateGroupMembers()
+	{
+		var id = jQuery( "#view_1 #dataElementGroups" ).val();
+		
+		jQuery.getJSON( "updateDataElementGroupEditor.action?id=" + id + "&" + toQueryString( '#view_1 #selectedDataElements', 'groupMembers' ),
+		function( json ){
+			showSuccessMessage( i18n_update_success );
+		});
+	}
+	
+	function toQueryString( jQueryString, paramName )
+	{
+		var p = "";
+		jQuery( jQueryString ).children().each(function(i, item ){
+			item.selected = "selected";
+			p += paramName + "=" + item.value + "&";			
+		});
+		return p;
+	}
+	
+	// View 2
+	
+	function getAssignedDataElementGroups()
+	{	
+		loadAvailableGroups();
+		
+		var id = jQuery( "#view_2 #availableDataElements2" ).val();
+		var list_2 = jQuery( "#view_2 #assignedGroups" );	
+		list_2.empty();	
+		
+		jQuery.postJSON( "getAssignedDataElementGroups.action", {
+			dataElementId: id
+		}, function( json ){
+			jQuery.each(json.dataElementGroups, function(i, item ){
+				list_2.append('<option value="' + item.id + '">' + item.name + '</option>' );
+				
+				jQuery( "#view_2 #availableGroups" ).children().each( function(k, it){
+					if( item.id == it.value )
+					{
+						jQuery(it).remove();
+					}
+				});	
+				
+			});				
+			
+		});			
+	}
+	
+	function assignGroupsForDataElement()
+	{
+		var dataElementId = jQuery("#view_2 #availableDataElements2").val();
+		
+		jQuery.getJSON( "asignGroupsForDataElement.action?dataElementId=" + dataElementId + "&" + toQueryString( '#view_2 #assignedGroups', 'dataElementGroups' ),
+		function( json ){
+			showSuccessMessage( i18n_update_success );
+		});
+		
+	}
+	
+	
+</script>
