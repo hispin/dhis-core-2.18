@@ -1894,268 +1894,123 @@
       </section>
     </section>
   </chapter>
+ 
   <chapter>
-    <title>GIS</title>
-    <section>
-      <title>OpenHealthMapper</title>
-      <para>The DHIS 2 GIS web module is inspired by the <ulink url="http://www.who.int/health_mapping/tools/healthmapper/en/">WHO HealthMapper</ulink> desktop application.</para>
-    </section>
-    <section>
-      <title>Importing geographical layers for orgunit thematic mapping</title>
-      <para>Start by installing the open source ogr2ogr tool. This should be available for most Linux distros (e.g. &quot;apt-get install ogr2ogr&quot;). For Windows, get FWTools, http://fwtools.maptools.org/</para>
-      <para> The most common format for GIS data is the ESRI shapefile, which consists of three identically named files with extensions .shp, .shx and .dbf. (You can use ogr2ogr to convert between any formats, see example below). Open the .dbf in a spreadsheet application (e.g. MS Excel). Make sure there is a field (column) which has Orgunit names, and that these Orgunits are already imported into DHIS2. Also make sure all spellings are identical. </para>
-      <para>On Windows, open the FWTools Shell and navigate to the folder with the shapefile. Issue the following command (replace &quot;output&quot; and &quot;input&quot; with the actual names): <programlisting>
-          <userinput> ogr2ogr -F GML output.gml input.shp </userinput>
-        </programlisting></para>
-      <para>The column in the .dbf file with the orgunit name will have been converted to an XML element inside the GML file. Open the GML file in a text editor (e.g. Notepad++) and do a search/replace to make sure this element is called exactly ogr:Name (case sensitive), e.g. &lt;ogr:Name&gt;Badjia&lt;/ogr:Name&gt; </para>
-      <para>Import the GML file into DHIS2 through the regular import interface (no need to zip)</para>
-    </section>
-    <section>
-      <title>Identifying map data</title>
-      <para>Geographical data can be divided in two basic groups - raster and vector. </para>
-      <section>
-        <title>Raster images</title>
-        <para>Raster can be thought of as pictures such as sattelite images. Images can be used as background for maps, and the OHM can pull them in from any standard compliant <ulink url="http://en.wikipedia.org/wiki/Web_Map_Service">Web Map Service (WMS)</ulink>. It is also of great interest to combine the DHIS2 installation with a <ulink url="http://geoserver.org/display/GEOS/Welcome">GeoServer</ulink> instance, which can be downloaded as a .war-file and run in the same servlet container (e.g. Tomcat, Jetty, Resin). Geoserver can provide both background layers such as roads, lakes etc. or also display thematic data as an alternative to the browser-rendered main mode which uses GeoJSON.</para>
-      </section>
-      <section>
-        <title>Vector data</title>
-        <para>In order to create thematic maps (also known as <ulink url="http://en.wikipedia.org/wiki/Choropleth_map">choropleth maps</ulink>) we need to have vector polygons (e.g. for facility catchment areas or administrative regions). Also, vector files are required for points (e.g. health facility locations or even different wards within a hospital). Such vector files consist of a collection of (x,y) coordinates with a number of associated attributes (at least a name). Vector data can come in a lot of formats, such as GPS coordinates for facilities. The most common is the <ulink url="http://en.wikipedia.org/wiki/Shapefile">ESRI shapefile format</ulink>. In order to make web maps interactive, DHIS 2 uses the <ulink url="http://en.wikipedia.org/wiki/GeoJSON">javascript GeoJSON format</ulink>.</para>
-      </section>
-      <section>
-        <title>Getting data</title>
-        <para> In order to use the OHM with DHIS2, it is necessary to have vector data for each orgunit level one wants to see in the map. In many countries, the Ministry of Health will have shapefiles for the health-related administrative divisions. In other cases, such files may have to be procured from a ministry of planning or from private vendors. Facility coordinates can easily be assembled into a layer (file) for facilities - and if they are not available, these can be collected by cheap GPS units (increasingly available also in mobile phones). Additionally, a lot of data are available freely on the web - especially bacground layers and overlays, but also facility positions and administrative boundaries. Below is a list of sources of such data:</para>
-        <itemizedlist>
-          <listitem>
-            <para>
-              <ulink url="http://www.openstreetmap.org">OpenStreetMap</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.openhealthconsortium.org/wiki/doku.php?id=layers_from_openstreetmap">Handling the layers</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.maplibrary.org/stacks/africa">Maplibrary</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.gadm.org/country">Global Administrative Areas</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.unsalb.org">UN organizations, especially WHO and FAO, have administrative boundaries</ulink>
-            </para>
-          </listitem>
-        </itemizedlist>
-      </section>
-      <section>
-        <title>Projections</title>
-        <para>DHIS 2 uses latitude/longitude (lat/lon) coordinates in the standard EPSG:4326 projection, which is very widespread. But it is also common to get data in UTM formats [http://en.wikipedia.org/wiki/ Universal_Transverse_Mercator_coordinate_system]. For example, data for Malawi is often distributed as UTM 36S projection, which corresponds to EPSG:2736. The conversion can be done by be done by using either Geoserver or ogr2ogr wich is part of GDAL and comes with Ubuntu. For Windows, it comes as part of <ulink url="http://www.bostongis.com/           PrinterFriendly.aspx?content_name=ogr_cheatsheet">FW Tools </ulink>. For example, the following line will convert a shapefile called inputfile.shp in UTM 36S projection to a GeoJSON file in lat/lon: <programlisting>
-            <userinput> ogr2ogr s_srs EPSG:2736 a_srs EPSG:4326 -f &quot;GeoJSON&quot; outputfile.json inputfile.shp </userinput>
-          </programlisting></para>
-      </section>
-      <section>
-        <title>GIS software to view and manipulate map data</title>
-        <para>There are many powerful free and open source GIS packages. We recommend the following:</para>
-        <itemizedlist>
-          <listitem>
-            <para>
-              <ulink url="http://www.qgis.org/">Quantum GIS</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.openjump.org/">OpenJUMP</ulink>
-            </para>
-          </listitem>
-          <listitem>
-            <para><ulink url="http://udig.refractions.net/">uDig</ulink>, which also forms basis for <ulink url="http://udig.refractions.net/gallery/cgiar/">DIVA-GIS</ulink></para>
-          </listitem>
-          <listitem>
-            <para>
-              <ulink url="http://www.gvsig.gva.es/eng/inicio-gvsig/">gvSIG</ulink>
-            </para>
-          </listitem>
-        </itemizedlist>
-        <para>These tools can for example be used to merge village boundary polygons into district polygons (provided the district that each village belongs to is listed as an attribute), and one can edit files to reflect new divisions or correct errors. Another power tool for working with GIS data is <ulink url="http://postgis.refractions.net/">PostGIS</ulink>, which can be used on itself or in conjunction with the above applications. </para>
-      </section>
-    </section>
-    <section>
-      <title>Conversion of geographical data to GeoJSON format</title>
-      <para>The DHIS2 mapping client relies on GeoJSON files in order to display a map in the browser window. Often times, geographical data is received in many different formats, but the ESRI shape file format is one of the most common. Several procedures will be described below. It is important, but not required, that the names in your geographical data match those in the DHIS2 organisational hierarchy. If they do not, you will need to manually match them in a later step</para>
-      <section>
-        <title>Production of GeoJSON files with GDAL</title>
-        <para>GDAL is a multi-platform toolkit for the manipulation of geographical data. It is freely available for a wide-range of platforms at <ulink url="http://gdal.org">http://gdal.org</ulink></para>
-        <para>Production of GeoJSON files are straightforward with GDAL. Just execute (on Windows)</para>
-        <programlisting>
-          <userinput>ogr2ogr.exe -f &quot;GeoJSON&quot; dst_datasource_name src_datasource_name</userinput>
-        </programlisting>
-        <para>or on Linux<programlisting>
-            <userinput>ogr2ogr -f &quot;GeoJSON&quot;dst_datasource_name src_datasource_name</userinput>
-          </programlisting></para>
-        <para>Replace <parameter>dst_datasource_name</parameter> with the path to the destination geographical data file (following the naming convention described above) and <parameter>src_datasource_name</parameter> with the source geographical data file. Take note that you may need to specify input and output coordinate systems as described above.</para>
-      </section>
-      <section>
-        <title>Copying files to the DHIS application</title>
-        <para>Currently, your GeoJSON files should be placed in the DHIS_HOME/geoson of your DHIS application to be accessible to the GIS module. If the GeoJSON directory does not exist, you will need to create it manually and copy your GeoJSON files there.</para>
-      </section>
-      <section>
-        <title>Using Geoserver</title>
-        <para>Geoserver is capable of outputting GeoJSON formats. If you have geoserver running someplace, you can execute the following query.</para>
-        <para>
-          <ulink url="http://localhost:8080/geoserver/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typename=topp:states&amp;outputformat=json&amp;srs_name=EPSG:4326">http://localhost:8080/geoserver/ows?service=WFS&amp;version=1.0.0&amp;request=GetFeature&amp;typename=topp:states&amp;outputformat=json&amp;srs_name=EPSG:4326</ulink>
-        </para>
-        <para> Take note that you need to specify the spatial coordinate system. By default, Geoserver will return GeoJSON files with the format &quot;long/lat&quot; while the DHIS mapping client expects the ordering of the coordinates in &quot;lat/long&quot; format. The explicit declaration of the spatial reference system will ensure that coordinates are returned in the proper order. At the time of writing, the DHIS mapping client does not support spatial reference systems other than EPSG 4326. If you are using Geoserver, the application will handle the reprojection from the native format of the geographical data to EPSG 4326. If you are using other methods as described below to generate the GeoJSON file, you will need to ensure that the GeoJSON output is set to EPSG 4326 (Geographical Lat/long). </para>
-        <para>You will need to adjust the host destination if the machine is not your local machine as well as defining the actual layer in Geoserver which should be output to GeoJSON (in this case <parameter>topp:states</parameter>).</para>
-        <para>Upon execution of the URL, Geoserver will produce a GeoJSON file, and you will be asked to save it. Once it has finished downloading, rename the file following the suggested naming convention:</para>
-        <para>ISO2CountryCode followed by an underscore, followed by the layer type (e.g. “admin” for administrative layers, “health” for health administrative boundaries). For instance, the first administrative layer for Zambia would be named as &quot;zm_admin1&quot;.</para>
-      </section>
-    </section>
+  <title>GIS</title>
+  <section>
+    <title>OpenHealthMapper</title>
+    <para>The DHIS 2 GIS web module is inspired by the <ulink url="http://www.who.int/health_mapping/tools/healthmapper/en/">WHO HealthMapper</ulink> desktop application.</para>
+  </section>
+  <section>
+    <title>Setting up the GIS module</title>  
+  <section id="gisSetup">
+    <title>Importing geographical layers for orgunit thematic mapping</title>
+    <para>The maps are generated off the coordinates information linked to the Organisation Units in the database. No additional files are needed. As soon as the orguints have coordinates the maps will be available in the GIS module. Although it is possible to add/edit coordinates directly in the Edit Organisation Unit window (in Maintenance-&gt;Organisation Unit) we recommend doing this in a batch job using the general import process in  the import/export module. The import process will need a gml file with at least the  two properties; &quot;Name&quot; and &quot;coordinates&quot;.</para>
+    <para>To generate the gml file start by installing the open source ogr2ogr tool. This should be available for most Linux distros (e.g. &quot;apt-get install
+ogr2ogr&quot;). For Windows, get FWTools, http://fwtools.maptools.org/</para>
+    <para>The most common format for GIS data is the ESRI shapefile, which consists of three identically named files with extensions .shp, .shx and .dbf.
+(You can use ogr2ogr to convert between any formats, see example below). Open the .dbf in a spreadsheet application (e.g. MS Excel). Make sure 
+ there is a field (column) called Name which has Orgunit names, and that these Orgunits are already existing in DHIS2. Also make sure all spellings are identical since the matching is done on this name.
+</para>
+    <para>On Windows, open the FWTools Shell and navigate to the folder with the shapefile. Issue the following command (replace &quot;output&quot; and
+&quot;input&quot; with the actual names):
+    <programlisting><userinput> ogr2ogr -F GML output.gml input.shp </userinput></programlisting> 
+</para>
+    <para>The column in the .dbf file with the orgunit name will have been converted to an XML element inside the GML file. Open the GML file in
+a text editor (e.g. Notepad++) and do a search/replace to make sure this element is called exactly ogr:Name (case sensitive), e.g.
+&lt;ogr:Name&gt;Badjia&lt;/ogr:Name&gt;
+</para>
+    <para>Import the GML file into DHIS2 through the import process in the import/export module (under services menu). There is no need to zip the file. Change import Type to Preview before doing the import to see which changes that will be made and resolve any issues with orgunit name matching etc. See the import/export chapter in the manual for more details on import processes. After import the coordinates will be added to the orgunit&apos;s metadata and also be available from the Orgunit Edit window (Maintenance-&gt;Organisation Units).</para>
+  </section>
+</section>
+    
+  <section>
+    <title>Administering the GIS module</title>
     <section id="gisAdministration">
-      <title>Administrator panel</title>
-      <screenshot>
-        <graphic fileref="resources/images/GIS/admin_panel.png" width="270px" align="center"/>
-      </screenshot>
-      <itemizedlist>
-        <listitem>
-          <para>Map source</para>
-          <para><guilabel>GeoJSON files:</guilabel> you will find your own registered maps in the Map combo box in the Thematic map panel. The Admin panels check box will become visible.</para>
-          <para><guilabel>Shapefiles:</guilabel> same as GeoJSON files, except that the files are generated from shapefiles installed in your running version of Geoserver on the fly.</para>
-          <para><guilabel>DHIS database:</guilabel> the Map combo box will simply be populated by the existing organisation unit levels and GeoJSON files will be created by the application automatically Organisation units must have coordinates stored in the database in order to be displayed in the map. This function is mainly intended for the facility level as it is easy to maintain and thus will offer up-to-date shapefiles.</para>
-        </listitem>
-        <listitem>
-          <para>Admin panels: Show/hide the shapefile management panels.</para>
-        </listitem>
-        <listitem>
-          <para>Longitude/latitude: The base coordinate for the current country. This coordinate will appear as default when registering maps and overlays.</para>
-        </listitem>
-      </itemizedlist>
-    </section>
-    <section id="gisMap">
-      <title>Registering geographical information</title>
-      <para>In order to view data in the GIS module, you must import your geographical data into your DHIS installation. Once you have produced GeoJSON files according to the procedure above, and imported them into the system, you will need to establish a correspondence between the information in the DHIS database, and the GeoJSON file.</para>
-      <screenshot>
-        <screeninfo>Register Geodata Panel</screeninfo>
-        <mediaobject>
-          <imageobject>
-            <imagedata width="60%" align="center" fileref="resources/images/GIS/register_geodata.png"/>
-          </imageobject>
-        </mediaobject>
-      </screenshot>
-      <itemizedlist>
-        <listitem>
-          <para><guilabel>Display name:</guilabel> Represents your map in the Map combo box in the Thematic map panel.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Organisation unit level:</guilabel> The level of the organization units displayed in the GeoJSON file.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Map source file:</guilabel> The GeoJSON file name. These files must be placed in the mapping/geojson folder. Use e.g. Geoserver 2.0 (currently RC1) to easily produce GeoJSON from your shapefiles.</para>
-        </listitem>
-        <listitem>
-          <para><guilabel>Name column:</guilabel> The shapefile data column (case sensitive!) that will be matched against DHIS organisation unit names. If you have an instance of Geoserver installed, you can view the layer through the built-in OpenLayers client. Click on a particular area, and the possible fields will be displayed.</para>
-          <screenshot>
-            <screeninfo>Identification of the name column with Geoserver&apos;s OpenLayers client</screeninfo>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="583px" align="center" fileref="resources/images/GIS/get_name_geoserver.png"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-          <screenshot>
-            <screeninfo>Identification of the name column directly in the GeoJSON file</screeninfo>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="383px" align="center" fileref="resources/images/GIS/get_name_geojson.png"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-        <listitem>
-          <para><guilabel>Longitude / latitude:</guilabel> The longitude and latitude refer to the approximate point where the map will be centered after rendering. If you have Geoserver running, you can view the layer through the integrated OpenLayers client and determine a good center point for your map. You can also use the background map of the DHIS GIS module, and determine an approximate location. You may need to experiment a bit with the center point and zoom level in order to get it correct.</para>
-          <screenshot>
-            <screeninfo>Using Geoserver OpenLayers client to get the map center point</screeninfo>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="386px" align="center" fileref="resources/images/GIS/geoserver_center_point.png"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-          <screenshot>
-            <screeninfo>Using DHIS GIS Module to get the map center point</screeninfo>
-            <mediaobject>
-              <imageobject>
-                <imagedata width="124px" align="center" fileref="resources/images/GIS/dhis_gis_center_point.png"/>
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-        <listitem>
-          <para><guilabel>Zoom:</guilabel> The zoom level controls the extent of the map. Some experimentation will be required to get the correct zoom level. Start with a value of &quot;7&quot; and increase or decrease the zoom level depending on the extent of the map that should be displayed.</para>
-        </listitem>
-      </itemizedlist>
-    </section>
-    <section id="gisMapOrganisationUnitRelation">
-      <title>Assign organization units to map</title>
-      <para>Select a registered map and wait for it to load. The organisation units (OU) in your database on this level will appear in the list and colors will appear in the map. What we want to do here is creating relations between OUs in the database and the corresponding OUs in the shapefile. This is often necessary because of inconsistencies in the naming in the geographical data, and what is present in the DHIS database. First, try auto-assign at the bottom toolbar to let the application link the OUs with a matching OU name in the shapefile. The polygons that remain white, you will have to link manually by first selecting a white OU in the list and then click the corresponding OU in the map.</para>
-      <screenshot>
-        <screeninfo>Assigning Organizational Units to the map</screeninfo>
-        <mediaobject>
-          <imageobject>
-            <imagedata width="80%" align="center" fileref="resources/images/GIS/assign_org_units.png"/>
-          </imageobject>
-        </mediaobject>
-      </screenshot>
-      <para>The remove button at the button tool bar removes the selected OU’s link. The remove all button removes all OU links for the selected map.</para>
+      <title>Administrator settings</title>
+      <para>The administrator settings window can be opened from the map toolbar, click on the wrench symbol (tooltip says Administrator settings). Here you can define the Date Type used to select periods. Either use fixed periods corresponding to the periods used in DHIS data collection (weeks, months, quarters, 6-months, years etc.) or use the more flexible start and end dates.</para>
     </section>
     <section id="gisOverlay">
       <title>Register overlays</title>
-      <para>Overlays are geographical layers that do not have any direct linkage to data in the database. Example include roads, rivers, airports, ports, and other geographical information that you may want to display on your map, but that is not neccsarily linked ot data contained in the DHIS database. The <guimenu>Register Overlay</guimenu> panel will allow you to add new layers and determine how they will be represented visually on the map. </para>
+      <para>Overlays are geographical layers that do not have any direct linkage
+    to data in the database. Example include roads, rivers, airports, ports,
+    and other geographical information that you may want to display on your
+    map, but that is not neccsarily linked ot data contained in the DHIS
+    database. The <guimenu>Register Overlay</guimenu> panel will allow you to
+    add new layers and determine how they will be represented visually on the
+    map. </para>
       <itemizedlist>
         <listitem>
-          <para><guilabel>Display name: </guilabel>Represents your overlay in the layer tree in the upper right corner.</para>
+          <para><guilabel>Display name: </guilabel>Represents your overlay in
+        the layer tree in the upper right corner.</para>
         </listitem>
         <listitem>
-          <para><guilabel>Map source file: </guilabel>The GeoJSON file name.</para>
+          <para><guilabel>Map source file: </guilabel>The GeoJSON file
+        name.</para>
         </listitem>
         <listitem>
-          <para><guilabel>Fill color: </guilabel>Decides the fill color if the layer is a polygon layer. </para>
+          <para><guilabel>Fill color: </guilabel>Decides the fill color if the
+        layer is a polygon layer. </para>
         </listitem>
         <listitem>
-          <para><guilabel>Fill opacity: </guilabel>Select an opacity level between 0 (invisible) and 1 (solid).</para>
+          <para><guilabel>Fill opacity: </guilabel>Select an opacity level
+        between 0 (invisible) and 1 (solid).</para>
         </listitem>
         <listitem>
-          <para><guilabel>Stroke color: </guilabel>The stroke color over lines and polygon borders.</para>
+          <para><guilabel>Stroke color: </guilabel>The stroke color over lines
+        and polygon borders.</para>
         </listitem>
         <listitem>
-          <para><guilabel>Stroke width: </guilabel>Select a stroke width between 0 and 4.</para>
+          <para><guilabel>Stroke width: </guilabel>Select a stroke width between
+        0 and 4.</para>
         </listitem>
       </itemizedlist>
+      <section>
+        <title>Copying files to the DHIS application</title>
+        <para>Currently, your GeoJSON files should be placed in the
+      DHIS2_HOME/geojson of your DHIS application to be accessible to the GIS
+      module. If the GeoJSON directory does not exist, you will need to create
+      it manually and copy your GeoJSON files there.</para>
+      </section>
     </section>
+  </section>
+  <section>
+    <title>Using the GIS module</title>
     <section id="gisThematicMap">
-      <title>Thematic map</title>
+      <title>Thematic mapping</title>
       <para>This panel lets you use your registered maps for thematic mapping. All you need to do is selecting your desired indicator-period-map combination in the left side menu.</para>
-      <para>Calculation method alludes to the size of the legend classes. Set to <guimenuitem>Equal intervals</guimenuitem> they will be “highest map value – lowest map value / number of classes”. Set to <guimenuitem>Equal group count</guimenuitem> the legend creator will try to distribute the organisation units evenly. Choose <guimenuitem>Fixed bounds </guimenuitem>and you may define your own class break values, e.g. “20,40,60” using a comma to seperate each of them.</para>
+      <para>Calculation method
+    alludes to the  size  of the legend classes. Set to <guimenuitem>Equal intervals</guimenuitem> they will be “highest map value – lowest map value
+    / number of classes”. Set to <guimenuitem>Equal group count</guimenuitem> the legend creator will try to distribute the organisation units evenly. Choose <guimenuitem>Fixed bounds </guimenuitem>and
+    you may define your own class break values, e.g. “20,40,60” using a comma to
+    seperate each of them.</para>
       <para>The map view combo box lists all map views (favorites) saved by the user. The settings that are stored in the map view will be automatically applied to the thematic map panel.</para>
     </section>
     <section id="gisFavoriteMapView">
       <title>Register favorite map views</title>
-      <para>This window will save the current thematic map view in order to restore it whenever you want via the <guimenuitem>map view</guimenuitem> combo box in the <guimenu>thematic map</guimenu> panel. By adding your views to DHIS 2 Dashboard you may access them there by inserting <guimenuitem>map views</guimenuitem> into one of the link areas.</para>
+      <para>This window will save the current thematic map view in order to
+    restore it whenever you want via the <guimenuitem>map view</guimenuitem> combo box in the <guimenu>thematic map</guimenu> panel. By
+    adding your views to DHIS 2 Dashboard you may access them there by
+    inserting <guimenuitem>map views</guimenuitem> into one of the link
+    areas.</para>
     </section>
     <section id="gisLegendSet">
       <title>Register legend sets</title>
-      <para>A legend set may be connected to many indicators, but an indicator may only have one legend set. Thus, you may select many indicators when you create a legend set. When an indicator that has a legend set is selected in the <guimenu>thematic map</guimenu> panel, the number of classes, low color and high color is automatically set.</para>
+      <para>A legend set may be connected to many indicators, but an indicator
+    may only have one legend set. Thus, you may select many indicators when
+    you create a legend set. When an indicator that has a legend set is
+    selected in the <guimenu>thematic map</guimenu> panel, the number of
+    classes, low color and high color is automatically set.</para>
     </section>
-    <section id="gisPdfPrint">
-      <title>Print map as PDF</title>
+    <section id="gisImageExport">
+      <title>Exporting/saving map images</title>
       <para>Click the PDF icon on the map toolbar and the left side print panel will open. You may add several pages to your PDF document by clicking the &quot;add page&quot; button on the bottom toolbar. Change the size of the focus rectangle in the &quot;scale&quot; column. The rectangle can be rotated by inserting a number (degrees) &quot;rotation&quot; column or by dragging the rotation knob. Your &quot;map title&quot; and &quot;comment&quot; will appear above and below the picture in the PDF document respectively. The higher &quot;dots per inch&quot; value you choose, the better quality of the image and the larger file size of the document.</para>
       <para>To get out of print mode you can simply expand a different panel or hide the print panel by clicking the PDF icon on the map toolbar again.</para>
     </section>
+  </section>
   </chapter>
+
+
   <chapter>
     <title>Import and export</title>
     <highlights>
