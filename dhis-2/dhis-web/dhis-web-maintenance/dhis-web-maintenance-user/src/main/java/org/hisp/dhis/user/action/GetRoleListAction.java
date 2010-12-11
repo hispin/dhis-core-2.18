@@ -33,12 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Thanh Nguyen

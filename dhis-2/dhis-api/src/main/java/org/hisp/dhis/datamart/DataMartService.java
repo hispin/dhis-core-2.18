@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.period.RelativePeriods;
 
 /**
