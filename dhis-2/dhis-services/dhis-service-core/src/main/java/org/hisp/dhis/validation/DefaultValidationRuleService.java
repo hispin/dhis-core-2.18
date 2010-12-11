@@ -65,6 +65,8 @@ public class DefaultValidationRuleService
 {
     private static final Log log = LogFactory.getLog( DefaultValidationRuleService.class );
     
+    private static final int DECIMALS = 1;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -319,7 +321,7 @@ public class DefaultValidationRuleService
     
                     if ( violation )
                     {
-                        validationResults.add( new ValidationResult( period, source, validationRule, leftSide, rightSide ) );
+                        validationResults.add( new ValidationResult( period, source, validationRule, MathUtils.getRounded( leftSide, DECIMALS ), MathUtils.getRounded( rightSide, DECIMALS ) ) );
                     }
                 }
             }
