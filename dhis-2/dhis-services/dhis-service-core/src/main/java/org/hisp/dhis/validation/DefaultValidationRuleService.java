@@ -28,7 +28,7 @@ package org.hisp.dhis.validation;
  */
 
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-
+import static org.hisp.dhis.system.util.MathUtils.getRounded;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -51,7 +51,6 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.CompositeCounter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -147,7 +146,7 @@ public class DefaultValidationRuleService
             {
                 double percentage = (double) ( 100 * counter.getCount( period, source ) ) / number;
                 
-                grid.addValue( String.valueOf( MathUtils.getRounded( percentage, 1 ) ) );
+                grid.addValue( String.valueOf( getRounded( percentage, DECIMALS ) ) );
             }
         }
         
@@ -321,7 +320,7 @@ public class DefaultValidationRuleService
     
                     if ( violation )
                     {
-                        validationResults.add( new ValidationResult( period, source, validationRule, MathUtils.getRounded( leftSide, DECIMALS ), MathUtils.getRounded( rightSide, DECIMALS ) ) );
+                        validationResults.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
                     }
                 }
             }
