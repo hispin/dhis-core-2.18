@@ -704,107 +704,103 @@
         ]
     });
 	
-	/* Section: export map */
-	var exportImagePanel = new Ext.form.FormPanel({
-        id: 'export_image_p',        
-        items:
-        [
-			{
-				xtype: 'textfield',
-				id: 'exportimagetitle_tf',
-				fieldLabel: i18n_title,
-				labelSeparator: GLOBAL.conf.labelseparator,
-				editable: true,
-				valueField: 'id',
-				displayField: 'text',
-				width: GLOBAL.conf.combo_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all'
-			},
-			{
-				xtype: 'combo',
-				id: 'exportimagelayers_cb',
-				fieldLabel: 'Layers',
-				labelSeparator: GLOBAL.conf.labelseparator,
-				editable: false,
-				valueField: 'id',
-				displayField: 'layer',
-				width: GLOBAL.conf.combo_width_fieldset,
-				minListWidth: GLOBAL.conf.combo_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all',
-				value: 1,
-				store: new Ext.data.ArrayStore({
-					fields: ['id', 'layer'],
-					data: [[1, 'Polygon layer'], [2, 'Point layer'], [3, 'Both']]
-				})					
-			},
-			{
-				xtype: 'combo',
-				id: 'exportimagewidth_cb',
-				fieldLabel: 'Width',
-				labelSeparator: GLOBAL.conf.labelseparator,
-				editable: true,
-				emptyText: 'Custom px',
-				valueField: 'width',
-				displayField: 'text',
-				width: GLOBAL.conf.combo_width_fieldset,
-				minListWidth: GLOBAL.conf.combo_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all',
-				store: new Ext.data.ArrayStore({
-					fields: ['width', 'text'],
-					data: [[800, 'Small'], [1190, 'Medium'], [1920, 'Large']]
-				})
-			},
-			{
-				xtype: 'combo',
-				id: 'exportimageheight_cb',
-				fieldLabel: 'Height',
-				labelSeparator: GLOBAL.conf.labelseparator,
-				editable: true,
-				emptyText: 'Custom px',
-				valueField: 'height',
-				displayField: 'text',
-				width: GLOBAL.conf.combo_width_fieldset,
-				minListWidth: GLOBAL.conf.combo_width_fieldset,
-				mode: 'local',
-				triggerAction: 'all',
-				store: new Ext.data.ArrayStore({
-					fields: ['height', 'text'],
-					data: [[600, 'Small'], [880, 'Medium'], [1200, 'Large']]
-				})
-			},
-			{
-				xtype: 'checkbox',
-				id: 'exportimageincludelegend_chb',
-				fieldLabel: i18n_include_legend,
-				labelSeparator: '',				
-				isFormField: true,
-				checked: true
-			}
-		]
-	});
-	
+	/* Section: export map */	
 	var exportImageWindow = new Ext.Window({
         id: 'exportimage_w',
         title: '<span id="window-image-title">Image export</span>',
         layout: 'fit',
         closeAction: 'hide',
-        defaults: {bodyStyle:'padding:8px'},
 		width: GLOBAL.conf.window_width,
         height: 220,
         items: [
-            new Ext.Panel({
+            {
+                xtype: 'form',
+                bodyStyle: 'padding:8px',
                 items: [
                     {html: '<div class="window-info">Export thematic map to PNG</div>'},
-                    exportImagePanel
+                    {
+                        xtype: 'textfield',
+                        id: 'exportimagetitle_tf',
+                        fieldLabel: i18n_title,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        editable: true,
+                        valueField: 'id',
+                        displayField: 'text',
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        mode: 'local',
+                        triggerAction: 'all'
+                    },
+                    {
+                        xtype: 'combo',
+                        id: 'exportimagelayers_cb',
+                        fieldLabel: 'Layers',
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        editable: false,
+                        valueField: 'id',
+                        displayField: 'layer',
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        value: 1,
+                        store: {
+                            xtype: 'arraystore',
+                            fields: ['id', 'layer'],
+                            data: [[1, 'Polygon layer'], [2, 'Point layer'], [3, 'Both']]
+                        }
+                    },
+                    {
+                        xtype: 'combo',
+                        id: 'exportimagewidth_cb',
+                        fieldLabel: 'Width',
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        editable: true,
+                        emptyText: 'Custom px',
+                        valueField: 'width',
+                        displayField: 'text',
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        store: new Ext.data.ArrayStore({
+                            fields: ['width', 'text'],
+                            data: [[800, 'Small'], [1190, 'Medium'], [1920, 'Large']]
+                        })
+                    },
+                    {
+                        xtype: 'combo',
+                        id: 'exportimageheight_cb',
+                        fieldLabel: 'Height',
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        editable: true,
+                        emptyText: 'Custom px',
+                        valueField: 'height',
+                        displayField: 'text',
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        mode: 'local',
+                        triggerAction: 'all',
+                        store: {
+                            xtype: 'arraystore',
+                            fields: ['height', 'text'],
+                            data: [[600, 'Small'], [880, 'Medium'], [1200, 'Large']]
+                        }
+                    },
+                    {
+                        xtype: 'checkbox',
+                        id: 'exportimageincludelegend_chb',
+                        fieldLabel: i18n_include_legend,
+                        labelSeparator: '',				
+                        isFormField: true,
+                        checked: true
+                    }
                 ]
-            })
+            }
         ],
         bbar: [
             '->',
-            new Ext.Button({
+            {
+                xtype: 'button',
                 id: 'exportimage_b',
 				labelSeparator: GLOBAL.conf.labelseparator,
                 iconCls: 'icon-export',
@@ -896,7 +892,7 @@
 						Ext.getCmp('exportimagetitle_tf').reset();
 					}
 				}
-            })
+            }
         ]    
     });
 	
@@ -905,32 +901,37 @@
         id: 'newpredefinedmaplegend_p',
         title: i18n_legend,
         items: [
-            new Ext.form.FormPanel({
+            {
+                xtype: 'form',
                 bodyStyle: 'padding: 8px 8px 5px 8px',
                 items: [
                     {html: '<div class="window-info">Register new legend</div>'},
-                    new Ext.form.TextField({
+                    {
+                        xtype: 'textfield',
                         id: 'predefinedmaplegendname_tf',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_display_name,
                         width: GLOBAL.conf.combo_width_fieldset
-                    }),
-                    new Ext.form.NumberField({
+                    },
+                    {
+                        xtype: 'numberfield',
                         id: 'predefinedmaplegendstartvalue_nf',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_start_value,
                         width: GLOBAL.conf.combo_number_width_small
-                    }),
-                    new Ext.form.NumberField({
+                    },
+                    {
+                        xtype: 'numberfield',
                         id: 'predefinedmaplegendendvalue_nf',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_end_value,
                         width: GLOBAL.conf.combo_number_width_small
-                    }),
-                    new Ext.ux.ColorField({
+                    },
+                    {
+                        xtype: 'colorfield',
                         id: 'predefinedmaplegendcolor_cp',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
@@ -938,10 +939,11 @@
                         allowBlank: false,
                         width: GLOBAL.conf.combo_width_fieldset,
                         value:"#C0C0C0"
-                    }),
+                    },
                     {html: '<div class="window-p"></div>'},
                     {html: '<div class="window-info">Delete legend</div>'},
-                    new Ext.form.ComboBox({
+                    {
+                        xtype: 'combo',
                         id: 'predefinedmaplegend_cb',
                         editable: false,
                         valueField: 'id',
@@ -956,16 +958,19 @@
                         width: GLOBAL.conf.combo_width_fieldset,
                         minListWidth: GLOBAL.conf.combo_width_fieldset,
                         store: GLOBAL.stores.predefinedMapLegend
-                    })
+                    }
                 ]
-            }),
-            new Ext.form.FormPanel({
+            },
+            {
+                xtypes: 'form',
                 items: [
-                    new Ext.Toolbar({
+                    {
+                        xtype: 'toolbar',
                         style: 'padding-top:4px',
                         items: [
                             '->',
-                            new Ext.Button({
+                            {
+                                xtype: 'button',
                                 id: 'newpredefinedmaplegend_b',
                                 text: i18n_register,
                                 iconCls: 'icon-add',
@@ -1009,8 +1014,9 @@
                                         }
                                     });
                                 }
-                            }),
-                            new Ext.Button({
+                            },
+                            {
+                                xtype: 'button',
                                 id: 'deletepredefinedmaplegend_b',
                                 text: i18n_delete,
                                 iconCls: 'icon-remove',
@@ -1034,11 +1040,11 @@
                                         }
                                     });
                                 }
-                            })
+                            }
                         ]
-                    })
+                    }
                 ]
-            })
+            }
         ],
         listeners: {
             expand: function() {
@@ -1054,19 +1060,22 @@
         id: 'newpredefinedmaplegendset_p',
         title: i18n_legendset,
         items: [
-            new Ext.form.FormPanel({
+            {
+                xtype: 'form',
                 bodyStyle: 'padding: 8px 8px 5px 8px',
                 items: [
                     {html: '<div class="window-info">Register new legend set</div>'},
-                    new Ext.form.TextField({
+                    {
+                        xtype: 'textfield',
                         id: 'predefinedmaplegendsetname_tf',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_display_name,
                         width: GLOBAL.conf.combo_width_fieldset
-                    }),
+                    },
                     {html: '<div class="window-field-label">'+i18n_legends+'</div>'},
-                    new Ext.ux.Multiselect({
+                    {
+                        xtype: 'multiselect',
                         id: 'predefinednewmaplegend_ms',
                         hideLabel: true,
                         dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
@@ -1075,10 +1084,11 @@
                         width: GLOBAL.conf.multiselect_width,
                         height: GLOBAL.util.getMultiSelectHeight() / 2,
                         store: GLOBAL.stores.predefinedMapLegend
-                    }),
+                    },
                     {html: '<div class="window-p"></div>'},
                     {html: '<div class="window-info">Delete legend set</div>'},
-                    new Ext.form.ComboBox({
+                    {
+                        xtype: 'combo',
                         id: 'predefinedmaplegendsetindicator_cb',
                         editable: false,
                         valueField: 'id',
@@ -1093,16 +1103,19 @@
                         width: GLOBAL.conf.combo_width_fieldset,
                         minListWidth: GLOBAL.conf.combo_width_fieldset,
                         store:GLOBAL.stores.predefinedMapLegendSet
-                    })
+                    }
                 ]
-            }),
-            new Ext.form.FormPanel({
+            },
+            {
+                xtype: 'form',
                 items: [
-                    new Ext.Toolbar({
+                    {
+                        xtype: 'toolbar',
                         style: 'padding-top:4px',
                         items: [
                             '->',
-                            new Ext.Button({
+                            {
+                                xtype: 'button',
                                 id: 'newpredefinedmaplegendset_b',
                                 text: i18n_register,
                                 iconCls: 'icon-add',
@@ -1163,8 +1176,9 @@
                                         }
                                     });
                                 }
-                            }),
-                            new Ext.Button({
+                            },
+                            {
+                                xtype: 'button',
                                 id: 'deletepredefinedmaplegendset_b',
                                 text: i18n_delete,
                                 iconCls: 'icon-remove',
@@ -1194,11 +1208,11 @@
                                         }
                                     });
                                 }
-                            })
+                            }
                         ]
-                    })
+                    }
                 ]
-            })
+            }
         ],
         listeners: {
             expand: function() {
@@ -1214,11 +1228,13 @@
         id: 'assignpredefinedmaplegendsetindicator_p',
         title: i18n_indicators,
         items: [
-            new Ext.form.FormPanel({
+            {
+                xtype: 'form',
                 bodyStyle: 'padding: 8px 8px 5px 8px',
                 items: [
                     {html: '<div class="window-info">Assign indicators to legend set</div>'},
-                    new Ext.form.ComboBox({
+                    {
+                        xtype: 'combo',
                         id: 'predefinedmaplegendsetindicator2_cb',
                         editable: false,
                         valueField: 'id',
@@ -1250,9 +1266,10 @@
                                 }
                             }
                         }	
-                    }),
+                    },
                     {html: '<div class="window-field-label">' + i18n_indicators + '</div>'},
-                    new Ext.ux.Multiselect({
+                    {
+                        xtype: 'multiselect',
                         id: 'predefinedmaplegendsetindicator_ms',
                         hideLabel:true,
                         dataFields: ['id', 'shortName'],
@@ -1261,16 +1278,19 @@
                         width:GLOBAL.conf.multiselect_width,
                         height: GLOBAL.util.getMultiSelectHeight(),
                         store:GLOBAL.stores.indicator
-                    })
+                    }
                 ]
-            }),
-            new Ext.form.FormPanel({
+            },
+            {
+                xtype: 'form',
                 items: [
-                    new Ext.Toolbar({
+                    {
+                        xtype: 'toolbar',
                         style: 'padding-top:4px',
                         items: [
                             '->',
-                            new Ext.Button({
+                            {
+                                xtype: 'button',
                                 id: 'assignpredefinedmaplegendsetindicator_b',
                                 text: i18n_assign,
                                 iconCls: 'icon-assign',
@@ -1310,11 +1330,11 @@
                                         }
                                     });
                                 }
-                            })
+                            }
                         ]
-                    })
+                    }
                 ]
-            })                            
+            }
         ],
         listeners: {
             expand: function() {
@@ -1334,11 +1354,13 @@
         id: 'assignpredefinedmaplegendsetdataelement_p',
         title: i18n_dataelements,
         items: [
-            new Ext.form.FormPanel({
+            {
+                xtype: 'form',
                 bodyStyle: 'padding: 8px 8px 5px 8px',
                 items: [
                     {html: '<div class="window-info">Assign data elements to legend set</div>'},
-                    new Ext.form.ComboBox({
+                    {
+                        xtype: 'combo',
                         id: 'predefinedmaplegendsetdataelement_cb',
                         editable: false,
                         valueField: 'id',
@@ -1370,9 +1392,10 @@
                                 }
                             }
                         }					
-                    }),
+                    },
                     {html: '<div class="window-field-label">' + i18n_dataelements + '</div>'},
-                    new Ext.ux.Multiselect({
+                    {
+                        xtype: 'multiselect',
                         id: 'predefinedmaplegendsetdataelement_ms',
                         hideLabel: true,
                         dataFields: ['id', 'shortName'],
@@ -1381,16 +1404,19 @@
                         width: GLOBAL.conf.multiselect_width,
                         height: GLOBAL.util.getMultiSelectHeight(),
                         store: GLOBAL.stores.dataElement
-                    })
+                    }
                 ]
-            }),
-            new Ext.form.FormPanel({
+            },
+            {
+                xtype: 'form',
                 items: [
-                    new Ext.Toolbar({
+                    {
+                        xtype: 'toolbar',
                         style: 'padding-top:4px',
                         items: [
                             '->',
-                            new Ext.Button({
+                            {
+                                xtype: 'button',
                                 id: 'assignpredefinedmaplegendsetdataelement_b',
                                 text: i18n_assign,
                                 iconCls: 'icon-assign',
@@ -1430,11 +1456,11 @@
                                         }
                                     });
                                 }
-                            })
+                            }
                         ]
-                    })
+                    }
                 ]
-            })
+            }
         ],
         listeners: {
             expand: function() {
@@ -1458,7 +1484,8 @@
 		width: GLOBAL.conf.window_width,
         height: Ext.isChrome ? 348:346,
         items: [
-            new Ext.Panel({
+            {
+                xtype: 'panel',
                 layout: 'accordion',
                 items: [
                     newPredefinedMapLegendPanel,
@@ -1466,7 +1493,7 @@
                     assignPredefinedMapLegendSetIndicatorPanel,
                     assignPredefinedMapLegendSetDataElementPanel
                 ]
-            })
+            }
         ],
         listeners: {
             afterrender: function() {
