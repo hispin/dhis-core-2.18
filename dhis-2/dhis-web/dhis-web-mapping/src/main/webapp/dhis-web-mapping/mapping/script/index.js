@@ -447,133 +447,61 @@
 	}
 	addOverlaysToMap(true);
 			
-	/* Section: mapview */
-    var newViewPanel = new Ext.form.FormPanel({
-        id: 'newview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items: [
-            new Ext.form.TextField({
-                id: 'viewname_tf',
-                emptytext: GLOBAL.conf.emptytext,
-                labelSeparator: GLOBAL.conf.labelseparator,
-                fieldLabel: i18n_display_name,
-                width: GLOBAL.conf.combo_width_fieldset,
-                autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
-            })
-        ]
-    });
-    
-    var deleteViewPanel = new Ext.form.FormPanel({   
-        id: 'deleteview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items: [
-            new Ext.form.ComboBox({
-                id: 'view_cb',
-                editable: false,
-                valueField: 'id',
-                displayField: 'name',
-                mode: 'remote',
-                forceSelection: true,
-                triggerAction: 'all',
-                emptyText: GLOBAL.conf.emptytext,
-                labelSeparator: GLOBAL.conf.labelseparator,
-                fieldLabel: i18n_favorite,
-                selectOnFocus: true,
-                width: GLOBAL.conf.combo_width_fieldset,
-                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                store:GLOBAL.stores.mapView
-            })
-        ]
-    });
-    
-    var dashboardViewPanel = new Ext.form.FormPanel({   
-        id: 'dashboardview_p',
-		bodyStyle: 'border:0px solid #fff',
-        items: [
-            new Ext.form.ComboBox({
-                id: 'view2_cb',
-                editable: false,
-                valueField: 'id',
-                displayField: 'name',
-                mode: 'remote',
-                forceSelection: true,
-                triggerAction: 'all',
-                emptyText: GLOBAL.conf.emptytext,
-                labelSeparator: GLOBAL.conf.labelseparator,
-                fieldLabel: i18n_favorite,
-                selectOnFocus: true,
-                width: GLOBAL.conf.combo_width_fieldset,
-                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                store: GLOBAL.stores.mapView
-            })
-        ]
-    });
-    
-	var viewWindow = new Ext.Window({
-        id: 'view_w',
+	/* Section: mapview */    
+	var favoriteWindow = new Ext.Window({
+        id: 'favorite_w',
         title: '<span id="window-favorites-title">' + i18n_favorites + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: GLOBAL.conf.window_width,
-        height: 125,
-        items:
-        [
+        height: 180,
+        items: [
             {
-                xtype: 'tabpanel',
-                activeTab: 0,
-				layoutOnTabChange: true,
-                deferredRender: false,
-                plain: true,
-                defaults: {
-                    bodyStyle: 'padding:8px; border:0px'
-                },
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        if (tab.id == 'view0') {
-                            Ext.getCmp('newview_b').show();
-                            Ext.getCmp('deleteview_b').hide();
-                            Ext.getCmp('dashboardview_b').hide();
-                        }
-                        else if (tab.id == 'view1') {
-                            Ext.getCmp('newview_b').hide();
-                            Ext.getCmp('deleteview_b').show();
-                            Ext.getCmp('dashboardview_b').hide();
-                        }
-                        else if (tab.id == 'view2') {
-                            Ext.getCmp('newview_b').hide();
-                            Ext.getCmp('deleteview_b').hide();
-                            Ext.getCmp('dashboardview_b').show();
-                        }
-                    }
-                },
+                xtype: 'form',
+                bodyStyle: 'padding:8px',
                 items: [
+                    {html: '<div class="window-info">Register current map as a favorite</div>'},
                     {
-                        title: '<span class="panel-tab-title">' + i18n_new + '</span>',
-                        id: 'view0',
-                        items: [newViewPanel]
+                        xtype: 'textfield',
+                        id: 'favoritename_tf',
+                        emptytext: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_display_name,
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
                     },
+                    {html: '<div class="window-p"></div>'},
+                    {html: '<div class="window-info">Delete / Add favorite to dashboard</div>'},
                     {
-                        title: '<span class="panel-tab-title">' + i18n_delete + '</span>',
-                        id: 'view1',
-                        items: [deleteViewPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_dhis_dashboard + '</span>',
-                        id: 'view2',
-                        items: [dashboardViewPanel]
+                        xtype: 'combo',
+                        id: 'favorite_cb',
+                        editable: false,
+                        valueField: 'id',
+                        displayField: 'name',
+                        mode: 'remote',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        emptyText: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_favorite,
+                        selectOnFocus: true,
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        store:GLOBAL.stores.mapView
                     }
                 ]
             }
         ],
         bbar: [
-            '->',            
-            new Ext.Button({
+            '->',
+            {
+                xtype: 'button',
                 id: 'newview_b',
+                iconCls: 'icon-add',
 				hideLabel: true,
 				text: i18n_register,
 				handler: function() {
-					var vn = Ext.getCmp('viewname_tf').getValue();
+					var vn = Ext.getCmp('favoritename_tf').getValue();
                     
                     if (!vn) {
 						Ext.message.msg(false, i18n_form_is_not_complete);
@@ -639,17 +567,45 @@
 							else if (formValues.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
 								GLOBAL.stores.pointMapView.load();
 							}
-                            Ext.getCmp('viewname_tf').reset();
+                            Ext.getCmp('favoritename_tf').reset();
                         }
                     });
 				}
-			}),
-            new Ext.Button({
+			},
+            {
+                xtype: 'button',
+                id: 'dashboardview_b',
+                iconCls: 'icon-assign',
+				hideLabel: true,
+				text: i18n_add,
+				handler: function() {
+					var v = Ext.getCmp('favorite_cb').getValue();
+					var rv = Ext.getCmp('favorite_cb').getRawValue();
+					
+					if (!v) {
+						Ext.message.msg(false, i18n_please_select_a_map_view);
+						return;
+					}
+					
+					Ext.Ajax.request({
+						url: GLOBAL.conf.path_mapping + 'addMapViewToDashboard' + GLOBAL.conf.type,
+						method: 'POST',
+						params: {id:v},
+						success: function(r) {
+							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + i18n_added_to_dashboard);
+                            Ext.getCmp('favorite_cb').clearValue();
+						}
+					});
+				}
+            },
+            {
+                xtype: 'button',
                 id: 'deleteview_b',
+                iconCls: 'icon-remove',
 				hideLabel: true,
 				text: i18n_delete,
 				handler: function() {
-					var v = Ext.getCmp('view_cb').getValue();
+					var v = Ext.getCmp('favorite_cb').getValue();
 					
                     if (!v) {
 						Ext.message.msg(false, i18n_please_select_a_map_view);
@@ -665,8 +621,7 @@
 						success: function(r) {
 							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + name + '</span> ' + i18n_deleted);
                             GLOBAL.stores.mapView.load();
-                            Ext.getCmp('view_cb').clearValue();
-                            Ext.getCmp('view2_cb').clearValue();
+                            Ext.getCmp('favorite_cb').clearValue();
                             if (v == choropleth.form.findField('mapview').getValue()) {
                                 choropleth.form.findField('mapview').clearValue();
                             }
@@ -676,31 +631,7 @@
 						}
 					});
 				}
-			}),
-            new Ext.Button({
-                id: 'dashboardview_b',
-				isFormField: true,
-				hideLabel: true,
-				text: i18n_add,
-				handler: function() {
-					var v = Ext.getCmp('view2_cb').getValue();
-					var rv = Ext.getCmp('view2_cb').getRawValue();
-					
-					if (!v) {
-						Ext.message.msg(false, i18n_please_select_a_map_view);
-						return;
-					}
-					
-					Ext.Ajax.request({
-						url: GLOBAL.conf.path_mapping + 'addMapViewToDashboard' + GLOBAL.conf.type,
-						method: 'POST',
-						params: {id:v},
-						success: function(r) {
-							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + i18n_added_to_dashboard);
-						}
-					});
-				}
-            })
+			}
         ]
     });
 	
@@ -2637,13 +2568,13 @@
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
-			viewWindow.setPosition(x,y);
+			favoriteWindow.setPosition(x,y);
 
-			if (viewWindow.visible) {
-				viewWindow.hide();
+			if (favoriteWindow.visible) {
+				favoriteWindow.hide();
 			}
 			else {
-				viewWindow.show();
+				favoriteWindow.show();
 			}
 		}
 	});
