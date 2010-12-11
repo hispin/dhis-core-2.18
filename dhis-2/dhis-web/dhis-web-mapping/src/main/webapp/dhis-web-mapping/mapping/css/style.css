@@ -213,13 +213,9 @@
 }
 .x-btn .icon-add {
 	background-image:url(../../../images/add.png);
-    padding-left:
 }
 .x-btn .icon-remove {
 	background-image:url(../../../images/remove.png);
-}
-.x-btn .icon-assign {
-	background-image:url(../../../images/assign2.png);
 }
 .x-btn .icon-assign {
 	background-image:url(../../../images/accept.png);

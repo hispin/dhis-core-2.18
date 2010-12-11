@@ -75,6 +75,7 @@ public class DefaultReportTableService
 {
     private static final Log log = LogFactory.getLog( DefaultReportTableService.class );
     
+    private static final String NULL_REPLACEMENT = "0.0";
     private static final String MODE_REPORT = "report";
     private static final String MODE_REPORT_TABLE = "table";
 
@@ -498,7 +499,7 @@ public class DefaultReportTableService
                         
                         for ( String identifier : reportTable.getCrossTabIdentifiers() )
                         {
-                            grid.addValue( valueOf( map.get( identifier ) ) );
+                            grid.addValue( parseAndReplaceNull( map.get( identifier ) ) );
                         }
                         
                         // -----------------------------------------------------
@@ -509,11 +510,11 @@ public class DefaultReportTableService
                         {
                             for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
                             {
-                                grid.addValue( valueOf( aggregatedDataValueService.
+                                grid.addValue( String.valueOf( aggregatedDataValueService.
                                     getAggregatedValue( (DataElement) metaObject, dimensionOption, period, unit ) ) );
                             }
                             
-                            grid.addValue( valueOf( aggregatedDataValueService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
+                            grid.addValue( String.valueOf( aggregatedDataValueService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );
                         }
                     }
                 }
@@ -524,14 +525,14 @@ public class DefaultReportTableService
     }
     
     /**
-     * Converts the given Double to String.
+     * Converts the given Double to String or replaces with default value if null.
      * 
      * @param value the Double.
      * @return the String.
      */
-    private String valueOf( Double value )
+    private String parseAndReplaceNull( Double value )
     {
-        return value != null ? String.valueOf( value ) : null;
+        return value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
     }
     
     /**
