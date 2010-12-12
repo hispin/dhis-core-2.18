@@ -1,4 +1,4 @@
 {
   "response": "error",
-  "message": "$!encoder.jsEncode( ${message} )"
+  "message": "$!encoder.jsonEncode( ${message} )"
 }

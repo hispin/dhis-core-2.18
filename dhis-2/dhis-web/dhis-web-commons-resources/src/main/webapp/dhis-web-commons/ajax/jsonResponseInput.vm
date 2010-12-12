@@ -1,4 +1,4 @@
 {
   "response": "input",
-  "message": "$!encoder.jsEncode( ${message} )"
+  "message": "$!encoder.jsonEncode( ${message} )"
 }

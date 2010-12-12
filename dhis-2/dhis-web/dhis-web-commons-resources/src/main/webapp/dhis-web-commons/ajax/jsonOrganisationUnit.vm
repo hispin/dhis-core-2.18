@@ -1,13 +1,13 @@
 { "organisationUnit": 
   {
     "id": $!{organisationUnit.id},
-    "name": "$!encoder.jsEncode( ${organisationUnit.name} )",
-    "shortName": "$!encoder.jsEncode( ${organisationUnit.shortName} )",
-    "code": "$!encoder.jsEncode( ${organisationUnit.code} )",
+    "name": "$!encoder.jsonEncode( ${organisationUnit.name} )",
+    "shortName": "$!encoder.jsonEncode( ${organisationUnit.shortName} )",
+    "code": "$!encoder.jsonEncode( ${organisationUnit.code} )",
     "openingDate": "$!{organisationUnit.openingDate}",
     "closedDate": "$!{organisationUnit.closedDate}",
     "active": "$!{organisationUnit.active}",
-    "comment": "$!encoder.jsEncode( ${organisationUnit.comment} )",
+    "comment": "$!encoder.jsonEncode( ${organisationUnit.comment} )",
     "geoCode": "$!{organisationUnit.geoCode}",
     "latitude": "$!{organisationUnit.latitude}",
     "longitude": "$!{organisationUnit.longitude}",

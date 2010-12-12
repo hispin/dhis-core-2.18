@@ -2,7 +2,7 @@
 { "levels": [
 #foreach( $level in $organisationUnitLevels )
   {    
-    "name": "$!encoder.jsEncode( ${level.name} )",
+    "name": "$!encoder.jsonEncode( ${level.name} )",
     "level": "$level.level"
   }#if( $velocityCount < $size ),#end    
 #end

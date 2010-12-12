@@ -1,9 +1,9 @@
 #set( $size = $organisationUnitGroups.size() )
 { "organisationUnitGroups": [
 #foreach( $group in $organisationUnitGroups )
-  {    
-    "name": "$!encoder.jsEncode( ${group.name} )",
-    "id": "$group.id"
+  {
+    "id": "$group.id",
+    "name": "$!encoder.jsonEncode( ${group.name} )"
   }#if( $velocityCount < $size ),#end    
 #end
 ] }

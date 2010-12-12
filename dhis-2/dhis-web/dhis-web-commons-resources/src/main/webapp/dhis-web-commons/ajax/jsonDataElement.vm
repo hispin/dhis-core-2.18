@@ -1,11 +1,11 @@
 { "dataElement": 
   {
     "id": $!{dataElement.id},
-    "name": "$!encoder.jsEncode( ${dataElement.name} )",
-    "alternativeName": "$!encoder.jsEncode( ${dataElement.alternativeNamee} )",
-    "shortName": "$!encoder.jsEncode( ${dataElement.shortName} )",
-    "code": "$!encoder.jsEncode( ${dataElement.code} )",
-    "description": "$!encoder.jsEncode( ${dataElement.description} )",
+    "name": "$!encoder.jsonEncode( ${dataElement.name} )",
+    "alternativeName": "$!encoder.jsonEncode( ${dataElement.alternativeNamee} )",
+    "shortName": "$!encoder.jsonEncode( ${dataElement.shortName} )",
+    "code": "$!encoder.jsonEncode( ${dataElement.code} )",
+    "description": "$!encoder.jsonEncode( ${dataElement.description} )",
     "active": "$!{dataElement.active}",
     "type": "$!{dataElement.type}",
     "aggregationOperator": "$!{dataElement.aggregationOperator}"

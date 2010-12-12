@@ -5,7 +5,7 @@
     "dataElementId": "$!{operand.dataElementId}",
     "optionComboId": "$!{operand.optionComboId}",
     "operandId": "$!{operand.operandId}",
-    "operandName": "$!encoder.jsEncode( ${operand.operandName} )"
+    "operandName": "$!encoder.jsonEncode( ${operand.operandName} )"
   }#if( $velocityCount < $size ),#end
 #end
 ] }
