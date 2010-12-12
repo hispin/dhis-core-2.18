@@ -315,14 +315,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- OrganisationUnit Search -->
 	
 	<bean
-		id="org.hisp.dhis.oum.action.search.GetCompulsoryGroupSetsAction"
-		class="org.hisp.dhis.oum.action.search.GetCompulsoryGroupSetsAction"
-		scope="prototype">
-		<property name="organisationUnitGroupService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	</bean>
-	
-	<bean
 		id="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction"
 		class="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction"
 		scope="prototype">
