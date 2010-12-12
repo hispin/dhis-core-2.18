@@ -137,11 +137,16 @@ public class HibernateOrganisationUnitStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnit> getOrganisationUnitsByGroups( Collection<OrganisationUnitGroup> groups )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups )
     {
         if ( groups != null && groups.size() > 0 )
         {
             StringBuilder hql = new StringBuilder( "from OrganisationUnit o where" );
+            
+            if ( name != null && !name.trim().isEmpty() )
+            {
+                hql.append(  " lower(name) like :name and" );
+            }
                         
             for ( int i = 0; i < groups.size(); i++ )
             {
@@ -151,6 +156,11 @@ public class HibernateOrganisationUnitStore
             hql.delete( hql.length() - 4, hql.length() );
             
             Query query = sessionFactory.getCurrentSession().createQuery( hql.toString() );
+            
+            if ( name != null && !name.trim().isEmpty() )
+            {
+                query.setString( "name", "%" + name.toLowerCase() + "%" );
+            }
             
             int i = 0;
             

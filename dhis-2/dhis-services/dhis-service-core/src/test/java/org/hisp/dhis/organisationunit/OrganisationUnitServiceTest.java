@@ -382,16 +382,22 @@ public class OrganisationUnitServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( groupC );
         
         List<OrganisationUnitGroup> groups = Arrays.asList( groupA );        
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitsByGroups( groups );        
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
         assertEquals( 3, units.size() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName().toLowerCase(), groups );
+        assertEquals( 1, units.size() );
+        assertEquals( unitA, units.iterator().next() );
 
-        groups = Arrays.asList( groupA, groupB );        
-        units = organisationUnitService.getOrganisationUnitsByGroups( groups );        
+        groups = Arrays.asList( groupA, groupB );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
         assertEquals( 2, units.size() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName().toUpperCase(), groups );
+        assertEquals( 1, units.size() );
+        assertEquals( unitB, units.iterator().next() );
 
         groups = Arrays.asList( groupA, groupB, groupC );        
-        units = organisationUnitService.getOrganisationUnitsByGroups( groups );        
-        assertEquals( 1, units.size() );        
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );        
+        assertEquals( 1, units.size() ); 
     }
     
     // -------------------------------------------------------------------------

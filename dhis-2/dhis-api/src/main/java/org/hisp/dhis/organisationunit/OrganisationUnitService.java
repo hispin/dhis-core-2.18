@@ -232,7 +232,7 @@ public interface OrganisationUnitService
      */
     Set<Source> convert( Collection<OrganisationUnit> organisationUnits );
     
-    Collection<OrganisationUnit> getOrganisationUnitsByGroups( Collection<OrganisationUnitGroup> groups );
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups );
     
     /**
      * Get the units in tree by the collection of given roots
