@@ -1,0 +1,22 @@
+
+<h3>$encoder.htmlEncode( $organisationUnit.name )</h3>
+
+<table>
+
+<tr>
+<td><b>$i18n.getString( "short_name" ):</b></td>
+<td>$encoder.htmlEncode( $organisationUnit.shortName )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "code" ):</b></td>
+<td>$encoder.htmlEncode( $organisationUnit.code )</td>
+</tr>
+
+#foreach( $groupSet in $groupSets )
+<tr>
+<td><b>$!encoder.htmlEncode( $groupSet.name ):</b></td>
+<td>$!encoder.htmlEncode( $!organisationUnit.getGroupNameInGroupSet( $groupSet ) )</td>
+</tr>
+#end
+
+</table>
