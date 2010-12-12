@@ -3,10 +3,10 @@
 #foreach( $indicator in $indicators )
   {
     "id": $!{indicator.id},
-    "name": "$!encoder.jsEncode( ${indicator.name} )",
-    "alternativeName": "$!encoder.jsEncode( ${indicator.alternativeNamee} )",
-    "shortName": "$!encoder.jsEncode( ${indicator.shortName} )",
-    "code": "$!encoder.jsEncode( ${indicator.code} )",
+    "name": "$!encoder.jsonEncode( ${indicator.name} )",
+    "alternativeName": "$!encoder.jsonEncode( ${indicator.alternativeNamee} )",
+    "shortName": "$!encoder.jsonEncode( ${indicator.shortName} )",
+    "code": "$!encoder.jsonEncode( ${indicator.code} )",
     "annualized": "${indicator.annualized}",
     "indicatorTypeId": $!{indicator.indicatorType.id}
   }#if( $velocityCount < $size ),#end

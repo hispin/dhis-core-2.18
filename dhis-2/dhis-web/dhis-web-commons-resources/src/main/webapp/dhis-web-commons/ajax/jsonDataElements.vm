@@ -3,10 +3,10 @@
 #foreach( $dataElement in $dataElements )
   {
     "id":  ${dataElement.id} ,
-    "name": "$!encoder.jsEncode( ${dataElement.name} )",
-    "alternativeName": "$!encoder.jsEncode( ${dataElement.alternativeNamee} )",
-    "shortName": "$!encoder.jsEncode( ${dataElement.shortName} )",
-    "code": "$!encoder.jsEncode( ${dataElement.code} )",
+    "name": "$!encoder.jsonEncode( ${dataElement.name} )",
+    "alternativeName": "$!encoder.jsonEncode( ${dataElement.alternativeNamee} )",
+    "shortName": "$!encoder.jsonEncode( ${dataElement.shortName} )",
+    "code": "$!encoder.jsonEncode( ${dataElement.code} )",
     "type": "$!{dataElement.type}",
     "aggregationOperator": "$!{dataElement.aggregationOperator}",
 	"zeroIsSignificant": "$!{dataElement.zeroIsSignificant}"
