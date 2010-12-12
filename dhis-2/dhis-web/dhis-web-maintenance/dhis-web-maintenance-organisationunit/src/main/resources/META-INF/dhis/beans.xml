@@ -323,5 +323,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.oum.action.search.GetOrganisationUnitDetailsAction"
+		class="org.hisp.dhis.oum.action.search.GetOrganisationUnitDetailsAction"
+		scope="prototype">
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
 		
 </beans>

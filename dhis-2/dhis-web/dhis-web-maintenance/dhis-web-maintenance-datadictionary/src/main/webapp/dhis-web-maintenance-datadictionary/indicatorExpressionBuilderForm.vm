@@ -106,7 +106,7 @@
 		checkAggregationOperator();
 		getExpressionText();
 		dialog.dialog("option", "title", "$i18n.getString( 'edit_numerator' )");
-		dialog.dialog( "open");		
+		dialog.dialog("open");		
 	}
 	
 	function indicatorDenominatorForm()
