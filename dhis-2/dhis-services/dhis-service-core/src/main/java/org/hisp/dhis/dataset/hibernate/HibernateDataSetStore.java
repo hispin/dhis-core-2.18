@@ -169,18 +169,17 @@ public class HibernateDataSetStore
         
         return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ConversionUtils.getIdentifiers( Source.class, sources ) ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
-	public Collection<DataSet> getDataSetsForMobile(Source source) {   	
-        System.out.println("received Source: "+source.getName());
+    public Collection<DataSet> getDataSetsForMobile( Source source )
+    {
         String hql = "from DataSet d where :source in elements(d.sources) and d.mobile = true";
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         query.setEntity( "source", source );
-        
+
         return query.list();
-    	
-	}
-    
+    }
+
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------
@@ -273,6 +272,5 @@ public class HibernateDataSetStore
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
         return getBetweenByName( name, first, max );
-    }
-	
+    }	
 }

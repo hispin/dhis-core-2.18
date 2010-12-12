@@ -91,6 +91,8 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
     
+    Collection<OrganisationUnit> getOrganisationUnitsByGroups( Collection<OrganisationUnitGroup> groups );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
