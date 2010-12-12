@@ -36,7 +36,7 @@
 
 <td></td>
 <td><input type="submit" value="$i18n.getString( 'search' )" style="width:100px">
-<input type="button" onclick="window.location.href='organisationUnitSearch.action'" value="$i18n.getString( 'clear' )"></td>
+<input type="button" onclick="window.location.href='organisationUnitSearch.action'" value="$i18n.getString( 'clear' )" style="width:100px"></td>
 
 <tr>
 <td style="height:15px" colspan="2"></td>
@@ -52,17 +52,35 @@
 
 <h4>$i18n.getString( "found" ) $organisationUnits.size() $i18n.getString( "organisation_units" )</h4>
 
-<table>
+<table class="listTable" style="width:90%">
+<thead>
 <tr>
 <th style="min-width:300px">$i18n.getString( "name" )</th>
+#foreach( $groupSet in $groupSets )
+<th>$encoder.htmlEncode( $groupSet.name )</th>
+#end
+<th class="{sorter: false}" style="width:24px"></th>
 </tr>
+</thead>
 
+<tbody id="list">
 #foreach( $unit in $organisationUnits )
 <tr>
 <td>$encoder.htmlEncode( $unit.name )</td>
+#foreach( $groupSet in $groupSets )
+<td>$!unit.getGroupNameInGroupSet( $groupSet )</td>
+#end
+<td><a href="#"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
 </tr>
 #end
+</tbody>
 
 </table>
 
 #end
+
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
+</script>
