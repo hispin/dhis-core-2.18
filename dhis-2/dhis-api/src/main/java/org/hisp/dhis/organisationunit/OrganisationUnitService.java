@@ -232,6 +232,15 @@ public interface OrganisationUnitService
      */
     Set<Source> convert( Collection<OrganisationUnit> organisationUnits );
     
+    /**
+     * Get the units which name are like the given name and are members of the
+     * given groups. If name or groups are null or empty they are ignored in the 
+     * search. If name and groups are null an empty collection is returned. 
+     * 
+     * @param name the name.
+     * @param groups the organisation unit groups.
+     * @return a collection of organisation units.
+     */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups );
     
     /**

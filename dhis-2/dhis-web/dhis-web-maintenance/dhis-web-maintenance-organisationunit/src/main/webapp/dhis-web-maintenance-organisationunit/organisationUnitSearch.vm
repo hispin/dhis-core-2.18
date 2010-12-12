@@ -1,0 +1,65 @@
+
+<h3>$i18n.getString( "org_unit_search_management" )</h3>
+
+<form action="searchOrganisationUnits.action" method="get">
+<table>
+<tr>
+<th>$i18n.getString( "criteria" )</th>
+<th>$i18n.getString( "options" )</th>
+</tr>
+
+<tr>
+<td>$i18n.getString( "name" )</th>
+<td><input type="text" name="name" style="width:325px"></td>
+</tr>
+
+#foreach( $groupSet in $groupSets )
+<tr>
+<td>$encoder.htmlEncode( $groupSet.name )</td>
+<td>
+  <select name="group" style="width:325px">
+  <option value="-1">[ $i18n.getString( "any" ) ]</option>
+  #foreach( $group in $groupSet.organisationUnitGroups )
+  <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
+  #end
+  </select>
+</td>
+</tr>
+#end
+
+<tr>
+<td style="height:15px" colspan="2"></td>
+</tr>
+<tr>
+
+<td></td>
+<td><input type="submit" value="$i18n.getString( 'search' )" style="width:100px"></td>
+
+<tr>
+<td style="height:15px" colspan="2"></td>
+</tr>
+<tr>
+
+</tr>
+
+</table>
+</form>
+
+#if ( $organisationUnits )
+
+<h4>$i18n.getString( "found" ) $organisationUnits.size() $i18n.getString( "organisation_units" )</h4>
+
+<table>
+<tr>
+<th style="min-width:300px">$i18n.getString( "name" )</th>
+</tr>
+
+#foreach( $unit in $organisationUnits )
+<tr>
+<td>$encoder.htmlEncode( $unit.name )</td>
+</tr>
+#end
+
+</table>
+
+#end
