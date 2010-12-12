@@ -28,6 +28,7 @@ package org.hisp.dhis.organisationunit.hibernate;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -37,6 +38,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
@@ -132,6 +134,35 @@ public class HibernateOrganisationUnitStore
         String hql = "from OrganisationUnit o where o.groups.size = 0";
         
         return sessionFactory.getCurrentSession().createQuery( hql ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<OrganisationUnit> getOrganisationUnitsByGroups( Collection<OrganisationUnitGroup> groups )
+    {
+        if ( groups != null && groups.size() > 0 )
+        {
+            StringBuilder hql = new StringBuilder( "from OrganisationUnit o where" );
+                        
+            for ( int i = 0; i < groups.size(); i++ )
+            {
+                hql.append( " :g" ).append( i ).append( " in elements( o.groups ) and" );
+            }
+            
+            hql.delete( hql.length() - 4, hql.length() );
+            
+            Query query = sessionFactory.getCurrentSession().createQuery( hql.toString() );
+            
+            int i = 0;
+            
+            for ( OrganisationUnitGroup group : groups )
+            {
+                query.setEntity( "g" + i++, group );
+            }
+            
+            return query.list();
+        }
+        
+        return new HashSet<OrganisationUnit>();
     }
 
     // -------------------------------------------------------------------------

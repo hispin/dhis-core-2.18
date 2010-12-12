@@ -405,6 +405,11 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
     }
 
+    public Collection<OrganisationUnit> getOrganisationUnitsByGroups( Collection<OrganisationUnitGroup> groups )
+    {
+        return organisationUnitStore.getOrganisationUnitsByGroups( groups );
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
