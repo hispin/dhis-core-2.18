@@ -247,7 +247,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		</property>
 	</bean>
-
+	
 	<!-- Hierarchy operations -->
 
 	<bean
@@ -312,4 +312,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 	
+	<!-- OrganisationUnit Search -->
+	
+	<bean
+		id="org.hisp.dhis.oum.action.search.GetCompulsoryGroupSetsAction"
+		class="org.hisp.dhis.oum.action.search.GetCompulsoryGroupSetsAction"
+		scope="prototype">
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction"
+		class="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction"
+		scope="prototype">
+		<property name="organisationUnitGroupService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+		
 </beans>

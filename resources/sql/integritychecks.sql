@@ -34,3 +34,10 @@ where sd.dataelementid not in (
   select dm.dataelementid from datasetmembers dm
   join dataset ds on(dm.datasetid=ds.datasetid)
   where sc.datasetid=ds.datasetid);
+
+-- Get orgunit groups which an orgunit member of
+
+select * from orgunitgroup g
+join orgunitgroupmembers m using(orgunitgroupid)
+join organisationunit o using (organisationunitid)
+where o.name = 'Mandera District Hospital';

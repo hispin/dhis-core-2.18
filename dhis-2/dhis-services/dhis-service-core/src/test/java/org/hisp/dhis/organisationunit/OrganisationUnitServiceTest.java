@@ -357,7 +357,7 @@ public class OrganisationUnitServiceTest
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitB ), unitH, unitI, unitJ, unitK ) );
     }
     @Test
-    public void testGetOrganisationUnitsByGroups()
+    public void testGetOrganisationUnitsByNameAndGroups()
     {
         OrganisationUnit unitA = createOrganisationUnit( 'A' );
         OrganisationUnit unitB = createOrganisationUnit( 'B' );
@@ -387,11 +387,17 @@ public class OrganisationUnitServiceTest
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName().toLowerCase(), groups );
         assertEquals( 1, units.size() );
         assertEquals( unitA, units.iterator().next() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName(), null );
+        assertEquals( 1, units.size() );
+        assertEquals( unitA, units.iterator().next() );        
 
         groups = Arrays.asList( groupA, groupB );
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
         assertEquals( 2, units.size() );
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName().toUpperCase(), groups );
+        assertEquals( 1, units.size() );
+        assertEquals( unitB, units.iterator().next() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName(), null );
         assertEquals( 1, units.size() );
         assertEquals( unitB, units.iterator().next() );
 
