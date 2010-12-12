@@ -263,6 +263,29 @@ public class OrganisationUnit
     {
         return coordinates != null && !coordinates.isEmpty() ? coordinates : "[]";
     }
+    
+    public OrganisationUnitGroup getGroupInGroupSet( OrganisationUnitGroupSet groupSet )
+    {
+        if ( groupSet != null )
+        {
+            for ( OrganisationUnitGroup group : groups )
+            {
+                if ( groupSet.getOrganisationUnitGroups().contains( group ) )
+                {
+                    return group;
+                }   
+            }
+        }
+        
+        return null;
+    }
+    
+    public String getGroupNameInGroupSet( OrganisationUnitGroupSet groupSet )
+    {
+        final OrganisationUnitGroup group = getGroupInGroupSet( groupSet );
+        
+        return group != null ? group.getName() : null;
+    }
         
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
