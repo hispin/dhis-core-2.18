@@ -27,13 +27,20 @@ package org.hisp.dhis.oum.action.search;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.springframework.util.CollectionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,7 +50,7 @@ import com.opensymphony.xwork2.Action;
 public class SearchOrganisationUnitsAction
     implements Action
 {
-    private static final int ANY = -1;
+    private static final int ANY = 0;
 
     // -------------------------------------------------------------------------
     // Depdencies
@@ -64,34 +71,51 @@ public class SearchOrganisationUnitsAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input and output
     // -------------------------------------------------------------------------
 
     private String name;
     
+    public String getName()
+    {
+        return name;
+    }
+
     public void setName( String name )
     {
         this.name = name;
     }
 
-    private Collection<Integer> group = new HashSet<Integer>();
+    private Collection<Integer> groupId = new HashSet<Integer>();
 
-    public void setGroup( Collection<Integer> group )
+    public Collection<Integer> getGroupId()
     {
-        this.group = group;
+        return groupId;
+    }
+
+    public void setGroupId( Collection<Integer> groupId )
+    {
+        this.groupId = groupId;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
+    private List<OrganisationUnitGroupSet> groupSets;
+
+    public List<OrganisationUnitGroupSet> getGroupSets()
+    {
+        return groupSets;
+    }
+    
     private Collection<OrganisationUnit> organisationUnits;
 
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -99,18 +123,33 @@ public class SearchOrganisationUnitsAction
     public String execute()
         throws Exception
     {
-        Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
-        
-        for ( Integer id : group )
-        {
-            if ( id != ANY )
-            {
-                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
-                groups.add( group );
-            }
-        }
+        // ---------------------------------------------------------------------
+        // Assemble groups and get search result
+        // ---------------------------------------------------------------------
 
-        organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups );
+        if ( StringUtils.isNotBlank( name ) || !CollectionUtils.isEmpty( groupId ) )
+        {
+            Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+            
+            for ( Integer id : groupId )
+            {
+                if ( id != ANY )
+                {
+                    OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
+                    groups.add( group );
+                }
+            }
+    
+            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups );
+        }
+        
+        // ---------------------------------------------------------------------
+        // Get group sets
+        // ---------------------------------------------------------------------
+
+        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
+        
+        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
         
         return SUCCESS;
     }

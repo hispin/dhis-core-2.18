@@ -297,17 +297,12 @@
 		<!-- OrganisationUnit Search -->
 		
 		<action name="organisationUnitSearch"
-			class="org.hisp.dhis.oum.action.search.GetCompulsoryGroupSetsAction">
+			class="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnitSearch.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
 		</action>
 		
-		<action name="searchOrganisationUnits"
-			class="org.hisp.dhis.oum.action.search.SearchOrganisationUnitsAction">
-			<result name="success" type="chain">organisationUnitSearch</result>
-		</action>
-
 	</package>
 
 </struts>

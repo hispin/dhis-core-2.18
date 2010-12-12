@@ -183,8 +183,7 @@ public class HibernateOrganisationUnitStore
             }
         }
         
-        return query.list();
-        
+        return query.list();        
     }
 
     // -------------------------------------------------------------------------

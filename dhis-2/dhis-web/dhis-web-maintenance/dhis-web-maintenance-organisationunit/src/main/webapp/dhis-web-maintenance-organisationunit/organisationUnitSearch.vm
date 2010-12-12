@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "org_unit_search_management" )</h3>
 
-<form action="searchOrganisationUnits.action" method="get">
+<form action="organisationUnitSearch.action" method="get">
 <table>
 <tr>
 <th>$i18n.getString( "criteria" )</th>
@@ -10,30 +10,33 @@
 
 <tr>
 <td>$i18n.getString( "name" )</th>
-<td><input type="text" name="name" style="width:325px"></td>
+<td><input type="text" name="name" style="width:325px" value="$!{name}"></td>
 </tr>
 
 #foreach( $groupSet in $groupSets )
 <tr>
 <td>$encoder.htmlEncode( $groupSet.name )</td>
 <td>
-  <select name="group" style="width:325px">
-  <option value="-1">[ $i18n.getString( "any" ) ]</option>
-  #foreach( $group in $groupSet.organisationUnitGroups )
-  <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
-  #end
+  <select name="groupId" style="width:325px">
+  <option value="0">[ $i18n.getString( "any" ) ]</option>
+    #foreach( $group in $groupSet.organisationUnitGroups )
+    <option value="$group.id"
+    #if( $groupId && $groupId.contains( $group.id ) )selected="selected"#end
+    >$encoder.htmlEncode( $group.name )</option>
+    #end
   </select>
 </td>
 </tr>
 #end
 
 <tr>
-<td style="height:15px" colspan="2"></td>
+<td style="height:10px" colspan="2"></td>
 </tr>
 <tr>
 
 <td></td>
-<td><input type="submit" value="$i18n.getString( 'search' )" style="width:100px"></td>
+<td><input type="submit" value="$i18n.getString( 'search' )" style="width:100px">
+<input type="button" onclick="window.location.href='organisationUnitSearch.action'" value="$i18n.getString( 'clear' )"></td>
 
 <tr>
 <td style="height:15px" colspan="2"></td>
