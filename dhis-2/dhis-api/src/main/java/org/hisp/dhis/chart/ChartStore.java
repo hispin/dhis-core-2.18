@@ -27,6 +27,8 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.common.GenericStore;
 
 /**
@@ -45,4 +47,13 @@ public interface ChartStore
      * @return the Chart.
      */
     Chart getByTitle( String title );
+    
+    Collection<Chart> getChartsBetween( int first, int max );
+    
+    Collection<Chart> getChartsBetweenByName( String name, int first, int max );
+    
+    int getChartCount();
+    
+    int getChartCountByName( String name );
+
 }

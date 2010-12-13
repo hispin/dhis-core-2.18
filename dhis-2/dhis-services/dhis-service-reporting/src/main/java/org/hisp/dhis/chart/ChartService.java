@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -73,4 +74,13 @@ public interface ChartService
     Chart getChartByTitle( String name );
     
     Collection<Chart> getCharts( final Collection<Integer> identifiers );
+    
+    Collection<Chart> getChartsBetween( int first, int max );
+    
+    Collection<Chart> getChartsBetweenByName( String name, int first, int max );
+    
+    int getChartCount();
+    
+    int getChartCountByName( String name );
+
 }

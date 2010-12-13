@@ -6,6 +6,7 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				 <tr>
+				 	<td>#filterDiv( "displayManageTableForm" )</td>
                     <td colspan="10" style="text-align:right">
                     	<input type="button" value="$i18n.getString( 'add_indicator_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=indicators'"><br>
                     	<input type="button" value="$i18n.getString( 'add_dataelement_table' )" style="width:250px" onclick="window.location.href='displayAddTableForm.action?mode=dataelements'"><br>
@@ -42,6 +43,8 @@
 				#end
 				</tbody>
 			</table>
+			<p></p>
+			#parse( "/dhis-web-commons/paging/paging.vm" )
 			
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">

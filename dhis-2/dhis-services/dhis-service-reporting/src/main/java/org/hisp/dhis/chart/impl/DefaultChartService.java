@@ -640,4 +640,23 @@ public class DefaultChartService
         } );
     }
 
+    public int getChartCount()
+    {
+        return chartStore.getChartCount();
+    }
+
+    public int getChartCountByName( String name )
+    {
+        return chartStore.getChartCountByName( name );
+    }
+
+    public Collection<Chart> getChartsBetween( int first, int max )
+    {
+        return chartStore.getChartsBetween( first, max );
+    }
+
+    public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
+    {
+        return chartStore.getChartsBetweenByName( name, first, max );
+    }
 }
