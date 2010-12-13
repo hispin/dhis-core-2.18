@@ -33,6 +33,7 @@
       <param name="page">/dhis-web-reporting/viewDocumentForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/document.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="displayAddDocumentForm" class="org.hisp.dhis.reporting.document.action.GetDocumentAction">
