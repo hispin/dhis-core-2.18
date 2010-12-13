@@ -54,6 +54,7 @@ public class HibernateChartStore
         return getCount();
     }
 
+    @SuppressWarnings("unchecked")
     public Collection<Chart> getChartsBetween( int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -62,6 +63,8 @@ public class HibernateChartStore
         criteria.setMaxResults( max );
         return criteria.list();
     }
+
+    @SuppressWarnings("unchecked")
     public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();

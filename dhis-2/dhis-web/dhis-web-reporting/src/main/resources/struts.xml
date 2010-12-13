@@ -418,6 +418,17 @@
       <param name="bufferSize">1024</param>
       </result>
     </action>
+    
+    
+    <!-- Organisation Unit Distribution -->
+  
+    <action name="displayOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/viewOrgUnitDistribution.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js</param>
+      <interceptor-ref name="organisationUnitTreeStack" />
+    </action>
 	
   </package>
 </struts>
