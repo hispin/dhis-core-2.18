@@ -146,6 +146,7 @@
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="displayConfigureReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportConfigurationAction">

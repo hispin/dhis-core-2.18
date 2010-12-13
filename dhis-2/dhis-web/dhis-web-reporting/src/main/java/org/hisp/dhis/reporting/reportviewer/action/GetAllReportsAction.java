@@ -27,6 +27,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
 
 import java.util.ArrayList;
@@ -35,22 +36,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.report.manager.ReportConfiguration;
 
-import org.apache.struts2.ServletActionContext;
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetAllReportsAction
-    implements Action
+    extends ActionPagingSupport<Report>
 {
     private static final String SEPARATOR = "/";
     private static final String BASE_QUERY = "frameset?__report=";
@@ -81,7 +81,7 @@ public class GetAllReportsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<Report> reports = new ArrayList<Report>();
@@ -89,6 +89,18 @@ public class GetAllReportsAction
     public List<Report> getReports()
     {
         return reports;
+    }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -136,6 +148,35 @@ public class GetAllReportsAction
         
         Collections.sort( reports, new ReportComparator() );
         
+        if ( isNotBlank( key ) )
+        {
+            reports = searchByName( reports, key );
+            
+            this.paging = createPaging( reports.size() );
+            
+            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );
+           
+        }
+        else {
+            this.paging = createPaging( reports.size() );
+                
+            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );
+        }
+        
         return SUCCESS;
+    }
+    
+    private List<Report> searchByName( List<Report> reports, String key )
+    {
+        List<Report> result = new ArrayList<Report>();
+
+        for ( Report each : reports )
+        {
+            if ( each.getName().contains( key ) )
+            {
+                result.add( each );
+            }
+        }
+        return result;
     }
 }
