@@ -1628,168 +1628,174 @@
                         width: GLOBAL.conf.combo_width_fieldset,                
                         store:GLOBAL.stores.overlay
                     }
-                ],
-                bbar: [
-                    '->',
-                    {
-                        xtype: 'button',
-                        id: 'newmaplayer_b',
-                        text: 'Register',
-                        iconCls: 'icon-add',
-                        handler: function() {
-                            var mln = Ext.getCmp('maplayername_tf').getRawValue();
-                            var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
-                            var mlfo = Ext.getCmp('maplayerfillopacity_cb').getRawValue();
-                            var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
-                            var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getRawValue();
-                            var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
-                            
-                            if (!mln || !mlmsf) {
-                                Ext.message.msg(false, i18n_overlay_form_is_not_complete);
-                                return;
-                            }
-                            
-                            if (GLOBAL.stores.overlay.find('name', mln) !== -1) {
-                                Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_is_already_in_use);
-                                return;
-                            }
-                                
-                            Ext.Ajax.request({
-                                url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
-                                method: 'POST',
-                                params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
-                                success: function(r) {
-                                    Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
-                                    GLOBAL.stores.overlay.load();
-                            
-                                    GLOBAL.vars.map.addLayer(
-                                        new OpenLayers.Layer.Vector(mln, {
-                                            'visibility': false,
-                                            'styleMap': new OpenLayers.StyleMap({
-                                                'default': new OpenLayers.Style(
-                                                    OpenLayers.Util.applyDefaults(
-                                                        {'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
-                                                        OpenLayers.Feature.Vector.style['default']
-                                                    )
-                                                )
-                                            }),
-                                            'strategies': [new OpenLayers.Strategy.Fixed()],
-                                            'protocol': new OpenLayers.Protocol.HTTP({
-                                                'url': GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
-                                                'format': new OpenLayers.Format.GeoJSON()
-                                            })
-                                        })
-                                    );
-                                    
-                                    Ext.getCmp('maplayername_tf').reset();
-                                    Ext.getCmp('maplayermapsourcefile_cb').clearValue();
-                                }
-                            });
-                        }
-                    },
-                    {
-                        xtype: 'button',
-                        id: 'deletemaplayer_b',
-                        text: i18n_delete,
-                        iconCls: 'icon-remove',
-                        handler: function() {
-                            var ml = Ext.getCmp('maplayer_cb').getValue();
-                            var mln = Ext.getCmp('maplayer_cb').getRawValue();
-                            
-                            if (!ml) {
-                                Ext.message.msg(false, i18n_please_select_an_overlay);
-                                return;
-                            }
-                            
-                            Ext.Ajax.request({
-                                url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
-                                method: 'POST',
-                                params: {id:ml},
-                                success: function(r) {
-                                    Ext.message.msg(true, i18n_overlay + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                                    GLOBAL.stores.overlay.load();
-                                    Ext.getCmp('maplayer_cb').clearValue();
-                                }
-                            });
-                            
-                            GLOBAL.vars.map.getLayersByName(mln)[0].destroy();
-                        }
-                    }
                 ]
+            }
+        ],
+        bbar: [
+            '->',
+            {
+                xtype: 'button',
+                id: 'newmaplayer_b',
+                text: 'Register',
+                iconCls: 'icon-add',
+                handler: function() {
+                    var mln = Ext.getCmp('maplayername_tf').getRawValue();
+                    var mlfc = Ext.getCmp('maplayerfillcolor_cf').getValue();
+                    var mlfo = Ext.getCmp('maplayerfillopacity_cb').getRawValue();
+                    var mlsc = Ext.getCmp('maplayerstrokecolor_cf').getValue();
+                    var mlsw = Ext.getCmp('maplayerstrokewidth_cb').getRawValue();
+                    var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
+                    
+                    if (!mln || !mlmsf) {
+                        Ext.message.msg(false, i18n_overlay_form_is_not_complete);
+                        return;
+                    }
+                    
+                    if (GLOBAL.stores.overlay.find('name', mln) !== -1) {
+                        Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_is_already_in_use);
+                        return;
+                    }
+                        
+                    Ext.Ajax.request({
+                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
+                        method: 'POST',
+                        params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
+                        success: function(r) {
+                            Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
+                            GLOBAL.stores.overlay.load();
+                    
+                            GLOBAL.vars.map.addLayer(
+                                new OpenLayers.Layer.Vector(mln, {
+                                    'visibility': false,
+                                    'styleMap': new OpenLayers.StyleMap({
+                                        'default': new OpenLayers.Style(
+                                            OpenLayers.Util.applyDefaults(
+                                                {'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
+                                                OpenLayers.Feature.Vector.style['default']
+                                            )
+                                        )
+                                    }),
+                                    'strategies': [new OpenLayers.Strategy.Fixed()],
+                                    'protocol': new OpenLayers.Protocol.HTTP({
+                                        'url': GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
+                                        'format': new OpenLayers.Format.GeoJSON()
+                                    })
+                                })
+                            );
+                            
+                            Ext.getCmp('maplayername_tf').reset();
+                            Ext.getCmp('maplayermapsourcefile_cb').clearValue();
+                        }
+                    });
+                }
+            },
+            {
+                xtype: 'button',
+                id: 'deletemaplayer_b',
+                text: i18n_delete,
+                iconCls: 'icon-remove',
+                handler: function() {
+                    var ml = Ext.getCmp('maplayer_cb').getValue();
+                    var mln = Ext.getCmp('maplayer_cb').getRawValue();
+                    
+                    if (!ml) {
+                        Ext.message.msg(false, i18n_please_select_an_overlay);
+                        return;
+                    }
+                    
+                    Ext.Ajax.request({
+                        url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
+                        method: 'POST',
+                        params: {id:ml},
+                        success: function(r) {
+                            Ext.message.msg(true, i18n_overlay + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
+                            GLOBAL.stores.overlay.load();
+                            Ext.getCmp('maplayer_cb').clearValue();
+                        }
+                    });
+                    
+                    GLOBAL.vars.map.getLayersByName(mln)[0].destroy();
+                }
             }
         ]
     });
             
-    /* Section: base layers */    
-    var mapLayerBaseLayersNameTextField=new Ext.form.TextField({id:'maplayerbaselayersname_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
-    var mapLayerBaseLayersUrlTextField=new Ext.form.TextField({id:'maplayerbaselayersurl_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
-    var mapLayerBaseLayersLayerTextField=new Ext.form.TextField({id:'maplayerbaselayerslayer_tf',emptyText:GLOBAL.conf.emptytext,hideLabel:true,width:GLOBAL.conf.combo_width});
-    
-    
-	var mapLayerBaseLayerComboBox=new Ext.form.ComboBox({id:'maplayerbaselayers_cb',typeAhead:true,editable:false,valueField:'id',displayField:'name',mode:'remote',forceSelection:true,triggerAction:'all',emptyText:GLOBAL.conf.emptytext,hideLabel:true,selectOnFocus:true,width:GLOBAL.conf.combo_width,minListWidth:GLOBAL.conf.combo_width,store:GLOBAL.stores.baseLayer});
-    
-    var deleteMapLayerBaseLayersButton = new Ext.Button({
-        id: 'deletemaplayerbaselayers_b',
-        text: i18n_delete_baselayer,
-        cls: 'window-button',
-        handler: function() {
-            var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
-            var mln = Ext.getCmp('maplayerbaselayers_cb').getRawValue();
-            
-            if (!ml) {
-                Ext.message.msg(false, i18n_please_select_a_baselayer);
-                return;
+    /* Section: base layers */
+    var baselayersWindow = new Ext.Window({
+        id: 'baselayers_w',
+        title: '<span id="window-maplayer-title">' + i18n_baselayers + '</span>',
+		layout: 'fit',
+        closeAction: 'hide',
+		width: GLOBAL.conf.window_width,
+        height: 229,
+        items: [
+            {
+                xtype: 'form',
+                bodyStyle: 'padding:8px',
+                items: [
+                    {html: '<div class="window-info">Register new base layer</div>'},
+                    {
+                        xtype: 'textfield',
+                        id: 'maplayerbaselayersname_tf',
+                        emptytext: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_display_name,
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'maplayerbaselayersurl_tf',
+                        emptytext: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_url,
+                        width: GLOBAL.conf.combo_width_fieldset,
+                    },
+                    {
+                        xtype: 'textfield',
+                        id: 'maplayerbaselayerslayer_tf',
+                        emptytext: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_layer,
+                        width: GLOBAL.conf.combo_width_fieldset,
+                    },
+                    {html: '<div class="window-p"></div>'},
+                    {html: '<div class="window-info">Delete overlay</div>'},
+                    {
+                        xtype: 'combo',
+                        id: 'maplayerbaselayers_cb',
+                        editable: false,
+                        valueField: 'id',
+                        displayField: 'name',
+                        mode: 'remote',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        emptytext: GLOBAL.conf.emptytext,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: i18n_overlays,
+                        width: GLOBAL.conf.combo_width_fieldset,                
+                        store: GLOBAL.stores.baseLayer
+                    }
+                ]
             }
-            
-            Ext.Ajax.request({
-                url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
-                method: 'POST',
-                params: {id: ml},
-                success: function(r) {
-                    Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
-                    GLOBAL.stores.baseLayer.load({callback: function() {
-                        Ext.getCmp('maplayerbaselayers_cb').clearValue();
-                        var names = GLOBAL.stores.baseLayer.collect('name');
-                        
-                        for (var i = 0; i < names.length; i++) {
-                            GLOBAL.vars.map.getLayersByName(names[i])[0].setVisibility(false);
-                        }
-                        
-                        GLOBAL.vars.map.getLayersByName(mln)[0].destroy(false);
-                    }});
-                }
-            });
-            
-        }
-    });
-    
-    var newMapLayerBaseLayersPanel = new Ext.form.FormPanel({
-        id: 'newmaplayerbaselayers_p',
-        items:
-        [
-            { html: '<div class="panel-fieldlabel-first">'+i18n_display_name+'</div>' }, mapLayerBaseLayersNameTextField,
-            { html: '<div class="panel-fieldlabel">'+i18n_url+'</div>' }, mapLayerBaseLayersUrlTextField,
-            { html: '<div class="panel-fieldlabel">'+i18n_layer+'</div>' }, mapLayerBaseLayersLayerTextField,
+        ],
+        bbar: [
+            '->',
             {
 				xtype: 'button',
 				id: 'newmaplayerbaselayers_b',
-				text: 'Register new base layer',
-				cls: 'window-button',
+				text: i18n_register,
+				iconCls: 'icon-add',
 				handler: function() {
 					var mlbn = Ext.getCmp('maplayerbaselayersname_tf').getValue();
 					var mlbu = Ext.getCmp('maplayerbaselayersurl_tf').getValue();
 					var mlbl = Ext.getCmp('maplayerbaselayerslayer_tf').getValue();
 					
 					if (!mlbn || !mlbu || !mlbl) {
-						Ext.message.msg(false, i18n_baselayer_form_is_not_complete );
+						Ext.message.msg(false, i18n_form_is_not_complete);
 						return;
 					}
 					
-					if (!GLOBAL.util.validateInputNameLength(mlbn)) {
-						Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
-						return;
-					}
-                    
                     if (GLOBAL.stores.baseLayer.find('name', mlbn) !== -1) {
                         Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_is_already_in_use);
                         return;
@@ -1800,77 +1806,57 @@
                         method: 'POST',
                         params: {name: mlbn, type: GLOBAL.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
                         success: function(r) {
-                            Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_was_registered);
-                            GLOBAL.stores.baseLayer.load();
+                            Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_was_registered);                            
                             GLOBAL.vars.map.addLayers([
-                                new OpenLayers.Layer.WMS(
-                                    mlbn,
-                                    mlbu,
-                                    {layers: mlbl}
-                                )
+                                new OpenLayers.Layer.WMS(mlbn, mlbu, {layers: mlbl})
                             ]);
-                            
+
+                            GLOBAL.stores.baseLayer.load();
                             Ext.getCmp('maplayerbaselayersname_tf').reset();
                             Ext.getCmp('maplayerbaselayersurl_tf').reset();
                             Ext.getCmp('maplayerbaselayerslayer_tf').reset();
                         }
                     });
 				}
-			}
-        ]
-    });
-
-    var deleteMapLayerBaseLayerPanel = new Ext.form.FormPanel({
-        id: 'deletemaplayerbaselayer_p',
-        items:
-        [
-            { html: '<div class="panel-fieldlabel-first">'+i18n_baselayers+'</div>' }, mapLayerBaseLayerComboBox,
-            deleteMapLayerBaseLayersButton
-        ]
-    });
-    
-    var baselayersWindow = new Ext.Window({
-        id: 'baselayers_w',
-        title: '<span id="window-maplayer-title">'+i18n_baselayers+'</span>',
-		layout: 'fit',
-        closeAction: 'hide',
-		width: 234,
-        items:
-        [
-			{
-                xtype: 'tabpanel',
-                activeTab: 0,
-                deferredRender: false,
-                plain: true,
-                defaults: {layout: 'fit', bodyStyle: 'padding:8px'},
-                listeners: {
-                    tabchange: function(panel, tab)
-                    {
-                        if (tab.id == 'baselayer0') {
-							Ext.getCmp('baselayers_w').setHeight(247);
-                        }
-                        else if (tab.id == 'baselayer1') {
-							Ext.getCmp('baselayers_w').setHeight(151);
-                        }
+			},
+            {
+                xtype: 'button',
+                id: 'deletemaplayerbaselayers_b',
+                text: i18n_delete,
+                iconCls: 'icon-remove',
+                handler: function() {
+                    var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
+                    var mln = Ext.getCmp('maplayerbaselayers_cb').getRawValue();
+                    
+                    if (!ml) {
+                        Ext.message.msg(false, i18n_please_select_a_baselayer);
+                        return;
                     }
-                },
-                items:
-                [
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_new + '</span>',
-                        id: 'baselayer0',
-                        items: [newMapLayerBaseLayersPanel]
-                    },
-                    {
-                        title: '<span class="panel-tab-title">' + i18n_delete + '</span>',
-                        id: 'baselayer1',
-                        items: [deleteMapLayerBaseLayerPanel]
-                    }
-                ]
+                    
+                    Ext.Ajax.request({
+                        url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
+                        method: 'POST',
+                        params: {id: ml},
+                        success: function(r) {
+                            Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
+                            GLOBAL.stores.baseLayer.load({callback: function() {
+                                Ext.getCmp('maplayerbaselayers_cb').clearValue();
+                                var names = GLOBAL.stores.baseLayer.collect('name');
+                                
+                                for (var i = 0; i < names.length; i++) {
+                                    GLOBAL.vars.map.getLayersByName(names[i])[0].setVisibility(false);
+                                }
+                                
+                                GLOBAL.vars.map.getLayersByName(mln)[0].destroy(false);
+                            }});
+                        }
+                    });
+                    
+                }
             }
         ]
     });
-	
+
     /* Section: administrator settings */
     var adminDateTypeCombo = new Ext.form.ComboBox({
         id: 'mapdatetype_cb',
@@ -2382,7 +2368,7 @@
 					ctCls: 'aa_med',
 					icon: '../../images/add_small.png',
 					handler: function() {
-                        Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - 262, Ext.getCmp('center').y + 50);
+                        Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
 						Ext.getCmp('baselayers_w').show();
 					}
 				},
