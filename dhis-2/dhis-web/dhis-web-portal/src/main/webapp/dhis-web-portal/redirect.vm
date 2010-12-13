@@ -3,7 +3,7 @@
 function redirect()
 {
 #if ( $startModule && $auth.hasAccess( $startModule, "index" ) )
-	window.location.href = "../${startModule}/index.action";jy
+	window.location.href = "../${startModule}/index.action";
 #else
     window.location.href = "intro.action";
 #end
