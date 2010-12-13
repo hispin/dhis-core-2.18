@@ -272,7 +272,7 @@
 /* Ext Window */
 .window-info {
 	padding:0 0 8px 0;
-	font:bold 11px lucida sans unicode,arial;
+	font:bold 11px arial;
 	color:#444;
 }
 .window-info-grey {
