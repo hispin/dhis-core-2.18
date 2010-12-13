@@ -375,7 +375,23 @@ function setFieldValue( fieldId, value )
  */
 function getFieldValue( fieldId )
 {
-    return jQuery("#" + fieldId).val();
+	if ( getTypeById( fieldId ) == 'select-multiple' )
+	{
+		return jQuery("#" + fieldId).val()[0];
+	}
+	
+	return jQuery("#" + fieldId).val();
+}
+
+/**
+ * Gets a value from the given element and HTML encodes it.
+ * 
+ * @param fieldId the identifier of the element.
+ * @return the type of the element with the given identifier.
+ */
+function getTypeById( fieldId )
+{
+	return byId(fieldId).type;	
 }
 
 /**
