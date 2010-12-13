@@ -5,7 +5,7 @@
 			form.submit();
 		},function(){
 			getDataElementIdsForValidate();
-			getFactors();			
+			getFactors();
 			setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
 			setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
 		});				

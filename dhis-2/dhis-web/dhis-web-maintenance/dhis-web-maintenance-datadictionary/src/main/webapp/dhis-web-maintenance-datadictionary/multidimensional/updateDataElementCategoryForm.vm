@@ -1,32 +1,32 @@
 <script>
-	var validator = null;
-	
 	jQuery(document).ready(	function(){
-		validator = validation( 'editDataElementCategoryForm', function( form ){ form.submit()}, function(){
+		validation( 'editDataElementCategoryForm', function( form ){ form.submit()}, function(){
 			listValidator( 'memberValidator', 'categoryOptions' );			
-		} );		
+		});		
 		checkValueIsExist( "name", "validateDataElementCategory.action", {id: $dataElementCategory.id});		
 		
 	});
 	
 	function updateCategoryOption()
 	{
-		var name = getFieldValue( 'categoryOptionName' );
-		var id = getFieldValue( 'categoryOptions' );
-		
-		if( name.length == 0 ) markInvalid( 'categoryOptionName', i18n_specify_category_option_name );		
-		else if( !listContainsById( 'categoryOptions', name, true) ){
-			jQuery.postJSON( 'validateDataElementCategoryOption.action', 
-			{name: name, id: id }, function(json){
-				if( json.response == 'success' ){					
-					updateCategoryOptionName();
-				}else{
-					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
-				}
-			});
+		try{
+			var name = getFieldValue( 'categoryOptionName' );
+			var id = getFieldValue( 'categoryOptions' );
 			
-		}
-
+			if( name.length == 0 ) markInvalid( 'categoryOptionName', i18n_specify_category_option_name );		
+			else if( listContainsById( 'categoryOptions', name, true) ) markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+			else
+			{
+				jQuery.postJSON( 'validateDataElementCategoryOption.action', 
+				{name: name, id: id }, function(json){
+					if( json.response == 'success' ){
+						updateCategoryOptionName();
+					}else{
+						markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+					}
+				});
+			}
+		} catch(e) { markInvalid( 'categoryOptionName', i18n_specify_category_option_name ); }
 	}
 </script>
 
@@ -38,7 +38,7 @@
   
   <table>
     <tr>
-      <th colspan="3">$i18n.getString( "details" )</th>      
+      <th colspan="4">$i18n.getString( "details" )</th>      
     </tr>
     <tr>
       <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -46,7 +46,7 @@
       <td></td>
     </tr>      
     <tr>
-      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+      <td><label>$i18n.getString( "concept_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 	  <td>
 		<div style="inline">
 			#set ( $conceptId = $!dataElementCategory.concept.id )
@@ -60,49 +60,49 @@
       <td></td>
     </tr>  
     <tr>
-      <td colspan="3" style="height:15px"></td>
+      <td colspan="4" style="height:15px"></td>
     </tr>
     <tr>
-      <th colspan="3">$i18n.getString( "category_options" )
+      <th colspan="4">$i18n.getString( "category_options" )
 	  <select id="memberValidator" class="{validate:{required:true}}" style="display:none"/></th>      
     </tr>
 	<tr>
 	  <td><label>$i18n.getString( "selected_name" )</label></td>
-	  <td><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
+	  <td colspan="3"><input type="text" id="categoryOptionName" name="categoryOptionName" style="width:25em"/></td>
 	  <td></td>
 	</tr>
 	 <tr>
       <td></td>
-      <td colspan="2">
+      <td colspan="3">
       	<input type="button" value="$i18n.getString( 'update_category_option' )" onclick="updateCategoryOption();" style="width:200px"/>
       </td>
     </tr>
     <tr>
       <td></td>
-      <td>
-	<table>
-	<tr>
-	<td>
-        <select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px" onclick='getSelectedCategoryOption();'>
-        #foreach( $categoryOption in $dataElementCategory.categoryOptions )
-        	<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.name )</option>
-        #end
-        </select>   
-      </td>
-      <td style="width:30px; text-align:center">
-        <a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"/></a><br/><br/>
-        <a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"/></a><br/><br/>
-      </td>
-	  </tr>
-	  </table>
+	  <td>
+		<table>
+		  <tr>
+			<td>
+				<select multiple size="10" id="categoryOptions" name="categoryOptions" style="width:300px" onclick="getSelectedCategoryOption();">
+				#foreach( $categoryOption in $dataElementCategory.categoryOptions )
+					<option value="$categoryOption.id">$encoder.htmlEncode( $categoryOption.name )</option>
+				#end
+				</select>   
+			</td>
+			<td style="width:30px; text-align:center">
+				<a href="javascript:moveUpSelectedOption( 'categoryOptions' )"><img src="../images/move_up.png"/></a><br/><br/>
+				<a href="javascript:moveDownSelectedOption( 'categoryOptions' )"><img src="../images/move_down.png"/></a><br/><br/>
+			</td>
+		  </tr>
+		</table>
 	  </td>
     </tr>
     <tr>
-      <td colspan="3" style="height:15px"></td>
+      <td colspan="4" style="height:15px"></td>
     </tr>
     <tr>
       <td></td>
-      <td colspan="2">
+      <td colspan="3">
         <input type="submit" value="$i18n.getString( 'save' )" style="width:100px"/>
 		<input type="button" onclick="window.location.href='category.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
       </td>
@@ -137,8 +137,6 @@
 		var categoryOptions = byId('categoryOptions');
 		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
 		showSuccessMessage( i18n_option_rename_successfully );
-		
 	}
-
 	
 </script>
