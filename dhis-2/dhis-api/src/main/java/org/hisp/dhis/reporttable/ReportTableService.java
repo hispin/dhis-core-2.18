@@ -30,6 +30,7 @@ package org.hisp.dhis.reporttable;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
 
 /**
  * @author Lars Helge Overland
@@ -142,4 +143,12 @@ public interface ReportTableService
      * @return true if the report table has been generated, false it not.
      */
     boolean reportTableIsGenerated( int id );
+    
+    Collection<ReportTable> getReportTablesBetween( int first, int max );
+    
+    Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max );
+    
+    int getReportTableCount();
+    
+    int getReportTableCountByName( String name );
 }

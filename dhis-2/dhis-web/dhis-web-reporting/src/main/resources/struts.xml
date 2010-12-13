@@ -85,6 +85,7 @@
       <param name="page">/dhis-web-reporting/viewChartForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/chart.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="viewChart" class="org.hisp.dhis.reporting.chart.action.ViewChartAction">
@@ -184,6 +185,7 @@
       <param name="page">/dhis-web-reporting/viewTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/table.js</param>
+	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
     
     <action name="removeTable" class="org.hisp.dhis.reporting.tablecreator.action.RemoveTableAction">

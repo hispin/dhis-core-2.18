@@ -27,6 +27,11 @@ package org.hisp.dhis.chart.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
@@ -43,4 +48,35 @@ public class HibernateChartStore
     {
         return getObject( Restrictions.eq( "title", title ) );
     }
+
+    public int getChartCount()
+    {
+        return getCount();
+    }
+
+    public Collection<Chart> getChartsBetween( int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.addOrder( Order.asc( "title" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+    public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.add( Restrictions.ilike( "title", "%" + name + "%" ) );
+        criteria.addOrder( Order.asc( "title" ) );
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+        return criteria.list();
+    }
+
+    public int getChartCountByName( String name )
+    {
+        Criteria criteria = getCriteria();
+        criteria.setProjection( Projections.rowCount() );
+        criteria.add( Restrictions.ilike( "title", "%" + name + "%" ) );        
+        return ((Number) criteria.uniqueResult()).intValue();
+    }    
 }

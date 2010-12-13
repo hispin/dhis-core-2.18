@@ -558,4 +558,24 @@ public class DefaultReportTableService
 
         return reportTables;
     }
+
+    public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
+    {
+        return reportTableStore.getBetweenByName( name, first, max );
+    }
+
+    public int getReportTableCount()
+    {
+        return reportTableStore.getCount();
+    }
+
+    public int getReportTableCountByName( String name )
+    {
+        return reportTableStore.getCountByName( name );
+    }
+
+    public Collection<ReportTable> getReportTablesBetween( int first, int max )
+    {
+        return reportTableStore.getBetween( first, max );
+    }
 }

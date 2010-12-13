@@ -27,22 +27,24 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GetAllTablesAction
-    implements Action
+    extends ActionPagingSupport<ReportTable>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,8 +58,20 @@ public class GetAllTablesAction
     }
     
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     private List<ReportTable> tables;
 
@@ -72,7 +86,18 @@ public class GetAllTablesAction
 
     public String execute()
     {
-        tables = new ArrayList<ReportTable>( reportTableService.getAllReportTables() );
+        if ( isNotBlank( key ) )
+        {
+            this.paging = createPaging( reportTableService.getReportTableCountByName( key ) );
+            
+            tables = new ArrayList<ReportTable>( reportTableService.getReportTablesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( reportTableService.getReportTableCount() );
+
+            tables = new ArrayList<ReportTable>( reportTableService.getReportTablesBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
         
         Collections.sort( tables, new ReportTableComparator() );
         
