@@ -81,4 +81,24 @@ public class DefaultDocumentService
     {
         return documentStore.getByName( name );
     }
+
+    public int getDocumentCount()
+    {
+        return documentStore.getCount();
+    }
+
+    public int getDocumentCountByName( String name )
+    {
+        return documentStore.getCountByName( name );
+    }
+
+    public Collection<Document> getDocumentsBetween( int first, int max )
+    {
+        return documentStore.getBetween( first, max );
+    }
+
+    public Collection<Document> getDocumentsBetweenByName( String name, int first, int max )
+    {
+        return documentStore.getBetweenByName( name, first, max );
+    }
 }

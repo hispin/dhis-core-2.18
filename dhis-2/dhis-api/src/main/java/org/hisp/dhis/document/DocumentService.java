@@ -29,6 +29,8 @@ package org.hisp.dhis.document;
 
 import java.util.Collection;
 
+import org.hisp.dhis.datamart.DataMartExport;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -75,4 +77,13 @@ public interface DocumentService
      * @return the Document.
      */
     Document getDocumentByName( String name );
+    
+    Collection<Document> getDocumentsBetween( int first, int max );
+    
+    Collection<Document> getDocumentsBetweenByName( String name, int first, int max );
+    
+    int getDocumentCount();
+    
+    int getDocumentCountByName( String name );
+
 }
