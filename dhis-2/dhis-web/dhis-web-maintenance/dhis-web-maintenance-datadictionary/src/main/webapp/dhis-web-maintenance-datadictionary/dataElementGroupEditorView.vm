@@ -201,7 +201,16 @@
 			}
 		}
 		list_1.find(":first").attr("selected", "selected");		
-		list_2.find(":first").attr("selected", "selected");		
+		list_2.find(":first").attr("selected", "selected");	
+		
+		var list_3 = jQuery( "#view_2 #assignedGroups").children();
+		list_2.children().each( function(i, item ){
+			list_3.each( function(k, it ){
+				if( it.value == item.value ){
+					jQuery( item ).remove();
+				}
+			});
+		});
 	}
 	
 	function getDataElementsByGroup()

@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.dataelementgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,9 +67,9 @@ public class AssignGroupsForDataElementAction
         this.dataElementId = dataElementId;
     }
 
-    private Collection<Integer> dataElementGroups;
+    private Set<Integer> dataElementGroups = new HashSet<Integer>();
 
-    public void setDataElementGroups( Collection<Integer> dataElementGroups )
+    public void setDataElementGroups( Set<Integer> dataElementGroups )
     {
         this.dataElementGroups = dataElementGroups;
     }

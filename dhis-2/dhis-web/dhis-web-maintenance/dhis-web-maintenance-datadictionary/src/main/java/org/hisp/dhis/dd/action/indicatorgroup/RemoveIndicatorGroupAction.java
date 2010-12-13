@@ -27,13 +27,16 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.IndicatorService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: RemoveIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: RemoveIndicatorGroupAction.java 3305 2007-05-14 18:55:52Z
+ *          larshelg $
  */
 public class RemoveIndicatorGroupAction
     extends ActionSupport
@@ -48,7 +51,18 @@ public class RemoveIndicatorGroupAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -61,12 +75,38 @@ public class RemoveIndicatorGroupAction
     }
 
     // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        indicatorService.deleteIndicatorGroup( indicatorService.getIndicatorGroup( id ) );
+        try
+        {
+            indicatorService.deleteIndicatorGroup( indicatorService.getIndicatorGroup( id ) );
+
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+
+                return ERROR;
+            }
+        }
+
+        message = i18n.getString( "item_deleted_successfully" );
 
         return SUCCESS;
     }

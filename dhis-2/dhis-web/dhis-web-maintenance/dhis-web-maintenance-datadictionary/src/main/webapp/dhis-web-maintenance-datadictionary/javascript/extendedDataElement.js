@@ -5,51 +5,40 @@
 
 function validateAddExtendedDataElement()
 {
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addExtendedDataElementValidationCompleted );
-    
-    var params = 'name=' + getFieldValue( 'name' ) +
-        '&shortName=' + getFieldValue( 'shortName' ) +
-        '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&code=' + getFieldValue( 'code' ) +
-        '&description=' + getFieldValue( 'description' ) +
-        '&mnemonic=' + getFieldValue( 'mnemonic' ) +
-        '&version=' + getFieldValue( 'version' ) +
-        '&keywords=' + getFieldValue( 'keywords' ) +
-        '&dataElementType=' + getListValue( 'dataElementType' ) +
-        '&minimumSize=' + getFieldValue( 'minimumSize' ) +
-        '&maximumSize=' + getFieldValue( 'maximumSize' ) +
-        '&responsibleAuthority=' + getFieldValue( 'responsibleAuthority' ) +
-        '&location=' + getFieldValue( 'location' ) +
-        '&reportingMethods=' + getFieldValue( 'reportingMethods' ) +
-        '&versionStatus=' + getFieldValue( 'versionStatus' );
-    
-    request.sendAsPost( params );
-    request.send( 'validateExtendedDataElement.action' );
-
-    return false;
-}
-
-function addExtendedDataElementValidationCompleted( messageElement )
-{
-	var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        var form = document.getElementById( 'addExtendedDataElementForm' );
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_adding_data_element_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
+	jQuery.postJSON("validateExtendedDataElement.action",{
+		name: getFieldValue( 'name' ),
+		shortName: getFieldValue( 'shortName' ),
+		alternativeName: getFieldValue( 'alternativeName' ),
+		code: getFieldValue( 'code' ),
+		description: getFieldValue( 'description' ),
+		mnemonic: getFieldValue( 'mnemonic' ),
+		version: getFieldValue( 'version' ),
+		keywords: getFieldValue( 'keywords' ),
+		dataElementType: getFieldValue( 'dataElementType' ),
+		dataElementType: getFieldValue( 'dataElementType' ),
+		minimumSize: getFieldValue( 'minimumSize' ),
+		maximumSize: getFieldValue( 'maximumSize' ),
+		responsibleAuthority: getFieldValue( 'responsibleAuthority' ),
+		location: getFieldValue( 'location' ),
+		reportingMethods: getFieldValue( 'reportingMethods' ),
+		versionStatus: getFieldValue( 'versionStatus' )		
+	}, function( json ){		
+		if ( json.response == 'success' )
+		{
+			var form = document.getElementById( 'addExtendedDataElementForm' );
+			form.submit();
+		}
+		else if ( json.response == 'error' )
+		{
+			window.alert( i18n_adding_data_element_failed + ':' + '\n' + json.message );
+		}
+		else if ( json.response == 'input' )
+		{
+			document.getElementById( 'message' ).innerHTML = json.message;
+			document.getElementById( 'message' ).style.display = 'block';
+		}
+	});
+	
 }
 
 // -----------------------------------------------------------------------------
@@ -58,51 +47,40 @@ function addExtendedDataElementValidationCompleted( messageElement )
 
 function validateUpdateExtendedDataElement()
 {
-	var request = new Request();
-    request.setResponseTypeXML( 'messageElement' );
-    request.setCallbackSuccess( updateExtendedDataElementValidationCompleted );
-    
-    var params = 'id=' + getFieldValue( 'id' ) + 
-    	'&name=' + getFieldValue( 'name' ) +
-        '&shortName=' + getFieldValue( 'shortName' ) +
-        '&alternativeName=' + getFieldValue( 'alternativeName' ) +
-        '&code=' + getFieldValue( 'code' ) +
-        '&description=' + getFieldValue( 'description' ) +
-        '&mnemonic=' + getFieldValue( 'mnemonic' ) +
-        '&version=' + getFieldValue( 'version' ) +
-        '&keywords=' + getFieldValue( 'keywords' ) +
-        '&dataElementType=' + getListValue( 'dataElementType' ) +        
-        '&minimumSize=' + getFieldValue( 'minimumSize' ) +
-        '&maximumSize=' + getFieldValue( 'maximumSize' ) +
-        '&responsibleAuthority=' + getFieldValue( 'responsibleAuthority' ) +
-        '&location=' + getFieldValue( 'location' ) +
-        '&reportingMethods=' + getFieldValue( 'reportingMethods' ) +
-        '&versionStatus=' + getFieldValue( 'versionStatus' );
+	
+	jQuery.postJSON("validateExtendedDataElement.action",{
+		id: getFieldValue( 'id' ),
+		name: getFieldValue( 'name' ),
+		shortName: getFieldValue( 'shortName' ),
+		alternativeName: getFieldValue( 'alternativeName' ),
+		code: getFieldValue( 'code' ),
+		description: getFieldValue( 'description' ),
+		mnemonic: getFieldValue( 'mnemonic' ),
+		version: getFieldValue( 'version' ),
+		keywords: getFieldValue( 'keywords' ),
+		dataElementType: getFieldValue( 'dataElementType' ),
+		dataElementType: getFieldValue( 'dataElementType' ),
+		minimumSize: getFieldValue( 'minimumSize' ),
+		maximumSize: getFieldValue( 'maximumSize' ),
+		responsibleAuthority: getFieldValue( 'responsibleAuthority' ),
+		location: getFieldValue( 'location' ),
+		reportingMethods: getFieldValue( 'reportingMethods' ),
+		versionStatus: getFieldValue( 'versionStatus' )		
+	}, function( json ){		
+		if ( json.response == 'success' )
+		{
+			var form = document.getElementById( 'updateExtendedDataElementForm' );
+			form.submit();
+		}
+		else if ( json.response == 'error' )
+		{
+			window.alert( i18n_adding_data_element_failed + ':' + '\n' + json.message );
+		}
+		else if ( json.response == 'input' )
+		{
+			document.getElementById( 'message' ).innerHTML = json.message;
+			document.getElementById( 'message' ).style.display = 'block';
+		}
+	});
 
-    request.sendAsPost( params );
-    request.send( 'validateExtendedDataElement.action' );
-    
-    return false;
-}
-
-function updateExtendedDataElementValidationCompleted( messageElement )
-{ 
-
-	var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-   
-    if ( type == 'success' )
-    {
-        var form = document.getElementById( 'updateExtendedDataElementForm' );
-        form.submit();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_saving_data_element_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
 }
