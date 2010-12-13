@@ -40,6 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.springframework.util.CollectionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -68,6 +69,13 @@ public class SearchOrganisationUnitsAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private OrganisationUnitSelectionManager selectionManager;
+
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
     }
 
     // -------------------------------------------------------------------------
@@ -116,6 +124,13 @@ public class SearchOrganisationUnitsAction
         return organisationUnits;
     }
     
+    private OrganisationUnit selectedOrganisationUnit;
+
+    public OrganisationUnit getSelectedOrganisationUnit()
+    {
+        return selectedOrganisationUnit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -127,6 +142,8 @@ public class SearchOrganisationUnitsAction
         // Assemble groups and get search result
         // ---------------------------------------------------------------------
 
+        selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
+        
         if ( StringUtils.isNotBlank( name ) || !CollectionUtils.isEmpty( groupId ) )
         {
             Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
@@ -140,7 +157,7 @@ public class SearchOrganisationUnitsAction
                 }
             }
     
-            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups );
+            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit );
         }
         
         // ---------------------------------------------------------------------

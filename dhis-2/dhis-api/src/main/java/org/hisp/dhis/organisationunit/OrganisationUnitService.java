@@ -242,6 +242,18 @@ public interface OrganisationUnitService
      * @return a collection of organisation units.
      */
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups );
+
+    /**
+     * Get the units which name are like the given name, are members of the
+     * given groups and children of the given parent organisation unit. If name 
+     * or groups are null or empty they are ignored in the sarch. If name and 
+     * groups are null an empty collection is returned. 
+     * 
+     * @param name the name.
+     * @param groups the organisation unit groups.
+     * @return a collection of organisation units.
+     */
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent );
     
     /**
      * Get the units in tree by the collection of given roots
