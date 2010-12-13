@@ -1,0 +1,484 @@
+<h3>$i18n.getString( "indicator_group_editor" ) #openHelp( "indicatorGroupEditor" )</h3>
+<script>
+	jQuery(function(){
+		jQuery("#tabs").tabs();
+	});
+</script>
+
+<div id="tabs" style="position:absolute">
+	<ul>
+		<li><a href="#view_1">$i18n.getString( "view_1" )</a></li>
+		<li><a href="#view_2">$i18n.getString( "view_2" )</a></li>
+	</ul>
+	<div id="view_1">
+	<table>	
+		<tr>
+			<th>$i18n.getString( "indicator_group" )</th>
+			<th></th>
+			<td rowspan="2"></td>
+			<th>$i18n.getString( "available_indicators" )</th>			
+		</tr>
+		
+		<tr>
+			<td><input id="indicatorGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'indicatorGroups');"/></td>
+			<td><input id="selectedIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'selectedIndicators');"/></td>		
+			<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableIndicators');"/></td>
+		</tr>
+
+		<tr>
+			<td>
+				<select class="select" id="indicatorGroups" size="30" onchange="getIndicatorsByGroup();"/>
+			</td>
+			<td>
+				<select class="select" id="selectedIndicators" multiple="multiple" size="30"  ondblclick="moveSelectedById(this.id, 'availableIndicators');"/>
+			</td>
+			
+			<td>
+				<input type="button" value="&lt;" onclick="moveSelectedById('availableIndicators', 'selectedIndicators');" style="width:30px"/><br/><br/>
+				<input type="button" value="&gt;" onclick="moveSelectedById('selectedIndicators', 'availableIndicators');" style="width:30px"/>
+			</td>
+			<td>
+				<select class="select" id="availableIndicators" multiple="multiple" size="30"  ondblclick="moveSelectedById(this.id, 'selectedIndicators');"/>
+			</td>
+		</tr>
+		<tr>
+			<td>			
+				<a href="javascript:sortList( 'indicatorGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'indicatorGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<input type="button" value="$i18n.getString( 'new' )" onclick="showAddGroup()" style="width:70px"/>
+				<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroup()" style="width:70px"/>
+				<input type="button" value="$i18n.getString( 'delete' )" onclick="deleteIndicatorGroup()" style="width:70px"/>
+			</td>
+			<td>
+				<a href="javascript:sortList( 'selectedIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'selectedIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>			
+				<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="updateGroupMembers()"/>
+			</td>
+			<td></td>
+			<td>
+				<a href="javascript:sortList( 'availableIndicators', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+				<a href="javascript:sortList( 'availableIndicators', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>						
+			</td>
+		</tr>
+	</table>
+	</div>
+	<div id="view_2">
+		<table>	
+			<tr>		
+				<th>$i18n.getString( "available_indicators" )</th>
+				<th></th>
+			<td rowspan="2"></td>
+				<th>$i18n.getString( "available_groups" )</th>
+				
+			</tr>
+			
+			<tr>
+				<td><input id="availableIndicatorsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableIndicators2');"/></td>
+				<td><input id="assignedGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'assignedGroups');"/></td>				
+				<td><input id="availableGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'availableGroups');"/></td>
+			</tr>
+
+			<tr>
+				<td>
+					<select class="select" id="availableIndicators2" size="30" onclick="getAssignedIndicatorGroups()">				
+					</select>
+				</td>		
+				<td>
+					<select class="select" id="assignedGroups" multiple="multiple" size="30" ondblclick="moveSelectedById('assignedGroups', 'availableGroups');">
+					</select>
+				</td>
+				
+				<td>
+					<input type="button" value="&lt;" onclick="moveSelectedById('availableGroups', 'assignedGroups');" style="width:30px"/><br/><br/>
+					<input type="button" value="&gt;" onclick="moveSelectedById('assignedGroups', 'availableGroups');" style="width:30px"/>
+				</td>
+				
+				<td>
+					<select class="select" id="availableGroups" multiple="multiple" size="30" ondblclick="moveSelectedById(this.id, 'assignedGroups');">				
+					</select>
+				</td>
+				
+			</tr>
+			<tr>		
+				<td>
+					<a href="javascript:sortList( 'availableIndicators2', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+					<a href="javascript:sortList( 'availableIndicators2', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>						
+				</td>
+				<td>
+					<a href="javascript:sortList( 'assignedGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+					<a href="javascript:sortList( 'assignedGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+					<input type="button" value="$i18n.getString( 'update_indicator_group_member' )" onclick="assignGroupsForIndicator()"/>
+				</td>
+				<td></td>
+				<td>
+					<a href="javascript:sortList( 'availableGroups', 'ASC' );"><img align="absmiddle" src="../images/sort_ascending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>
+					<a href="javascript:sortList( 'availableGroups', 'DES' );"><img align="absmiddle" src="../images/sort_descending.png" style="border:#666666 thin solid;cursor:pointer;width:20px;"/></a>			
+					<input type="button" value="$i18n.getString( 'new' )" onclick="showAddGroup2()" style="width:70px"/>
+					<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroup2()" style="width:70px"/>
+					<input type="button" value="$i18n.getString( 'delete' )" onclick="deleteIndicatorGroup2()" style="width:70px"/>
+				</td>
+				
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="addIndicatorGroupForm">
+	<label>$i18n.getString( "name" )</label>	
+	<input type="text" id="name" name="name" style="width:20em" class="{validate:{required:true}}"/>	
+</div>
+
+<style>
+#addIndicatorGroupForm{
+	width:300px;
+}
+#addIndicatorGroupForm div{
+	float:left;
+}
+.select{
+	min-width:300px;
+}
+</style>
+
+<script type="text/javascript">
+
+	var i18n_select_indicator_group = '$encoder.jsEscape( $i18n.getString( "select_indicator_group" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_indicator_group" ) , "'")';
+	var i18n_member_of = '$encoder.jsEscape( $i18n.getString( "member_of" ) , "'")';
+	var i18n_update_success = '$encoder.jsEscape( $i18n.getString( "update_success" ) , "'")';
+		
+	var indicatorGroups = new Array();
+	#foreach( $indicatorGroup in $indicatorGroups )
+		indicatorGroups['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.name, "'" )';
+	#end
+
+	var availableIndicators = new Array();
+	#foreach( $indicator in $indicators )
+		availableIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.name, "'" )';
+	#end
+	var selectedIndicators = new Array();	
+	
+	jQuery(function(){
+		loadAvailableGroups();
+		getIndicatorsByGroup();	
+		getAssignedIndicatorGroups();	
+		jQuery( "#addIndicatorGroupForm" ).dialog({autoOpen:false, modal:true});		
+	});
+	
+	function loadAvailableIndicators()
+	{
+		var filter_1 = jQuery( '#view_1 #availableIndicatorsFilter' ).val();
+		var filter_2 = jQuery( '#view_2 #availableIndicatorsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #availableIndicators" );
+		var list_2 = jQuery( "#view_2 #availableIndicators2" );
+		list_1.empty();
+		list_2.empty();
+		
+		for( var id in availableIndicators)
+		{
+			var text = availableIndicators[id];
+			if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+			{				
+				list_1.append('<option value="' + id + '">' + text + '</option>' );
+				list_2.append('<option value="' + id + '">' + text + '</option>' );
+			}
+		}
+		
+		list_1.find(":first").attr("selected", "selected");		
+		list_2.find(":first").attr("selected", "selected");		
+		
+	}
+	
+	function loadAvailableGroups()
+	{
+		var filter_1 = jQuery( '#view_1 #indicatorGroupsFilter' ).val();
+		var filter_2 = jQuery( '#view_2 #indicatorGroupsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #indicatorGroups" );
+		var list_2 = jQuery( "#view_2 #availableGroups" );			
+		list_1.empty();				
+		list_2.empty();				
+		for( var id in indicatorGroups)
+		{
+			var text = indicatorGroups[id];
+			if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+			{
+				list_1.append('<option value="' + id + '">' + text + '</option>' );
+				list_2.append('<option value="' + id + '">' + text + '</option>' );
+			}
+		}
+		list_1.find(":first").attr("selected", "selected");		
+		list_2.find(":first").attr("selected", "selected");
+		
+		var list_3 = jQuery( "#view_2 #assignedGroups").children();
+		list_2.children().each( function(i, item ){
+			list_3.each( function(k, it ){
+				if( it.value == item.value ){
+					jQuery( item ).remove();
+				}
+			});
+		});
+	}
+	
+	function getIndicatorsByGroup()
+	{
+		
+		loadAvailableIndicators();
+		
+		var filter_1 = jQuery( '#view_1 #selectedIndicatorsFilter' ).val();
+		var list_1 = jQuery( "#view_1 #selectedIndicators" );
+		list_1.empty();				
+		
+		jQuery.postJSON( "../dhis-web-commons-ajax-json/getIndicators.action", {
+			id: jQuery( '#view_1 #indicatorGroups' ).val()
+		}, function( json ){
+			jQuery.each( json.indicators, function(i, item){				
+				var text = item.name;
+				if( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1)
+				{
+					list_1.append('<option value="' + item.id + '">' + text + '</option>' );
+				}
+				jQuery( "#view_1 #availableIndicators" ).children().each( function(k, it){
+					if( item.id == it.value )
+					{
+						jQuery(it).remove();
+					}
+				});
+			});
+		});
+	}
+	
+	function showAddGroup()
+	{
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "new" ) , "'")');
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){				
+				jQuery.postJSON( "validateIndicatorGroup.action", {					
+					name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "addIndicatorGroupEditor.action", {
+							name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }					
+						}, function( json ){
+							indicatorGroups[json.indicatorGroup.id] = json.indicatorGroup.name;
+							loadAvailableGroups();								
+							loadAvailableIndicators();
+							
+							jQuery( "#view_1 #selectedIndicators" ).empty();
+							jQuery( '#addIndicatorGroupForm' ).dialog('close');
+						} );
+					}else{
+						markInvalid( "addIndicatorGroupForm #name", json.message );
+					}
+				});	
+			}
+		}]);
+		jQuery( '#addIndicatorGroupForm' ).dialog('open');		
+		
+	}
+	
+	function showUpdateGroup()
+	{
+		var id = jQuery( "#view_1 #indicatorGroups" ).val();		
+		var text = jQuery( "#view_1 #indicatorGroups option[value=" + id + "]" ).text();
+		jQuery( '#addIndicatorGroupForm #name' ).val( text );
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){
+				
+				jQuery.postJSON( "validateIndicatorGroup.action", {
+					id: id,
+					name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "renameIndicatorGroupEditor.action", {
+							name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); },
+							id: id
+						}, function( json ){
+							indicatorGroups[id] = jQuery( '#addIndicatorGroupForm #name' ).val();
+							loadAvailableGroups();		
+							jQuery( '#addIndicatorGroupForm' ).dialog('close');
+							showSuccessMessage( i18n_update_success );
+						} );
+					}else{
+						markInvalid( "addIndicatorGroupForm #name", json.message );
+					}
+				});				
+			}
+		}]);
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "rename" ) , "'")');
+		jQuery( '#addIndicatorGroupForm' ).dialog('open');		
+		
+	}
+	
+	function deleteIndicatorGroup()
+	{
+		var id = jQuery( "#view_1 #indicatorGroups" ).val();
+		var name = jQuery( "#view_1 #indicatorGroups option[value=" + id + "]" ).text();
+		
+		if ( window.confirm( i18n_confirm_delete + '\n\n' + name ) )
+        {
+			
+			jQuery.postJSON( "deleteIndicatorGroupEditor.action",{
+				id: id
+			}, function( json ){
+				if( json.response == 'success'){
+					indicatorGroups.splice(id, 1);
+					loadAvailableGroups();		
+					showSuccessMessage( json.message );
+				}else{
+					showErrorMessage( json.message );
+				}
+			});
+		}
+	}
+	
+	function updateGroupMembers()
+	{
+		var id = jQuery( "#view_1 #indicatorGroups" ).val();
+		
+		jQuery.getJSON( "updateIndicatorGroupEditor.action?id=" + id + "&" + toQueryString( '#view_1 #selectedIndicators', 'groupMembers' ),
+		function( json ){
+			showSuccessMessage( i18n_update_success );
+		});
+	}
+	
+	function toQueryString( jQueryString, paramName )
+	{
+		var p = "";
+		jQuery( jQueryString ).children().each(function(i, item ){
+			item.selected = "selected";
+			p += paramName + "=" + item.value + "&";			
+		});
+		return p;
+	}
+	
+	// View2
+	
+	function getAssignedIndicatorGroups()
+	{
+		loadAvailableGroups();
+		
+		var id = jQuery( "#view_2 #availableIndicators2" ).val();
+		var list_2 = jQuery( "#view_2 #assignedGroups" );	
+		list_2.empty();	
+		
+		jQuery.postJSON( "getAssignedIndicatorGroups.action", {
+			indicatorId: id
+		}, function( json ){
+			jQuery.each(json.indicatorGroups, function(i, item ){
+				list_2.append('<option value="' + item.id + '">' + item.name + '</option>' );
+				
+				jQuery( "#view_2 #availableGroups" ).children().each( function(k, it){
+					if( item.id == it.value )
+					{
+						jQuery(it).remove();
+					}
+				});	
+				
+			});				
+			
+		});		
+	}
+	
+	function showAddGroup2()
+	{
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "new" ) , "'")');
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){				
+				jQuery.postJSON( "validateIndicatorGroup.action", {					
+					name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "addIndicatorGroupEditor.action", {
+							name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }					
+						}, function( json ){
+							indicatorGroups[json.indicatorGroup.id] = json.indicatorGroup.name;
+							loadAvailableGroups();								
+							jQuery( '#addIndicatorGroupForm' ).dialog('close');
+						} );
+					}else{
+						markInvalid( "addIndicatorGroupForm #name", json.message );
+					}
+				});	
+			}
+		}]);
+		jQuery( '#addIndicatorGroupForm' ).dialog('open');		
+		
+	}
+	
+	function showUpdateGroup2()
+	{
+		var id = jQuery( "#view_2 #availableGroups" ).val()[0];		
+		var text = jQuery( "#view_2 #availableGroups option[value=" + id + "]" ).text();
+		jQuery( '#addIndicatorGroupForm #name' ).val( text );
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'buttons', [{
+			text: '$encoder.jsEscape( $i18n.getString( "save" ) , "'")',
+			click: function(){				
+				jQuery.postJSON( "validateIndicatorGroup.action", {
+					id: id,
+					name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); }
+				}, function( json ){
+					if( json.response == 'success' ){
+						jQuery.postJSON( "renameIndicatorGroupEditor.action", {
+							name: function(){ return jQuery( '#addIndicatorGroupForm #name' ).val(); },
+							id: id
+						}, function( json ){
+							indicatorGroups[id] = jQuery( '#addIndicatorGroupForm #name' ).val();
+							loadAvailableGroups();		
+							jQuery( '#addIndicatorGroupForm' ).dialog('close');
+							showSuccessMessage( i18n_update_success );
+						} );
+					}else{
+						markInvalid( "addIndicatorGroupForm #name", json.message );
+					}
+				});				
+			}
+		}]);
+		
+		jQuery( '#addIndicatorGroupForm' ).dialog('option', 'title', '$encoder.jsEscape( $i18n.getString( "rename" ) , "'")');
+		jQuery( '#addIndicatorGroupForm' ).dialog('open');		
+		
+	}
+	
+	function deleteIndicatorGroup2()
+	{
+		var id = jQuery( "#view_2 #availableGroups" ).val()[0];
+		var name = jQuery( "#view_2 #availableGroups option[value=" + id + "]" ).text();
+		
+		if ( window.confirm( i18n_confirm_delete + '\n\n' + name ) )
+        {
+			
+			jQuery.postJSON( "deleteIndicatorGroupEditor.action",{
+				id: id
+			}, function( json ){
+				if( json.response == 'success'){
+					indicatorGroups.splice(id, 1);
+					loadAvailableGroups();		
+					showSuccessMessage( json.message );
+				}else{
+					showErrorMessage( json.message );
+				}
+			});
+		}
+	}
+	
+	function assignGroupsForIndicator()
+	{
+		var id = jQuery( "#view_2 #availableIndicators2" ).val();
+		
+		jQuery.getJSON( "asignGroupsForIndicator.action?indicatorId=" + id + "&" + toQueryString( '#view_2 #assignedGroups', 'indicatorGroups' ),
+		function( json ){
+			showSuccessMessage( i18n_update_success );
+		});
+	}
+	
+	
+	
+</script>

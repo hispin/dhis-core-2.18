@@ -1,4 +1,0 @@
-<dataElementGroup type="success">
-	<id>$dataElementGroup.id</id>
-	<name>$encoder.xmlEncode( $dataElementGroup.name )</name>
-</dataElementGroup>

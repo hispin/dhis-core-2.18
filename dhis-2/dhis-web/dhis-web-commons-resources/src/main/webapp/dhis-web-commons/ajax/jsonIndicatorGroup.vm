@@ -1,6 +1,6 @@
 { "indicatorGroup": 
   {
-    "id": $!{indicator.id},
+    "id": $!{indicatorGroup.id},
     "name": "$!encoder.jsonEncode( ${indicatorGroup.name} )",
     "alternativeName": "$!encoder.jsonEncode( ${indicatorGroup.alternativeNamee} )",
     "memberCount": "$memberCount"

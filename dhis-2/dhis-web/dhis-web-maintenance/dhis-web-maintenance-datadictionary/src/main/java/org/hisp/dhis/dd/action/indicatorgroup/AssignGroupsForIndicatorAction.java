@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.indicatorgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,9 +67,9 @@ public class AssignGroupsForIndicatorAction
         this.indicatorId = indicatorId;
     }
 
-    private Collection<Integer> indicatorGroups;
+    private Set<Integer> indicatorGroups = new HashSet<Integer>();
 
-    public void setIndicatorGroups( Collection<Integer> indicatorGroups )
+    public void setIndicatorGroups( Set<Integer> indicatorGroups )
     {
         this.indicatorGroups = indicatorGroups;
     }
