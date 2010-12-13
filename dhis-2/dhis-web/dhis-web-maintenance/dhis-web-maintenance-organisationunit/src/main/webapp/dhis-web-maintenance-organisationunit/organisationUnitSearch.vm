@@ -1,4 +1,10 @@
 
+#if( $selectedOrganisationUnit )
+#set( $orgUnitText = "[ $!encoder.htmlEncode( $selectedOrganisationUnit.name ) ]" )
+#else
+#set( $orgUnitText = $i18n.getString( 'please_select_from_tree' ) )
+#end
+
 <h3>$i18n.getString( "org_unit_search_management" )</h3>
 
 <form action="organisationUnitSearch.action" method="get">
@@ -6,6 +12,11 @@
 <tr>
 <th>$i18n.getString( "criteria" )</th>
 <th>$i18n.getString( "options" )</th>
+</tr>
+
+<tr>
+<td>$i18n.getString( "organisation_unit" )</td>
+<td><input type="text" id="selectedOrganisationUnit" style="width:325px" readonly="true" value="${orgUnitText}"></td>
 </tr>
 
 <tr>
@@ -87,5 +98,7 @@ $( document ).ready( function() {
 	tableSorter( 'listTable' );	
 	initOrgUnitDetails();
 } );
+
+var i18n_all = '$encoder.jsEscape( $i18n.getString( "all" ) , "'" )';
 
 </script>

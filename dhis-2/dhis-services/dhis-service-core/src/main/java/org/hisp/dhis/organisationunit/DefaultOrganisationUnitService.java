@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
@@ -408,6 +409,21 @@ public class DefaultOrganisationUnitService
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups )
     {
         return organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups );
+    }
+
+    @SuppressWarnings("unchecked")    
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent )
+    {
+        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups );
+        
+        if ( parent == null )
+        {
+            return result;
+        }
+        
+        final Collection<OrganisationUnit> subTree = getOrganisationUnitWithChildren( parent.getId() );
+        
+        return CollectionUtils.intersection( subTree, result );
     }
     
     // -------------------------------------------------------------------------

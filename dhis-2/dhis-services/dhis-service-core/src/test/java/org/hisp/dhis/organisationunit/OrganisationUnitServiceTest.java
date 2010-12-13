@@ -31,6 +31,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -360,8 +361,9 @@ public class OrganisationUnitServiceTest
     public void testGetOrganisationUnitsByNameAndGroups()
     {
         OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B' );
-        OrganisationUnit unitC = createOrganisationUnit( 'C' );      
+        OrganisationUnit unitB = createOrganisationUnit( 'B', unitA );
+        unitA.getChildren().add( unitB );
+        OrganisationUnit unitC = createOrganisationUnit( 'C' );
         organisationUnitService.addOrganisationUnit( unitA );
         organisationUnitService.addOrganisationUnit( unitB );
         organisationUnitService.addOrganisationUnit( unitC );
@@ -386,10 +388,13 @@ public class OrganisationUnitServiceTest
         assertEquals( 3, units.size() );
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName().toLowerCase(), groups );
         assertEquals( 1, units.size() );
-        assertEquals( unitA, units.iterator().next() );
+        assertTrue( units.contains( unitA ) );
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName(), null );
         assertEquals( 1, units.size() );
-        assertEquals( unitA, units.iterator().next() );        
+        assertEquals( unitA, units.iterator().next() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA );
+        assertEquals( 2, units.size() );
+        assertFalse( units.contains( unitC ) );
 
         groups = Arrays.asList( groupA, groupB );
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
@@ -400,10 +405,12 @@ public class OrganisationUnitServiceTest
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName(), null );
         assertEquals( 1, units.size() );
         assertEquals( unitB, units.iterator().next() );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA );
+        assertEquals( 2, units.size() );
 
         groups = Arrays.asList( groupA, groupB, groupC );        
         units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );        
-        assertEquals( 1, units.size() ); 
+        assertEquals( 1, units.size() );
     }
     
     // -------------------------------------------------------------------------
