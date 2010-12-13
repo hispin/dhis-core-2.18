@@ -5,11 +5,35 @@
 
 <tr>
 <td><b>$i18n.getString( "short_name" ):</b></td>
-<td>$encoder.htmlEncode( $organisationUnit.shortName )</td>
+<td>$!encoder.htmlEncode( $organisationUnit.shortName )</td>
 </tr>
 <tr>
 <td><b>$i18n.getString( "code" ):</b></td>
-<td>$encoder.htmlEncode( $organisationUnit.code )</td>
+<td>$!encoder.htmlEncode( $organisationUnit.code )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "opening_date" ):</b></td>
+<td>$!format.formatDate( $organisationUnit.openingDate )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "closed_date" ):</b></td>
+<td>$!format.formatDate( $organisationUnit.closedDate )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "active" ):</b></td>
+<td>#formatBool( $organisationUnit.active )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "comment" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.comment )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "url" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.url )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "last_updated" ):</b></td>
+<td>$!format.formateDate( $organisationUnit.lastUpdated )</td>
 </tr>
 
 #foreach( $groupSet in $groupSets )
