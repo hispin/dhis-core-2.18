@@ -254,6 +254,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dashboard.DashboardContentStore"/>
   </bean>
   
+  <!-- Tally Sheet -->
+  
   <bean id="org.hisp.dhis.tallysheet.TallySheetService"
     class="org.hisp.dhis.tallysheet.DefaultTallySheetService">
     <property name="dataValueService" 
@@ -262,7 +264,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.tallysheet.TallySheetPdfService"
     class="org.hisp.dhis.tallysheet.DefaultTallySheetPdfService"/>
-        
+  
+  <!-- Organisation Unit Distribution -->
+  
+  <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"
+  	class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">
+    <property name="organisationUnitService" 
+        ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+    
   <!-- DeletionHandler -->
   
   <bean id="org.hisp.dhis.report.ReportDeletionHandler"

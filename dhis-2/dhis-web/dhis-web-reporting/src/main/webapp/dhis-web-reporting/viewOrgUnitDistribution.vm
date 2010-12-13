@@ -1,0 +1,51 @@
+
+<h3>$i18n.getString( "orgunit_distribution" )</h3>
+
+<div id="selectionTree" style="width:325px; height:200px"></div>
+
+<script type="text/javascript">
+selectionTreeSelection.setMultipleSelectionAllowed( false );
+selectionTree.buildSelectionTree();	
+</script>
+
+<form action="displayOrgUnitDistribution.action" method="get">
+<p>
+<select id="groupSetId" name="groupSetId" style="width:325px">
+<option value="0">[ $i18n.getString( "select_group_set" ) ]</option>
+#foreach( $groupSet in $groupSets )
+<option value="$groupSet.id"
+#if( $selectedGroupSet.id && $groupSet.id == $selectedGroupSet.id ) selected="selected"#end
+>$!encoder.htmlEncode( $groupSet.name )</option>
+#end
+</select>
+</p>
+
+<p><input type="submit" value="$i18n.getString( 'get_report' )" style="width:100px"></p>
+
+<br>
+
+#if( $distribution )
+
+<table class="listTable">
+
+<thead>
+#foreach( $col in $distribution.getRow( 0 ) )
+<th>$encoder.htmlEncode( $col )</th>
+#end
+</thead>
+
+<tbody>
+#foreach( $row in $distribution.getRows() )
+#if( $velocityCount > 1 )
+<tr>
+#foreach( $col in $row )
+<td>${col}</td>
+#end
+</tr>
+#end 
+#end
+</tbody>
+
+</table>
+
+#end

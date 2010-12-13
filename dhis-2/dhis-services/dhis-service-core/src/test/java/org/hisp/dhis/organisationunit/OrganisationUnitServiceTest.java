@@ -357,6 +357,7 @@ public class OrganisationUnitServiceTest
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 3, unitB ), unitD, unitE ) );
         assertTrue( equals( organisationUnitService.getOrganisationUnitsAtLevel( 4, unitB ), unitH, unitI, unitJ, unitK ) );
     }
+    
     @Test
     public void testGetOrganisationUnitsByNameAndGroups()
     {

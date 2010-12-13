@@ -273,7 +273,10 @@ function SelectionTree()
         {
             linkTag.className = 'selected';
 			selectedOrganisationUnit.push( childId );
-			addSelectedOrganisationUnitABCDEF( childId );
+			
+			if ( typeof (window.addSelectedOrganisationUnitABCDEF) == 'function') { 
+				addSelectedOrganisationUnitABCDEF( childId );// This code is completely ridiculous and must be removed
+			} 
         }
 
         var childTag = document.createElement( 'li' );

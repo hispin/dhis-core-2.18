@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.document.Document;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;

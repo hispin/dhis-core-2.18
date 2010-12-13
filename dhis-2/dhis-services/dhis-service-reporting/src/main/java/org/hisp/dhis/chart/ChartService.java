@@ -33,7 +33,6 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;

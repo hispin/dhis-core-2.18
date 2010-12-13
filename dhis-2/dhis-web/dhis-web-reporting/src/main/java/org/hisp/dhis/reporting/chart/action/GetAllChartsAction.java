@@ -37,9 +37,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.reporttable.ReportTable;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
