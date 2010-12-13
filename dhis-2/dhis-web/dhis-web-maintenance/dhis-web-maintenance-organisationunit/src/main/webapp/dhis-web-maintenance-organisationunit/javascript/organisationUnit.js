@@ -7,6 +7,8 @@ function organisationUnitSelected( orgUnitIds )
     window.location.href = 'organisationUnit.action';
 }
 
+selection.setListenerFunction( organisationUnitSelected );
+
 // -----------------------------------------------------------------------------
 // View details
 // -----------------------------------------------------------------------------
