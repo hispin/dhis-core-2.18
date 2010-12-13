@@ -255,7 +255,7 @@
 		<action name="updateOrganisationUnitGroupAtLevel"
 			class="org.hisp.dhis.reportexcel.organisationunitgrouplisting.action.UpdateOrganisationUnitGroupAtLevelAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<!-- REPORT EXCEL ASSOCIATION ACTION -->
@@ -384,14 +384,14 @@
 		<action name="copyReportExcelItems"
 			class="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
 		<action name="copyExcelItemsToGroup"
 			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemToGroupAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_COPY_EXCEL_ITEM_ADMINISTRATION</param>
 		</action>
 
@@ -451,25 +451,25 @@
 		<action name="generateReportCategory"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportCategoryAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportNormal"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportNormalAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportOrgGroupListing"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportOrganizationGroupListingAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportPeriodColumnListing"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateReportPeriodColumnListingAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 
@@ -666,25 +666,25 @@
 		<action name="generateAdvancedReportNormal"
 			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportNormalAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportOrganizationGroupListing"
 			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportOrgGroupListingAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportPeriodColumnListingAction"
 			class="org.hisp.dhis.reportexcel.export.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportCategory"
 			class="org.hisp.dhis.reportexcel.export.action.GenerateAdvancedReportCategoryAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<!-- INDIVIDUAL REPORT EXCEL -->
@@ -722,7 +722,7 @@
 		<action name="cleanUpReportExcel"
 			class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<!-- PREVIEW ADVANCED REPORT -->
@@ -903,7 +903,7 @@
 		<action name="deleteDataElementGroupOrderForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.DeleteDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="getDataElementGroupOrderForCategory"
@@ -924,13 +924,13 @@
 		<action name="updateSortedDataElementsForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementForCategoryAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<action name="updateSortedDataElementGroupOrderForCategory"
 			class="org.hisp.dhis.reportexcel.excelitemgroup.dataelementgroup.action.UpdateSortedDataElementGroupOrderForCategoryAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -1035,7 +1035,7 @@
 		<action name="copyExcelItems"
 			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-excel-reporting/responseSuccess.vm</result>
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
 
 		<!-- IMPORT DATA -->

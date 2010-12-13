@@ -43,10 +43,8 @@ newTemplateName = '';
 
 function openEditExcelTemplate( currentFileName ) {
 
-	//byId("currentFileNameHidden").value = currentFileName;
 	curTemplateName = currentFileName;
 	$("#editExcelTemplateDiv").showAtCenter( true );
-
 }
 
 function validateRenamingExcelTemplate( fileName, columnIndex ) {
