@@ -831,591 +831,585 @@
     var predefinedMapLegendSetWindow = new Ext.Window({
         id: 'predefinedmaplegendset_w',
         title: '<span id="window-predefinedlegendset-title">'+i18n_predefined_legend_sets+'</span>',
-		layout: 'fit',
+		layout: 'accordion',
         closeAction: 'hide',
 		width: GLOBAL.conf.window_width,
         height: Ext.isChrome ? 348:346,
         items: [
             {
-                xtype: 'panel',
-                layout: 'accordion',
+                id: 'newpredefinedmaplegend_p',
+                title: i18n_legend,
                 items: [
                     {
-                        id: 'newpredefinedmaplegend_p',
-                        title: i18n_legend,
+                        xtype: 'form',
+                        bodyStyle: 'padding: 8px 8px 5px 8px',
                         items: [
+                            {html: '<div class="window-info">Register new legend</div>'},
                             {
-                                xtype: 'form',
-                                bodyStyle: 'padding: 8px 8px 5px 8px',
-                                items: [
-                                    {html: '<div class="window-info">Register new legend</div>'},
-                                    {
-                                        xtype: 'textfield',
-                                        id: 'predefinedmaplegendname_tf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_display_name,
-                                        width: GLOBAL.conf.combo_width_fieldset
-                                    },
-                                    {
-                                        xtype: 'numberfield',
-                                        id: 'predefinedmaplegendstartvalue_nf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_start_value,
-                                        width: GLOBAL.conf.combo_number_width_small
-                                    },
-                                    {
-                                        xtype: 'numberfield',
-                                        id: 'predefinedmaplegendendvalue_nf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_end_value,
-                                        width: GLOBAL.conf.combo_number_width_small
-                                    },
-                                    {
-                                        xtype: 'colorfield',
-                                        id: 'predefinedmaplegendcolor_cp',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_color,
-                                        allowBlank: false,
-                                        width: GLOBAL.conf.combo_width_fieldset,
-                                        value:"#C0C0C0"
-                                    },
-                                    {html: '<div class="window-p"></div>'},
-                                    {html: '<div class="window-info">Delete legend</div>'},
-                                    {
-                                        xtype: 'combo',
-                                        id: 'predefinedmaplegend_cb',
-                                        editable: false,
-                                        valueField: 'id',
-                                        displayField: 'name',
-                                        mode: 'remote',
-                                        forceSelection: true,
-                                        triggerAction: 'all',
-                                        selectOnFocus: true,
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_legend,
-                                        width: GLOBAL.conf.combo_width_fieldset,
-                                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                        store: GLOBAL.stores.predefinedMapLegend
-                                    }
-                                ]
+                                xtype: 'textfield',
+                                id: 'predefinedmaplegendname_tf',
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_display_name,
+                                width: GLOBAL.conf.combo_width_fieldset
                             },
                             {
-                                xtypes: 'form',
-                                items: [
-                                    {
-                                        xtype: 'toolbar',
-                                        style: 'padding-top:4px',
-                                        items: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                id: 'newpredefinedmaplegend_b',
-                                                text: i18n_register,
-                                                iconCls: 'icon-add',
-                                                handler: function() {
-                                                    var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
-                                                    var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_nf').getValue());
-                                                    var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_nf').getValue());
-                                                    var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
-                                                    
-                                                    if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
-                                                        Ext.message.msg(false, i18n_form_is_not_complete);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (!mln || !mlsv || !mlev || !mlc) {
-                                                        Ext.message.msg(false, i18n_form_is_not_complete);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (!GLOBAL.util.validateInputNameLength(mln)) {
-                                                        Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (GLOBAL.stores.predefinedMapLegend.find('name', mln) !== -1) {
-                                                        Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + mln + '</span> ' + i18n_already_exists);
-                                                        return;
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegend' + GLOBAL.conf.type,
-                                                        method: 'POST',
-                                                        params: {name: mln, startValue: mlsv, endValue: mlev, color: mlc},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
-                                                            GLOBAL.stores.predefinedMapLegend.load();
-                                                            Ext.getCmp('predefinedmaplegendname_tf').reset();
-                                                            Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
-                                                            Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
-                                                            Ext.getCmp('predefinedmaplegendcolor_cp').reset();
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                xtype: 'button',
-                                                id: 'deletepredefinedmaplegend_b',
-                                                text: i18n_delete,
-                                                iconCls: 'icon-remove',
-                                                handler: function() {
-                                                    var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
-                                                    var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
-                                                    
-                                                    if (!mlv) {
-                                                        Ext.message.msg(false, i18n_please_select_a_legend);
-                                                        return;
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'deleteMapLegend' + GLOBAL.conf.type,
-                                                        method: 'POST',
-                                                        params: {id: mlv},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + i18n_was_deleted);
-                                                            GLOBAL.stores.predefinedMapLegend.load();
-                                                            Ext.getCmp('predefinedmaplegend_cb').clearValue();
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
-                        listeners: {
-                            expand: function() {
-                                predefinedMapLegendSetWindow.setHeight(Ext.isChrome ? 348:346);
+                                xtype: 'numberfield',
+                                id: 'predefinedmaplegendstartvalue_nf',
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_start_value,
+                                width: GLOBAL.conf.combo_number_width_small
                             },
-                            collapse: function() {
-                                predefinedMapLegendSetWindow.setHeight(123);
+                            {
+                                xtype: 'numberfield',
+                                id: 'predefinedmaplegendendvalue_nf',
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_end_value,
+                                width: GLOBAL.conf.combo_number_width_small
+                            },
+                            {
+                                xtype: 'colorfield',
+                                id: 'predefinedmaplegendcolor_cp',
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_color,
+                                allowBlank: false,
+                                width: GLOBAL.conf.combo_width_fieldset,
+                                value:"#C0C0C0"
+                            },
+                            {html: '<div class="window-p"></div>'},
+                            {html: '<div class="window-info">Delete legend</div>'},
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegend_cb',
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'name',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_legend,
+                                width: GLOBAL.conf.combo_width_fieldset,
+                                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                                store: GLOBAL.stores.predefinedMapLegend
                             }
-                        }
+                        ]
                     },
-                    
                     {
-                        title: i18n_legendset,
+                        xtypes: 'form',
                         items: [
                             {
-                                xtype: 'form',
-                                bodyStyle: 'padding: 8px 8px 5px 8px',
+                                xtype: 'toolbar',
+                                style: 'padding-top:4px',
                                 items: [
-                                    {html: '<div class="window-info">Register new legend set</div>'},
+                                    '->',
                                     {
-                                        xtype: 'textfield',
-                                        id: 'predefinedmaplegendsetname_tf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_display_name,
-                                        width: GLOBAL.conf.combo_width_fieldset
+                                        xtype: 'button',
+                                        id: 'newpredefinedmaplegend_b',
+                                        text: i18n_register,
+                                        iconCls: 'icon-add',
+                                        handler: function() {
+                                            var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
+                                            var mlsv = parseFloat(Ext.getCmp('predefinedmaplegendstartvalue_nf').getValue());
+                                            var mlev = parseFloat(Ext.getCmp('predefinedmaplegendendvalue_nf').getValue());
+                                            var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
+                                            
+                                            if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
+                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                return;
+                                            }
+                                            
+                                            if (!mln || !mlsv || !mlev || !mlc) {
+                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                return;
+                                            }
+                                            
+                                            if (!GLOBAL.util.validateInputNameLength(mln)) {
+                                                Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
+                                                return;
+                                            }
+                                            
+                                            if (GLOBAL.stores.predefinedMapLegend.find('name', mln) !== -1) {
+                                                Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + mln + '</span> ' + i18n_already_exists);
+                                                return;
+                                            }
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegend' + GLOBAL.conf.type,
+                                                method: 'POST',
+                                                params: {name: mln, startValue: mlsv, endValue: mlev, color: mlc},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
+                                                    GLOBAL.stores.predefinedMapLegend.load();
+                                                    Ext.getCmp('predefinedmaplegendname_tf').reset();
+                                                    Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
+                                                    Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
+                                                    Ext.getCmp('predefinedmaplegendcolor_cp').reset();
+                                                }
+                                            });
+                                        }
                                     },
-                                    {html: '<div class="window-field-label">'+i18n_legends+'</div>'},
                                     {
-                                        xtype: 'multiselect',
-                                        id: 'predefinednewmaplegend_ms',
-                                        hideLabel: true,
-                                        dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
-                                        valueField: 'id',
-                                        displayField: 'displayString',
-                                        width: GLOBAL.conf.multiselect_width,
-                                        height: GLOBAL.util.getMultiSelectHeight() / 2,
-                                        store: GLOBAL.stores.predefinedMapLegend
-                                    },
-                                    {html: '<div class="window-p"></div>'},
-                                    {html: '<div class="window-info">Delete legend set</div>'},
-                                    {
-                                        xtype: 'combo',
-                                        id: 'predefinedmaplegendsetindicator_cb',
-                                        editable: false,
-                                        valueField: 'id',
-                                        displayField: 'name',
-                                        mode: 'remote',
-                                        forceSelection: true,
-                                        triggerAction: 'all',
-                                        selectOnFocus: true,
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_legendset,
-                                        width: GLOBAL.conf.combo_width_fieldset,
-                                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                        store:GLOBAL.stores.predefinedMapLegendSet
+                                        xtype: 'button',
+                                        id: 'deletepredefinedmaplegend_b',
+                                        text: i18n_delete,
+                                        iconCls: 'icon-remove',
+                                        handler: function() {
+                                            var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
+                                            var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
+                                            
+                                            if (!mlv) {
+                                                Ext.message.msg(false, i18n_please_select_a_legend);
+                                                return;
+                                            }
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'deleteMapLegend' + GLOBAL.conf.type,
+                                                method: 'POST',
+                                                params: {id: mlv},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + i18n_was_deleted);
+                                                    GLOBAL.stores.predefinedMapLegend.load();
+                                                    Ext.getCmp('predefinedmaplegend_cb').clearValue();
+                                                }
+                                            });
+                                        }
                                     }
                                 ]
-                            },
+                            }
+                        ]
+                    }
+                ],
+                listeners: {
+                    expand: function() {
+                        predefinedMapLegendSetWindow.setHeight(Ext.isChrome ? 348:346);
+                    },
+                    collapse: function() {
+                        predefinedMapLegendSetWindow.setHeight(123);
+                    }
+                }
+            },
+            
+            {
+                title: i18n_legendset,
+                items: [
+                    {
+                        xtype: 'form',
+                        bodyStyle: 'padding: 8px 8px 5px 8px',
+                        items: [
+                            {html: '<div class="window-info">Register new legend set</div>'},
                             {
-                                xtype: 'form',
+                                xtype: 'textfield',
+                                id: 'predefinedmaplegendsetname_tf',
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_display_name,
+                                width: GLOBAL.conf.combo_width_fieldset
+                            },
+                            {html: '<div class="window-field-label">'+i18n_legends+'</div>'},
+                            {
+                                xtype: 'multiselect',
+                                id: 'predefinednewmaplegend_ms',
+                                hideLabel: true,
+                                dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
+                                valueField: 'id',
+                                displayField: 'displayString',
+                                width: GLOBAL.conf.multiselect_width,
+                                height: GLOBAL.util.getMultiSelectHeight() / 2,
+                                store: GLOBAL.stores.predefinedMapLegend
+                            },
+                            {html: '<div class="window-p"></div>'},
+                            {html: '<div class="window-info">Delete legend set</div>'},
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendsetindicator_cb',
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'name',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_legendset,
+                                width: GLOBAL.conf.combo_width_fieldset,
+                                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                                store:GLOBAL.stores.predefinedMapLegendSet
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'form',
+                        items: [
+                            {
+                                xtype: 'toolbar',
+                                style: 'padding-top:4px',
                                 items: [
+                                    '->',
                                     {
-                                        xtype: 'toolbar',
-                                        style: 'padding-top:4px',
-                                        items: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                id: 'newpredefinedmaplegendset_b',
-                                                text: i18n_register,
-                                                iconCls: 'icon-add',
-                                                handler: function() {
-                                                    var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
-                                                    var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
-                                                    var array = [];
-                                                    
-                                                    if (mlms) {
-                                                        array = mlms.split(',');
-                                                        if (array.length > 1) {
-                                                            for (var i = 0; i < array.length; i++) {
-                                                                var sv = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('startValue');
-                                                                var ev = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('endValue');
-                                                                for (var j = 0; j < array.length; j++) {
-                                                                    if (j != i) {
-                                                                        var temp_sv = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('startValue');
-                                                                        var temp_ev = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('endValue');
-                                                                        for (var k = sv+1; k < ev; k++) {
-                                                                            if (k > temp_sv && k < temp_ev) {
-                                                                                Ext.message.msg(false, i18n_overlapping_legends_are_not_allowed);
-                                                                                return;
-                                                                            }
-                                                                        }
+                                        xtype: 'button',
+                                        id: 'newpredefinedmaplegendset_b',
+                                        text: i18n_register,
+                                        iconCls: 'icon-add',
+                                        handler: function() {
+                                            var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
+                                            var mlms = Ext.getCmp('predefinednewmaplegend_ms').getValue();
+                                            var array = [];
+                                            
+                                            if (mlms) {
+                                                array = mlms.split(',');
+                                                if (array.length > 1) {
+                                                    for (var i = 0; i < array.length; i++) {
+                                                        var sv = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('startValue');
+                                                        var ev = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('endValue');
+                                                        for (var j = 0; j < array.length; j++) {
+                                                            if (j != i) {
+                                                                var temp_sv = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('startValue');
+                                                                var temp_ev = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('endValue');
+                                                                for (var k = sv+1; k < ev; k++) {
+                                                                    if (k > temp_sv && k < temp_ev) {
+                                                                        Ext.message.msg(false, i18n_overlapping_legends_are_not_allowed);
+                                                                        return;
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     }
-                                                    else {
-                                                        Ext.message.msg(false, i18n_form_is_not_complete);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (!mlsv) {
-                                                        Ext.message.msg(false, i18n_form_is_not_complete);
-                                                        return;
-                                                    }
-                                                    
-                                                    array = mlms.split(',');
-                                                    var params = '?mapLegends=' + array[0];
-                                                    if (array.length > 1) {
-                                                        for (var l = 1; l < array.length; l++) {
-                                                            array[l] = '&mapLegends=' + array[l];
-                                                            params += array[l];
-                                                        }
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
-                                                        method: 'POST',
-                                                        params: {name: mlsv, type: GLOBAL.conf.map_legend_type_predefined},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + i18n_was_registered);
-                                                            GLOBAL.stores.predefinedMapLegendSet.load();
-                                                            Ext.getCmp('predefinedmaplegendsetname_tf').reset();
-                                                            Ext.getCmp('predefinednewmaplegend_ms').reset();							
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                xtype: 'button',
-                                                id: 'deletepredefinedmaplegendset_b',
-                                                text: i18n_delete,
-                                                iconCls: 'icon-remove',
-                                                handler: function() {
-                                                    var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
-                                                    var mlsrv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
-                                                    
-                                                    if (!mlsv) {
-                                                        Ext.message.msg(false, i18n_please_select_a_legend_set);
-                                                        return;
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'deleteMapLegendSet' + GLOBAL.conf.type,
-                                                        method: 'POST',
-                                                        params: {id: mlsv},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
-                                                            GLOBAL.stores.predefinedMapLegendSet.load();
-                                                            Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
-                                                            if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
-                                                                Ext.getCmp('predefinedmaplegendsetindicator2_cb').clearValue();
-                                                            }
-                                                            if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
-                                                                Ext.getCmp('predefinedmaplegendsetdataelement_cb').clearValue();
-                                                            }                            
-                                                        }
-                                                    });
                                                 }
                                             }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
-                        listeners: {
-                            expand: function() {
-                                predefinedMapLegendSetWindow.setHeight((GLOBAL.util.getMultiSelectHeight() / 2) + (Ext.isChrome ? 299:295));
-                            },
-                            collapse: function() {
-                                predefinedMapLegendSetWindow.setHeight(123);
-                            }
-                        }
-                    },
-                    
-                    {
-                        title: i18n_indicators,
-                        items: [
-                            {
-                                xtype: 'form',
-                                bodyStyle: 'padding: 8px 8px 5px 8px',
-                                items: [
-                                    {html: '<div class="window-info">Assign indicators to legend set</div>'},
-                                    {
-                                        xtype: 'combo',
-                                        id: 'predefinedmaplegendsetindicator2_cb',
-                                        editable: false,
-                                        valueField: 'id',
-                                        displayField: 'name',
-                                        mode: 'remote',
-                                        forceSelection: true,
-                                        triggerAction: 'all',
-                                        selectOnFocus: true,
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_legendset,
-                                        width: GLOBAL.conf.combo_width_fieldset,
-                                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                        store: GLOBAL.stores.predefinedMapLegendSet,
-                                        listeners: {
-                                            'select': {
-                                                fn: function(cb, record) {
-                                                    var indicators = record.data.indicators || [];
-                                                    var indicatorString = '';
-                                                    
-                                                    for (var i = 0; i < indicators.length; i++) {
-                                                        indicatorString += indicators[i];
-                                                        if (i < indicators.length-1) {
-                                                            indicatorString += ',';
-                                                        }
-                                                    }
-                                                    
-                                                    Ext.getCmp('predefinedmaplegendsetindicator_ms').setValue(indicatorString);
+                                            else {
+                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                return;
+                                            }
+                                            
+                                            if (!mlsv) {
+                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                return;
+                                            }
+                                            
+                                            array = mlms.split(',');
+                                            var params = '?mapLegends=' + array[0];
+                                            if (array.length > 1) {
+                                                for (var l = 1; l < array.length; l++) {
+                                                    array[l] = '&mapLegends=' + array[l];
+                                                    params += array[l];
                                                 }
                                             }
-                                        }	
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
+                                                method: 'POST',
+                                                params: {name: mlsv, type: GLOBAL.conf.map_legend_type_predefined},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + i18n_was_registered);
+                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.getCmp('predefinedmaplegendsetname_tf').reset();
+                                                    Ext.getCmp('predefinednewmaplegend_ms').reset();							
+                                                }
+                                            });
+                                        }
                                     },
-                                    {html: '<div class="window-field-label">' + i18n_indicators + '</div>'},
                                     {
-                                        xtype: 'multiselect',
-                                        id: 'predefinedmaplegendsetindicator_ms',
-                                        hideLabel:true,
-                                        dataFields: ['id', 'shortName'],
-                                        valueField: 'id',
-                                        displayField: 'shortName',
-                                        width:GLOBAL.conf.multiselect_width,
-                                        height: GLOBAL.util.getMultiSelectHeight(),
-                                        store:GLOBAL.stores.indicator
-                                    }
-                                ]
-                            },
-                            {
-                                xtype: 'form',
-                                items: [
-                                    {
-                                        xtype: 'toolbar',
-                                        style: 'padding-top:4px',
-                                        items: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                id: 'assignpredefinedmaplegendsetindicator_b',
-                                                text: i18n_assign,
-                                                iconCls: 'icon-assign',
-                                                handler: function() {
-                                                    var ls = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue();
-                                                    var lsrw = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getRawValue();
-                                                    var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
-                                                    
-                                                    if (!ls) {
-                                                        Ext.message.msg(false, i18n_please_select_a_legend_set);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (!lims) {
-                                                        Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
-                                                        return;
-                                                    }
-                                                    
-                                                    var array = [];
-                                                    array = lims.split(',');
-                                                    var params = '?indicators=' + array[0];
-                                                    
-                                                    if (array.length > 1) {
-                                                        for (var i = 1; i < array.length; i++) {
-                                                            array[i] = '&indicators=' + array[i];
-                                                            params += array[i];
-                                                        }
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
-                                                        method: 'POST',
-                                                        params: {id: ls},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                                                            GLOBAL.stores.predefinedMapLegendSet.load();
-                                                        }
-                                                    });
-                                                }
+                                        xtype: 'button',
+                                        id: 'deletepredefinedmaplegendset_b',
+                                        text: i18n_delete,
+                                        iconCls: 'icon-remove',
+                                        handler: function() {
+                                            var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
+                                            var mlsrv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
+                                            
+                                            if (!mlsv) {
+                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                return;
                                             }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
-                        listeners: {
-                            expand: function() {
-                                predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 243:240));
-                                
-                                if (!GLOBAL.stores.indicator.isLoaded) {
-                                    GLOBAL.stores.indicator.load();
-                                }
-                            },
-                            collapse: function() {
-                                predefinedMapLegendSetWindow.setHeight(123);
-                            }
-                        }
-                    },
-                    
-                    {
-                        title: i18n_dataelements,
-                        items: [
-                            {
-                                xtype: 'form',
-                                bodyStyle: 'padding: 8px 8px 5px 8px',
-                                items: [
-                                    {html: '<div class="window-info">Assign data elements to legend set</div>'},
-                                    {
-                                        xtype: 'combo',
-                                        id: 'predefinedmaplegendsetdataelement_cb',
-                                        editable: false,
-                                        valueField: 'id',
-                                        displayField: 'name',
-                                        mode: 'remote',
-                                        forceSelection: true,
-                                        triggerAction: 'all',
-                                        selectOnFocus: true,
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_legendset,
-                                        width: GLOBAL.conf.combo_width_fieldset,
-                                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                        store: GLOBAL.stores.predefinedMapLegendSet,
-                                        listeners:{
-                                            'select': {
-                                                fn: function(cb, record) {
-                                                    var dataElements = record.data.dataElements || [];
-                                                    var dataElementString = '';
-
-                                                    for (var i = 0; i < dataElements.length; i++) {
-                                                        dataElementString += dataElements[i];
-                                                        if (i < dataElements.length-1) {
-                                                            dataElementString += ',';
-                                                        }
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'deleteMapLegendSet' + GLOBAL.conf.type,
+                                                method: 'POST',
+                                                params: {id: mlsv},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
+                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
+                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
+                                                        Ext.getCmp('predefinedmaplegendsetindicator2_cb').clearValue();
                                                     }
-                                                    
-                                                    Ext.getCmp('predefinedmaplegendsetdataelement_ms').setValue(dataElementString);
+                                                    if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
+                                                        Ext.getCmp('predefinedmaplegendsetdataelement_cb').clearValue();
+                                                    }                            
                                                 }
-                                            }
-                                        }					
-                                    },
-                                    {html: '<div class="window-field-label">' + i18n_dataelements + '</div>'},
-                                    {
-                                        xtype: 'multiselect',
-                                        id: 'predefinedmaplegendsetdataelement_ms',
-                                        hideLabel: true,
-                                        dataFields: ['id', 'shortName'],
-                                        valueField: 'id',
-                                        displayField: 'shortName',
-                                        width: GLOBAL.conf.multiselect_width,
-                                        height: GLOBAL.util.getMultiSelectHeight(),
-                                        store: GLOBAL.stores.dataElement
-                                    }
-                                ]
-                            },
-                            {
-                                xtype: 'form',
-                                items: [
-                                    {
-                                        xtype: 'toolbar',
-                                        style: 'padding-top:4px',
-                                        items: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                id: 'assignpredefinedmaplegendsetdataelement_b',
-                                                text: i18n_assign,
-                                                iconCls: 'icon-assign',
-                                                handler: function() {
-                                                    var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
-                                                    var lsrw = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getRawValue();
-                                                    var lims = Ext.getCmp('predefinedmaplegendsetdataelement_ms').getValue();
-                                                    
-                                                    if (!ls) {
-                                                        Ext.message.msg(false, i18n_please_select_a_legend_set);
-                                                        return;
-                                                    }
-                                                    
-                                                    if (!lims) {
-                                                        Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
-                                                        return;
-                                                    }
-                                                    
-                                                    var array = [];
-                                                    array = lims.split(',');
-                                                    var params = '?dataElements=' + array[0];
-                                                    
-                                                    if (array.length > 1) {
-                                                        for (var i = 1; i < array.length; i++) {
-                                                            array[i] = '&dataElements=' + array[i];
-                                                            params += array[i];
-                                                        }
-                                                    }
-                                                    
-                                                    Ext.Ajax.request({
-                                                        url: GLOBAL.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
-                                                        method: 'POST',
-                                                        params: {id: ls},
-                                                        success: function(r) {
-                                                            Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                                                            GLOBAL.stores.predefinedMapLegendSet.load();
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        ]
+                                            });
+                                        }
                                     }
                                 ]
                             }
-                        ],
-                        listeners: {
-                            expand: function() {
-                                predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 241:238));
-                                
-                                if (!GLOBAL.stores.dataElement.isLoaded) {
-                                    GLOBAL.stores.dataElement.load();
-                                }
-                            },
-                            collapse: function() {
-                                predefinedMapLegendSetWindow.setHeight(123);
-                            }
-                        }
+                        ]
                     }
-                ]
+                ],
+                listeners: {
+                    expand: function() {
+                        predefinedMapLegendSetWindow.setHeight((GLOBAL.util.getMultiSelectHeight() / 2) + (Ext.isChrome ? 299:295));
+                    },
+                    collapse: function() {
+                        predefinedMapLegendSetWindow.setHeight(123);
+                    }
+                }
+            },
+            
+            {
+                title: i18n_indicators,
+                items: [
+                    {
+                        xtype: 'form',
+                        bodyStyle: 'padding: 8px 8px 5px 8px',
+                        items: [
+                            {html: '<div class="window-info">Assign indicators to legend set</div>'},
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendsetindicator2_cb',
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'name',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_legendset,
+                                width: GLOBAL.conf.combo_width_fieldset,
+                                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                                store: GLOBAL.stores.predefinedMapLegendSet,
+                                listeners: {
+                                    'select': {
+                                        fn: function(cb, record) {
+                                            var indicators = record.data.indicators || [];
+                                            var indicatorString = '';
+                                            
+                                            for (var i = 0; i < indicators.length; i++) {
+                                                indicatorString += indicators[i];
+                                                if (i < indicators.length-1) {
+                                                    indicatorString += ',';
+                                                }
+                                            }
+                                            
+                                            Ext.getCmp('predefinedmaplegendsetindicator_ms').setValue(indicatorString);
+                                        }
+                                    }
+                                }	
+                            },
+                            {html: '<div class="window-field-label">' + i18n_indicators + '</div>'},
+                            {
+                                xtype: 'multiselect',
+                                id: 'predefinedmaplegendsetindicator_ms',
+                                hideLabel:true,
+                                dataFields: ['id', 'shortName'],
+                                valueField: 'id',
+                                displayField: 'shortName',
+                                width:GLOBAL.conf.multiselect_width,
+                                height: GLOBAL.util.getMultiSelectHeight(),
+                                store:GLOBAL.stores.indicator
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'form',
+                        items: [
+                            {
+                                xtype: 'toolbar',
+                                style: 'padding-top:4px',
+                                items: [
+                                    '->',
+                                    {
+                                        xtype: 'button',
+                                        id: 'assignpredefinedmaplegendsetindicator_b',
+                                        text: i18n_assign,
+                                        iconCls: 'icon-assign',
+                                        handler: function() {
+                                            var ls = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue();
+                                            var lsrw = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getRawValue();
+                                            var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
+                                            
+                                            if (!ls) {
+                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                return;
+                                            }
+                                            
+                                            if (!lims) {
+                                                Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
+                                                return;
+                                            }
+                                            
+                                            var array = [];
+                                            array = lims.split(',');
+                                            var params = '?indicators=' + array[0];
+                                            
+                                            if (array.length > 1) {
+                                                for (var i = 1; i < array.length; i++) {
+                                                    array[i] = '&indicators=' + array[i];
+                                                    params += array[i];
+                                                }
+                                            }
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
+                                                method: 'POST',
+                                                params: {id: ls},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
+                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                }
+                                            });
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                listeners: {
+                    expand: function() {
+                        predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 243:240));
+                        
+                        if (!GLOBAL.stores.indicator.isLoaded) {
+                            GLOBAL.stores.indicator.load();
+                        }
+                    },
+                    collapse: function() {
+                        predefinedMapLegendSetWindow.setHeight(123);
+                    }
+                }
+            },
+            
+            {
+                title: i18n_dataelements,
+                items: [
+                    {
+                        xtype: 'form',
+                        bodyStyle: 'padding: 8px 8px 5px 8px',
+                        items: [
+                            {html: '<div class="window-info">Assign data elements to legend set</div>'},
+                            {
+                                xtype: 'combo',
+                                id: 'predefinedmaplegendsetdataelement_cb',
+                                editable: false,
+                                valueField: 'id',
+                                displayField: 'name',
+                                mode: 'remote',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                selectOnFocus: true,
+                                emptyText: GLOBAL.conf.emptytext,
+                                labelSeparator: GLOBAL.conf.labelseparator,
+                                fieldLabel: i18n_legendset,
+                                width: GLOBAL.conf.combo_width_fieldset,
+                                minListWidth: GLOBAL.conf.combo_width_fieldset,
+                                store: GLOBAL.stores.predefinedMapLegendSet,
+                                listeners:{
+                                    'select': {
+                                        fn: function(cb, record) {
+                                            var dataElements = record.data.dataElements || [];
+                                            var dataElementString = '';
+
+                                            for (var i = 0; i < dataElements.length; i++) {
+                                                dataElementString += dataElements[i];
+                                                if (i < dataElements.length-1) {
+                                                    dataElementString += ',';
+                                                }
+                                            }
+                                            
+                                            Ext.getCmp('predefinedmaplegendsetdataelement_ms').setValue(dataElementString);
+                                        }
+                                    }
+                                }					
+                            },
+                            {html: '<div class="window-field-label">' + i18n_dataelements + '</div>'},
+                            {
+                                xtype: 'multiselect',
+                                id: 'predefinedmaplegendsetdataelement_ms',
+                                hideLabel: true,
+                                dataFields: ['id', 'shortName'],
+                                valueField: 'id',
+                                displayField: 'shortName',
+                                width: GLOBAL.conf.multiselect_width,
+                                height: GLOBAL.util.getMultiSelectHeight(),
+                                store: GLOBAL.stores.dataElement
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'form',
+                        items: [
+                            {
+                                xtype: 'toolbar',
+                                style: 'padding-top:4px',
+                                items: [
+                                    '->',
+                                    {
+                                        xtype: 'button',
+                                        id: 'assignpredefinedmaplegendsetdataelement_b',
+                                        text: i18n_assign,
+                                        iconCls: 'icon-assign',
+                                        handler: function() {
+                                            var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
+                                            var lsrw = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getRawValue();
+                                            var lims = Ext.getCmp('predefinedmaplegendsetdataelement_ms').getValue();
+                                            
+                                            if (!ls) {
+                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                return;
+                                            }
+                                            
+                                            if (!lims) {
+                                                Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
+                                                return;
+                                            }
+                                            
+                                            var array = [];
+                                            array = lims.split(',');
+                                            var params = '?dataElements=' + array[0];
+                                            
+                                            if (array.length > 1) {
+                                                for (var i = 1; i < array.length; i++) {
+                                                    array[i] = '&dataElements=' + array[i];
+                                                    params += array[i];
+                                                }
+                                            }
+                                            
+                                            Ext.Ajax.request({
+                                                url: GLOBAL.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
+                                                method: 'POST',
+                                                params: {id: ls},
+                                                success: function(r) {
+                                                    Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
+                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                }
+                                            });
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                listeners: {
+                    expand: function() {
+                        predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 241:238));
+                        
+                        if (!GLOBAL.stores.dataElement.isLoaded) {
+                            GLOBAL.stores.dataElement.load();
+                        }
+                    },
+                    collapse: function() {
+                        predefinedMapLegendSetWindow.setHeight(123);
+                    }
+                }
             }
         ],
         listeners: {
@@ -1858,58 +1852,62 @@
     });
 
     /* Section: administrator settings */
-    var adminDateTypeCombo = new Ext.form.ComboBox({
-        id: 'mapdatetype_cb',
-        fieldLabel: i18n_date_type,
-        labelSeparator: GLOBAL.conf.labelseparator,
-        editable: false,
-        valueField: 'value',
-        displayField: 'text',
-        mode: 'local',
-        value: GLOBAL.conf.map_date_type_fixed,
-        triggerAction: 'all',
-        width: GLOBAL.conf.combo_width_fieldset,
-        minListWidth: GLOBAL.conf.combo_width_fieldset,
-        store: new Ext.data.ArrayStore({
-            fields: ['value', 'text'],
-            data: [
-                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
-                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
-            ]
-        }),
-        listeners: {
-            'select': function(cb) {
-                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
-                    GLOBAL.vars.mapDateType.value = cb.getValue();
-                    Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
-                        method: 'POST',
-                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
-                        success: function() {
-                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
-                            choropleth.prepareMapViewDateType();
-                            symbol.prepareMapViewDateType();
-                        }
-                    });
-                }
-            }
-        }
-    });
-        
-    var adminPanel = new Ext.form.FormPanel({
-        title: 'Date type',
-        items: [adminDateTypeCombo]
-    });
-    
     var adminWindow = new Ext.Window({
         id: 'admin_w',
         title: '<span id="window-admin-title">Administrator settings</span>',
         layout: 'accordion',
-        defaults: {bodyStyle:'padding:8px; border:0px'},
-        width: 250,
-        height: 93,
         closeAction: 'hide',
-        items: [adminPanel]        
+        width: GLOBAL.conf.window_width,
+        height: 119,
+        items: [
+            {
+                xtype: 'form',
+                title: 'Date type',
+                bodyStyle: 'padding:8px',
+                items: [
+                    {html: '<div class="window-info">Set thematic map date type</div>'},
+                    {
+                        xtype: 'combo',
+                        id: 'mapdatetype_cb',
+                        fieldLabel: i18n_date_type,
+                        labelSeparator: GLOBAL.conf.labelseparator,
+                        editable: false,
+                        valueField: 'value',
+                        displayField: 'text',
+                        mode: 'local',
+                        value: GLOBAL.conf.map_date_type_fixed,
+                        triggerAction: 'all',
+                        width: GLOBAL.conf.combo_width_fieldset,
+                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        store: {
+                            xtype: 'arraystore',
+                            fields: ['value', 'text'],
+                            data: [
+                                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
+                                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
+                            ]
+                        },
+                        listeners: {
+                            'select': function(cb) {
+                                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
+                                    GLOBAL.vars.mapDateType.value = cb.getValue();
+                                    Ext.Ajax.request({
+                                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
+                                        method: 'POST',
+                                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
+                                        success: function() {
+                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
+                                            choropleth.prepareMapViewDateType();
+                                            symbol.prepareMapViewDateType();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
     });
 	
 	/* Section: layers */
