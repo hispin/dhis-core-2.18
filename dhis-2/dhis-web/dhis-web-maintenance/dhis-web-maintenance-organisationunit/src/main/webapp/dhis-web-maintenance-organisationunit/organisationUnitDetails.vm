@@ -35,6 +35,22 @@
 <td><b>$i18n.getString( "last_updated" ):</b></td>
 <td>$!format.formateDate( $organisationUnit.lastUpdated )</td>
 </tr>
+<tr>
+<td><b>$i18n.getString( "contact_person" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.contactPerson )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "address" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.address )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "email" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.email )</td>
+</tr>
+<tr>
+<td><b>$i18n.getString( "phone_number" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.phoneNumber )</td>
+</tr>
 
 #foreach( $groupSet in $groupSets )
 <tr>
