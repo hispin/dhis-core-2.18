@@ -710,6 +710,10 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                                         return;
                                                     }
                                                     
+                                                    if (Ext.getCmp('locatefeature_w')) {
+                                                        Ext.getCmp('locatefeature_w').destroy();
+                                                    }
+                                                    
                                                     this.form.findField('mapview').clearValue();
                                                     this.updateValues = true;
                                                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
@@ -1445,10 +1449,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             }
             
             if (this.updateValues) {
-                if (Ext.getCmp('locatefeature_w')) {
-                    Ext.getCmp('locatefeature_w').destroy();
-                }
-                    
                 var dataUrl = this.valueType.isIndicator() ? 'getIndicatorMapValues' : 'getDataElementMapValues';                
                 var params = {
                     id: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : this.form.findField('dataelement').getValue(),

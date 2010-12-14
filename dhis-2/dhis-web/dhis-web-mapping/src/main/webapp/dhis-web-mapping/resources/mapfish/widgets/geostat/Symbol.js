@@ -649,11 +649,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                                     if (!node) {
                                                         return;
                                                     }
+
+                                                    if (Ext.getCmp('locatefeature_w')) {
+                                                        Ext.getCmp('locatefeature_w').destroy();
+                                                    }
                                                     
                                                     this.form.findField('mapview').clearValue();
                                                     this.updateValues = true;
                                                     this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level, null, null);
-                                                        
+                                                    
                                                     this.form.findField('boundary').setValue(node.attributes.text);
                                                     Ext.getCmp('tree_w2').hide();
                                                     
@@ -1419,11 +1423,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 this.mapView = false;
             }
             
-            if (this.updateValues) {       
-                if (Ext.getCmp('locatefeature_w')) {
-                    Ext.getCmp('locatefeature_w').destroy();
-                }
-                         
+            if (this.updateValues) {
                 var dataUrl = this.valueType.isIndicator() ? 'getIndicatorMapValues' : 'getDataElementMapValues';                
                 var params = {
                     id: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : this.form.findField('dataelement').getValue(),
