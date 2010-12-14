@@ -1945,391 +1945,6 @@
     
     GLOBAL.vars.map.addLayers([choroplethLayer, symbolLayer]);
         
-    /* Section: layer options */
-    function showWMSLayerOptions(layer) {
-        if (Ext.getCmp('baselayeroptions_w')) {
-            Ext.getCmp('baselayeroptions_w').destroy();
-        }
-        
-        var baseLayerOptionsWindow = new Ext.Window({
-            id: 'baselayeroptions_w',
-            title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
-            width: 180,
-            items: [
-                {
-                    xtype: 'menu',
-                    id: 'baselayeroptions_m',
-                    floating: false,
-                    items: [
-                        {
-                            text: 'Show WMS legend',
-                            iconCls: 'menu-layeroptions-wmslegend',
-                            listeners: {
-                                'click': {
-                                    fn: function() {
-                                        baseLayerOptionsWindow.destroy();
-                                        
-                                        var frs = layer.getFullRequestString({
-                                            REQUEST: "GetLegendGraphic",
-                                            WIDTH: null,
-                                            HEIGHT: null,
-                                            EXCEPTIONS: "application/vnd.ogc.se_xml",
-                                            LAYERS: layer.params.LAYERS,
-                                            LAYER: layer.params.LAYERS,
-                                            SRS: null,
-                                            FORMAT: 'image/png'
-                                        });
-
-                                        var wmsLayerLegendWindow = new Ext.Window({
-                                            title: 'WMS Legend: <span style="font-weight:normal;">' + layer.name + '</span>',
-                                            items: [
-                                                {
-                                                    xtype: 'panel',
-                                                    html: '<img src="' + frs + '">'
-                                                }
-                                            ]
-                                        });
-                                        wmsLayerLegendWindow.setPagePosition(Ext.getCmp('east').x - 500, Ext.getCmp('center').y + 50);
-                                        wmsLayerLegendWindow.show();
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            text: 'Opacity',
-                            iconCls: 'menu-layeroptions-opacity',
-                            menu: { 
-                                items: [
-                                    {
-                                        text: '0.1',
-                                        iconCls: 'menu-layeroptions-opacity-10',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
-                                    },
-                                    {
-                                        text: '0.2',
-                                        iconCls: 'menu-layeroptions-opacity-20',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
-                                    },
-                                    {
-                                        text: '0.3',
-                                        iconCls: 'menu-layeroptions-opacity-30',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
-                                    },
-                                    {
-                                        text: '0.4',
-                                        iconCls: 'menu-layeroptions-opacity-40',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
-                                    },
-                                    {
-                                        text: '0.5',
-                                        iconCls: 'menu-layeroptions-opacity-50',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
-                                    },
-                                    {
-                                        text: '0.6',
-                                        iconCls: 'menu-layeroptions-opacity-60',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
-                                    },
-                                    {
-                                        text: '0.7',
-                                        iconCls: 'menu-layeroptions-opacity-70',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
-                                    },
-                                    {
-                                        text: '0.8',
-                                        iconCls: 'menu-layeroptions-opacity-80',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
-                                    },
-                                    {
-                                        text: '0.9',
-                                        iconCls: 'menu-layeroptions-opacity-90',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
-                                    },
-                                    {
-                                        text: '1.0',
-                                        iconCls: 'menu-layeroptions-opacity-100',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        });
-        baseLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 206, Ext.getCmp('center').y + 50);
-        baseLayerOptionsWindow.show();
-    }
-    
-
-    function showVectorLayerOptions(layer, type) {
-        if (Ext.getCmp('vectorlayeroptions_w')) {
-            Ext.getCmp('vectorlayeroptions_w').destroy();
-        }
-        
-        var data = [];
-        for (var i = 0; i < layer.features.length; i++) {
-            data.push([layer.features[i].data.id || i, layer.features[i].data.name]);
-        }
-        
-        var featureStore = new Ext.data.ArrayStore({
-            mode: 'local',
-            autoDestroy: true,
-            idProperty: 'id',
-            fields: ['id','name'],
-            sortInfo: {field: 'name', direction: 'ASC'},
-            data: data
-        });
-        
-        var locateFeatureWindow = new Ext.Window({
-            id: 'locatefeature_w',
-            title: 'Locate features',
-            layout: 'fit',
-            defaults: {bodyStyle:'padding:8px; border:0px'},
-            width: 250,
-            height: GLOBAL.util.getMultiSelectHeight() + 145,
-            items: [
-                {
-                    xtype: 'panel',
-                    items: [
-                        { html: '<div class="window-field-label-first">' + i18n_highlight_color + '</div>' },
-                        {
-                            xtype: 'colorfield',
-                            labelSeparator: GLOBAL.conf.labelseparator,
-                            id: 'highlightcolor_cf',
-                            allowBlank: false,
-                            isFormField: true,
-                            width: GLOBAL.conf.combo_width,
-                            value: "#0000FF"
-                        },
-                        { html: '<div class="window-field-label">' + i18n_feature_filter + '</div>' },
-                        {
-                            xtype: 'textfield',
-                            id: 'locatefeature_tf',
-                            enableKeyEvents: true,
-                            listeners: {
-                                'keyup': {
-                                    fn: function() {
-                                        var p = Ext.getCmp('locatefeature_tf').getValue();
-                                        featureStore.filter('name', p, true, false);
-                                    }
-                                }
-                            }
-                        },
-                        { html: '<div class="window-field-nolabel"></div>' },
-                        {
-                            xtype: 'grid',
-                            id: 'featuregrid_gp',
-                            height: GLOBAL.util.getMultiSelectHeight(),
-                            store: featureStore,
-                            cm: new Ext.grid.ColumnModel({
-                                columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
-                            }),
-                            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
-                            viewConfig: {forceFit: true},
-                            sortable: true,
-                            autoExpandColumn: 'name',
-                            listeners: {
-                                'cellclick': {
-                                    fn: function(g, ri, ci) {
-                                        layer.redraw();
-                                        
-                                        var id, feature, backupF, backupS;
-                                        id = g.getStore().getAt(ri).data.id;
-                                        
-                                        for (var i = 0; i < layer.features.length; i++) {
-                                            if (layer.features[i].data.id == id) {
-                                                feature = layer.features[i];
-                                                break;
-                                            }
-                                        }
-                                        
-                                        var color = Ext.getCmp('highlightcolor_cf').getValue();
-                                        var symbolizer;
-                                        
-                                        if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
-                                            feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
-                                            symbolizer = new OpenLayers.Symbolizer.Polygon({
-                                                'strokeColor': color,
-                                                'fillColor': color
-                                            });
-                                        }
-                                        else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
-                                            symbolizer = new OpenLayers.Symbolizer.Point({
-                                                'pointRadius': 7,
-                                                'fillColor': color
-                                            });
-                                        }
-                                        
-                                        layer.drawFeature(feature,symbolizer);
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ],
-            listeners: {
-                'close': {
-                    fn: function() {
-                        GLOBAL.vars.locateFeatureWindow = false;
-                        layer.redraw();
-                    }
-                }
-            }
-        });
-        
-        GLOBAL.vars.locateFeatureWindow = locateFeatureWindow;
-        
-        var vectorLayerOptionsWindow = new Ext.Window({
-            id: 'vectorlayeroptions_w',
-            title: 'Options: <span style="font-weight:normal;">' + layer.name + '</span>',
-            closeAction: 'hide',
-            width: 180,
-            items: [
-                {
-                    xtype: 'menu',
-                    id: 'vectorlayeroptions_m',
-                    floating: false,
-                    items: [
-                        {
-                            text: 'Locate feature',
-                            iconCls: 'menu-layeroptions-locate',
-                            listeners: {
-                                'click': {
-                                    fn: function() {
-                                        if (type != GLOBAL.conf.map_layer_type_overlay) {
-                                            if (layer.features.length > 0) {
-                                                locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - 272, Ext.getCmp('center').y + 50);
-                                                locateFeatureWindow.show();
-                                                vectorLayerOptionsWindow.hide();
-                                            }
-                                            else {
-                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        
-                        {
-                            text: 'Show/hide labels',
-                            iconCls: 'menu-layeroptions-labels',
-                            listeners: {
-                                'click': {
-                                    fn: function() {
-                                        if (type != GLOBAL.conf.map_layer_type_overlay) {
-                                            if (layer.features.length > 0) {
-                                                if (layer.name == 'Polygon layer') {
-                                                    if (GLOBAL.vars.activePanel.isPolygon()) {
-                                                        GLOBAL.util.toggleFeatureLabels(choropleth);
-                                                    }
-                                                    else {
-                                                        Ext.message.msg(false, 'Please use <span class="x-msg-hl">Point layer</span> options');
-                                                    }
-                                                }
-                                                else if (layer.name == 'Point layer') {
-                                                    if (GLOBAL.vars.activePanel.isPoint()) {
-                                                        GLOBAL.util.toggleFeatureLabels(symbol);
-                                                    }
-                                                    else {
-                                                        Ext.message.msg(false, 'Please use <span class="x-msg-hl">Polygon layer</span> options');
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + ' </span>' + i18n_has_no_orgunits);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        
-                        {
-                            text: 'Opacity',
-                            iconCls: 'menu-layeroptions-opacity',
-                            menu: { 
-                                items: [
-                                    {
-                                        text: '0.1',
-                                        iconCls: 'menu-layeroptions-opacity-10',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.1); } } }
-                                    },
-                                    {
-                                        text: '0.2',
-                                        iconCls: 'menu-layeroptions-opacity-20',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.2); } } }
-                                    },
-                                    {
-                                        text: '0.3',
-                                        iconCls: 'menu-layeroptions-opacity-30',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.3); } } }
-                                    },
-                                    {
-                                        text: '0.4',
-                                        iconCls: 'menu-layeroptions-opacity-40',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.4); } } }
-                                    },
-                                    {
-                                        text: '0.5',
-                                        iconCls: 'menu-layeroptions-opacity-50',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.5); } } }
-                                    },
-                                    {
-                                        text: '0.6',
-                                        iconCls: 'menu-layeroptions-opacity-60',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.6); } } }
-                                    },
-                                    {
-                                        text: '0.7',
-                                        iconCls: 'menu-layeroptions-opacity-70',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.7); } } }
-                                    },
-                                    {
-                                        text: '0.8',
-                                        iconCls: 'menu-layeroptions-opacity-80',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.8); } } }
-                                    },
-                                    {
-                                        text: '0.9',
-                                        iconCls: 'menu-layeroptions-opacity-90',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(0.9); } } }
-                                    },
-                                    {
-                                        text: '1.0',
-                                        iconCls: 'menu-layeroptions-opacity-100',
-                                        listeners: { 'click': { fn: function() { layer.setOpacity(1.0); } } }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            ]
-        });
-        vectorLayerOptionsWindow.setPagePosition(Ext.getCmp('east').x - 202, Ext.getCmp('center').y + 50);
-        vectorLayerOptionsWindow.show();
-    }
-	
-	var layerTreeConfig = [{
-        nodeType: 'gx_baselayercontainer',
-        singleClickExpand: true,
-        expanded: true,
-        text: 'Base layers',
-		iconCls: 'icon-background'
-    }, {
-        nodeType: 'gx_overlaylayercontainer',
-        singleClickExpand: true
-    }, {
-        nodeType: 'gx_layer',
-        layer: 'Polygon layer'
-    }, {
-        nodeType: 'gx_layer',
-        layer: 'Point layer'
-    }];       
-    
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + i18n_map_layers + '</span>',
         enableDD: true,
@@ -2337,34 +1952,289 @@
         rootVisible: false,
         root: {
             nodeType: 'async',
-            children: layerTreeConfig
+            children: [
+                {
+                    nodeType: 'gx_baselayercontainer',
+                    singleClickExpand: true,
+                    expanded: true,
+                    text: 'Base layers',
+                    iconCls: 'icon-background'
+                },
+                {
+                    nodeType: 'gx_overlaylayercontainer',
+                    singleClickExpand: true
+                },
+                {
+                    nodeType: 'gx_layer',
+                    layer: 'Polygon layer'
+                },
+                {
+                    nodeType: 'gx_layer',
+                    layer: 'Point layer'
+                }
+            ]
         },
-		listeners: {
-			'click': {
-				fn: function(n) {
-					if (n.parentNode.attributes.text == 'Base layers') {
-						showWMSLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0]);
-					}
-                    else if (n.parentNode.attributes.text == 'Overlays') {
-                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer.name)[0], GLOBAL.conf.map_layer_type_overlay);
+        contextMenuBaselayer: new Ext.menu.Menu({
+            items: [
+                {
+                    text: 'Show WMS legend',
+                    iconCls: 'menu-layeroptions-wmslegend',
+                    handler: function(item, e) {
+                        var layer = item.parentMenu.contextNode.layer;
+
+                        var frs = layer.getFullRequestString({
+                            REQUEST: "GetLegendGraphic",
+                            WIDTH: null,
+                            HEIGHT: null,
+                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                            LAYERS: layer.params.LAYERS,
+                            LAYER: layer.params.LAYERS,
+                            SRS: null,
+                            FORMAT: 'image/png'
+                        });
+                        
+                        var wmsLayerLegendWindow = new Ext.Window({
+                            title: 'WMS Legend: <span style="font-weight:normal;">' + layer.name + '</span>',
+                            items: [
+                                {
+                                    xtype: 'panel',
+                                    html: '<img src="' + frs + '">'
+                                }
+                            ]
+                        });
+                        wmsLayerLegendWindow.setPagePosition(Ext.getCmp('east').x - 500, Ext.getCmp('center').y + 50);
+                        wmsLayerLegendWindow.show();
                     }
-					else if (n.isLeaf()) {
-                        showVectorLayerOptions(GLOBAL.vars.map.getLayersByName(n.attributes.layer)[0]);
-					}
-				}
-			}
-		},					
+                },
+                {
+                    text: 'Opacity',
+                    iconCls: 'menu-layeroptions-opacity',
+                    menu: { 
+                        items: GLOBAL.conf.opacityItems,
+                        listeners: {
+                            'itemclick': function(item) {
+                                item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
+                            }
+                        }
+                    }
+                }
+            ]
+        }),
+        contextMenuOverlay: new Ext.menu.Menu({
+            items: [
+                {
+                    text: 'Opacity',
+                    iconCls: 'menu-layeroptions-opacity',
+                    menu: { 
+                        items: GLOBAL.conf.opacityItems,
+                        listeners: {
+                            'itemclick': function(item) {
+                                item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
+                            }
+                        }
+                    }
+                }
+            ]
+        }),
+        contextMenuVector: new Ext.menu.Menu({
+            showLocateFeatureWindow: function(cm) {
+                var layer = GLOBAL.vars.map.getLayersByName(cm.contextNode.attributes.layer)[0];
+
+                var data = [];
+                for (var i = 0; i < layer.features.length; i++) {
+                    data.push([layer.features[i].data.id || i, layer.features[i].data.name]);
+                }
+                
+                if (data.length) {
+                    var featureStore = new Ext.data.ArrayStore({
+                        mode: 'local',
+                        idProperty: 'id',
+                        fields: ['id','name'],
+                        sortInfo: {field: 'name', direction: 'ASC'},
+                        autoDestroy: true,
+                        data: data
+                    });
+                    
+                    if (Ext.getCmp('locatefeature_w')) {
+                        Ext.getCmp('locatefeature_w').destroy();
+                    }
+                    
+                    var locateFeatureWindow = new Ext.Window({
+                        id: 'locatefeature_w',
+                        title: 'Locate features',
+                        layout: 'fit',
+                        width: GLOBAL.conf.window_width,
+                        height: GLOBAL.util.getMultiSelectHeight() + 140,
+                        items: [
+                            {
+                                xtype: 'form',
+                                bodyStyle:'padding:8px',
+                                items: [
+                                    {html: '<div class="window-info">Locate an organisation unit in the map</div>'},
+                                    {
+                                        xtype: 'colorfield',
+                                        id: 'highlightcolor_cf',
+                                        emptyText: GLOBAL.conf.emptytext,
+                                        labelSeparator: GLOBAL.conf.labelseparator,
+                                        fieldLabel: i18n_highlight_color,
+                                        allowBlank: false,
+                                        width: GLOBAL.conf.combo_width_fieldset,
+                                        value: "#0000FF"
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        id: 'locatefeature_tf',
+                                        emptyText: GLOBAL.conf.emptytext,
+                                        labelSeparator: GLOBAL.conf.labelseparator,
+                                        fieldLabel: i18n_feature_filter,
+                                        width: GLOBAL.conf.combo_width_fieldset,
+                                        enableKeyEvents: true,
+                                        listeners: {
+                                            'keyup': function(tf) {
+                                                featureStore.filter('name', tf.getValue(), true, false);
+                                            }
+                                        }
+                                    },
+                                    {html: '<div class="window-p"></div>'},
+                                    {
+                                        xtype: 'grid',
+                                        id: 'featuregrid_gp',
+                                        height: GLOBAL.util.getMultiSelectHeight(),
+                                        cm: new Ext.grid.ColumnModel({
+                                            columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
+                                        }),
+                                        sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+                                        viewConfig: {forceFit: true},
+                                        sortable: true,
+                                        autoExpandColumn: 'name',
+                                        store: featureStore,
+                                        listeners: {
+                                            'cellclick': {
+                                                fn: function(g, ri, ci, e) {
+                                                    layer.redraw();
+                                                    
+                                                    var id, feature;
+                                                    id = g.getStore().getAt(ri).data.id;
+                                                    
+                                                    for (var i = 0; i < layer.features.length; i++) {
+                                                        if (layer.features[i].data.id == id) {
+                                                            feature = layer.features[i];
+                                                            break;
+                                                        }
+                                                    }
+                                                    
+                                                    var color = Ext.getCmp('highlightcolor_cf').getValue();
+                                                    var symbolizer;
+                                                    
+                                                    if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
+                                                        feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
+                                                        symbolizer = new OpenLayers.Symbolizer.Polygon({
+                                                            'strokeColor': color,
+                                                            'fillColor': color
+                                                        });
+                                                    }
+                                                    else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
+                                                        symbolizer = new OpenLayers.Symbolizer.Point({
+                                                            'pointRadius': 7,
+                                                            'fillColor': color
+                                                        });
+                                                    }
+                                                    
+                                                    layer.drawFeature(feature,symbolizer);
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        listeners: {
+                            'hide': function() {
+                                layer.redraw();
+                            }
+                        }
+                    });
+                    locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    locateFeatureWindow.show();
+                }
+                else {
+                    Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                }
+            },
+            items: [
+                {
+                    text: 'Locate feature',
+                    iconCls: 'menu-layeroptions-locate',
+                    handler: function(item, e) {
+                        item.parentMenu.showLocateFeatureWindow(item.parentMenu);
+                    }
+                },
+                {
+                    text: 'Show/hide labels',
+                    iconCls: 'menu-layeroptions-labels',
+                    handler: function(item, e) {
+                        var layer = GLOBAL.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];
+                        
+                        if (layer.features.length) {
+                            if (layer.name == 'Polygon layer') {
+                                GLOBAL.util.toggleFeatureLabels(choropleth);
+                            }
+                            else if (layer.name == 'Point layer') {
+                                GLOBAL.util.toggleFeatureLabels(symbol);
+                            }
+                        }
+                        else {
+                            Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                        }
+                    }
+                },
+                {
+                    text: 'Opacity',
+                    iconCls: 'menu-layeroptions-opacity',
+                    menu: { 
+                        items: GLOBAL.conf.opacityItems,
+                        listeners: {
+                            'itemclick': function(item) {
+                                item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
+                            }
+                        }
+                    }
+                }
+            ]
+        }),
+		listeners: {
+            'contextmenu': function(node, e) {
+                if (node.attributes.text != 'Base layers' && node.attributes.text != 'Overlays') {
+                    node.select();
+                    
+                    if (node.parentNode.attributes.text == 'Base layers') {
+                        var cmb = node.getOwnerTree().contextMenuBaselayer;
+                        cmb.contextNode = node;
+                        cmb.showAt(e.getXY());
+                    }
+                    
+                    else if (node.parentNode.attributes.text == 'Overlays') {
+                        var cmo = node.getOwnerTree().contextMenuOverlay;
+                        cmo.contextNode = node;
+                        cmo.showAt(e.getXY());
+                    }
+                    
+                    else {
+                        var cmv = node.getOwnerTree().contextMenuVector;
+                        cmv.contextNode = node;
+                        cmv.showAt(e.getXY());
+                    }
+                }
+            }
+		},
         bbar: new Ext.StatusBar({
 			id: 'maplayers_sb',
-			items:
-			[
+			items: [
 				{
 					xtype: 'button',
 					id: 'baselayers_b',
 					text: 'Base layers',
-					cls: 'x-btn-text-icon',
-					ctCls: 'aa_med',
-					icon: '../../images/add_small.png',
+                    iconCls: 'icon-add',
 					handler: function() {
                         Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
 						Ext.getCmp('baselayers_w').show();
@@ -2374,9 +2244,7 @@
 					xtype: 'button',
 					id: 'overlays_b',
 					text: 'Overlays',
-					cls: 'x-btn-text-icon',
-					ctCls: 'aa_med',
-					icon: '../../images/add_small.png',
+                    iconCls: 'icon-add',
 					handler: function() {
                         Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
 						Ext.getCmp('overlays_w').show();
@@ -2578,8 +2446,8 @@
 			zoomOutButton, ' ',
 			zoomToVisibleExtentButton,
 			'-',
-			favoritesButton, ' ',
-            predefinedMapLegendSetButton, ' ',
+			favoritesButton,
+            predefinedMapLegendSetButton,
 			exportImageButton,
 			'-',
             adminButton,
