@@ -7,7 +7,7 @@
 
 <h3>$i18n.getString( "org_unit_search_management" )</h3>
 
-<form action="organisationUnitSearch.action" method="get">
+<form action="organisationUnitSearch.action" method="post">
 <table>
 <tr>
 <th>$i18n.getString( "criteria" )</th>
