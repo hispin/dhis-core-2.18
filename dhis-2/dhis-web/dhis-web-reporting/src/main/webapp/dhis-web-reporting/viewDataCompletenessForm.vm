@@ -1,6 +1,7 @@
 <script type="text/javascript">
 	jQuery(document).ready( function(){
 		selectionTreeSelection.setListenerFunction( displayCompleteness );
+		jQuery("#selectionTree").resizable();
 	});
 </script>
 
@@ -11,8 +12,12 @@
     <col width="5"/>
     <col width="330"/>    
     <tr>
-	    <td>
-			#organisationUnitSelectionTree( true, false, false )
+	    <td><div id="selectionTree" style="width:325px; height:220px"></div>				
+			<script type="text/javascript">
+				selectionTreeSelection.setMultipleSelectionAllowed( false );
+				selectionTree.clearSelectedOrganisationUnits();
+				selectionTree.buildSelectionTree();
+			</script>
         </td>
         <td></td>
         <td valign="bottom">
