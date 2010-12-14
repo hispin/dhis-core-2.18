@@ -1279,3 +1279,8 @@ function isZeroNumber( value )
 {
 	return isNumber( value ) && parseFloat( value ) == 0;
 }
+
+function getRandomNumber()
+{
+	return Math.floor( 1000000 * Math.random() );
+}

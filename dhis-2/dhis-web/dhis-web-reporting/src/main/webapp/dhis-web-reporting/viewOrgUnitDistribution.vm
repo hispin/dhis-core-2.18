@@ -1,37 +1,59 @@
 
 <h3>$i18n.getString( "orgunit_distribution" )</h3>
 
-<div id="selectionTree" style="width:325px; height:200px"></div>
-
-<script type="text/javascript">
-selectionTreeSelection.setMultipleSelectionAllowed( false );
-selectionTree.buildSelectionTree();	
-</script>
+<!-- Criteria -->
 
 <form action="displayOrgUnitDistribution.action" method="get">
-<p>
-<select id="groupSetId" name="groupSetId" style="width:325px">
+
+<table>
+
+<tr><th>$i18n.getString( "criteria" )</th></tr>
+
+<tr>
+<td><div id="selectionTree" style="width:325px; height:200px"></div></td>
+</tr>
+
+<tr>
+<td><select id="groupSetId" name="groupSetId" style="width:325px">
 <option value="0">[ $i18n.getString( "select_group_set" ) ]</option>
 #foreach( $groupSet in $groupSets )
 <option value="$groupSet.id"
 #if( $selectedGroupSet.id && $groupSet.id == $selectedGroupSet.id ) selected="selected"#end
 >$!encoder.htmlEncode( $groupSet.name )</option>
 #end
-</select>
-</p>
+</select></td>
+</tr>
 
-<p><input type="submit" value="$i18n.getString( 'get_report' )" style="width:100px"></p>
+<tr>
+<td><input type="submit" value="$i18n.getString( 'get_report' )" style="width:100px">
+<input type="button" value="$i18n.getString( 'get_chart' )" style="width:100px" onclick="displayOrgUnitDistributionChart()"></td>
+</tr>
 
-<br>
+<tr><td style="height:15px"></td></tr>
+
+</table>
+
+</form>
+
+<script type="text/javascript">
+selectionTreeSelection.setMultipleSelectionAllowed( false );
+selectionTree.buildSelectionTree();	
+</script>
+
+<!-- Table -->
 
 #if( $distribution )
+
+<div id="tableDiv">
 
 <table class="listTable">
 
 <thead>
+<tr>
 #foreach( $col in $distribution.getRow( 0 ) )
-<th>$encoder.htmlEncode( $col )</th>
+<th class="oud">$encoder.htmlEncode( $col )</th>
 #end
+</tr>
 </thead>
 
 <tbody>
@@ -39,7 +61,7 @@ selectionTree.buildSelectionTree();
 #if( $velocityCount > 1 )
 <tr>
 #foreach( $col in $row )
-<td>${col}</td>
+<td #if( $velocityCount > 1 )class="oud"#end>${col}</td>
 #end
 </tr>
 #end 
@@ -48,4 +70,10 @@ selectionTree.buildSelectionTree();
 
 </table>
 
+</div>
+
 #end
+
+<!-- Chart -->
+
+<div id="chartDiv" style="display:none"><img src="" id="chartImg"></div>

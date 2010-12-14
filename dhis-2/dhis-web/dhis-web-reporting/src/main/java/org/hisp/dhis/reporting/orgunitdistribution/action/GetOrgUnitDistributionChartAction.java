@@ -1,7 +1,7 @@
 package org.hisp.dhis.reporting.orgunitdistribution.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,33 +27,21 @@ package org.hisp.dhis.reporting.orgunitdistribution.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.jfree.chart.JFreeChart;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOrgUnitDistributionAction
+public class GetOrgUnitDistributionChartAction
     implements Action
 {
-    private static final Comparator<OrganisationUnitGroupSet> GROUPSET_COMPARATOR = new OrganisationUnitGroupSetNameComparator();
-    
-    private static final Log log = LogFactory.getLog( GetOrgUnitDistributionAction.class );
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -94,47 +82,37 @@ public class GetOrgUnitDistributionAction
     // Output
     // -------------------------------------------------------------------------
 
-    private List<OrganisationUnitGroupSet> groupSets;
-    
-    public List<OrganisationUnitGroupSet> getGroupSets()
+    private JFreeChart chart;
+
+    public JFreeChart getChart()
     {
-        return groupSets;
-    }
-    
-    private OrganisationUnitGroupSet selectedGroupSet;
-    
-    public OrganisationUnitGroupSet getSelectedGroupSet()
-    {
-        return selectedGroupSet;
+        return chart;
     }
 
-    private Grid distribution;
-    
-    public Grid getDistribution()
+    private int width = 700;
+
+    public int getWidth()
     {
-        return distribution;
+        return width;
     }
 
+    private int height = 400;
+
+    public int getHeight()
+    {
+        return height;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
+        OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( groupSetId );
+        OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
         
-        Collections.sort( groupSets, GROUPSET_COMPARATOR );        
-        
-        OrganisationUnit selectedOrganisationUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
-        
-        if ( groupSetId != null && groupSetId > 0 )
-        {
-            selectedGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( groupSetId );
-            
-            log.info( "Get distribution for group set: " + selectedGroupSet + " and organisation unit: " + selectedOrganisationUnit );
-        
-            distribution = distributionService.getOrganisationUnitDistribution( selectedGroupSet, selectedOrganisationUnit, false );
-        }
+        chart = distributionService.getOrganisationUnitDistributionChart( groupSet, unit );
         
         return SUCCESS;
     }

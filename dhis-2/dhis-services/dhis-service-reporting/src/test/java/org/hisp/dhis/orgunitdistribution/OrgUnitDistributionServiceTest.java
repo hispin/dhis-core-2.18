@@ -59,7 +59,7 @@ public class OrgUnitDistributionServiceTest
         
         organisationUnitGroupService.addOrganisationUnitGroupSet( groupSet );
         
-        Grid grid = distributionService.getOrganisationUnitDistribution( groupSet, unitA );
+        Grid grid = distributionService.getOrganisationUnitDistribution( groupSet, unitA, false );
         assertNotNull( grid );
         assertEquals( 3, grid.getWidth() );
         assertEquals( 3, grid.getHeight() );

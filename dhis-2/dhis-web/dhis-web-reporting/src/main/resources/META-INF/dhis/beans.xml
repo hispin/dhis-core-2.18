@@ -530,4 +530,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
   
+  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction"
+  	class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionChartAction"
+  	scope="prototype">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+    <property name="distributionService"
+      ref="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService"/>
+    <property name="selectionTreeManager"
+      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+  </bean>
 </beans>

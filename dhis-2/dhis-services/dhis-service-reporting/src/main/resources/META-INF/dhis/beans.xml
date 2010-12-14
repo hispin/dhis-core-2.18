@@ -271,6 +271,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   	class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">
     <property name="organisationUnitService" 
         ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    <property name="chartService"
+      ref="org.hisp.dhis.chart.ChartService"/>
   </bean>
     
   <!-- DeletionHandler -->

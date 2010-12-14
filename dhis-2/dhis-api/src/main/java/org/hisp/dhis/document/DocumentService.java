@@ -29,8 +29,6 @@ package org.hisp.dhis.document;
 
 import java.util.Collection;
 
-import org.hisp.dhis.datamart.DataMartExport;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
