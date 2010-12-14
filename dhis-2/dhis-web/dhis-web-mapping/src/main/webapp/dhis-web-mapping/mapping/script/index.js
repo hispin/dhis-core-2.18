@@ -1567,6 +1567,7 @@
                         displayField: 'value',
                         mode: 'local',
                         triggerAction: 'all',
+                        labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_fill_opacity,
                         width: GLOBAL.conf.combo_number_width,
                         minListWidth: GLOBAL.conf.combo_number_width,
@@ -1574,7 +1575,7 @@
                         store: {
                             xtype: 'arraystore',
                             fields: ['value'],
-                            data: [[0.0],[0.1],[0.2],[0.3],[0.4],[0.5],[0.6],[0.7],[0.8],[0.9],[1.0]]
+                            data: [['0'],['0.1'],['0.2'],['0.3'],['0.4'],['0.5'],['0.6'],['0.7'],['0.8'],['0.9'],['1.0']]
                         }
                     },
                     {
@@ -1595,6 +1596,7 @@
                         displayField: 'value',
                         mode: 'local',
                         triggerAction: 'all',
+                        labelSeparator: GLOBAL.conf.labelseparator,
                         fieldLabel: i18n_stroke_width,
                         width: GLOBAL.conf.combo_number_width,
                         minListWidth: GLOBAL.conf.combo_number_width,
@@ -1641,7 +1643,7 @@
                     var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
                     
                     if (!mln || !mlmsf) {
-                        Ext.message.msg(false, i18n_overlay_form_is_not_complete);
+                        Ext.message.msg(false, i18n_form_is_not_complete);
                         return;
                     }
                     
@@ -1655,7 +1657,7 @@
                         method: 'POST',
                         params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
                         success: function(r) {
-                            Ext.message.msg(true, 'The overlay <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
+                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + i18n_registered);
                             GLOBAL.stores.overlay.load();
                     
                             GLOBAL.vars.map.addLayer(
@@ -1702,7 +1704,7 @@
                         method: 'POST',
                         params: {id:ml},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_overlay + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
+                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> '+ i18n_deleted);
                             GLOBAL.stores.overlay.load();
                             Ext.getCmp('maplayer_cb').clearValue();
                         }
@@ -1766,7 +1768,7 @@
                         triggerAction: 'all',
                         emptytext: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_overlays,
+                        fieldLabel: i18n_baselayer,
                         width: GLOBAL.conf.combo_width_fieldset,                
                         store: GLOBAL.stores.baseLayer
                     }
@@ -1800,7 +1802,7 @@
                         method: 'POST',
                         params: {name: mlbn, type: GLOBAL.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
                         success: function(r) {
-                            Ext.message.msg(true, 'The base layer <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_was_registered);                            
+                            Ext.message.msg(true, i18n_baselayer + '<span class="x-msg-hl"> ' + mlbn + '</span> ' + i18n_registered);                            
                             GLOBAL.vars.map.addLayers([
                                 new OpenLayers.Layer.WMS(mlbn, mlbu, {layers: mlbl})
                             ]);
@@ -1832,7 +1834,7 @@
                         method: 'POST',
                         params: {id: ml},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_was_deleted);
+                            Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_deleted);
                             GLOBAL.stores.baseLayer.load({callback: function() {
                                 Ext.getCmp('maplayerbaselayers_cb').clearValue();
                                 var names = GLOBAL.stores.baseLayer.collect('name');

@@ -6,7 +6,6 @@ GLOBAL.conf = {
 
     path_mapping: '../',
     path_commons: '../../dhis-web-commons-ajax-json/',
-    path_geoserver: '../../../geoserver/',
     type: '.action',
 	
 	ows: 'ows?service=WMS&request=GetCapabilities',
