@@ -40,7 +40,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: AddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
+ * @version $Id: AddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z
+ *          torgeilo $
  */
 public class AddOrganisationUnitAction
     extends ActionSupport
@@ -95,23 +96,22 @@ public class AddOrganisationUnitAction
         this.code = code;
     }
 
-
     private String openingDate;
 
     public void setOpeningDate( String openingDate )
     {
         this.openingDate = openingDate;
     }
-    
+
     private String comment;
 
     public void setComment( String comment )
     {
         this.comment = comment;
     }
-    
+
     private String coordinates;
-    
+
     public void setCoordinates( String coordinates )
     {
         this.coordinates = coordinates;
@@ -122,6 +122,34 @@ public class AddOrganisationUnitAction
     public void setUrl( String url )
     {
         this.url = url;
+    }
+
+    private String contactPerson;
+
+    public void setContactPerson( String contactPerson )
+    {
+        this.contactPerson = contactPerson;
+    }
+
+    private String address;
+
+    public void setAddress( String address )
+    {
+        this.address = address;
+    }
+
+    private String email;
+
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
+
+    private String phoneNumber;
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     // -------------------------------------------------------------------------
@@ -146,6 +174,11 @@ public class AddOrganisationUnitAction
         comment = nullIfEmpty( comment );
         coordinates = nullIfEmpty( coordinates );
         url = nullIfEmpty( url );
+        
+        contactPerson = nullIfEmpty( contactPerson );
+        address = nullIfEmpty( address );
+        email = nullIfEmpty( email );
+        phoneNumber = nullIfEmpty( phoneNumber );
 
         Date date = format.parseDate( openingDate );
 
@@ -169,15 +202,19 @@ public class AddOrganisationUnitAction
         // Create organisation unit
         // ---------------------------------------------------------------------
 
-        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, 
-            code, date, null, true, comment );
-        
+        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, true, comment );
+
         organisationUnit.setCoordinates( coordinates );
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
+        organisationUnit.setContactPerson( contactPerson );
+        organisationUnit.setAddress( address );
+        organisationUnit.setEmail( email );
+        organisationUnit.setPhoneNumber( phoneNumber );
 
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         return SUCCESS;
     }
+
 }

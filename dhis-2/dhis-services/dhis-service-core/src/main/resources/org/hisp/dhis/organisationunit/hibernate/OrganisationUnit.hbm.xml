@@ -55,6 +55,16 @@
       <key column="organisationunitid"/>
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"/>
     </set>
-    
+	
+	<!-- Contact info -->
+	
+	<property name="contactPerson" length="255"/>
+	
+	<property name="address" length="255"/>
+	
+	<property name="email" length="150"/>
+	
+	<property name="phoneNumber" length="150"/>
+	
   </joined-subclass>
 </hibernate-mapping>

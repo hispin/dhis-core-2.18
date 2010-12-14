@@ -135,6 +135,34 @@ public class UpdateOrganisationUnitAction
     {
         this.url = url;
     }
+    
+    private String contactPerson;
+
+    public void setContactPerson( String contactPerson )
+    {
+        this.contactPerson = contactPerson;
+    }
+
+    private String address;
+
+    public void setAddress( String address )
+    {
+        this.address = address;
+    }
+
+    private String email;
+
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
+
+    private String phoneNumber;
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -147,6 +175,11 @@ public class UpdateOrganisationUnitAction
         comment = nullIfEmpty( comment );
         coordinates = nullIfEmpty( coordinates );
         url = nullIfEmpty( url );
+        
+        contactPerson = nullIfEmpty( contactPerson );
+        address = nullIfEmpty( address );
+        email = nullIfEmpty( email );
+        phoneNumber = nullIfEmpty( phoneNumber );
 
         Date oDate = format.parseDate( openingDate );
 
@@ -172,6 +205,10 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setComment( comment );
         organisationUnit.setCoordinates( coordinates );
         organisationUnit.setUrl( url );
+        organisationUnit.setContactPerson( contactPerson );
+        organisationUnit.setAddress( address );
+        organisationUnit.setEmail( email );
+        organisationUnit.setPhoneNumber( phoneNumber );
 
         organisationUnitService.updateOrganisationUnit( organisationUnit );
 

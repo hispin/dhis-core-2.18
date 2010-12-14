@@ -76,8 +76,27 @@
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em" maxlength="255" class="{validate:{maxlength:255,url:true}}"/></td>
     </tr>
 	<tr>
+		<th colspan="3">$i18n.getString( "contact_details" )</th>
+	</tr>
+	<tr>
+		<td><label for="contactPerson">$i18n.getString( "contact_person" ) </label></td>
+		<td colspan="3"><input type="text" id="contactPerson" name="contactPerson" value="$!encoder.htmlEncode( $organisationUnit.contactPerson )" style="width:20em" maxlength="255"/></td>
+	</tr>
+	<tr>
+		<td><label for="address">$i18n.getString( "address" ) </label></td>
+		<td colspan="3"><input type="text" id="address" name="address" value="$!encoder.htmlEncode( $organisationUnit.address )" style="width:20em" maxlength="255"/></td>
+	</tr>
+	<tr>
+		<td><label for="email">$i18n.getString( "email" )</label></td>
+		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $organisationUnit.email )" style="width:20em" maxlength="150" class="{validate:{email:true}}"/></td>
+	</tr>
+    <tr>
+        <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
+        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $organisationUnit.phoneNumber )" style="width:20em" maxlength="150"/></td>
+    </tr>
+	<tr>
 		<td></td>
-		<td><input type="submit" value="$i18n.getString( "save" )" style="width:10em"/><input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/></td>
+		<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/></td>
 	</tr>
 </table>
 
