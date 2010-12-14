@@ -202,6 +202,7 @@ public class DefaultChartService
         CategoryPlot plot = getCategoryPlot( dataSet, getBarRenderer(), orientation, labelPositions );
 
         JFreeChart jFreeChart = getBasicJFreeChart( plot );
+        jFreeChart.setTitle( title );
 
         return jFreeChart;
     }
@@ -368,7 +369,7 @@ public class DefaultChartService
 
         return renderer;
     }
-
+    
     /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
@@ -466,10 +467,8 @@ public class DefaultChartService
 
                         if ( chart.isDimension( DIMENSION_PERIOD ) )
                         {
-
                             regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), chart
                                 .getFormat().formatPeriod( period ) );
-
                         }
                         else
                         {
@@ -477,10 +476,10 @@ public class DefaultChartService
                                 chart.getFormat().formatPeriod( period ), indicator.getShortName() );
                         }
                         columnIndex++;
-
-                        if ( value != null && value != 0.0 ) // Omit missing
-                        // values and 0
-                        // from regression
+                        
+                        // Omit missing values and 0 from regression
+                        
+                        if ( value != null && value != 0.0 ) 
                         {
                             regression.addData( columnIndex, value );
                         }
@@ -497,11 +496,10 @@ public class DefaultChartService
                         for ( Period period : chart.getAllPeriods() )
                         {
                             final double value = regression.predict( columnIndex++ );
-
-                            if ( !Double.isNaN( value ) ) // Enough values
-                            // must
-                            // exist for
-                            // regression
+                            
+                            // Enough values must exist for regression
+                            
+                            if ( !Double.isNaN( value ) ) 
                             {
                                 regressionDataSet.addValue( value, TREND_PREFIX + indicator.getShortName(), chart
                                     .getFormat().formatPeriod( period ) );

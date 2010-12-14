@@ -30,7 +30,6 @@ package org.hisp.dhis.reporttable;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
 
 /**
  * @author Lars Helge Overland
