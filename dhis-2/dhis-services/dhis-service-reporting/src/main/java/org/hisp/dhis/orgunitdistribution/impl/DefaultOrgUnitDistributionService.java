@@ -30,7 +30,7 @@ public class DefaultOrgUnitDistributionService
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+    
     @Override
     @Transactional
     @SuppressWarnings("unchecked")

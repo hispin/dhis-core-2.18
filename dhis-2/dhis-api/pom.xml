@@ -26,6 +26,10 @@
 	  <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
     </dependency>
+    <dependency>
+      <groupId>jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+    </dependency>
   </dependencies>
   
   <properties>
