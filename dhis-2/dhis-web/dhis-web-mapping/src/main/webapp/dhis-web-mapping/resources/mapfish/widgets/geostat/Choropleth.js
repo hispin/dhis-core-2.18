@@ -1416,22 +1416,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 	},
     
     loadGeoJson: function() {
-        function load() {
-            GLOBAL.vars.mask.msg = i18n_loading_geojson;
-            GLOBAL.vars.mask.show();
-            
-            this.setUrl(GLOBAL.conf.path_mapping + 'getGeoJson.action?' +
-                'parentId=' + this.organisationUnitSelection.parent.id +
-                '&level=' + this.organisationUnitSelection.level.level
-            );
-        }
+        GLOBAL.vars.mask.msg = i18n_loading_geojson;
+        GLOBAL.vars.mask.show();
         
-        if (this.isDrillDown || this.mapView) {
-            load.call(this);
-        }
-        else { //TODO
-            load.call(this);
-        }
+        this.setUrl(GLOBAL.conf.path_mapping + 'getGeoJson.action?' +
+            'parentId=' + this.organisationUnitSelection.parent.id +
+            '&level=' + this.organisationUnitSelection.level.level
+        );
     },
 
     classify: function(exception, position) {
@@ -1453,7 +1444,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                 this.mapView = false;
             }
             
-            if (this.updateValues) {                
+            if (this.updateValues) {
+                if (Ext.getCmp('locatefeature_w')) {
+                    Ext.getCmp('locatefeature_w').destroy();
+                }
+                    
                 var dataUrl = this.valueType.isIndicator() ? 'getIndicatorMapValues' : 'getDataElementMapValues';                
                 var params = {
                     id: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : this.form.findField('dataelement').getValue(),

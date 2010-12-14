@@ -67,7 +67,22 @@ GLOBAL.conf = {
 
     classify_with_bounds: 1,
     classify_by_equal_intervals: 2,
-    classify_by_quantils: 3
+    classify_by_quantils: 3,
+
+//  Layers
+
+    opacityItems: [
+        {text: '0.1', iconCls: 'menu-layeroptions-opacity-10'},
+        {text: '0.2', iconCls: 'menu-layeroptions-opacity-20'},
+        {text: '0.3', iconCls: 'menu-layeroptions-opacity-30'},
+        {text: '0.4', iconCls: 'menu-layeroptions-opacity-40'},
+        {text: '0.5', iconCls: 'menu-layeroptions-opacity-50'},
+        {text: '0.6', iconCls: 'menu-layeroptions-opacity-60'},
+        {text: '0.7', iconCls: 'menu-layeroptions-opacity-70'},
+        {text: '0.8', iconCls: 'menu-layeroptions-opacity-80'},
+        {text: '0.9', iconCls: 'menu-layeroptions-opacity-90'},
+        {text: '1.0', iconCls: 'menu-layeroptions-opacity-100'}
+    ]
 };
 
 GLOBAL.util = {
