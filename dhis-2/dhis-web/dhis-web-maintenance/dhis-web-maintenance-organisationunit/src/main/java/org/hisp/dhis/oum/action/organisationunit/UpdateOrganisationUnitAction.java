@@ -124,9 +124,16 @@ public class UpdateOrganisationUnitAction
 
     private String coordinates;
 
-    public void setPolygonCoordinates( String polygonCoordinates )
+    public void setCoordinates( String coordinates )
     {
-        this.coordinates = polygonCoordinates;
+        this.coordinates = coordinates;
+    }
+    
+    private String featureType;
+
+    public void setFeatureType( String featureType )
+    {
+        this.featureType = featureType;
     }
 
     private String url;
@@ -174,6 +181,7 @@ public class UpdateOrganisationUnitAction
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
         coordinates = nullIfEmpty( coordinates );
+        featureType = nullIfEmpty( featureType );
         url = nullIfEmpty( url );
         
         contactPerson = nullIfEmpty( contactPerson );
@@ -204,6 +212,7 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );
         organisationUnit.setCoordinates( coordinates );
+        organisationUnit.setFeatureType( featureType );
         organisationUnit.setUrl( url );
         organisationUnit.setContactPerson( contactPerson );
         organisationUnit.setAddress( address );

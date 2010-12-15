@@ -21,7 +21,7 @@
 
 <h3>$i18n.getString( "edit_org_unit" ) #openHelp( "ou_edit" )</h3>
 
-<form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
+<form id="updateOrganisationUnitForm" name="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$organisationUnit.id"/>
@@ -33,11 +33,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" maxlength="160" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" maxlength="160" value="$!encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="25" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="shortName" name="shortName" maxlength="25" value="$!encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
@@ -69,7 +69,11 @@
 	</tr>
     <tr>
         <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
+        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em" onkeyup="setFeatureType(this.value)">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
+    </tr>
+    <tr>
+        <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
+        <td><input type="text" id="featureType" name="featureType" value="$!encoder.htmlEncode( $organisationUnit.featureType )" style="width:20em" readonly="readonly"/></td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
@@ -102,4 +106,24 @@
 <script type="text/javascript">
 	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
 	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
+    
+    function setFeatureType(c) {
+       document.updateOrganisationUnitForm.featureType.value = getFeatureType(c);
+    }
+    
+    function getFeatureType(c) {
+        if (c.length >= 2) {
+            if (c.substring(0,1) == "[" && c.substring(1,2) != "[" && c.substring(c.length-1,c.length) == "]") {
+                return "Point";
+            }
+    
+            if (c.length >= 8) {
+                if (c.substring(0,4) == "[[[[" && c.substring(c.length-4,c.length) == "]]]]") {
+                    return "MultiPolygon";
+                }
+            }
+        }
+
+        return "";
+    }
 </script>
