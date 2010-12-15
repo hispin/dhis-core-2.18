@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.reportexcel.action;
 
+import static org.apache.commons.io.FilenameUtils.getExtension;
+import static org.apache.commons.lang.StringUtils.isBlank;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,6 +47,8 @@ import com.opensymphony.xwork2.Action;
 public class DownloadFileAction
     implements Action
 {
+    private static final String PREFIX_OUTPUT_STREAM = "application/";
+    
     // -------------------------------------------
     // Dependency
     // -------------------------------------------
@@ -95,6 +100,11 @@ public class DownloadFileAction
         File output = new File( selectionManager.getDownloadFilePath() );
 
         fileName = output.getName();
+        
+        if ( isBlank( outputFormat ) )
+        {
+            outputFormat = PREFIX_OUTPUT_STREAM + getExtension( fileName );
+        }
 
         inputStream = new BufferedInputStream( new FileInputStream( output ) );
 
