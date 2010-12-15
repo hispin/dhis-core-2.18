@@ -89,6 +89,13 @@ public class CreateTableAction
         this.mode = mode;
     }
 
+    private boolean doDataMart;
+
+    public void setDoDataMart( boolean doDataMart )
+    {
+        this.doDataMart = doDataMart;
+    }
+
     private Integer reportingPeriod;
 
     public void setReportingPeriod( Integer reportingPeriod )
@@ -103,13 +110,6 @@ public class CreateTableAction
         this.organisationUnitId = organisationUnitId;
     }
     
-    private boolean doDataMart;
-
-    public void setDoDataMart( boolean doDataMart )
-    {
-        this.doDataMart = doDataMart;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

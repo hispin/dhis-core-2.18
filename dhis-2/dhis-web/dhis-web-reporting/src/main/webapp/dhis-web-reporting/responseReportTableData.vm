@@ -3,6 +3,8 @@
     #if( $mark ) class="listAlternateRow"#else class="listRow"#end
 #end
 
+<p><input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px"></p>
+
 <table class="listTable">
     <tr>
         <td style="text-align:center" colspan="$data.columns.values().size()"><h3>$data.name</h3></td>

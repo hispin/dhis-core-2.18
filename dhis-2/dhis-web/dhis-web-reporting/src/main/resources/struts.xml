@@ -209,7 +209,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/report.js,javascript/table.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/generateReport.js</param>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
     
@@ -280,12 +280,7 @@
       <result name="success" type="velocity">/dhis-web-commons/ajax/xmlDataElements.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-        
-	<action name="verifyReportTable" class="org.hisp.dhis.reporting.tablecreator.action.VerifyReportTableAction">
-		<result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-		<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-	</action>
-		
+        		
     <!-- PivotTable -->
     
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.action.NoAction">

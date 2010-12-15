@@ -3,12 +3,7 @@
 
 <input type="hidden" id="id" name="id" value="$!id">
 <input type="hidden" id="mode" name="mode" value="$!mode">
-
-#if ( $mode == "status" ) <!-- Keep the process running and show status -->
-	<script type="text/javascript">
-	   getTableStatus();
-	</script>
-#else <!-- Show input params -->
+<input type="hidden" id="url" name="url" value="$!url">
 
 <table>
 	
@@ -78,19 +73,19 @@
     <tr>        
         <td>
         #if ( $mode == "table" )
-            <input type="button" value="$i18n.getString( 'ok' )" onclick="createTable( '$id' )" style="width:120px">        
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px">
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( 'html' )" style="width:120px">
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px"><br><br>
+            <input type="button" value="$i18n.getString( 'get_report_as_xsl' )" onclick="generateReport( 'xsl' )" style="width:120px">
+            <input type="button" value="$i18n.getString( 'get_report_as_csv' )" onclick="generateReport( 'csv' )" style="width:120px">
         #end
         #if ( $mode == "report" )
-            <input type="button" value="$i18n.getString( 'ok' )" style="width:120px" onclick="runAndViewReport( '$id', '$url' )">
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( '' )" style="width:120px">
             <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewReportForm.action'" style="width:120px">
         #end
         </td>
     </tr>
     
 </table>
-
-#end
 
 <span id="message"></span>
 
