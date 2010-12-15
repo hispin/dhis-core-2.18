@@ -287,14 +287,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dimensionService"
       ref="org.hisp.dhis.dimension.DimensionService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.VerifyReportTableAction"
-	class="org.hisp.dhis.reporting.tablecreator.action.VerifyReportTableAction"
-	scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>
-  
+    
   <!-- ReportViewer -->
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
