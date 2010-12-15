@@ -44,7 +44,6 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 public class GenerateReportNormalAction
     extends GenerateReportSupport
 {
-
     @Override
     public String execute()
         throws Exception
