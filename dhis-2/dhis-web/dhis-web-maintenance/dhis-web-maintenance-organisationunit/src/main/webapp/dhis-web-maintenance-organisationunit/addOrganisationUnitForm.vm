@@ -1,17 +1,17 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addOrganisationUnitForm' );
+		validation( 'addOrganisationUnitForm' );	
 		
 		checkValueIsExist( "name", "validateOrganisationUnit.action");
 		checkValueIsExist( "code", "validateOrganisationUnit.action");
 		
-		datePickerValid( 'openingDate', false );
+		datePickerValid( 'openingDate', false );			
 	});
 </script>
 
 <h3>$i18n.getString( "create_new_org_unit" ) #openHelp( "ou_edit" )</h3>
 
-<form id="addOrganisationUnitForm" name="addOrganisationUnitForm" action="addOrganisationUnit.action" method="post">
+<form id="addOrganisationUnitForm" action="addOrganisationUnit.action" method="post">
 
 <table>
 	<tr>
@@ -40,11 +40,7 @@
 	</tr>
     <tr>
         <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em" onkeyup="setFeatureType(this.value)"></textarea></td>
-    </tr>
-    <tr>
-        <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
-        <td><input type="text" id="featureType" name="featureType" style="width:20em" readonly="readonly"/></td>
+        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em"></textarea></td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
@@ -84,25 +80,4 @@
 	nameField.select();
 	nameField.focus();
 	var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
-	
-	function setFeatureType(c) {
-	   document.addOrganisationUnitForm.featureType.value = getFeatureType(c);
-    }
-	
-	function getFeatureType(c) {
-        if (c.length >= 2) {
-            if (c.substring(0,1) == "[" && c.substring(1,2) != "[" && c.substring(c.length-1,c.length) == "]") {
-                return "Point";
-            }
-    
-            if (c.length >= 8) {
-                if (c.substring(0,4) == "[[[[" && c.substring(c.length-4,c.length) == "]]]]") {
-                    return "MultiPolygon";
-                }
-            }
-        }
-
-        return "";
-    }
-    
 </script>
