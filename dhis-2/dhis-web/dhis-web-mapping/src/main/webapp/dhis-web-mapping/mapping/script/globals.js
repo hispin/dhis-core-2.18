@@ -8,10 +8,6 @@ GLOBAL.conf = {
     path_commons: '../../dhis-web-commons-ajax-json/',
     type: '.action',
 	
-	ows: 'ows?service=WMS&request=GetCapabilities',
-	wfs: 'wfs?request=GetFeature&typename=',	
-	output: '&outputformat=json&version=1.0.0',
-	
 //	Help strings
     
     setup: 'gisSetup',
