@@ -255,7 +255,7 @@
 
 /* Ext ComboBox */
 .combo-disabled {
-    opacity:0.75;
+    opacity:0.70;
     color:#000000;
     border-color:#9ca1b8;
     cursor: default;

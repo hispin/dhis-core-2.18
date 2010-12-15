@@ -597,52 +597,73 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 'focus': {
                     scope: this,
                     fn: function(tf) {
-                        function showTree() {
-                            var value, rawvalue;
-                            var w = new Ext.Window({
-                                id: 'tree_w2',
-                                title: 'Boundary',
-                                closeAction: 'hide',
-                                autoScroll: true,
-                                height: 'auto',
-                                autoHeight: true,
-                                width: 280,
-                                boxMaxWidth: 280,
-                                items: [
-									{
-										xtype: 'treepanel',
-										height: screen.height / 3,
-										bodyStyle: 'padding: 8px',
-										autoScroll: true,
-										loader: new Ext.tree.TreeLoader({
-											dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
-										}),
-										root: {
-											id: GLOBAL.vars.topLevelUnit.id,
-											text: GLOBAL.vars.topLevelUnit.name,
-											hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
-											nodeType: 'async',
-											draggable: false,
-											expanded: true
-										},
-										clickedNode: null,
-										listeners: {
-											'click': {
-												scope: this,
-												fn: function(n) {
-													this.form.findField('boundary').selectedNode = n;
-												}
-											}
-										}
-									},
-                                    {
-                                        xtype: 'panel',
-                                        layout: 'table',
+                        if (GLOBAL.vars.topLevelUnit) {
+                            Ext.getCmp('tree_w2').show();
+                        }
+                        else {
+                            Ext.Ajax.request({
+                                url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
+                                params: {level: 1},
+                                method: 'POST',
+                                scope: this,
+                                success: function(r) {
+                                    var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
+                                    GLOBAL.vars.topLevelUnit = {
+                                        id: rootNode.id,
+                                        name: rootNode.name,
+                                        hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
+                                    };
+                                    
+                                    var w = new Ext.Window({
+                                        id: 'tree_w2',
+                                        title: 'Boundary',
+                                        closeAction: 'hide',
+                                        autoScroll: true,
+                                        height: 'auto',
+                                        autoHeight: true,
+                                        width: GLOBAL.conf.window_width,
                                         items: [
+                                            {
+                                                xtype: 'panel',
+                                                bodyStyle: 'padding:8px; background-color:#ffffff',
+                                                items: [
+                                                    {html: '<div class="window-info">Select outer boundary</div>'},
+                                                    {
+                                                        xtype: 'treepanel',
+                                                        bodyStyle: 'background-color:#ffffff',
+                                                        height: screen.height / 3,
+                                                        autoScroll: true,
+                                                        lines: false,
+                                                        loader: new Ext.tree.TreeLoader({
+                                                            dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
+                                                        }),
+                                                        root: {
+                                                            id: GLOBAL.vars.topLevelUnit.id,
+                                                            text: GLOBAL.vars.topLevelUnit.name,
+                                                            hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
+                                                            nodeType: 'async',
+                                                            draggable: false,
+                                                            expanded: true
+                                                        },
+                                                        clickedNode: null,
+                                                        listeners: {
+                                                            'click': {
+                                                                scope: this,
+                                                                fn: function(n) {
+                                                                    this.form.findField('boundary').selectedNode = n;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        bbar: [
+                                            '->',
                                             {
                                                 xtype: 'button',
                                                 text: i18n_select,
-                                                width: 133,
+                                                iconCls: 'icon-assign',
                                                 scope: this,
                                                 handler: function() {
                                                     var node = this.form.findField('boundary').selectedNode;
@@ -663,44 +684,14 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                                     
                                                     this.loadGeoJson();
                                                 }
-                                            },
-                                            {
-                                                xtype: 'button',
-                                                text: i18n_cancel,
-                                                width: 133,
-                                                scope: this,
-                                                handler: function() {
-                                                    Ext.getCmp('tree_w2').hide();
-                                                }
                                             }
                                         ]
-                                    }
-                                ]
-                            });
-                            
-                            var x = Ext.getCmp('center').x + 15;
-                            var y = Ext.getCmp('center').y + 41;
-                            w.setPosition(x,y);
-                            w.show();
-                        }
-
-                        if (GLOBAL.vars.topLevelUnit) {
-                            showTree.call(this);
-                        }
-                        else {
-                            Ext.Ajax.request({
-                                url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
-                                params: {level: 1},
-                                method: 'POST',
-                                scope: this,
-                                success: function(r) {
-                                    var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
-                                    GLOBAL.vars.topLevelUnit = {
-                                        id: rootNode.id,
-                                        name: rootNode.name,
-                                        hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
-                                    };
-                                    showTree.call(this);
+                                    });
+                                    
+                                    var x = Ext.getCmp('center').x + 15;
+                                    var y = Ext.getCmp('center').y + 41;
+                                    w.setPosition(x,y);
+                                    w.show();
                                 }
                             });
                         }
