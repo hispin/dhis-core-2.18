@@ -172,7 +172,7 @@ public class GetAllReportsAction
 
         for ( Report each : reports )
         {
-            if ( each.getName().contains( key ) )
+            if ( each.getName().toLowerCase().contains( key.toLowerCase() ) )
             {
                 result.add( each );
             }
