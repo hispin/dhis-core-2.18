@@ -773,7 +773,7 @@
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 		<action name="addExcelItemGroupForm"
-			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/import/addExcelItemGroup.vm</param>
 			<param name="javascripts">javascript/excelitemgroups.js</param>
@@ -816,7 +816,7 @@
 		</action>
 
 		<action name="updateExcelItemGroupForm"
-			class="org.hisp.dhis.reportexcel.chart.action.GetPeriodTypesAction">
+			class="org.hisp.dhis.commons.action.GetPeriodTypesAction">
 			<result name="success" type="chain">updateExcelItemGroupFormChain
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
