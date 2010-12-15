@@ -35,6 +35,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.jfree.util.Log;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -116,6 +117,13 @@ public class AddOrganisationUnitAction
     {
         this.coordinates = coordinates;
     }
+    
+    private String featureType;
+
+    public void setFeatureType( String featureType )
+    {
+        this.featureType = featureType;
+    }
 
     private String url;
 
@@ -173,6 +181,7 @@ public class AddOrganisationUnitAction
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
         coordinates = nullIfEmpty( coordinates );
+        featureType = nullIfEmpty( featureType );
         url = nullIfEmpty( url );
         
         contactPerson = nullIfEmpty( contactPerson );
@@ -205,6 +214,7 @@ public class AddOrganisationUnitAction
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, true, comment );
 
         organisationUnit.setCoordinates( coordinates );
+        organisationUnit.setFeatureType( featureType );
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
         organisationUnit.setContactPerson( contactPerson );
