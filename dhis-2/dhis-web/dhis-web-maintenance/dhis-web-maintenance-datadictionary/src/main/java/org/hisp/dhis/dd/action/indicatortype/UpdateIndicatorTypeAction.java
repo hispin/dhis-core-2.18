@@ -34,7 +34,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UpdateIndicatorTypeAction.java 3305 2007-05-14 18:55:52Z larshelg $
+ * @version $Id: UpdateIndicatorTypeAction.java 3305 2007-05-14 18:55:52Z
+ *          larshelg $
  */
 public class UpdateIndicatorTypeAction
     extends ActionSupport
@@ -49,7 +50,7 @@ public class UpdateIndicatorTypeAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,6 +76,13 @@ public class UpdateIndicatorTypeAction
         this.factor = factor;
     }
 
+    private Boolean number;
+
+    public void setNumber( Boolean number )
+    {
+        this.number = number;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -82,10 +90,11 @@ public class UpdateIndicatorTypeAction
     public String execute()
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( id );
-        
+
         indicatorType.setName( name );
         indicatorType.setFactor( factor );
-        
+        indicatorType.setNumber( number );
+
         indicatorService.updateIndicatorType( indicatorType );
 
         return SUCCESS;

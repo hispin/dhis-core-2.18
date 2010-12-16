@@ -80,8 +80,8 @@ public class IndicatorServiceTest
     public void testAddIndicatorType()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         int idA = indicatorService.addIndicatorType( typeA );
         int idB = indicatorService.addIndicatorType( typeB );
@@ -99,7 +99,7 @@ public class IndicatorServiceTest
     public void testUpdateIndicatorType()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
         int idA = indicatorService.addIndicatorType( typeA );
         typeA = indicatorService.getIndicatorType( idA );
         assertEquals( typeA.getName(), "IndicatorTypeA" );
@@ -115,8 +115,8 @@ public class IndicatorServiceTest
     public void testGetAndDeleteIndicatorType()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         int idA = indicatorService.addIndicatorType( typeA );
         int idB = indicatorService.addIndicatorType( typeB );
@@ -139,8 +139,8 @@ public class IndicatorServiceTest
     public void testGetAllIndicatorTypes()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         indicatorService.addIndicatorType( typeA );
         indicatorService.addIndicatorType( typeB );
@@ -156,8 +156,8 @@ public class IndicatorServiceTest
     public void testGetIndicatorTypeByName()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         int idA = indicatorService.addIndicatorType( typeA );
         int idB = indicatorService.addIndicatorType( typeB );
@@ -292,7 +292,7 @@ public class IndicatorServiceTest
     @Test
     public void testGetGroupsContainingIndicator() throws Exception
     {
-        IndicatorType indicatorType = new IndicatorType( "indicatorTypeName", 100 );
+        IndicatorType indicatorType = new IndicatorType( "indicatorTypeName", 100, false );
         indicatorService.addIndicatorType( indicatorType );
 
         Indicator indicator1 = createIndicator( 'A', indicatorType );
@@ -348,7 +348,7 @@ public class IndicatorServiceTest
     public void testAddIndicator()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
         
         indicatorService.addIndicatorType( type );
         
@@ -371,7 +371,7 @@ public class IndicatorServiceTest
     public void testUpdateIndicator()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         
@@ -391,7 +391,7 @@ public class IndicatorServiceTest
     public void testGetAndDeleteIndicator()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         
@@ -419,7 +419,7 @@ public class IndicatorServiceTest
     public void testGetIndicatorByUUID()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
         indicatorService.addIndicatorType( type );
         
         Indicator indicatorA = createIndicator( 'A', type );        
@@ -437,7 +437,7 @@ public class IndicatorServiceTest
     public void testGetAllIndicators()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         
@@ -458,7 +458,7 @@ public class IndicatorServiceTest
     public void testGetIndicatorByName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         
@@ -483,7 +483,7 @@ public class IndicatorServiceTest
     public void testGetIndicatorByAlternativeName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         
@@ -508,7 +508,7 @@ public class IndicatorServiceTest
     public void testGetIndicatorByShortName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorService.addIndicatorType( type );
         

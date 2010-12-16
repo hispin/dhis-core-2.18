@@ -205,6 +205,8 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified ");
         
+        executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
+        
         log.info( "Tables updated" );
     }
 

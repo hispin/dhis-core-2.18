@@ -38,6 +38,8 @@ public class IndicatorType
 {
     private int factor;
 
+    private Boolean number;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -46,10 +48,11 @@ public class IndicatorType
     {
     }
 
-    public IndicatorType( String name, int factor )
+    public IndicatorType( String name, int factor, Boolean number )
     {
         this.name = name;
         this.factor = factor;
+        this.number = number;
     }
 
     // -------------------------------------------------------------------------
@@ -103,5 +106,15 @@ public class IndicatorType
     public void setFactor( int factor )
     {
         this.factor = factor;
+    }
+
+    public Boolean getNumber()
+    {
+        return number != null && number;
+    }
+
+    public void setNumber( Boolean number )
+    {
+        this.number = number;
     }
 }
