@@ -139,6 +139,8 @@ var validationMessage	= {
 		,custome_regex: validatorFormat("{1}")
 		,greaterDate: '$encoder.jsEscape($i18n.getString('closedDate_should_be_greater_than_openDate' ) , "'")'
 		,unicodechars: '$encoder.jsEscape($i18n.getString('please_unicode_chars_only' ) , "'")'
+		,unrecognizedcoordinatestring: '$encoder.jsEscape($i18n.getString('unrecognized_coordinate_string' ) , "'")'
+		
 };
 var i18n_process = '$encoder.jsEscape( $i18n.getString( "process" ) , "'" )';
 var i18n_delete_success = '$encoder.jsEscape( $i18n.getString( "delete_success" ) , "'" )';
