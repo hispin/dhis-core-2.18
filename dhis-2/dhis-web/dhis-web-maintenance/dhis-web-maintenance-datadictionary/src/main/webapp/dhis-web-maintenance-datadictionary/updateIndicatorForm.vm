@@ -1,6 +1,13 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'updateIndicatorForm', function( form ){ form.submit()} );	
+		validation( 'updateIndicatorForm', 
+			function( form ){ form.submit()} , 
+			function()
+			{
+				setFieldValue( 'denominator', "1" );
+				setFieldValue( 'denominatorDescription', "" );
+				setRadioValue( 'denominatorAggregationOperator', "sum" );
+			});	
 		checkValueIsExist( "name", "validateIndicator.action", {id:getFieldValue('id')});
 		checkValueIsExist( "shortName", "validateIndicator.action" , {id:getFieldValue('id')});
 		checkValueIsExist( "alternativeName", "validateIndicator.action" , {id:getFieldValue('id')});
@@ -58,9 +65,9 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em">			
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();'>			
 			#foreach( $indicatorType in $indicatorTypes )
-				<option value="$indicatorType.id"#if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
+				<option value="$indicatorType.id" number="$indicatorType.number" #if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
 			</select>
 		</td>
@@ -79,7 +86,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"/>
+			<input type="button" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"  #if($!indicator.indicatorType.number=='true') disabled #end/>
 			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator" class="{validate:{required:true}}"/>
 		</td>
 	</tr>

@@ -88,9 +88,9 @@ public class IndicatorStoreTest
     public void testAddIndicatorType()
         throws Exception
     {        
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
-        IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
+        IndicatorType typeC = new IndicatorType( "IndicatorTypeA", 100, false );
         
         int idA = indicatorTypeStore.save( typeA );
         int idB = indicatorTypeStore.save( typeB );
@@ -117,7 +117,7 @@ public class IndicatorStoreTest
     public void testUpdateIndicatorType()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
         int idA = indicatorTypeStore.save( typeA );
         typeA = indicatorTypeStore.get( idA );
         assertEquals( typeA.getName(), "IndicatorTypeA" );
@@ -133,8 +133,8 @@ public class IndicatorStoreTest
     public void testGetAndDeleteIndicatorType()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         int idA = indicatorTypeStore.save( typeA );
         int idB = indicatorTypeStore.save( typeB );
@@ -157,8 +157,8 @@ public class IndicatorStoreTest
     public void testGetAllIndicatorTypes()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         indicatorTypeStore.save( typeA );
         indicatorTypeStore.save( typeB );
@@ -174,8 +174,8 @@ public class IndicatorStoreTest
     public void testGetIndicatorTypeByName()
         throws Exception
     {
-        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100 );
-        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1 );
+        IndicatorType typeA = new IndicatorType( "IndicatorTypeA", 100, false );
+        IndicatorType typeB = new IndicatorType( "IndicatorTypeB", 1, false );
         
         int idA = indicatorTypeStore.save( typeA );
         int idB = indicatorTypeStore.save( typeB );
@@ -200,7 +200,7 @@ public class IndicatorStoreTest
     public void testAddIndicator()
         throws Exception
     {        
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
         
         indicatorTypeStore.save( type );
         
@@ -233,7 +233,7 @@ public class IndicatorStoreTest
     public void testUpdateIndicator()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -253,7 +253,7 @@ public class IndicatorStoreTest
     public void testGetAndDeleteIndicator()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -283,7 +283,7 @@ public class IndicatorStoreTest
     {
         String uuid = UUIdUtils.getUUId();
         
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
         indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
@@ -301,7 +301,7 @@ public class IndicatorStoreTest
     public void testGetAllIndicators()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -322,7 +322,7 @@ public class IndicatorStoreTest
     public void testGetIndicatorByName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -347,7 +347,7 @@ public class IndicatorStoreTest
     public void testGetIndicatorByAlternativeName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -372,7 +372,7 @@ public class IndicatorStoreTest
     public void testGetIndicatorByShortName()
         throws Exception
     {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         
@@ -401,7 +401,7 @@ public class IndicatorStoreTest
         
         indicatorService.addIndicatorGroupSet( groupSetA );
         
-        IndicatorType type = new IndicatorType( "IndicatorType", 100 );
+        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
 
         indicatorTypeStore.save( type );
         

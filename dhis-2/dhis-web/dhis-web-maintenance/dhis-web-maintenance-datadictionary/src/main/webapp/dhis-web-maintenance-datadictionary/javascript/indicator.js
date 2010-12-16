@@ -1,3 +1,10 @@
+
+function indicatorTypeChanged()
+{
+	var type  = byId('indicatorTypeId').options[byId('indicatorTypeId').selectedIndex].getAttribute('number');
+	byId('denominatorButton').disabled = eval(type);
+}
+
 // -----------------------------------------------------------------------------
 // Change indicator group and data dictionary
 // -----------------------------------------------------------------------------
