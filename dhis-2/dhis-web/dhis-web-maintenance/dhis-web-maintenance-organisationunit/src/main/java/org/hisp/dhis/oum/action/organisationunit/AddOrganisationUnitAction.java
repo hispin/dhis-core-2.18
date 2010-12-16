@@ -49,7 +49,7 @@ public class AddOrganisationUnitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
