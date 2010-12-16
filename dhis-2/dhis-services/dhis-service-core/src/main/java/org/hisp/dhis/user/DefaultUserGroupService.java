@@ -1,4 +1,4 @@
-package org.hisp.dhis.user.impl;
+package org.hisp.dhis.user;
 
 import java.util.Collection;
 
