@@ -42,7 +42,6 @@ public class FileNameComparator
     @Override
     public int compare( File arg0, File arg1 )
     {
-
         return arg0.getName().compareToIgnoreCase( arg1.getName() );
     }
 }

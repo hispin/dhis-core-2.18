@@ -43,98 +43,100 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class CopyExcelItemAction implements Action {
-	// -------------------------------------------
-	// Dependency
-	// -------------------------------------------
+public class CopyExcelItemAction
+    implements Action
+{
+    // -------------------------------------------
+    // Dependency
+    // -------------------------------------------
 
-	private ExcelItemService excelItemService;
+    private ExcelItemService excelItemService;
 
-	private ReportExcelService reportExcelService;
+    private ReportExcelService reportExcelService;
 
-	private StatementManager statementManager;
+    private StatementManager statementManager;
 
-	// -------------------------------------------
-	// Input
-	// -------------------------------------------
+    // -------------------------------------------
+    // Input
+    // -------------------------------------------
 
-	private Integer excelItemGroupId;
+    private Integer excelItemGroupId;
 
-	private Integer sheetNo;
+    private Integer sheetNo;
 
-	private Collection<String> reportItemIds;
+    private Collection<String> reportItemIds;
 
-	// -------------------------------------------
-	// Getter & Setter
-	// -------------------------------------------
+    // -------------------------------------------
+    // Getter & Setter
+    // -------------------------------------------
 
-	public void setStatementManager(StatementManager statementManager) {
-		this.statementManager = statementManager;
-	}
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
-	public void setReportExcelService(ReportExcelService reportExcelService) {
-		this.reportExcelService = reportExcelService;
-	}
+    public void setReportExcelService( ReportExcelService reportExcelService )
+    {
+        this.reportExcelService = reportExcelService;
+    }
 
-	public void setExcelItemGroupId(Integer excelItemGroupId) {
-		this.excelItemGroupId = excelItemGroupId;
-	}
+    public void setExcelItemGroupId( Integer excelItemGroupId )
+    {
+        this.excelItemGroupId = excelItemGroupId;
+    }
 
-	public Integer getSheetNo() {
-		return sheetNo;
-	}
+    public Integer getSheetNo()
+    {
+        return sheetNo;
+    }
 
-	public void setReportItemIds(Collection<String> reportItemIds) {
-		this.reportItemIds = reportItemIds;
-	}
+    public void setReportItemIds( Collection<String> reportItemIds )
+    {
+        this.reportItemIds = reportItemIds;
+    }
 
-	public void setExcelItemService(ExcelItemService excelItemService) {
-		this.excelItemService = excelItemService;
-	}
+    public void setExcelItemService( ExcelItemService excelItemService )
+    {
+        this.excelItemService = excelItemService;
+    }
 
-	public void setSheetNo(Integer sheetNo) {
-		this.sheetNo = sheetNo;
-	}
+    public void setSheetNo( Integer sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
 
-	// -------------------------------------------
-	// Action implementation
-	// -------------------------------------------
+    // -------------------------------------------
+    // Action implementation
+    // -------------------------------------------
 
-	public String execute() throws Exception {
-		
-		statementManager.initialise();
+    public String execute()
+        throws Exception
+    {
+        statementManager.initialise();
 
-		ExcelItemGroup excelItemGroup = excelItemService
-				.getExcelItemGroup(excelItemGroupId);
+        ExcelItemGroup excelItemGroup = excelItemService.getExcelItemGroup( excelItemGroupId );
 
-		for (String itemId : reportItemIds) {
+        for ( String itemId : reportItemIds )
+        {
+            ReportExcelItem source = reportExcelService.getReportExcelItem( Integer.parseInt( itemId ) );
 
-			ReportExcelItem source = reportExcelService
-					.getReportExcelItem(Integer.parseInt(itemId));
+            ExcelItem excelItem = new ExcelItem();
 
-			ExcelItem excelItem = new ExcelItem();
+            excelItem.setName( source.getName() );
+            excelItem.setRow( source.getRow() );
+            excelItem.setColumn( source.getColumn() );
+            excelItem.setExpression( source.getExpression() );
+            excelItem.setSheetNo( sheetNo );
+            excelItem.setExcelItemGroup( excelItemService.getExcelItemGroup( excelItemGroupId ) );
 
-			excelItem.setName(source.getName());
+            excelItemService.addExcelItem( excelItem );
+        }
 
-			excelItem.setRow(source.getRow());
+        excelItemService.updateExcelItemGroup( excelItemGroup );
 
-			excelItem.setColumn(source.getColumn());
+        statementManager.destroy();
 
-			excelItem.setExpression(source.getExpression());
-
-			excelItem.setSheetNo(sheetNo);
-
-			excelItem.setExcelItemGroup(excelItemService
-					.getExcelItemGroup(excelItemGroupId));
-			
-			excelItemService.addExcelItem(excelItem);
-		}
-
-		excelItemService.updateExcelItemGroup(excelItemGroup);
-
-		statementManager.destroy();
-
-		return SUCCESS;
-	}
+        return SUCCESS;
+    }
 
 }
