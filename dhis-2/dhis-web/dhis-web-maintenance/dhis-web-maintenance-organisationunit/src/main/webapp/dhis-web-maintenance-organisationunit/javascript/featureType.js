@@ -10,7 +10,7 @@ function setFeatureType( field, c )
     
     if ( c.length >= 2 )
     {
-        if ( c.substring( 0, 1 ) == "[" && c.substring( 1, 2 ) != "[" && c.substring( c.length - 1, c.length ) == "]" )
+        if ( c.substring( 0, 1 ) == "[" && c.substring( 1, 2 ) != "[" && c.substring( c.length - 1, c.length ) == "]" && c.substring( c.length - 2, c.length - 1 ) != "]" )
         {
             field.value = "Point";
             return;
@@ -38,11 +38,11 @@ function setFeatureType( field, c )
 
 function validateFeatureType( cField, fField )
 {
-    if ( cField.value && !fField.value )
+    if ( cField.value && ( !fField.value || fField.value == validationMessage.unrecognizedcoordinatestring ) )
     {
         fField.style.color = "#ff0000";
         fField.style.fontStyle = "italic";
-        fField.value = "Unrecognized coordinate string!";
+        fField.value = validationMessage.unrecognizedcoordinatestring;
         return false;
     }
     
