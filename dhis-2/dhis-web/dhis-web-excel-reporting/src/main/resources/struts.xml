@@ -384,7 +384,7 @@
 		<action name="copyReportExcelItems"
 			class="org.hisp.dhis.reportexcel.item.action.CopyReportExcelItemAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
 
@@ -1035,7 +1035,7 @@
 		<action name="copyExcelItems"
 			class="org.hisp.dhis.reportexcel.excelitem.action.CopyExcelItemAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<!-- IMPORT DATA -->

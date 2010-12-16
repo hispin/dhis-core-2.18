@@ -29,7 +29,6 @@ function changeItemType()
 	value = getFieldValue( 'itemType' );
 	enable( 'expression-button' );
 	
-	
 	if( value == 'dataelement' ){
 		byId('expression-button' ).onclick = deExpressionBuilderForm;
 	}else if( value == 'indicator' ){
@@ -54,22 +53,20 @@ function insertOperation( value ) {
 
 function insertExpression() 
 {
-	
 	if( category ) var expression = "[*." + getFieldValue("elementSelect")+ "]";
-	else var expression = getFieldValue("elementSelect");	
+	else var expression = getFieldValue("elementSelect");
 	setFieldValue( 'formula', getFieldValue( 'formula') + expression );
-	
+
 	getExpression();
-	
 }
 
 function getExpression()
 {	
-	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action',
 	{ expression: getFieldValue('formula')}, function( json ){
 		if(json.response == 'success'){
-			setInnerHTML( 'expression-description', json.message );				
-		}	
+			setInnerHTML( 'expression-description', json.message );
+		}
 	});		
 }
 
@@ -82,7 +79,8 @@ function validateAddReportExcelItem( form )
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
 		column: getFieldValue( 'column' ),
-		name: getFieldValue( 'name' ),
+		name: getFieldValue( 'name' )
+
 	},function( json ){
 		if(json.response == 'success'){					
 			form.submit();
@@ -101,7 +99,8 @@ function validateUpdateReportExcelItem( form )
 		sheetNo: getFieldValue( 'sheetNo' ),
 		row: getFieldValue( 'row' ),
 		column: getFieldValue( 'column' ),
-		name: getFieldValue( 'name' ),
+		name: getFieldValue( 'name' )
+
 	},function( json ){
 		if(json.response == 'success'){					
 			form.submit();
@@ -111,43 +110,34 @@ function validateUpdateReportExcelItem( form )
 	});
 }
 
-
-
 /*
 *	Delete multi report item
 */
 
 function deleteMultiReportItem( confirm )
 {
-	
 	if ( window.confirm( confirm ) ) 
-	{	
-		
+	{			
 		var listRadio = document.getElementsByName( 'reportItemCheck' );
-		
-		var params = new Array();	
-		
+		var url = "deleteMultiReportItem.action?";
 		var j = 0;
 		
-		for( var i=0;i<listRadio.length;i++ )
+		for( var i=0; i < listRadio.length; i++ )
 		{
 			var item = listRadio.item(i);
 			
-			if(item.checked==true)
+			if( item.checked == true )
 			{		
-				params.push( item.getAttribute( 'reportItemID' ) );				
-				j++;				
+				url += "ids=" + item.getAttribute( 'reportItemID' );
+				url += (i < listRadio.length-1) ? "&" : "";
+				j++;
 			}
 		}
-
+		
 		if( j>0 )
 		{
 			$.getJSON(
-    	    "deleteMultiReportItem.action",
-    	    {
-    	        "ids": params   
-    	    },
-				function( json )
+				url, {}, function( json )
 				{
 					if ( json.response == "success" )
 					{
@@ -163,11 +153,9 @@ function deleteMultiReportItem( confirm )
 	}
 }
 
-
 /**
 *	COPY REPORT ITEM(s) TO ANOTHER REPORTEXCEL
 */
-//function copySelectedItem() {
 function copySelectedReportItemToReport() {
 	
 	var request = new Request();
@@ -200,14 +188,15 @@ function copySelectedReportItemToReportReceived( xmlObject ) {
 */
 
 sheetId = 0;
-NoItemsChecked = 0;
+NumberOfItemsChecked = 0;
 ItemsSaved = null;
 itemsCurTarget = null;
 itemsDuplicated = null;
+warningMessages = "";
 
 function validateCopyReportItemsToReportExcel() {
 
-	sheetId	= byId( "targetSheetNo" ).value;
+	sheetId	= $( "#targetSheetNo" ).val();
 	
 	var message = '';
 	
@@ -274,7 +263,7 @@ function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute )
 		}
 	}
 	
-	NoItemsChecked = itemsChecked.length;
+	NumberOfItemsChecked = itemsChecked.length;
 	
 	for (var i in itemsChecked)
 	{
@@ -298,59 +287,35 @@ function splitDuplicatedItems( itemCheckID, itemIDAttribute, itemNameAttribute )
 
 function saveCopyReportItemsToReportExcel() {
 	
-	var warningMessage = " ======= Sheet [" + sheetId + "] =======<br/>";
+	warningMessages = " ======= Sheet [" + sheetId + "] ========";
 	
 	// If have ReportItem(s) in Duplicating list
-	// preparing the warning message
-	if ( itemsDuplicated.length > 0 ) {
-
-		warningMessage += 
-		"<b>[" + (itemsDuplicated.length) + "/" + (NoItemsChecked) + "]</b>:: "
-		+ i18n_copy_items_duplicated
-		+ "<br/><br/>";
-		
-		for (var i in itemsDuplicated) {
-		
-			warningMessage +=
-			"<b>(*)</b> "
-			+ itemsDuplicated[i] 
-			+ "<br/><br/>";
-		}
-		
-		warningMessage += "======================<br/><br/>";
+	// Preparing the warning message
+	if ( itemsDuplicated.length > 0 )
+	{
+		setUpDuplicatedItemsMessage();
 	}
 	
 	// If have also ReportItem(s) in Copying list
-	// do copy and prepare the message notes
-	if ( ItemsSaved.length > 0 ) {
-	
-		$.post("copyReportExcelItems.action",
+	// Do copy and prepare the message notes
+	if ( ItemsSaved.length > 0 )
+	{
+		var url = "copyReportExcelItems.action";
+			url += "?reportId=" + $("#targetReport").val();
+			url += "&sheetNo=" + sheetId;
+			
+		for (var i in ItemsSaved)
 		{
-			reportId:$("#targetReport").val(),
-			sheetNo:sheetId,
-			reportItems:ItemsSaved
-		},
-		function (data)
-		{
-			var data = data.getElementsByTagName("message")[0];	
-			var type = data.getAttribute("type");
-			
-			if ( type == "success" ) {
-				
-				warningMessage +=
-				"<br/><b>[" + (ItemsSaved.length) + "/" + (NoItemsChecked) + "]</b>:: "
-				+ i18n_copy_successful
-				+ "<br/>======================<br/><br/>";
-			}
-			
-			setMessage( warningMessage );
-			
-		},'xml');
+			url += "&reportItems=" + ItemsSaved[i];
+		}
+		
+		executeCopyItems( url );
 	}
 	// If have no any ReportItem(s) will be copied
 	// and also have ReportItem(s) in Duplicating list
-	else if ( itemsDuplicated.length > 0 ) {
-		setMessage( warningMessage );
+	else if ( itemsDuplicated.length > 0 )
+	{
+		setMessage( warningMessages );
 	}
 		
 	hideById('copyToReport'); 
@@ -362,7 +327,6 @@ function saveCopyReportItemsToReportExcel() {
 *	COPY SELECTED REPORTITEM(s) TO EXCEL_ITEM_GROUP
 */
 
-//function copySelectedExcelItemForm() {
 function copySelectedReportItemToExcelItemGroup() {
 	
 	var request = new Request();
@@ -393,10 +357,9 @@ function copySelectedReportItemToExcelItemGroupReceived( xmlObject ) {
 *	Validate copy Report Items to Excel Item Group
 */
 
-//function validateCopyExcelItems() {
 function validateCopyReportItemsToExcelItemGroup() {
 
-	sheetId	= byId("targetExcelItemGroupSheetNo").value;
+	sheetId	= $("#targetExcelItemGroupSheetNo").val();
 	
 	var message = '';
 	
@@ -443,55 +406,36 @@ function validateCopyReportItemsToExcelItemGroupReceived( xmlObject ) {
 	saveCopiedReportItemsToExcelItemGroup();
 }
 
-warningMessages = "";
-
 function saveCopiedReportItemsToExcelItemGroup() {
 	
-	warningMessages = "";
+	warningMessages = " ======= Sheet [" + sheetId + "] ========";
 	
 	// If have ReportItem(s) in Duplicating list
 	// preparing the warning message
-	if ( itemsDuplicated.length > 0 ) {
-
-		warningMessages += 
-		"<b>[" + (itemsDuplicated.length) + "/" + (NoItemsChecked) + "]</b>:: "
-		+ i18n_copy_items_duplicated
-		+ "<br/><br/>";
-		
-		for (var i in itemsDuplicated) {
-		
-			warningMessages +=
-			"<b>(*)</b> "
-			+ itemsDuplicated[i] 
-			+ "<br/><br/>";
-		}
-		
-		warningMessages += "<br/>";
+	if ( itemsDuplicated.length > 0 )
+	{
+		setUpDuplicatedItemsMessage();
 	}
 	
 	// If have also ReportItem(s) in Copying list
 	// do copy and prepare the message notes
-	if ( ItemsSaved.length > 0 ) {
-	
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( saveCopyExcelItemsReceived );	
-		
-		var params = "excelItemGroupId=" + byId("targetExcelItemGroup").value;
-			params += "&sheetNo=" + sheetId;
+	if ( ItemsSaved.length > 0 )
+	{
+		var url = "copyExcelItems.action";
+			url += "?excelItemGroupId=" + $("#targetExcelItemGroup").val();
+			url += "&sheetNo=" + sheetId;
 			
 		for (var i in ItemsSaved)
 		{
-			params += "&reportItemIds=" + ItemsSaved[i];
+			url += "&reportItemIds=" + ItemsSaved[i];
 		}
-			
-		request.sendAsPost(params);
-		request.send( "copyExcelItems.action");
+	
+		executeCopyItems( url );
 	}
 	// If have no any ReportItem(s) will be copied
 	// and also have ReportItem(s) in Duplicating list
-	else if ( itemsDuplicated.length > 0 ) {
-
+	else if ( itemsDuplicated.length > 0 )
+	{
 		setMessage( warningMessages );
 	}
 		
@@ -499,23 +443,41 @@ function saveCopiedReportItemsToExcelItemGroup() {
 	unLockScreen();
 }
 
-function saveCopyExcelItemsReceived( data ) {
+function setUpDuplicatedItemsMessage()
+{		
+	warningMessages += 
+	"<br/><b>[" + (itemsDuplicated.length) + "/" + (NumberOfItemsChecked) + "]</b>:: "
+	+ i18n_copy_items_duplicated
+	+ "<br/><br/>";
 	
-	var type = data.getAttribute("type");
-	
-	if ( type == "success" ) {
-	
+	for (var i in itemsDuplicated)
+	{
 		warningMessages +=
-		" ======= Sheet [" + sheetId + "] ========"
-		+ "<br/><b>[" + (ItemsSaved.length) + "/" + (NoItemsChecked) + "]</b>:: "
-		+ i18n_copy_successful
-		+ "<br/>======================<br/><br/>";
-		
+		"<b>(*)</b> "
+		+ itemsDuplicated[i] 
+		+ "<br/><br/>";
 	}
 	
-	setMessage( warningMessages );
+	warningMessages += "<br/>";
 }
 
+function executeCopyItems( url )
+{	
+	$.postJSON(
+		url, {}, function ( json )
+		{
+			if ( json.response == "success" )
+			{	
+				warningMessages +=
+				"<br/><b>[" + (ItemsSaved.length) + "/" + (NumberOfItemsChecked) + "]</b>:: "
+				+ i18n_copy_successful
+				+ "<br/>======================<br/><br/>";
+			}
+			
+			setMessage( warningMessages );
+		}
+	);
+}
 
 /**
 * Open dataelement expression
@@ -550,10 +512,7 @@ function getALLDataElementGroup() {
 	for ( id in dataElementGroups )
 	{
 		list.add( new Option( dataElementGroups[id], id ), null );
-		//var option = new Option( dataElementGroups[id], id );
-		//list.add( option , null );
 	}
-	
 }
 
 /**
@@ -591,9 +550,6 @@ function getDataElementsByGroupCompleted( xmlObject ){
 		dataElementList.add( option, null );
 	}
 }
-
-
-
 
 
 /**
@@ -656,7 +612,6 @@ function filterIndicatorsCompleted( xmlObject ) {
 			option.selected = true;
 			byId("formulaIndicatorDiv").innerHTML = indicatorName;
 		}
-		
 	}
 }
 

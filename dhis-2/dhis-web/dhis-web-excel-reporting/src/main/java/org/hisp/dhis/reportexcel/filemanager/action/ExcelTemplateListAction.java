@@ -56,9 +56,9 @@ import org.hisp.dhis.system.comparator.FileNameComparator;
 public class ExcelTemplateListAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportLocationManager reportLocationManager;
 
@@ -81,14 +81,15 @@ public class ExcelTemplateListAction
         this.reportService = reportService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    
     private String mode;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String newFileUploadedOrRenamed;
 
@@ -96,9 +97,9 @@ public class ExcelTemplateListAction
 
     private List<String> reportTypes = new ArrayList<String>();
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter && Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public Map<String, Boolean> getMapTemplateFiles()
     {
@@ -140,9 +141,9 @@ public class ExcelTemplateListAction
         return reportTypes;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -157,9 +158,9 @@ public class ExcelTemplateListAction
 
         String newUploadOrRenamePath = null;
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the path of newly uploaded file
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         if ( !StringUtils.isNullOREmpty( mode ) )
         {
@@ -178,17 +179,15 @@ public class ExcelTemplateListAction
             newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
         }
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // Get the list of files
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         List<File> templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 
         Collections.sort( templateFiles, new FileNameComparator() );
 
         Collection<String> reportExcelTemplates = reportService.getALLReportExcelTemplates();
-
-        Collections.sort( templateFiles );
 
         for ( File file : templateFiles )
         {

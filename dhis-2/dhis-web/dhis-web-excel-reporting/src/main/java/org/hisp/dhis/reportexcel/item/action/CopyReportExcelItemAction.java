@@ -26,7 +26,8 @@
  */
 package org.hisp.dhis.reportexcel.item.action;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.reportexcel.ReportExcel;
@@ -59,7 +60,7 @@ public class CopyReportExcelItemAction
 
     private Integer sheetNo;
 
-    private Collection<String> reportItems;
+    private List<String> reportItems = new ArrayList<String>();
 
     // -------------------------------------------
     // Getter & Setter
@@ -90,7 +91,7 @@ public class CopyReportExcelItemAction
         this.reportId = reportId;
     }
 
-    public void setReportItems( Collection<String> reportItems )
+    public void setReportItems( List<String> reportItems )
     {
         this.reportItems = reportItems;
     }
@@ -106,11 +107,11 @@ public class CopyReportExcelItemAction
         statementManager.initialise();
 
         ReportExcel reportExcel = reportService.getReportExcel( reportId );
-
+        
         for ( String itemId : this.reportItems )
         {
             ReportExcelItem reportItem = reportService.getReportExcelItem( Integer.parseInt( itemId ) );
-            
+
             ReportExcelItem newReportItem = new ReportExcelItem();
             newReportItem.setName( reportItem.getName() );
             newReportItem.setItemType( reportItem.getItemType() );
@@ -121,11 +122,10 @@ public class CopyReportExcelItemAction
             newReportItem.setSheetNo( sheetNo );
             newReportItem.setReportExcel( reportExcel );
             reportService.addReportExcelItem( newReportItem );
-        }     
+        }
 
         statementManager.destroy();
 
         return SUCCESS;
     }
-
 }

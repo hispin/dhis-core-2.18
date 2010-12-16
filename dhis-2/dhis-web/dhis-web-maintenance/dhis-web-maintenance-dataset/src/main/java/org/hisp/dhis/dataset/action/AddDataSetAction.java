@@ -1,4 +1,4 @@
- package org.hisp.dhis.dataset.action;
+package org.hisp.dhis.dataset.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -93,7 +93,7 @@ public class AddDataSetAction
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private String name;
 
     public void setName( String name )
@@ -107,13 +107,13 @@ public class AddDataSetAction
     {
         this.shortName = shortName;
     }
-    
+
     private String code;
 
     public void setCode( String code )
     {
         this.code = code;
-    }    
+    }
 
     private String frequencySelect;
 
@@ -128,22 +128,22 @@ public class AddDataSetAction
     {
         this.selectedList = selectedList;
     }
-    
+
     private boolean mobile;
-    
-    public void setMobile(boolean mobile) 
+
+    public void setMobile( boolean mobile )
     {
-		this.mobile = mobile;
-	}
+        this.mobile = mobile;
+    }
 
     // -------------------------------------------------------------------------
     // Action
-    // -------------------------------------------------------------------------    
+    // -------------------------------------------------------------------------
 
-	public String execute()
+    public String execute()
         throws Exception
     {
-    	// ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
 
@@ -155,14 +155,13 @@ public class AddDataSetAction
         if ( code != null && code.trim().length() == 0 )
         {
             code = null;
-        }               
-        
+        }
+
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
-        
+
         dataSet.setMobile( mobile );
-        
 
         for ( String id : selectedList )
         {
@@ -174,22 +173,22 @@ public class AddDataSetAction
         dataSetService.addDataSet( dataSet );
 
         assignDataSetToUserRole( dataSet );
-        
+
         return SUCCESS;
     }
-    
+
     private void assignDataSetToUserRole( DataSet dataSet )
     {
         User currentUser = currentUserService.getCurrentUser();
-        
+
         if ( !currentUserService.currentUserIsSuper() && currentUser != null )
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUser );       
-            
+            UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
+
             for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
-            {                
+            {
                 userAuthorityGroup.getDataSets().add( dataSet );
-                
+
                 userStore.updateUserAuthorityGroup( userAuthorityGroup );
             }
         }
