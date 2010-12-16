@@ -132,7 +132,7 @@ public abstract class GenerateReportSupport
 
     protected PeriodService periodService;
 
-    protected PeriodGenericManager periodGenericManager;   
+    protected PeriodGenericManager periodGenericManager;
 
     protected ReportExcelService reportService;
 
@@ -391,8 +391,8 @@ public abstract class GenerateReportSupport
     }
 
     protected void installPeriod( Period period )
-    {       
-        
+    {
+
         Calendar calendar = Calendar.getInstance();
 
         // Monthly period
@@ -463,12 +463,17 @@ public abstract class GenerateReportSupport
 
         this.initFormulaEvaluating();
 
-        ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
-            organisationUnit.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
-        
-        ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
-            .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
-        
+        if ( reportExcel.getOrganisationRow() != null && reportExcel.getOrganisationColumn() != null )
+        {
+            ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+                organisationUnit.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+        }
+
+        if ( reportExcel.getPeriodRow() != null && reportExcel.getPeriodColumn() != null )
+        {
+            ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
+                .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+        }
     }
 
     protected double getIndicatorValue( ReportExcelItem reportItem, OrganisationUnit organisationUnit )
@@ -705,7 +710,7 @@ public abstract class GenerateReportSupport
     {
         Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );
-        
+
         if ( aggregatedValue == null )
         {
             aggregatedValue = 0.0;
@@ -735,12 +740,17 @@ public abstract class GenerateReportSupport
 
         this.initFormulaEvaluating();
 
-        ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
-            organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+        if ( reportExcel.getOrganisationRow() != null && reportExcel.getOrganisationColumn() != null )
+        {
+            ExcelUtils.writeValueByPOI( reportExcel.getOrganisationRow(), reportExcel.getOrganisationColumn(),
+                organisationUnitGroup.getName(), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+        }
 
-        ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
-            .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
-
+        if ( reportExcel.getPeriodRow() != null && reportExcel.getPeriodColumn() != null )
+        {
+            ExcelUtils.writeValueByPOI( reportExcel.getPeriodRow(), reportExcel.getPeriodColumn(), format
+                .formatPeriod( period ), ExcelUtils.TEXT, templateWorkbook.getSheetAt( 0 ), csText );
+        }
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
