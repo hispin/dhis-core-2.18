@@ -21,7 +21,7 @@
 
 <h3>$i18n.getString( "edit_org_unit" ) #openHelp( "ou_edit" )</h3>
 
-<form id="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
+<form id="updateOrganisationUnitForm" name="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post" onsubmit="return validateFeatureType(this.coordinates, this.featureType)">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$organisationUnit.id"/>
@@ -69,7 +69,11 @@
 	</tr>
     <tr>
         <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
+        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em" onkeyup="setFeatureType(document.updateOrganisationUnitForm.featureType, this.value)">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
+    </tr>
+    <tr>
+        <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
+        <td><input type="text" id="featureType" name="featureType" value="$!encoder.htmlEncode( $organisationUnit.featureType )" style="width:20em" readonly="readonly"/></td>
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
@@ -100,6 +104,8 @@
 </form>
 
 <script type="text/javascript">
+	
 	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
 	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
+	
 </script>
