@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "update_reportexcel_userrole" )</h3>
 
-<form name="userRole" action="updateReportExcelUserRole.action" method="POST">
+<form name="userRole" action="updateReportExcelUserRole.action" method="POST" onsubmit="selectAllById( 'selectedList' );">
 <input type="hidden" name="id" value="$reportExcel.id"/>
 <table>
 	<tr>
@@ -36,14 +36,11 @@
 	</tr>
 </table>
 <br>
-<input type="button" value="$i18n.getString( 'ok' )" style="width:100px" onclick="submitForm()"/>
+<input type="submit" value="$i18n.getString( 'ok' )" style="width:100px"/>
 <input type="button" value="$i18n.getString( 'cancel' )"  style="width:100px" onclick="window.location = 'listReportExcel.action'"/>
 </form>
+
 <script>
-	function submitForm(){
-		selectAllById( 'selectedList' );
-		document.forms['userRole'].submit();
-	}
 	$(document).ready(function(){
 		sortList('availableList', 'ASC');
 		sortList('selectedList', 'ASC');
