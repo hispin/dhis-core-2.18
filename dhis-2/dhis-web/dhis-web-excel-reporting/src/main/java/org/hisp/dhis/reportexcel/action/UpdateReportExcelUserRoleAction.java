@@ -47,9 +47,9 @@ public class UpdateReportExcelUserRoleAction
     implements Action
 {
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
@@ -65,11 +65,11 @@ public class UpdateReportExcelUserRoleAction
         this.userStore = userStore;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
-    private Collection<Integer> userRoles;
+    private Collection<Integer> userRoles = new HashSet<Integer>();
 
     public void setUserRoles( Collection<Integer> userRoles )
     {
