@@ -16,6 +16,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 
 public class DefaultAggregatedDataValueService
@@ -70,6 +71,11 @@ public class DefaultAggregatedDataValueService
     public int deleteAggregatedDataValues()
     {
         return aggregatedDataValueStore.deleteAggregatedDataValues();
+    }
+
+    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    {
+       return aggregatedDataValueStore.getAggregateDataValuesAtLevel(orgunit, level, periods);
     }
 
     // -------------------------------------------------------------------------

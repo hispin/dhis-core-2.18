@@ -381,7 +381,18 @@
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 	</bean>
-	
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- PivotViewExport                                                    -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+	<bean id="org.hisp.dhis.importexport.synchronous.ExportPivotViewService"
+		class="org.hisp.dhis.importexport.synchronous.ExportPivotViewService">
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+	</bean>
+
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- Mapping                                                       -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
