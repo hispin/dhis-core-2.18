@@ -1,10 +1,13 @@
 package org.hisp.dhis.aggregation.jdbc;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueStoreIterator;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +15,8 @@ import java.util.Map;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.amplecode.quick.mapper.ObjectMapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueStore;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -37,6 +42,13 @@ import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 public class JdbcAggregatedDataValueStore
     extends HibernateGenericStore<CaseAggregationCondition> implements AggregatedDataValueStore
 {
+
+    // number of rows to fetch from db for large resultset
+    private int FETCH_SIZE = 100;
+
+    private static final Log log = LogFactory.getLog( JdbcAggregatedDataValueStore.class );
+
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -126,7 +138,46 @@ public class JdbcAggregatedDataValueStore
             holder.close();
         }
     }
-    
+
+    @Override
+    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    {
+        final StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            int rootlevel = rootOrgunit.getLevel();
+
+            String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
+
+            final String sql =
+                "SELECT dataelementid, categoryoptioncomboid, periodid, adv.organisationunitid, periodtypeid, adv.level, value " +
+                "FROM aggregateddatavalue AS adv " +
+                "INNER JOIN _orgunitstructure AS ous on adv.organisationunitid=ous.organisationunitid " +
+                "WHERE adv.level = " + level.getLevel() +
+                " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
+                " AND adv.periodid IN (" + periodids + ") ";
+
+            log.info("sql: " + sql);
+
+            Statement statement = holder.getStatement();
+
+            statement.setFetchSize(FETCH_SIZE);
+
+            final ResultSet resultSet = statement.executeQuery( sql );
+
+            return new JdbcAggregatedDataValueStoreIterator(resultSet, holder);
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated data value", ex );
+        }
+        finally
+        {
+            // holder.close();
+        }
+    }
+
     public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql =

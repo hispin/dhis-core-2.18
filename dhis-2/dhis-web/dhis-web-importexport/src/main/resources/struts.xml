@@ -168,13 +168,8 @@
         <param name="contentDisposition">filename="${fileName}"</param>
         <param name="bufferSize">10240</param>				
       </result>
-	</action>
-	
-	<action name="exportDataMart" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
-	  <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
     <action name="getExportStatus" class="org.hisp.dhis.importexport.action.exp.GetExportStatusAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseExportStatus.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
@@ -195,7 +190,13 @@
       <result name="error" type="velocity-xml">/dhis-web-importexport/responseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
+
+    <action name="exportPivotView" class="org.hisp.dhis.importexport.action.exp.ExportPivotViewAction">
+      <result name="success" type="outputStreamResult" />
+      <result name="client-error" type="httpheader">
+      </result>
+    </action>
+
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- Dhis 1.4 Configuration                                        -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

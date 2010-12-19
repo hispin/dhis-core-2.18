@@ -11,6 +11,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 
 public interface AggregatedDataValueService
@@ -102,6 +103,16 @@ public interface AggregatedDataValueService
      * @throws AggregationStoreException
      */
     int deleteAggregatedDataValues();
+
+
+    /**
+     * Returns values for children of an orgunit at a particular level
+     * @param orgunit the root organisationunit
+     * @param level the level to retrieve values at
+     * @param periods the periods to retrieve values for
+     * @return an iterator type object for retrieving the values
+     */
+    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
 
     // ----------------------------------------------------------------------
     // AggregatedDataMapValue
