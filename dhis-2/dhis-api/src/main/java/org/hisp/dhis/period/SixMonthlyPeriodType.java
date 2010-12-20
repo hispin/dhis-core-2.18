@@ -150,4 +150,28 @@ public class SixMonthlyPeriodType
 
         return sixMonths;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        Calendar cal = createCalendarInstance( period.getStartDate() );
+        int year = cal.get( Calendar.YEAR);
+        int month = cal.get( Calendar.MONTH);
+
+        String periodString = null;
+
+        switch (month) {
+            case Calendar.JANUARY:
+                periodString = year + "S1";
+                break;
+            case Calendar.JULY:
+                periodString = year + "S2";
+                break;
+            default:
+                throw new RuntimeException("Not a valid six-monthly period");
+        }
+
+        return periodString;
+    }
+
 }

@@ -150,4 +150,34 @@ public class QuarterlyPeriodType
 
         return quarters;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        Calendar cal = createCalendarInstance( period.getStartDate() );
+        int year = cal.get( Calendar.YEAR);
+        int month = cal.get( Calendar.MONTH);
+
+        String periodString = null;
+
+        switch (month) {
+            case Calendar.JANUARY:
+                periodString = year + "Q1";
+                break;
+            case Calendar.APRIL:
+                periodString = year + "Q2";
+                break;
+            case Calendar.JULY:
+                periodString = year + "Q3";
+                break;
+            case Calendar.OCTOBER:
+                periodString = year + "Q1";
+                break;
+            default:
+                throw new RuntimeException("Not a valid quarterly period");
+        }
+
+        return periodString;
+    }
+
 }

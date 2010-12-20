@@ -202,4 +202,16 @@ public class WeeklyPeriodType
 
         return weeks;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        Calendar cal = createCalendarInstance( period.getStartDate() );
+        int year = cal.get( Calendar.YEAR);
+        int week = cal.get( Calendar.WEEK_OF_YEAR);
+
+        String periodString = year + "W" + week;
+        return periodString;
+    }
+
 }

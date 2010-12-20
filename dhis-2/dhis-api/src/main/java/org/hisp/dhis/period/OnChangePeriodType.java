@@ -114,4 +114,10 @@ public class OnChangePeriodType
 
         period.setEndDate( cal.getTime() );
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }

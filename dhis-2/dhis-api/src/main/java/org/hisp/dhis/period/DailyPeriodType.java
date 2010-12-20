@@ -27,6 +27,8 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -130,5 +132,12 @@ public class DailyPeriodType
         }
 
         return days;
+    }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        return format.format( period.getStartDate());
     }
 }

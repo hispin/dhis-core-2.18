@@ -75,4 +75,10 @@ public class SurveyPeriodType
     {
         return 0;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }

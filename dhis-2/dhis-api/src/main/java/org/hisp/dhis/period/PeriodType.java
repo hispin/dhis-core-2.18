@@ -198,6 +198,14 @@ public abstract class PeriodType
         calendar.set( Calendar.HOUR_OF_DAY, 0 );
     }
 
+    /**
+     * Returns an iso8601 formatted string representation of the period
+     *
+     * @param period
+     * @return the period as string
+     */
+    public abstract String getIsoDate(Period period);
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

@@ -27,6 +27,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,7 @@ import java.util.List;
 public class MonthlyPeriodType
     extends CalendarPeriodType
 {
+
     /**
      * The name of the MonthlyPeriodType, which is "Monthly".
      */
@@ -53,7 +55,6 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
     // PeriodType functionality
     // -------------------------------------------------------------------------
-
     @Override
     public String getName()
     {
@@ -92,7 +93,6 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
     // CalendarPeriodType functionality
     // -------------------------------------------------------------------------
-
     @Override
     public Period getNextPeriod( Period period )
     {
@@ -120,7 +120,7 @@ public class MonthlyPeriodType
 
         return new Period( this, startDate, cal.getTime() );
     }
-    
+
     /**
      * Generates monthly Periods for the whole year in which the given Period's
      * startDate exists.
@@ -144,5 +144,12 @@ public class MonthlyPeriodType
         }
 
         return months;
+    }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        SimpleDateFormat format = new SimpleDateFormat( "yyyyMM" );
+        return format.format( period.getStartDate() );
     }
 }
