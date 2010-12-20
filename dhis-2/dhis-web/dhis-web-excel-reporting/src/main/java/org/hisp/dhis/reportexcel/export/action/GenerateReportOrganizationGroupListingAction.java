@@ -53,6 +53,7 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 public class GenerateReportOrganizationGroupListingAction
     extends GenerateReportSupport
 {
+    private static final String PREFIX_FORMULA_SUM = "SUM(";
 
     // -------------------------------------------
     // Dependency
@@ -72,9 +73,9 @@ public class GenerateReportOrganizationGroupListingAction
         statementManager.initialise();
 
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
+
         Period period = periodGenericManager.getSelectedPeriod();
-        
+
         this.installPeriod( period );
 
         ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
@@ -88,7 +89,7 @@ public class GenerateReportOrganizationGroupListingAction
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
-            
+
             Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
 
             this.generateOutPutFile( reportExcel, orgUniGroupAtLevels, reportExcelItems, organisationUnit, sheet );
@@ -121,12 +122,11 @@ public class GenerateReportOrganizationGroupListingAction
             int chapperNo = 0;
             int firstRow = reportItem.getRow();
             int rowBegin = firstRow + 1;
-            
-            String totalFormula = "SUM(";
-            
+
+            String totalFormula = PREFIX_FORMULA_SUM;
+
             for ( OrganisationUnitGroup organisationUnitGroup : reportExcel.getOrganisationUnitGroups() )
             {
-
                 OrganisationUnitLevel organisationUnitLevel = orgUniGroupAtLevels.get( organisationUnitGroup );
 
                 List<OrganisationUnit> organisationUnitsAtLevel = new ArrayList<OrganisationUnit>();
@@ -143,7 +143,6 @@ public class GenerateReportOrganizationGroupListingAction
                         .getOrganisationUnitsAtLevel( organisationUnitLevel.getLevel(), organisationUnit ) );
 
                     organisationUnits.retainAll( organisationUnitsAtLevel );
-
                 }
                 else
                 {
@@ -166,8 +165,8 @@ public class GenerateReportOrganizationGroupListingAction
                     ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo], ExcelUtils.TEXT,
                         sheet, this.csText12BoldCenter );
                     chapperNo++;
-                }               
-                
+                }
+
                 rowBegin++;
                 int serial = 1;
 
@@ -212,22 +211,22 @@ public class GenerateReportOrganizationGroupListingAction
                     && (!organisationUnits.isEmpty()) )
                 {
                     String columnName = ExcelUtils.convertColNumberToColName( reportItem.getColumn() );
-                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";                    
+                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
+                    
                     ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
                     
-                    totalFormula += columnName + beginChapter + ",";                    
+                    totalFormula += columnName + beginChapter + ",";
                 }
 
             }
-            
-            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ))
+
+            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
+                && !totalFormula.equals( PREFIX_FORMULA_SUM ) )
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
-
-                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );             
                 
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
             }
-
         }
     }
 }

@@ -576,8 +576,7 @@ public abstract class GenerateReportSupport
 
         if ( reportItem.getPeriodType().equalsIgnoreCase( ReportExcelItem.PERIODTYPE.SELECTED_MONTH ) )
         {
-            value = MathUtils
-                .calculateExpression( generateExpression( reportItem, startDate, endDate, organisationUnit ) );
+            value = MathUtils.calculateExpression( generateExpression( reportItem, startDate, endDate, organisationUnit ) );
         }
         else if ( reportItem.getPeriodType().equalsIgnoreCase( ReportExcelItem.PERIODTYPE.LAST_3_MONTH ) )
         {
@@ -609,7 +608,7 @@ public abstract class GenerateReportSupport
             value = MathUtils.calculateExpression( generateExpression( reportItem, startSixMonthly, endSixMonthly,
                 organisationUnit ) );
         }
-
+        
         return value;
     }
 
@@ -634,34 +633,23 @@ public abstract class GenerateReportSupport
             while ( matcher.find() )
             {
                 String replaceString = matcher.group();
-
+                
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
 
                 String dataElementIdString = replaceString.substring( 0, replaceString.indexOf( SEPARATOR ) );
-                String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1,
-                    replaceString.length() );
+                String optionComboIdString = replaceString.substring( replaceString.indexOf( SEPARATOR ) + 1, replaceString.length() );
 
                 int dataElementId = Integer.parseInt( dataElementIdString );
                 int optionComboId = Integer.parseInt( optionComboIdString );
 
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
-
+                
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
-
-                if ( !(dataElement instanceof CalculatedDataElement) )
-                {
-
-                    replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate ) + "";
-
-                    matcher.appendReplacement( buffer, replaceString );
-
-                    matcher.appendTail( buffer );
-
-                }
-
-                else if ( dataElement instanceof CalculatedDataElement )
-                {
+               
+                // CalculatedDataElement
+                if ( dataElement instanceof CalculatedDataElement )
+                {    
                     CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
 
                     int factor = 0;
@@ -680,23 +668,28 @@ public abstract class GenerateReportSupport
                         optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
                             .length() );
 
-                        DataElement element = dataElementService
-                            .getDataElement( Integer.parseInt( dataElementIdString ) );
-                        optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
-                            .parseInt( optionComboIdString ) );
+                        DataElement element = dataElementService.getDataElement( Integer.parseInt( dataElementIdString ) );
+                        optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer.parseInt( optionComboIdString ) );
 
                         double dataValue = getValue( element, optionCombo, organisationUnit, startDate, endDate );
 
-                        value += dataValue * factor;
-
+                        value += (dataValue * factor);
                     }
 
-                    buffer.append( value );
+                    matcher.appendReplacement( buffer, value + "" ); 
+                }
+                // Normal
+                else
+                {
+                    replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate ) + "";
 
-                    break;
+                    matcher.appendReplacement( buffer, replaceString );
                 }
             }
-
+            
+            // Finally
+            matcher.appendTail( buffer );
+            
             return buffer.toString();
         }
         catch ( NumberFormatException ex )
