@@ -241,17 +241,6 @@
 .ext-gecko .x-btn button, .ext-webkit .x-btn button {
     padding-right:2px;
 }
-#ext-gen105 {
-    background-position:0 center;
-    background-repeat:no-repeat;
-    width:14px;
-    height:14px;
-}
-
-/* Ext FieldSet */
-#boundary_fs {
-    margin-bottom:4px;
-}
 
 /* Ext ComboBox */
 .combo-disabled {

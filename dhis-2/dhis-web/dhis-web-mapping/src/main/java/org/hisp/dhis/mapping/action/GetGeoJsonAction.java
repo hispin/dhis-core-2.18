@@ -28,7 +28,6 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -93,16 +92,13 @@ public class GetGeoJsonAction
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
         
-        if ( level == null )
-        {
-            level = organisationUnitService.getLevelOfOrganisationUnit( parent );
-        }
+        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
         
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
         
         FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
         
-        return object.iterator().next().getFeatureType();
+        return object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
     }
 }
 
