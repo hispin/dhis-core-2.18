@@ -207,24 +207,26 @@ public class GenerateReportOrganizationGroupListingAction
                     iRow++;
                 }
 
-                if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
+                if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) 
+                    || reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
                     && (!organisationUnits.isEmpty()) )
                 {
                     String columnName = ExcelUtils.convertColNumberToColName( reportItem.getColumn() );
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
-                    
+
                     ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
-                    
+
                     totalFormula += columnName + beginChapter + ",";
                 }
 
             }
 
-            if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
+            if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
+                || reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
                 && !totalFormula.equals( PREFIX_FORMULA_SUM ) )
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
-                
+
                 ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
             }
         }
