@@ -179,7 +179,7 @@ public class Period
      *
      * @return the period string
      */
-    String getIsoDate() {
+    public String getIsoDate() {
         return periodType.getIsoDate(this);
     }
     /**
