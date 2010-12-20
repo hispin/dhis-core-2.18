@@ -27,6 +27,8 @@ package org.hisp.dhis.dd.action.concept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +36,8 @@ import java.util.List;
 import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.comparator.ConceptNameComparator;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id$
  */
 public class GetConceptListAction
-    extends ActionSupport
+    extends ActionPagingSupport<Concept>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -73,6 +77,18 @@ public class GetConceptListAction
         return defaultConcept;
     }
 
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implemantation
     // -------------------------------------------------------------------------
@@ -81,8 +97,19 @@ public class GetConceptListAction
     {
         defaultConcept = conceptService.getConceptByName( Concept.DEFAULT_CONCEPT_NAME );
         
-        concepts = new ArrayList<Concept>( conceptService.getAllConcepts() );
-
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( conceptService.getConceptCountByName( key ) );
+            
+            concepts = new ArrayList<Concept>( conceptService.getConceptsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( conceptService.getConceptCount() );
+            
+            concepts = new ArrayList<Concept>( conceptService.getConceptsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+        
         Collections.sort( concepts, new ConceptNameComparator() );
 
         return SUCCESS;

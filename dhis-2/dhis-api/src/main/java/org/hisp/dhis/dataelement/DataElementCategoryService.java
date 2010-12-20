@@ -348,4 +348,20 @@ public interface DataElementCategoryService
      */
     
     Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements );
+    
+    Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max );
+    
+    Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max );
+    
+    int getDataElementCategoryCount();
+    
+    int getDataElementCategoryCountByName( String name );
+
+    Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetween( int first, int max );
+    
+    Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first, int max );
+    
+    int getDataElementCategoryComboCount();
+    
+    int getDataElementCategoryComboCountByName( String name );
 }

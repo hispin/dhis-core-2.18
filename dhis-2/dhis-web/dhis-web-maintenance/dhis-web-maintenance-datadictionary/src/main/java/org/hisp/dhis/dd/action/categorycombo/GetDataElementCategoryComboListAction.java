@@ -27,13 +27,17 @@ package org.hisp.dhis.dd.action.categorycombo;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class GetDataElementCategoryComboListAction
-    implements Action
+    extends ActionPagingSupport<DataElementCategoryCombo>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -72,6 +76,18 @@ public class GetDataElementCategoryComboListAction
     {
         return defaultCombo;
     }
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -82,9 +98,19 @@ public class GetDataElementCategoryComboListAction
         defaultCombo = dataElementCategoryService
             .getDataElementCategoryComboByName( DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME );
 
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
-            .getAllDataElementCategoryCombos() );
-
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryComboCountByName( key ) );
+            
+            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryComboCount() );
+            
+            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+        
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
         
         return SUCCESS;

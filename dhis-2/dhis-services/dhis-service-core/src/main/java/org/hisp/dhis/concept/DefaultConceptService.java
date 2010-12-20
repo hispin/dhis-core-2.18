@@ -92,4 +92,28 @@ public class DefaultConceptService
         Concept defaultConcept = new Concept( "default" );
         conceptStore.save( defaultConcept );
     }
+
+    @Override
+    public int getConceptCount()
+    {
+        return conceptStore.getCount();
+    }
+
+    @Override
+    public int getConceptCountByName( String name )
+    {
+        return conceptStore.getCountByName( name );
+    }
+
+    @Override
+    public Collection<Concept> getConceptsBetween( int first, int max )
+    {
+        return conceptStore.getBetween( first, max );
+    }
+
+    @Override
+    public Collection<Concept> getConceptsBetweenByName( String name, int first, int max )
+    {
+        return conceptStore.getBetweenByName( name, first, max );
+    }
 }
