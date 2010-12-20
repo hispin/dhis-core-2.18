@@ -69,8 +69,6 @@ public class ExportPivotViewService {
     {
         Writer writer = new BufferedWriter(new OutputStreamWriter(out));
 
-        // out.write("Hello World\n".getBytes());
-
         Collection<Period> periods 
             = periodService.getIntersectingPeriodsByPeriodType( new MonthlyPeriodType(), startDate, endDate );
 
@@ -110,7 +108,10 @@ public class ExportPivotViewService {
         while (adv != null)
         {
             // process adv ..
-            writer.write( adv.getPeriodId() + ",");
+            int periodId = adv.getPeriodId();
+            String period = periodService.getPeriod( periodId).getIsoDate();
+
+            writer.write( period + ",");
             writer.write( adv.getOrganisationUnitId() + ",");
             writer.write( adv.getDataElementId() + ",");
             writer.write( adv.getCategoryOptionComboId() + ",");
