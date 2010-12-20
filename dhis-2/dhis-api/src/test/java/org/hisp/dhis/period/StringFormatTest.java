@@ -22,6 +22,10 @@ public class StringFormatTest {
     {
         final Calendar calendar = Calendar.getInstance();
 
+        // override locale settings
+        calendar.setFirstDayOfWeek( Calendar.MONDAY);
+        calendar.setMinimalDaysInFirstWeek( 4);
+
         calendar.clear();
         calendar.set( year, month - 1, day );
 
