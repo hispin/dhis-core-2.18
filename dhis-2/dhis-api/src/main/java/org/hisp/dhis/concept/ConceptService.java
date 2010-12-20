@@ -29,6 +29,8 @@ package org.hisp.dhis.concept;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElementCategory;
+
 /**
  * @author Dang Duy Hieu
  * @version $Id ConceptService.java Aug 25, 2010$
@@ -58,5 +60,13 @@ public interface ConceptService
     // -------------------------------------------------------------------------
     // Concept expanding
     // -------------------------------------------------------------------------
+    
+    Collection<Concept> getConceptsBetween( int first, int max );
+    
+    Collection<Concept> getConceptsBetweenByName( String name, int first, int max );
+    
+    int getConceptCount();
+    
+    int getConceptCountByName( String name );
     
 }

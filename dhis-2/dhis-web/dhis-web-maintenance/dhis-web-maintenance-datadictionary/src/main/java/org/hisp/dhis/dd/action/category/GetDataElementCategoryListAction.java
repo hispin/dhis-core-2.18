@@ -27,22 +27,24 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
 public class GetDataElementCategoryListAction
-    implements Action
+    extends ActionPagingSupport<DataElementCategory>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -72,6 +74,18 @@ public class GetDataElementCategoryListAction
     {
         return defaultCategory;
     }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -81,9 +95,19 @@ public class GetDataElementCategoryListAction
     {
         defaultCategory = dataElementCategoryService.getDataElementCategoryByName( DataElementCategory.DEFAULT_NAME );
 
-        dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
-            .getAllDataElementCategories() );
-
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCountByName( key ) );
+            
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCount() );
+            
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+        
         Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
 
         return SUCCESS;

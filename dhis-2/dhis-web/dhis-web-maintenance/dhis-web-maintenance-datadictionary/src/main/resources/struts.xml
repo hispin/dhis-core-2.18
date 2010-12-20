@@ -803,6 +803,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/category.js</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="getDataElementCategory"
@@ -878,6 +879,7 @@
 			<param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryCombo.vm</param>
 			<param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 			<param name="javascripts">javascript/categoryCombo.js</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="getDataElementCategoryCombo"
@@ -951,6 +953,7 @@
 				/dhis-web-maintenance-datadictionary/multidimensional/concept.vm</param>
 			<param name="javascripts">javascript/concept.js</param>
 			<param name="requiredAuthorities">F_CONCEPT_MANAGEMENT</param>
+			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 		
 		<action name="showAddConceptForm"

@@ -682,4 +682,45 @@ public class DefaultDataElementCategoryService
 
         return optionsMap;
     }
+
+    public int getDataElementCategoryCount()
+    {
+        return dataElementCategoryStore.getCount();
+    }
+
+    public int getDataElementCategoryCountByName( String name )
+    {
+        return dataElementCategoryStore.getCountByName( name );
+    }
+
+    public Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max )
+    {
+        return dataElementCategoryStore.getBetween( first, max );
+    }
+
+    public Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max )
+    {
+        return dataElementCategoryStore.getBetweenByName( name, first, max );
+    }
+
+    public int getDataElementCategoryComboCount()
+    {
+        return dataElementCategoryComboStore.getCount();
+    }
+
+    public int getDataElementCategoryComboCountByName( String name )
+    {
+        return dataElementCategoryComboStore.getCountByName( name );
+    }
+    
+    public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetween( int first, int max )
+    {
+        return dataElementCategoryComboStore.getBetween( first, max );
+    }
+
+    public Collection<DataElementCategoryCombo> getDataElementCategoryCombosBetweenByName( String name, int first,
+        int max )
+    {
+        return dataElementCategoryComboStore.getBetweenByName( name, first, max );
+    }
 }
