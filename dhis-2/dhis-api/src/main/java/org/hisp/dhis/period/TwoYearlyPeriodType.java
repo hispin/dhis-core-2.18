@@ -148,4 +148,10 @@ public class TwoYearlyPeriodType
 
         return twoYears;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }

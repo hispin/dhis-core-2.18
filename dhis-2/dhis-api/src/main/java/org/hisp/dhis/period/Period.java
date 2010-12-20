@@ -175,6 +175,14 @@ public class Period
     // -------------------------------------------------------------------------
 
     /**
+     * Returns an ISO8601 formatted string version of the period
+     *
+     * @return the period string
+     */
+    String getIsoDate() {
+        return periodType.getIsoDate(this);
+    }
+    /**
      * Copies the transient properties (name) from the argument Period
      * to this Period.
      * 

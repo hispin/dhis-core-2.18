@@ -144,4 +144,10 @@ public class FinancialAprilPeriodType
 
         return years;
     }
+
+    @Override
+    public String getIsoDate( Period period )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }
