@@ -175,19 +175,22 @@ function getJoinTable()
 
 function getJoinQuery()
 {
+	var url = "autoJoinResourceTables.action?";
+	
+	for (var i in tableList)
+	{
+		url += "tableList=" + tableList[i];
+		url += (i < tableList.length-1) ? "&" : "";
+	}
+
 	$.getJSON(
-		"autoJoinResourceTables.action",
-		{
-			"tableList": tableList
-		},
-		function( json )
+		url, function( json )
 		{
 			fromQuery = json.result;
 			setUpQuery();
 		}
 	);
 }
-
 function setUpQuery()
 {
 	var index = "";
