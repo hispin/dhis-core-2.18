@@ -99,10 +99,11 @@
 	
 	function reload()
 	{
-		jQuery.post( "mergeAssignedOrgunits.action",
-		{ selectedDataSets: getArrayValueOfListById( 'selectedDataSets' )
-		},
-		function( xml ){
+		var url = "mergeAssignedOrgunits.action?";
+			url += getParamString( "selectedDataSets", "selectedDataSets" );
+
+		jQuery.post( url, function( xml )
+		{
 			var responseLen = jQuery( xml ).find('unitId').length;
 			var selectedListLen = byId('selectedDataSets').options.length;
 			

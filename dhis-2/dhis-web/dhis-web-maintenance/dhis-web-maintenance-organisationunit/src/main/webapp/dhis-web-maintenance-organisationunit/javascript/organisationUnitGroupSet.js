@@ -55,16 +55,17 @@ function changeCompulsory( value )
 
 function validateAddOrganisationGroupSet( form )
 {
-	jQuery.postJSON('validateOrganisationUnitGroupSet.action', 
-		{selectedGroups: getArrayValueOfListById('selectedGroups')},
-		function( json ){
-			if( json.response == 'success' ){
-				markValid( 'selectedGroups' );
-				selectAllById( 'selectedGroups' );
-				form.submit();
-			}else{
-				markInvalid( 'selectedGroups', json.message );				
-			}
-		});		
-		
+	var url = "validateOrganisationUnitGroupSet.action?";
+		url += getParamString( 'selectedGroups', 'selectedGroups' );
+
+	jQuery.postJSON( url, function( json )
+	{
+		if( json.response == 'success' ){
+			markValid( 'selectedGroups' );
+			selectAllById( 'selectedGroups' );
+			form.submit();
+		}else{
+			markInvalid( 'selectedGroups', json.message );				
+		}
+	});		
 }

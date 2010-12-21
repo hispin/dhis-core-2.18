@@ -41,7 +41,6 @@ import org.hisp.dhis.user.UserAuthorityGroup;
  */
 public abstract class ReportExcel
 {
-
     private int id;
 
     private String name;

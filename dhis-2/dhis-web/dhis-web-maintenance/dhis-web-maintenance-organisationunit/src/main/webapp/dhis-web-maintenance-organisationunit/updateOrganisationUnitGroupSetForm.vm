@@ -4,8 +4,7 @@
 		
 		checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action", {id: $organisationUnitGroupSet.id});	
 
-		changeCompulsory( getFieldValue( 'compulsory' ) );	
-			
+		changeCompulsory( getFieldValue( 'compulsory' ) );
 	});
 	
 </script>

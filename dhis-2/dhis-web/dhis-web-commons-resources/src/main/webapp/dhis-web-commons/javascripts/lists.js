@@ -430,10 +430,9 @@ function getAvailablePeriods( periodTypeId, availablePeriodsId, selectedPeriodsI
 		} );
 }
 
-
 function getSelectedTextById( id )
 {
-	var list  = byId( id );
+	var list = byId( id );
 	return list[list.selectedIndex].text;
 }
 

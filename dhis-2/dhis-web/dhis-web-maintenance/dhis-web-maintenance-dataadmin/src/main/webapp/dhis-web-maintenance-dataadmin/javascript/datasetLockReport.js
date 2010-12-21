@@ -10,26 +10,23 @@ function setClickedButtonElementValue( isLock )
 
 function validateCollectiveDataLockingForm( form )
 {
-	$.postJSON(
-		"validateCollectiveDataLocking.action",
+	var url = "validateCollectiveDataLocking.action?";
+		url += getParamString( "selectedPeriods", "selectedPeriods" );
+		url += "&" + getParamString( "selectedDataSets", "selectedDataSets" );
+
+	$.postJSON( url, function( json )
+	{
+		if ( json.response == "input" )
 		{
-			selectedPeriods: getArrayValueOfListById( "selectedPeriods" ),
-			selectedDataSets: getArrayValueOfListById( "selectedDataSets" )		
-		},
-		function( json )
-		{
-			if ( json.response == "input" )
-			{
-				setHeaderDelayMessage( json.message );
-			}
-			else
-			{
-				selectAllById( "selectedPeriods" );
-				selectAllById( "selectedDataSets" );
-				form.submit();
-			}
+			setHeaderDelayMessage( json.message );
 		}
-	);
+		else
+		{
+			selectAllById( "selectedPeriods" );
+			selectAllById( "selectedDataSets" );
+			form.submit();
+		}
+	});
 }
 
 // ------------------------------------------------------------------------------
