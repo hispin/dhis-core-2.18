@@ -4,24 +4,8 @@
 		
 		checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action");	
 
-		changeCompulsory( getFieldValue( 'compulsory' ) );	
-			
+		changeCompulsory( getFieldValue( 'compulsory' ) );
 	});
-	
-	function validateAddOrganisationGroupSet( form )
-	{
-		jQuery.postJSON('validateOrganisationUnitGroupSet.action', 
-			{selectedGroups: getArrayValueOfListById('selectedGroups')},
-			function( json ){
-				if( json.response == 'success' ){
-					markValid( 'selectedGroups' );
-					form.submit();
-				}else{
-					markInvalid( 'selectedGroups', json.message );				
-				}
-			});		
-			
-	}
 	
 </script>
 

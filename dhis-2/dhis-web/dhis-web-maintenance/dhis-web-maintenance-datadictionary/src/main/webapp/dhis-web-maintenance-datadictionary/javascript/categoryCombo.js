@@ -30,10 +30,13 @@ function removeDataElementCategoryCombo( categoryComboId, categoryComboName )
 
 function validateSelectedCategories( form )
 {
-	jQuery.postJSON( "validateDataElementCategoryCombo.action",
-		{ selectedCategories: getArrayValueOfListById( 'selectedList' ) },
-		function( json ){
-			if( json.response == 'success' ) form.submit();
-			else markInvalid( 'selectedCategories', json.message );
-		});
+	var url = "validateDataElementCategoryCombo.action?";
+		url += getParamString( "selectedList", "selectedCategories" );
+
+	jQuery.postJSON( url, function( json )
+	{
+		if( json.response == 'success' ) form.submit();
+		else markInvalid( 'selectedCategories', json.message );
+	});
+
 }
