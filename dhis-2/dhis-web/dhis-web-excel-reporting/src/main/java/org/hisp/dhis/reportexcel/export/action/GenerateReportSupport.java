@@ -128,8 +128,6 @@ public abstract class GenerateReportSupport
 
     protected DataElementService dataElementService;
 
-    protected I18nFormat format;
-
     protected PeriodService periodService;
 
     protected PeriodGenericManager periodGenericManager;
@@ -148,6 +146,8 @@ public abstract class GenerateReportSupport
 
     protected I18n i18n;
 
+    protected I18nFormat format;
+    
     // -------------------------------------------
     // Input & Output
     // -------------------------------------------
