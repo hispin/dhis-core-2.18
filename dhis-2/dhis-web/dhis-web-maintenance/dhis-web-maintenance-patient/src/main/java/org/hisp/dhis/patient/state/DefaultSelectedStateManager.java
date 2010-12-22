@@ -48,6 +48,14 @@ public class DefaultSelectedStateManager
     implements SelectedStateManager
 {
 
+    public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
+
+    public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
+
+    public static final String SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID = "selected_sort_attribute_id";
+
+    
+    
     public static final String SESSION_KEY_SELECTED_PATIENT_ID = "selected_patient_id";
 
     public static final String SESSION_KEY_SELECTED_PROGRAM_ID = "selected_program_id";
@@ -55,10 +63,6 @@ public class DefaultSelectedStateManager
     public static final String SESSION_KEY_SELECTED_PROGRAMSTAGE_ID = "selected_program_stage_id";
 
     public static final String SESSION_KEY_LISTALL = "list_all_value";
-
-    public static final String SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID = "selected_searching_attribute_id";
-
-    public static final String SESSION_KEY_SPECIFIED_SEARCH_TEXT = "specified_search_text";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -175,16 +179,6 @@ public class DefaultSelectedStateManager
         getSession().remove( SESSION_KEY_LISTALL );
     }
 
-    public void clearSearchTest()
-    {
-        getSession().remove( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
-    }
-
-    public void clearSearchingAttributeId()
-    {
-        getSession().remove( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
-    }
-
     public boolean getListAll()
     {
         if ( getSession().get( SESSION_KEY_LISTALL ) != null )
@@ -198,32 +192,10 @@ public class DefaultSelectedStateManager
         }
     }
 
-    public String getSearchText()
-    {
-        return (String) getSession().get( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
-    }
-
-    public Integer getSearchingAttributeId()
-    {
-        return (Integer) getSession().get( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
-    }
-
     @SuppressWarnings( "unchecked" )
     public void setListAll( boolean listAll )
     {
         getSession().put( SESSION_KEY_LISTALL, listAll );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public void setSearchText( String searchText )
-    {
-        getSession().put( SESSION_KEY_SPECIFIED_SEARCH_TEXT, searchText );
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public void setSearchingAttributeId( int searchingAttributeId )
-    {
-        getSession().put( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID, searchingAttributeId );
     }
 
     // -------------------------------------------------------------------------
@@ -236,4 +208,59 @@ public class DefaultSelectedStateManager
         return ActionContext.getContext().getSession();
     }
 
+    // -------------------------------------------------------------------------
+    // Search patients by patient-attribute
+    // -------------------------------------------------------------------------
+
+    @SuppressWarnings( "unchecked" )
+    public void setSearchingAttributeId( int searchingAttributeId )
+    {
+        getSession().put( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID, searchingAttributeId );
+    }
+
+    public Integer getSearchingAttributeId()
+    {
+        return (Integer) getSession().get( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
+    }
+
+    public void clearSearchingAttributeId()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_SEARCHING_ATTRIBUTE_ID );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public void setSearchText( String searchText )
+    {
+        getSession().put( SESSION_KEY_SPECIFIED_SEARCH_TEXT, searchText );
+    }
+
+    public String getSearchText()
+    {
+        return (String) getSession().get( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
+    }
+
+    public void clearSearchText()
+    {
+        getSession().remove( SESSION_KEY_SPECIFIED_SEARCH_TEXT );
+    }
+
+    // -------------------------------------------------------------------------
+    // Sort by patient-attribute
+    // -------------------------------------------------------------------------
+    
+    @SuppressWarnings( "unchecked" )
+    public void setSortingAttributeId( int sortAttributeId )
+    {
+        getSession().put( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID, sortAttributeId );
+    }
+
+    public Integer getSortAttributeId()
+    {
+        return (Integer) getSession().get( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
+    }
+    
+    public void clearSortingAttributeId()
+    {
+        getSession().remove( SESSION_KEY_SELECTED_SORT_ATTRIBUTE_ID );
+    }
 }
