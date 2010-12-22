@@ -52,21 +52,21 @@ public class UpdateDataSetAction
     {
         this.name = name;
     }
-    
+
     private String shortName;
 
     public void setShortName( String shortName )
     {
         this.shortName = shortName;
     }
-    
+
     private String code;
 
     public void setCode( String code )
     {
         this.code = code;
-    }    
-    
+    }
+
     private String frequencySelect;
 
     public void setFrequencySelect( String frequencySelect )
@@ -87,13 +87,13 @@ public class UpdateDataSetAction
     {
         this.selectedList = selectedList;
     }
-    
+
     private boolean mobile;
-    
-    public void setMobile(boolean mobile) 
+
+    public void setMobile( boolean mobile )
     {
-		this.mobile = mobile;
-	}
+        this.mobile = mobile;
+    }
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -127,7 +127,7 @@ public class UpdateDataSetAction
     public String execute()
         throws Exception
     {
-    	// ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
 
@@ -140,7 +140,7 @@ public class UpdateDataSetAction
         {
             code = null;
         }
-    	
+
         Collection<DataElement> dataElements = new HashSet<DataElement>();
 
         for ( String id : selectedList )
@@ -149,7 +149,7 @@ public class UpdateDataSetAction
         }
 
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
-        
+
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         dataSet.setName( name );
@@ -158,7 +158,10 @@ public class UpdateDataSetAction
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.setDataElements( dataElements );
         dataSet.setMobile( mobile );
-
+        if ( dataSet.getMobile() != null && dataSet.getMobile() )
+        {
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+        }
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;

@@ -27,8 +27,13 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Set;
+
 import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
@@ -57,7 +62,14 @@ public class RemoveDataElementAction
     {
         this.i18n = i18n;
     }
-    
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -79,7 +91,7 @@ public class RemoveDataElementAction
     {
         return message;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -89,6 +101,15 @@ public class RemoveDataElementAction
     {
         try
         {
+            DataElement dataElement = dataElementService.getDataElement( id );
+            Set<DataSet> dataSets = dataElement.getDataSets();
+            for(DataSet dataSet : dataSets){
+                if(dataSet.getMobile() != null && dataSet.getMobile()){
+                    dataSet.setVersion( dataSet.getVersion() + 1 );
+                    dataSetService.updateDataSet( dataSet );
+                }                
+            }
+            
             dataElementService.deleteDataElement( dataElementService.getDataElement( id ) );
         }
         catch ( DeleteNotAllowedException ex )
@@ -100,6 +121,7 @@ public class RemoveDataElementAction
                 return ERROR;
             }
         }
+        
         
         return SUCCESS;
     }

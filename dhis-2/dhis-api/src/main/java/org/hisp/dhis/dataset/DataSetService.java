@@ -199,6 +199,20 @@ public interface DataSetService
      */
     Collection<DataSet> getDataSetsForMobile(Source source);
 
+    /**
+     * Get list of realted datasets from categoryOption
+     * 
+     * @return A List containing related DataSets.
+     */
+    Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId);
+    
+    /**
+     * Get list of realted datasets from category
+     * 
+     * @return A List containing related DataSets.
+     */
+    Collection<DataSet> getMobileDataSetsFromCategory(int categoryOptionId);
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

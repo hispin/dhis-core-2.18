@@ -95,6 +95,11 @@ public class DataSet
      */
     private DataEntryForm dataEntryForm;
 
+    /**
+     * Indicating custom data entry form.
+     */
+    private Integer version;
+    
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -287,4 +292,18 @@ public class DataSet
 
         return result;
     }
+
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( Integer version )
+    {
+        this.version = version;
+    }
+
+    
+    
+    
 }

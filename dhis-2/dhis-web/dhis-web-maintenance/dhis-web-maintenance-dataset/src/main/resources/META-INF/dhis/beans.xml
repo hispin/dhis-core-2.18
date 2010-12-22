@@ -85,6 +85,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
 		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>		
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.section.RemoveSectionAction"
@@ -92,6 +95,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="sectionService">
 			<ref bean="org.hisp.dhis.dataset.SectionService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 	</bean>
 	
@@ -135,6 +141,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="sectionService">
 			<ref bean="org.hisp.dhis.dataset.SectionService"/>
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
 	</bean>
 	

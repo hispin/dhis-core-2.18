@@ -122,6 +122,9 @@ public interface DataSetStore
 
     Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
     
+    Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId);
+    
+    Collection<DataSet> getMobileDataSetsFromCategory(int categoryId);
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

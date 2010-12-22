@@ -29,6 +29,8 @@ package org.hisp.dhis.dataset.action.section;
 
 import java.util.List;
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 
@@ -54,12 +56,21 @@ public class SaveSectionSortOrderAction
     {
         this.sections = sections;
     }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     @Override
     public String execute()
         throws Exception
     {
         int sortOrder = 1;
+        
+        DataSet dataSet = null;
         
         for ( String id : sections )
         {
@@ -68,7 +79,15 @@ public class SaveSectionSortOrderAction
             section.setSortOrder( sortOrder++ );
             
             sectionService.updateSection( section );
+            
+            if(dataSet == null)
+                dataSet = section.getDataSet();
         }
+        if(dataSet.getMobile() != null && dataSet.getMobile()){
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSetService.updateDataSet( dataSet );
+        }
+        dataSet = null;
         
         return SUCCESS;
     }

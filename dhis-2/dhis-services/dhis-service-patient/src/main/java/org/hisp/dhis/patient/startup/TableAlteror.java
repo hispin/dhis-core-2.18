@@ -69,6 +69,10 @@ public class TableAlteror extends AbstractStartupRoutine
         
         updateDOBType();
         
+		updateDataSetMobileAttribute();
+		
+		updateDataSetVersionAttribute();
+		
         executeSql("UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT +"' WHERE type IS NULL");
         
         executeSql("UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL");
@@ -131,6 +135,40 @@ public class TableAlteror extends AbstractStartupRoutine
             holder.close();
         }
     }
+	
+	private void updateDataSetMobileAttribute(){
+		StatementHolder holder = statementManager.getHolder();
+		
+		try
+        {
+            executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null");
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+	}
+	
+	private void updateDataSetVersionAttribute(){
+		StatementHolder holder = statementManager.getHolder();
+		
+		try
+        {
+            executeSql( "UPDATE dataset SET version = 1 WHERE version is null");
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+	}
     
     private int executeSql( String sql )
     {

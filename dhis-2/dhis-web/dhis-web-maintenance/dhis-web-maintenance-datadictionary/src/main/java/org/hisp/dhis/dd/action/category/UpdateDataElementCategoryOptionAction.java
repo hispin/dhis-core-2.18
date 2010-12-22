@@ -27,8 +27,12 @@ package org.hisp.dhis.dd.action.category;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,11 +52,18 @@ public class UpdateDataElementCategoryOptionAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
-    }
+    }  
+    
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }    
 
     // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------    
 
     private Integer id;
 
@@ -77,9 +88,13 @@ public class UpdateDataElementCategoryOptionAction
         DataElementCategoryOption categoryOption = dataElementCategoryService
             .getDataElementCategoryOption( id );
         categoryOption.setName( name );
-        
         dataElementCategoryService.updateDataElementCategoryOption( categoryOption );
 
+        Collection<DataSet> dataSets = dataSetService.getMobileDataSetsFromCategoryOption(id);
+        for(DataSet dataSet : dataSets){
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSetService.updateDataSet( dataSet );
+        }
         return SUCCESS;
     }
 

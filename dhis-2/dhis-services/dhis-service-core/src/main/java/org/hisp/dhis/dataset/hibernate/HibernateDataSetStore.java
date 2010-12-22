@@ -27,8 +27,16 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -47,11 +55,20 @@ import org.hisp.dhis.system.util.ConversionUtils;
  * @version $Id: HibernateDataSetStore.java 3303 2007-05-14 13:39:34Z larshelg $
  */
 public class HibernateDataSetStore
-    extends HibernateGenericStore<DataSet> implements DataSetStore
+    extends HibernateGenericStore<DataSet>
+    implements DataSetStore
 {
+    private static final Log log = LogFactory.getLog( HibernateDataSetStore.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     private PeriodStore periodStore;
 
@@ -142,12 +159,12 @@ public class HibernateDataSetStore
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
     {
         periodType = periodStore.getPeriodType( periodType.getClass() );
-        
+
         Session session = sessionFactory.getCurrentSession();
-        
+
         Criteria criteria = session.createCriteria( DataSet.class );
         criteria.add( Restrictions.eq( "periodType", periodType ) );
-        
+
         return criteria.list();
     }
 
@@ -155,10 +172,10 @@ public class HibernateDataSetStore
     public Collection<DataSet> getDataSetsBySource( Source source )
     {
         String hql = "from DataSet d where :source in elements(d.sources)";
-        
+
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
         query.setEntity( "source", source );
-        
+
         return query.list();
     }
 
@@ -166,8 +183,9 @@ public class HibernateDataSetStore
     public Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources )
     {
         String hql = "select distinct d from DataSet d join d.sources s where s.id in (:ids)";
-        
-        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", ConversionUtils.getIdentifiers( Source.class, sources ) ).list();
+
+        return sessionFactory.getCurrentSession().createQuery( hql )
+            .setParameterList( "ids", ConversionUtils.getIdentifiers( Source.class, sources ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -178,8 +196,72 @@ public class HibernateDataSetStore
         query.setEntity( "source", source );
 
         return query.list();
+
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getMobileDataSetsFromCategoryOption( int categoryOptionId )
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        List<DataSet> mobileDataSets = new ArrayList<DataSet>();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "select * from dataset where datasetid  in (select DISTINCT datasetid from datasetmembers where dataelementid in (select dataelementid from dataelement where categorycomboid in (select categorycomboid from categorycombos_categories where categoryid in (select categoryid from categories_categoryoptions where categoryoptionid = '"
+                    + categoryOptionId + "')))) and (mobile = true and mobile is not null)" );
+
+            while ( resultSet.next() )
+            {
+                DataSet dataSet = getDataSet( resultSet.getInt( 1 ) );
+                mobileDataSets.add( dataSet );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return mobileDataSets;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getMobileDataSetsFromCategory( int categoryId )
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        List<DataSet> mobileDataSets = new ArrayList<DataSet>();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "select * from dataset where datasetid in (select DISTINCT datasetid from datasetmembers where dataelementid in (select dataelementid     from dataelement where categorycomboid in (select categorycomboid from categorycombos_categories where categoryid ='"
+                    + categoryId + "'))) and (mobile = true and mobile is not null)" );
+            while ( resultSet.next() )
+            {
+                DataSet dataSet = getDataSet( resultSet.getInt( 1 ) );
+                mobileDataSets.add( dataSet );
+            }
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+        return mobileDataSets;
+    }
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------
@@ -272,5 +354,5 @@ public class HibernateDataSetStore
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
         return getBetweenByName( name, first, max );
-    }	
+    }
 }

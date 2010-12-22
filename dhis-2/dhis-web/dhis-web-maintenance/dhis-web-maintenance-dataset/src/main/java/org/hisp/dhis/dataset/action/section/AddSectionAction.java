@@ -122,6 +122,11 @@ public class AddSectionAction
         section.setDataElements( selectedDataElements );
         sectionService.addSection( section );
 
+        if ( dataSet.getMobile() != null && dataSet.getMobile() )
+        {
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSetService.updateDataSet( dataSet );
+        }
         return SUCCESS;
     }
 }
