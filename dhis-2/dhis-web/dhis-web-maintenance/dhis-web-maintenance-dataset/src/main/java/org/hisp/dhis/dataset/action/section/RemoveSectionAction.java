@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.action.section;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 
@@ -44,6 +46,13 @@ public class RemoveSectionAction
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -65,6 +74,13 @@ public class RemoveSectionAction
         throws Exception
     {
         Section section = sectionService.getSection( id );
+        
+        DataSet dataSet = section.getDataSet();
+        
+        if(dataSet.getMobile() != null && dataSet.getMobile()){
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSetService.updateDataSet( dataSet );
+        }
         
         sectionService.deleteSection( section );
         

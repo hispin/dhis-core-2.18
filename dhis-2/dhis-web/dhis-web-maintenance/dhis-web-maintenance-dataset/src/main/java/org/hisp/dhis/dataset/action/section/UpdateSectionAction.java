@@ -32,6 +32,8 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 
@@ -58,6 +60,12 @@ public class UpdateSectionAction
         this.dataElementService = dataElementService;
     }
 
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -110,6 +118,12 @@ public class UpdateSectionAction
 
         sectionService.updateSection( section );
 
+        DataSet dataSet = section.getDataSet();
+        if(dataSet.getMobile() != null && dataSet.getMobile()){
+            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSetService.updateDataSet( dataSet );
+        }
+        
         return SUCCESS;
     }
 }

@@ -37,11 +37,27 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class DataSet
     extends Model
+    implements DataStreamSerializable, Comparable<DataSet>
 {
 
     private String periodType;
 
     private List<Section> sections;
+
+    private int version;
+
+    public DataSet()
+    {
+    }
+
+    public DataSet( DataSet dataSet )
+    {
+        this.setId( dataSet.getId() );
+        this.setName( dataSet.getName() );
+        this.periodType = dataSet.getPeriodType();
+        this.sections = dataSet.getSections();
+        this.version = dataSet.getVersion();
+    }
 
     public String getPeriodType()
     {
@@ -53,8 +69,18 @@ public class DataSet
         this.periodType = periodType;
     }
 
-    @XmlElementWrapper(name="sections")
-    @XmlElement(name="section")
+    public int getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( int version )
+    {
+        this.version = version;
+    }
+
+    @XmlElementWrapper( name = "sections" )
+    @XmlElement( name = "section" )
     public List<Section> getSections()
     {
         return sections;
@@ -71,6 +97,7 @@ public class DataSet
     {
         dout.writeInt( this.getId() );
         dout.writeUTF( this.getName() );
+        dout.writeInt( this.getVersion() );
         dout.writeUTF( this.getPeriodType() );
 
         if ( this.sections == null )
@@ -92,7 +119,45 @@ public class DataSet
         throws IOException
     {
         // FIXME: Get implementation from client
+        this.setId( dataInputStream.readInt() );
+        this.setName( dataInputStream.readUTF() );
+        this.setVersion( dataInputStream.readInt() );
+        this.setPeriodType( dataInputStream.readUTF() );
 
+        int sectionSize = dataInputStream.readInt();
+
+        for ( int i = 0; i < sectionSize; i++ )
+        {
+            Section section = new Section();
+            section.deSerialize( dataInputStream );
+            sections.add( section );
+        }
+
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( ((DataSet) obj).getId() == this.getId() )
+            return true;
+        return false;
+    }
+
+    @Override
+    public int compareTo( DataSet ds )
+    {
+        if ( this.getId() > ds.getId() )
+        {
+            return 1;
+        }
+        else if ( this.getId() < ds.getId() )
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 }

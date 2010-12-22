@@ -38,6 +38,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.system.util.ConversionUtils;
 
@@ -68,6 +70,13 @@ public class UpdateDataElementAction
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
         this.dataElementCategoryService = dataElementCategoryService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -230,7 +239,7 @@ public class UpdateDataElementAction
         // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( id );
-        
+
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
 
@@ -301,6 +310,16 @@ public class UpdateDataElementAction
         for ( String id : dataElementGroupSets )
         {
             dataElement.getGroupSets().add( dataElementService.getDataElementGroupSet( Integer.parseInt( id ) ) );
+        }
+
+        Set<DataSet> dataSets = dataElement.getDataSets();
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( dataSet.getMobile() != null && dataSet.getMobile())
+            {
+                dataSet.setVersion( dataSet.getVersion() + 1 );
+                dataSetService.updateDataSet( dataSet );
+            }
         }
 
         dataElementService.updateDataElement( dataElement );

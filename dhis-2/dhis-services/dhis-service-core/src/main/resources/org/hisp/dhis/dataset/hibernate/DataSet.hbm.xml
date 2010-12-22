@@ -49,5 +49,7 @@
 	
 	<property name="mobile"/>
 	
+	<property name="version"/>
+	
   </class>
 </hibernate-mapping>

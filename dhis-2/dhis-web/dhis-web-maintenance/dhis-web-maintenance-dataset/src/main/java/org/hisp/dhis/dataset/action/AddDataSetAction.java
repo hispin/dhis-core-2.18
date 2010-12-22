@@ -163,6 +163,7 @@ public class AddDataSetAction
 
         dataSet.setMobile( mobile );
 
+        dataSet.setVersion( 1 );
         for ( String id : selectedList )
         {
             DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );

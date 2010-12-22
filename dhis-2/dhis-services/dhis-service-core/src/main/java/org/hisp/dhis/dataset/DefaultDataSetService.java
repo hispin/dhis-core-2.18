@@ -275,11 +275,18 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSet.getDataElements() );
     }    
     
-	public Collection<DataSet> getDataSetsForMobile(Source source) 
-	{
-		return i18n( i18nService, dataSetStore.getDataSetsForMobile(source) );		
-	}
-
+    public Collection<DataSet> getDataSetsForMobile(Source source) 
+    {
+        return i18n( i18nService, dataSetStore.getDataSetsForMobile(source) );		
+    }
+    
+    public Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId){
+        return dataSetStore.getMobileDataSetsFromCategoryOption(categoryOptionId);
+    }
+    
+    public Collection<DataSet> getMobileDataSetsFromCategory(int categoryId){
+        return dataSetStore.getMobileDataSetsFromCategory(categoryId);
+    }
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

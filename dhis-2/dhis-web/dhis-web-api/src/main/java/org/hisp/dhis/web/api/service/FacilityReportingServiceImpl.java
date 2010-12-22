@@ -133,7 +133,6 @@ public class FacilityReportingServiceImpl
         DataSet ds = new DataSet();
 
         ds.setId( dataSet.getId() );
-
         // Name defaults to short name with fallback to name if empty
         String name = dataSet.getShortName();
         if (name == null || name.trim().isEmpty()) {
@@ -141,7 +140,7 @@ public class FacilityReportingServiceImpl
         }
         
         ds.setName( name );
-//        ds.setVersionDataSet( dataSet.getVersionDataSet() );
+        ds.setVersion( dataSet.getVersion() );
         ds.setPeriodType( dataSet.getPeriodType().getName() );
 
         List<Section> sectionList = new ArrayList<Section>();

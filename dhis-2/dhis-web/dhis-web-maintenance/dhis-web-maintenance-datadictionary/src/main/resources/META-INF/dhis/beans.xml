@@ -75,6 +75,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
 		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.dd.action.dataelement.AddDataElementAction"
@@ -96,6 +99,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
 	</bean>
 
@@ -757,6 +763,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="conceptService">
 			<ref bean="org.hisp.dhis.concept.ConceptService" />
 		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction"
@@ -785,6 +794,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="dataElementCategoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
 	</bean>
 	

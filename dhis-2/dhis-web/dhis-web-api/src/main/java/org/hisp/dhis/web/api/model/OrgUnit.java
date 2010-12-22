@@ -47,6 +47,8 @@ public class OrgUnit
     private String uploadFacilityReportUrl;
 
     private String uploadActivityReportUrl;
+    
+    private String updateDataSetUrl;
 
     @XmlAttribute
     public int getId()
@@ -108,6 +110,16 @@ public class OrgUnit
     public void setUploadActivityReportUrl( String uploadActivityReportUrl )
     {
         this.uploadActivityReportUrl = uploadActivityReportUrl;
+    }    
+
+    public String getUpdateDataSetUrl()
+    {
+        return updateDataSetUrl;
+    }
+
+    public void setUpdateDataSetUrl( String updateDataSetUrl )
+    {
+        this.updateDataSetUrl = updateDataSetUrl;
     }
 
     public void serialize( DataOutputStream dataOutputStream )
@@ -119,6 +131,7 @@ public class OrgUnit
         dataOutputStream.writeUTF( this.downloadActivityPlanUrl );
         dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
         dataOutputStream.writeUTF( this.uploadActivityReportUrl );
+        dataOutputStream.writeUTF( this.updateDataSetUrl );
     }
 
     public void deSerialize( DataInputStream dataInputStream )
@@ -130,5 +143,6 @@ public class OrgUnit
         this.downloadActivityPlanUrl = dataInputStream.readUTF();
         this.uploadFacilityReportUrl = dataInputStream.readUTF();
         this.uploadActivityReportUrl = dataInputStream.readUTF();
+        this.updateDataSetUrl = dataInputStream.readUTF();
     }
 }
