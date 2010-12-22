@@ -115,7 +115,7 @@ public class ExportPivotViewService {
             writer.write( adv.getOrganisationUnitId() + ",");
             writer.write( adv.getDataElementId() + ",");
             writer.write( adv.getCategoryOptionComboId() + ",");
-            writer.write( adv.getLevel() + "\n");
+            writer.write( adv.getValue() + "\n");
 
             adv = advIterator.next();
         }
