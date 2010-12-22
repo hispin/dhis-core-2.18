@@ -6,18 +6,7 @@
         <td><label>$i18n.getString( "registering_unit" )</label></td>
         <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:22em"></td>
         <td>&nbsp;</td>
-        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='listAllPatients.action'"></td>
-    </tr>
-	<tr>
-		<td>$i18n.getString( "sort_by" )</td>
-        <td>
-		<select id="patientAttributeId" name="patientAttributeId" maxlength="30" style="width:22.2em" onchange="javascript:selectPatientAttribute()" #if( $programs.size() == 0 ) disabled="disabled" #end>
-				<option value="0">[$i18n.getString( "select" )]</option>
-				#foreach( $patientAttribute in $patientAttributes )
-					<option value="$patientAttribute.id" #if( $sortPatientAttributeId && $patientAttribute.id == $sortPatientAttributeId ) selected="selected" #end>$encoder.htmlEncode( $patientAttribute.name )</option>
-				#end
-			</select>
-		</td>
+        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='searchPatient.action?listAll=true'"></td>
     </tr>
 </table>
 
@@ -31,17 +20,30 @@
 		  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end>
             <option value="">$i18n.getString( "search_by_name_identifier" )</option>
                 #foreach( $attribute in $patientAttributes )
-                    <option value="$attribute.id" #if( $searchingAttributeId && $attribute.id == $searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
+                    <option value="$attribute.id" #if( $!searchingAttributeId && $!attribute.id == $!searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
                 #end
           </select> 
 		  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>		
-		<td><input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em"></td>		
+		<td><input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText"></td>		
 		<td><input type="submit" value="$i18n.getString( "search" )"</td>
 		<td>&nbsp;</td>
 		<td><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientForm.action'"></td>
 		
 	</tr>
+	
+	<tr>
+		<td></td>
+        <td>
+		<select id="sortPatientAttributeId" name="sortPatientAttributeId" maxlength="30" style="width:20.2em" onchange="validateSearchPatient()">
+				<option value="0">[ $i18n.getString( "sort_by" ) ]</option>
+				#foreach( $patientAttribute in $patientAttributes )
+					<option value="$patientAttribute.id" #if( $!sortPatientAttributeId && $!patientAttribute.id == $!sortPatientAttributeId ) selected="selected" #end>$encoder.htmlEncode( $patientAttribute.name )</option>
+				#end
+			</select>
+		</td>
+    </tr>
+	
 </table>
 
 <p></p>

@@ -94,24 +94,11 @@ public class ValidateSearchPatientAction
             return INPUT;
         }
 
-        if ( searchText == null )
+        if ( searchText == null || searchText.trim().length() == 0 )
         {
             message = i18n.getString( "specify_a_search_criteria" );
 
             return INPUT;
-        }
-
-        else
-        {
-            searchText = searchText.trim();
-
-            if ( searchText.length() == 0 )
-            {
-                message = i18n.getString( "specify_a_search_criteria" );
-
-                return INPUT;
-            }
-
         }
 
         // ---------------------------------------------------------------------
