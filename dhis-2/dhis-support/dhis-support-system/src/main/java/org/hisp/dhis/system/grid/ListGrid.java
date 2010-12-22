@@ -43,10 +43,20 @@ public class ListGrid
     implements Grid
 {
     /**
+     * The title of the grid.
+     */
+    private String title;
+    
+    /**
+     * A List which represents the column headers of the grid.
+     */
+    private List<String> headers;
+    
+    /**
      * A two dimensional List which simulates a grid where the first list
      * represents rows and the second represents columns.
      */
-    private final List<List<String>> grid;
+    private List<List<String>> grid;
     
     /**
      * Indicating the current row in the grid.
@@ -58,6 +68,7 @@ public class ListGrid
      */
     public ListGrid()
     {
+        headers = new ArrayList<String>();
         grid = new ArrayList<List<String>>();
     }
 
@@ -65,6 +76,26 @@ public class ListGrid
     // Public methods
     // ---------------------------------------------------------------------
 
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle( String title )
+    {
+        this.title = title;
+    }
+
+    public List<String> getHeaders()
+    {
+        return headers;
+    }
+    
+    public void addHeader( String value )
+    {
+        headers.add( value );
+    }
+    
     public int getHeight()
     {        
         return ( grid != null && grid.size() > 0 ) ? grid.size() : 0;
