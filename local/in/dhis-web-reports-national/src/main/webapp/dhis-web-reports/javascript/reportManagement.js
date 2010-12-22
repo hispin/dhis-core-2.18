@@ -2,6 +2,49 @@
 // Report details form
 // -----------------------------------------------------------------------------
 
+function checkStartDate( dtStr )
+{
+	
+	if( isDate( dtStr ) )
+	{
+		var splitDate = dtStr.split("-");
+		var temDay = splitDate[2];
+		if( parseInt( temDay,10 ) > 1 )
+		{
+			alert("Please select start day of the month");
+			return false;
+		}		
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function checkEndDate( dtStr )
+{
+	if( isDate( dtStr ) )
+	{
+		var splitDate = dtStr.split("-");
+		var temDay = splitDate[2];
+		if( parseInt( temDay,10 ) < 30 )
+		{
+			alert("Please select end day of the month");
+			return false;
+		}		
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
+
+
 function showReportDetails(reportId) {
 	/* var request = new Request();
 	request.setResponseTypeXML('report');
@@ -167,6 +210,75 @@ function editreportValidationCompleted(messageElement) {
 	}
 }
 
+
+function getOUDetails(orgUnitIds)
+{
+    /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
+	
+    var request = new Request();
+    request.setResponseTypeXML( 'orgunit' );
+    request.setCallbackSuccess( getOUDetailsRecevied );
+    //request.send( url );
+
+    var requestString = "getOrgUnitDetails.action";
+    var params = "orgUnitId=" + orgUnitIds;
+    request.sendAsPost( params );
+    request.send( requestString ); */
+	
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds
+			},
+			function (data)
+			{
+				getOUDetailsRecevied(data);
+			},'xml');
+
+    getReports();
+}
+
+function getOUDetailsForOuWiseProgressReport(orgUnitIds)
+{
+    /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
+
+    var request = new Request();
+    request.setResponseTypeXML( 'orgunit' );
+    request.setCallbackSuccess( getOUDetailsRecevied );
+    //request.send( url );
+
+    var requestString = "getOrgUnitDetails.action";
+    var params = "orgUnitId=" + orgUnitIds;
+    request.sendAsPost( params );
+    request.send( requestString ); */
+	
+	$.post("getOrgUnitDetails.action",
+		{
+			orgUnitId : orgUnitIds
+		},
+		function (data)
+		{
+			getOUDetailsRecevied(data);
+		},'xml');
+
+}
+
+function getOUDetailsRecevied(xmlObject)
+{
+		
+    var orgUnits = xmlObject.getElementsByTagName("orgunit");
+
+    for ( var i = 0; i < orgUnits.length; i++ )
+    {
+        var id = orgUnits[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
+        var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+        var level = orgUnits[ i ].getElementsByTagName("level")[0].firstChild.nodeValue;
+		alert( orgUnitName );
+		
+        document.reportForm.ouNameTB.value = orgUnitName;
+        //document.reportForm.ouLevelTB.value = level;
+    }    		
+}
+
 // ----------------------------------------------------------------------
 // Get Periods
 // ----------------------------------------------------------------------
@@ -176,7 +288,8 @@ function getPeriods() {
 	var periodTypeId = periodTypeList.options[periodTypeList.selectedIndex].value;
 	var availablePeriods = document.getElementById('availablePeriods');
 
-	if (periodTypeId != "NA") {
+	if (periodTypeId != "NA") 
+	{
 		/* var url = "getPeriods.action?id=" + periodTypeId;
 
 		var request = new Request();
@@ -193,12 +306,15 @@ function getPeriods() {
 				getPeriodsReceived(data);
 			},'xml');
 			
-	} else {
+	} else 
+	{
+		document.reportForm.generate.disabled=true;
 		clearList(availablePeriods);
 		clearList(reportsList);
 	}
 	var ouId = document.getElementById('ouIDTB').value;
-	var reportType = document.getElementById('reportTypeTB').value;
+	//var reportType = document.getElementById('reportTypeTB').value;
+	 var reportType = document.reportForm.reportTypeNameTB.value;
 
 	getReports(ouId, reportType);
 }
@@ -209,6 +325,11 @@ function getPeriodsReceived(xmlObject) {
 	clearList(availablePeriods);
 
 	var periods = xmlObject.getElementsByTagName("period");
+	
+    if( periods.length > 0 )
+    {
+        document.reportForm.generate.disabled=false;
+    }
 
 	for ( var i = 0; i < periods.length; i++) {
 		var id = periods[i].getElementsByTagName("id")[0].firstChild.nodeValue;
@@ -223,25 +344,61 @@ function getPeriodsReceived(xmlObject) {
 	}
 }
 
+function getPeriodsForCumulative()
+{
+    //document.reportForm.generate.disabled=false;
+    var periodTypeList = document.getElementById( "periodTypeId" );
+    var periodTypeId = periodTypeList.options[ periodTypeList.selectedIndex ].value;
+    var reportsList = document.getElementById( "reportList" );
+	
+    if ( periodTypeId != "NA" )
+    {
+        var ouId = document.reportForm.ouIDTB.value;
+        var reportTypeName = document.reportForm.reportTypeNameTB.value;
+  
+        getReports(ouId, reportTypeName);
+        document.reportForm.generate.disabled=false;
+    }
+    else
+    {
+    
+        document.reportForm.generate.disabled=true;
+        clearList( reportsList );
+        jQuery("#startDate").val("");
+        jQuery("#endDate").val("");
+        document.reportForm.startDate = "";
+        document.reportForm.endDate = " ";
+    }
+ 
+}
+
+
+
 // ----------------------------------------------------------------------
 // Get Reports
 // ----------------------------------------------------------------------
 
-function getReports(ouId, reportType) {
+//function getReports(ouId, reportType) 
+function getReports(orgUnitIds, reportTypeName) 
+{
+	//alert("inside function getReports");
 	var periodTypeList = document.getElementById('periodTypeId');
 	var periodType = periodTypeList.options[periodTypeList.selectedIndex].value;
 	// var autogenvalue = document.getElementById( 'autogen' ).value;
-
-	if (periodType != "NA" && ouId != null && ouId != "") {
+	
+	//alert( periodType + "," + orgUnitIds + "," + reportTypeName );
+	
+	if ( periodType != "NA" && orgUnitIds != null && reportTypeName != "" ) 
+	{
 		
-		/* var url = "getReports.action?periodType=" + periodType + "&ouId="
-				+ ouId + "&reportType=" + reportType;
+		var url = "getReports.action?periodType=" + periodType + "&ouId=" + orgUnitIds + "&reportType=" + reportTypeName;
 
 		var request = new Request();
 		request.setResponseTypeXML('report');
 		request.setCallbackSuccess(getReportsReceived);
-		request.send(url); */
+		request.send(url); 
 		
+		/*
 		$.post("getReports.action",
 			{
 				periodType : periodType,
@@ -252,6 +409,7 @@ function getReports(ouId, reportType) {
 			{
 				getReportsReceived(data);
 			},'xml');
+			*/
 	}
 }
 

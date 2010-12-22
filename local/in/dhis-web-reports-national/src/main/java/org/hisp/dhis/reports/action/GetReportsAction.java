@@ -58,13 +58,21 @@ public class GetReportsAction
         this.ouId = ouId;
     }
 
+    private String reportType;
+    
+    
+    public void setReportType( String reportType )
+    {
+        this.reportType = reportType;
+    }
+/*
     private String reportTypeName;
 
     public void setReportTypeName( String reportTypeName )
     {
         this.reportTypeName = reportTypeName;
     }
-
+*/
     private List<Report_in> reportList;
 
     public List<Report_in> getReportList()
@@ -95,9 +103,12 @@ public class GetReportsAction
                 ouName = orgUnit.getShortName();
 
                 PeriodType periodTypeObj = periodService.getPeriodTypeByName( periodType );
-
+                
+                System.out.println( "report type  : " + reportType  + " ,Period Type :" + periodTypeObj.getName() + " ,org Unit :"  + ouName );
+                
                 reportList = new ArrayList<Report_in>( reportService.getReportsByPeriodSourceAndReportType(
-                    periodTypeObj, orgUnit, reportTypeName ) );
+                    periodTypeObj, orgUnit, reportType ) );
+                System.out.println( "Size of Reports List : " + reportList.size() );
             }
             catch ( Exception e )
             {

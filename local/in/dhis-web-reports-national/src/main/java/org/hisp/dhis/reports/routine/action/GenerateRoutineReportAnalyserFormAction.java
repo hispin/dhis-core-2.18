@@ -77,7 +77,7 @@ public class GenerateRoutineReportAnalyserFormAction
         {
             PeriodType type = periodTypeIterator.next();
             
-            if( type.getName().equalsIgnoreCase("Monthly") || type.getName().equalsIgnoreCase("quarterly") || type.getName().equalsIgnoreCase("yearly") )
+            if( type.getName().equalsIgnoreCase("Monthly") || type.getName().equalsIgnoreCase("quarterly") || type.getName().equalsIgnoreCase("yearly") || type.getName().equalsIgnoreCase("Daily") )
             {
             }
             else
