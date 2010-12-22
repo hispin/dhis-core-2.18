@@ -199,7 +199,6 @@ public class HibernateDataSetStore
 
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getMobileDataSetsFromCategoryOption( int categoryOptionId )
     {
         StatementHolder holder = statementManager.getHolder();
@@ -210,9 +209,10 @@ public class HibernateDataSetStore
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement
-                .executeQuery( "select * from dataset where datasetid  in (select DISTINCT datasetid from datasetmembers where dataelementid in (select dataelementid from dataelement where categorycomboid in (select categorycomboid from categorycombos_categories where categoryid in (select categoryid from categories_categoryoptions where categoryoptionid = '"
-                    + categoryOptionId + "')))) and (mobile = true and mobile is not null)" );
+            ResultSet resultSet = statement.executeQuery( "select * from dataset where datasetid in " +
+                "(select DISTINCT datasetid from datasetmembers where dataelementid in (select dataelementid from dataelement where categorycomboid in " +
+                "(select categorycomboid from categorycombos_categories where categoryid in (select categoryid from categories_categoryoptions where categoryoptionid = '"
+                + categoryOptionId + "')))) and (mobile = true and mobile is not null)" );
 
             while ( resultSet.next() )
             {
@@ -232,7 +232,6 @@ public class HibernateDataSetStore
         return mobileDataSets;
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getMobileDataSetsFromCategory( int categoryId )
     {
         StatementHolder holder = statementManager.getHolder();
@@ -243,9 +242,11 @@ public class HibernateDataSetStore
         {
             Statement statement = holder.getStatement();
 
-            ResultSet resultSet = statement
-                .executeQuery( "select * from dataset where datasetid in (select DISTINCT datasetid from datasetmembers where dataelementid in (select dataelementid     from dataelement where categorycomboid in (select categorycomboid from categorycombos_categories where categoryid ='"
-                    + categoryId + "'))) and (mobile = true and mobile is not null)" );
+            ResultSet resultSet = statement.executeQuery( "select * from dataset where datasetid in " + 
+                "(select DISTINCT datasetid from datasetmembers where dataelementid in " +
+                "(select dataelementid from dataelement where categorycomboid in (select categorycomboid from categorycombos_categories where categoryid ='"
+                + categoryId + "'))) and (mobile = true and mobile is not null)" );
+            
             while ( resultSet.next() )
             {
                 DataSet dataSet = getDataSet( resultSet.getInt( 1 ) );
@@ -262,6 +263,7 @@ public class HibernateDataSetStore
         }
         return mobileDataSets;
     }
+    
     // -------------------------------------------------------------------------
     // FrequencyOverrideAssociation
     // -------------------------------------------------------------------------

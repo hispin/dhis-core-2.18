@@ -96,7 +96,7 @@ public class DataSet
     private DataEntryForm dataEntryForm;
 
     /**
-     * Indicating custom data entry form.
+     * Indicating version number.
      */
     private Integer version;
     
@@ -302,8 +302,4 @@ public class DataSet
     {
         this.version = version;
     }
-
-    
-    
-    
 }

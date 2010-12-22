@@ -422,10 +422,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.user.UserService" class="org.hisp.dhis.user.DefaultUserService">
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 	</bean>
+	
 	<bean id="org.hisp.dhis.user.UserGroupService" class="org.hisp.dhis.user.DefaultUserGroupService">
 		<property name="userGroupStore" ref="org.hisp.dhis.user.UserGroupStore" />
   	</bean>
-
 
 	<bean id="org.hisp.dhis.validation.ValidationCriteriaService"
 		class="org.hisp.dhis.validation.DefaultValidationCriteriaService">
@@ -581,7 +581,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<value>name</value>
 			</list>
 		</property>
-
 		<property name="rulePropertyNames">
 			<map>
 				<entry key="name">
@@ -1228,13 +1227,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					<ref local="org.hisp.dhis.startup.TableAlteror" />
 					<ref local="org.hisp.dhis.period.PeriodTypePopulator" />
 					<ref local="org.hisp.dhis.startup.TableCreator" />
-					<ref
-						local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
+					<ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
 					<ref local="org.hisp.dhis.expression.MultiDimensionExpressionUpgrader" />
 					<ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
 					<ref local="org.hisp.dhis.dataelement.UuidPopulator" />
-					<ref
-						local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
+					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
 					<ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
 				</list>
 			</list>
@@ -1282,8 +1279,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"
+	<bean id="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler"
 		class="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler">
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
@@ -1294,8 +1290,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"
+	<bean id="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler"
 		class="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler">
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
@@ -1307,8 +1302,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sectionService" ref="org.hisp.dhis.dataset.SectionService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler"
+	<bean id="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler"
 		class="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
@@ -1352,15 +1346,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
+	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler"
 		class="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"
+	<bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler"
 		class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler">
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
@@ -1446,60 +1438,33 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="arguments">
 			<list>
 				<list>
-					<ref 
-						local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataset.SectionDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
-					<ref
-						local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.user.UserDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.user.UserSettingDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
-					<ref 
-						local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
+					<ref local="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementCategoryOptionComboDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementCategoryComboDeletionHandler" />
+					<ref local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
+					<ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
+					<ref local="org.hisp.dhis.dataset.SectionDeletionHandler" />
+					<ref local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler" />
+					<ref local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler" />
+					<ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
+					<ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />
+					<ref local="org.hisp.dhis.indicator.IndicatorGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.minmax.MinMaxDataElementDeletionHandler" />
+					<ref local="org.hisp.dhis.validation.ValidationRuleDeletionHandler" />
+					<ref local="org.hisp.dhis.validation.ValidationRuleGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.datavalue.DataValueDeletionHandler" />
+					<ref local="org.hisp.dhis.datavalue.DataValueAuditDeletionHandler" />
+					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetDeletionHandler" />
+					<ref local="org.hisp.dhis.user.UserDeletionHandler" />
+					<ref local="org.hisp.dhis.user.UserAuthorityGroupDeletionHandler" />
+					<ref local="org.hisp.dhis.user.UserCredentialsDeletionHandler" />
+					<ref local="org.hisp.dhis.user.UserSettingDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
+					<ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
 				</list>
 			</list>
 		</property>

@@ -30,18 +30,20 @@ package org.hisp.dhis.system.grid;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class GridTest
-    extends TestCase
 {
     private ListGrid grid;
     
-    @Override
+    @Before
     public void setUp()
     {
         grid = new ListGrid();
@@ -62,16 +64,19 @@ public class GridTest
         grid.addValue( "33" );
     }
     
+    @Test
     public void testGetHeight()
     {
         assertEquals( 3, grid.getHeight() );
     }
     
+    @Test
     public void testGetWidth()
     {
         assertEquals( 3, grid.getWidth() );
     }
     
+    @Test
     public void testGetRow()
     {
         List<String> rowA = grid.getRow( 0 );
@@ -89,11 +94,13 @@ public class GridTest
         assertTrue( rowB.contains( "23" ) );
     }
     
+    @Test
     public void testGetRows()
     {
         assertEquals( 3, grid.getRows().size() );
     }
     
+    @Test
     public void testGetColumn()
     {        
         List<String> columnB = grid.getColumn( 1 );
@@ -111,6 +118,7 @@ public class GridTest
         assertTrue( columnC.contains( "33" ) ); 
     }
     
+    @Test
     public void testAddColumn()
     {
         List<String> columnValues = new ArrayList<String>( 3 );
@@ -136,6 +144,7 @@ public class GridTest
         assertTrue( rowB.contains( "24" ) );
     }
     
+    @Test
     public void testAddRegressionColumn()
     {
         grid = new ListGrid();        
