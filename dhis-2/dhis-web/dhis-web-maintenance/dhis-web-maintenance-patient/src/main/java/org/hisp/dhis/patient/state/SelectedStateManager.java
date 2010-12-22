@@ -38,7 +38,7 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public interface SelectedStateManager
 {
-    public static String LIST_ALL_PATIENT = "All";
+    
     
     OrganisationUnit getSelectedOrganisationUnit();
 

@@ -62,7 +62,11 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
           <tr>
             <th>#</th>
             #if($mapPatientPatientAttr.size()!=0)
-                <th>$patientAttribute.name</th>
+                <th id="patientAttributeName"></th>
+				<script>
+					var selectedAttr = byId("sortPatientAttributeId");
+					byId('patientAttributeName').innerHTML = selectedAttr.options[selectedAttr.selectedIndex].text;
+				</script>
             #end
             <th>$i18n.getString( "first_name" )</th>
             <th>$i18n.getString( "middle_name" )</th>
@@ -70,7 +74,10 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
             <th>$i18n.getString( "gender" )</th>
             <th>$i18n.getString( "date_of_birth" )</th> 
             <th>$i18n.getString( "age" )</th>
-            <th colspan="7" style="text-align:center">$i18n.getString( "operations" )</th>
+			#if($mapPatientOrgunit.size()!=0)
+			<th>$i18n.getString( "hierachy_orgunit" )</th>
+			#end
+            <th colspan="8" style="text-align:center">$i18n.getString( "operations" )</th>
           </tr>
           
           <tbody id="list">	
@@ -80,10 +87,10 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
           	<td>
                     #set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
                     $nr
-		</td>
-                #if($mapPatientPatientAttr.size()!=0)
+			</td>
+                #if($!mapPatientPatientAttr.size()!=0)
                     <td>
-                        $mapPatientPatientAttr.get($patient)
+                        $!mapPatientPatientAttr.get($patient)
                     </td>
                 #end
                 
@@ -105,7 +112,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 		<td>            
                     $!patient.getAge()
         </td>
-				
+        <td>
+					$!mapPatientOrgunit.get($patient)
+        </td>
 		<td style="text-align:center"#alternate( $mark )>
                   <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
                 </td>                
