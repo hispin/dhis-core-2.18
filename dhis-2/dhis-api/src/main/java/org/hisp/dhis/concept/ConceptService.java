@@ -29,8 +29,6 @@ package org.hisp.dhis.concept;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElementCategory;
-
 /**
  * @author Dang Duy Hieu
  * @version $Id ConceptService.java Aug 25, 2010$
@@ -67,6 +65,5 @@ public interface ConceptService
     
     int getConceptCount();
     
-    int getConceptCountByName( String name );
-    
+    int getConceptCountByName( String name );    
 }

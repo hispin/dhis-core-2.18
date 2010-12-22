@@ -41,3 +41,11 @@ select * from orgunitgroup g
 join orgunitgroupmembers m using(orgunitgroupid)
 join organisationunit o using (organisationunitid)
 where o.name = 'Mandera District Hospital';
+
+-- Get reports which uses report table
+
+select * from report r
+join reportreporttables rr using(reportid)
+join reporttable t using(reporttableid)
+where t.name='Indicators';
+
