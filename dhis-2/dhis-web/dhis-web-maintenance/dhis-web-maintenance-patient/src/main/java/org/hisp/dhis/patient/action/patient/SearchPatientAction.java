@@ -39,7 +39,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.Relationship;
@@ -52,13 +51,15 @@ import org.hisp.dhis.relationship.RelationshipService;
 public class SearchPatientAction
     extends ActionPagingSupport<Patient>
 {
+    public static String LIST_ALL_PATIENT = "All";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    private SelectedStateManager selectedStateManager;
+    // private SelectedStateManager selectedStateManager;
 
     private PatientService patientService;
 
@@ -94,6 +95,8 @@ public class SearchPatientAction
 
     private Map<Patient, String> mapPatientPatientAttr = new HashMap<Patient, String>();
 
+    private Map<Patient, String> mapPatientOrgunit = new HashMap<Patient, String>();
+
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
@@ -103,14 +106,14 @@ public class SearchPatientAction
         this.selectionManager = selectionManager;
     }
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
-    {
-        this.selectedStateManager = selectedStateManager;
-    }
-
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public Map<Patient, String> getMapPatientOrgunit()
+    {
+        return mapPatientOrgunit;
     }
 
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
@@ -211,43 +214,34 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
 
         PatientAttribute sortingPatientAttribute = null;
-        if ( sortPatientAttributeId == null )
-        {
-            selectedStateManager.clearSortingAttributeId();
-
-        }
-        else
+        
+        if ( sortPatientAttributeId != null )
         {
             sortingPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
-            selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
         }
-
+        
         // ---------------------------------------------------------------------
         // Get and searching patient-attribute
         // ---------------------------------------------------------------------
-
+       
         PatientAttribute searchingPatientAttribute = null;
-        if ( searchingAttributeId == null )
-        {
-            selectedStateManager.clearSearchingAttributeId();
-        }
-        else
+        if ( searchingAttributeId != null )
         {
             searchingPatientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
         }
-
+        
         // ---------------------------------------------------------------------
         // Get all of patient into the selected organisation unit
         // ---------------------------------------------------------------------
-
-        if ( listAll )
+        
+        if ( listAll || ( searchText != null && searchText.equalsIgnoreCase( LIST_ALL_PATIENT ) ) )
         {
-            searchText = SelectedStateManager.LIST_ALL_PATIENT;
-
+            searchText = LIST_ALL_PATIENT;
+            
             OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-
+            
             listAllPatient( organisationUnit, sortingPatientAttribute );
+            
         }
 
         // ---------------------------------------------------------------------
@@ -259,8 +253,10 @@ public class SearchPatientAction
         {
             searchPatientByAttribute( searchingPatientAttribute, searchText, sortingPatientAttribute );
         }
-
-        selectedStateManager.setSearchText( searchText );
+        else if ( searchingPatientAttribute == null && searchText != null )
+        {
+            searchPatientByAttribute( searchText, sortingPatientAttribute );
+        }
         
         return SUCCESS;
 
@@ -276,11 +272,11 @@ public class SearchPatientAction
     private void listAllPatient( OrganisationUnit organisationUnit, PatientAttribute sortingPatientAttribute )
     {
         // Get patients by the selected organisation - unit
-        
+
         total = patientService.countGetPatientsByOrgUnit( organisationUnit );
-        
+
         this.paging = createPaging( total );
-        
+
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
             .getPageSize() ) );
 
@@ -306,11 +302,6 @@ public class SearchPatientAction
     private void searchPatientByAttribute( PatientAttribute searchingPatientAttribute, String searchText,
         PatientAttribute sortingPatientAttribute )
     {
-        selectedStateManager.clearListAll();
-
-        selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-        selectedStateManager.setSearchText( searchText );
-
         total = patientAttributeValueService.countSearchPatientAttributeValue( searchingPatientAttribute, searchText );
         this.paging = createPaging( total );
 
@@ -327,6 +318,17 @@ public class SearchPatientAction
             for ( Patient patient : patients )
             {
                 mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+
+                // -------------------------------------------------------------
+                // Get hierarchy organisation unit
+                // -------------------------------------------------------------
+
+                mapPatientOrgunit.put( patient, getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+
+                // -------------------------------------------------------------
+                // Sort patients
+                // -------------------------------------------------------------
+
                 if ( sortingPatientAttribute != null )
                 {
                     PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
@@ -339,5 +341,54 @@ public class SearchPatientAction
         }
 
     }
-    
+
+    private void searchPatientByAttribute( String searchText, PatientAttribute sortingPatientAttribute )
+    {
+        total = patientService.countGetPatients( searchText );
+        this.paging = createPaging( total );
+        patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
+
+        if ( patients != null && patients.size() > 0 )
+        {
+            if ( sortPatientAttributeId != null && sortingPatientAttribute != null )
+            {
+                patients = patientService.sortPatientsByAttribute( patients, sortingPatientAttribute );
+            }
+            for ( Patient patient : patients )
+            {
+                // -------------------------------------------------------------
+                // Get hierarchy organisation unit
+                // -------------------------------------------------------------
+
+                mapPatientOrgunit.put( patient, getHierarchyOrgunit( patient.getOrganisationUnit() ) );
+
+                // -------------------------------------------------------------
+                // Sort patients
+                // -------------------------------------------------------------
+
+                if ( sortingPatientAttribute != null )
+                {
+                    PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
+                        patient, sortingPatientAttribute );
+                    String value = (attributeValue == null) ? "" : attributeValue.getValue();
+
+                    mapPatientPatientAttr.put( patient, value );
+                }
+            }
+        }
+    }
+
+    private String getHierarchyOrgunit( OrganisationUnit orgunit )
+    {
+        String hierarchyOrgunit = orgunit.getName();
+        
+        while ( orgunit.getParent() != null )
+        {
+            hierarchyOrgunit = orgunit.getParent().getName() + " / " + hierarchyOrgunit;
+        
+            orgunit = orgunit.getParent();
+        }
+        
+        return hierarchyOrgunit;
+    }
 }
