@@ -35,6 +35,26 @@ import java.util.List;
 public interface Grid
 {
     /**
+     * Returns the grid title.
+     */
+    String getTitle();
+    
+    /**
+     * Sets the grid title.
+     */
+    void setTitle( String title );
+    
+    /**
+     * Returns all header values.
+     */
+    List<String> getHeaders();
+    
+    /**
+     * Adds a header value.
+     */
+    void addHeader( String value );
+    
+    /**
      * Returns the current height / number of rows in the grid.
      */
     int getHeight();
