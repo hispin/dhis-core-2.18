@@ -22,11 +22,18 @@ implements Action
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    private Integer selectedOrgUnitId;
+    private String selectedOrgUnitId;
     
-    public void setSelectedOrgUnitId(Integer selectedOrgUnitId)
+    public void setSelectedOrgUnitId( String selectedOrgUnitId )
     {
         this.selectedOrgUnitId = selectedOrgUnitId;
+    }
+    
+    private Integer id;
+
+    public void setId( Integer id )
+    {
+        this.id = id;
     }
 
     private OrganisationUnit organisationUnit;
@@ -41,7 +48,15 @@ implements Action
 
     public String execute()
     {
-        organisationUnit = organisationUnitService.getOrganisationUnit( selectedOrgUnitId.intValue() );
+       
+        System.out.println( "orgUnit Id is "  + id );
+        organisationUnit = organisationUnitService.getOrganisationUnit( id );
+       // organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( selectedOrgUnitId ) );
+       // organisationUnit = organisationUnitService.getOrganisationUnit( selectedOrgUnitId.intValue() );
+        
+        System.out.println( "orgUnit Id is "  + selectedOrgUnitId + " , orgNunit name is : " + organisationUnit.getName() );
+        
+        //Integer.parseInt( year );
        
         return SUCCESS;
     }

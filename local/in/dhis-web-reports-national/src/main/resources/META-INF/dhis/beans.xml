@@ -1318,9 +1318,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="passwordManager">
 			<ref bean="org.hisp.dhis.security.PasswordManager"/>
 		</property>
-		<property name="organisationUnitService">
+<!--		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
+		</property>-->
         <property name="organisationUnitGroupService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
         </property>

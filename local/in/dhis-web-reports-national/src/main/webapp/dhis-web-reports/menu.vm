@@ -12,7 +12,7 @@
     <li>Report Analysis</li>
     <ul>
         <li><a href = "upwardReportAnalyser.action">GOI Reports</a></li>
-        <li><a href = "edReportForm.action">ED Report</a></li>
+      <!--  <li><a href = "edReportForm.action">ED Report</a></li> -->
         <li><a href = "routineReportAnalyser.action">Routine Reports</a></li>
         <li><a href = "feedbackReportAnalyser.action">Feedback Reports</a></li>
         <li><a href = "aggregationReportAnalyser.action">Aggregation Reports</a></li>

@@ -1,10 +1,51 @@
 
+/*
+ *     function getOUDetails(orgUnitIds)
+    {
+         jQuery.postJSON("../dhis-web-commons-ajax-json/getOrganisationUnit.action",{
+          id: orgUnitIds
+         }, function( json ){
+               setFieldValue("your_oranisation_unit_field_id", json.organisationUnit.name );
+         });
+    }
+
+jQuery.extend({
+	postJSON: function( url, data, callback ) {
+		return jQuery.post(url, data, callback, "json");
+	}
+});
+
+ * 
+ */
+
 	
 // function for displaying OrgUnit
+//function getSelectedOrgUnit( orgUnitIds )
+//{
+    //alert( orgUnitIds );
+	//if( orgUnitIds != "" )
+   // {
+	//	var url = "getOrgUnitName.action?selectedOrgUnitId=" + orgUnitIds;
+	//	var request = new Request();
+	//	request.setResponseTypeXML('dataelement');
+	//	request.setCallbackSuccess( responseGetSelectedOrgUnitName );
+	//	request.send(url); 
+		
 function getSelectedOrgUnit( orgUnitIds )
 {
-    if( orgUnitIds != "" )
-    {
+	//alert( orgUnitIds );  
+	jQuery.postJSON("getOrgUnitName.action",{
+    	  //selectedOrgUnitId: orgUnitIds
+    	  id : orgUnitIds[0]
+     }, function( json ){
+           setFieldValue( "ouNameTB",json.organisationUnit.name );
+     });
+}
+
+
+
+/*
+		
 		$.post("getOrgUnitName.action",
 			{
 				selectedOrgUnitId : orgUnitIds
@@ -13,14 +54,17 @@ function getSelectedOrgUnit( orgUnitIds )
 			{
 				 responseGetSelectedOrgUnitName(data);
 			},'xml');
+			*/
 			
-	}
-}
+//	}
+//}
 
 function responseGetSelectedOrgUnitName( dataelement )
 {
     var element = dataelement.getElementsByTagName("dataelement");
-    document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+    var orgUnitname = element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+    //document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+    document.reportForm.ouNameTB.value = orgUnitname;
 }
 
 

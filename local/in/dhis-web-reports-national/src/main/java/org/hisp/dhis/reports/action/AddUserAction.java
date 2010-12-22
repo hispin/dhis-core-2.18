@@ -9,7 +9,6 @@ import java.util.Set;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
@@ -38,14 +37,14 @@ public class AddUserAction
     {
         this.passwordManager = passwordManager;
     }
-
+/*
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+*/
     private OrganisationUnitGroupService organisationUnitGroupService;
     
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -66,7 +65,7 @@ public class AddUserAction
         String surname = "NRHM";
         String firstName = "HMIS";
 
-        int userRoles[] = { 0, 1, 1, 3, 4, 6, 5 };
+       // int userRoles[] = { 0, 1, 1, 3, 4, 6, 5 };
 //        int orgUnitLevels = organisationUnitService.getNumberOfOrganisationalLevels();
         //for ( int i = 4; i <= 4; i++ )
         {
