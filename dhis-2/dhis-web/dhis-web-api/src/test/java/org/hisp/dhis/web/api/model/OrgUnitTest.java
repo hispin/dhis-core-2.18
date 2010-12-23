@@ -24,7 +24,8 @@ public class OrgUnitTest
         unit.setDownloadAllUrl( "downloadAllUrl" );
         unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
-
+        unit.setUpdateDataSetUrl( "updateDataSetUrl" );
+        
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );
         unit.serialize( dos );
