@@ -126,6 +126,8 @@ public class ExportToExcelAction implements Action
         int tempCol1 = 0;
         int tempRow1 = 1;
         
+        System.out.println( "Export to Excel" );
+        
         ActionContext ctx = ActionContext.getContext();
         HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );                        
         HttpSession session = req.getSession();

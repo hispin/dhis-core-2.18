@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -167,6 +168,38 @@ public class GenerateAnnualAnalysisDataAction
     {
         return data2;
     }
+    
+   //17/12/2010 for num data
+    List<List<Double>> numDataList;
+    
+    public List<List<Double>> getNumDataList()
+    {
+        return numDataList;
+    }
+    //17/12/2010 for denum data
+    List<List<Double>> denumDataList;
+    
+    public List<List<Double>> getDenumDataList()
+    {
+        return denumDataList;
+    }
+    
+    Double numServiceValues[][];
+    
+    public Double[][] getNumServiceValues()
+    {
+        return numServiceValues;
+    }
+
+    Double denumServiceValues[][];
+    
+    public Double[][] getDenumServiceValues()
+    {
+        return denumServiceValues;
+    }
+    
+    
+    
     List<List<Double>> dataList;
 
     public List<List<Double>> getDataList() {
@@ -224,14 +257,25 @@ public class GenerateAnnualAnalysisDataAction
         this.ouIDTB = ouIDTB;
     }
 
+    ListTool listTool;
+
+    public ListTool getListTool()
+    {
+        return listTool;
+    }
+    
     public String execute()
             throws Exception {
         dataList = new ArrayList<List<Double>>();
+        numDataList = new ArrayList<List<Double>>();
+        denumDataList = new ArrayList<List<Double>>();
+        
         xseriesList = new ArrayList<String>();
         yseriesList = new ArrayList<String>();
 
         decimalFormat = new DecimalFormat("0.0");
-
+        
+        listTool = new ListTool();
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit(ouIDTB);
@@ -242,6 +286,7 @@ public class GenerateAnnualAnalysisDataAction
             selectedIndicator = new Indicator();
             selectedIndicator = indicatorService.getIndicator(availableIndicators);
             chartTitle += "\n Indicator : " + selectedIndicator.getName();
+            
 
         } else {
             selectedDataElement = new DataElement();
@@ -271,6 +316,9 @@ public class GenerateAnnualAnalysisDataAction
 
         HttpSession session = req.getSession();
         session.setAttribute("data1", data1);
+        session.setAttribute("numDataList", numDataList);
+        session.setAttribute("denumDataList", denumDataList);
+        
         session.setAttribute("data2", data2);
         session.setAttribute("series1", series1);
         session.setAttribute("categories1", categories1);
@@ -294,6 +342,10 @@ public class GenerateAnnualAnalysisDataAction
        // DecimalFormat decFormat = new DecimalFormat("0.0");
 
         Double[][] serviceValues = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
+        
+        numServiceValues = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
+        denumServiceValues = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
+        
         data2 = new Double[annualPeriodsListCB.size()][monthlyPeriodsListCB.size()];
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
@@ -309,6 +361,9 @@ public class GenerateAnnualAnalysisDataAction
         Iterator iterator1 = annualPeriodsListCB.iterator();
         while (iterator1.hasNext()) {
             List<Double> dataValues = new ArrayList<Double>();
+            List<Double> numDataValue = new ArrayList<Double>();
+            List<Double> denumDataValue = new ArrayList<Double>();
+            
             int tempYear = Integer.parseInt((String) iterator1.next());
             //series1[count1] = "" + tempYear + "-" + (tempYear + 1);
             series1[count1] = "" + tempYear;
@@ -324,13 +379,32 @@ public class GenerateAnnualAnalysisDataAction
                 p = dashBoardService.getPeriodByMonth(tempMonth, tempYear, monthlyPeriodType);
                 if (p == null) {
                     serviceValues[count1][count2] = 0.0;
+                    numServiceValues[count1][count2] = 0.0;
+                    denumServiceValues[count1][count2] = 0.0;
+                    
                     System.out.println("PERIOD IS NULL for " + tempMonth + " : " + tempYear);
-                } else {
-                    if (riRadio.equals("indicatorsRadio")) {
-                        serviceValues[count1][count2] = aggregationService.getAggregatedIndicatorValue(
-                                selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
+                } 
+                else 
+                {
+                    if (riRadio.equals("indicatorsRadio"))
+                    {
+                        serviceValues[count1][count2] = aggregationService.getAggregatedIndicatorValue( selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
                         //System.out.println("indicators Radio is Selected " + serviceValues[count1][count2]);
-                    } else {
+                       
+                        numServiceValues[count1][count2] = aggregationService.getAggregatedNumeratorValue( selectedIndicator, p.getStartDate(),p.getEndDate(), selectedOrgUnit );
+                        denumServiceValues[count1][count2] = aggregationService.getAggregatedDenominatorValue( selectedIndicator, p.getStartDate(),p.getEndDate(), selectedOrgUnit );
+                        
+                        // for numenetor value
+                        numServiceValues[count1][count2] = numServiceValues[count1][count2];
+                        numServiceValues[count1][count2] = Math.round( numServiceValues[count1][count2] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                        
+                        // for denum value
+                        denumServiceValues[count1][count2] = denumServiceValues[count1][count2];
+                        denumServiceValues[count1][count2] = Math.round( denumServiceValues[count1][count2] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
+                        
+                    } 
+                    else 
+                    {
                         Double aggDataValue = 0.0;
                         serviceValues[count1][count2] = 0.0;
                         DataElementCategoryCombo dataElementCategoryCombo = selectedDataElement.getCategoryCombo();
@@ -339,7 +413,8 @@ public class GenerateAnnualAnalysisDataAction
                                 dataElementCategoryCombo.getOptionCombos());
 
                         Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                        while (optionComboIterator.hasNext()) {
+                        while (optionComboIterator.hasNext()) 
+                        {
                             DataElementCategoryOptionCombo decoc = (DataElementCategoryOptionCombo) optionComboIterator.next();
 
                             aggDataValue = aggregationService.getAggregatedDataValue(selectedDataElement, decoc, p.getStartDate(), p.getEndDate(), selectedOrgUnit);
@@ -354,23 +429,42 @@ public class GenerateAnnualAnalysisDataAction
                     }
                     //if ( serviceValues[count1][count2] != null )
                     //{
-                    if (serviceValues[count1][count2] == null) {
+                    if ( serviceValues[count1][count2] == null )
+                    {
                         serviceValues[count1][count2] = 0.0;
                     }
                     serviceValues[count1][count2] = Math.round(serviceValues[count1][count2] * Math.pow(10, 1)) / Math.pow(10, 1);
                     //}
 
                 }
-                if (serviceValues[count1][count2] == null) {
+                if ( serviceValues[count1][count2] == null )
+                {
                     serviceValues[count1][count2] = 0.0;
+                }
+                
+                if ( numServiceValues[count1][count2] == null )
+                {
+                    numServiceValues[count1][count2] = 0.0;
+                }
+                
+                if ( denumServiceValues[count1][count2] == null )
+                {
+                    denumServiceValues[count1][count2] = 0.0;
                 }
                 categories1[count2] = monthNames[tempMonth];
                 categories2[count2] = monthNames[tempMonth];
                 data2[count1][count2] = 0.0;
+                
                 dataValues.add(serviceValues[count1][count2]);
+                numDataValue.add( numServiceValues[count1][count2] );
+                denumDataValue.add( denumServiceValues[count1][count2] ); 
+                
                 count2++;
             }// Monthly PeriodList loop end
             dataList.add(dataValues);
+            numDataList.add( numDataValue );
+            denumDataList.add( denumDataValue );
+            
             count1++;
         } // Annual PeriodList loop end
         return serviceValues;

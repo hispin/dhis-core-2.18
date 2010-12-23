@@ -7,8 +7,8 @@
 		        <li><a href="annualAnalyser.action">$i18n.getString( "annual" )</a></li>
 		        <li><a href="graphicalAnalyserDataElement.action">$i18n.getString( "dataelements_wise" )</a></li>
 		        <li><a href="graphicalAnalyserIndicator.action">$i18n.getString( "indicator_wise" )</a></li>
-		       <!--  <li><a href="surveyAnalyser.action">Survey</a></li>
-		        <li><a href="motionChartForm.action">MotionChart</a></li> -->
+		        <li><a href="surveyAnalyser.action">$i18n.getString( "survey" )</a></li>
+		      <!--  <li><a href="motionChartForm.action">MotionChart</a></li> -->
 		   	</ul>
 		<li><a href="tabularAnalysisForm.action">$i18n.getString( "ta" )</a></li>   	
 		<li>$i18n.getString( "ds_datastatus" )</li>

@@ -668,7 +668,7 @@ public class GenerateSummaryDataStatusResultAction
         try
         {
             @SuppressWarnings("unused")
-			int sqlResult = jdbcTemplate.update( query );
+	    int sqlResult = jdbcTemplate.update( query );
             System.out.println( "View " + dataViewName + " dropped Successfully (if exists) " );
 
             query = "CREATE view " + dataViewName + " AS "

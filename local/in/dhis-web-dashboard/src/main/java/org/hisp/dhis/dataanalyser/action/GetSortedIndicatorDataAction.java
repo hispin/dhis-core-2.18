@@ -115,6 +115,58 @@ public class GetSortedIndicatorDataAction implements Action
     public void initializeDataLists()
     {
         int i;
+        headingInfo.add( "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\"  style=\"border-collapse: collapse; border-style: solid\" bordercolor=\"#111111\" width=\"100%\"><tr><td class=\"TableHeadingCellStyles\" bgcolor=\"#C0C0C0\"  style=\"border-style: dotted; border-width: 1\"><strong>Indicator Names</strong></td>" );
+        headingInfo.add( "<td class=\"TableHeadingCellStyles\" align=\"center\" bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong></strong></td>" );
+        
+        for(i=0; i < categories1.length; i++)
+        {
+            headingInfo.add( "<td class=\"TableHeadingCellStyles\" align=\"center\" bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong>"+categories1[i]+"</strong></td>" );
+        }
+        headingInfo.add( "</tr>" );
+
+        for(i=0; i<data1.length; i++)
+        {
+            headingInfo.add( "<tr><td class=\"TableHeadingCellStyles\"  rowspan = 3 style=\"border-style: dotted; border-width: 1\">"+series1[i]+"</td>" );
+            headingInfo.add( "<td class=\"TableHeadingCellStyles\" align=\"center\"  bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong>Num</strong></td>" );
+            for(int j=0; j<data1[i].length; j++)
+            {
+                headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+numDataArray[i][j]+"</td>" );
+               // headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+denumDataArray[i][j]+"</td>" );
+                //headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+data1[i][j]+"</td>" ); 
+                
+            }
+            headingInfo.add( "</tr>" );
+            
+            headingInfo.add( "<tr><td class=\"TableHeadingCellStyles\" align=\"center\"  bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong>Den</strong></td>" );
+            for(int j=0; j<data1[i].length; j++)
+            {
+               // headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+numDataArray[i][j]+"</td>" );
+                headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+denumDataArray[i][j]+"</td>" );
+                //headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+data1[i][j]+"</td>" ); 
+                
+            }
+            headingInfo.add( "</tr>" );
+            
+            headingInfo.add( "<tr><td class=\"TableHeadingCellStyles\" align=\"center\"  bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong>Val</strong></td>" );
+            for(int j=0; j<data1[i].length; j++)
+            {
+               // headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+numDataArray[i][j]+"</td>" );
+               // headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\">"+denumDataArray[i][j]+"</td>" );
+                headingInfo.add( "<td class=\"TableDataCellStyles\" align=\"center\" style=\"border-style: dotted; border-width: 1\"><strong>"+data1[i][j]+"</strong></td>" ); 
+                
+            }
+            headingInfo.add( "</tr>" );
+        
+        
+        }
+        
+        headingInfo.add( "</table>" );
+        
+        
+        
+        //16/12/2010 Start 
+        /*        
+        int i;
         headingInfo.add( "<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\"  style=\"border-collapse: collapse; border-style: solid\" bordercolor=\"#111111\" width=\"100%\"><tr><td class=\"TableHeadingCellStyles\" bgcolor=\"#C0C0C0\"  rowspan=2 style=\"border-style: dotted; border-width: 1\"><strong>Indicator Names</strong></td>" );
         
         for(i=0; i < categories1.length; i++)
@@ -134,6 +186,8 @@ public class GetSortedIndicatorDataAction implements Action
             headingInfo.add( "<td class=\"TableHeadingCellStyles\" align=\"center\"  bgcolor=\"#C0C0C0\" style=\"border-style: dotted; border-width: 1\"><strong>Val</strong></td>" );
         }
         headingInfo.add( "</tr>" );
+        
+*/ //16/12/2010 end       
     /*    
         
         for(i=0; i<numDataArray.length; i++)
@@ -155,7 +209,11 @@ public class GetSortedIndicatorDataAction implements Action
             }
            // headingInfo.add( "</tr>" );
         }
-*/        
+*/
+        
+        //16/12/2010 Start 
+        /*                
+        
         for(i=0; i<data1.length; i++)
         {
             headingInfo.add( "<tr><td class=\"TableHeadingCellStyles\" style=\"border-style: dotted; border-width: 1\">"+series1[i]+"</td>" );
@@ -170,6 +228,7 @@ public class GetSortedIndicatorDataAction implements Action
         }
         
         headingInfo.add( "</table>" );
+        */ //16/12/2010 end  
     }
     
 

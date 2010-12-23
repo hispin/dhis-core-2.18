@@ -186,10 +186,9 @@
 		
 		<action name="generateAnnualData"
 			class="org.hisp.dhis.dataanalyser.aa.action.GenerateAnnualAnalysisDataAction">
-			<result name="success" type="velocity">
-				/dhis-web-dashboard/annualAnalysisResult.vm</result>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,javascript/ga.js,javascript/hashtable.js</param>
+			<result name="success" type="velocity">/popup.vm</result>  
+			<param name="page">/dhis-web-dashboard/annualAnalysisResult.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/ga.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
@@ -219,20 +218,51 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/surveyAnalysisFront.vm</param>
 			<param name="menu">/dhis-web-dashboard/menuWithTreeForSA.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/db.js,javascript/aa.js,javascript/hashtable.js,javascript/date.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/db.js,javascript/aa.js,javascript/hashtable.js,javascript/date.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
 		
-		<action name="viewSurveyAnalysisResult"
+<!--		<action name="viewSurveyAnalysisResult"
 			class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction">
 			<result name="success" type="velocity">
 				/dhis-web-dashboard/surveyAnalysisResult.vm</result>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/ga.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
-		</action>
+		</action>-->
+		
+	   <action name="generateChartSurvey"
+            class="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction">
+		    <result name="success" type="velocity">/popup.vm</result>
+            <param name="page">/dhis-web-dashboard/surveyAnalysisResult.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+        </action>
+		
+		
+		
+<!--		<action name="viewSurveyAnalysisResult"
+            class="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction">
+            <result name="success" type="velocity">/dhis-web-dashboard/surveyAnalysisResult.vm</result>
+            <param name="javascripts">
+                ../dhis-web-commons/ouwt/ouwt.js,javascript/ga.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+        </action>
+	-->    	
+		
+		<!-- Export Survey data to Excel -->
+        <action name="exportSurveyDataToExcel"
+            class="org.hisp.dhis.dataanalyser.action.ExportSurveyDataToExcelAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>       
+		
+		
 		
 		<!-- DataStatus Module Stuff -->
 		
