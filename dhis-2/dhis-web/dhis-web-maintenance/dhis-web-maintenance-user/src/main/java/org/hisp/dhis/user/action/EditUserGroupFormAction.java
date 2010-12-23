@@ -1,4 +1,4 @@
-package org.hisp.dhis.mobile.user.action;
+package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.List;

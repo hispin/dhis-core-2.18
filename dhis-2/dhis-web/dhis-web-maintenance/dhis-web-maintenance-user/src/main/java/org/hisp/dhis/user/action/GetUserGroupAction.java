@@ -1,4 +1,4 @@
-package org.hisp.dhis.mobile.user.action;
+package org.hisp.dhis.user.action;
 
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;

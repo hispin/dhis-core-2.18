@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "edit_usergroup" )</h3>
+<h3>$i18n.getString( "edit_user_group" )</h3>
 
 <form id="editUserGroupForm" name="editUserGroupForm" action="updateUserGroup.action" method="post" onsubmit="return editValidation();" >
 	
@@ -9,7 +9,7 @@
     <col/> ## Input
     <thead>
       <tr>
-        <th colspan="2">$i18n.getString( "usergroup_details" )</th>
+        <th colspan="2">$i18n.getString( "user_group_details" )</th>
       </tr>
     </thead>
     <tbody>

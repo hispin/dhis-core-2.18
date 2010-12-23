@@ -1,4 +1,4 @@
-package org.hisp.dhis.mobile.user.action;
+package org.hisp.dhis.user.action;
 
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;

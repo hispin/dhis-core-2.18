@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "add_usergroup" )</h3>
+<h3>$i18n.getString( "add_user_group" )</h3>
 
 <form id="addUserGroupForm" name="addUserGroupForm" action = " addUserGroup.action"  method="post" onSubmit=" return addValidation()" >
   <table id="detailsList">
@@ -6,7 +6,7 @@
     <col/> ## Input
     <thead>
       <tr>
-        <th colspan="2">$i18n.getString( "usergroup_details" )</th>
+        <th colspan="2">$i18n.getString( "user_group_details" )</th>
       </tr>
     </thead>
     <tbody>
