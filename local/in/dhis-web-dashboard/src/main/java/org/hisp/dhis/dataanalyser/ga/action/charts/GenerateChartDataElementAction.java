@@ -964,6 +964,7 @@ public class GenerateChartDataElementAction implements Action
                if( aggDataCB != null )
                {
                    aggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
+                   System.out.println( "start Date is   : " + startDate + " , End date is : " + endDate );
                    //System.out.println( "Agg data value before is  : " + aggDataValue );
                    if(aggDataValue == null ) aggDataValue = 0.0;
                    //System.out.println( "Agg data value after zero assign is  : " + aggDataValue );

@@ -39,6 +39,7 @@ import org.hisp.dhis.dataanalyser.ga.charts.Horizontal3DBarChart;
 import org.hisp.dhis.dataanalyser.ga.charts.LineAndBarChart;
 import org.hisp.dhis.dataanalyser.ga.charts.LineChart;
 import org.hisp.dhis.dataanalyser.ga.charts.StandardChart;
+import org.hisp.dhis.dataanalyser.ga.charts.SurveyChart;
 import org.hisp.dhis.dataanalyser.ga.charts.Vertical3DBarChart;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
@@ -221,12 +222,13 @@ public class GenerateChartAction1
             //System.out.println( "PieChart3D" );
             selChart = new PieChart3D();
         }
+*/         
         else if ( currentChart.equals( "SurveyChart" ) )
         {
             //System.out.println( "SurveyChart" );
             selChart = new SurveyChart();
         }
-*/ 
+
        // chart = selChart.getChartViewer( data1, series1, categories1, chartTitle, xAxis_Title, yAxis_Title );
         chart = selChart.getChartViewergetChartViewerDataElement( data1, series1, categories1, chartTitle, xAxis_Title, yAxis_Title );
 

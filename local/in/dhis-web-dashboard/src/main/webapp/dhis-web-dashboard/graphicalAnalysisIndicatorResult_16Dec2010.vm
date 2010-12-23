@@ -141,7 +141,6 @@ function exportToExcelFunction2( summaryOption )
         <td class="NormalB"><a id="exportExcelAnchor1" name="exportExcelAnchor1" href="#" onclick="javascript:exportToExcelFunction1('no')" target="_blank">Export To Excel</a></td>
         <td class="NormalB">&nbsp;&nbsp;<!--<font face="Arial, Helvetica, sans-serif" color="#000000">-->
                     <select id="chartTypeOption" name="chartTypeOption" onchange="chartTypeOptionChange(event)">
-                        <option value="Vertical3DBarChart">Select Chart Type</option>
                         <option value="Vertical3DBarChart">Vertical 3D BarChart</option>
                         <option value="Horizontal3DBarChart">Horizontal 3D BarChart</option>
                         <option value="LineChart">Line Chart</option>
@@ -165,51 +164,43 @@ function exportToExcelFunction2( summaryOption )
 <div id="headingInfoId">
 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">                
         <tr>
-            <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1"><strong>Indicator Names</strong></td> 
-            <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" align="center" style="border-style: dotted; border-width: 1"><strong>&nbsp;</strong></td>            
+            <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" rowspan="2"><strong>Indicator Names</strong></td>             
                      #foreach($xaxisvalue in $indicatorChartResult.categories)
-            <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1"><strong>$xaxisvalue</strong></td>                     
+            <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" colspan="3"><strong>$xaxisvalue</strong></td>                     
                     #end
         </tr>
-         #set($count1 = 0) 
-         #foreach($onedataList in $indicatorChartResult.data )
       
         <tr>  
-		        #set( $numValCimpleteResult = $indicatorChartResult.numDataArray )
-		        #set( $denumValCimpleteResult = $indicatorChartResult.denumDataArray )
-		        #set( $numValList = $listTool.get($numValCimpleteResult, $count1) )
-		        #set( $denumValList = $listTool.get($denumValCimpleteResult, $count1) )
-		        #set( $count2 = 0 ) 	  	
-		       
-		       <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="3">$yseriesList.get($count1).name</td> 
-		       <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Num</strong></td>
-		        #foreach($data in $onedataList) 
-		       <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($numValList, $count2)</td>
-		        #set( $count2 = $count2 + 1 )
-		       #end
+                    
+                    #foreach($xaxisvalue in $indicatorChartResult.categories)
+                    <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Num</strong></td>
+                    <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
+                    <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td>                                        
+                    #end             
         </tr>
-           
-        <tr>           
-                  <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
-                   #set( $count2 = 0 )
-                   #foreach($data in $onedataList) 
-                    <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
-                   #set( $count2 = $count2 + 1 )
-                   #end
-       </tr> 
-                
-       <tr>           
-                 <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td> 
-                 #set( $count2 = 0 )
-                 #foreach($data in $onedataList) 
-                 <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$data</strong></td>
-                 #set( $count2 = $count2 + 1 )
-                 #end 
-                
-      </tr>  
-             #set( $count1 = $count1 + 1 )
-              
-        #end 
+                   #set( $numValCimpleteResult = $indicatorChartResult.numDataArray )
+                   #set( $denumValCimpleteResult = $indicatorChartResult.denumDataArray )
+                   #set($count1 = 0)  
+                   #foreach($onedataList in $indicatorChartResult.data )
+                                           
+        <tr>
+                        <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1).name</td>            
+                         
+                         #set( $numValList = $listTool.get($numValCimpleteResult, $count1) )
+                         #set( $denumValList = $listTool.get($denumValCimpleteResult, $count1) )
+                         #set( $count2 = 0 )                         
+                         #foreach($data in $onedataList) 
+                                         
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($numValList, $count2)</td>
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
+                            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$data</td>
+                               
+                          #set( $count2 = $count2 + 1 ) 
+                        #end 
+                    
+        </tr> 
+                 #set( $count1 = $count1 + 1 )    
+               #end  
     </table>
 </div>
 </div>   

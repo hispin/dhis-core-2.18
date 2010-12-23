@@ -1,7 +1,5 @@
-package org.hisp.dhis.dataanalyser.sa.action;
-
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,9 +24,11 @@ package org.hisp.dhis.dataanalyser.sa.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.dataanalyser.sa.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,7 +37,9 @@ import javax.servlet.http.HttpSession;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
+import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.dataanalyser.util.SurveyChartResult;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -53,10 +55,13 @@ import org.hisp.dhis.surveydatavalue.SurveyDataValueService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 
-public class GenerateSurveyAnalysisDataAction
-    implements Action
+/**
+ * @author Mithilesh Kumar Thakur
+ *
+ * @version GenerateChartSurveyAction.java Dec 10, 2010 11:33:19 AM
+ */
+public class GenerateChartSurveyAction implements Action
 {
-
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
@@ -109,10 +114,24 @@ public class GenerateSurveyAnalysisDataAction
     {
         this.periodService = periodService;
     }
-
+    
     // ---------------------------------------------------------------
     // Input & Output
     // ---------------------------------------------------------------
+   
+    private HttpSession session;
+
+    public HttpSession getSession()
+    {
+        return session;
+    }
+    
+    private SurveyChartResult surveyChartResult;
+    
+    public SurveyChartResult getSurveyChartResult()
+    {
+        return surveyChartResult;
+    }
 
     private OrganisationUnit selectedOrgUnit;
 
@@ -124,14 +143,7 @@ public class GenerateSurveyAnalysisDataAction
     {
         return series1;
     }
-
-    private String[] categories1;
-
-    public String[] getCategories1()
-    {
-        return categories1;
-    }
-
+    
     private String[] series2;
 
     public String[] getSeries2()
@@ -139,13 +151,19 @@ public class GenerateSurveyAnalysisDataAction
         return series2;
     }
 
+    private String[] categories1;
+
+    public String[] getCategories1()
+    {
+        return categories1;
+    }
+    
     private String[] categories2;
 
     public String[] getCategories2()
     {
         return categories2;
     }
-
     String chartTitle = "Service : ";
 
     public String getChartTitle()
@@ -187,14 +205,13 @@ public class GenerateSurveyAnalysisDataAction
     {
         return data1;
     }
-
+    
     Double data2[][];
 
     public Double[][] getData2()
     {
         return data2;
     }
-
     List<List<String>> dataList;
 
     public List<List<String>> getDataList()
@@ -215,7 +232,7 @@ public class GenerateSurveyAnalysisDataAction
     {
         return yseriesList;
     }
-
+    
     /* Input Parameters */
     private int availableIndicators;
 
@@ -244,32 +261,41 @@ public class GenerateSurveyAnalysisDataAction
     {
         eDateLB = dateLB;
     }
-
     private List<Survey> surveyList;
 
     public List<Survey> getSurveyList()
     {
         return surveyList;
     }
+    
+    private List<Period> monthlyPeriods;
+    
+    ListTool listTool;
 
+    public ListTool getListTool()
+    {
+        return listTool;
+    }
+    
     private List<SurveyDataValue> surveyDataValueList;
 
     public List<SurveyDataValue> getSurveyDataValueList()
     {
         return surveyDataValueList;
     }
-
-    private List<Period> monthlyPeriods;
-
-    public String execute()
-        throws Exception
+    
+    public String execute()throws Exception
     {
         statementManager.initialise();
+        
+        listTool = new ListTool();
 
-        dataList = new ArrayList<List<String>>();
-        xseriesList = new ArrayList<String>();
+      //  dataList = new ArrayList<List<String>>();
+      //  xseriesList = new ArrayList<String>();
         yseriesList = new ArrayList<String>();
-
+        
+        System.out.println( "inside GenerateChartSurveyAction" );
+        
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
@@ -281,39 +307,115 @@ public class GenerateSurveyAnalysisDataAction
         chartTitle += "\n Indicator : " + selectedIndicator.getName();
 
         surveyList = new ArrayList<Survey>( surveyService.getSurveysByIndicator( selectedIndicator ) );
-        surveyDataValueList = new ArrayList<SurveyDataValue>();
+        
+       // Map<OrganisationUnitGroup, List<OrganisationUnit>> orgUnitGroupMap = new HashMap<OrganisationUnitGroup, List<OrganisationUnit>>();
+       // Map<Survey, Double> surveyValues = new HashMap<Survey, Double>(); 
+        //surveyDataValueList = new ArrayList<SurveyDataValue>();
 
         // Period Related Info
         Period startPeriod = periodService.getPeriod( sDateLB );
         Period endPeriod = periodService.getPeriod( eDateLB );
 
-        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( new MonthlyPeriodType(),
-            startPeriod.getStartDate(), endPeriod.getEndDate() ) );
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( new MonthlyPeriodType(),startPeriod.getStartDate(), endPeriod.getEndDate() ) );
+       
+        System.out.println( "Chart Generation Start Time is : \t" + new Date() );
+        surveyChartResult = generateChartSurveyData( monthlyPeriods, selectedIndicator,selectedOrgUnit );
+        
+       // data1 = getServiceValuesByPeriod();
+       // xAxis_Title = "Period";
+       // yAxis_Title = "Indicator";
+        
+        
+        ActionContext ctx = ActionContext.getContext();
+        HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
 
-        data1 = getServiceValuesByPeriod();
-        xAxis_Title = "Period";
-        yAxis_Title = "Indicator";
+        session = req.getSession();
 
-        int count1 = 0;
-        while ( count1 != categories1.length )
+        session.setAttribute( "data1", surveyChartResult.getData() );
+        session.setAttribute( "data2", surveyChartResult.getData2() );
+        session.setAttribute( "numDataArray", surveyChartResult.getNumDataArray() );
+        session.setAttribute( "denumDataArray", surveyChartResult.getDenumDataArray() );
+        session.setAttribute( "series1", surveyChartResult.getSeries() );
+        session.setAttribute( "series2", surveyChartResult.getSeries2() );
+        session.setAttribute( "categories1", surveyChartResult.getCategories() );
+        session.setAttribute( "chartTitle", surveyChartResult.getChartTitle() );
+        session.setAttribute( "xAxisTitle", surveyChartResult.getXAxis_Title() );
+        session.setAttribute( "yAxisTitle", surveyChartResult.getYAxis_Title() );
+        session.setAttribute( "categories2", categories2 );
+        
+        statementManager.destroy();
+        System.out.println( "Chart Generation End Time is : \t" + new Date() );
+
+        return SUCCESS;
+    }
+    
+    public SurveyChartResult generateChartSurveyData( List<Period> monthlyPeriods,Indicator selectedIndicator, OrganisationUnit selectedOrgUnit )
+        throws Exception
+    {
+
+        SurveyChartResult surveyChartResult;
+        
+        //Double[][] serviceValues = new Double[1][monthlyPeriods.size()];
+
+       // Double[][] numDataArray = new Double[1][monthlyPeriods.size()];
+       // Double[][] denumDataArray = new Double[1][monthlyPeriods.size()];
+        
+        String[] series = new String[1];
+        String[] categories = new String[monthlyPeriods.size()];
+        Double[][] data = new Double[1][monthlyPeriods.size()];
+
+        Double[][] numDataArray = new Double[1][monthlyPeriods.size()];
+        Double[][] denumDataArray = new Double[1][monthlyPeriods.size()];
+        
+        categories2 = new String[monthlyPeriods.size()];
+/*        
+        Map<String, String> surveyValues = new HashMap<String, String>(); 
+        
+        surveyList = new ArrayList<Survey>( surveyService.getSurveysByIndicator( selectedIndicator ) );
+       
+        String surveyDataValue;
+        for ( Survey survey : surveyList )
         {
-            xseriesList.add( categories1[count1] );
-            count1++;
+         //   Survey survey = surveyService.getSurveyByName( surveyId );
+            
+            SurveyDataValue tempSurveyDataValue = surveyDataValueService.getSurveyDataValue( selectedOrgUnit, survey, selectedIndicator );
+            if ( tempSurveyDataValue.getValue() == null )
+            {
+                surveyDataValue = "";
+            }
+            else 
+            {
+                surveyDataValue = tempSurveyDataValue.getValue();
+            }
+            surveyValues.put( survey.getName(), surveyDataValue );
+            // selOUGroupMemberList.addAll( selectedOUGroupMemberList );
         }
+*/
+        // Map<Integer, List<Double>> numData = new HashMap<Integer,
+        // List<Double>>();
+        // Map<Integer, List<Double>> denumData = new HashMap<Integer,
+        // List<Double>>();
 
+        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
+        String xAxis_Title = "Period";
+        String yAxis_Title = "Indicator";
+        
+        surveyList = new ArrayList<Survey>( surveyService.getSurveysByIndicator( selectedIndicator ) );
+        surveyDataValueList = new ArrayList<SurveyDataValue>();
+        
         data2 = new Double[surveyList.size()][monthlyPeriods.size()];
+        
         series2 = new String[surveyList.size()];
+        
         for ( int i = 0; i < data2.length; i++ )
         {
             Survey survey = surveyList.get( i );
-            SurveyDataValue surveyDataValue = surveyDataValueService.getSurveyDataValue( selectedOrgUnit, survey,
-                selectedIndicator );
-            
-            
+            SurveyDataValue surveyDataValue = surveyDataValueService.getSurveyDataValue( selectedOrgUnit, survey, selectedIndicator );
 
             surveyDataValueList.add( surveyDataValue );
 
             series2[i] = survey.getName();
+            
             for ( int j = 0; j < data2[i].length; j++ )
             {
                 if ( surveyDataValue != null )
@@ -326,75 +428,36 @@ public class GenerateSurveyAnalysisDataAction
                 }
             }
         }
-
-        ActionContext ctx = ActionContext.getContext();
-        HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );
-
-        HttpSession session = req.getSession();
-        session.setAttribute( "data1", data1 );
-        session.setAttribute( "data2", data2 );
-        session.setAttribute( "series1", series1 );
-        session.setAttribute( "categories1", categories1 );
-        session.setAttribute( "series2", series2 );
-        session.setAttribute( "categories2", categories2 );
-        session.setAttribute( "chartTitle", chartTitle );
-        session.setAttribute( "xAxisTitle", xAxis_Title );
-        session.setAttribute( "yAxisTitle", yAxis_Title );
-        
-        //session.setAttribute( "surveyList", surveyList );
-
-        statementManager.destroy();
-
-        return SUCCESS;
-    }// execute end
-
-    public Double[][] getServiceValuesByPeriod()
-    {
-        Double[][] serviceValues = new Double[1][monthlyPeriods.size()];
-
-        Double[][] numDataArray = new Double[1][monthlyPeriods.size()];
-        Double[][] denumDataArray = new Double[1][monthlyPeriods.size()];
         
         int countForServiceList = 0;
         int countForPeriodList = 0;
-
-        series1 = new String[1];
-        // series2 = new String[1];
-        categories1 = new String[monthlyPeriods.size()];
-        categories2 = new String[monthlyPeriods.size()];
-
-        List<String> dataValues = new ArrayList<String>();
-
-        series1[countForServiceList] = selectedIndicator.getName();
-        // series2[countForServiceList] = selectedIndicator.getName();
-
-        yseriesList.add( selectedIndicator.getName() );
-
+        
         Iterator<Period> periodListIterator = monthlyPeriods.iterator();
-        countForPeriodList = 0;
+       
+        series[countForServiceList] = selectedIndicator.getName();
+        yseriesList.add( selectedIndicator.getName() );
         
-        Double aggSurveyDataValue = 0.0;
-        
+        Double aggSurveyIndicatorDataValue = 0.0;
         Double aggIndicatorNumValue = 0.0;
         Double aggIndicatorDenumValue = 0.0;
         
         while ( periodListIterator.hasNext() )
         {
             Period p = (Period) periodListIterator.next();
-
-           // serviceValues[countForServiceList][countForPeriodList] = aggregationService.getAggregatedIndicatorValue(selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
-            aggSurveyDataValue = aggregationService.getAggregatedIndicatorValue(selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
+            aggSurveyIndicatorDataValue = aggregationService.getAggregatedIndicatorValue(selectedIndicator, p.getStartDate(), p.getEndDate(), selectedOrgUnit );
             
-            if( aggSurveyDataValue == null ) aggSurveyDataValue = 0.0;
+            if( aggSurveyIndicatorDataValue == null )
+            {
+                aggSurveyIndicatorDataValue = 0.0;
+            }
             
-            serviceValues[countForServiceList][countForPeriodList] = aggSurveyDataValue;
+            data[countForServiceList][countForPeriodList] = aggSurveyIndicatorDataValue;
+            
+            //for indicator value
+            data[countForServiceList][countForPeriodList] = Math.round( data[countForServiceList][countForPeriodList] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
             
             aggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( selectedIndicator, p.getStartDate(),p.getEndDate(), selectedOrgUnit );
             aggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue( selectedIndicator, p.getStartDate(),p.getEndDate(), selectedOrgUnit );
-            
-            
-            //for indicator value
-            serviceValues[countForServiceList][countForPeriodList] = Math.round( serviceValues[countForServiceList][countForPeriodList] * Math.pow( 10, 2 ) ) / Math.pow( 10, 2 );
             
             // for numenetor value
             numDataArray[countForServiceList][countForPeriodList] = aggIndicatorNumValue;
@@ -403,22 +466,22 @@ public class GenerateSurveyAnalysisDataAction
             // for denum value
             denumDataArray[countForServiceList][countForPeriodList] = aggIndicatorDenumValue;
             denumDataArray[countForServiceList][countForPeriodList] = Math.round( denumDataArray[countForServiceList][countForPeriodList] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
-            /*
-            if ( serviceValues[countForServiceList][countForPeriodList] == -1 )
-                serviceValues[countForServiceList][countForPeriodList] = 0.0;
-             */
+            
+            
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-            categories1[countForPeriodList] = simpleDateFormat.format( p.getStartDate() );
+            categories[countForPeriodList] = simpleDateFormat.format( p.getStartDate() );
             categories2[countForPeriodList] = simpleDateFormat.format( p.getStartDate() );
-
-            dataValues.add( "" + serviceValues[countForServiceList][countForPeriodList] );
-
+            
             countForPeriodList++;
-        }// periodList loop end
-        dataList.add( dataValues );
+        }  
         countForServiceList++;
 
-        return serviceValues;
-    }// getServiceValues method end
 
-}// class end
+        surveyChartResult = new SurveyChartResult( series, series2,categories, data, data2, numDataArray, denumDataArray, chartTitle, xAxis_Title, yAxis_Title );
+        return surveyChartResult;
+
+    }
+
+    
+    
+}

@@ -58,33 +58,85 @@
                         <option value="LineAndBarChart">Line And BarChart</option>
                          <option value="AreaChart" >Area Chart</option>
                     </select>
-   
-   
     </div> 
     <br /><br />
-    
-    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: dotted" bordercolor="#111111" width="100%">
+#if($riRadio.equals("indicatorsRadio")) 
+    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">
         <tr>
-            <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">Year</td>
-            	#foreach($xaxisvalue in $xseriesList)
-            	    <td class="TableHeadingCellStyles" align="center" style="border-style: dotted; border-width: 1">$xaxisvalue</td>
-            	#end
+        	<td class="TableHeadingCellStyles" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Year</strong></td>
+        	<td class="TableHeadingCellStyles" bgcolor="#C0C0C0" align="center" style="border-style: dotted; border-width: 1"><strong>&nbsp;</strong></td>
+            #foreach($xaxisvalue in $xseriesList)
+                <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" align="center" style="border-style: dotted; border-width: 1" ><strong>$xaxisvalue</strong></td>
+            #end
         </tr>
-        	#set($count1 = 0)
+        
+        #set($count1 = 0)
         #foreach($onedataList in $dataList)
-            <tr>
-                <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1)</td>
-               		 #foreach($data in $onedataList)
-               		     <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$decimalFormat.format( $data )</td>
-               		 #end
-               		 #set($count1 = $count1 + 1)
-            </tr>    
+        <tr>
+           
+            #set( $numValCimpleteResult = $numServiceValues )
+            #set( $denumValCimpleteResult = $denumServiceValues )
+        
+            #set( $numValList = $listTool.get($numValCimpleteResult, $count1) )
+            #set( $denumValList = $listTool.get($denumValCimpleteResult, $count1) )
+           
+            <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="3" >$yseriesList.get( $count1 )</td>
+            <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Num</strong></td>
+             #set( $count2 = 0 )
+            #foreach($data in $onedataList)
+             <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($numValList, $count2)</td>
+            #set( $count2 = $count2 + 1 )
+            #end
+       </tr>
+       <tr>
+            <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
+            #set( $count2 = 0 )
+            #foreach($data in $onedataList)
+             <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
+            #set( $count2 = $count2 + 1 )
+            #end
+       </tr>     
+            <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td> 
+            #set( $count2 = 0 )
+            #foreach($data in $onedataList)
+            <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$data</strong></td>
+            #set( $count2 = $count2 + 1 )
+            #end
+      </tr> 
+        #set($count1 = $count1 + 1)
         #end	
     </table>
     
     <br />
    	 <div align="center">
    	     <iframe name="iframeForChart" id="iframeForChart" src="generateChart.action?currentChart=Vertical3DBarChart" width="850px" height="550px" scrolling=auto frameborder="0"></iframe>
-   	 </div>    
+   	 </div> 
+#else   	 
+    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">
+        <tr>
+            <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Year</strong></td>
+            #foreach($xaxisvalue in $xseriesList)
+                <td class="TableHeadingCellStyles" bgcolor="#C0C0C0" align="center" style="border-style: dotted; border-width: 1" ><strong>$xaxisvalue</strong></td>
+            #end
+        </tr>
+        #set($count1 = 0)
+        #foreach($onedataList in $dataList)
+            <tr>
+                <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1">$yseriesList.get($count1)</td>
+                #foreach($data in $onedataList)
+                    <!--   <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$decimalFormat.format( $data )</strong></td> -->
+                     <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$data</strong></td>
+                #end
+        #set($count1 = $count1 + 1)
+            </tr>    
+        #end    
+    </table>
+    
+    <br />
+     <div align="center">
+         <iframe name="iframeForChart" id="iframeForChart" src="generateChart.action?currentChart=Vertical3DBarChart" width="850px" height="550px" scrolling=auto frameborder="0"></iframe>
+     </div> 
+ 	 
+#end   	    
 	</body>
 </html>   

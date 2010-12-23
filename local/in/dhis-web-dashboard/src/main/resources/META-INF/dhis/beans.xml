@@ -353,6 +353,32 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	  
     </bean>
 	
+	<bean id="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction"
+        class="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction"
+        scope="prototype">
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        
+        <property name="surveyService">
+            <ref bean="org.hisp.dhis.survey.SurveyService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="surveyDataValueService">
+            <ref bean="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
+        </property>
+    </bean>
+	
+<!--	
     <bean id="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction"
 		class="org.hisp.dhis.dataanalyser.sa.action.GenerateSurveyAnalysisDataAction"
 		scope="prototype">
@@ -377,6 +403,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
         </property>
     </bean>
+-->	
+<!--	<bean id="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction"
+        class="org.hisp.dhis.dataanalyser.sa.action.GenerateChartSurveyAction"
+        scope="prototype">
+        <property name="aggregationService">
+            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
+        </property>
+        <property name="statementManager" ref="statementManager"/>
+        
+        <property name="surveyService">
+            <ref bean="org.hisp.dhis.survey.SurveyService"/>
+        </property>
+        <property name="indicatorService">
+            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
+        </property>
+        <property name="periodService">
+            <ref bean="org.hisp.dhis.period.PeriodService"/>
+        </property>
+        <property name="organisationUnitService">
+            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        </property>
+        <property name="surveyDataValueService">
+            <ref bean="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
+        </property>
+    </bean>
+-->	
+	<!-- Export Survey to Excel -->
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportSurveyDataToExcelAction"
+        class="org.hisp.dhis.dataanalyser.action.ExportSurveyDataToExcelAction"
+        scope="prototype">
+
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+    </bean> 
 	
 	<!-- DataStatus -->
 	
@@ -577,8 +637,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 	
 	 <!-- DataStatus For Mobile end  -->	
-	
-	
 	
     <bean
 		id="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction"
