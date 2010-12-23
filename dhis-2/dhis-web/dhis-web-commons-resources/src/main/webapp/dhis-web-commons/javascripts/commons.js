@@ -675,10 +675,11 @@ function getParamString( elementId )
 function getParamString( elementId, param )
 {
     var result = "";
+	var list = jQuery( "#" + elementId ).children();
 	
-	jQuery.each( jQuery( "#" + elementId ).children(), function( i, item ){
+	list.each( function( i, item ){
 		result += param + "=" + item.value;
-		result += (i < jQuery( "#" + elementId ).children().length-1) ? "&" : "";
+		result += (i < list.length-1) ? "&" : "";
 	});
 	
 	return result;
