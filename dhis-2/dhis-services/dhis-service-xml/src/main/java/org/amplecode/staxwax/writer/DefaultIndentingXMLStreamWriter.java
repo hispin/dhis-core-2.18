@@ -32,23 +32,26 @@ import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultIndentingXMLStreamWriter.java 145 2009-06-29 14:48:33Z larshelg $
+ * @version $Id: DefaultIndentingXMLStreamWriter.java 145 2009-06-29 14:48:33Z
+ *          larshelg $
  */
 public class DefaultIndentingXMLStreamWriter
     implements XMLWriter
 {
     private static final String LINE_BREAK = "\n";
-    private static final char SPACE = ' ';    
-    private static final int indentStep = 4; //TODO improve
-    
-    private static int currentIndent = 0;    
-    
-    private XMLWriter writer;    
+
+    private static final char SPACE = ' ';
+
+    private static final int indentStep = 4; // TODO improve
+
+    private static int currentIndent = 0;
+
+    private XMLWriter writer;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    
+
     public DefaultIndentingXMLStreamWriter( XMLWriter writer )
     {
         this.writer = writer;
@@ -57,21 +60,21 @@ public class DefaultIndentingXMLStreamWriter
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     public String getWhiteSpace( int indent )
     {
         final StringBuffer buffer = new StringBuffer();
-        
+
         final int length = indent * indentStep;
-        
+
         for ( int i = 0; i < length; i++ )
         {
             buffer.append( SPACE );
         }
-        
+
         return LINE_BREAK + buffer.toString();
     }
-    
+
     // -------------------------------------------------------------------------
     // XMLWriter implementation
     // -------------------------------------------------------------------------
@@ -84,57 +87,62 @@ public class DefaultIndentingXMLStreamWriter
     public void openElement( String name )
     {
         writer.writeCharacters( getWhiteSpace( currentIndent++ ) );
-        
-        writer.openElement( name );        
+
+        writer.openElement( name );
     }
 
     public void openElement( String name, String... attributeNameValuePairs )
     {
         writer.writeCharacters( getWhiteSpace( currentIndent++ ) );
-        
+
         writer.openElement( name, attributeNameValuePairs );
     }
 
     public void writeElement( String name, String value )
     {
         writer.writeCharacters( getWhiteSpace( currentIndent ) );
-        
+
         writer.writeElement( name, value );
     }
 
     public void writeElement( String name, String value, String... attributeNameValuePairs )
     {
         writer.writeCharacters( getWhiteSpace( currentIndent ) );
-        
+
         writer.writeElement( name, value, attributeNameValuePairs );
     }
-    
+
     public void writeCharacters( String characters )
     {
         writer.writeCharacters( characters );
     }
-    
+
     public void writeCData( String cData )
     {
         writer.writeCData( cData );
+    }
+
+    public void writeCData( String name, String cData )
+    {
+        writer.writeCData( name, cData );
     }
 
     public XMLStreamWriter getXmlStreamWriter()
     {
         return writer.getXmlStreamWriter();
     }
-    
+
     public void closeElement()
     {
         writer.writeCharacters( getWhiteSpace( --currentIndent ) );
-        
+
         writer.closeElement();
     }
-    
+
     public void closeDocument()
     {
         writer.writeCharacters( getWhiteSpace( --currentIndent ) );
-        
+
         writer.closeDocument();
     }
 

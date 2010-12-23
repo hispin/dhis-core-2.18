@@ -93,6 +93,14 @@ public interface XMLWriter
     void writeCData( String cData );
 
     /**
+     * Writes non-parsed character data to ouput.
+     * 
+     * @param name the name of the XML element.
+     * @param cData character data to write.
+     */
+    void writeCData( String name, String cData );
+    
+    /**
      * Provides the underlying XmlStreamWriter.
      * 
      * @return the underlying XmlStreamWriter.

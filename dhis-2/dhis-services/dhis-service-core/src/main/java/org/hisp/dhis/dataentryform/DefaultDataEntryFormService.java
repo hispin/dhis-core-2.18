@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -181,4 +183,18 @@ public class DefaultDataEntryFormService
 
         return dataEntryFormStore.listDisctinctDataEntryFormByDataSetIds( dataSetIds );
     }
+    
+    public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers ){
+        
+        Collection<DataEntryForm> dataEntryForms = getAllDataEntryForms();
+
+        return identifiers == null ? dataEntryForms : FilterUtils.filter( dataEntryForms, new Filter<DataEntryForm>()
+        {
+            public boolean retain( DataEntryForm object )
+            {
+                return identifiers.contains( object.getId() );
+            }
+        } );
+    }
+    
 }

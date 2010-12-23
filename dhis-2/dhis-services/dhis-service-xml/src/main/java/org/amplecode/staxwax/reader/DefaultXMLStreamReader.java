@@ -346,11 +346,13 @@ public class DefaultXMLStreamReader
         throws XMLStreamException
     {
         StringBuffer sb = new StringBuffer();
-        while ( reader.isCharacters() )
+        
+        while ( reader.isCharacters() || reader.getEventType() == XMLStreamReader2.CDATA )
         {
             sb.append( reader.getText() );
             reader.next();
         }
+        
         return sb.length() == 0 ? null : sb.toString();
     }
     

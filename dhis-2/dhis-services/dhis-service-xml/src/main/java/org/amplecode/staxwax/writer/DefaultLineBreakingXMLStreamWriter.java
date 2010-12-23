@@ -32,19 +32,20 @@ import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultIndentingXMLStreamWriter.java 114 2008-11-23 20:17:23Z larshelg $
+ * @version $Id: DefaultIndentingXMLStreamWriter.java 114 2008-11-23 20:17:23Z
+ *          larshelg $
  */
 public class DefaultLineBreakingXMLStreamWriter
     implements XMLWriter
 {
     private static final String LINE_BREAK = "\n";
-    
+
     private XMLWriter writer;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    
+
     public DefaultLineBreakingXMLStreamWriter( XMLWriter writer )
     {
         this.writer = writer;
@@ -57,60 +58,65 @@ public class DefaultLineBreakingXMLStreamWriter
     public void openDocument( String encoding, String version )
     {
         writer.openDocument( encoding, version );
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
 
     public void openElement( String name )
     {
         writer.openElement( name );
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
 
     public void openElement( String name, String... attributeNameValuePairs )
     {
         writer.openElement( name, attributeNameValuePairs );
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
 
     public void writeElement( String name, String value )
     {
         writer.writeElement( name, value );
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
 
     public void writeElement( String name, String value, String... attributeNameValuePairs )
     {
         writer.writeElement( name, value, attributeNameValuePairs );
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
-    
+
     public void writeCharacters( String characters )
     {
         writer.writeCharacters( characters );
     }
-    
+
     public void writeCData( String cData )
     {
         writer.writeCData( cData );
+    }
+
+    public void writeCData( String name, String cData )
+    {
+        writer.writeCData( name, cData );
     }
 
     public XMLStreamWriter getXmlStreamWriter()
     {
         return writer.getXmlStreamWriter();
     }
-    
+
     public void closeElement()
     {
         writer.closeElement();
-        
+
         writer.writeCharacters( LINE_BREAK );
     }
-    
+
     public void closeDocument()
     {
         writer.closeDocument();

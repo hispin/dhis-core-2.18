@@ -41,7 +41,7 @@ public class DataSetBatchHandler
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
- 
+
     public DataSetBatchHandler( JdbcConfiguration config )
     {
         super( config, false, false );
@@ -55,39 +55,39 @@ public class DataSetBatchHandler
     {
         statementBuilder.setTableName( "dataset" );
     }
-    
+
     @Override
     protected void setAutoIncrementColumn()
     {
         statementBuilder.setAutoIncrementColumn( "datasetid" );
     }
-    
+
     @Override
     protected void setIdentifierColumns()
     {
         statementBuilder.setIdentifierColumn( "datasetid" );
     }
-    
+
     @Override
     protected void setIdentifierValues( DataSet dataSet )
-    {        
+    {
         statementBuilder.setIdentifierValue( dataSet.getId() );
     }
-    
+
     protected void setUniqueColumns()
     {
         statementBuilder.setUniqueColumn( "name" );
         statementBuilder.setUniqueColumn( "shortName" );
         statementBuilder.setUniqueColumn( "code" );
     }
-    
+
     protected void setUniqueValues( DataSet dataSet )
-    {        
+    {
         statementBuilder.setUniqueValue( dataSet.getName() );
         statementBuilder.setUniqueValue( dataSet.getShortName() );
         statementBuilder.setUniqueValue( dataSet.getCode() );
     }
-    
+
     protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
@@ -95,14 +95,16 @@ public class DataSetBatchHandler
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "periodtypeid" );
         statementBuilder.setColumn( "sortorder" );
+        statementBuilder.setColumn( "dataEntryForm" );
     }
-    
+
     protected void setValues( DataSet dataSet )
-    {        
+    {
         statementBuilder.setValue( dataSet.getName() );
         statementBuilder.setValue( dataSet.getShortName() );
         statementBuilder.setValue( dataSet.getCode() );
         statementBuilder.setValue( dataSet.getPeriodType().getId() );
         statementBuilder.setValue( dataSet.getSortOrder() );
+        statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
     }
 }

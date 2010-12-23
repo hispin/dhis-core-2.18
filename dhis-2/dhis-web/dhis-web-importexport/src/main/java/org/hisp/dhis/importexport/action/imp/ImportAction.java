@@ -30,10 +30,9 @@ package org.hisp.dhis.importexport.action.imp;
 import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.getCurrentRunningProcessImportFormat;
 import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.setCurrentImportFileName;
 import static org.hisp.dhis.importexport.action.util.ImportExportInternalProcessUtil.setCurrentRunningProcessType;
+import static org.hisp.dhis.system.util.ConversionUtils.getList;
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_IMPORT;
 import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
-
-import static org.hisp.dhis.system.util.ConversionUtils.getList;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -246,7 +245,7 @@ public class ImportAction
         // ---------------------------------------------------------------------
         // Process
         // ---------------------------------------------------------------------
-
+        
         String importType = importFormat + IMPORT_INTERNAL_PROCESS_ID_POSTFIX;
         
         String owner = currentUserService.getCurrentUsername();

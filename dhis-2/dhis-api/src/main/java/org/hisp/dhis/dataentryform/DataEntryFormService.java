@@ -86,6 +86,8 @@ public interface DataEntryFormService
      */
     Collection<DataEntryForm> getAllDataEntryForms();    
     
+    Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers );
+    
     /**
      * Prepare DataEntryForm code
      * 

@@ -60,7 +60,8 @@ public class NameMappingUtil
     private static ThreadLocal<Map<Object, String>> organisationUnitGroupSetMap = new ThreadLocal<Map<Object, String>>();
     private static ThreadLocal<Map<Object, String>> reportTableMap = new ThreadLocal<Map<Object,String>>();
     private static ThreadLocal<Map<Object, String>> dataElementAggregationOperatorMap = new ThreadLocal<Map<Object,String>>();
-    
+    private static ThreadLocal<Map<Object, String>> dataEntryFormMap = new ThreadLocal<Map<Object,String>>();
+
     // -------------------------------------------------------------------------
     // Control
     // -------------------------------------------------------------------------
@@ -87,6 +88,7 @@ public class NameMappingUtil
         organisationUnitGroupSetMap.remove();
         reportTableMap.remove();
         dataElementAggregationOperatorMap.remove();
+        dataEntryFormMap.remove();
     }
 
     // -------------------------------------------------------------------------
@@ -505,11 +507,32 @@ public class NameMappingUtil
     {
         return dataElementAggregationOperatorMap.get() != null ? new LoggingHashMap<Object, String>( dataElementAggregationOperatorMap.get() ) : new HashMap<Object, String>();
     }
+
+    // -------------------------------------------------------------------------
+    // Category
+    // -------------------------------------------------------------------------
+
+    /**
+     * Adds a map entry with DataElementCategory identifier as key and name as value.
+     */
+    public static void addDataEntryFormMapping( Object dataEntryFormId, String dataEntryFormName )
+    {
+        put( dataEntryFormMap, dataEntryFormId, dataEntryFormName );
+    }
+
+    /**
+     * Returns a Map with all DataElementCategory identifier and name entries.
+     */
+
+    public static Map<Object, String> getDataEntryFormMap()
+    {
+        return dataEntryFormMap.get() != null ? new HashMap<Object, String>( dataEntryFormMap.get() ) : new HashMap<Object, String>();
+    }
     
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     private static void put( ThreadLocal<Map<Object, String>> threadLocal, Object key, String value )
     {
         Map<Object, String> map = threadLocal.get();

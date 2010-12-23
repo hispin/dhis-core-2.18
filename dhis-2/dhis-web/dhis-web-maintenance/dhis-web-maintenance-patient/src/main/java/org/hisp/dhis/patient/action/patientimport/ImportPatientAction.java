@@ -445,6 +445,7 @@ public class ImportPatientAction
         throws Exception
     {
         Patient patient = new Patient();
+        patient.setFirstName( "" );
         patient.setMiddleName( "" );
         patient.setLastName( "" );
         patient.setOrganisationUnit( orgunit );
@@ -769,7 +770,7 @@ public class ImportPatientAction
         // Check duplication name, birthdate, gender
         Collection<Patient> patients = patientService.getPatient( patient.getFirstName(), patient.getMiddleName(),
             patient.getLastName(), patient.getBirthDate(), patient.getGender() );
-
+        
         if ( patients != null && patients.size() > 0 )
         {
             errPatients.put( row, patient );

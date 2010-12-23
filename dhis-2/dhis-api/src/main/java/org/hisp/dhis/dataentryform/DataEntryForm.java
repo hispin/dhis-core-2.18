@@ -32,11 +32,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.common.ImportableObject;
+
 /**
  * @author Bharath Kumar
  */
 public class DataEntryForm
-    implements Serializable
+    implements Serializable, ImportableObject
 {
     public static final Pattern INPUT_PATTERN = Pattern.compile( "value\\[\\d+\\]\\.value:value\\[\\d+\\]\\.value" );
     public static final Pattern OPERAND_PATTERN = Pattern.compile( "\\d+" );

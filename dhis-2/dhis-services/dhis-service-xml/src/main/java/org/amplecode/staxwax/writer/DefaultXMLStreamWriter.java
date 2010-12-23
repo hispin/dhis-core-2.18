@@ -160,6 +160,22 @@ public class DefaultXMLStreamWriter
             throw new RuntimeException( "Failed to write CData: " + cData, ex );
         }
     }
+    
+    public void writeCData( String name, String cData )
+    {
+        try
+        {
+            writer.writeStartElement( verifyNotNull( name ) );
+            
+            writer.writeCData( replaceNull( cData ) );
+            
+            writer.writeEndElement();
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to write CData: " + cData, ex );
+        }
+    }
 
     public XMLStreamWriter getXmlStreamWriter()
     {
