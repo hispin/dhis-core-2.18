@@ -83,4 +83,6 @@ public interface ObjectMappingGenerator
     Map<Period, Integer> getPeriodObjectMapping( boolean skipMapping );
     
     Map<String, Integer> getPeriodTypeMapping();
+    
+    Map<Object, Integer> getDataEntryFormMapping( boolean skipMapping );
 }

@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_11;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_12;
 
 import java.util.Collection;
@@ -139,19 +138,12 @@ public class DataElementCategoryConverter
             category.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             category.setName( values.get( FIELD_NAME ) );
 
-            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) )
+            if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) && values.get( FIELD_CONCEPT_ID ) != null )
             {
                 log.debug( "reading category dxf version >1.2" );
                 int conceptid = Integer.parseInt( values.get( FIELD_CONCEPT_ID ) );
                 String conceptName = conceptMap.get( conceptid );
                 category.setConcept( conceptService.getConceptByName( conceptName ) );
-
-            }
-            else if ( params.getMinorVersion().equals( MINOR_VERSION_11 ) )
-            {
-                log.debug( "reading category dxf version 1.1" );
-                // TODO: read concept from conceptname
-                category.setConcept( defaultConcept );
             }
             else
             {

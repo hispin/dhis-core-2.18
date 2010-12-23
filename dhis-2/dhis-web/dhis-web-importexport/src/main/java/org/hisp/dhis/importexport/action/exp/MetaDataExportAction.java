@@ -87,7 +87,7 @@ public class MetaDataExportAction
     {
         this.format = format;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class MetaDataExportAction
     {
         return inputStream;
     }
-    
+
     private String fileName;
 
     public String getFileName()
@@ -128,7 +128,7 @@ public class MetaDataExportAction
     {
         this.dataDictionaryMode = dataDictionaryMode;
     }
-    
+
     private boolean dataElements;
 
     public void setDataElements( boolean dataElements )
@@ -142,9 +142,9 @@ public class MetaDataExportAction
     {
         this.dataElementGroups = dataElementGroups;
     }
-    
+
     private boolean dataElementGroupSets;
-    
+
     public void setDataElementGroupSets( boolean dataElementGroupSets )
     {
         this.dataElementGroupSets = dataElementGroupSets;
@@ -156,7 +156,7 @@ public class MetaDataExportAction
     {
         this.dataDictionaries = dataDictionaries;
     }
-    
+
     private boolean dataSets;
 
     public void setDataSets( boolean dataSets )
@@ -177,7 +177,7 @@ public class MetaDataExportAction
     {
         this.indicatorGroups = indicatorGroups;
     }
-    
+
     private boolean indicatorGroupSets;
 
     public void setIndicatorGroupSets( boolean indicatorGroupSets )
@@ -205,21 +205,21 @@ public class MetaDataExportAction
     {
         this.organisationUnitGroupSets = organisationUnitGroupSets;
     }
-    
+
     private boolean organisationUnitLevels;
 
     public void setOrganisationUnitLevels( boolean organisationUnitLevels )
     {
         this.organisationUnitLevels = organisationUnitLevels;
     }
-    
+
     private boolean validationRules;
 
     public void setValidationRules( boolean validationRules )
     {
         this.validationRules = validationRules;
     }
-    
+
     private boolean reports;
 
     public void setReports( boolean reports )
@@ -233,9 +233,9 @@ public class MetaDataExportAction
     {
         this.reportTables = reportTables;
     }
-    
+
     private boolean charts;
-    
+
     public void setCharts( boolean charts )
     {
         this.charts = charts;
@@ -255,13 +255,14 @@ public class MetaDataExportAction
     public String execute()
         throws Exception
     {
-        importDataValueService.deleteImportDataValues();        
+        importDataValueService.deleteImportDataValues();
         importObjectService.deleteImportObjects();
-        
+
         ExportParams params = new ExportParams();
 
-        params.setExtendedMode( dataDictionaryMode != null && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
-        
+        params.setExtendedMode( dataDictionaryMode != null
+            && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
+
         if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables || charts )
         {
             params.setCategories( null );
@@ -271,29 +272,29 @@ public class MetaDataExportAction
             params.setDataElements( null );
             params.setCalculatedDataElements( null );
         }
-        
+
         if ( dataElementGroups )
         {
             params.setDataElementGroups( null );
         }
-        
+
         if ( dataElementGroupSets )
         {
             params.setDataElementGroupSets( null );
         }
-        
+
         if ( indicators || indicatorGroups || reportTables || charts )
         {
             params.setIndicators( null );
-            
+
             params.setIndicatorTypes( null );
         }
-        
+
         if ( indicatorGroups )
         {
             params.setIndicatorGroups( null );
         }
-        
+
         if ( indicatorGroupSets )
         {
             params.setIndicatorGroupSets( null );
@@ -303,70 +304,71 @@ public class MetaDataExportAction
         {
             params.setDataDictionaries( null );
         }
-        
+
         if ( dataSets || reportTables )
         {
-            params.setDataSets( null );            
+            params.setDataEntryForms( null );
+            params.setDataSets( null );
         }
-        
+
         if ( organisationUnits || organisationUnitGroups || reportTables || charts )
         {
             params.setOrganisationUnits( null );
         }
-        
+
         if ( organisationUnitGroups || organisationUnitGroupSets )
         {
-            params.setOrganisationUnitGroups( null );            
+            params.setOrganisationUnitGroups( null );
         }
-        
+
         if ( organisationUnitGroupSets )
         {
             params.setOrganisationUnitGroupSets( null );
         }
-        
+
         if ( organisationUnitLevels )
         {
             params.setOrganisationUnitLevels( null );
         }
-        
+
         if ( validationRules )
         {
             params.setValidationRules( null );
         }
-        
+
         if ( reports )
         {
             params.setReports( null );
         }
-        
+
         if ( reportTables )
-        {            
-            params.setReportTables( null );            
-            params.setPeriods( null ); //TODO Include only relevant periods
+        {
+            params.setReportTables( null );
+            params.setPeriods( null ); // TODO Include only relevant periods
         }
-        
+
         if ( charts )
         {
             params.setCharts( null );
             params.setPeriods( null );
         }
-        
+
         if ( olapUrls )
         {
             params.setOlapUrls( null );
         }
-        
+
         params.setIncludeDataValues( false );
-        
+
         params.setI18n( i18n );
         params.setFormat( format );
-        
+
         ExportService exportService = serviceProvider.provide( exportFormat );
-        
+
         inputStream = exportService.exportData( params );
 
         fileName = FILENAME;
-        
+
         return SUCCESS;
     }
 }

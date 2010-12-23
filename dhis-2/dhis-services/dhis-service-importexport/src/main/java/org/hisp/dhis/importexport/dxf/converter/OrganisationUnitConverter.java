@@ -195,25 +195,27 @@ public class OrganisationUnitConverter
                 reader.moveToStartElement( FIELD_FEATURE );
                 unit.setFeatureType( reader.getAttributeValue( ATTRIBUTE_TYPE ) );
                 
-                List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
-                while ( reader.moveToStartElement( FIELD_COORDINATES_TUPLE, FIELD_FEATURE ) )
+                if ( unit.getFeatureType() != null )
                 {
-                    CoordinatesTuple tuple = new CoordinatesTuple();
-                    while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_COORDINATES_TUPLE ) )
+                    List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
+                    while ( reader.moveToStartElement( FIELD_COORDINATES_TUPLE, FIELD_FEATURE ) )
                     {
-                        tuple.addCoordinates( reader.getElementValue() );
+                        CoordinatesTuple tuple = new CoordinatesTuple();
+                        while ( reader.moveToStartElement( FIELD_COORDINATES, FIELD_COORDINATES_TUPLE ) )
+                        {
+                            tuple.addCoordinates( reader.getElementValue() );
+                        }
+                        list.add( tuple );
                     }
-                    list.add( tuple );
-                }
-                
-                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    unit.setPointCoordinatesFromList( list );
-                }
-                
-                else
-                {
-                    unit.setMultiPolygonCoordinatesFromList( list );
+                    
+                    if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                    {
+                        unit.setPointCoordinatesFromList( list );
+                    }                
+                    else
+                    {
+                        unit.setMultiPolygonCoordinatesFromList( list );
+                    }
                 }
                 
                 reader.moveToStartElement( FIELD_LAST_UPDATED );

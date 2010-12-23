@@ -52,6 +52,7 @@ import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -76,6 +77,7 @@ import org.hisp.dhis.importexport.dxf.converter.DataElementGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetMemberConverter;
+import org.hisp.dhis.importexport.dxf.converter.DataEntryFormConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetSourceAssociationConverter;
@@ -110,16 +112,16 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDXFExportService.java 5960 2008-10-17 14:07:50Z larshelg $
+ * @version $Id: DefaultDXFExportService.java 5960 2008-10-17 14:07:50Z larshelg
+ *          $
  */
 public class DefaultDXFExportService
     implements ExportService
 {
     private static final String ZIP_ENTRY_NAME = "Export.xml";
-        
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -140,7 +142,7 @@ public class DefaultDXFExportService
 
     private ConceptService conceptService;
 
-    public void setConceptService(ConceptService conceptService)
+    public void setConceptService( ConceptService conceptService )
     {
         this.conceptService = conceptService;
     }
@@ -151,7 +153,7 @@ public class DefaultDXFExportService
     {
         this.categoryService = categoryService;
     }
-    
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -165,51 +167,58 @@ public class DefaultDXFExportService
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private DataDictionaryService dataDictionaryService;
 
     public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
     {
         this.dataDictionaryService = dataDictionaryService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+
+    private DataEntryFormService dataEntryFormService;
+
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    {
+        this.dataEntryFormService = dataEntryFormService;
+    }
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-    
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
     }
-    
+
     private ValidationRuleService validationRuleService;
 
     public void setValidationRuleService( ValidationRuleService validationRuleService )
     {
         this.validationRuleService = validationRuleService;
     }
-    
+
     private ReportService reportService;
-    
+
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
@@ -221,9 +230,9 @@ public class DefaultDXFExportService
     {
         this.reportTableService = reportTableService;
     }
-    
+
     private ChartService chartService;
-    
+
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
@@ -238,7 +247,8 @@ public class DefaultDXFExportService
 
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
-    public void setCompleteDataSetRegistrationService( CompleteDataSetRegistrationService completeDataSetRegistrationService )
+    public void setCompleteDataSetRegistrationService(
+        CompleteDataSetRegistrationService completeDataSetRegistrationService )
     {
         this.completeDataSetRegistrationService = completeDataSetRegistrationService;
     }
@@ -249,7 +259,7 @@ public class DefaultDXFExportService
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
-    
+
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -259,97 +269,103 @@ public class DefaultDXFExportService
         try
         {
             // -----------------------------------------------------------------
-            // Pipes are input/output pairs. Data written on the output stream 
-            // shows up on the input stream at the other end of the pipe. 
+            // Pipes are input/output pairs. Data written on the output stream
+            // shows up on the input stream at the other end of the pipe.
             // -----------------------------------------------------------------
-            
+
             PipedOutputStream out = new PipedOutputStream();
-            
+
             PipedInputStream in = new PipedInputStream( out );
-            
+
             ZipOutputStream zipOut = new ZipOutputStream( out );
-            
+
             zipOut.putNextEntry( new ZipEntry( ZIP_ENTRY_NAME ) );
 
             XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
-            
+
             // -----------------------------------------------------------------
-            // Writes to one end of the pipe 
+            // Writes to one end of the pipe
             // -----------------------------------------------------------------
-            
-            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_12, ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
-            
+
+            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_12,
+                ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
+
             ExportPipeThread thread = new ExportPipeThread( sessionFactory );
-            
+
             thread.setZipOutputStream( zipOut );
             thread.setParams( params );
             thread.setWriter( writer );
             thread.setRootName( DXFROOT );
             thread.setRootProperties( rootProperties );
-            
+
             thread.registerXMLConverter( new ConceptConverter( conceptService ) );
             thread.registerXMLConverter( new DataElementCategoryOptionConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryComboConverter( categoryService ) );
             thread.registerXMLConverter( new DataElementCategoryOptionComboConverter( categoryService ) );
-            
+
             thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService ) );
             thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryService ) );
-            
-            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedDataElementConverter( dataElementService ) : new DataElementConverter( dataElementService ) );            
+
+            thread
+                .registerXMLConverter( params.isExtendedMode() ? new ExtendedDataElementConverter( dataElementService )
+                    : new DataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupSetConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupSetMemberConverter( dataElementService ) );
-            
+
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
-            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedIndicatorConverter( indicatorService ) : new IndicatorConverter( indicatorService ) );
+            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedIndicatorConverter( indicatorService )
+                : new IndicatorConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupMemberConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupSetConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupSetMemberConverter( indicatorService ) );
-            
+
             thread.registerXMLConverter( new DataDictionaryConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryIndicatorConverter( dataDictionaryService ) );
-                        
+            
+            thread.registerXMLConverter( new DataEntryFormConverter( dataEntryFormService, dataElementService, categoryService ) );
             thread.registerXMLConverter( new DataSetConverter( dataSetService ) );
             thread.registerXMLConverter( new DataSetMemberConverter( dataSetService, dataElementService ) );
-            
+
             thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
             thread.registerXMLConverter( new OrganisationUnitRelationshipConverter( organisationUnitService ) );
             thread.registerXMLConverter( new OrganisationUnitGroupConverter( organisationUnitGroupService ) );
-            thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter( organisationUnitGroupService, organisationUnitService ) );
-            
+            thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter( organisationUnitGroupService,
+                organisationUnitService ) );
+
             thread.registerXMLConverter( new GroupSetConverter( organisationUnitGroupService ) );
             thread.registerXMLConverter( new GroupSetMemberConverter( organisationUnitGroupService ) );
             thread.registerXMLConverter( new OrganisationUnitLevelConverter( organisationUnitService ) );
-            
+
             thread.registerXMLConverter( new DataSetSourceAssociationConverter( dataSetService, organisationUnitService ) );
-            
-            thread.registerXMLConverter( new ValidationRuleConverter( validationRuleService ) );            
+
+            thread.registerXMLConverter( new ValidationRuleConverter( validationRuleService ) );
             thread.registerXMLConverter( new PeriodConverter( periodService ) );
-            
+
             thread.registerXMLConverter( new ReportConverter( reportService ) );
             thread.registerXMLConverter( new ReportTableConverter( reportTableService ) );
             thread.registerXMLConverter( new ChartConverter( chartService ) );
-            thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );            
-            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter(
-                completeDataSetRegistrationService, dataSetService, organisationUnitService, periodService ) );
-            
-            thread.registerXMLConverter( params.isAggregatedData() ? 
-                new AggregatedDataValueConverter( aggregatedDataValueService, dataSetService, periodService ) : 
-                new DataValueConverter( aggregatedDataValueService, statementManager, periodService ) );
-            
+            thread.registerXMLConverter( new OlapUrlConverter( olapURLService ) );
+            thread.registerXMLConverter( new CompleteDataSetRegistrationConverter( completeDataSetRegistrationService,
+                dataSetService, organisationUnitService, periodService ) );
+
+            thread.registerXMLConverter( params.isAggregatedData() ? new AggregatedDataValueConverter(
+                aggregatedDataValueService, dataSetService, periodService ) : new DataValueConverter(
+                aggregatedDataValueService, statementManager, periodService ) );
+
             thread.start();
-            
+
             // -----------------------------------------------------------------
-            // Reads at the other end of the pipe 
+            // Reads at the other end of the pipe
             // -----------------------------------------------------------------
-            
+
             InputStream bis = new BufferedInputStream( in );
-            
+
             return bis;
         }
         catch ( IOException ex )
