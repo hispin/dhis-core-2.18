@@ -698,7 +698,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                                             '->',
                                             {
                                                 xtype: 'button',
-                                                text: i18n_select,
+                                                text: i18n_apply,
                                                 iconCls: 'icon-assign',
                                                 scope: this,
                                                 handler: function() {

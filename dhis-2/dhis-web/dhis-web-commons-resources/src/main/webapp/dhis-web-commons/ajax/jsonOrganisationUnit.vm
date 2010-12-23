@@ -9,6 +9,8 @@
     "active": "$!{organisationUnit.active}",
     "comment": "$!encoder.jsonEncode( ${organisationUnit.comment} )",
     "geoCode": "$!{organisationUnit.geoCode}",
+    "featureType": "$!encoder.jsonEncode( ${organisationUnit.featureType} )",
+    "coordinates": "$!encoder.jsonEncode( ${organisationUnit.coordinates} )",
     "latitude": "$!{organisationUnit.latitude}",
     "longitude": "$!{organisationUnit.longitude}",
 	"hasChild": $!{organisationUnit.hasChild()}
