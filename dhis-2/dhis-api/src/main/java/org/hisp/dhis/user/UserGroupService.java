@@ -7,7 +7,7 @@ public interface UserGroupService
 {
     String ID = UserGroupService.class.getName();
 
-    int addUserGroup( UserGroup userGroup );
+    void addUserGroup( UserGroup userGroup );
     
     void updateUserGroup( UserGroup userGroup );
     

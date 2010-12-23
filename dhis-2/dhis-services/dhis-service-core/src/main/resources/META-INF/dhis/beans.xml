@@ -191,10 +191,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
-  <bean id="org.hisp.dhis.user.UserGroupStore" class="org.hisp.dhis.user.hibernate.HiberntateUserGroupStore">
+  <bean id="org.hisp.dhis.user.UserGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.user.UserGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
-
 
   <bean id="org.hisp.dhis.validation.ValidationCriteriaStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="clazz" value="org.hisp.dhis.validation.ValidationCriteria" />

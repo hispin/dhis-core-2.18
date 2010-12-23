@@ -2,9 +2,7 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserGroupStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -14,53 +12,52 @@ public class DefaultUserGroupService implements UserGroupService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private UserGroupStore userGroupStore;
-
-    public void setUserGroupStore( UserGroupStore userGroupStore )
+    private GenericIdentifiableObjectStore<UserGroup> userGroupStore;
+    
+    public void setUserGroupStore( GenericIdentifiableObjectStore<UserGroup> userGroupStore )
     {
         this.userGroupStore = userGroupStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // UserGroup
     // -------------------------------------------------------------------------
 
     @Override
-    public int addUserGroup( UserGroup userGroup )
+    public void addUserGroup( UserGroup userGroup )
     {
-        return userGroupStore.addUserGroup( userGroup );
+        userGroupStore.saveOrUpdate( userGroup );
     }
 
     @Override
     public void deleteUserGroup( UserGroup userGroup )
     {
-        userGroupStore.deleteUserGroup( userGroup );
+        userGroupStore.delete( userGroup );
     }
 
     @Override
     public void updateUserGroup( UserGroup userGroup )
     {
-        userGroupStore.updateUserGroup( userGroup );
+        userGroupStore.update( userGroup );
     }
 
     
     @Override
     public Collection<UserGroup> getAllUserGroups()
     {
-        return userGroupStore.getAllUserGroups();
+        return userGroupStore.getAll();
     }
 
     @Override
     public UserGroup getUserGroup( int userGroupId )
     {
-        return userGroupStore.getUserGroup( userGroupId );
+        return userGroupStore.get( userGroupId );
     }
 
     @Override
     public UserGroup getUserGroupByName( String name )
     {
-        return userGroupStore.getUserGroupByName( name );
+        return userGroupStore.getByName( name );
     }
 
 }

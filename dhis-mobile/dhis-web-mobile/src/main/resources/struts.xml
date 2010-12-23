@@ -58,69 +58,6 @@
 			<param name="stylesheets">css/receiveImportPage.css</param>
 		</action>
 		
-		<!-- User Group -->
-		<action name="getAllUserGroups"
-			class="org.hisp.dhis.mobile.user.action.GetUserGroupListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-mobile/userGroupList.vm</param>
-			<param name="menu">/dhis-web-mobile/menu.vm</param>
-			<param name="stylesheets">css/receiveImportPage.css</param>
-			<param name="javascripts">javascript/user.js</param>
-		</action>
-		
-		<action name="addUserGroupForm"
-			class="org.hisp.dhis.mobile.user.action.AddUserGroupFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-mobile/addUserGroupForm.vm</param>
-			<param name="menu">/dhis-web-mobile/menu.vm</param>
-			<param name="javascripts">javascript/user.js</param>
-			<param name="stylesheets">css/receiveImportPage.css</param>
-		</action>
-		
-		<action name="addUserGroup"
-			class="org.hisp.dhis.mobile.user.action.AddUserGroupAction">
-			<param name="javascripts">javascript/user.js</param>
-			<result name="success" type="redirect">
-				getAllUserGroups.action</result>
-		</action>
-		
-		<!-- edit user group-->
-		<action name="editUserGroupForm"
-			class="org.hisp.dhis.mobile.user.action.EditUserGroupFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-mobile/editUserGroupForm.vm</param>
-			<param name="menu">/dhis-web-mobile/menu.vm</param>
-			<param name="stylesheets">css/receiveImportPage.css</param>
-		</action>
-		
-		<action name="updateUserGroup"
-			class="org.hisp.dhis.mobile.user.action.UpdateUserGroupAction">
-			<result name="success" type="redirect">
-				getAllUserGroups.action</result>
-		</action>
-		
-		<!-- edit user group end -->
-		
-		<!-- Remove user group 	-->
-		
-		<action name="removeUserGroup"
-			class="org.hisp.dhis.mobile.user.action.RemoveUserGroupAction">
-			
-			<!-- <result name="success" type="redirect">getAllUserGroups.action</result> -->
-			<result name="success" type="velocity">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<!--<param name ="javascripts">javascript/user.js</param>-->
-		</action>
-		
-		<!--show details-->
-		
-		<action name="getUserGroup"
-			class="org.hisp.dhis.mobile.user.action.GetUserGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-mobile/responseUserGroup.vm</result>
-			
-		</action>
-		<!-- show detail end-->
 		
 		<!-- Create Mobile Application -->
 		<action name="createMobileApp"
