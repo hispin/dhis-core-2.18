@@ -447,7 +447,7 @@
 	}
 	addOverlaysToMap(true);
 			
-	/* Section: mapview */    
+	/* Section: mapview */
 	var favoriteWindow = new Ext.Window({
         id: 'favorite_w',
         title: '<span id="window-favorites-title">' + i18n_favorites + '</span>',
@@ -2229,31 +2229,28 @@
                 }
             }
 		},
-        bbar: new Ext.StatusBar({
-			id: 'maplayers_sb',
-			items: [
-				{
-					xtype: 'button',
-					id: 'baselayers_b',
-					text: 'Base layers',
-                    iconCls: 'icon-add',
-					handler: function() {
-                        Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
-						Ext.getCmp('baselayers_w').show();
-					}
-				},
-                {
-					xtype: 'button',
-					id: 'overlays_b',
-					text: 'Overlays',
-                    iconCls: 'icon-add',
-					handler: function() {
-                        Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
-						Ext.getCmp('overlays_w').show();
-					}
-				}
-			]
-		})
+        bbar: [
+            {
+                xtype: 'button',
+                id: 'baselayers_b',
+                text: 'Base layers',
+                iconCls: 'icon-add',
+                handler: function() {
+                    Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('baselayers_w').show();
+                }
+            },
+            {
+                xtype: 'button',
+                id: 'overlays_b',
+                text: 'Overlays',
+                iconCls: 'icon-add',
+                handler: function() {
+                    Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('overlays_w').show();
+                }
+            }
+        ]
 	});
 	
     /* Section: widgets */
@@ -2293,7 +2290,7 @@
         }
     });
     
-    mapping = new mapfish.widgets.geostat.Mapping({});
+    //mapping = new mapfish.widgets.geostat.Mapping({});    
 	
 	/* Section: map toolbar */
 	var mapLabel = new Ext.form.Label({
