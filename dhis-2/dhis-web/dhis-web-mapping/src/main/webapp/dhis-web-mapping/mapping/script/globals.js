@@ -20,7 +20,7 @@ GLOBAL.conf = {
 
 //  Layout
 
-    west_width: 270, // viewport west
+    west_width: 270,
     gridpanel_width: 270 - 15,
     multiselect_width: 219,
 	combo_width: 150,
@@ -354,7 +354,7 @@ GLOBAL.vars = {
     
     topLevelUnit: null,
     
-    locateFeatureWindow: null,
-    
-    selectFeatureWindow: null
+    user: {
+		isAdmin: false
+	}
 };

@@ -1,4 +1,4 @@
-﻿Ext.onReady( function() {    
+﻿Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
 	Ext.QuickTips.init();
@@ -17,7 +17,8 @@
             GLOBAL.vars.parameter.mapView = init.mapView;
             GLOBAL.vars.parameter.baseLayers = init.baseLayers;
             GLOBAL.vars.parameter.overlays = init.overlays;
-            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;            
+            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;
+            GLOBAL.vars.user.isAdmin = init.security.isAdmin;
                         
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
@@ -2334,6 +2335,7 @@
 	var favoritesButton = new Ext.Button({
 		iconCls: 'icon-favorite',
 		tooltip: i18n_favorite_map_views,
+		hidden: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -2387,6 +2389,7 @@
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: i18n_create_predefined_legend_sets,
+		hidden: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2407,6 +2410,7 @@
 	var adminButton = new Ext.Button({
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
+		hidden: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;

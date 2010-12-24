@@ -116,12 +116,14 @@
 			class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="deleteMapLegend"
 			class="org.hisp.dhis.mapping.action.DeleteMapLegendAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="getAllMapLegends"
@@ -142,12 +144,14 @@
 			class="org.hisp.dhis.mapping.action.AddOrUpdateMapLegendSetAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="deleteMapLegendSet"
 			class="org.hisp.dhis.mapping.action.DeleteMapLegendSetAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="getAllMapLegendSets"
@@ -198,11 +202,13 @@
 			class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">
@@ -240,12 +246,14 @@
 			class="org.hisp.dhis.mapping.action.AddOrUpdateMapLayerAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="deleteMapLayer"
 			class="org.hisp.dhis.mapping.action.DeleteMapLayerAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
+            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="getAllMapLayers"

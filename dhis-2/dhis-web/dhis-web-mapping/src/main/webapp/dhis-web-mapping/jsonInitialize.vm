@@ -69,5 +69,8 @@
       }
     }#if( $velocityCount < $overlaysSize ),#end
 #end
-  ]
+  ],
+  "security": {
+    "isAdmin": $auth.hasAccess( "dhis-web-mapping", "deleteMapLegendSet" )
+  } 
 }
