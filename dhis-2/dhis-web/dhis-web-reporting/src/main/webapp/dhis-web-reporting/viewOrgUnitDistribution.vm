@@ -42,29 +42,27 @@ selectionTree.buildSelectionTree();
 
 <!-- Table -->
 
-#if( $distribution )
+#if( $grid )
 
 <div id="tableDiv">
 
-<table class="listTable">
+<table class="listTable gridTable">
 
 <thead>
 <tr>
-#foreach( $col in $distribution.getRow( 0 ) )
-<th class="oud">$encoder.htmlEncode( $col )</th>
+#foreach( $header in $grid.getHeaders() )
+<th>$!encoder.htmlEncode( $header )</th>
 #end
 </tr>
 </thead>
 
 <tbody>
-#foreach( $row in $distribution.getRows() )
-#if( $velocityCount > 1 )
+#foreach( $row in $grid.getRows() )
 <tr>
 #foreach( $col in $row )
-<td #if( $velocityCount > 1 )class="oud"#end>${col}</td>
+<td #if( $velocityCount == 1 )style="text-align:left"#end>$!encoder.htmlEncode( $col )</td>
 #end
 </tr>
-#end 
 #end
 </tbody>
 

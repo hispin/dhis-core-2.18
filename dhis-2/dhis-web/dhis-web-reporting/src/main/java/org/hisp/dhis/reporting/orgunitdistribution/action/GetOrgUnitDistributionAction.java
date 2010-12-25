@@ -108,11 +108,11 @@ public class GetOrgUnitDistributionAction
         return selectedGroupSet;
     }
 
-    private Grid distribution;
+    private Grid grid;
     
-    public Grid getDistribution()
+    public Grid getGrid()
     {
-        return distribution;
+        return grid;
     }
 
     // -------------------------------------------------------------------------
@@ -133,7 +133,7 @@ public class GetOrgUnitDistributionAction
             
             log.info( "Get distribution for group set: " + selectedGroupSet + " and organisation unit: " + selectedOrganisationUnit );
         
-            distribution = distributionService.getOrganisationUnitDistribution( selectedGroupSet, selectedOrganisationUnit, false );
+            grid = distributionService.getOrganisationUnitDistribution( selectedGroupSet, selectedOrganisationUnit, false );
         }
         
         return SUCCESS;
