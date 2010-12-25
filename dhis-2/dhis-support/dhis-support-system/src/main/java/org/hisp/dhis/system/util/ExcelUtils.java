@@ -63,9 +63,6 @@ public class ExcelUtils
     //
     // -------------------------------------------------------------------------
 
-    /**
-     * @throws WriteException
-     */
     public static void setUpFormat( WritableCellFormat cellFormat, Alignment alignment, Border border,
         BorderLineStyle borderLineStyle, Colour colour )
         throws WriteException
@@ -75,10 +72,6 @@ public class ExcelUtils
         cellFormat.setBorder( border, borderLineStyle );
     }
 
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
     public static void printDataElementHeaders( WritableSheet sheet, WritableCellFormat format, I18n i18n, int row,
         int column )
         throws RowsExceededException, WriteException
@@ -92,11 +85,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, i18n.getString( "type" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "aggregation_operator" ), format ) );
     }
-
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
 
     public static void addDataElementCellToSheet( WritableSheet sheet, WritableCellFormat format, DataElement element,
         I18n i18n, int row, int column )
@@ -113,10 +101,6 @@ public class ExcelUtils
             format ) );
     }
 
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
     public static void printIndicatorHeaders( WritableSheet sheet, WritableCellFormat format, I18n i18n, int row,
         int column )
         throws RowsExceededException, WriteException
@@ -137,11 +121,6 @@ public class ExcelUtils
 
     }
 
-    /**
-     * @param expressionService
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
     public static void addIndicatorCellToSheet( WritableSheet sheet, WritableCellFormat format, Indicator indicator,
         I18n i18n, ExpressionService expressionService, int row, int column )
         throws RowsExceededException, WriteException
@@ -167,10 +146,6 @@ public class ExcelUtils
             .getExpressionDescription( indicator.getDenominator() ), format ) );
     }
 
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
     public static void printExtendedDataElementHeaders( WritableSheet sheet, WritableCellFormat format1,
         WritableCellFormat format2, I18n i18n, int row, int column )
         throws RowsExceededException, WriteException
@@ -239,11 +214,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, i18n.getString( "last_updated" ), format2 ) );
     }
 
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
-
     public static void addExtendedDataElementCellToSheet( WritableSheet sheet, WritableCellFormat format,
         DataElement element, I18n i18n, int row, int column )
         throws RowsExceededException, WriteException
@@ -304,11 +274,6 @@ public class ExcelUtils
         }
     }
 
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
-
     public static void printOrganisationUnitHeaders( WritableSheet sheet, WritableCellFormat format, I18n i18n,
         int row, int column )
         throws RowsExceededException, WriteException
@@ -321,11 +286,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, i18n.getString( "comment" ), format ) );
 
     }
-
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
 
     public static void addOrganisationUnitCellToSheet( WritableSheet sheet, WritableCellFormat format,
         OrganisationUnit unit, I18n i18n, I18nFormat i18nFormat, int row, int column )
@@ -340,11 +300,6 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, i18n.getString( getBoolean().get( unit.isActive() ) ), format ) );
         sheet.addCell( new Label( column++, row, unit.getComment(), format ) );
     }
-
-    /**
-     * @throws WriteException
-     * @throws RowsExceededException
-     */
 
     public static void printOrganisationUnitHierarchyHeaders( WritableSheet sheet, WritableCellFormat format1,
         WritableCellFormat format2, I18n i18n, int row, int column, int level )
