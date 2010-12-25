@@ -27,10 +27,10 @@ package org.hisp.dhis.importexport.csv.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.CSV_EXTENSION;
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.NEWLINE;
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.SEPARATOR_B;
-import static org.hisp.dhis.importexport.csv.util.CsvUtil.csvEncode;
+import static org.hisp.dhis.system.util.CsvUtils.CSV_EXTENSION;
+import static org.hisp.dhis.system.util.CsvUtils.NEWLINE;
+import static org.hisp.dhis.system.util.CsvUtils.SEPARATOR_B;
+import static org.hisp.dhis.system.util.CsvUtils.csvEncode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
