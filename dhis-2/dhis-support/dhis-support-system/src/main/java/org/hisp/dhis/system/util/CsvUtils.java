@@ -1,4 +1,4 @@
-package org.hisp.dhis.importexport.csv.util;
+package org.hisp.dhis.system.util;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -31,7 +31,7 @@ package org.hisp.dhis.importexport.csv.util;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class CsvUtil
+public class CsvUtils
 {
     public static final String SEPARATOR = ",";
     public static final byte[] SEPARATOR_B = SEPARATOR.getBytes();
