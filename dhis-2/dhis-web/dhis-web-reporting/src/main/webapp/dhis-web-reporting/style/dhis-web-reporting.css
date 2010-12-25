@@ -1,6 +1,11 @@
 
-.oud
+.gridTable th, .gridTable td
 {
   text-align: center;
   width: 150px;
+}
+
+.gridLeft td
+{
+  text-align: left;
 }
