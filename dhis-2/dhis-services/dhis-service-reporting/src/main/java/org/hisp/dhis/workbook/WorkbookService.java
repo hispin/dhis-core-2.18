@@ -48,12 +48,6 @@ public interface WorkbookService
     
     String writeReportTableData( OutputStream outputStream, int id, I18nFormat format );
     
-    void writeAllDataElements( OutputStream outputStream, I18n i18n );
-    
-    void writeAllIndicators( OutputStream outputStream, I18n i18n );
-    
-    void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n );
-
     void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet );
     
     void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );

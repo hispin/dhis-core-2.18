@@ -42,7 +42,8 @@ public class CsvUtils
     private static final String EMPTY = "";
     
     /**
-     * Encodes the given value to a CSV acceptable value.
+     * Encodes the given value to a CSV acceptable value. Returns the empty string
+     * if argument is null.
      * 
      * @param value the value.
      * @return the CSV encoded value.
@@ -53,7 +54,8 @@ public class CsvUtils
     }
 
     /**
-     * Encodes the given value to a CSV acceptable value.
+     * Encodes the given value to a CSV acceptable value. Returns the empty string
+     * if argument is null.
      * 
      * @param value the value.
      * @return the CSV encoded value.

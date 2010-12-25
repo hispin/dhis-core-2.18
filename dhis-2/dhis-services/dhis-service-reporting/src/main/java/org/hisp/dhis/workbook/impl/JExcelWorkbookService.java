@@ -32,9 +32,7 @@ import static org.hisp.dhis.system.util.MathUtils.isNumeric;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 
 import jxl.Workbook;
@@ -48,15 +46,10 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -82,27 +75,6 @@ public class JExcelWorkbookService
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -176,154 +148,6 @@ public class JExcelWorkbookService
         }
 
         return data.getName();
-    }
-
-    public void writeAllDataElements( OutputStream outputStream, I18n i18n )
-    {
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-
-            WritableSheet sheet = workbook.createSheet( "Data elements", 0 );
-
-            int rowNumber = 1;
-
-            for ( DataElement element : dataElementService.getAllDataElements() )
-            {
-                sheet.addCell( new Label( 0, rowNumber++, element.getName(), FORMAT_TTTLE ) );
-
-                rowNumber++;
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "alternative_name" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, element.getAlternativeName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, element.getShortName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, element.getCode(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "description" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, element.getDescription(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "active" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( element.isActive() ), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "type" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getType().get( element.getType() ), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "aggregation_operator" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getAggregationOperator().get(
-                    element.getAggregationOperator() ), FORMAT_TEXT ) );
-
-                rowNumber++;
-            }
-
-            workbook.write();
-
-            workbook.close();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to generate workbook for data elements", ex );
-        }
-    }
-
-    public void writeAllIndicators( OutputStream outputStream, I18n i18n )
-    {
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-
-            WritableSheet sheet = workbook.createSheet( "Indicators", 0 );
-
-            int rowNumber = 1;
-
-            for ( Indicator indicator : indicatorService.getAllIndicators() )
-            {
-                sheet.addCell( new Label( 0, rowNumber++, indicator.getName(), FORMAT_TTTLE ) );
-
-                rowNumber++;
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "alternative_name" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getAlternativeName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getShortName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getCode(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "description" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getDescription(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "annualized" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( indicator.getAnnualized() ), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "indicator_type" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getIndicatorType().getName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "numerator_description" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getNumeratorDescription(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "denominator_description" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, indicator.getDenominatorDescription(), FORMAT_TEXT ) );
-
-                rowNumber++;
-            }
-
-            workbook.write();
-
-            workbook.close();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to generate workbook for indicators", ex );
-        }
-    }
-
-    public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n )
-    {
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-
-            WritableSheet sheet = workbook.createSheet( "Organisation units", 0 );
-
-            int rowNumber = 1;
-
-            for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-            {
-                sheet.addCell( new Label( 0, rowNumber++, unit.getName(), FORMAT_TTTLE ) );
-
-                rowNumber++;
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "short_name" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, unit.getShortName(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "code" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, unit.getCode(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "active" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, getBoolean().get( unit.isActive() ), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "comment" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, unit.getComment(), FORMAT_TEXT ) );
-
-                sheet.addCell( new Label( 0, rowNumber, i18n.getString( "geo_code" ), FORMAT_LABEL ) );
-                sheet.addCell( new Label( 1, rowNumber++, unit.getGeoCode(), FORMAT_TEXT ) );
-
-                rowNumber++;
-            }
-
-            workbook.write();
-
-            workbook.close();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to generate workbook for organisation units", ex );
-        }
     }
 
     public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
@@ -474,35 +298,5 @@ public class JExcelWorkbookService
         {
             throw new RuntimeException( "Write failed", ex );
         }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Map<Boolean, String> getBoolean()
-    {
-        Map<Boolean, String> map = new HashMap<Boolean, String>();
-        map.put( true, "Yes" );
-        map.put( false, "No" );
-        return map;
-    }
-
-    private Map<String, String> getType()
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.VALUE_TYPE_STRING, "Text" );
-        map.put( DataElement.VALUE_TYPE_INT, "Number" );
-        map.put( DataElement.VALUE_TYPE_BOOL, "Yes/No" );
-        return map;
-    }
-
-    private Map<String, String> getAggregationOperator()
-    {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put( DataElement.AGGREGATION_OPERATOR_SUM, "Sum" );
-        map.put( DataElement.AGGREGATION_OPERATOR_AVERAGE, "Average" );
-        map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "Count" );
-        return map;
     }
 }

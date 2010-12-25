@@ -1,4 +1,4 @@
-package org.hisp.dhis.workbook.tallysheet;
+package org.hisp.dhis.tallysheet;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo

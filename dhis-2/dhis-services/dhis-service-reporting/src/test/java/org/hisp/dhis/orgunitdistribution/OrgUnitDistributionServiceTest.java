@@ -62,6 +62,6 @@ public class OrgUnitDistributionServiceTest
         Grid grid = distributionService.getOrganisationUnitDistribution( groupSet, unitA, false );
         assertNotNull( grid );
         assertEquals( 3, grid.getWidth() );
-        assertEquals( 3, grid.getHeight() );
+        assertEquals( 2, grid.getHeight() );
     }   
 }

@@ -134,7 +134,7 @@ public class DefaultOrgUnitDistributionService
             
             Collection<OrganisationUnit> subTree = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ); 
             
-            for ( OrganisationUnitGroup group : groups ) // Columns
+            for ( OrganisationUnitGroup group : groups )
             {
                 Collection<OrganisationUnit> result = CollectionUtils.intersection( subTree, group.getMembers() );
                 
