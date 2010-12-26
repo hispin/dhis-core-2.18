@@ -92,11 +92,11 @@ public class DefaultOrgUnitDistributionService
                 
         Grid grid = getOrganisationUnitDistribution( groupSet, organisationUnit, true );
         
-        Assert.isTrue( grid != null && grid.getHeight() == 2 );
+        Assert.isTrue( grid != null && grid.getHeight() == 1 );
         
         for ( int i = 1; i < grid.getWidth(); i++ ) // Skip name column
         {
-            categoryValues.put( grid.getRow( 0 ).get( i ), Double.valueOf( grid.getRow( 1 ).get( i ) ) );
+            categoryValues.put( grid.getHeaders().get( i ), Double.valueOf( grid.getRow( 0 ).get( i ) ) );
         }
         
         String title = groupSet.getName() + TITLE_SEP + organisationUnit.getName();

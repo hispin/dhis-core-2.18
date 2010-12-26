@@ -505,4 +505,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionTreeManager"
       ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
+  
+  <bean id="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction"
+  	class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction"
+  	scope="prototype">
+    <property name="organisationUnitGroupService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+  </bean>
+  
 </beans>

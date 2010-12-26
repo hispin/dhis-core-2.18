@@ -1,7 +1,7 @@
 package org.hisp.dhis.reporting.orgunitdistribution.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,27 +27,24 @@ package org.hisp.dhis.reporting.orgunitdistribution.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetOrgUnitDistributionAction
+public class GetOrgUnitDistributionOptionsAction
     implements Action
 {
-    private static final Log log = LogFactory.getLog( GetOrgUnitDistributionAction.class );
-    
-    private static final String DEFAULT_TYPE = "html";
+    private static final Comparator<OrganisationUnitGroupSet> GROUPSET_COMPARATOR = new OrganisationUnitGroupSetNameComparator();
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -60,47 +57,15 @@ public class GetOrgUnitDistributionAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    private OrgUnitDistributionService distributionService;
-
-    public void setDistributionService( OrgUnitDistributionService distributionService )
-    {
-        this.distributionService = distributionService;
-    }
-    
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer groupSetId;
-
-    public void setGroupSetId( Integer groupSetId )
-    {
-        this.groupSetId = groupSetId;
-    }
-    
-    private String type;
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Grid grid;
+    private List<OrganisationUnitGroupSet> groupSets;
     
-    public Grid getGrid()
+    public List<OrganisationUnitGroupSet> getGroupSets()
     {
-        return grid;
+        return groupSets;
     }
 
     // -------------------------------------------------------------------------
@@ -109,19 +74,10 @@ public class GetOrgUnitDistributionAction
 
     public String execute()
     {
-        type = StringUtils.defaultIfEmpty( type, DEFAULT_TYPE );
+        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
         
-        OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
+        Collections.sort( groupSets, GROUPSET_COMPARATOR );        
         
-        if ( groupSetId != null && groupSetId > 0 )
-        {
-            OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( groupSetId );
-            
-            log.info( "Get distribution for group set: " + groupSet + " and organisation unit: " + unit );
-        
-            grid = distributionService.getOrganisationUnitDistribution( groupSet, unit, false );
-        }
-        
-        return type;
+        return SUCCESS;
     }
 }
