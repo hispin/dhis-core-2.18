@@ -37,29 +37,19 @@ import static org.hisp.dhis.system.util.PDFUtils.getPdfPTable;
 import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
 import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
-import static org.hisp.dhis.system.util.PDFUtils.printDataElement;
-import static org.hisp.dhis.system.util.PDFUtils.printIndicator;
-import static org.hisp.dhis.system.util.PDFUtils.printOrganisationUnit;
 
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.pdf.PdfService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,81 +81,8 @@ public class ItextPdfService
     private static Font HEADER3;
 
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
-    private IndicatorService indicatorService;
-
-    public void setIndicatorService( IndicatorService indicatorService )
-    {
-        this.indicatorService = indicatorService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }
-
-    // -------------------------------------------------------------------------
     // PdfService implementation
     // -------------------------------------------------------------------------
-
-    public void writeAllDataElements( OutputStream outputStream, I18n i18n )
-    {
-        initFont();
-        Document document = PDFUtils.openDocument( outputStream );
-
-        for ( DataElement element : dataElementService.getAllDataElements() )
-        {
-            addTableToDocument( document, printDataElement( element, i18n, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
-        }
-
-        PDFUtils.closeDocument( document );
-    }
-
-    public void writeAllIndicators( OutputStream outputStream, I18n i18n )
-    {
-        initFont();
-        Document document = PDFUtils.openDocument( outputStream );
-
-        for ( Indicator indicator : indicatorService.getAllIndicators() )
-        {
-            addTableToDocument( document, printIndicator( indicator, i18n, expressionService, HEADER3, ITALIC, TEXT,
-                true, 0.40f, 0.60f ) );
-        }
-
-        PDFUtils.closeDocument( document );
-    }
-
-    public void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n, I18nFormat format )
-    {
-        initFont();
-        Document document = PDFUtils.openDocument( outputStream );
-
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-        {
-            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true,
-                0.40f, 0.60f ) );
-        }
-
-        PDFUtils.closeDocument( document );
-    }
 
     public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
         I18n i18n, OrganisationUnit unit, DataSet dataSet )

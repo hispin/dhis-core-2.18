@@ -46,12 +46,6 @@ public interface PdfService
 {
     String ID = PdfService.class.getName();
 
-    void writeAllDataElements( OutputStream outputStream, I18n i18n );
-
-    void writeAllIndicators( OutputStream outputStream, I18n i18n );
-
-    void writeAllOrganisationUnits( OutputStream outputStream, I18n i18n, I18nFormat format );
-
     void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n,
         OrganisationUnit unit, DataSet dataSet );
 
