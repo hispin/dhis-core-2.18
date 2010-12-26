@@ -38,11 +38,8 @@ import static org.hisp.dhis.system.util.PDFUtils.getTitleCell;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
 
 import java.io.OutputStream;
-import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -68,54 +65,6 @@ public class ItextPdfService
     // -------------------------------------------------------------------------
     // PdfService implementation
     // -------------------------------------------------------------------------
-
-    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
-        I18n i18n, OrganisationUnit unit, DataSet dataSet )
-    {
-        Document document = openDocument( out );
-
-        PdfPTable table = getPdfPTable( true, 0.501f, 0.10f, 0.10f, 0.10f, 0.10f, 0.10f );
-
-        table.setHeaderRows( 1 );
-
-        String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
-
-        table.addCell( getTitleCell( i18n.getString( "data_completeness_report" ) + " - " + unit.getName()
-            + dataSetName, 6 ) );
-
-        table.addCell( getEmptyCell( 6, 10 ) );
-
-        table.addCell( getSubtitleCell( i18n.getString( "district_health_information_software" ) + " - "
-            + DateUtils.getMediumDateString(), 6 ) );
-
-        table.addCell( getEmptyCell( 6, 25 ) );
-
-        table.addCell( getItalicCell( i18n.getString( "name" ) ) );
-        table.addCell( getItalicCell( i18n.getString( "actual" ) ) );
-        table.addCell( getItalicCell( i18n.getString( "target" ) ) );
-        table.addCell( getItalicCell( i18n.getString( "percent" ) ) );
-        table.addCell( getItalicCell( i18n.getString( "on_time" ) ) );
-        table.addCell( getItalicCell( i18n.getString( "percent" ) ) );
-
-        table.addCell( getEmptyCell( 6, 8 ) );
-
-        if ( results != null )
-        {
-            for ( DataSetCompletenessResult result : results )
-            {
-                table.addCell( getTextCell( result.getName() ) );
-                table.addCell( getTextCell( String.valueOf( result.getRegistrations() ) ) );
-                table.addCell( getTextCell( String.valueOf( result.getSources() ) ) );
-                table.addCell( getTextCell( String.valueOf( result.getPercentage() ) ) );
-                table.addCell( getTextCell( String.valueOf( result.getRegistrationsOnTime() ) ) );
-                table.addCell( getTextCell( String.valueOf( result.getPercentageOnTime() ) ) );
-            }
-        }
-
-        addTableToDocument( document, table );
-
-        closeDocument( document );
-    }
 
     public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
     {

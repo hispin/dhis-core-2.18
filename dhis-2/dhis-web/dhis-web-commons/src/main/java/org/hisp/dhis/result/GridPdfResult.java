@@ -103,14 +103,16 @@ public class GridPdfResult
         table.setHeaderRows( 1 );
 
         table.addCell( getTitleCell( grid.getTitle(), grid.getWidth() ) );
-        table.addCell( getEmptyCell( grid.getWidth(), 20 ) );
+        table.addCell( getEmptyCell( grid.getWidth(), 30 ) );
+        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getWidth() ) );
+        table.addCell( getEmptyCell( grid.getWidth(), 30 ) );
         
         for ( String header : grid.getHeaders() )
         {
             table.addCell( getItalicCell( header ) );
         }
 
-        table.addCell( getEmptyCell( grid.getWidth(), 8 ) );
+        table.addCell( getEmptyCell( grid.getWidth(), 10 ) );
         
         for ( List<String> row : grid.getRows() )
         {

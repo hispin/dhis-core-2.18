@@ -422,25 +422,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="selectionTreeManager"
       ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessPDFAction"
-    class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessPDFAction"
-    scope="prototype">
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    <property name="pdfService"
-      ref="org.hisp.dhis.pdf.PdfService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction"
-    class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction"
-    scope="prototype">
-    <property name="selectionTreeManager"
-      ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-    <property name="workbookService"
-      ref="org.hisp.dhis.workbook.WorkbookService"/>
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
     class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
     scope="prototype">

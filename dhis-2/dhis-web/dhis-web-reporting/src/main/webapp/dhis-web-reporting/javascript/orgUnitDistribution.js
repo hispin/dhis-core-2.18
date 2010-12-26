@@ -11,7 +11,6 @@ function organisationUnitSelected( units ) {
 }
 
 function displayOrgUnitDistribution() {
-	alert(selectedOrganisationUnit);
 	if ( inputInvalid() ) {
 		return false;
 	}
