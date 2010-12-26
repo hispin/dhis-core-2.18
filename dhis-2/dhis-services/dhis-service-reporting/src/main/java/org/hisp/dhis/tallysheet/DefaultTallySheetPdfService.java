@@ -27,8 +27,6 @@ package org.hisp.dhis.tallysheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -36,6 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -43,7 +42,6 @@ import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -56,8 +54,8 @@ import com.lowagie.text.pdf.PdfWriter;
 public class DefaultTallySheetPdfService
     implements TallySheetPdfService
 {
-    private static BaseFont bf;
-
+    //TODO this class must be improved and use PdfUtils
+    
     private static Font headerFont;
 
     private static Font tableFont;
@@ -229,9 +227,7 @@ public class DefaultTallySheetPdfService
 
     private void initFont()
     {
-        bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
-        headerFont = new Font( bf, 12, Font.NORMAL );
-        tableFont = new Font( bf, 8, Font.NORMAL );
+        headerFont = PDFUtils.getBoldFont( 12 );
+        tableFont = PDFUtils.getFont( 8 );
     }
 }

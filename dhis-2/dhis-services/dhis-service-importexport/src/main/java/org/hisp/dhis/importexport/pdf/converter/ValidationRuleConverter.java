@@ -42,8 +42,6 @@ import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 
 /**
  * @author Dang Duy Hieu
@@ -80,15 +78,9 @@ public class ValidationRuleConverter
         List<ValidationRule> validationRules = new ArrayList<ValidationRule>( validationRuleService.getValidationRules( params.getValidationRules() ) );
         Collections.sort( validationRules, new ValidationRuleNameComparator() );
 
-        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font TEXT = new Font( bf, 9, Font.NORMAL );
-        Font ITALIC = new Font( bf, 9, Font.ITALIC );
-        Font HEADER3 = new Font( bf, 12, Font.BOLD );
-
         for ( ValidationRule rule : validationRules )
         {
-            addTableToDocument( document, printValidationRule( rule, i18n, expressionService, HEADER3, ITALIC, TEXT,
-                true, 0.40f, 0.60f ) );
+            addTableToDocument( document, printValidationRule( rule, i18n, expressionService, true, 0.40f, 0.60f ) );
         }
     }
 }

@@ -27,15 +27,14 @@ package org.hisp.dhis.pdf.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PDFUtils.ALIGN_CENTER;
 import static org.hisp.dhis.system.util.PDFUtils.addTableToDocument;
 import static org.hisp.dhis.system.util.PDFUtils.closeDocument;
-import static org.hisp.dhis.system.util.PDFUtils.getCell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader3Cell;
+import static org.hisp.dhis.system.util.PDFUtils.getEmptyCell;
 import static org.hisp.dhis.system.util.PDFUtils.getItalicCell;
 import static org.hisp.dhis.system.util.PDFUtils.getPdfPTable;
+import static org.hisp.dhis.system.util.PDFUtils.getSubtitleCell;
 import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
-import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
+import static org.hisp.dhis.system.util.PDFUtils.getTitleCell;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
 
 import java.io.OutputStream;
@@ -54,8 +53,6 @@ import org.hisp.dhis.validation.ValidationResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
@@ -69,25 +66,12 @@ public class ItextPdfService
     implements PdfService
 {
     // -------------------------------------------------------------------------
-    // Variables
-    // -------------------------------------------------------------------------
-
-    private static BaseFont bf;
-
-    private static Font TEXT;
-
-    private static Font ITALIC;
-
-    private static Font HEADER3;
-
-    // -------------------------------------------------------------------------
     // PdfService implementation
     // -------------------------------------------------------------------------
 
     public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
         I18n i18n, OrganisationUnit unit, DataSet dataSet )
     {
-        initFont();
         Document document = openDocument( out );
 
         PdfPTable table = getPdfPTable( true, 0.501f, 0.10f, 0.10f, 0.10f, 0.10f, 0.10f );
@@ -96,30 +80,30 @@ public class ItextPdfService
 
         String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
 
-        table.addCell( getHeader3Cell( i18n.getString( "data_completeness_report" ) + " - " + unit.getName()
-            + dataSetName, 6, HEADER3 ) );
+        table.addCell( getTitleCell( i18n.getString( "data_completeness_report" ) + " - " + unit.getName()
+            + dataSetName, 6 ) );
 
-        table.addCell( getCell( 6, 8 ) );
+        table.addCell( getEmptyCell( 6, 10 ) );
 
-        table.addCell( getTextCell( i18n.getString( "district_health_information_software" ) + " - "
-            + DateUtils.getMediumDateString(), 6, TEXT ) );
+        table.addCell( getSubtitleCell( i18n.getString( "district_health_information_software" ) + " - "
+            + DateUtils.getMediumDateString(), 6 ) );
 
-        table.addCell( getCell( 6, 15 ) );
+        table.addCell( getEmptyCell( 6, 25 ) );
 
-        table.addCell( getItalicCell( i18n.getString( "name" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "actual" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "target" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "percent" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "on_time" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "percent" ), 1, ITALIC ) );
+        table.addCell( getItalicCell( i18n.getString( "name" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "actual" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "target" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "percent" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "on_time" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "percent" ) ) );
 
-        table.addCell( getCell( 6, 8 ) );
+        table.addCell( getEmptyCell( 6, 8 ) );
 
         if ( results != null )
         {
             for ( DataSetCompletenessResult result : results )
             {
-                table.addCell( getTextCell( result.getName(), TEXT ) );
+                table.addCell( getTextCell( result.getName() ) );
                 table.addCell( getTextCell( String.valueOf( result.getRegistrations() ) ) );
                 table.addCell( getTextCell( String.valueOf( result.getSources() ) ) );
                 table.addCell( getTextCell( String.valueOf( result.getPercentage() ) ) );
@@ -135,31 +119,30 @@ public class ItextPdfService
 
     public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
     {
-        initFont();
         Document document = openDocument( out );
 
         PdfPTable table = getPdfPTable( true, 0.19f, 0.13f, 0.21f, 0.07f, 0.12f, 0.07f, 0.21f );
 
         table.setHeaderRows( 0 );
 
-        table.addCell( getHeader3Cell( i18n.getString( "data_quality_report" ), 7, HEADER3 ) );
+        table.addCell( getTitleCell( i18n.getString( "data_quality_report" ), 7 ) );
 
-        table.addCell( getCell( 7, 8 ) );
+        table.addCell( getEmptyCell( 7, 10 ) );
 
-        table.addCell( getTextCell( i18n.getString( "district_health_information_software" ) + " - "
-            + format.parseDate( DateUtils.getMediumDateString() ), 7, TEXT ) );
+        table.addCell( getSubtitleCell( i18n.getString( "district_health_information_software" ) + " - "
+            + format.parseDate( DateUtils.getMediumDateString() ), 7) );
 
-        table.addCell( getCell( 7, 15 ) );
+        table.addCell( getEmptyCell( 7, 25 ) );
 
-        table.addCell( getItalicCell( i18n.getString( "source" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "period" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "left_side_description" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "value" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "operator" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "value" ), 1, ITALIC ) );
-        table.addCell( getItalicCell( i18n.getString( "right_side_description" ), 1, ITALIC ) );
+        table.addCell( getItalicCell( i18n.getString( "source" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "period" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "left_side_description" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "value" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "operator" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "value" ) ) );
+        table.addCell( getItalicCell( i18n.getString( "right_side_description" ) ) );
 
-        table.addCell( getCell( 7, 8 ) );
+        table.addCell( getEmptyCell( 7, 8 ) );
 
         if ( results != null )
         {
@@ -169,16 +152,13 @@ public class ItextPdfService
 
                 Period period = validationResult.getPeriod();
 
-                table.addCell( getTextCell( unit.getName(), TEXT ) );
-                table.addCell( getTextCell( format.formatPeriod( period ), TEXT ) );
-                table
-                    .addCell( getTextCell( validationResult.getValidationRule().getLeftSide().getDescription(), TEXT ) );
+                table.addCell( getTextCell( unit.getName() ) );
+                table.addCell( getTextCell( format.formatPeriod( period ) ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getLeftSide().getDescription() ) );
                 table.addCell( getTextCell( String.valueOf( validationResult.getLeftsideValue() ) ) );
-                table.addCell( getTextCell( i18n.getString( validationResult.getValidationRule().getOperator() ), 1,
-                    ALIGN_CENTER ) );
+                table.addCell( getTextCell( i18n.getString( validationResult.getValidationRule().getOperator() ) ) );
                 table.addCell( getTextCell( String.valueOf( validationResult.getRightsideValue() ) ) );
-                table
-                    .addCell( getTextCell( validationResult.getValidationRule().getRightSide().getDescription(), TEXT ) );
+                table.addCell( getTextCell( validationResult.getValidationRule().getRightSide().getDescription() ) );
             }
         }
 
@@ -186,18 +166,4 @@ public class ItextPdfService
 
         closeDocument( document );
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private void initFont()
-    {
-        bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
-        TEXT = new Font( bf, 9, Font.NORMAL );
-        ITALIC = new Font( bf, 9, Font.ITALIC );
-        HEADER3 = new Font( bf, 12, Font.BOLD );
-    }
-
 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.system.util;
  */
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+import static com.lowagie.text.pdf.PdfPCell.*;
 
 import java.io.OutputStream;
 import java.util.Calendar;
@@ -56,44 +57,10 @@ import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
- * @modifier Dang Duy Hieu
- * @since 2010-05-19
+ * @author Dang Duy Hieu
  */
 public class PDFUtils
 {
-    public static final int ALIGN_CENTER = PdfPCell.ALIGN_CENTER;
-
-    public static final int ALIGN_LEFT = PdfPCell.ALIGN_LEFT;
-
-    public static final int ALIGN_RIGHT = PdfPCell.ALIGN_RIGHT;
-
-    private static final Font TEXT = new Font( Font.HELVETICA, 9, Font.NORMAL );
-
-    private static final Font TEXT5 = new Font( Font.HELVETICA, 8, Font.NORMAL );
-
-    private static final Font TEXT6 = new Font( Font.HELVETICA, 6, Font.NORMAL );
-
-    private static final Font TEXT7 = new Font( Font.HELVETICA, 4, Font.NORMAL );
-
-    private static final Font ITALIC = new Font( Font.HELVETICA, 9, Font.ITALIC );
-
-    private static final Font HEADER1 = new Font( Font.HELVETICA, 20, Font.BOLD );
-
-    private static final Font HEADER2 = new Font( Font.HELVETICA, 16, Font.BOLD );
-
-    private static final Font HEADER3 = new Font( Font.HELVETICA, 12, Font.BOLD );
-
-    private static final Font HEADER4 = new Font( Font.HELVETICA, 9, Font.BOLD );
-
-    private static final Font HEADER5 = new Font( Font.HELVETICA, 8, Font.BOLD );
-
-    private static final Font HEADER6 = new Font( Font.HELVETICA, 6, Font.BOLD );
-
-    private static final Font HEADER7 = new Font( Font.HELVETICA, 4, Font.BOLD );
-
-    public static final String PDF_ARIAL_FONT = "arial.ttf";
-
     /**
      * Creates a document.
      * 
@@ -233,6 +200,31 @@ public class PDFUtils
 
         return cell;
     }
+    
+    public static PdfPCell getTitleCell( String text, int colspan )
+    {
+        return getCell( text, colspan, getBoldFont( 16 ), ALIGN_CENTER );
+    }
+    
+    public static PdfPCell getSubtitleCell( String text, int colspan )
+    {
+        return getCell( text, colspan, getItalicFont( 12 ), ALIGN_CENTER );
+    }
+    
+    public static PdfPCell getHeaderCell( String text, int colspan )
+    {
+        return getCell( text, colspan, getFont( 12 ), ALIGN_LEFT );
+    }
+    
+    public static PdfPCell getTextCell( String text )
+    {
+        return getCell( text, 1, getFont( 9 ), ALIGN_LEFT );
+    }
+    
+    public static PdfPCell getItalicCell( String text )
+    {
+        return getCell( text, 1, getItalicFont( 9 ), ALIGN_LEFT );
+    }
 
     /**
      * Creates an empty cell.
@@ -241,7 +233,7 @@ public class PDFUtils
      * @param height The height of the column.
      * @return A PdfCell.
      */
-    public static PdfPCell getCell( int colSpan, int height )
+    public static PdfPCell getEmptyCell( int colSpan, int height )
     {
         PdfPCell cell = new PdfPCell();
 
@@ -252,339 +244,41 @@ public class PDFUtils
         return cell;
     }
 
-    /**
-     * Creates a cell spanning one column.
-     * 
-     * @param text The text to include in the cell.
-     * @param font The font of the cell content.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getCell( String text, Font font )
+    // -------------------------------------------------------------------------
+    // Font methods
+    // -------------------------------------------------------------------------
+
+    public static Font getFont( float size )
     {
-        return getCell( text, 1, font, ALIGN_LEFT );
+        return getFont( "ubuntu.ttf", size );
     }
 
-    /**
-     * Creates a cell with text font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getTextCell( String text, int colspan )
+    public static Font getBoldFont( float size )
     {
-        return getCell( text, colspan, TEXT, ALIGN_LEFT );
+        return getFont( "ubuntu-bold.ttf", size );
     }
 
-    /**
-     * Creates a cell with text font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The font for text in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getTextCell( String text, int colspan, Font font )
+    public static Font getItalicFont( float size )
     {
-        return getCell( text, colspan, font, ALIGN_LEFT );
+        return getFont( "ubuntu-italic.ttf", size );
     }
 
-    /**
-     * Creates a cell with text font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param horizontalAlign The horizontal align, either ALIGN_LEFT,
-     *        ALIGN_RIGHT, or ALIGN_CENTER.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getTextCell( String text, int colspan, int horizontalAlign )
-    {
-        return getCell( text, colspan, TEXT, horizontalAlign );
-    }
-
-    /**
-     * Creates a cell with text font spanning one column.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getTextCell( String text )
-    {
-        return getCell( text, 1, TEXT, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text font spanning one column.
-     * 
-     * @param text The text to include in the cell.
-     * @param font The font for text in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getTextCell( String text, Font font )
-    {
-        return getCell( text, 1, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getText5Cell( String text )
-    {
-        return getCell( text, 1, TEXT5, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getText5Cell( String text, Font font )
-    {
-        return getCell( text, 1, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 6 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getText6Cell( String text )
-    {
-        return getCell( text, 1, TEXT6, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getText6Cell( String text, Font font )
-    {
-        return getCell( text, 1, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 7 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getText7Cell( String text )
-    {
-        return getCell( text, 1, TEXT7, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with text 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @return A PdfCell.
-     */
-
-    public static PdfPCell getText7Cell( String text, Font font )
-    {
-        return getCell( text, 1, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with italic text font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getItalicCell( String text, int colspan )
-    {
-        return getCell( text, colspan, ITALIC, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with italic text font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The font to embed in text of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getItalicCell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 1 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader1Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER1, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 2 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader2Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER2, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 3 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader3Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER3, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 3 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The font of the cell content.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader3Cell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 3 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader4Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER4, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 3 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The font of the cell content.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader4Cell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader5Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER5, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 5 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The customize font of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader5Cell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 6 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader6Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER6, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 6 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The customize font of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader6Cell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 7 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader7Cell( String text, int colspan )
-    {
-        return getCell( text, colspan, HEADER7, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a cell with header 7 font.
-     * 
-     * @param text The text to include in the cell.
-     * @param colspan The column span of the cell.
-     * @param font The customize font of the cell.
-     * @return A PdfCell.
-     */
-    public static PdfPCell getHeader7Cell( String text, int colspan, Font font )
-    {
-        return getCell( text, colspan, font, ALIGN_LEFT );
-    }
-
-    /**
-     * Creates a BaseFont with the given dimension
-     * 
-     * @param dimension whether horizontal or vertical
-     * @return A BaseFont.
-     */
-    public static BaseFont getTrueTypeFontByDimension( String dimension )
+    private static Font getFont( String fontPath, float size )
     {
         try
         {
-            return BaseFont.createFont( PDF_ARIAL_FONT, dimension, BaseFont.EMBEDDED );
+            BaseFont baseFont = BaseFont.createFont( fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED );
+            return new Font( baseFont, size );
         }
-        catch ( Exception e )
+        catch ( Exception ex )
         {
-            throw new RuntimeException( "Error occurred in creating a BaseFont instance by the given dimension" );
-        }
-
+            throw new RuntimeException( "Error while creating base font", ex );
+        }        
     }
+
+    // -------------------------------------------------------------------------
+    // Domain object methods
+    // -------------------------------------------------------------------------
 
     /**
      * Writes a "Data Elements" title in front of page
@@ -621,7 +315,7 @@ public class PDFUtils
     }
 
     /**
-     * Writes a DHIS2.0 title in front of page
+     * Writes a DHIS 2 title in front of page
      * 
      * @param document The document
      * @param exportParams the exporting params
@@ -629,24 +323,19 @@ public class PDFUtils
      */
     private static void printFrontPage( Document document, String title, I18n i18n, I18nFormat format )
     {
-        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
-        Font TEXT = new Font( bf, 9, Font.NORMAL );
-        Font HEADER2 = new Font( bf, 16, Font.BOLD );
-
         PdfPTable table = getPdfPTable( true, 1.00f );
 
-        table.addCell( getCell( i18n.getString( "district_health_information_software" ), 1, TEXT, ALIGN_CENTER ) );
+        table.addCell( getTitleCell( i18n.getString( "district_health_information_software" ), 1 ) );
 
-        table.addCell( getCell( 1, 40 ) );
+        table.addCell( getEmptyCell( 1, 40 ) );
 
-        table.addCell( getCell( title, 1, HEADER2, ALIGN_CENTER ) );
+        table.addCell( getSubtitleCell( title, 1 ) );
 
-        table.addCell( getCell( 1, 40 ) );
+        table.addCell( getEmptyCell( 1, 40 ) );
 
         String date = format.formatDate( Calendar.getInstance().getTime() );
 
-        table.addCell( getCell( date, 1, TEXT, ALIGN_CENTER ) );
+        table.addCell( getSubtitleCell( date, 1 ) );
 
         addTableToDocument( document, table );
 
@@ -665,45 +354,43 @@ public class PDFUtils
      *        multiple pages or should be kept at one page.
      * @param columnWidths The column widths.
      */
-    public static PdfPTable printDataElement( DataElement element, I18n i18n, Font HEADER3, Font ITALIC, Font TEXT,
-        boolean keepTogether, float... columnWidths )
+    public static PdfPTable printDataElement( DataElement element, I18n i18n, boolean keepTogether, float... columnWidths )
     {
         PdfPTable table = getPdfPTable( keepTogether, columnWidths );
 
-        table.addCell( getHeader3Cell( element.getName(), 2, HEADER3 ) );
+        table.addCell( getHeaderCell( element.getName(), 2 ) );
 
-        table.addCell( getCell( 2, 15 ) );
+        table.addCell( getEmptyCell( 2, 15 ) );
 
-        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-        table.addCell( getTextCell( element.getShortName(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "short_name" ) ) );
+        table.addCell( getTextCell( element.getShortName() ) );
 
         if ( nullIfEmpty( element.getAlternativeName() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getAlternativeName(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ) ) );
+            table.addCell( getTextCell( element.getAlternativeName() ) );
         }
         if ( nullIfEmpty( element.getCode() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getItalicCell( i18n.getString( "code" ) ) );
             table.addCell( getTextCell( element.getCode() ) );
         }
         if ( nullIfEmpty( element.getDescription() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( element.getDescription(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "description" ) ) );
+            table.addCell( getTextCell( element.getDescription() ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "active" ) ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( element.isActive() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "type" ) ) );
+        table.addCell( getTextCell( i18n.getString( getType().get( element.getType() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ),
-            TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "aggregation_operator" ) ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
 
-        table.addCell( getCell( 2, 30 ) );
+        table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
     }
@@ -721,61 +408,59 @@ public class PDFUtils
      *        multiple pages or should be kept at one page.
      * @param columnWidths The column widths.
      */
-    public static PdfPTable printIndicator( Indicator indicator, I18n i18n, ExpressionService expressionService,
-        Font HEADER3, Font ITALIC, Font TEXT, boolean keepTogether, float... columnWidths )
+    public static PdfPTable printIndicator( Indicator indicator, I18n i18n, 
+        ExpressionService expressionService, boolean keepTogether, float... columnWidths )
     {
         PdfPTable table = getPdfPTable( keepTogether, columnWidths );
 
-        table.addCell( getHeader3Cell( indicator.getName(), 2, HEADER3 ) );
+        table.addCell( getHeaderCell( indicator.getName(), 2 ) );
 
-        table.addCell( getCell( 2, 15 ) );
+        table.addCell( getEmptyCell( 2, 15 ) );
 
-        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getShortName(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "short_name" ) ) );
+        table.addCell( getTextCell( indicator.getShortName() ) );
 
         if ( nullIfEmpty( indicator.getAlternativeName() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "alternative_name" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getAlternativeName(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "alternative_name" ) ) );
+            table.addCell( getTextCell( indicator.getAlternativeName() ) );
         }
         if ( nullIfEmpty( indicator.getCode() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getItalicCell( i18n.getString( "code" ) ) );
             table.addCell( getTextCell( indicator.getCode() ) );
         }
         if ( nullIfEmpty( indicator.getDescription() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( indicator.getDescription(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "description" ) ) );
+            table.addCell( getTextCell( indicator.getDescription() ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "annualized" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "annualized" ) ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "indicator_type" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getIndicatorType().getName(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "indicator_type" ) ) );
+        table.addCell( getTextCell( indicator.getIndicatorType().getName() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "numerator_description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getNumeratorDescription(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "numerator_description" ) ) );
+        table.addCell( getTextCell( indicator.getNumeratorDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
-            indicator.getNumeratorAggregationOperator() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "numerator_aggregation_operator" ) ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getNumeratorAggregationOperator() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "numerator_formula" ), 1, ITALIC ) );
-        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "numerator_formula" ) ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getNumerator() ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "denominator_description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( indicator.getDenominatorDescription(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "denominator_description" ) ) );
+        table.addCell( getTextCell( indicator.getDenominatorDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get(
-            indicator.getDenominatorAggregationOperator() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "denominator_aggregation_operator" ) ) );
+        table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( indicator.getDenominatorAggregationOperator() ) ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "denominator_formula" ), 1, ITALIC ) );
-        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "denominator_formula" ) ) );
+        table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ) ) );
 
-        table.addCell( getCell( 2, 30 ) );
+        table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
     }
@@ -793,43 +478,42 @@ public class PDFUtils
      *        multiple pages or should be kept at one page.
      * @param columnWidths The column widths.
      */
-    public static PdfPTable printOrganisationUnit( OrganisationUnit unit, I18n i18n, I18nFormat format, Font HEADER3,
-        Font ITALIC, Font TEXT, boolean keepTogether, float... columnWidths )
+    public static PdfPTable printOrganisationUnit( OrganisationUnit unit, I18n i18n, I18nFormat format, boolean keepTogether, float... columnWidths )
     {
         PdfPTable table = getPdfPTable( keepTogether, columnWidths );
 
-        table.addCell( getHeader3Cell( unit.getName(), 2, HEADER3 ) );
+        table.addCell( getHeaderCell( unit.getName(), 2 ) );
 
-        table.addCell( getCell( 2, 15 ) );
+        table.addCell( getEmptyCell( 2, 15 ) );
 
-        table.addCell( getItalicCell( i18n.getString( "short_name" ), 1, ITALIC ) );
-        table.addCell( getTextCell( unit.getShortName(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "short_name" ) ) );
+        table.addCell( getTextCell( unit.getShortName() ) );
 
         if ( nullIfEmpty( unit.getCode() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "code" ), 1, ITALIC ) );
+            table.addCell( getItalicCell( i18n.getString( "code" ) ) );
             table.addCell( getTextCell( unit.getCode() ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "opening_date" ), 1, ITALIC ) );
+        table.addCell( getItalicCell( i18n.getString( "opening_date" ) ) );
         table.addCell( getTextCell( unit.getOpeningDate() != null ? format.formatDate( unit.getOpeningDate() ) : "" ) );
 
-        if ( nullIfEmpty( unit.getClosedDate().toString() ) != null )
+        if ( unit.getClosedDate() != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "closed_date" ), 1, ITALIC ) );
+            table.addCell( getItalicCell( i18n.getString( "closed_date" ) ) );
             table.addCell( getTextCell( unit.getClosedDate() != null ? format.formatDate( unit.getClosedDate() ) : "" ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "active" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "active" ) ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( unit.isActive() ) ) ) );
 
         if ( nullIfEmpty( unit.getComment() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "comment" ), 1, ITALIC ) );
-            table.addCell( getTextCell( unit.getComment(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "comment" ) ) );
+            table.addCell( getTextCell( unit.getComment() ) );
         }
 
-        table.addCell( getCell( 2, 30 ) );
+        table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
     }
@@ -847,46 +531,45 @@ public class PDFUtils
      *        multiple pages or should be kept at one page.
      * @param columnWidths The column widths.
      */
-    public static PdfPTable printValidationRule( ValidationRule validationRule, I18n i18n,
-        ExpressionService expressionService, Font HEADER3, Font ITALIC, Font TEXT, boolean keepTogether,
-        float... columnWidths )
+    public static PdfPTable printValidationRule( ValidationRule validationRule, I18n i18n, 
+        ExpressionService expressionService, boolean keepTogether, float... columnWidths )
     {
         PdfPTable table = getPdfPTable( keepTogether, columnWidths );
 
-        table.addCell( getHeader3Cell( validationRule.getName(), 2, HEADER3 ) );
+        table.addCell( getHeaderCell( validationRule.getName(), 2 ) );
 
-        table.addCell( getCell( 2, 15 ) );
+        table.addCell( getEmptyCell( 2, 15 ) );
 
         if ( nullIfEmpty( validationRule.getDescription() ) != null )
         {
-            table.addCell( getItalicCell( i18n.getString( "description" ), 1, ITALIC ) );
-            table.addCell( getTextCell( validationRule.getDescription(), TEXT ) );
+            table.addCell( getItalicCell( i18n.getString( "description" ) ) );
+            table.addCell( getTextCell( validationRule.getDescription() ) );
         }
 
-        table.addCell( getItalicCell( i18n.getString( "type" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( validationRule.getType() ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "type" ) ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getType() ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "operator" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( validationRule.getOperator() ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "operator" ) ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getOperator() ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "left_side_of_expression" ), 1, ITALIC ) );
+        table.addCell( getItalicCell( i18n.getString( "left_side_of_expression" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( validationRule.getLeftSide()
-            .getExpression() ), TEXT ) );
+            .getExpression() ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "left_side_description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( validationRule.getLeftSide().getDescription(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "left_side_description" ) ) );
+        table.addCell( getTextCell( validationRule.getLeftSide().getDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "right_side_of_expression" ), 1, ITALIC ) );
+        table.addCell( getItalicCell( i18n.getString( "right_side_of_expression" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( validationRule.getRightSide()
-            .getExpression() ), TEXT ) );
+            .getExpression() ) ) );
 
-        table.addCell( getItalicCell( i18n.getString( "right_side_description" ), 1, ITALIC ) );
-        table.addCell( getTextCell( validationRule.getRightSide().getDescription(), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "right_side_description" ) ) );
+        table.addCell( getTextCell( validationRule.getRightSide().getDescription() ) );
 
-        table.addCell( getItalicCell( i18n.getString( "period_type" ), 1, ITALIC ) );
-        table.addCell( getTextCell( i18n.getString( validationRule.getPeriodType().getName() ), TEXT ) );
+        table.addCell( getItalicCell( i18n.getString( "period_type" ) ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getPeriodType().getName() ) ) );
 
-        table.addCell( getCell( 2, 30 ) );
+        table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
     }
@@ -920,5 +603,4 @@ public class PDFUtils
         map.put( DataElement.AGGREGATION_OPERATOR_COUNT, "count" );
         return map;
     }
-
 }

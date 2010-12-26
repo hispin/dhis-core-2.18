@@ -39,8 +39,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPTable;
 
 /**
@@ -76,8 +74,6 @@ public class OrganisationUnitHierarchyConverter
 
         if ( params.getOrganisationUnits() != null && params.getOrganisationUnits().size() > 0 )
         {
-            Font TEXT = new Font( getTrueTypeFontByDimension( BaseFont.IDENTITY_H ), 9, Font.NORMAL );
-
             Collection<OrganisationUnit> hierarchy = getHierarchy();
 
             PdfPTable table = getPdfPTable( false, 0.100f );
@@ -86,7 +82,7 @@ public class OrganisationUnitHierarchyConverter
             {
                 String indent = getIndent( unit.getLevel() );
 
-                table.addCell( getTextCell( indent + unit.getName(), TEXT ) );
+                table.addCell( getTextCell( indent + unit.getName() ) );
             }
 
             addTableToDocument( document, table );

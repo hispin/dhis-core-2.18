@@ -38,7 +38,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.external.location.LocationManager;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
