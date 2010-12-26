@@ -191,16 +191,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- PDF -->
   
   <bean id="org.hisp.dhis.pdf.PdfService"
-    class="org.hisp.dhis.pdf.impl.ItextPdfService">
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    <property name="expressionService"
-      ref="org.hisp.dhis.expression.ExpressionService"/>
-  </bean>
+    class="org.hisp.dhis.pdf.impl.ItextPdfService"/>
   
   <!-- Workbook -->
   
