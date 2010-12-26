@@ -27,13 +27,10 @@ package org.hisp.dhis.workbook.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.MathUtils.isNumeric;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import java.util.SortedMap;
 
 import jxl.Workbook;
 import jxl.write.Label;
@@ -51,8 +48,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reporttable.ReportTableData;
-import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.workbook.WorkbookService;
@@ -67,88 +62,8 @@ public class JExcelWorkbookService
     implements WorkbookService
 {
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private ReportTableService reportTableService;
-
-    public void setReportTableService( ReportTableService reportTableService )
-    {
-        this.reportTableService = reportTableService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Properties
-    // -------------------------------------------------------------------------
-
-    private static final WritableCellFormat FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
-        WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
-
-    private static final WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont(
-        WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );
-
-    private static final WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
-        11, WritableFont.NO_BOLD, false ) );
-
-    // -------------------------------------------------------------------------
     // WorkbookService implementation
     // -------------------------------------------------------------------------
-
-    public String writeReportTableData( OutputStream outputStream, int id, I18nFormat format )
-    {
-        ReportTableData data = reportTableService.getReportTableData( id, format );
-
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( outputStream );
-
-            WritableSheet sheet = workbook.createSheet( "Report table data", 0 );
-
-            int rowNumber = 1;
-
-            int columnIndex = 0;
-
-            sheet.addCell( new Label( 0, rowNumber++, data.getName(), FORMAT_TTTLE ) );
-
-            rowNumber++;
-
-            for ( String column : data.getPrettyPrintColumns() )
-            {
-                sheet.addCell( new Label( columnIndex++, rowNumber, column, FORMAT_LABEL ) );
-            }
-
-            rowNumber++;
-
-            for ( SortedMap<Integer, String> row : data.getRows() )
-            {
-                columnIndex = 0;
-
-                for ( String value : row.values() )
-                {
-                    if ( isNumeric( value ) )
-                    {
-                        sheet.addCell( new Number( columnIndex++, rowNumber, Double.valueOf( value ), FORMAT_TEXT ) );
-                    }
-                    else
-                    {
-                        sheet.addCell( new Label( columnIndex++, rowNumber, value, FORMAT_TEXT ) );
-                    }
-                }
-
-                rowNumber++;
-            }
-
-            workbook.write();
-
-            workbook.close();
-        }
-        catch ( Exception ex )
-        {
-            throw new RuntimeException( "Failed to generate workbook for data elements", ex );
-        }
-
-        return data.getName();
-    }
 
     public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
         I18n i18n, OrganisationUnit unit, DataSet dataSet )

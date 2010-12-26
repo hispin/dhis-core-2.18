@@ -23,13 +23,18 @@
 		<result-types>
 			<result-type name="plainTextErrorResult"
 				class="org.hisp.dhis.result.PlainTextErrorResult" />
-			<result-type name="chart" class="org.hisp.dhis.result.ChartResult" />
+			<result-type name="chart" 
+				class="org.hisp.dhis.result.ChartResult" />
 			<result-type name="velocity-xml"
 				class="org.hisp.dhis.result.VelocityXMLResult" />
 			<result-type name="velocity-json"
 				class="org.hisp.dhis.result.VelocityJsonResult" />
 			<result-type name="outputStreamResult"
 				class="org.hisp.dhis.result.OutputStreamResult" />
+			<result-type name="gridCsvResult"
+				class="org.hisp.dhis.result.GridCsvResult" />
+			<result-type name="gridXlsResult"
+				class="org.hisp.dhis.result.GridXlsResult" />
 		</result-types>
 
 		<interceptors>

@@ -97,12 +97,5 @@
       <property name="paramOrganisationUnit"/>
     </component>
     
-    <list name="displayColumns" table="reporttable_displaycolumns" cascade="all-delete-orphan">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="reporttablecolumnid"
-        class="org.hisp.dhis.reporttable.ReportTableColumn"/>
-    </list>
-    
   </class>
 </hibernate-mapping>

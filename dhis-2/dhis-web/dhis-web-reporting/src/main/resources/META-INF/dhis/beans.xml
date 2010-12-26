@@ -234,42 +234,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableDataExportAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataExportAction"
-    scope="prototype">
-    <property name="serviceProvider"
-      ref="exportServiceProvider"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GenerateTableDataWorkbookAction"
-    scope="prototype">
-    <property name="workbookService"
-      ref="org.hisp.dhis.workbook.WorkbookService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetTableDataAction"
-    scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetDisplayTableOptionsAction"
-    scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.SaveDisplayTableAction"
-    scope="prototype">
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
     class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction"
     scope="prototype">
@@ -287,6 +252,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dimensionService"
       ref="org.hisp.dhis.dimension.DimensionService"/>
   </bean>
+  
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
+    scope="prototype">
+    <property name="reportTableService"
+      ref="org.hisp.dhis.reporttable.ReportTableService"/>
+  </bean>    
     
   <!-- ReportViewer -->
   

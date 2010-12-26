@@ -33,13 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Abyot Asalefew

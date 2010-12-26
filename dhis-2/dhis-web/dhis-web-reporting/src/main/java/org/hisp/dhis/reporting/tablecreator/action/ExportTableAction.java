@@ -27,22 +27,20 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableColumn;
 import org.hisp.dhis.reporttable.ReportTableService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class GetDisplayTableOptionsAction
+public class ExportTableAction
     implements Action
 {
+    private static final String DEFAULT_TYPE = "html";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -66,44 +64,40 @@ public class GetDisplayTableOptionsAction
     // -------------------------------------------------------------------------
 
     private Integer id;
-
+    
     public void setId( Integer id )
     {
         this.id = id;
     }
-    
-    private ReportTable reportTable;
 
-    public ReportTable getReportTable()
+    private String type;
+
+    public void setType( String type )
     {
-        return reportTable;
+        this.type = type;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<ReportTableColumn> columns;
+    private Grid grid;
 
-    public List<ReportTableColumn> getColumns()
+    public Grid getGrid()
     {
-        return columns;
+        return grid;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Result implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
+        throws Exception
     {
-        reportTable = reportTableService.getReportTable( id );
+        grid = reportTableService.getPrettyReportTableGrid( id, format );
         
-        reportTable.setRelativePeriods( reportTable.getRelatives().getRelativePeriods( 1, format, true ) ); //TODO check
-        reportTable.setI18nFormat( format );
-        reportTable.init();
-        
-        columns = reportTable.getFilledDisplayColumns();
-        
-        return SUCCESS;
-    }
+        return type != null ? type : DEFAULT_TYPE;
+    }    
 }

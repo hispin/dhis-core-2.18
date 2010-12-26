@@ -73,10 +73,10 @@
     <tr>        
         <td>
         #if ( $mode == "table" )
-            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( 'html' )" style="width:120px">
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px"><br><br>
-            <input type="button" value="$i18n.getString( 'get_report_as_xsl' )" onclick="generateReport( 'xsl' )" style="width:120px">
-            <input type="button" value="$i18n.getString( 'get_report_as_csv' )" onclick="generateReport( 'csv' )" style="width:120px">
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( 'html' )" style="width:140px">
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px"><br><br>
+            <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="generateReport( 'xls' )" style="width:140px">
+            <input type="button" value="$i18n.getString( 'get_report_as_csv' )" onclick="generateReport( 'csv' )" style="width:140px">
         #end
         #if ( $mode == "report" )
             <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( '' )" style="width:120px">

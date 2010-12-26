@@ -29,12 +29,12 @@ package org.hisp.dhis.reporttable.jdbc;
 
 import java.util.Map;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableData;
 
 /**
  * @author Lars Helge Overland
@@ -80,11 +80,11 @@ public interface ReportTableManager
         DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit );
     
     /**
-     * Returns a ReportTableData object based on the registered ReportTableColumns
-     * for the given ReportTable.
-     *  
+     * Instantiates and populates a Grid populated with data from the given 
+     * ReportTable.
+     * 
      * @param reportTable the ReportTable.
-     * @return a ReportTableData object.
+     * @return a Grid.
      */
-    ReportTableData getDisplayReportTableData( ReportTable reportTable );
+    Grid getReportTableGrid( ReportTable reportTable );    
 }

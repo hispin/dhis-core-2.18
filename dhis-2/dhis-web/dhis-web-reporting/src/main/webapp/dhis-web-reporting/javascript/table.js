@@ -246,36 +246,3 @@ function addReportTableToDashboard( id )
         request.send( "addReportTableToDashboard.action?id=" + id );
     }
 }
-
-// -----------------------------------------------------------------------------
-// Display
-// -----------------------------------------------------------------------------
-
-function saveDisplayTable()
-{
-    var params = "id=" + document.getElementById( "reportTableId" ).value + "&";
-    
-    var table = document.getElementById( "columnTable" );
-    
-    var inputs = table.getElementsByTagName( "input" );
-    
-    for ( var i = 0; i < inputs.length; i+=2 )
-    {
-        var column = inputs[i].id;
-        var header = inputs[i].value;
-        var hidden = !( inputs[i+1].checked );
-        
-        params += "column=" + column + "-" + header + "-" + hidden + "&";
-    }
-    
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( saveDisplayTableReceived );
-    request.sendAsPost( params );
-    request.send( "saveDisplayTable.action" );
-}
-
-function saveDisplayTableReceived( messageElement )
-{
-    window.location.href = 'displayManageTableForm.action';
-}

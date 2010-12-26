@@ -58,13 +58,13 @@ import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
  * @author Tran Thanh Tri
  * @version $Id$
  */
-
 public class ExportExcelAction
     extends StreamActionSupport
 {
@@ -333,7 +333,7 @@ public class ExportExcelAction
     @Override
     protected String getContentType()
     {
-        return CONTENT_TYPE_EXCEL;
+        return ContextUtils.CONTENT_TYPE_EXCEL;
     }
 
     @Override

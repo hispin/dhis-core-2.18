@@ -48,6 +48,10 @@ public class GridTest
     {
         grid = new ListGrid();
 
+        grid.addHeader( "col1" );
+        grid.addHeader( "col2" );
+        grid.addHeader( "col3" );
+        
         grid.nextRow();        
         grid.addValue( "11" );
         grid.addValue( "12" );
@@ -74,6 +78,17 @@ public class GridTest
     public void testGetWidth()
     {
         assertEquals( 3, grid.getWidth() );
+    }
+    
+    @Test
+    public void testReplaceHeader()
+    {
+        assertTrue( grid.getHeaders().contains( "col2" ) );
+        
+        grid.replaceHeader( "col2", "Column2" );
+
+        assertFalse( grid.getHeaders().contains( "col2" ) );
+        assertTrue( grid.getHeaders().contains( "Column2" ) );
     }
     
     @Test
@@ -142,6 +157,26 @@ public class GridTest
         assertTrue( rowB.contains( "22" ) );
         assertTrue( rowB.contains( "23" ) );
         assertTrue( rowB.contains( "24" ) );
+    }
+    
+    @Test
+    public void testRemoveColumn()
+    {
+        assertEquals( 3, grid.getWidth() );
+        
+        grid.removeColumn( 2 );
+        
+        assertEquals( 2, grid.getWidth() );
+    }
+    
+    @Test
+    public void testRemoveColumnByHeader()
+    {
+        assertEquals( 3, grid.getWidth() );
+        
+        grid.removeColumn( "col2" );
+        
+        assertEquals( 2, grid.getWidth() );
     }
     
     @Test

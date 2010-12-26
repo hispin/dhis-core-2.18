@@ -205,10 +205,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- Workbook -->
   
   <bean id="org.hisp.dhis.workbook.WorkbookService"
-    class="org.hisp.dhis.workbook.impl.JExcelWorkbookService">   
-    <property name="reportTableService"
-      ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>
+    class="org.hisp.dhis.workbook.impl.JExcelWorkbookService"/>
   
   <!-- PivotTable -->
   
