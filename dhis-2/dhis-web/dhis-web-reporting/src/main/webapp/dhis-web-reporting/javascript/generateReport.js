@@ -1,8 +1,4 @@
 
-var FORMAT_HTML = "html";
-var FORMAT_XSL = "xsl";
-var FORMAT_CSV = "csv";
-
 var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
@@ -97,18 +93,7 @@ function reportStatusReceived( xmlObject )
         }
         else if ( $( "#mode" ).val() == MODE_TABLE )
         {
-        	if ( outputFormat == FORMAT_HTML )
-        	{
-        		window.location.href = "getTableData.action?id=" + $( "#id" ).val();
-        	}
-        	else if ( outputFormat == FORMAT_XSL )
-        	{
-        		window.location.href = "generateTableDataWorkbook.action?id=" + $( "#id" ).val();
-        	}
-        	else if ( outputFormat == FORMAT_CSV )
-        	{
-        		window.location.href = "getTableDataExport.action?exportFormat=CSV&id=" + $( "#id" ).val();
-        	}
+        	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=" + outputFormat;
         }
     }
     else if ( statusMessage == null )

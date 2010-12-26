@@ -31,12 +31,6 @@
 				</entry>
 				<entry>
 					<key>
-						<value>CSV</value>
-					</key>
-					<ref bean="org.hisp.dhis.importexport.CSVExportService" />
-				</entry>
-				<entry>
-					<key>
 						<value>XLS</value>
 					</key>
 					<ref bean="org.hisp.dhis.importexport.XLSExportService" />
@@ -361,16 +355,6 @@
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-	</bean>
-
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- CSV Export                                           -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-	<bean id="org.hisp.dhis.importexport.CSVExportService"
-		class="org.hisp.dhis.importexport.csv.exporter.DefaultCSVExportService">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

@@ -29,6 +29,9 @@ package org.hisp.dhis.system.grid;
 
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,11 @@ public class ListGrid
      * The title of the grid.
      */
     private String title;
+    
+    /**
+     * The subtitle of the grid.
+     */
+    private String subtitle;
     
     /**
      * A List which represents the column headers of the grid.
@@ -81,9 +89,23 @@ public class ListGrid
         return title;
     }
 
-    public void setTitle( String title )
+    public Grid setTitle( String title )
     {
         this.title = title;
+        
+        return this;
+    }
+
+    public String getSubtitle()
+    {
+        return subtitle;
+    }
+
+    public Grid setSubtitle( String subtitle )
+    {
+        this.subtitle = subtitle;
+        
+        return this;
     }
 
     public List<String> getHeaders()
@@ -91,9 +113,21 @@ public class ListGrid
         return headers;
     }
     
-    public void addHeader( String value )
+    public Grid addHeader( String value )
     {
         headers.add( value );
+        
+        return this;
+    }
+    
+    public Grid replaceHeader( String currentHeader, String newHeader )
+    {
+        if ( headers.contains( currentHeader ) )
+        {
+            headers.set( headers.indexOf( currentHeader ), newHeader );
+        }
+        
+        return this;
     }
     
     public int getHeight()
@@ -108,16 +142,20 @@ public class ListGrid
         return ( grid != null && grid.size() > 0 ) ? grid.get( 0 ).size() : 0;
     }
     
-    public void nextRow()
+    public Grid nextRow()
     {
         grid.add( new ArrayList<String>() );
         
         currentRowIndex++;
+        
+        return this;
     }
     
-    public void addValue( String value )
+    public Grid addValue( String value )
     {
         grid.get( currentRowIndex ).add( value );
+        
+        return this;
     }
     
     public List<String> getRow( int rowIndex )
@@ -152,7 +190,7 @@ public class ListGrid
         return grid.get( rowIndex ).get( columnIndex );
     }
     
-    public void addColumn( List<String> columnValues )
+    public Grid addColumn( List<String> columnValues )
     {
         verifyGridState();
         
@@ -168,9 +206,40 @@ public class ListGrid
         {
             grid.get( rowIndex++ ).add( columnValues.get( columnIndex++ ) );
         }
+        
+        return this;
     }
     
-    public void addRegressionColumn( int columnIndex )
+    public Grid removeColumn( int columnIndex )
+    {
+        verifyGridState();
+        
+        if ( headers.size() > 0 )
+        {
+            headers.remove( columnIndex );
+        }
+        
+        for ( List<String> row : grid )
+        {
+            row.remove( columnIndex );
+        }
+        
+        return this;
+    }
+    
+    public Grid removeColumn( String header )
+    {
+        int index = headers.indexOf( header );
+        
+        if ( index != -1 )
+        {
+            removeColumn( index );
+        }
+        
+        return this;
+    }
+    
+    public Grid addRegressionColumn( int columnIndex )
     {
         verifyGridState();
         
@@ -209,6 +278,36 @@ public class ListGrid
         }
 
         addColumn( regressionColumn );
+        
+        return this;
+    }
+    
+    public Grid fromResultSet( ResultSet resultSet )
+        throws SQLException
+    {
+        headers = new ArrayList<String>();
+        grid = new ArrayList<List<String>>();
+                
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        
+        int cols = metaData.getColumnCount();
+        
+        for ( int i = 0; i < cols; i++ )
+        {
+            this.addHeader( String.valueOf( metaData.getColumnName( i + 1 ) ) );
+        }
+        
+        while ( resultSet.next() )
+        {
+            this.nextRow();
+            
+            for ( int i = 0; i < cols; i++ )
+            {
+                this.addValue( String.valueOf( resultSet.getObject( i + 1 ) ) );
+            }
+        }
+        
+        return this;
     }
 
     // ---------------------------------------------------------------------
@@ -216,7 +315,8 @@ public class ListGrid
     // ---------------------------------------------------------------------
 
     /**
-     * Verifies that all grid rows are of the same length.
+     * Verifies that all grid rows are of the same length, and that the number
+     * of headers is the same as number of columns or 0.
      */
     private void verifyGridState()
     {
@@ -230,6 +330,11 @@ public class ListGrid
             }
             
             rowLength = row.size();
+        }
+        
+        if ( rowLength != null && headers.size() != 0 && headers.size() != rowLength )
+        {
+            throw new IllegalStateException( "Number of headers is not 0 and not equal to the number of columns" );
         }
     }
 

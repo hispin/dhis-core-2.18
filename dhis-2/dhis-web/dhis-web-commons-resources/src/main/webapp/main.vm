@@ -35,11 +35,9 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
-	
-	
+		
     <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
-	
-	
+		
     <script type="text/javascript" src="../main.js"></script>
   
     <script type="text/javascript" src="../request.js"></script>
@@ -47,24 +45,6 @@
       <script type="text/javascript" src="$javascript"></script>
     #end
 	
-	<script>
-		jQuery(document).ready( function()
-		{
-			jQuery.each(jQuery(":button, :submit"), function(i, item){
-				jQuery( item ).addClass( 'button' );
-			});
-			
-			jQuery.each(jQuery(":text, textarea, :password"), function(i, item){
-				jQuery( item ).addClass( 'text' );
-			});
-			
-			jQuery.each(jQuery("select"), function(i, item){
-				jQuery( item ).addClass( 'combobox' );
-			});			
-			
-		});
-	</script>
-
   </head>
   
   <body>

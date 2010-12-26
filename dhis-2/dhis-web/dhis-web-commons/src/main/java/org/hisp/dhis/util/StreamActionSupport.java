@@ -32,7 +32,6 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -44,14 +43,6 @@ import com.opensymphony.xwork2.ActionSupport;
 public abstract class StreamActionSupport
     extends ActionSupport
 {
-    protected static final String CONTENT_TYPE_PDF = "application/pdf";
-    protected static final String CONTENT_TYPE_ZIP = "application/zip";
-    protected static final String CONTENT_TYPE_JSON = "application/json";
-    protected static final String CONTENT_TYPE_HTML = "text/html";
-    protected static final String CONTENT_TYPE_TEXT = "text/plain";
-    protected static final String CONTENT_TYPE_XML = "text/xml";
-    protected static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
-    
     // -------------------------------------------------------------------------
     // ActionSupport implementation
     // -------------------------------------------------------------------------
@@ -63,21 +54,7 @@ public abstract class StreamActionSupport
         
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        if ( getContentType() != null )
-        {
-            response.setContentType( getContentType() );
-        }
-        
-        if ( getFilename() != null )
-        {
-            response.addHeader( "Content-Disposition", "attachment; filename=\"" + getFilename() + "\"" );
-        }
-        
-        if ( disallowCache() )
-        {
-            response.addHeader( "Cache-Control", "no-cache" );
-            response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
-        }
+        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename() );
         
         try
         {

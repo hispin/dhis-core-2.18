@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -57,10 +58,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.jdbc.ReportTableManager;
-import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -78,7 +77,7 @@ public class DefaultReportTableService
     private static final String NULL_REPLACEMENT = "0.0";
     private static final String MODE_REPORT = "report";
     private static final String MODE_REPORT_TABLE = "table";
-
+    
     // ---------------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------------
@@ -365,14 +364,33 @@ public class DefaultReportTableService
     }
 
     @Transactional
-    public ReportTableData getReportTableData( int id, I18nFormat format )
+    public Grid getPrettyReportTableGrid( int id, I18nFormat format )
     {
         ReportTable reportTable = getReportTable( id );
         
         reportTable.setI18nFormat( format );
         reportTable.init();
         
-        return reportTableManager.getDisplayReportTableData( reportTable );
+        Grid grid = reportTableManager.getReportTableGrid( reportTable );
+        
+        grid.setTitle( reportTable.getName() );        
+                
+        for ( String col : ReportTable.DB_COLUMNS )
+        {
+            grid.removeColumn( col );
+        }
+        
+        for ( String col : ReportTable.PRETTY_COLUMNS.keySet() )
+        {
+            grid.replaceHeader( col, ReportTable.PRETTY_COLUMNS.get( col ) );
+        }
+        
+        for ( String col : reportTable.getPrettyCrossTabColumns().keySet() )
+        {
+            grid.replaceHeader( col, reportTable.getPrettyCrossTabColumns().get( col ) );
+        }
+        
+        return grid;
     }
     
     public boolean reportTableIsGenerated( int id )

@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -81,7 +82,7 @@ public class GetReportDesignAction
     @Override
     protected String getContentType()
     {
-        return CONTENT_TYPE_XML;
+        return ContextUtils.CONTENT_TYPE_XML;
     }
 
     @Override

@@ -42,6 +42,7 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -116,7 +117,7 @@ public class RenderReportAction
     @Override
     protected String getContentType()
     {
-        return CONTENT_TYPE_PDF;
+        return ContextUtils.CONTENT_TYPE_PDF;
     }
 
     @Override

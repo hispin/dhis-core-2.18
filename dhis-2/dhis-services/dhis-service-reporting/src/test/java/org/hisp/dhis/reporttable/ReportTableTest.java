@@ -260,11 +260,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 8, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -319,11 +314,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 2, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -382,11 +372,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 4, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -449,11 +434,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 8, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -509,11 +489,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 2, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -572,11 +547,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 4, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -653,11 +623,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 16, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -718,11 +683,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 4, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -790,11 +750,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 8, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -849,11 +804,6 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 2, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 
     @Test
@@ -912,10 +862,5 @@ public class ReportTableTest
         
         assertNotNull( prettyCrossTabColumns );
         assertEquals( 4, prettyCrossTabColumns.size() );
-        
-        List<ReportTableColumn> filledDisplayColumns = reportTable.getFilledDisplayColumns();
-        
-        assertNotNull( filledDisplayColumns );
-        assertEquals( reportTable.getAllColumns().size(), filledDisplayColumns.size() );
     }
 }

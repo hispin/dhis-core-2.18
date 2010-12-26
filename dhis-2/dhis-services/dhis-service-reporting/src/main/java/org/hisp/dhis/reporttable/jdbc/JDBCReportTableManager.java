@@ -32,26 +32,23 @@ import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableColumn;
-import org.hisp.dhis.reporttable.ReportTableData;
 import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
-import org.hisp.dhis.reporttable.statement.DisplayReportTableStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
 import org.hisp.dhis.reporttable.statement.ReportTableStatement;
+import org.hisp.dhis.system.grid.ListGrid;
 
 /**
  * @author Lars Helge Overland
@@ -204,74 +201,23 @@ public class JDBCReportTableManager
         }
     }
     
-    public ReportTableData getDisplayReportTableData( ReportTable reportTable )
+    public Grid getReportTableGrid( ReportTable reportTable )
     {
-        ReportTableData data = new ReportTableData();
-        
-        // ---------------------------------------------------------------------
-        // Set name
-        // ---------------------------------------------------------------------
-
-        data.setName( reportTable.getName() );
-
-        ReportTableStatement statement = new DisplayReportTableStatement( reportTable );
-        
         StatementHolder holder = statementManager.getHolder();
-
+        
         try
         {
-            log.debug( "Get display report table data statement: " + statement.getStatement() );
+            ResultSet resultSet = holder.getStatement().executeQuery( "SELECT * FROM " + reportTable.getExistingTableName() );
             
-            ResultSet resultSet = holder.getStatement().executeQuery( statement.getStatement() );
-            
-            // -----------------------------------------------------------------
-            // Set columns
-            // -----------------------------------------------------------------
-
-            int index = 1;
-            
-            for ( ReportTableColumn column : reportTable.getFilledDisplayColumns() )
-            {
-                if ( !column.isHidden() )
-                {
-                    data.getColumns().put( index++, column.getName() );
-                
-                    data.getPrettyPrintColumns().add( column.getHeader() );
-                }
-            }
-
-            // -----------------------------------------------------------------
-            // Set data
-            // -----------------------------------------------------------------
-
-            while ( resultSet.next() )
-            {
-                SortedMap<Integer, String> row = new TreeMap<Integer, String>();
-                
-                index = 1;
-                
-                for ( ReportTableColumn column : reportTable.getFilledDisplayColumns() )
-                {
-                    if ( !column.isHidden() )
-                    {
-                        row.put( index++, String.valueOf( resultSet.getObject( column.getName() ) ) );
-                    }
-                }
-                
-                data.getRows().add( row );
-            }
-            
-            log.debug( "Number of rows: " + data.getRows().size() );
+            return new ListGrid().fromResultSet( resultSet );
         }
         catch ( Exception ex )
         {
-            throw new RuntimeException( "Failed to get display report table data", ex );
+            throw new RuntimeException( "Failed to get report table data grid", ex );
         }
         finally
         {
             holder.close();
         }
-        
-        return data;
     }
 }

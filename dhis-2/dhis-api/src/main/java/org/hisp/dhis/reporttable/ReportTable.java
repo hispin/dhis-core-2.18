@@ -28,6 +28,7 @@ package org.hisp.dhis.reporttable;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,18 @@ public class ReportTable
     public static final String TOTAL_COLUMN_PRETTY_PREFIX = "Total ";
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
+
+    public static final List<String> DB_COLUMNS = Arrays.asList( DATAELEMENT_ID, CATEGORYCOMBO_ID, 
+        INDICATOR_ID, DATASET_ID, PERIOD_ID, ORGANISATIONUNIT_ID, REPORTING_MONTH_COLUMN_NAME, PARAM_ORGANISATIONUNIT_COLUMN_NAME );
+    
+    public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() { {
+        put( DATAELEMENT_NAME, "Data element" );
+        put( CATEGORYCOMBO_NAME, "Category combination" );
+        put( INDICATOR_NAME, "Indicator" );
+        put( DATASET_NAME, "Data set" );
+        put( PERIOD_NAME, "Period" );
+        put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+    } };
     
     private static final String EMPTY_REPLACEMENT = "_";
     private static final String EMPTY = "";    
@@ -183,11 +196,6 @@ public class ReportTable
      */
     private ReportParams reportParams;
 
-    /**
-     * The list of ReportTableColumns for the ReportTable.
-     */
-    private List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>();
-    
     // -------------------------------------------------------------------------
     // Transient properties
     // -------------------------------------------------------------------------
@@ -650,38 +658,6 @@ public class ReportTable
     }
     
     /**
-     * Returns a list of ReportTableColumns for this ReportTable. Searches for
-     * persisted display columns for each column. If none is found, a
-     * ReportTableColumn is generated based on the pretty-print column name and
-     * inserted in the list.
-     */
-    public List<ReportTableColumn> getFilledDisplayColumns()
-    {
-        List<String> columns = getAllColumns();
-        
-        List<ReportTableColumn> displayColumns = new ArrayList<ReportTableColumn>( getDisplayColumns() );
-        
-        for ( String column : columns )
-        {
-            if ( !hasDisplayColumn( column ) )
-            {
-                String prettyColumn = prettyCrossTabColumns.get( column ) != null ? 
-                    prettyCrossTabColumns.get( column ) : prettyPrintColumn( column );
-                    
-                ReportTableColumn displayColumn = new ReportTableColumn();
-                
-                displayColumn.setName( column );
-                displayColumn.setHeader( prettyColumn );
-                displayColumn.setHidden( false );
-                
-                displayColumns.add( displayColumn );
-            }
-        }
-        
-        return displayColumns;
-    }
-    
-    /**
      * Returns a list of names of all columns for this ReportTable.
      */
     public List<String> getAllColumns()
@@ -691,6 +667,7 @@ public class ReportTable
         columns.addAll( getIndexColumns() );
         columns.addAll( getIndexNameColumns() );
         columns.add( ReportTable.REPORTING_MONTH_COLUMN_NAME );
+        columns.add( ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME );
         columns.addAll( getCrossTabColumns() );
         columns.addAll( getDimensionOptionColumns() );
         
@@ -708,22 +685,6 @@ public class ReportTable
         }
         
         return columns;
-    }
-    
-    /**
-     * Tests whether the column with the argument name has a corresponding ReportTableColumn.
-     */
-    public boolean hasDisplayColumn( String name )
-    {
-        for ( ReportTableColumn column : displayColumns )
-        {
-            if ( column.getName().equals( name ) && column.getHeader() != null && column.getHeader().trim().length() > 0 )
-            {
-                return true;
-            }
-        }
-        
-        return false;
     }
     
     /**
@@ -1267,17 +1228,7 @@ public class ReportTable
     {
         this.reportParams = reportParams;
     }
-
-    public List<ReportTableColumn> getDisplayColumns()
-    {
-        return displayColumns;
-    }
-
-    public void setDisplayColumns( List<ReportTableColumn> displayColumns )
-    {
-        this.displayColumns = displayColumns;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Get- and set-methods for transient properties
     // -------------------------------------------------------------------------

@@ -29,6 +29,7 @@ package org.hisp.dhis.reporttable;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**
@@ -124,17 +125,17 @@ public interface ReportTableService
      * @return the ReportTable.
      */
     ReportTable getReportTableByName( String name );
-    
-    /**
-     * Retrieves a ReportTableData object for the ReportTable with the given
-     * identifier.
-     * 
-     * @param id the identifier of the ReportTable which the ReportTableData is
-     *        based on.
-     * @return a ReportTableData object.
-     */
-    ReportTableData getReportTableData( int id, I18nFormat format );
 
+    /**
+     * Instantiates and populates a Grid populated with data from the ReportTable 
+     * with the given identifier.
+     * 
+     * @param id the ReportTable identifier.
+     * @param format the I18nFormat.
+     * @return a Grid.
+     */
+    Grid getPrettyReportTableGrid( int id, I18nFormat format );
+    
     /**
      * Tests whether the report table has been generated in the database.
      * 

@@ -27,22 +27,33 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class CodecUtilsTest
-    extends TestCase
 {
+    @Test
     public void testEncrypt()
     {
         assertEquals( "ZGhpcw==", CodecUtils.encryptBase64( "dhis" ) );
     }
-    
+
+    @Test
     public void testDecrypt()
     {
         assertEquals( "dhis", CodecUtils.decryptBase64( "ZGhpcw==" ) );
+    }
+    
+    @Test
+    public void testFilenameEncode()
+    {
+        assertEquals( "foobar", CodecUtils.filenameEncode( "foo?%*bar" ) );
+        assertEquals( "foobar", CodecUtils.filenameEncode( "%foo/:|bar<>" ) );
+        assertEquals( "foobar", CodecUtils.filenameEncode( "?foo.bar/" ) );
     }
 }

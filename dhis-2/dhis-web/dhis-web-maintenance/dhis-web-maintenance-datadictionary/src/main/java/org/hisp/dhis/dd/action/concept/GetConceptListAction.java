@@ -33,13 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.concept.Concept;
+import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.concept.comparator.ConceptNameComparator;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.paging.ActionPagingSupport;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Dang Duy Hieu

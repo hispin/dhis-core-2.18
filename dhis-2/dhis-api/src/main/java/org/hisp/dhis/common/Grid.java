@@ -27,6 +27,8 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -42,7 +44,17 @@ public interface Grid
     /**
      * Sets the grid title.
      */
-    void setTitle( String title );
+    Grid setTitle( String title );
+    
+    /**
+     * Returns the grid subtitle.
+     */
+    String getSubtitle();
+    
+    /**
+     * Sets the grid subtitle.
+     */
+    Grid setSubtitle( String subtitle );
     
     /**
      * Returns all header values.
@@ -52,7 +64,13 @@ public interface Grid
     /**
      * Adds a header value.
      */
-    void addHeader( String value );
+    Grid addHeader( String value );
+    
+    /**
+     * Replaces the header String given in the first argument with the header
+     * String given in the second argument if the former exists.
+     */
+    Grid replaceHeader( String currentHeader, String newHeader );
     
     /**
      * Returns the current height / number of rows in the grid.
@@ -67,14 +85,14 @@ public interface Grid
     /**
      * Adds a new row the the grid and moves the cursor accordingly.
      */
-    void nextRow();
+    Grid nextRow();
 
     /**
      * Adds the value to the end of the current row.
      * 
      * @param value the value to add.
      */
-    void addValue( String value );
+    Grid addValue( String value );
 
     /**
      * Returns the row with the given index.
@@ -112,12 +130,31 @@ public interface Grid
      * @throws IllegalStateException if the columnValues has different length
      *         than the rows in grid, or if the grid rows are not of the same length.
      */
-    void addColumn( List<String> columnValues );
-
+    Grid addColumn( List<String> columnValues );
+    
     /**
-     * Column must hold numeric data.
+     * Removes the header and column at the given index.
+     */
+    Grid removeColumn( int columnIndex );
+    
+    /**
+     * Removes the header and the column at the index of the given header if it
+     * exists.
+     */
+    Grid removeColumn( String header );
+    
+    /**
+     * Adds a regression column to the grid. Column must hold numeric data.
      * 
      * @param columnIndex the index of the base column.
      */
-    void addRegressionColumn( int columnIndex );
+    Grid addRegressionColumn( int columnIndex );
+    
+    /**
+     * Instantiates and populates a Grid based on the given result set. The
+     * column names are used as headers and result rows are represented as grid
+     * rows.
+     */
+    Grid fromResultSet( ResultSet resultSet )
+        throws SQLException;
 }

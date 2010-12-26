@@ -46,8 +46,6 @@ public interface WorkbookService
 {
     String ID = WorkbookService.class.getName();
     
-    String writeReportTableData( OutputStream outputStream, int id, I18nFormat format );
-    
     void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out, I18n i18n, OrganisationUnit unit, DataSet dataSet );
     
     void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format );

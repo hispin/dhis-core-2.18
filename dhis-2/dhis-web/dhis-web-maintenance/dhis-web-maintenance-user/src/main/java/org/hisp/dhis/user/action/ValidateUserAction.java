@@ -61,6 +61,7 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+    
     private Integer id;
 
     public void setId( Integer id )
@@ -78,6 +79,7 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+    
     private String message;
 
     public String getMessage()
@@ -88,12 +90,12 @@ public class ValidateUserAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
         if ( username != null )
         {
-
             UserCredentials match = userStore.getUserCredentialsByUsername( username );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -102,7 +104,6 @@ public class ValidateUserAction
 
                 return ERROR;
             }
-
         }
 
         message = i18n.getString( "everything_is_ok" );
