@@ -31,15 +31,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.comparator.DataSetCompletenessResultComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -52,8 +55,9 @@ public class GetDataCompletenessAction
     implements Action
 {
     private static final String KEY_DATA_COMPLETENESS = "dataSetCompletenessResults";
-
-    private static final String KEY_DATA_COMPLETENESS_DATASET = "dataSetCompletenessDataSet";
+    private static final String DEFAULT_TYPE = "html";    
+    private static final String SPACE = " ";
+    private static final String EMPTY = "";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -86,6 +90,13 @@ public class GetDataCompletenessAction
     {
         this.selectionTreeManager = selectionTreeManager;
     }
+    
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -112,15 +123,22 @@ public class GetDataCompletenessAction
         this.criteria = criteria;
     }
 
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<DataSetCompletenessResult> results;
+    private Grid grid;
 
-    public List<DataSetCompletenessResult> getResults()
+    public Grid getGrid()
     {
-        return results;
+        return grid;
     }
 
     // -------------------------------------------------------------------------
@@ -130,44 +148,75 @@ public class GetDataCompletenessAction
     public String execute()
         throws Exception
     {
-        SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS );
-        SessionUtils.removeSessionVar( KEY_DATA_COMPLETENESS_DATASET );
-
-        Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
-        OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
-
-        if ( periodId != null && selectedUnit != null && criteria != null )
+        Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
+        
+        if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) ) // Use last grid for any format except html
         {
-            DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
-
-            if ( dataSetId != null )
-            {
-                // -------------------------------------------------------------
-                // Display completeness by DataSets
-                // -------------------------------------------------------------
-
-                results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
-                    _periodId, selectedUnit.getId(), dataSetId ) );
-
-                DataSet dataSet = dataSetService.getDataSet( dataSetId );
-
-                SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS_DATASET, dataSet );
-            }
-            else
-            {
-                // -------------------------------------------------------------
-                // Display completeness by child OrganisationUnits for a DataSet
-                // -------------------------------------------------------------
-
-                results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
-                    _periodId, selectedUnit.getId() ) );
-            }
-
-            Collections.sort( results, new DataSetCompletenessResultComparator() );
-
-            SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, results );
+            grid = _grid;
+            
+            return type;
         }
-
-        return SUCCESS;
+        else
+        {    
+            Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
+            OrganisationUnit selectedUnit = selectionTreeManager.getSelectedOrganisationUnit();
+            
+            if ( periodId != null && selectedUnit != null && criteria != null )
+            {
+                DataSet dataSet = null;
+                List<DataSetCompletenessResult> results = null;
+    
+                DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
+    
+                if ( dataSetId != null && dataSetId != 0 ) // One data set for one organisation unit
+                {
+                    results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                        _periodId, selectedUnit.getId(), dataSetId ) );
+    
+                    dataSet = dataSetService.getDataSet( dataSetId );
+                }
+                else // All data sets for children of one organisation unit
+                {
+                    results = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
+                        _periodId, selectedUnit.getId() ) );
+                }
+    
+                Collections.sort( results, new DataSetCompletenessResultComparator() );
+                
+                grid = getGrid( results, selectedUnit, dataSet );
+                
+                SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, grid );                      
+            }
+            
+            return type != null ? type : DEFAULT_TYPE;
+        }        
+    }
+    
+    private Grid getGrid( List<DataSetCompletenessResult> results, OrganisationUnit unit, DataSet dataSet )
+    {
+        String title = i18n.getString( "data_completeness_report" );
+        String subtitle = ( unit != null ? unit.getName() : EMPTY ) + SPACE + ( dataSet != null ? dataSet.getName() : EMPTY );
+        
+        Grid grid = new ListGrid().setTitle( title ).setSubtitle( subtitle );
+        
+        grid.addHeader( i18n.getString( "name" ) );
+        grid.addHeader( i18n.getString( "actual" ) );
+        grid.addHeader( i18n.getString( "target" ) );
+        grid.addHeader( i18n.getString( "percent" ) );
+        grid.addHeader( i18n.getString( "on_time" ) );
+        grid.addHeader( i18n.getString( "percent" ) );
+        
+        for ( DataSetCompletenessResult result : results )
+        {
+            grid.nextRow();
+            grid.addValue( result.getName() );
+            grid.addValue( String.valueOf( result.getRegistrations() ) );
+            grid.addValue( String.valueOf( result.getSources() ) );
+            grid.addValue( String.valueOf( result.getPercentage() ) );
+            grid.addValue( String.valueOf( result.getRegistrationsOnTime() ) );
+            grid.addValue( String.valueOf( result.getPercentageOnTime() ) );
+        }
+        
+        return grid;
     }
 }

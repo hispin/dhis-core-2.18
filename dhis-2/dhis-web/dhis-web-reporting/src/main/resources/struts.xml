@@ -250,6 +250,7 @@
     <action name="exportTable" class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction">
       <result name="csv" type="gridCsvResult"/>
       <result name="xls" type="gridXlsResult"/>
+      <result name="pdf" type="gridPdfResult"/>
       <result name="html" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/ajax/htmlGrid.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>      
@@ -294,42 +295,12 @@
     </action>
     
     <action name="getDataCompleteness" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseDataCompleteness.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="getDataCompletenessPDF" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessPDFAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/pdf</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="DataCompletenessReport.pdf"</param>
-        <param name="bufferSize">10240</param>        
-      </result>
-	  <result name="error" type="redirect">dataCompletenessPDFError.action</result>
-    </action>
-    
-	<action name="dataCompletenessPDFError" class="org.hisp.dhis.reporting.action.NoAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-commons/oust/selectedOrgunitError.vm</param>
-		<param name="menu">/dhis-web-reporting/menu.vm</param>
-	</action>
-	
-	<action name="dataCompletenessWorkbookError" class="org.hisp.dhis.reporting.action.NoAction">
-		<result name="success" type="velocity">/main.vm</result>
-		<param name="page">/dhis-web-commons/oust/selectedOrgunitError.vm</param>
-		<param name="menu">/dhis-web-reporting/menu.vm</param>
-	</action>
-	
-    <action name="getDataCompletenessWorkbook" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessWorkbookAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/vnd.ms-excel</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="DataCompletenessReport.xls"</param>
-        <param name="bufferSize">10240</param>        
-      </result>
-      <result name="error" type="redirect">dataCompletenessWorkbookError.action</result>
-    </action>
-    
+      <result name="csv" type="gridCsvResult"/>
+      <result name="xls" type="gridXlsResult"/>
+      <result name="pdf" type="gridPdfResult"/>
+      <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
+    </action> 
+        
     <action name="displayConfigureDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/configureDataCompletenessForm.vm</param>

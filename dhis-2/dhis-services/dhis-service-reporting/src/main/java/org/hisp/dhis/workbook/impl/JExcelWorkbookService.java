@@ -29,7 +29,6 @@ package org.hisp.dhis.workbook.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
 import java.util.List;
 
 import jxl.Workbook;
@@ -42,8 +41,6 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.hisp.dhis.completeness.DataSetCompletenessResult;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,78 +61,6 @@ public class JExcelWorkbookService
     // -------------------------------------------------------------------------
     // WorkbookService implementation
     // -------------------------------------------------------------------------
-
-    public void writeDataSetCompletenessResult( Collection<DataSetCompletenessResult> results, OutputStream out,
-        I18n i18n, OrganisationUnit unit, DataSet dataSet )
-    {
-        final int MARGIN_LEFT = 1;
-
-        WritableCellFormat documentTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 15,
-            WritableFont.NO_BOLD, false ) );
-        WritableCellFormat subTitle = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 13,
-            WritableFont.NO_BOLD, false ) );
-        WritableCellFormat columnHeader = new WritableCellFormat( new WritableFont( WritableFont.TAHOMA, 11,
-            WritableFont.NO_BOLD, true ) );
-        WritableCellFormat text = new WritableCellFormat( new WritableFont( WritableFont.ARIAL, 11,
-            WritableFont.NO_BOLD, false ) );
-
-        try
-        {
-            WritableWorkbook workbook = Workbook.createWorkbook( out );
-
-            WritableSheet sheet = workbook.createSheet( "Data completeness", 0 );
-
-            String dataSetName = dataSet != null ? " - " + dataSet.getName() : "";
-
-            sheet.addCell( new Label( MARGIN_LEFT, 1, i18n.getString( "data_completeness_report" ) + " - "
-                + unit.getName() + dataSetName, documentTitle ) );
-
-            sheet.addCell( new Label( MARGIN_LEFT, 3, i18n.getString( "district_health_information_software" ) + " - "
-                + DateUtils.getMediumDateString(), subTitle ) );
-
-            int row = 5;
-
-            sheet.addCell( new Label( MARGIN_LEFT, row, i18n.getString( "name" ), columnHeader ) );
-            sheet.addCell( new Label( MARGIN_LEFT + 1, row, i18n.getString( "actual" ), columnHeader ) );
-            sheet.addCell( new Label( MARGIN_LEFT + 2, row, i18n.getString( "target" ), columnHeader ) );
-            sheet.addCell( new Label( MARGIN_LEFT + 3, row, i18n.getString( "percent" ), columnHeader ) );
-            sheet.addCell( new Label( MARGIN_LEFT + 4, row, i18n.getString( "on_time" ), columnHeader ) );
-            sheet.addCell( new Label( MARGIN_LEFT + 5, row, i18n.getString( "percent" ), columnHeader ) );
-
-            row = 7;
-
-            if ( results != null )
-            {
-                for ( DataSetCompletenessResult result : results )
-                {
-                    sheet.addCell( new Label( MARGIN_LEFT, row, result.getName(), text ) );
-                    sheet.addCell( new Number( MARGIN_LEFT + 1, row, result.getRegistrations(), text ) );
-                    sheet.addCell( new Number( MARGIN_LEFT + 2, row, result.getSources(), text ) );
-                    sheet.addCell( new Number( MARGIN_LEFT + 3, row, result.getPercentage(), text ) );
-                    sheet.addCell( new Number( MARGIN_LEFT + 4, row, result.getRegistrationsOnTime(), text ) );
-                    sheet.addCell( new Number( MARGIN_LEFT + 5, row, result.getPercentageOnTime(), text ) );
-
-                    row++;
-                }
-            }
-
-            workbook.write();
-
-            workbook.close();
-        }
-        catch ( IOException ex )
-        {
-            throw new RuntimeException( "Failed to create workbook", ex );
-        }
-        catch ( RowsExceededException ex )
-        {
-            throw new RuntimeException( "Rows exceeded", ex );
-        }
-        catch ( WriteException ex )
-        {
-            throw new RuntimeException( "Write failed", ex );
-        }
-    }
 
     public void writeValidationResult( List<ValidationResult> results, OutputStream out, I18n i18n, I18nFormat format )
     {
