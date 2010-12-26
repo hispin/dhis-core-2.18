@@ -75,14 +75,9 @@ public class DataElementConverter
         List<DataElement> elements = new ArrayList<DataElement>( dataElementService.getDataElements( params.getDataElements() ) );
         Collections.sort( elements, new DataElementNameComparator() );
         
-        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font TEXT = new Font( bf, 9, Font.NORMAL );
-        Font ITALIC = new Font( bf, 9, Font.ITALIC );
-        Font HEADER3 = new Font( bf, 12, Font.BOLD );
-
         for ( DataElement element : elements )
         {
-            addTableToDocument( document, printDataElement( element, i18n, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
+            addTableToDocument( document, printDataElement( element, i18n, true, 0.40f, 0.60f ) );
         }
     }
 }

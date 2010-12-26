@@ -41,8 +41,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 
 /**
  * @author Lars Helge Overland
@@ -76,14 +74,9 @@ public class OrganisationUnitConverter
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() ) );
         Collections.sort( units, new OrganisationUnitNameComparator() );
 
-        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font ITALIC = new Font( bf, 9, Font.ITALIC );
-        Font TEXT = new Font( bf, 9, Font.NORMAL );
-        Font HEADER3 = new Font( bf, 12, Font.BOLD );
-
         for ( OrganisationUnit unit : units )
         {
-            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, HEADER3, ITALIC, TEXT, true, 0.40f, 0.60f ) );
+            addTableToDocument( document, printOrganisationUnit( unit, i18n, format, true, 0.40f, 0.60f ) );
         }
     }
 }

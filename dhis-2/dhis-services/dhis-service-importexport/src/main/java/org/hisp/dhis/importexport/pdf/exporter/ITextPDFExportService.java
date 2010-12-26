@@ -41,7 +41,6 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.pdf.converter.DataElementConverter;
-import org.hisp.dhis.importexport.pdf.converter.ExtendedDataElementConverter;
 import org.hisp.dhis.importexport.pdf.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.pdf.converter.OrganisationUnitHierarchyConverter;
@@ -132,7 +131,6 @@ public class ITextPDFExportService
 
             thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
             thread.setIndicatorConverter( new IndicatorConverter( indicatorService, expressionService ) );
-            thread.setExtendedDataElementConverter( new ExtendedDataElementConverter( dataElementService ) );
             thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
                 organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );

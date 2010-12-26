@@ -29,13 +29,8 @@ package org.hisp.dhis.databrowser;
 
 import static org.hisp.dhis.system.util.PDFUtils.addTableToDocument;
 import static org.hisp.dhis.system.util.PDFUtils.closeDocument;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader5Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader6Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getHeader7Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText5Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText6Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getText7Cell;
-import static org.hisp.dhis.system.util.PDFUtils.getTrueTypeFontByDimension;
+import static org.hisp.dhis.system.util.PDFUtils.getHeaderCell;
+import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
 import static org.hisp.dhis.system.util.PDFUtils.openDocument;
 
 import java.awt.Color;
@@ -45,6 +40,7 @@ import java.util.List;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -54,7 +50,6 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
@@ -65,24 +60,6 @@ import com.lowagie.text.pdf.PdfPTable;
 public class DefaultDataBrowserPdfService
     implements DataBrowserPdfService
 {
-    private static BaseFont bf;
-
-    private Font titleFont;
-
-    private Font periodFont;
-
-    private Font header5Font;
-
-    private Font header6Font;
-
-    private Font header7Font;
-
-    private Font text5Font;
-
-    private Font text6Font;
-
-    private Font text7Font;
-
     private static final Color headColor = new Color( 0xC0D9D9 ); // Blueish
 
     private static final Color parColor = new Color( 0xDDDDDD ); // Greyish
@@ -103,7 +80,6 @@ public class DefaultDataBrowserPdfService
 
         try
         {
-            this.initFont();
             Document document;
 
             // DataBrowser table
@@ -154,8 +130,7 @@ public class DefaultDataBrowserPdfService
         String dataBrowserToDate, String dataBrowserPeriodType, I18n i18n )
         throws DocumentException
     {
-        Paragraph titleParagraph = new Paragraph( i18n.getString( "export_results_for" ) + " " + dataBrowserTitleName,
-            titleFont );
+        Paragraph titleParagraph = new Paragraph( i18n.getString( "export_results_for" ) + " " + dataBrowserTitleName, PDFUtils.getBoldFont( 12 ) );
 
         String fromDate = dataBrowserFromDate;
         if ( dataBrowserFromDate.length() == 0 )
@@ -171,7 +146,7 @@ public class DefaultDataBrowserPdfService
 
         Paragraph periodParagraph = new Paragraph( i18n.getString( "from_date" ) + ": " + fromDate + " "
             + i18n.getString( "to_date" ) + ": " + toDate + ", " + i18n.getString( "period_type" ) + ": "
-            + i18n.getString( dataBrowserPeriodType ), periodFont );
+            + i18n.getString( dataBrowserPeriodType ), PDFUtils.getFont( 8 ) );
 
         if ( i18n != null )
         {
@@ -261,22 +236,7 @@ public class DefaultDataBrowserPdfService
 
     private PdfPCell createHeaderCell( String columnName, int fontSize, Color color )
     {
-        PdfPCell cell;
-
-        // Set font size for header cell
-        if ( fontSize == 4 )
-        {
-            cell = new PdfPCell( getHeader7Cell( columnName, 1, header7Font ) );
-        }
-        else if ( fontSize == 6 )
-        {
-            cell = new PdfPCell( getHeader6Cell( columnName, 1, header6Font ) );
-        }
-        else
-        // Default is 8
-        {
-            cell = new PdfPCell( getHeader5Cell( columnName, 1, header5Font ) );
-        }
+        PdfPCell cell = getHeaderCell( columnName, 1 );
 
         cell.setMinimumHeight( fontSize );
         cell.setBorder( Rectangle.BOX );
@@ -287,22 +247,7 @@ public class DefaultDataBrowserPdfService
 
     private PdfPCell createTextCell( String columnName, int fontSize, Color color )
     {
-        PdfPCell cell;
-
-        // Set font size for header cell
-        if ( fontSize == 4 )
-        {
-            cell = new PdfPCell( getText7Cell( columnName, text7Font ) );
-        }
-        else if ( fontSize == 6 )
-        {
-            cell = new PdfPCell( getText6Cell( columnName, text6Font ) );
-        }
-        else
-        // Default is 8
-        {
-            cell = new PdfPCell( getText5Cell( columnName, text5Font ) );
-        }
+        PdfPCell cell = getTextCell( columnName );
 
         cell.setMinimumHeight( fontSize );
         cell.setBorder( Rectangle.BOX );
@@ -324,19 +269,4 @@ public class DefaultDataBrowserPdfService
         }
         table.setWidths( widths );
     }
-
-    private void initFont()
-    {
-        bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-
-        titleFont = new Font( bf, 16, Font.HELVETICA );
-        periodFont = new Font( bf, 8, Font.HELVETICA );
-        header5Font = new Font( bf, 8, Font.BOLD );
-        header6Font = new Font( bf, 6, Font.BOLD );
-        header7Font = new Font( bf, 4, Font.BOLD );
-        text5Font = new Font( bf, 8, Font.NORMAL );
-        text6Font = new Font( bf, 6, Font.NORMAL );
-        text7Font = new Font( bf, 4, Font.NORMAL );
-    }
-
 }

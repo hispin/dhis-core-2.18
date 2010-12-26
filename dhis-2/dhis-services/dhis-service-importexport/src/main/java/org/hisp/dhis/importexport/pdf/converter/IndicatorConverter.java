@@ -42,8 +42,6 @@ import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 
 /**
  * @author Lars Helge Overland
@@ -79,15 +77,9 @@ public class IndicatorConverter
         List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getIndicators( params.getIndicators() ) );
         Collections.sort( indicators, new IndicatorNameComparator() );
 
-        BaseFont bf = getTrueTypeFontByDimension( BaseFont.IDENTITY_H );
-        Font TEXT = new Font( bf, 9, Font.NORMAL );
-        Font ITALIC = new Font( bf, 9, Font.ITALIC );
-        Font HEADER3 = new Font( bf, 12, Font.BOLD );
-
         for ( Indicator indicator : indicators )
         {
-            addTableToDocument( document, printIndicator( indicator, i18n, expressionService, HEADER3, ITALIC, TEXT,
-                true, 0.40f, 0.60f ) );
+            addTableToDocument( document, printIndicator( indicator, i18n, expressionService, true, 0.40f, 0.60f ) );
         }
     }
 }
