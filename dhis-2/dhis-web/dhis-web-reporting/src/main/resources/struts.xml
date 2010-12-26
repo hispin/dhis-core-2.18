@@ -390,7 +390,14 @@
         
     <!-- Organisation Unit Distribution -->
   
-    <action name="displayOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">
+    <action name="getOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">      
+      <result name="csv" type="gridCsvResult"/>
+      <result name="xls" type="gridXlsResult"/>
+      <result name="pdf" type="gridPdfResult"/>
+      <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
+    </action>    
+  
+    <action name="displayOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewOrgUnitDistribution.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
