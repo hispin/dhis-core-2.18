@@ -29,14 +29,13 @@ package org.hisp.dhis.validation;
 
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
@@ -62,8 +61,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultValidationRuleService
     implements ValidationRuleService
 {
-    private static final Log log = LogFactory.getLog( DefaultValidationRuleService.class );
-    
     private static final int DECIMALS = 1;
     
     // -------------------------------------------------------------------------
@@ -167,8 +164,6 @@ public class DefaultValidationRuleService
             {
                 validationViolations.addAll( validateInternal( period, source, validationRules, true ) );
             }
-            
-            log.info( "Validated " + source );
         }
         
         return validationViolations;
@@ -194,8 +189,6 @@ public class DefaultValidationRuleService
             {
                 validationViolations.addAll( validateInternal( period, source, validationRules, true ) );
             }
-            
-            log.info( "Validated " + source );
         }
         
         return validationViolations;
@@ -218,8 +211,6 @@ public class DefaultValidationRuleService
                     validationViolations.addAll( validateInternal( period, source, relevantRules, false ) );
                 }
             }
-            
-            log.info( "Validated " + source );
         }
 
         return validationViolations;
@@ -244,8 +235,6 @@ public class DefaultValidationRuleService
                     validationViolations.addAll( validateInternal( period, source, relevantRules, false ) );
                 }
             }
-            
-            log.info( "Validated " + source );
         }
 
         return validationViolations;

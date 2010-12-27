@@ -163,28 +163,15 @@
     <action name="viewValidationResultDetails" class="org.hisp.dhis.validationrule.action.GetValidationResultDetailsAction">
       <result name="success" type="velocity">/popup.vm</result>
       <param name="page">/dhis-web-validationrule/viewValidationResultDetailsForm.vm</param>
+      <param name="javascripts">javascript/runValidation.js</param>
     </action>
     
-    <action name="generateValidationResultPDF" class="org.hisp.dhis.validationrule.action.GenerateValidationResultPDFAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/pdf</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="ValidationReport.pdf"</param>
-        <param name="bufferSize">10240</param>				
-      </result>
-      <result name="none" type="redirect">showRunValidationForm.action</result>
+    <action name="exportValidationResult" class="org.hisp.dhis.validationrule.action.ExportValidationResultAction">
+      <result name="csv" type="gridCsvResult"/>
+      <result name="xls" type="gridXlsResult"/>
+      <result name="pdf" type="gridPdfResult"/>      
     </action>
-    
-    <action name="generateValidationResultWorkbook" class="org.hisp.dhis.validationrule.action.GenerateValidationResultWorkbookAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/vnd.ms-excel</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="ValidationReport.xls"</param>
-        <param name="bufferSize">10240</param>        
-      </result>
-      <result name="none" type="redirect">showRunValidationForm.action</result>
-    </action>
-    
+        
     <!-- Data analysis -->
     
     <action name="viewAnalysisForm" class="org.hisp.dhis.validationrule.action.dataanalysis.ViewAnalysisFormAction">

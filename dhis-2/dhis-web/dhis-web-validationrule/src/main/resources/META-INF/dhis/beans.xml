@@ -230,21 +230,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>  
   
-  <bean id="org.hisp.dhis.validationrule.action.GenerateValidationResultPDFAction"
-    class="org.hisp.dhis.validationrule.action.GenerateValidationResultPDFAction"
-    scope="prototype">
-    <property name="pdfService">
-      <ref bean="org.hisp.dhis.pdf.PdfService"/>
-    </property>
-  </bean>      
-  
-  <bean id="org.hisp.dhis.validationrule.action.GenerateValidationResultWorkbookAction"
-    class="org.hisp.dhis.validationrule.action.GenerateValidationResultWorkbookAction"
-    scope="prototype">
-    <property name="workbookService">
-      <ref bean="org.hisp.dhis.workbook.WorkbookService"/>
-    </property>
-  </bean>
+  <bean id="org.hisp.dhis.validationrule.action.ExportValidationResultAction"
+  	class="org.hisp.dhis.validationrule.action.ExportValidationResultAction"
+  	scope="prototype"/>
   
   <!-- Data analysis -->
   
