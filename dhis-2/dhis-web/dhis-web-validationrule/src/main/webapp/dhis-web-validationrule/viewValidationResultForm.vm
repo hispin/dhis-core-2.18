@@ -7,28 +7,24 @@
 	    <col width="150">
         <col width="150">
         <col width="150">
-	    <col>
+        <col width="150">
 	</colgroup>
 	<tr>
 		<td>$i18n.getString( "start_date" ):</td>
 		<td>$startDate</td>
-		<td><input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:100%" 
-				onclick="window.location.href='generateValidationResultPDF.action'">
-		</td>
-		<td><input name="button" type="button" style="width:100%" 
-                onClick="window.location.href='showRunValidationForm.action'" value="$i18n.getString( 'done' )">
-		</td>
+		<td><input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:140px" onclick="exportValidationResult( 'pdf' )"></td>
+		<td><input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:140px" onclick="exportValidationResult( 'xls' )"></td>
+		<td>#if( $aggregate )<input id="resultTypeButton" type="button" value="$i18n.getString( 'see_statistics' )" style="width:140px" onclick="showAggregateResults()">#end</td>
     </tr>
 	<tr>
 		<td>$i18n.getString( "end_date" ):</td>
 		<td>$endDate</td>
-		<td><input type="button" value="$i18n.getString( 'generate_workbook' )" style="width:100%"
-                onclick="window.location.href='generateValidationResultWorkbook.action'">
-		</td>
-		<td>#if( $aggregate )<input id="resultTypeButton" type="button" value="$i18n.getString( 'see_statistics' )" style="width:100%" onclick="showAggregateResults()">#end</td>
+		<td><input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="exportValidationResult( 'csv' )"></td>
+		<td><input name="button" type="button" style="width:140px" onclick="window.location.href='showRunValidationForm.action'" value="$i18n.getString( 'done' )"></td>
+		<td></td>
 	</tr>
 	<tr>
-		<td colspan="4" height="15"></td>
+		<td colspan="5" height="15"></td>
 	</tr>
 </table>
 #if ( $validationResults.size() == 0 )

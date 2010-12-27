@@ -124,3 +124,9 @@ function showValidationResults()
 	button.onclick = function() { showAggregateResults(); };
 	button.value = "See statistics";
 }
+
+function exportValidationResult( type )
+{
+	window.location.href = 'exportValidationResult.action?type=' + type;
+}
+

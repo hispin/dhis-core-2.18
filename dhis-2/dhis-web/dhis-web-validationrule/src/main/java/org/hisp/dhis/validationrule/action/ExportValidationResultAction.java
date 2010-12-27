@@ -27,39 +27,34 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.lang.xwork.StringUtils;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.pdf.PdfService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.validation.ValidationResult;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class GenerateValidationResultPDFAction
-    extends ActionSupport
+public class ExportValidationResultAction
+    implements Action
 {
+    private static final String DEFAULT_TYPE = "pdf";
+    
     private static final String KEY_VALIDATIONRESULT = "validationResult";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private PdfService pdfService;
-
-    public void setPdfService( PdfService pdfService )
-    {
-        this.pdfService = pdfService;
-    }
-    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -73,35 +68,77 @@ public class GenerateValidationResultPDFAction
     {
         this.i18n = i18n;
     }
+    
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private InputStream inputStream;
+    private Grid grid;
 
-    public InputStream getInputStream()
+    public Grid getGrid()
     {
-        return inputStream;
+        return grid;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     public String execute()
         throws Exception
+    {
+        grid = generateGrid();
+        
+        type = StringUtils.defaultIfEmpty( type, DEFAULT_TYPE );
+        
+        return type;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private Grid generateGrid()
     {
         List<ValidationResult> results = (List<ValidationResult>) SessionUtils.
             getSessionVar( KEY_VALIDATIONRESULT );
         
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Grid grid = new ListGrid();
         
-        pdfService.writeValidationResult( results, out, i18n, format );
-
-        inputStream = new ByteArrayInputStream( out.toByteArray() );
-                
-        return SUCCESS;
+        grid.setTitle( i18n.getString( "data_quality_report" ) );
+        //TODO subtitle
+        
+        grid.addHeader( i18n.getString( "source" ) );
+        grid.addHeader( i18n.getString( "period" ) );
+        grid.addHeader( i18n.getString( "left_side_description" ) );
+        grid.addHeader( i18n.getString( "value" ) );
+        grid.addHeader( i18n.getString( "operator" ) );
+        grid.addHeader( i18n.getString( "value" ) );
+        grid.addHeader( i18n.getString( "right_side_description" ) );
+    
+        for ( ValidationResult validationResult : results )
+        {
+            OrganisationUnit unit = (OrganisationUnit) validationResult.getSource();
+            Period period = validationResult.getPeriod();
+            
+            grid.nextRow();
+            grid.addValue( unit.getName() );
+            grid.addValue( format.formatPeriod( period ) );
+            grid.addValue( validationResult.getValidationRule().getLeftSide().getDescription() ); //TODO lazy prone
+            grid.addValue( String.valueOf( validationResult.getLeftsideValue() ) );
+            grid.addValue( i18n.getString( validationResult.getValidationRule().getOperator() ) );
+            grid.addValue( String.valueOf( validationResult.getRightsideValue() ) );
+            grid.addValue( validationResult.getValidationRule().getRightSide().getDescription() );
+        }
+        
+        return grid;
     }
 }
