@@ -74,6 +74,18 @@ public class UpdateProgramAction
     {
         this.description = description;
     }
+    
+    private Integer version;
+
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( Integer version )
+    {
+        this.version = version;
+    }
 
     /**
      * Description of Date of Enrollment This description is differ from each
@@ -119,9 +131,9 @@ public class UpdateProgramAction
         throws Exception
     {
         Program program = programService.getProgram( id );
-
         program.setName( name );
         program.setDescription( description );
+        program.setVersion(version);
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMinDaysAllowedInputData( minDaysAllowedInputData );

@@ -21,6 +21,7 @@ import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.service.ActivityReportingService;
 import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
@@ -173,6 +174,15 @@ public class OrgUnitResource
         throws NotAllowedException
     {
         activityReportingService.saveActivityReport( unit, activityValue );
+    }
+
+    @POST
+    @Path( "programs" )
+    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
+    {
+        MobileModel model = new MobileModel();
+        model.setPrograms( programService.updateProgram(programsFromClient, locale, unit) );
+        return model;
     }
 
     @Required

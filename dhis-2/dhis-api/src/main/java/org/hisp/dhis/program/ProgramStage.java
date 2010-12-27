@@ -60,6 +60,7 @@ public class ProgramStage
 
     public ProgramStage()
     {
+
     }
 
     public ProgramStage( String name, Program program )

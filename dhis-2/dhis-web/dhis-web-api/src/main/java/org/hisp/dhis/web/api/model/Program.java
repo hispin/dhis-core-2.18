@@ -36,6 +36,18 @@ public class Program
     extends Model
 {
 
+    private int version;
+    
+    public int getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( int version )
+    {
+        this.version = version;
+    }
+
     private List<ProgramStage> programStages;
 
     public List<ProgramStage> getProgramStages()
@@ -54,6 +66,7 @@ public class Program
     {
         dout.writeInt( this.getId() );
         dout.writeUTF( this.getName() );
+        dout.writeInt( this.getVersion() );
         dout.writeInt( programStages.size() );
         for ( int i = 0; i < programStages.size(); i++ )
         {

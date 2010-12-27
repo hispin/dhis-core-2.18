@@ -43,7 +43,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @version TableAlteror.java Sep 9, 2010 10:22:29 PM
  */
-public class TableAlteror extends AbstractStartupRoutine
+public class TableAlteror
+    extends AbstractStartupRoutine
 {
     private static final Log log = LogFactory.getLog( TableAlteror.class );
 
@@ -57,6 +58,7 @@ public class TableAlteror extends AbstractStartupRoutine
     {
         this.statementManager = statementManager;
     }
+
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
@@ -66,22 +68,27 @@ public class TableAlteror extends AbstractStartupRoutine
         throws Exception
     {
         updatePatientOrgunitAssociation();
-        
+
         updateDOBType();
-        
-		updateDataSetMobileAttribute();
-		
-		updateDataSetVersionAttribute();
-		
-        executeSql("UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT +"' WHERE type IS NULL");
-        
-        executeSql("UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL");
-        
-        executeSql("UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL");
+
+        executeSql( "UPDATE program SET version = 1 WHERE version is NULL" );
+
+        updateDataSetMobileAttribute();
+
+        updateDataSetVersionAttribute();
+
+        executeSql( "UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT
+            + "' WHERE type IS NULL" );
+
+        executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
+
+        executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
+
     }
 
-    private void updatePatientOrgunitAssociation(){
-        
+    private void updatePatientOrgunitAssociation()
+    {
+
         StatementHolder holder = statementManager.getHolder();
 
         try
@@ -101,7 +108,7 @@ public class TableAlteror extends AbstractStartupRoutine
                     executeSql( "UPDATE patient SET organisationunitid=" + resultSet.getInt( 2 ) + " WHERE patientid="
                         + resultSet.getInt( 1 ) );
                 }
-                
+
                 executeSql( "ALTER TABLE patientidentifier DROP COLUMN organisationunitid" );
             }
         }
@@ -114,17 +121,18 @@ public class TableAlteror extends AbstractStartupRoutine
             holder.close();
         }
     }
-    
-    private void updateDOBType(){
+
+    private void updateDOBType()
+    {
         StatementHolder holder = statementManager.getHolder();
 
         try
         {
-            executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true");
-            
-            executeSql("ALTER TABLE patient drop column birthdateestimated");
-            
-            executeSql("DELETE FROM validationcriteria where property='birthdateestimated'");
+            executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true" );
+
+            executeSql( "ALTER TABLE patient drop column birthdateestimated" );
+
+            executeSql( "DELETE FROM validationcriteria where property='birthdateestimated'" );
         }
         catch ( Exception ex )
         {
@@ -135,13 +143,14 @@ public class TableAlteror extends AbstractStartupRoutine
             holder.close();
         }
     }
-	
-	private void updateDataSetMobileAttribute(){
-		StatementHolder holder = statementManager.getHolder();
-		
-		try
+
+    private void updateDataSetMobileAttribute()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
         {
-            executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null");
+            executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
         }
         catch ( Exception ex )
         {
@@ -151,14 +160,15 @@ public class TableAlteror extends AbstractStartupRoutine
         {
             holder.close();
         }
-	}
-	
-	private void updateDataSetVersionAttribute(){
-		StatementHolder holder = statementManager.getHolder();
-		
-		try
+    }
+
+    private void updateDataSetVersionAttribute()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
         {
-            executeSql( "UPDATE dataset SET version = 1 WHERE version is null");
+            executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
         }
         catch ( Exception ex )
         {
@@ -168,8 +178,8 @@ public class TableAlteror extends AbstractStartupRoutine
         {
             holder.close();
         }
-	}
-    
+    }
+
     private int executeSql( String sql )
     {
         try

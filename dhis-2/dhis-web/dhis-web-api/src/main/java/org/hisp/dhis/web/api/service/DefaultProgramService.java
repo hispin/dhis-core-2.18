@@ -35,6 +35,8 @@ import java.util.Locale;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.api.model.DataElement;
+import org.hisp.dhis.web.api.model.Model;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.Program;
 import org.hisp.dhis.web.api.model.ProgramStage;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
@@ -67,6 +69,40 @@ public class DefaultProgramService
         return programs;
     }
 
+    public List<Program> updateProgram( ModelList programsFromClient, String localeString, OrganisationUnit unit )
+    {
+        List<Program> programs = new ArrayList<Program>();
+        boolean isExisted = false;
+        
+        //Get all Program belong to this OrgUnit
+        List<Program> serverPrograms = this.getPrograms( unit, localeString );
+        for ( int i = 0; i < serverPrograms.size(); i++ )
+        {
+            Program program = serverPrograms.get( i );
+            
+            //Loop thought the list of program from client
+            for ( int j = 0; j < programsFromClient.getModels().size(); j++ )
+            {
+                Model model = programsFromClient.getModels().get( j );
+                if ( program.getId() == model.getId() )
+                {
+                    //Version is different
+                    if ( program.getVersion() != Integer.parseInt( model.getName() ) )
+                    {
+                        programs.add( program );
+                        isExisted = true;
+                    }
+                }
+            }
+            //Server has more program than client
+            if ( isExisted = false )
+            {
+                programs.add( program );
+            }
+        }
+        return programs;
+    }
+
     public Program getProgram( int programId, String localeString )
     {
         Locale locale = LocaleUtil.getLocale( localeString );
@@ -79,6 +115,7 @@ public class DefaultProgramService
 
         pr.setId( program.getId() );
         pr.setName( program.getName() );
+        pr.setVersion( program.getVersion() );
 
         List<ProgramStage> prStgs = new ArrayList<ProgramStage>();
 
@@ -89,7 +126,6 @@ public class DefaultProgramService
             ProgramStage prStg = new ProgramStage();
             prStg.setId( programStage.getId() );
             prStg.setName( programStage.getName() );
-
             List<DataElement> des = new ArrayList<DataElement>();
 
             for ( org.hisp.dhis.program.ProgramStageDataElement programStagedataElement : programStage
@@ -128,5 +164,4 @@ public class DefaultProgramService
     {
         this.i18nService = i18nService;
     }
-
 }
