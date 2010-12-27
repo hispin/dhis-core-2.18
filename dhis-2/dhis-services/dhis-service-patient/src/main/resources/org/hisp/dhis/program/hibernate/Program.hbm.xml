@@ -12,7 +12,9 @@
     
     <property name="name" not-null="true" unique="true" length="160"/>
     
-    <property name="description" type="text"/>  
+    <property name="description" type="text"/>
+	  
+	<property name="version"/>  
     
     <property name="dateOfEnrollmentDescription" type="text" not-null="true"/>
      

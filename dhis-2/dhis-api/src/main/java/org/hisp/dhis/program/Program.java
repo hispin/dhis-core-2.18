@@ -48,6 +48,8 @@ public class Program
     private String name;
 
     private String description;
+    
+    private Integer version;
 
     /**
      * Description of Date of Enrollment This description is differ from each
@@ -157,6 +159,17 @@ public class Program
     public void setOrganisationUnits( Set<OrganisationUnit> organisationUnits )
     {
         this.organisationUnits = organisationUnits;
+    }
+    
+
+    public Integer getVersion()
+    {
+        return version;
+    }
+
+    public void setVersion( Integer version )
+    {
+        this.version = version;
     }
 
     public Set<OrganisationUnit> getOrganisationUnits()

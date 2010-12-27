@@ -32,27 +32,28 @@ import org.hisp.dhis.dataelement.DataElement;
 
 /**
  * @author Viet Nguyen
- *
+ * 
  * @version $Id$
  */
-public class ProgramStageDataElement implements Serializable
+public class ProgramStageDataElement
+    implements Serializable
 {
-    
+
     /**
      * Part of composite key
      */
     private ProgramStage programStage;
-    
+
     /**
      * Part of composite key
      */
     private DataElement dataElement;
-    
+
     /*
-     * True if this dataElement is mandatory in the dataEntryForm for this programStage
+     * True if this dataElement is mandatory in the dataEntryForm for this
+     * programStage
      */
     private boolean compulsory = false;
-    
 
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory )
     {
@@ -60,12 +61,11 @@ public class ProgramStageDataElement implements Serializable
         this.dataElement = dataElement;
         this.compulsory = compulsory;
     }
-    
+
     public ProgramStageDataElement()
     {
-        
     }
-    
+
     public ProgramStage getProgramStage()
     {
         return programStage;
@@ -122,7 +122,8 @@ public class ProgramStageDataElement implements Serializable
 
         final ProgramStageDataElement other = (ProgramStageDataElement) object;
 
-        return dataElement.getId() == other.getDataElement().getId() && programStage.getId() == other.getProgramStage().getId();
+        return dataElement.getId() == other.getDataElement().getId()
+            && programStage.getId() == other.getProgramStage().getId();
     }
 
 }

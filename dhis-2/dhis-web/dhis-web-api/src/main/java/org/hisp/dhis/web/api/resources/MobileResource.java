@@ -118,6 +118,8 @@ public class MobileResource
             .build( unit.getId() ).toString() );
         orgUnit.setUploadActivityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activities" )
             .build( unit.getId() ).toString() );
+        orgUnit.setUpdateProgramUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "programs" )
+            .build( unit.getId() ).toString() );
         orgUnit.setUpdateDataSetUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "updateDataSets" )
             .build( unit.getId() ).toString()  );
         return orgUnit;

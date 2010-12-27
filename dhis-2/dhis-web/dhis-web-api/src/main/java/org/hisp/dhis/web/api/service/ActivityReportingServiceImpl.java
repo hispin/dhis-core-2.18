@@ -109,21 +109,21 @@ public class ActivityReportingServiceImpl
 
         List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
 
-        if (DEBUG)
+        if ( DEBUG )
             log.debug( "Filtering through " + allActivities.size() + " activities" );
 
         for ( Activity activity : allActivities )
         {
             long dueTime = activity.getDueDate().getTime();
-            
+
             if ( to.isBefore( dueTime ) )
             {
                 continue;
             }
 
-
-            if (DEBUG)
-                log.debug( "Activity " + activity.getBeneficiary().getFirstName() + ", " + activity.getTask().getProgramStage().getName() );
+            if ( DEBUG )
+                log.debug( "Activity " + activity.getBeneficiary().getFirstName() + ", "
+                    + activity.getTask().getProgramStage().getName() );
 
             if ( from.isBefore( dueTime ) )
             {
@@ -135,12 +135,12 @@ public class ActivityReportingServiceImpl
                 a.setLate( true );
                 items.add( a );
             }
-            
-            if (items.size() > 10)
+
+            if ( items.size() > 10 )
                 break;
         }
 
-        if (DEBUG)
+        if ( DEBUG )
             log.debug( "Found " + items.size() + " current activities" );
 
         if ( items.isEmpty() )
@@ -181,6 +181,7 @@ public class ActivityReportingServiceImpl
         task.setCompleted( stageInstance.isCompleted() );
         task.setId( stageInstance.getId() );
         task.setProgramStageId( stageInstance.getProgramStage().getId() );
+        task.setProgramId( stageInstance.getProgramInstance().getProgram().getId() );
 
         return task;
     }
@@ -196,7 +197,7 @@ public class ActivityReportingServiceImpl
         beneficiary.setLastName( patient.getLastName() );
         beneficiary.setMiddleName( patient.getMiddleName() );
 
-        Period period = new Period( new DateTime(patient.getBirthDate()), new DateTime());
+        Period period = new Period( new DateTime( patient.getBirthDate() ), new DateTime() );
         beneficiary.setAge( period.getYears() );
 
         PatientMobileSetting setting = getSettings();
@@ -290,7 +291,8 @@ public class ActivityReportingServiceImpl
     // -------------------------------------------------------------------------
 
     @Override
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue ) throws NotAllowedException
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
+        throws NotAllowedException
     {
 
         ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( activityValue
@@ -298,7 +300,7 @@ public class ActivityReportingServiceImpl
 
         if ( programStageInstance == null )
         {
-            throw new NotAllowedException( "INVALID_PROGRAM_STAGE");
+            throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
         }
 
         programStageInstance.getProgramStage();

@@ -48,7 +48,10 @@ public class OrgUnit
 
     private String uploadActivityReportUrl;
     
+    private String updateProgramUrl;
+    
     private String updateDataSetUrl;
+
 
     @XmlAttribute
     public int getId()
@@ -122,6 +125,16 @@ public class OrgUnit
         this.updateDataSetUrl = updateDataSetUrl;
     }
 
+    public String getUpdateProgramUrl()
+    {
+        return updateProgramUrl;
+    }
+
+    public void setUpdateProgramUrl( String updateProgramUrl )
+    {
+        this.updateProgramUrl = updateProgramUrl;
+    }
+
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
@@ -131,6 +144,7 @@ public class OrgUnit
         dataOutputStream.writeUTF( this.downloadActivityPlanUrl );
         dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
         dataOutputStream.writeUTF( this.uploadActivityReportUrl );
+        dataOutputStream.writeUTF( this.updateProgramUrl );
         dataOutputStream.writeUTF( this.updateDataSetUrl );
     }
 
@@ -143,6 +157,7 @@ public class OrgUnit
         this.downloadActivityPlanUrl = dataInputStream.readUTF();
         this.uploadFacilityReportUrl = dataInputStream.readUTF();
         this.uploadActivityReportUrl = dataInputStream.readUTF();
+        this.updateProgramUrl = dataInputStream.readUTF();
         this.updateDataSetUrl = dataInputStream.readUTF();
     }
 }

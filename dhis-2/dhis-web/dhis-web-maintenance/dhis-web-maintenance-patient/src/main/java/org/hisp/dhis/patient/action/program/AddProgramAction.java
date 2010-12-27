@@ -67,6 +67,13 @@ public class AddProgramAction
     {
         this.description = description;
     }
+    
+    private Integer version;
+
+    public void setVersion( Integer version )
+    {
+        this.version = version;
+    }
 
     /**
      * Description of Date of Enrollment This description is differ from each
@@ -115,6 +122,7 @@ public class AddProgramAction
 
         program.setName( name );
         program.setDescription( description );
+        program.setVersion( new Integer( 1 ) );
         program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMinDaysAllowedInputData( minDaysAllowedInputData );

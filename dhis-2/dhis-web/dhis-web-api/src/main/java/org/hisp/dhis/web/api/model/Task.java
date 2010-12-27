@@ -37,6 +37,8 @@ public class Task implements DataStreamSerializable
     
     private int programStageId;
     
+    private int programId;
+    
     private boolean completed;
 
     public int getId()
@@ -59,6 +61,16 @@ public class Task implements DataStreamSerializable
         this.programStageId = programStageId;
     }
     
+    public int getProgramId()
+    {
+        return programId;
+    }
+
+    public void setProgramId( int programId )
+    {
+        this.programId = programId;
+    }
+
     public boolean isCompleted()
     {
         return completed;
@@ -74,7 +86,8 @@ public class Task implements DataStreamSerializable
         throws IOException
     {
         dout.writeInt(this.getId());
-        dout.writeInt(this.getProgramStageId());        
+        dout.writeInt(this.getProgramStageId()); 
+        dout.writeInt( this.getProgramId() );
         dout.writeBoolean(this.isCompleted());
     }
 
