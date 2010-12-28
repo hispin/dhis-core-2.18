@@ -474,7 +474,14 @@
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
-
+		
+		<action name="getPatientsByName"
+			class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/resultSearchPatients.vm</param>
+			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
+		
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"

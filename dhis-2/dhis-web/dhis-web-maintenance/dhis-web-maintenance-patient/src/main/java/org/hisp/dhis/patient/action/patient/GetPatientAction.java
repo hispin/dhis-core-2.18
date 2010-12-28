@@ -134,7 +134,6 @@ public class GetPatientAction
                if( representativeIdentifier.getIdentifierType() != null && representativeIdentifier.getIdentifierType().isRelated() ) 
                 {
                     identiferMap.put( representativeIdentifier.getIdentifierType().getId(), representativeIdentifier.getIdentifier() );
-                    //System.out.println( "if patient uderage "+representativeIdentifier.getIdentifierType().getId()+ representativeIdentifier.getIdentifier() );
                 }
             }
         }
@@ -145,7 +144,7 @@ public class GetPatientAction
             if ( idType != null )
             {
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-                //System.out.println( "if type is not null "+identifier.getIdentifierType().getId()+ identifier.getIdentifier()  );
+
                 if(idType.getFormat().equals("State Format"))
                 {
                      String iden = identifier.getIdentifier();

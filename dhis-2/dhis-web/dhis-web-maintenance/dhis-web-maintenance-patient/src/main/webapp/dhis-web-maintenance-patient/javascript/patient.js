@@ -696,3 +696,44 @@ function removeEnrollment(){
 	byId('programEnrollmentForm').action = "removeEnrollment.action";
 	byId('programEnrollmentForm').submit();
 }
+
+// ----------------------------------------------------------------------------
+// Search patients by name
+// ----------------------------------------------------------------------------
+
+function startSearch()
+{	
+	var firstName = getFieldValue('firstName');
+	var middleName = getFieldValue('middleName');
+	var lastName = getFieldValue('lastName');
+	
+	var fullName = firstName + middleName + lastName; 
+	if( fullName.length < 3 ){
+		$("#similarPatients").hide();
+		return;
+	}
+	
+	$.post("getPatientsByName.action",
+		{
+			firstName: firstName,
+			middleName: middleName,
+			lastName: lastName
+		},
+		function (html)
+		{
+			jQuery("#similarPatients").show();
+			var patientCount = $('<div/>').html(html).find('#matchCount');
+			jQuery('#patientCount').html( patientCount );
+			jQuery('#searchResults').html( html );
+		},'html');
+}
+
+// ----------------------------------------------------------------------------
+// Show patients
+// ----------------------------------------------------------------------------
+
+function showSearchPatients(){
+	// tb_show(i18n_child_representative,'getPatientsByName.action?firstName='+ firstName +'&middleName=' + middleName + '&lastName=' + lastName +'&height=450&width=600',null);
+	tb_show( i18n_child_representative, "#TB_inline?height=350&width=580&inlineId=searchResults",null);
+	
+}

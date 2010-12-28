@@ -44,14 +44,15 @@ public class Patient
     implements Serializable
 {
     public static final String MALE = "M";
-
     public static final String FEMALE = "F";
 
     public static final char DOB_TYPE_VERIFIED = 'V';
-
     public static final char DOB_TYPE_DECLARED = 'D';
-
     public static final char DOB_TYPE_APPROXIATED = 'A';
+    
+    public static final char AGE_TYPE_YEAR = 'Y';
+    public static final char AGE_TYPE_MONTH = 'M';
+    public static final char AGE_TYPE_DAY = 'D';
 
     private Integer id;
 
@@ -60,6 +61,8 @@ public class Patient
     private String middleName;
 
     private String lastName;
+
+    private String fullName;
 
     private String gender;
 
@@ -402,15 +405,15 @@ public class Patient
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
         // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
-        if ( ageType == 'Y' )
+        if ( ageType == AGE_TYPE_YEAR )
         {
             todayCalendar.add( Calendar.YEAR, -1 * age );
         }
-        else if ( ageType == 'M' )
+        else if ( ageType == AGE_TYPE_MONTH )
         {
             todayCalendar.add( Calendar.MONTH, -1 * age );
         }
-        else if ( ageType == 'D' )
+        else if ( ageType == AGE_TYPE_DAY )
         {
             todayCalendar.add( Calendar.DATE, -1 * age );
         }
@@ -418,9 +421,45 @@ public class Patient
         setBirthDate( todayCalendar.getTime() );
     }
 
+    public char getAgeType()
+    {
+        Calendar todayCalendar = Calendar.getInstance();
+        todayCalendar.clear( Calendar.MILLISECOND );
+        todayCalendar.clear( Calendar.SECOND );
+        todayCalendar.clear( Calendar.MINUTE );
+        todayCalendar.set( Calendar.HOUR_OF_DAY, 0 );
+
+        Calendar birthCalendar = Calendar.getInstance();
+        birthCalendar.setTime( birthDate );
+
+        int age = todayCalendar.get( Calendar.YEAR ) - birthCalendar.get( Calendar.YEAR );
+
+        if ( age > 0 )
+        {
+            return AGE_TYPE_YEAR;
+        }
+
+        age = todayCalendar.get( Calendar.MONTH ) - birthCalendar.get( Calendar.MONTH );
+        if ( age > 0 )
+        {
+            return AGE_TYPE_MONTH;
+        }
+
+        return AGE_TYPE_DAY;
+    }
+
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
+
+    public void setFullName( String fullName )
+    {
+        this.fullName = fullName;
+    }
+
     public String getFullName()
     {
-        return firstName + " " + middleName + " " + lastName;
+        return fullName;
     }
 
     public String getBloodGroup()
@@ -462,9 +501,9 @@ public class Patient
     {
         switch ( dobType )
         {
-        case 'V':
+        case DOB_TYPE_VERIFIED:
             return "Verified";
-        case 'D':
+        case DOB_TYPE_DECLARED:
             return "Declared";
         default:
             return "Approxiated";

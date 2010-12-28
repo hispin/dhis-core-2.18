@@ -74,10 +74,13 @@ public class HibernatePatientStore
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name )
     {
-        return getCriteria(
-            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).addOrder( Order.asc( "firstName" ) ).list();
+//        String hql = "From Patient p where lower( p.firstName + ' ' + p.middleName + ' ' + p.lastName ) like :name order by p.id";
+//
+//        return getQuery( hql ).setString( "name", "%" + name + "%" ).list();
+        
+         return getCriteria(
+            Restrictions.disjunction().add( Restrictions.ilike( "fullName", "%" + name + "%") ) ).addOrder(
+            Order.asc( "firstName" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -137,16 +140,14 @@ public class HibernatePatientStore
     public Collection<Patient> getByOrgUnitProgram( OrganisationUnit organisationUnit, Program program, int min, int max )
     {
         return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias( "programs",
-            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder(Order.asc("id")).setFirstResult( min ).setMaxResults(
-            max ).list();
+            "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).addOrder( Order.asc( "id" ) )
+            .setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public int countGetPatientsByNames( String name )
+    public int countGetPatientsByName( String name )
     {
         Number rs = (Number) getCriteria(
-            Restrictions.disjunction().add( Restrictions.ilike( "firstName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "middleName", "%" + name + "%" ) ).add(
-                Restrictions.ilike( "lastName", "%" + name + "%" ) ) ).setProjection( Projections.rowCount() )
+            Restrictions.ilike( "fullName", "%" + name + "%") ).setProjection( Projections.rowCount() )
             .uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
@@ -170,7 +171,7 @@ public class HibernatePatientStore
         Number rs = (Number) getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).createAlias(
             "programs", "program" ).add( Restrictions.eq( "program.id", program.getId() ) ).setProjection(
             Projections.rowCount() ).uniqueResult();
-        
+
         return rs != null ? rs.intValue() : 0;
     }
 

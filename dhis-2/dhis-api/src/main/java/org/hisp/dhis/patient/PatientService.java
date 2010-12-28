@@ -90,9 +90,9 @@ public interface PatientService
     Collection<Patient> getPatientsByBirthDate( Date birthDate );
 
     /**
-     * Search Patient base on firstname/middlename/lastname/
+     * Search Patient base on fullName
      * 
-     * @param name firstName/middleName/lastName/
+     * @param name fullName
      * @return Patient List
      */
     Collection<Patient> getPatientsByNames( String name );
@@ -212,7 +212,7 @@ public interface PatientService
      * @param name
      * @return number of patients
      */
-    int countnGetPatientsByNames( String name );
+    int countGetPatientsByName( String name );
 
     int createPatient( Patient patient,Integer representativeId,
         Integer relationshipTypeId, List<PatientAttributeValue> patientAttributeValues );
