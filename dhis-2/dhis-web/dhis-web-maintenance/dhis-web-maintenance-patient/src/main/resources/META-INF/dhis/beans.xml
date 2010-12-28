@@ -509,7 +509,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierTypeService"
 			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 	</bean>
-
+	
+	<bean id="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
+		class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+	
 	<!-- Patient-Program Enrollment -->
 
 	<bean

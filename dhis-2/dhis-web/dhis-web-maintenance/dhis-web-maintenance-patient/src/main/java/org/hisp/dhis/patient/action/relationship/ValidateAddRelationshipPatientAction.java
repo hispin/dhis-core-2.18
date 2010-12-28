@@ -192,7 +192,7 @@ implements Action
         // Check Identifiers duplicate
 
         Patient p = new Patient();
-        if ( dobType == 'V' || dobType == 'D' )
+        if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
             p.setBirthDate( format.parseDate( birthDate ) );

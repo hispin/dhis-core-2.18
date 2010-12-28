@@ -1,0 +1,33 @@
+<span id="matchCount"><strong>$!patients.size() $i18n.getString('patients')</strong></span>
+<p></p>
+<table width='100%' id='searchTable' name='searchTable'>
+#if($!patients)
+	<thread><tr #alternate( true )>
+		<th><strong>$i18n.getString('full_name')</strong></th>
+		<th><strong>$i18n.getString( "age" )</strong></th>
+		<th><strong>$i18n.getString( "gender" )</strong></th>
+		<th><strong>$i18n.getString( "dob_type" )</strong></th>
+		<th><strong>$i18n.getString( "date_of_birth" )</strong></th>
+		<th><strong>$i18n.getString( "orgunit" )</strong></th>
+	</tr></thread>
+	<tbody>
+		#set($mark = false)
+		#foreach( $patient  in $patients )
+			<tr id="tr${patient.id}" #alternate($mark) onclick='window.location.href="showUpdatePatientForm.action?id=$patient.id"' style="cursor:pointer">
+				<td>$!patient.getFullName()</td>
+				<td>$!patient.getAge()</td>
+				<td>$!patient.gender</td>
+				<td>$!patient.dobType</td>
+				<td>$!patient.birthDate</td>
+				<td>$!patient.organisationUnit</td>
+			</tr>
+		#set($mark = !$mark)
+		#end
+	</tbody>
+#else
+	<tr>
+		<td colspan='5'><strong>i18n_no_patients_found</strong></td>
+	</tr>
+#end
+</table>
+

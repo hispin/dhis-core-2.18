@@ -172,7 +172,7 @@ public class ValidatePatientAction
             return INPUT;
         }
 
-        if ( dobType != null && (dobType == 'V' || dobType == 'D') )
+        if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED ) )
         {
             birthDate = birthDate.trim();
 

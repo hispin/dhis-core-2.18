@@ -245,7 +245,7 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> getPatients( String searchText, int min, int max )
     {
-        int countPatientName = patientStore.countGetPatientsByNames( searchText );
+        int countPatientName = patientStore.countGetPatientsByName( searchText );
 
         Set<Patient> patients = new HashSet<Patient>();
 
@@ -416,14 +416,14 @@ public class DefaultPatientService
     @Override
     public int countGetPatients( String searchText )
     {
-        return patientStore.countGetPatientsByNames( searchText )
+        return patientStore.countGetPatientsByName( searchText )
             + patientIdentifierService.countGetPatientsByIdentifier( searchText );
     }
 
     @Override
-    public int countnGetPatientsByNames( String name )
+    public int countGetPatientsByName( String name )
     {
-        return patientStore.countGetPatientsByNames( name );
+        return patientStore.countGetPatientsByName( name );
     }
 
     @Override

@@ -63,7 +63,7 @@ public interface PatientStore
     
     int countListPatientByOrgunit(OrganisationUnit organisationUnit);
     
-    int countGetPatientsByNames( String name );
+    int countGetPatientsByName( String name );
     
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
 }

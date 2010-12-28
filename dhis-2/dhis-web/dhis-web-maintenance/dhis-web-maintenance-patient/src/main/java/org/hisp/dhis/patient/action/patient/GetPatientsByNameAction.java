@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,84 +24,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package org.hisp.dhis.patient.action.patient;
 
-package org.hisp.dhis.patient.action.program;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $ID : GetPatientsByNameAction.java Dec 23, 2010 9:14:34 AM $
  */
-public class AddProgramAction
+public class GetPatientsByNameAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramService programService;
-
-    public void setProgramService( ProgramService programService )
-    {
-        this.programService = programService;
-    }
+    private PatientService patientService;
 
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private String firstName;
 
-    public void setName( String name )
+    private String middleName;
+
+    private String lastName;
+
+    private List<Patient> patients;
+
+    // -------------------------------------------------------------------------
+    // Getter && Setter
+    // -------------------------------------------------------------------------
+
+    public void setPatientService( PatientService patientService )
     {
-        this.name = name;
+        this.patientService = patientService;
     }
 
-    private String description;
-
-    public void setDescription( String description )
+    public void setFirstName( String firstName )
     {
-        this.description = description;
+        this.firstName = firstName;
     }
 
-    /**
-     * Description of Date of Enrollment This description is differ from each
-     * program
-     */
-    private String dateOfEnrollmentDescription;
-
-    public void setDateOfEnrollmentDescription( String dateOfEnrollmentDescription )
+    public void setMiddleName( String middleName )
     {
-        this.dateOfEnrollmentDescription = dateOfEnrollmentDescription;
+        this.middleName = middleName;
     }
 
-    /**
-     * Description of Date of Incident This description is differ from each
-     * program
-     */
-    private String dateOfIncidentDescription;
-
-    public void setDateOfIncidentDescription( String dateOfIncidentDescription )
+    public void setLastName( String lastName )
     {
-        this.dateOfIncidentDescription = dateOfIncidentDescription;
+        this.lastName = lastName;
     }
 
-    private Integer minDaysAllowedInputData;
-
-    public void setMinDaysAllowedInputData( Integer minDaysAllowedInputData )
+    public List<Patient> getPatients()
     {
-        this.minDaysAllowedInputData = minDaysAllowedInputData;
-    }
-
-    private Integer maxDaysAllowedInputData;
-
-    public void setMaxDaysAllowedInputData( Integer maxDaysAllowedInputData )
-    {
-        this.maxDaysAllowedInputData = maxDaysAllowedInputData;
+        return patients;
     }
 
     // -------------------------------------------------------------------------
@@ -109,20 +94,12 @@ public class AddProgramAction
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        Program program = new Program();
-
-        program.setName( name );
-        program.setDescription( description );
-        program.setVersion( new Integer( 1 ) );
-        program.setDateOfEnrollmentDescription( dateOfEnrollmentDescription );
-        program.setDateOfIncidentDescription( dateOfIncidentDescription );
-        program.setMinDaysAllowedInputData( minDaysAllowedInputData );
-        program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
+        String fullName = StringUtils.join( new String[] { firstName, middleName, lastName }, ' ' );
         
-        programService.saveProgram( program );
+        patients = new ArrayList<Patient>( patientService.getPatients( fullName ) );
 
         return SUCCESS;
     }
+
 }

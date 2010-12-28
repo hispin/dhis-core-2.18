@@ -114,9 +114,9 @@
 		<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
 		<td>
 			<select id="ageType" name="ageType" style="width:15em" >
-				<option value="D"> $i18n.getString('day')</option>
-				<option value="M"> $i18n.getString('month')</option>
-				<option value="Y"> $i18n.getString('year')</option>
+				<option value="D" #if($patient.getAgeType()=='D') selected #end> $i18n.getString('day')</option>
+				<option value="M" #if($patient.getAgeType()=='M') selected #end> $i18n.getString('month')</option>
+				<option value="Y" #if($patient.getAgeType()=='Y') selected #end> $i18n.getString('year')</option>
 			</select>
 			<input type="text" id="age" name="age" value="$patient.getIntegerValueOfAge()" style="width:14.5em"  style="width:12em" onchange="ageOnchange()" class="{validate:{number:true, alphanumeric: true}}">
 		</td>
