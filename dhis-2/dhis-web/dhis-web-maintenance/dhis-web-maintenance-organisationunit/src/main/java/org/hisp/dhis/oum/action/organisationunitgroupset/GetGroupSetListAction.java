@@ -27,13 +27,17 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -42,7 +46,7 @@ import com.opensymphony.xwork2.ActionSupport;
  * @version $Id$
  */
 public class GetGroupSetListAction
-    extends ActionSupport
+    extends ActionPagingSupport<OrganisationUnitGroupSet>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -56,7 +60,7 @@ public class GetGroupSetListAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input& Output
     // -------------------------------------------------------------------------
 
     private List<OrganisationUnitGroupSet> organisationUnitGroupSets;
@@ -64,6 +68,18 @@ public class GetGroupSetListAction
     public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
     {
         return organisationUnitGroupSets;
+    }
+    
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -73,8 +89,21 @@ public class GetGroupSetListAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
-            .getAllOrganisationUnitGroupSets() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( organisationUnitGroupService.getOrganisationUnitGroupSetCountByName( key ) );
+            
+            organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( organisationUnitGroupService.getOrganisationUnitGroupSetCount() );
+            
+            organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+
+//        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
+//            .getAllOrganisationUnitGroupSets() );
 
         Collections.sort( organisationUnitGroupSets, new OrganisationUnitGroupSetNameComparator() );
 

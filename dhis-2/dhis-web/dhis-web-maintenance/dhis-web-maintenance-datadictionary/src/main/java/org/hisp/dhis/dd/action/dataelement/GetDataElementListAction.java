@@ -185,7 +185,7 @@ public class GetDataElementListAction
             
             this.paging = createPaging( dataElements.size() );
             
-            dataElements = getBlockElement( dataElements, paging.getStartPage(), paging.getEndPos() );
+            dataElements = getBlockElement( dataElements, paging.getStartPos(), paging.getPageSize() );
         }
         else
         {

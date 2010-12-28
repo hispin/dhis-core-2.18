@@ -27,6 +27,8 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,15 +38,14 @@ import java.util.List;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-
-import com.opensymphony.xwork2.ActionSupport;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: GetOrganisationUnitListAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
 public class GetOrganisationUnitListAction
-    extends ActionSupport
+    extends ActionPagingSupport<OrganisationUnit>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -80,7 +81,7 @@ public class GetOrganisationUnitListAction
     }    
     
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
@@ -88,6 +89,18 @@ public class GetOrganisationUnitListAction
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
+    }
+
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -115,6 +128,28 @@ public class GetOrganisationUnitListAction
         
         displayPropertyHandler.handle( organisationUnits );
         
+        if ( isNotBlank( key ) )
+        {
+            organisationUnits = searchByName( organisationUnits, key );
+        }
+        
+        this.paging = createPaging( organisationUnits.size() );
+        organisationUnits = getBlockElement( organisationUnits, paging.getStartPos(), paging.getPageSize() );
+
         return SUCCESS;
+    }
+    
+    private List<OrganisationUnit> searchByName( List<OrganisationUnit> orgUnits, String key )
+    {
+        List<OrganisationUnit> result = new ArrayList<OrganisationUnit>();
+
+        for ( OrganisationUnit each : orgUnits )
+        {
+            if ( each.getName().toLowerCase().contains( key.toLowerCase() ) )
+            {
+                result.add( each );
+            }
+        }
+        return result;
     }
 }

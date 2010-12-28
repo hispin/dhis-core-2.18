@@ -27,6 +27,8 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
@@ -47,7 +50,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id: GetOrgunitUserListAction.java 5549 2008-08-20 05:23:35Z abyot $
  */
 public class GetOrgunitUserListAction
-    implements Action
+    extends ActionPagingSupport<User>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -78,6 +81,18 @@ public class GetOrgunitUserListAction
         return userCredentialsList;
     }
 
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -85,26 +100,41 @@ public class GetOrgunitUserListAction
     public String execute()
         throws Exception
     {
-        userCredentialsList = new ArrayList<UserCredentials>();
-
-        Collection<User> users = new HashSet<User>();
-
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( organisationUnit == null )
+        if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            users = userStore.getUsersWithoutOrganisationUnit();
+            if ( organisationUnit == null )
+            {
+                this.paging = createPaging( userStore.getUsersWithoutOrganisationUnitCountByName( key ) );
+                
+                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersWithoutOrganisationUnitBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            }
+            else 
+            {
+                this.paging = createPaging( userStore.getUsersByOrganisationUnitCountByName( organisationUnit, key ) );
+                
+                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersByOrganisationUnitBetweenByName( organisationUnit, key, paging.getStartPos(), paging.getPageSize() ) );
+                
+            }
         }
         else
         {
-            users = userStore.getUsersByOrganisationUnit( organisationUnit );
+            if ( organisationUnit == null )
+            {
+                this.paging = createPaging( userStore.getUsersWithoutOrganisationUnitCount(  ) );
+                
+                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersWithoutOrganisationUnitBetween( paging.getStartPos(), paging.getPageSize() ) );
+            }
+            else 
+            {
+                this.paging = createPaging( userStore.getUsersByOrganisationUnitCount( organisationUnit ) );
+                
+                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
+                
+            }
         }
-
-        for ( User user : users )
-        {
-            userCredentialsList.add( userStore.getUserCredentials( user ) );
-        }
-
+        
         Collections.sort( userCredentialsList, new UsernameComparator() );
 
         return SUCCESS;

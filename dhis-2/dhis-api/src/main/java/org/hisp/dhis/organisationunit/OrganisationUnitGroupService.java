@@ -183,4 +183,20 @@ public interface OrganisationUnitGroupService
      * @return a Collection of OrganisationUnitGroupSets.
      */
     Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSetsNotAssignedTo( OrganisationUnit organisationUnit );
+
+    Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max );
+    
+    Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max );
+    
+    int getOrganisationUnitGroupCount();
+    
+    int getOrganisationUnitGroupCountByName( String name );
+
+    Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetween( int first, int max );
+    
+    Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetweenByName( String name, int first, int max );
+    
+    int getOrganisationUnitGroupSetCount();
+    
+    int getOrganisationUnitGroupSetCountByName( String name );
 }

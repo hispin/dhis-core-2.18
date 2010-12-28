@@ -27,8 +27,10 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -428,5 +430,93 @@ public class HibernateUserStore
     public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
     {
         return userRoleStore.getBetweenByName( name, first, max );
+    }
+
+    // ===================
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max )
+    {
+        return getBlockUser( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), first, max );
+    }
+
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
+        int first, int max )
+    {
+        return getBlockUser( findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ), first, max );
+    }
+
+    public int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit )
+    {
+        return getUsersByOrganisationUnit( orgUnit ).size();
+    }
+
+    public int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name )
+    {
+        return findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ).size();
+    }
+
+    // ===================
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
+    {
+        return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit()), first, max );
+    }
+
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max )
+    {
+
+        return getBlockUser( findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ), first, max );
+    }
+
+    public int getUsersWithoutOrganisationUnitCount()
+    {
+        return getUsersWithoutOrganisationUnit().size();
+    }
+
+    public int getUsersWithoutOrganisationUnitCountByName( String name )
+    {
+        return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
+    }
+
+    // ==============================
+    private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
+    {
+
+        List<UserCredentials> returnList = new ArrayList<UserCredentials>();
+
+        for ( UserCredentials user : users )
+        {
+            if ( user.getUsername().toLowerCase().contains( key.toLowerCase() ) )
+            {
+                returnList.add( user );
+            }
+        }
+
+        return returnList;
+    }
+
+    private List<UserCredentials> getBlockUser( Collection<UserCredentials> usersList, int startPos, int pageSize )
+    {
+        List<UserCredentials> returnList;
+
+        List<UserCredentials> elementList = new ArrayList<UserCredentials>( usersList );
+        try
+        {
+            returnList = elementList.subList( startPos, startPos + pageSize );
+        }
+        catch ( IndexOutOfBoundsException ex )
+        {
+            returnList = elementList.subList( startPos, elementList.size() );
+        }
+        return returnList;
+    }
+    
+    private List<UserCredentials> toUserCredentials( Collection<User> users )
+    {
+        List<UserCredentials> returnUserCredentials = new ArrayList<UserCredentials>();
+
+        for ( User user : users )
+        {
+            returnUserCredentials.add( getUserCredentials( user ) );
+        }
+        return returnUserCredentials;
     }
 }
