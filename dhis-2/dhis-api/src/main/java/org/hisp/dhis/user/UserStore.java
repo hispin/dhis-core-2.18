@@ -113,7 +113,25 @@ public interface UserStore
     
     int getUserCountByName( String name );
 
+    //=====================
+    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max );
+    
+    Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String name, int first, int max );
+    
+    int getUsersWithoutOrganisationUnitCount();
+    
+    int getUsersWithoutOrganisationUnitCountByName( String name );
 
+    //=====================
+    Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
+    
+    Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name, int first, int max );
+    
+    int getUsersByOrganisationUnitCount( OrganisationUnit orgUnit );
+    
+    int getUsersByOrganisationUnitCountByName( OrganisationUnit orgUnit, String name );
+
+    
     // -------------------------------------------------------------------------
     // UserCredentials
     // -------------------------------------------------------------------------

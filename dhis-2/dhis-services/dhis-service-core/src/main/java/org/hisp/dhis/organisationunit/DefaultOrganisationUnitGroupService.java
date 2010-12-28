@@ -208,4 +208,45 @@ public class DefaultOrganisationUnitGroupService
         
         return groupSets;
     }
+
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max )
+    {
+        return organisationUnitGroupStore.getBetween( first, max );
+    }
+
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max )
+    {
+        return organisationUnitGroupStore.getBetweenByName( name, first, max );
+    }
+
+    public int getOrganisationUnitGroupCount()
+    {
+        return organisationUnitGroupStore.getCount();
+    }
+
+    public int getOrganisationUnitGroupCountByName( String name )
+    {
+        return organisationUnitGroupStore.getCountByName( name );
+    }
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetween( int first, int max )
+    {
+        return organisationUnitGroupSetStore.getBetween( first, max );
+    }
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetweenByName( String name, int first, int max )
+    {
+        return organisationUnitGroupSetStore.getBetweenByName( name, first, max );
+    }
+    
+    public int getOrganisationUnitGroupSetCount()
+    {
+        return organisationUnitGroupSetStore.getCount();
+    }
+    
+    public int getOrganisationUnitGroupSetCountByName( String name )
+    {
+        return organisationUnitGroupSetStore.getCountByName( name );
+    }
+
 }
