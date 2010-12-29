@@ -1,12 +1,8 @@
 package org.hisp.dhis.reports.aggregation.action;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportType;
@@ -27,46 +23,10 @@ public class GenerateAggregationReportAnalyserFormAction
         this.periodService = periodService;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    public OrganisationUnitService getOrganisationUnitService()
-    {
-        return organisationUnitService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constants
-    // -------------------------------------------------------------------------
-    
-    private final int ALL = 0;
-
-    public int getALL()
-    {
-        return ALL;
-    }
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
     
-    private Collection<OrganisationUnit> organisationUnits;
-
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-
-    private Collection<Period> periods = new ArrayList<Period>();
-
-    public Collection<Period> getPeriods()
-    {
-        return periods;
-    }
-
     private Collection<PeriodType> periodTypes;
 
     public Collection<PeriodType> getPeriodTypes()
@@ -81,33 +41,29 @@ public class GenerateAggregationReportAnalyserFormAction
         return reportTypeName;
     }
     
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     
-    
     public String execute()
         throws Exception
     {
-        /* Report Info */
         reportTypeName = ReportType.RT_AGGREGATION;
         
-        /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();
 
-        Iterator<PeriodType> alldeIterator = periodTypes.iterator();
-        while ( alldeIterator.hasNext() )
+        // Filtering Periodtypes other than Daily, Monthly, Quarterly and Yearly
+        Iterator<PeriodType> periodTypeIterator = periodTypes.iterator();
+        while ( periodTypeIterator.hasNext() )
         {
-            PeriodType type = alldeIterator.next();
-            if ( type.getName().equalsIgnoreCase( "Monthly" ) || type.getName().equalsIgnoreCase( "quarterly" )
+            PeriodType type = periodTypeIterator.next();
+            if ( type.getName().equalsIgnoreCase( "daily" ) || type.getName().equalsIgnoreCase( "Monthly" ) || type.getName().equalsIgnoreCase( "quarterly" )
                 || type.getName().equalsIgnoreCase( "yearly" ) )
             {
-                periods.addAll( periodService.getPeriodsByPeriodType( type ) );
             }
             else
             {
-                alldeIterator.remove();
+                periodTypeIterator.remove();
             }
         }
 

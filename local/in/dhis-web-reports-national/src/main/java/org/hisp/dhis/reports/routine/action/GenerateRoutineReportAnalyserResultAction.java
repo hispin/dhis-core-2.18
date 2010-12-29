@@ -237,10 +237,20 @@ public class GenerateRoutineReportAnalyserResultAction
         }
 
         System.out.println( orgUnitList.get( 0 ).getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
+
+        OrganisationUnitGroup orgUnitGroup = null;
         
-        OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
-        
-        List<OrganisationUnit> orgGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
+        List<OrganisationUnit> orgGroupMembers = null;
+
+        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) || organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
+        {
+            
+        }
+        else
+        {
+            orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
+            orgGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
+        }
 
         
         selectedPeriod = periodService.getPeriod( availablePeriods );
@@ -717,7 +727,6 @@ public class GenerateRoutineReportAnalyserResultAction
                         }
                         else
                         {
-                            
                             List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
                             
                             orgUnitList.retainAll( orgGroupMembers );

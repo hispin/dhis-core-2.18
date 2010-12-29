@@ -287,54 +287,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 	</bean>
 	
-	<!--Aggregation Report 25/08/2010 start-->
+	<!-- Aggregation Report -->
 	<bean
 		id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
 		class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserFormAction"
 		scope="prototype">
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 	
 	<bean
 		id="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
 		class="org.hisp.dhis.reports.aggregation.action.GenerateAggregationReportAnalyserResultAction"
 		scope="prototype">
-		
-		<property name="reportService" ref="org.hisp.dhis.reports.ReportService">
-		</property>
-		<property name="statementManager" ref="statementManager">
-		</property>
-		<property name="dataSetService"
-			ref="org.hisp.dhis.dataset.DataSetService">
-		</property>
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService">
-		</property>
-		<property name="dataElementService"
-			ref="org.hisp.dhis.dataelement.DataElementService">
-		</property>
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
-		</property>
-		<property name="aggregationService"
-			ref="org.hisp.dhis.aggregation.AggregationService">
-		</property>
-		<property name="indicatorService"
-			ref="org.hisp.dhis.indicator.IndicatorService">
-		</property>
-		<property name="dataValueService"
-			ref="org.hisp.dhis.datavalue.DataValueService">
-		</property>
-		<property name="dataElementCategoryOptionComboService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService">
-		</property>
-		
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+		<property name="statementManager" ref="statementManager" />
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
-	
-	<!-- Aggregation Report 25/08/2010 end -->
 	
 	<!-- Feedback Reports -->
 	<bean
@@ -347,11 +316,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<!--    <property name="reportService">
-		<ref bean="org.hisp.dhis.reports.util.ReportService"/>
-		</property>-->
-		
+		</property>		
 	</bean>
 	
 	<bean
