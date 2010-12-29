@@ -121,6 +121,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>   
         <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
         </property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+		</property>
 <!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
         </property>-->
 <!--        <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
@@ -138,6 +140,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
         </property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+		</property>
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+		</property>
     </bean>	
 <!-- Graphical Analyser Indicators End-->	
 	
@@ -285,7 +291,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService">
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+		</property>
     </bean>
+	
+<!-- Export Annual Data to Excel -->
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportAnnualDataToExcelAction"
+        class="org.hisp.dhis.dataanalyser.action.ExportAnnualDataToExcelAction"
+        scope="prototype">
+
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+        </property>
+        <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+        </property>
+    </bean> 
+	
 	
 	<!-- Motion Chart -->
 	
@@ -376,6 +398,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="surveyDataValueService">
             <ref bean="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
         </property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
+		</property>
     </bean>
 	
 <!--	
@@ -435,6 +459,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
 
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
+        </property>
+		<property name="surveyService" ref="org.hisp.dhis.survey.SurveyService">
+		</property>
+		<property name="surveyDataValueService" ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService">
+		</property>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+		</property>
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+		</property>
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService">
         </property>
     </bean> 
 	

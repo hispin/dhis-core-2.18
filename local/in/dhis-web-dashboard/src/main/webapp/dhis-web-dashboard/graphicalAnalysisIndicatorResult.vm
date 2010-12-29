@@ -224,7 +224,7 @@ function exportToExcelFunction2( summaryOption )
 #end 
 </div> 
    
-        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%">
+        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%" WRAP="HARD">
               <tr>
                       <td class="TableHeadingCellStyles" width="30%"  align="center" bgcolor="#C0C0C0" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Indicator Names</strong></td>
                       <td class="TableHeadingCellStyles" width="30%"  align="center"  bgcolor="#C0C0C0" colspan="2" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><strong>Formula</strong></td>
@@ -237,8 +237,10 @@ function exportToExcelFunction2( summaryOption )
                       <td class="TableHeadingCellStyles" width="30%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$service.getName()</td>
                       <td class="TableHeadingCellStyles" width="25%" align="center" style="border-left-style:dotted; border-left-width:1; border-right-width:0; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1"><u>$service.getNumeratorDescription()</u><br>$service.getDenominatorDescription()</td>
                       <td class="TableHeadingCellStyles" width="5%"  align="left" style="border-left-style:dotted; border-left-width:0; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">&nbsp;X&nbsp;$service.getIndicatorType().getFactor()</td>
-                      <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$numeratorDEList.get($count1)</td>
-                      <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$denominatorDEList.get($count1)</td>
+                 <!-- <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$numeratorDEList.get($count1)</td>
+                      <td class="TableHeadingCellStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1">$denominatorDEList.get($count1)</td>-->
+                      <td class="TableCellDataWrapStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1" >$numDataElements.get($count1)</td>
+                      <td class="TableCellDataWrapStyles" width="20%" style="border-left-style:dotted; border-left-width:1; border-right-width:1; border-top-style:dotted; border-top-width:1; border-bottom-style:dotted; border-bottom-width:1" >$denumDataElements.get($count1)</td>
              </tr>                                           
                      #set($count1 = $count1 + 1) 
                      #end 

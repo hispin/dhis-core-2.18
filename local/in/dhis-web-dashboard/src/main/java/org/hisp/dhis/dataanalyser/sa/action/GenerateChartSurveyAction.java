@@ -40,6 +40,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataanalyser.util.SurveyChartResult;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -114,6 +115,13 @@ public class GenerateChartSurveyAction implements Action
     {
         this.periodService = periodService;
     }
+   
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
     
     // ---------------------------------------------------------------
     // Input & Output
@@ -136,6 +144,11 @@ public class GenerateChartSurveyAction implements Action
     private OrganisationUnit selectedOrgUnit;
 
     private Indicator selectedIndicator;
+
+    public Indicator getSelectedIndicator()
+    {
+        return selectedIndicator;
+    }
 
     private String[] series1;
 
@@ -284,6 +297,36 @@ public class GenerateChartSurveyAction implements Action
         return surveyDataValueList;
     }
     
+    private Integer selectedIndicatorId;
+    
+    public Integer getSelectedIndicatorId()
+    {
+        return selectedIndicatorId;
+    }
+
+    private Integer selectedOrgId;
+    
+    public Integer getSelectedOrgId()
+    {
+        return selectedOrgId;
+    }
+    
+    private String numDataElement;
+    
+    public String getNumDataElement()
+    {
+        return numDataElement;
+    }
+    
+    private String denumDataElement;
+    
+    public String getDenumDataElement()
+    {
+        return denumDataElement;
+    }
+    
+    
+    
     public String execute()throws Exception
     {
         statementManager.initialise();
@@ -305,8 +348,21 @@ public class GenerateChartSurveyAction implements Action
         selectedIndicator = new Indicator();
         selectedIndicator = indicatorService.getIndicator( availableIndicators );
         chartTitle += "\n Indicator : " + selectedIndicator.getName();
-
+        
+        // for numeratorDataElement,denominatorDataElement
+        numDataElement = new String();
+        denumDataElement = new String();
+        numDataElement = expressionService.getExpressionDescription( selectedIndicator.getNumerator());
+        denumDataElement = expressionService.getExpressionDescription( selectedIndicator.getDenominator());
+        
+        
+        
+        selectedIndicatorId = selectedIndicator.getId();
+        selectedOrgId = selectedOrgUnit.getId();
+        
         surveyList = new ArrayList<Survey>( surveyService.getSurveysByIndicator( selectedIndicator ) );
+        
+        
         
        // Map<OrganisationUnitGroup, List<OrganisationUnit>> orgUnitGroupMap = new HashMap<OrganisationUnitGroup, List<OrganisationUnit>>();
        // Map<Survey, Double> surveyValues = new HashMap<Survey, Double>(); 
@@ -341,7 +397,7 @@ public class GenerateChartSurveyAction implements Action
         session.setAttribute( "chartTitle", surveyChartResult.getChartTitle() );
         session.setAttribute( "xAxisTitle", surveyChartResult.getXAxis_Title() );
         session.setAttribute( "yAxisTitle", surveyChartResult.getYAxis_Title() );
-        session.setAttribute( "categories2", categories2 );
+        session.setAttribute( "categories2", surveyChartResult.getCategories2() );
         
         statementManager.destroy();
         System.out.println( "Chart Generation End Time is : \t" + new Date() );
@@ -363,7 +419,10 @@ public class GenerateChartSurveyAction implements Action
         String[] series = new String[1];
         String[] categories = new String[monthlyPeriods.size()];
         Double[][] data = new Double[1][monthlyPeriods.size()];
-
+        
+        Double[][] data2 = new Double[surveyList.size()][monthlyPeriods.size()];
+        
+       // Double[][] data2 = new Double[surveyList.size()][surveyList.size()];
         Double[][] numDataArray = new Double[1][monthlyPeriods.size()];
         Double[][] denumDataArray = new Double[1][monthlyPeriods.size()];
         
@@ -397,6 +456,7 @@ public class GenerateChartSurveyAction implements Action
         // List<Double>>();
 
         String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
+        chartTitle += "\n Indicator : " + selectedIndicator.getName();
         String xAxis_Title = "Period";
         String yAxis_Title = "Indicator";
         
@@ -405,6 +465,7 @@ public class GenerateChartSurveyAction implements Action
         
         data2 = new Double[surveyList.size()][monthlyPeriods.size()];
         
+       // data2 = new Double[surveyList.size()][surveyList.size()];
         series2 = new String[surveyList.size()];
         
         for ( int i = 0; i < data2.length; i++ )
@@ -426,7 +487,9 @@ public class GenerateChartSurveyAction implements Action
                 {
                     data2[i][j] = 0.0;
                 }
+                //System.out.println( data2[i][j]);
             }
+            
         }
         
         int countForServiceList = 0;
@@ -477,7 +540,7 @@ public class GenerateChartSurveyAction implements Action
         countForServiceList++;
 
 
-        surveyChartResult = new SurveyChartResult( series, series2,categories, data, data2, numDataArray, denumDataArray, chartTitle, xAxis_Title, yAxis_Title );
+        surveyChartResult = new SurveyChartResult( series, series2,categories, categories2, data, data2, numDataArray, denumDataArray, chartTitle, xAxis_Title, yAxis_Title );
         return surveyChartResult;
 
     }

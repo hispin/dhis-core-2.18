@@ -209,8 +209,7 @@ public class GenerateChartAction
             selChart = new SurveyChart();
         }
 
-        chart = selChart.getChartViewer( data1, series1, categories1, data2, series2, categories2, chartTitle, xAxis_Title,
-            yAxis_Title );
+        chart = selChart.getChartViewer( data1, series1, categories1, data2, series2, categories2, chartTitle, xAxis_Title, yAxis_Title );
 
         
         // Saving chart into Session        

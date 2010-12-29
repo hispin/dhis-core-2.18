@@ -83,5 +83,11 @@
     white-space: nowrap;
     cursor: default;         
 }
-
+.TableCellDataWrapStyles {
+    font-family: arial, georgia, tahoma;
+    font-size: 11px;   
+    white-space: wrap;
+    cursor: default;   
+    border:1px dotted #C0C0C0;  
+}
 

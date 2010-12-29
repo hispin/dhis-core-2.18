@@ -64,25 +64,11 @@ import com.opensymphony.xwork2.ActionContext;
 /**
  * @author Mithilesh Kumar Thakur
  *
- * @version ExportIndicatorToExcelAction.java Nov 18, 2010 4:24:16 PM
+ * @version ExportAnnualDataToExcelAction.java Dec 24, 2010 5:10:42 PM
  */
-public class ExportIndicatorToExcelAction implements Action
+public class ExportAnnualDataToExcelAction implements Action
 {
-    //private static final FontRecord FontRecord = null;
 
-   // private static final FontRecord Font = null;
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-/*
-    private LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
-    {
-        this.locationManager = locationManager;
-    }
- */  
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
@@ -90,18 +76,17 @@ public class ExportIndicatorToExcelAction implements Action
         this.configurationService = configurationService;
     }
     
-    private ExpressionService expressionService;
-
-    public void setExpressionService( ExpressionService expressionService )
-    {
-        this.expressionService = expressionService;
-    }
-    
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
     }
     
     // -------------------------------------------------------------------------
@@ -161,7 +146,7 @@ public class ExportIndicatorToExcelAction implements Action
     {
         this.viewSummary = viewSummary;
     }
-    
+   
     private String chartDisplayOption;
 
     public void setChartDisplayOption( String chartDisplayOption )
@@ -169,6 +154,21 @@ public class ExportIndicatorToExcelAction implements Action
         this.chartDisplayOption = chartDisplayOption;
     }
     
+    private String radioButtonValue;
+    
+    public void setRadioButtonValue( String radioButtonValue )
+    {
+        this.radioButtonValue = radioButtonValue;
+    }
+    
+    private Integer selctedIndicatorId;
+
+    public void setSelctedIndicatorId( Integer selctedIndicatorId )
+    {
+        this.selctedIndicatorId = selctedIndicatorId;
+    }
+
+    //private Indicator selectedIndicator;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -180,6 +180,16 @@ public class ExportIndicatorToExcelAction implements Action
         int tempRow1 = 1;
        // int tempCol2 = 0;
         
+        if( radioButtonValue.equals( "indicator" ) )
+        {
+            System.out.println( "indicator" );
+        }
+        else
+        {
+            System.out.println( "dataelement" );
+        }
+       // System.out.println("Complete path is :" + radioButtonValue.equals( "indicator" ) );
+        
         ActionContext ctx = ActionContext.getContext();
         HttpServletRequest req = (HttpServletRequest) ctx.get( ServletActionContext.HTTP_REQUEST );                        
         HttpSession session = req.getSession();
@@ -189,8 +199,8 @@ public class ExportIndicatorToExcelAction implements Action
         byte[] encoderBytes = encoder.pngEncode();
         Double[][] objData1 = (Double[][]) session.getAttribute( "data1" );
         
-        Double[][] objnumData1 = (Double[][]) session.getAttribute( "numDataArray" );
-        Double[][] objdenumData1 = (Double[][]) session.getAttribute( "denumDataArray" );
+        Double[][] objnumData1 = (Double[][]) session.getAttribute( "numServiceValues" );
+        Double[][] objdenumData1 = (Double[][]) session.getAttribute( "denumServiceValues" );
         //Double[][] objData2 = (Double[][]) session.getAttribute( "data2" );
         
         String[] series1S = (String[]) session.getAttribute( "series1" );
@@ -203,7 +213,7 @@ public class ExportIndicatorToExcelAction implements Action
         initialzeAllLists(series1S, categories1S );
         
         //if(objData1 == null || objData2 == null || series1 == null || series2 == null || categories1 == null || categories2 == null )
-        if(objData1 == null || series1 == null ||  categories1 == null || objnumData1 == null || objdenumData1 == null  )
+        if( objData1 == null || series1 == null ||  categories1 == null || objnumData1 == null || objdenumData1 == null  )
                 System.out.println("Session Objects are null");
         else
                 System.out.println("Session Objects are not null");
@@ -213,12 +223,20 @@ public class ExportIndicatorToExcelAction implements Action
         numDataArray = convertDoubleTodouble( objnumData1 );
         denumDataArray = convertDoubleTodouble( objdenumData1 );
         
+        //System.out.println(" Selected Indicator Id is : " + selctedIndicatorId + " ,selected Indicator :"  + selectedIndicator );
+        
+        //selectedIndicator = new Indicator();
+        //selectedIndicator = indicatorService.getIndicator( selctedIndicatorId );
+        //String IndicatorName =  selectedIndicator.getName();
+        
+       // System.out.println(" Selected Indicator Id is : " + selctedIndicatorId + " ,selected Indicator :"  + selectedIndicator );
+        
       //  data2 = convertDoubleTodouble( objData2 );
         
         if(chartDisplayOption == null || chartDisplayOption.equalsIgnoreCase("none")) { }
-        else if(chartDisplayOption.equalsIgnoreCase("ascend")) { sortByAscending(); }
-        else if(chartDisplayOption.equalsIgnoreCase("desend")) { sortByDesscending(); }
-        else if(chartDisplayOption.equalsIgnoreCase("alphabet")) { sortByAlphabet(); }          
+        //else if(chartDisplayOption.equalsIgnoreCase("ascend")) { sortByAscending(); }
+       // else if(chartDisplayOption.equalsIgnoreCase("desend")) { sortByDesscending(); }
+       // else if(chartDisplayOption.equalsIgnoreCase("alphabet")) { sortByAlphabet(); }          
                 
         //File outputReportFile = locationManager.getFileForWriting( UUID.randomUUID().toString() + ".xls", "db", "output" );
         
@@ -232,22 +250,24 @@ public class ExportIndicatorToExcelAction implements Action
        // System.out.println("Complete path is :" + outputReportFile );
         
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File(outputReportFile) );
-        WritableSheet sheet0 = outputReportWorkbook.createSheet( "IndicatorChartOutput", 0 );
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "ChartOutput", 0 );
         
-        if(viewSummary.equals( "no" ))
+        if( viewSummary.equals( "no" ))
         {
             WritableImage writableImage = new WritableImage(0,1,10,23,encoderBytes);
             sheet0.addImage( writableImage );
             tempRow1 = 24;
         }    
-        else
-        {
+       else
+       {
            // tempRow1 -= objData1.length;
             tempRow1 = 0;
-        }
+       }
         tempCol1 = 0;
         //tempCol2 = 0;
         tempRow1++;
+        
+        
         WritableCellFormat wCellformat1 = new WritableCellFormat();                            
         wCellformat1.setBorder( Border.ALL, BorderLineStyle.THIN );
         wCellformat1.setAlignment( Alignment.CENTRE );
@@ -280,7 +300,138 @@ public class ExportIndicatorToExcelAction implements Action
         wcf.setVerticalAlignment( VerticalAlignment.CENTRE );
         wcf.setWrap( true );
         
+        if( radioButtonValue.equals( "indicator" ) )
+        {
+            System.out.println( "in excel indicator" );
+            
+            sheet0.addCell( new Label( tempCol1, tempRow1, "Years", wCellformat2) );
+            sheet0.addCell( new Label( tempCol1+1, tempRow1, "", wCellformat2) );
+            
+            tempCol1++;
+            
+            //for time display
+            for(int i=0; i< categories1.length; i++)
+            {   
+                sheet0.addCell( new Label( tempCol1+1, tempRow1, categories1[i], wCellformat2) );
+                tempCol1++;
+            }
+           
+            tempRow1 = tempRow1+1;
+            
+            int tempRowValue = 0;
+            for( int j=0; j< series1.length; j++ )
+            {
+                tempCol1 = 0;
+                sheet0.mergeCells( tempCol1 , tempRow1, tempCol1, tempRow1+2 ); 
+                sheet0.addCell( new Label( tempCol1, tempRow1, series1[j], wCellformat2) );
+                
+                int tempNumCol = 1;
+                
+                sheet0.addCell( new Label( tempNumCol, tempRow1, "Num", wCellformat2) );
+                tempNumCol =  tempNumCol+1;
+                for( int k=0;k<categories1.length;k++ )
+                {
+                   // tempCol1 = 0;
+                    sheet0.addCell( new Number( tempNumCol, tempRow1, numDataArray[j][k], wCellformat1 ) );
+                    tempNumCol++;
+                }
+                int tempDenumCol = 1;
+                
+                sheet0.addCell( new Label( tempDenumCol, tempRow1+1, "Den", wCellformat2) );
+                
+                tempDenumCol = tempDenumCol+1;
+                
+                for( int k=0;k<categories1.length;k++ )
+                { 
+                  //  tempRow1 = 0;
+                   sheet0.addCell( new Number( tempDenumCol, tempRow1+1, denumDataArray[j][k], wCellformat1 ) );
+                   tempDenumCol++;
+               }
+               int tempValueCol = 1;
+              
+               sheet0.addCell( new Label( tempValueCol, tempRow1+2, "Val", wCellformat2) );
+               tempValueCol = tempValueCol+1;
+                
+                for( int k=0;k<categories1.length;k++ )
+                { 
+                    //tempRow1 = 0;
+                    sheet0.addCell( new Number( tempValueCol, tempRow1+2, data1[j][k], wcf ) );
+                    tempValueCol++;
+                }
+               
+               tempRow1 = tempRow1+3;
+               tempRow1++;
+               tempRowValue = tempRow1++; 
+            }
+            
+            tempRow1 = tempRowValue;
+            
+            tempRow1 = tempRow1+2;
+            sheet0.addCell( new Label( tempCol1, tempRow1, "Indicators Names", wCellformat2) );
+            
+            sheet0.mergeCells( tempCol1+1 , tempRow1, tempCol1 + 2, tempRow1 );
+            sheet0.addCell( new Label( tempCol1+1, tempRow1, "Formula", wCellformat2) );
+            
+            sheet0.addCell( new Label( tempCol1+3, tempRow1, "Numerator DataElements", wCellformat2) );
+            sheet0.addCell( new Label( tempCol1+4, tempRow1, "Denominator DataElements", wCellformat2) );
+            
+            tempRow1 = tempRow1+1;
+            
+           // for(int j=0; j< series1.length; j++)
+           // {
+                Indicator indicator =  indicatorService.getIndicator( selctedIndicatorId );
+                
+                //Indicator indicator =  indicatorService.getIndicatorByName( IndicatorName );
+                
+                sheet0.addCell( new Label( tempCol1, tempRow1, indicator.getName(), wCellformat1 ) );
+                String formula = indicator.getNumeratorDescription() + "/" +  indicator.getDenominatorDescription();
+                
+                sheet0.addCell( new Label( tempCol1+1, tempRow1,formula , wCellformat1 ) );
+                String factor = "X" + indicator.getIndicatorType().getFactor();
+                
+                sheet0.addCell( new Label( tempCol1+2, tempRow1, factor, wCellformat1) );
+                sheet0.addCell( new Label( tempCol1+3, tempRow1, expressionService.getExpressionDescription( indicator.getNumerator()), wCellformat1 ) );
+                sheet0.addCell( new Label( tempCol1+4, tempRow1, expressionService.getExpressionDescription( indicator.getDenominator() ), wCellformat1 ) );
+                
+                tempRow1++;
+            //}
+        }
         
+        else
+        {
+            System.out.println( "in DataElements Excel sheet" );
+            
+            sheet0.addCell( new Label( tempCol1, tempRow1, "Years", wCellformat2) );
+            //tempCol1++;
+            
+            //for time display
+            for(int i=0; i< categories1.length; i++)
+            {   
+                sheet0.addCell( new Label( tempCol1+1, tempRow1, categories1[i], wCellformat2) );
+                tempCol1++;
+            }
+           
+            tempRow1 = tempRow1+1;
+            
+            for(int j=0; j< series1.length; j++)
+            {
+                tempCol1 = 0;
+                //sheet0.mergeCells( tempCol1 , tempRow1, tempCol1, tempRow1+2 ); 
+                sheet0.addCell( new Label( tempCol1, tempRow1, series1[j], wCellformat2) );
+                
+                tempCol1++;
+                for( int k=0;k<categories1.length;k++ )
+                { 
+                    sheet0.addCell( new Number( tempCol1, tempRow1, data1[j][k], wCellformat1 ) );
+                    tempCol1++;
+                }
+               
+               tempRow1++;
+            }
+              
+        }
+   
+        /*       
         sheet0.addCell( new Label( tempCol1, tempRow1, "Indicators", wCellformat2) );
         sheet0.addCell( new Label( tempCol1+1, tempRow1, "", wCellformat2) );
        
@@ -295,10 +446,8 @@ public class ExportIndicatorToExcelAction implements Action
         }
        
         tempRow1 = tempRow1+1;
-        int tempRowValue = 0;
         for(int j=0; j< series1.length; j++)
         {
-            //int temp =0;
             tempCol1 = 0;
             sheet0.mergeCells( tempCol1 , tempRow1, tempCol1, tempRow1+2 ); 
             sheet0.addCell( new Label( tempCol1, tempRow1, series1[j], wCellformat2) );
@@ -339,43 +488,10 @@ public class ExportIndicatorToExcelAction implements Action
            
            tempRow1 = tempRow1+3;
            tempRow1++;
-           tempRowValue = tempRow1++;
-           //temp = tempRowValue;
-          // System.out.println( "Row Count inside loop : " + tempRowValue );
-           
-        }
-        tempRow1 = tempRowValue;
-        
-        //tempRow1 = temp;
-        //System.out.println( "Row Count outSide Loop : " + tempRow1 );
-        tempRow1 = tempRow1+2;
-        sheet0.addCell( new Label( tempCol1, tempRow1, "Indicators Names", wCellformat2) );
-        
-        sheet0.mergeCells( tempCol1+1 , tempRow1, tempCol1 + 2, tempRow1 );
-        sheet0.addCell( new Label( tempCol1+1, tempRow1, "Formula", wCellformat2) );
-        
-        sheet0.addCell( new Label( tempCol1+3, tempRow1, "Numerator DataElements", wCellformat2) );
-        sheet0.addCell( new Label( tempCol1+4, tempRow1, "Denominator DataElements", wCellformat2) );
-        
-        tempRow1 = tempRow1+1;
-        
-        for(int j=0; j< series1.length; j++)
-        {
-            Indicator indicator =  indicatorService.getIndicatorByName( series1[j] );
             
-            sheet0.addCell( new Label( tempCol1, tempRow1, indicator.getName(), wCellformat1 ) );
-            String formula = indicator.getNumeratorDescription() + "/" +  indicator.getDenominatorDescription();
-            
-            sheet0.addCell( new Label( tempCol1+1, tempRow1,formula , wCellformat1 ) );
-            String factor = "X" + indicator.getIndicatorType().getFactor();
-            
-            sheet0.addCell( new Label( tempCol1+2, tempRow1, factor, wCellformat1) );
-            sheet0.addCell( new Label( tempCol1+3, tempRow1, expressionService.getExpressionDescription( indicator.getNumerator()), wCellformat1 ) );
-            sheet0.addCell( new Label( tempCol1+4, tempRow1, expressionService.getExpressionDescription( indicator.getDenominator() ), wCellformat1 ) );
-            
-            tempRow1++;
         }
         
+        */
         
         /*        
         
@@ -557,7 +673,7 @@ public class ExportIndicatorToExcelAction implements Action
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
-        fileName = "Indicator Chart Output.xls";
+        fileName = "Chart Output.xls";
                 
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
 
@@ -604,103 +720,6 @@ public class ExportIndicatorToExcelAction implements Action
         return data;
     }// convertDoubleTodouble end
 
-    public void sortByAscending()
-    {
-        for(int i=0; i < categories1.length-1 ; i++)
-        {
-                for(int j=0; j < categories1.length-1-i; j++)
-                {
-                        if(data1[0][j] > data1[0][j+1])
-                        {
-                                for(int k=0; k<series1.length; k++)
-                                {
-                                        double temp1 = data1[k][j];
-                                        data1[k][j] = data1[k][j+1];
-                                        data1[k][j+1] = temp1;
-                                        
-                                        temp1 = numDataArray[k][j];
-                                        numDataArray[k][j] = numDataArray[k][j+1];
-                                        numDataArray[k][j+1] = temp1;
 
-                                        temp1 = denumDataArray[k][j];
-                                        denumDataArray[k][j] = denumDataArray[k][j+1];
-                                        denumDataArray[k][j+1] = temp1;
-
-                                }
-                                
-                                String temp2 = categories1[j];
-                                categories1[j] = categories1[j+1];
-                                categories1[j+1] = temp2;
-                        }
-
-                }
-        }
-
-    }  
-
-
-    public void sortByDesscending()
-    {
-        for(int i=0; i < categories1.length-1 ; i++)
-        {
-                for(int j=0; j < categories1.length-1-i; j++)
-                {
-                        if(data1[0][j] < data1[0][j+1])
-                        {
-                                for(int k=0; k<series1.length; k++)
-                                {
-                                        double temp1 = data1[k][j];
-                                        data1[k][j] = data1[k][j+1];
-                                        data1[k][j+1] = temp1; 
-                                        
-                                        temp1 = numDataArray[k][j];
-                                        numDataArray[k][j] = numDataArray[k][j+1];
-                                        numDataArray[k][j+1] = temp1;         
-                                        
-                                        temp1 = denumDataArray[k][j];
-                                        denumDataArray[k][j] = denumDataArray[k][j+1];
-                                        denumDataArray[k][j+1] = temp1;         
-                                }
-                                
-                                String temp2 = categories1[j];
-                                categories1[j] = categories1[j+1];
-                                categories1[j+1] = temp2;
-                        }
-
-                }
-        }
-
-    }   
-   
-    public void sortByAlphabet()
-    {   
-            for(int i=0; i < categories1.length-1 ; i++)
-            {
-                    for(int j=0; j < categories1.length-1-i; j++)
-                    {
-                            if(categories1[j].compareToIgnoreCase(categories1[j+1]) > 0)
-                            {
-                                    for(int k=0; k<series1.length; k++)
-                                    {
-                                    double temp1 = data1[k][j];
-                                    data1[k][j] = data1[k][j+1];
-                                    data1[k][j+1] = temp1;  
-                                    
-                                    temp1 = numDataArray[k][j];
-                                    numDataArray[k][j] = numDataArray[k][j+1];
-                                    numDataArray[k][j+1] = temp1;
-                                    
-                                    temp1 = denumDataArray[k][j];
-                                    denumDataArray[k][j] = denumDataArray[k][j+1];
-                                    denumDataArray[k][j+1] = temp1;  
-                                    }
-                                    
-                                    String temp2 = categories1[j];
-                                    categories1[j] = categories1[j+1];
-                                    categories1[j+1] = temp2;
-                            }
-                    }
-            }
-
-    }
 }// class end 
+
