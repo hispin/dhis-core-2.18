@@ -36,7 +36,7 @@
 		<dependency>
 		  <groupId>org.hisp.dhis</groupId>
 		  <artifactId>dhis-in-service-reports</artifactId>
-		  <version>${version}</version>
+		  <version>${project.version}</version>
 		</dependency>   
 	
 		<!-- Other -->
