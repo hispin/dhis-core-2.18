@@ -96,12 +96,12 @@ public class DelSurveyAction
         Survey survey = surveyService.getSurvey( surveyId );
         
         int flag = surveyService.deleteSurvey( survey );
-
+       // System.out.println( "flag is " + flag );
         if ( flag < 0 )
         {
             status = "error";
-            
-            message = survey.getName() + " not Deleted. Contains Data.";
+            String delMseg = i18n.getString( "not_del_contain_data" );
+            message = survey.getName() + " : "+  delMseg;
 
             return ERROR;
         }

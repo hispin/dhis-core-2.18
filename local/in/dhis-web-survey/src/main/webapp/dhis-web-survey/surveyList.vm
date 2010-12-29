@@ -80,6 +80,6 @@ function showsection(SurveyId)
 {
 	window.location.href="section.action?surveyId=" + surveyId;
 }
-var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete" ) , "'" )';
+var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_survey" ) , "'" )';
 var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'" )';
 </script>
