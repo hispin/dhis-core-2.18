@@ -130,7 +130,6 @@ public class DefaultReportService
         this.organisationUnitService = organisationUnitService;
     }
     
-    int deFlag2;
     // -------------------------------------------------------------------------
     // Report_in
     // -------------------------------------------------------------------------
@@ -560,9 +559,8 @@ public class DefaultReportService
     public String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
-        //int deFlag2 = 0;
         int isAggregated = 0;
-       
+
         try
         {
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -594,34 +592,28 @@ public class DefaultReportService
                     matcher.appendReplacement( buffer, replaceString );
                     continue;
                 }
-               // if ( dataElement.getType().equalsIgnoreCase( "int" ) )
-                if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )   
+                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
-                   
-                    //System.out.println( "dataelement id is : " + dataElementId + ", option combo id is : " + optionComboId  );
-                    //System.out.println( "Start date is  : " + startDate + ", end date is  : " + endDate + ", orgunit is : " + organisationUnit.getName() + ", aggvalue is : " + aggregatedValue );
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
+                    System.out.println( dataElement.getId() + " : " + optionCombo.getId() + " : " + startDate + " : " + endDate + " : " + organisationUnit + " : " + aggregatedValue);
                     if ( aggregatedValue == null )
                     {
-                        //System.out.println( "Aggregated value is null" );
                         replaceString = NULL_REPLACEMENT;
-                        deFlag2 = 0;
                     }
                     else
                     {
                         replaceString = String.valueOf( aggregatedValue );
-                       // System.out.println( " Aggregated value is not null : "  + replaceString );
-                        deFlag2 = 1;
+
                         isAggregated = 1;
                     }
                 }
                 else
                 {
                     deFlag1 = 1;
-                    deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -657,7 +649,7 @@ public class DefaultReportService
             }
 
             matcher.appendTail( buffer );
-
+            
             if ( deFlag1 == 0 )
             {
                 double d = 0.0;
@@ -692,17 +684,15 @@ public class DefaultReportService
 
                     // These line are to display non financial data that do not
                     // require decimals
-                    
-                   if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
+                    if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
                     {
-                       resultValue = "" + (int) d;
-                   }
+                        resultValue = "" + (int) d;
+                    }
                 }
 
             }
             else
             {
-                deFlag2 = 0;
                 resultValue = buffer.toString();
             }
 
@@ -716,7 +706,6 @@ public class DefaultReportService
                 resultValue = " ";
             }
 
-            //System.out.println( "result value is : " + resultValue );
             return resultValue;
         }
         catch ( NumberFormatException ex )
@@ -760,16 +749,16 @@ public class DefaultReportService
 
                 if ( dataElement == null || optionCombo == null )
                 {
-                    //System.out.println( "dataelement id is : " + dataElementId + ", option combo id is : " + optionComboId );
                     replaceString = "";
                     matcher.appendReplacement( buffer, replaceString );
                     continue;
                 }
-                if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
+                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
 
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
 
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -799,7 +788,8 @@ public class DefaultReportService
                 {
                     deFlag1 = 1;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
                     {
@@ -893,7 +883,7 @@ public class DefaultReportService
             {
                 resultValue = " ";
             }
-           // System.out.println( resultValue );
+
             return resultValue;
         }
         catch ( NumberFormatException ex )
@@ -942,8 +932,8 @@ public class DefaultReportService
                     deFlag1 = 1;
                     deFlag2 = 0;
                     PeriodType dePeriodType = getDataElementPeriodType( dataElement );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType(
-                        dePeriodType, startDate, endDate ) );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     Period tempPeriod = new Period();
                     if ( periodList == null || periodList.isEmpty() )
                     {
