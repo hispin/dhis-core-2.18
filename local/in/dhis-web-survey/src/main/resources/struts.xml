@@ -89,8 +89,7 @@
 		<action name="delSurvey"
 			class="org.hisp.dhis.survey.action.DelSurveyAction">
 			<result name="success" type="velocity-xml">/dhis-web-survey/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-survey/responseError.vm</result>
+			<result name="error" type="velocity-xml">/dhis-web-survey/responseError.vm</result>
 			<!--<param name="requiredAuthorities">F_DATASET_DELETE</param>-->
 		</action>
 		
@@ -115,8 +114,7 @@
 			class="org.hisp.dhis.survey.action.SetupAssociationsTreeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/surveyAssociations.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/oust/oust.js,javascript/IndicatorList.js,javascript/associations.js</param>
+			<param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/IndicatorList.js,javascript/associations.js</param>
 			<!--<param name="requiredAuthorities">F_DATASET_ASSIGN</param>-->
 		</action>
 		

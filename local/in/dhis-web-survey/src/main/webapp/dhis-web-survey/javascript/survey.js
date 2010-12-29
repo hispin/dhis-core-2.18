@@ -9,7 +9,7 @@ var tmpSource;
 
 function removeSurvey( surveyId, surveyName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + surveyName );
+  var result = window.confirm( i18n_confirm_delete + '\n\n' + " Survey Id =" + surveyId + '\n\n' + " Survey Name ="  + surveyName );
 
   if ( result )
   {
@@ -33,7 +33,9 @@ function removeSurveyCompleted( messageElement )
     if ( type == 'error' )
    {
     	var message = messageElement.firstChild.nodeValue;
-		setFieldValue( 'warningField', message );			
+    	//alert( message );
+		//setFieldValue( 'warningField', message );
+		setInnerHTML( 'warningField', message );
 		showWarning();
    }
    else
@@ -222,17 +224,36 @@ function filterByIndicatorGroup( selectedIndicatorGroup )
 {
   var selectedList = document.getElementById( 'selectedList' );
 
-  var list = new Array();
+ // var list = new Array();
+  
+  var params = 'indicatorGroupId=' + selectedIndicatorGroup;
+  
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
   	//params += '&selectedIndicators=' + selectedList.options[i].value;
-	list[i] = selectedList.options[i].value;
+  	params += '&selectedIndicators=' + selectedList.options[i].value;
+	//list[i] = selectedList.options[i].value;
   }
   // Clear the list
   var availableList = document.getElementById( 'availableList' );
 
   availableList.options.length = 0;
+  
+ // alert(list);
+  //alert(list.length);
+  
+  var request = new Request();
+  request.setResponseTypeXML( 'indicatorgroup' );
+  request.setCallbackSuccess( filterByIndicatorGroupCompleted );
+  //request.send( url );
 
+  var requestString = "filterAvailableIndicatorsByIndicatorGroup.action";
+ // var params = "indicatorGroupId=" + selectedIndicatorGroup + "&selectedIndicators=" + list;
+  request.sendAsPost( params );
+  request.send( requestString ); 
+  
+ /* 
+  
    $.post("filterAvailableIndicatorsByIndicatorGroup.action",
 		{
 			indicatorGroupId : selectedIndicatorGroup,
@@ -242,6 +263,7 @@ function filterByIndicatorGroup( selectedIndicatorGroup )
 		{
 			filterByIndicatorGroupCompleted(data);
 		},'xml');
+		*/
 }
 
 function filterByIndicatorGroupCompleted( indicatorGroup )
@@ -256,6 +278,7 @@ function filterByIndicatorGroupCompleted( indicatorGroup )
     var indicator = indicatorList[i];
     var name = indicator.firstChild.nodeValue;
     var id = indicator.getAttribute( 'id' );
+   // var title = indicator.firstChild.nodeValue;
 
     availableList.add( new Option( name, id ), null );
   }

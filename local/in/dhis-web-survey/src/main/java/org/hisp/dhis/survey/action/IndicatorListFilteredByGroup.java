@@ -109,18 +109,17 @@ public class IndicatorListFilteredByGroup
     public String execute()
         throws Exception
     {
-        if (  indicatorGroupId == null || indicatorGroupId.equals( "ALL" ) )
+        if (  indicatorGroupId == null || indicatorGroupId.equalsIgnoreCase( "ALL" ) )
         {
         	indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         }
         else
         {
-        	IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer
-                .parseInt( indicatorGroupId ) );
+        	IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( Integer.parseInt( indicatorGroupId ) );
 
         	indicators = new ArrayList<Indicator>( indicatorGroup.getMembers() );
         }
-
+       // System.out.println("\n\n +++ \n selectedIndicators list  is  : " + selectedIndicators + " ,selectedIndicators list size is : "  + selectedIndicators.length );
         if ( selectedIndicators != null && selectedIndicators.length > 0 )
         {
             Iterator<Indicator> iter = indicators.iterator();
@@ -128,9 +127,11 @@ public class IndicatorListFilteredByGroup
             while ( iter.hasNext() )
             {
             	Indicator indicator = iter.next();
-
+            	//System.out.println("\n\n +++ \n Indicator Id is   : " + indicator.getId() + " , Indicator name is :" + indicator.getName() );
+            	
                 for ( int i = 0; i < selectedIndicators.length; i++ )
                 {
+                    //System.out.println("\n\n +++ \n Indicator Id is   : " + indicator.getId() + " , Indicator name is :" + indicator.getName() );
                     if ( indicator.getId() == Integer.parseInt( selectedIndicators[i] ) )
                     {
                         iter.remove();
@@ -143,7 +144,7 @@ public class IndicatorListFilteredByGroup
         {
         	Survey survey = surveyService.getSurvey( surveyId );
 
-            indicators.removeAll( survey.getIndicators() );
+                indicators.removeAll( survey.getIndicators() );
         }
 
       //  Collections.sort( indicators, indicatorComparator );
