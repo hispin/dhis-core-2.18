@@ -455,40 +455,40 @@ public class DefaultPatientService
             patientAttributeValueService.deletePatientAttributeValue( av );
         }
 
-        // -------------------------------------------------------------------------
-        // If underAge = true : save representative information.
-        // -------------------------------------------------------------------------
-
-        if ( patient.isUnderAge() )
+        if ( shouldSaveRepresentativeInformation( patient, representativeId ))
         {
+            Patient representative = patientStore.get( representativeId );
 
-            if ( representativeId != null )
+            if ( representative != null )
             {
-                if ( patient.getRepresentative() == null || patient.getRepresentative().getId() != representativeId )
+                patient.setRepresentative( representative );
+
+                Relationship rel = new Relationship();
+                rel.setPatientA( representative );
+                rel.setPatientB( patient );
+
+                if ( relationshipTypeId != null )
                 {
-                    Patient representative = patientStore.get( representativeId );
-
-                    if ( representative != null )
+                    RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
+                    if ( relType != null )
                     {
-                        patient.setRepresentative( representative );
-
-                        Relationship rel = new Relationship();
-                        rel.setPatientA( representative );
-                        rel.setPatientB( patient );
-
-                        if ( relationshipTypeId != null )
-                        {
-                            RelationshipType relType = relationshipTypeService.getRelationshipType( relationshipTypeId );
-                            if ( relType != null )
-                            {
-                                rel.setRelationshipType( relType );
-                                relationshipService.saveRelationship( rel );
-                            }
-                        }
+                        rel.setRelationshipType( relType );
+                        relationshipService.saveRelationship( rel );
                     }
                 }
             }
         }
+    }
+
+    private boolean shouldSaveRepresentativeInformation( Patient patient, Integer representativeId )
+    {
+        if (!patient.isUnderAge()) 
+            return false;
+
+        if (representativeId == null)
+            return false;
+        
+        return patient.getRepresentative() == null || !patient.getRepresentative().getId().equals( representativeId );
     }
 
     public Collection<Patient> getPatients( OrganisationUnit organisationUnit, Program program, int min, int max )
