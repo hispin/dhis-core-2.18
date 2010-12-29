@@ -61,6 +61,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.importexport.ImportDataValue;
 import org.hisp.dhis.importexport.ImportObjectStatus;
@@ -728,7 +729,7 @@ public abstract class DhisConvenienceTest
      * @param rightSide The right side expression.
      * @param periodType The period-type.
      */
-    public static ValidationRule createValidationRule( char uniqueCharacter, String operator, Expression leftSide,
+    public static ValidationRule createValidationRule( char uniqueCharacter, Operator operator, Expression leftSide,
         Expression rightSide, PeriodType periodType )
     {
         ValidationRule validationRule = new ValidationRule();

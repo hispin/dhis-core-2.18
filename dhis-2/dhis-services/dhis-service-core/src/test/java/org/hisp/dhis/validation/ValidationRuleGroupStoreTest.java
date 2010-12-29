@@ -32,6 +32,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
+import static org.hisp.dhis.expression.Operator.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -120,8 +122,8 @@ public class ValidationRuleGroupStoreTest
     @Test
     public void testAddValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
         
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
@@ -147,8 +149,8 @@ public class ValidationRuleGroupStoreTest
     @Test
     public void testUpdateValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
         
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
@@ -183,8 +185,8 @@ public class ValidationRuleGroupStoreTest
     @Test
     public void testDeleteValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
         
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
@@ -220,8 +222,8 @@ public class ValidationRuleGroupStoreTest
     @Test
     public void testGetAllValidationRuleGroup()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
         
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );
@@ -250,8 +252,8 @@ public class ValidationRuleGroupStoreTest
     @Test
     public void testGetValidationRuleGroupByName()
     {
-        ValidationRule ruleA = createValidationRule( 'A', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
-        ValidationRule ruleB = createValidationRule( 'B', ValidationRule.OPERATOR_EQUAL, null, null, periodType );
+        ValidationRule ruleA = createValidationRule( 'A', equal_to, null, null, periodType );
+        ValidationRule ruleB = createValidationRule( 'B', equal_to, null, null, periodType );
         
         validationRuleStore.save( ruleA );
         validationRuleStore.save( ruleB );

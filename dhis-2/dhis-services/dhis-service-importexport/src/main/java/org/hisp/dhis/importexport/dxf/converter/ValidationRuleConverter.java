@@ -34,6 +34,7 @@ import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
@@ -46,22 +47,31 @@ import org.hisp.dhis.validation.ValidationRuleService;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: ValidationRuleConverter.java 6455 2008-11-24 08:59:37Z larshelg $
+ * @version $Id: ValidationRuleConverter.java 6455 2008-11-24 08:59:37Z larshelg
+ *          $
  */
 public class ValidationRuleConverter
     extends ValidationRuleImporter
     implements XMLConverter
 {
     public static final String COLLECTION_NAME = "validationRules";
+
     public static final String ELEMENT_NAME = "validationRule";
 
     private static final String FIELD_NAME = "name";
+
     private static final String FIELD_DESCRIPTION = "description";
+
     private static final String FIELD_TYPE = "type";
+
     private static final String FIELD_OPERATOR = "operator";
+
     private static final String FIELD_LEFTSIDE_EXPRESSION = "leftSideExpression";
+
     private static final String FIELD_LEFTSIDE_DESCRIPTION = "leftSideDescription";
+
     private static final String FIELD_RIGHTSIDE_EXPRESSION = "rightSideExpression";
+
     private static final String FIELD_RIGHTSIDE_DESCRIPTION = "rightSideDescription";
 
     // -------------------------------------------------------------------------
@@ -132,7 +142,7 @@ public class ValidationRuleConverter
                 writer.writeElement( FIELD_NAME, rule.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, rule.getDescription() );
                 writer.writeElement( FIELD_TYPE, rule.getType() );
-                writer.writeElement( FIELD_OPERATOR, rule.getOperator() );
+                writer.writeElement( FIELD_OPERATOR, rule.getOperator().toString() );
                 writer.writeElement( FIELD_LEFTSIDE_EXPRESSION, rule.getLeftSide().getExpression() );
                 writer.writeElement( FIELD_LEFTSIDE_DESCRIPTION, rule.getLeftSide().getDescription() );
                 writer.writeElement( FIELD_RIGHTSIDE_EXPRESSION, rule.getRightSide().getExpression() );
@@ -162,7 +172,7 @@ public class ValidationRuleConverter
             validationRule.setName( values.get( FIELD_NAME ) );
             validationRule.setDescription( values.get( FIELD_DESCRIPTION ) );
             validationRule.setType( values.get( FIELD_TYPE ) );
-            validationRule.setOperator( values.get( FIELD_OPERATOR ) );
+            validationRule.setOperator( Operator.valueOf( values.get( FIELD_OPERATOR ) ) );
 
             validationRule.getLeftSide().setExpression(
                 expressionService.convertExpression( values.get( FIELD_LEFTSIDE_EXPRESSION ), dataElementMapping,

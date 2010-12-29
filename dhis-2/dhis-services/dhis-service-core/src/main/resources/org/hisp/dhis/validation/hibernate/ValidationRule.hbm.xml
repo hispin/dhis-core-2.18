@@ -17,7 +17,7 @@
     
     <property name="type"/>
  
-    <property name="operator">
+    <property name="operator" type="org.hisp.dhis.expression.OperatorUserType">
       <column name="operator" not-null="true" unique="false"/>
     </property>
 
