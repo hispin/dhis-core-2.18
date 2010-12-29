@@ -3,25 +3,23 @@
 
 <form id="editUserGroupForm" name="editUserGroupForm" action="updateUserGroup.action" method="post" onsubmit="return editValidation();" >
 	
-  <input type="hidden" name="userGroupId" id="userGroupId" value="$userGroupId" />
-  <table id="detailsList">
-    <col/> ## Labels
-    <col/> ## Input
+<input type="hidden" name="userGroupId" id="userGroupId" value="$userGroupId" />
+<table id="detailsList">
+	<col/>
+	<col/>
     <thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "user_group_details" )</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" onchange="nameChanged()" style="width:20em" maxlength="150" />
-        </td>
-      </tr>
-      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr>
+		<th colspan="2">$i18n.getString( "user_group_details" )</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" onchange="nameChanged()" style="width:20em" maxlength="150" /></td>
+	</tr>
+	<tr><td colspan="2" style="height:15px"></td></tr>
     </tbody>
-  </table>
-    <br/>&nbsp;
+</table>
 <table>
     <tr>
         <th>$i18n.getString( "available_users" )</th><td></td>
@@ -51,10 +49,11 @@
         </td>
     
         <td>
-            <select id="groupMembers" name="groupMembers" size="2"value = "$group.name" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableUsers' )" />
+            <select id="groupMembers" name="groupMembers" size="2"value = "$group.name" multiple="multiple" style="min-width:25em; height:25em" ondblclick="moveSelectedById( 'groupMembers', 'availableUsers' )">
              #foreach( $user in $groupMembers )
-                    <option value="$user.id">$encoder.htmlEncode( $user.name )</option>
-                #end
+             	<option value="$user.id">$encoder.htmlEncode( $user.name )</option>
+             #end
+             </select>
         </td>
        
     </tr>
@@ -85,13 +84,7 @@
 		return false ;
     }else{
     	if (c >0 )
-		{
-			/* for( k =0;k<=c;k++)
-			{alert('k : ' + k);
-			alert('abc.options[k] : ' + abc.options[k]);
-				abc.options[k].selected = true ;    
-			}*/
-			
+		{			
 			selectAllById("groupMembers");
 		}
 	}

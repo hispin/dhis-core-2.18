@@ -5,6 +5,6 @@
     #introListImgItem( "alluser.action" "user" "user" )
     #introListImgItem( "user.action" "user_by_orgunit" "user" )
     #introListImgItem( "allRole.action" "user_role" "user" )
-    #introListImgItem( "getAllUserGroups.action" "user_groups" "user" )
+    #introListImgItem( "getAllUserGroups.action" "user_group" "user" )
 
 </ul>

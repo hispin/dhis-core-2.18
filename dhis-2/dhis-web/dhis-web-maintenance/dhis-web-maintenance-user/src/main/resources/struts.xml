@@ -187,7 +187,7 @@
 
   <action name="editUserGroupForm" class="org.hisp.dhis.user.action.EditUserGroupFormAction">
     <result name="success" type="velocity">/main.vm</result>
-    <param name="page">/dhis-web-maintenance-user/editUserGroupForm.vm</param>
+    <param name="page">/dhis-web-maintenance-user/updateUserGroupForm.vm</param>
     <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
     <param name="stylesheets">css/receiveImportPage.css</param>
   </action>
