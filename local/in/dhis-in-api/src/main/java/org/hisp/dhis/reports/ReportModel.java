@@ -35,7 +35,7 @@ public class ReportModel
 
     public final static String RM_STATIC = "static";
         
-    public final static String RM_DYNAMIC_WITH_ROOT = "dynamicwithroot";
+    public final static String RM_DYNAMIC_WITH_ROOT = "dynamicwithrootfacility";
         
     public final static String RM_DYNAMIC_WITHOUT_ROOT = "dynamicwithoutroot";
     

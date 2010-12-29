@@ -111,14 +111,15 @@
       <artifactId>dhis-web-reporting</artifactId>
       <version>${version}</version>
       <type>war</type>
-    </dependency>-->	
+    </dependency>-->
+<!--	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard-integration</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
-
+-->
 <!--
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -187,14 +188,14 @@
     </dependency>
 
 <!-- SMS Mobile application -->
-<!--
+
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mobile</artifactId>
       <version>${version}</version>
       <type>war</type>
     </dependency>
--->
+
 	
 <!--
     <dependency>
