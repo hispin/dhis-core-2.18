@@ -29,6 +29,7 @@ package org.hisp.dhis.validationrule.action;
 
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
@@ -154,7 +155,7 @@ public class AddValidationRuleAction
         validationRule.setName( name );
         validationRule.setDescription( description );
         validationRule.setType( ValidationRule.TYPE_ABSOLUTE );
-        validationRule.setOperator( operator );
+        validationRule.setOperator( Operator.valueOf(operator) );
         validationRule.setLeftSide( leftSide );
         validationRule.setRightSide( rightSide );
 

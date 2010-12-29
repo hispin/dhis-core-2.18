@@ -28,6 +28,7 @@ package org.hisp.dhis.validationrule.action;
  */
 
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.validation.ValidationRule;
@@ -146,7 +147,7 @@ public class UpdateValidationRuleAction
 
         validationRule.setName( name );
         validationRule.setDescription( description );
-        validationRule.setOperator( operator );
+        validationRule.setOperator( Operator.valueOf( operator ) );
 
         validationRule.getLeftSide().setExpression( leftSideExpression );
         validationRule.getLeftSide().setDescription( leftSideDescription );

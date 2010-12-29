@@ -30,6 +30,7 @@ package org.hisp.dhis.system.util;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.hisp.dhis.expression.Operator;
 import org.nfunk.jep.JEP;
 
 /**
@@ -50,9 +51,9 @@ public class MathUtils
      * @param rightSide The right side of the expression.
      * @return True if the expressio is true, fals otherwise.
      */
-    public static boolean expressionIsTrue( double leftSide, String operator, double rightSide )
+    public static boolean expressionIsTrue( double leftSide, Operator operator, double rightSide )
     {
-        final String expression = leftSide + operator + rightSide;
+        final String expression = leftSide + operator.getMathematicalOperator() + rightSide;
         
         final JEP parser = new JEP();
         

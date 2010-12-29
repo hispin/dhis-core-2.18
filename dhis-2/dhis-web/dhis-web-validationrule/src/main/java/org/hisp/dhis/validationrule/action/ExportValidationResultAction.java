@@ -134,7 +134,7 @@ public class ExportValidationResultAction
             grid.addValue( format.formatPeriod( period ) );
             grid.addValue( validationResult.getValidationRule().getLeftSide().getDescription() ); //TODO lazy prone
             grid.addValue( String.valueOf( validationResult.getLeftsideValue() ) );
-            grid.addValue( i18n.getString( validationResult.getValidationRule().getOperator() ) );
+            grid.addValue( i18n.getString( validationResult.getValidationRule().getOperator().toString() ) );
             grid.addValue( String.valueOf( validationResult.getRightsideValue() ) );
             grid.addValue( validationResult.getValidationRule().getRightSide().getDescription() );
         }

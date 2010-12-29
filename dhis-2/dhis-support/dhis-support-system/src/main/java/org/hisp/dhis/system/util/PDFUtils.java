@@ -550,7 +550,7 @@ public class PDFUtils
         table.addCell( getTextCell( i18n.getString( validationRule.getType() ) ) );
 
         table.addCell( getItalicCell( i18n.getString( "operator" ) ) );
-        table.addCell( getTextCell( i18n.getString( validationRule.getOperator() ) ) );
+        table.addCell( getTextCell( i18n.getString( validationRule.getOperator().toString() ) ) );
 
         table.addCell( getItalicCell( i18n.getString( "left_side_of_expression" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( validationRule.getLeftSide()

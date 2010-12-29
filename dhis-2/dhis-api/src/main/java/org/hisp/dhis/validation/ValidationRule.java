@@ -27,13 +27,12 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.expression.Expression;
+import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
 
 /**
@@ -46,20 +45,11 @@ public class ValidationRule
     public static final String TYPE_STATISTICAL = "statistical";
     public static final String TYPE_ABSOLUTE = "absolute";
     
-    public static final String OPERATOR_EQUAL = "equal_to";
-    public static final String OPERATOR_NOT_EQUAL = "not_equal_to";
-    public static final String OPERATOR_GREATER = "greater_than";
-    public static final String OPERATOR_GREATER_EQUAL = "greater_than_or_equal_to";
-    public static final String OPERATOR_LESSER = "less_than";
-    public static final String OPERATOR_LESSER_EQUAL = "less_than_or_equal_to";
-    
-    private static Map<String, String> operatorMap = new HashMap<String, String>();
-    
     private String description;
     
     private String type;
 
-    private String operator;
+    private Operator operator;
     
     private Expression leftSide;
     
@@ -78,7 +68,7 @@ public class ValidationRule
     }
 
     public ValidationRule( String name, String description, String type, 
-        String operator, Expression leftSide, Expression rightSide )
+        Operator operator, Expression leftSide, Expression rightSide )
     {
         this.name = name;
         this.description = description;
@@ -143,7 +133,7 @@ public class ValidationRule
         this.description = description;
     }
     
-    public String getOperator()
+    public Operator getOperator()
     {
         return operator;
     }
@@ -158,7 +148,7 @@ public class ValidationRule
         this.periodType = periodType;
     }
 
-    public void setOperator( String operator )
+    public void setOperator( Operator operator )
     {
         this.operator = operator;
     }
@@ -203,22 +193,4 @@ public class ValidationRule
         this.groups = groups;
     }
 
-    // -------------------------------------------------------------------------
-    // Operator
-    // -------------------------------------------------------------------------  
-
-    static
-    {
-        operatorMap.put( OPERATOR_EQUAL, "==" );
-        operatorMap.put( OPERATOR_NOT_EQUAL, "!=" );
-        operatorMap.put( OPERATOR_GREATER, ">" );
-        operatorMap.put( OPERATOR_GREATER_EQUAL, ">=" );
-        operatorMap.put( OPERATOR_LESSER, "<" );
-        operatorMap.put( OPERATOR_LESSER_EQUAL, "<=" );
-    }
-    
-    public String getMathematicalOperator()
-    {
-        return operatorMap.get( operator );
-    }
 }

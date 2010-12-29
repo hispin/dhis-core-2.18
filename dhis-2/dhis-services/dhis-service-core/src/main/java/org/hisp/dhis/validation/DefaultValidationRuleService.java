@@ -305,7 +305,7 @@ public class DefaultValidationRuleService
     
                 if ( leftSide != null && rightSide != null )
                 {
-                    violation = !expressionIsTrue( leftSide, validationRule.getMathematicalOperator(), rightSide );
+                    violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
     
                     if ( violation )
                     {

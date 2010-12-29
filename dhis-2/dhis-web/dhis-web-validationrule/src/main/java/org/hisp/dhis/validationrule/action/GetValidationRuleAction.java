@@ -115,7 +115,7 @@ public class GetValidationRuleAction
         leftSideTextualExpression = expressionService.getExpressionDescription( validationRule.getLeftSide().getExpression() );
         rightSideTextualExpression = expressionService.getExpressionDescription( validationRule.getRightSide().getExpression() );
         
-        validationOperator = validationRule.getOperator();       
+        validationOperator = validationRule.getOperator().toString();       
         
         periodType = validationRule.getPeriodType();
         

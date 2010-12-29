@@ -1609,9 +1609,9 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Number( colStart, rowStart, validationRule.getId(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 1, rowStart, validationRule.getName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 2, rowStart, validationRule.getDescription(), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getMathematicalOperator(),
+                    sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator().getMathematicalOperator(),
                         wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 5, rowStart, validationRule.getType(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 6, rowStart, validationRule.getLeftSide().getDescription(),
                         wCellformat ) );
@@ -1742,9 +1742,9 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 1, rowStart, validationRule.getName(), wCellformat ) );
                         sheet0
                             .addCell( new Label( colStart + 2, rowStart, validationRule.getDescription(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getMathematicalOperator(),
+                        sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator().getMathematicalOperator(),
                             wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 5, rowStart, validationRule.getType(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 6, rowStart, validationRule.getLeftSide()
                             .getDescription(), wCellformat ) );

@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.util;
+package org.hisp.dhis.expression;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,46 +27,25 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-import static org.hisp.dhis.expression.Operator.*;
-
-import org.junit.Test;
-
-/**
- * @author Lars Helge Overland
- * @version $Id: MathUtil.java 4712 2008-03-12 10:32:45Z larshelg $
- */
-public class MathUtilsTest
+public enum Operator
 {
-    
-    @Test
-    public void testExpressionIsTrue()
+    equal_to( "==" ), 
+    not_equal_to( "!=" ), 
+    greater_than( ">" ), 
+    greater_than_or_equal_to( ">=" ), 
+    less_than( "<" ), 
+    less_than_or_equal_to( "<=" );
+
+    private final String mathematicalOperator;
+
+    Operator( String mathematicalOperator )
     {
-        assertFalse( expressionIsTrue( 20.0, equal_to, 10.0 ) );
-        assertTrue( expressionIsTrue( 20.0, not_equal_to, 10.0 ) );
-        assertTrue( expressionIsTrue( 20.0, greater_than, 10.0 ) );
-        assertTrue( expressionIsTrue( 20.0, greater_than_or_equal_to, 20.0 ) );
-        assertFalse( expressionIsTrue( 30.0, less_than, 15.0 ) );
-        assertTrue( expressionIsTrue( 40.0, less_than_or_equal_to, 50.0 ) );
-        assertFalse( expressionIsTrue( 0.0, greater_than_or_equal_to, 20.0 ) );
-    }
-    
-    @Test
-    public void testGetMin()
-    {
-        double[] array = { 5.0, 2.0, 6.0, 12.0 };
-        
-        assertEquals( 2.0, MathUtils.getMin( array ) );
+        this.mathematicalOperator = mathematicalOperator;
     }
 
-    @Test
-    public void testGetMax()
+    public String getMathematicalOperator()
     {
-        double[] array = { 5.0, 2.0, 12.0, 6.0 };
-        
-        assertEquals( 12.0, MathUtils.getMax( array ) );
+        return mathematicalOperator;
     }
+
 }
