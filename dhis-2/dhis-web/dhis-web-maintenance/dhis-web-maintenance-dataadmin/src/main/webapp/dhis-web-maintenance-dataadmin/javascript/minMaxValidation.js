@@ -2,7 +2,7 @@ function generateMinMaxValue(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( minMaxValueCompleted );	
-	request.sendAsPost(getParamString('dataSetIds'));
+	request.sendAsPost(getParamString('dataSetIds', 'datatSetIds'));
 	request.send( 'generateMinMaxValue.action' );
 }
 
@@ -51,7 +51,7 @@ function removeMinMaxValue(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( minMaxValueCompleted );	
-	request.sendAsPost(getParamString('dataSetIds'));
+	request.sendAsPost(getParamString('dataSetIds', 'dataSetIds'));
 	request.send( 'removeMinMaxValue.action' );
 	
 }

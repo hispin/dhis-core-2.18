@@ -651,24 +651,6 @@ function showHideDiv( elementId )
 }
 
 /**
- * Returns a query string with all element values in the select list with
- * the specified identifier.
- */
-function getParamString( elementId )
-{
-    var list = document.getElementById( elementId );
-    
-    var params = "";
-    
-    for ( var i = 0; i < list.options.length; i++ )
-    {
-        params += elementId + "=" + list.options[i].value + "&";
-    }
-    
-    return params;
-}
-
-/**
  * Returns a query string with all element values in the select list and
  * the specified param.
  */
