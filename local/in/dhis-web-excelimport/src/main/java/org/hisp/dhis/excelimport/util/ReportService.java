@@ -50,20 +50,20 @@ public class ReportService
         this.periodService = periodService;
     }
 
-    /*private DBConnection dbConnection;
-
-    public void setDbConnection( DBConnection dbConnection )
-    {
-        this.dbConnection = dbConnection;
-    }*/
+    /*
+     * private DBConnection dbConnection;
+     * 
+     * public void setDbConnection( DBConnection dbConnection ) {
+     * this.dbConnection = dbConnection; }
+     */
 
     private JdbcTemplate jdbcTemplate;
 
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
-    }    
-    
+    }
+
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -105,9 +105,9 @@ public class ReportService
     {
         this.indicatorService = indicatorService;
     }
-    
+
     private ConfigurationService configurationService;
-    
+
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
@@ -120,13 +120,12 @@ public class ReportService
     public List<Period> getMonthlyPeriods( Date start, Date end )
     {
         List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( start, end ) );
-        PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
+        PeriodType monthlyPeriodType = PeriodType.getByNameIgnoreCase( "monthly" );
 
         List<Period> monthlyPeriodList = new ArrayList<Period>();
-        Iterator it = periodList.iterator();
-        while ( it.hasNext() )
+
+        for ( Period period : periodList )
         {
-            Period period = (Period) it.next();
             if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
                 monthlyPeriodList.add( period );
@@ -171,57 +170,15 @@ public class ReportService
         return newPeriod;
     }
 
-    /*
-     * Returns the PeriodType Object based on the Period Type Name For ex:- if
-     * we pass name as Monthly then it returns the PeriodType Object for Monthly
-     * PeriodType If there is no such PeriodType returns null
-     */
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-                break;
-            }
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-        return periodType;
-    }
-
-    /*
-     * Returns the child tree of the selected Orgunit
-     */
-    public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU )
-    {
-        List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
-        Iterator it = selecteOU.getChildren().iterator();
-        while ( it.hasNext() )
-        {
-            OrganisationUnit orgU = (OrganisationUnit) it.next();
-            ouList.add( orgU );
-        }
-        return ouList;
-    }
-
     public List<Integer> getLinelistingRecordNos( OrganisationUnit organisationUnit, Period period, String lltype )
     {
         List<Integer> recordNosList = new ArrayList<Integer>();
 
-        //Connection con = dbConnection.openConnection();
+        // Connection con = dbConnection.openConnection();
 
         Statement st = null;
 
-        //ResultSet rs1 = null;
+        // ResultSet rs1 = null;
 
         String query = "";
 
@@ -247,12 +204,12 @@ public class ReportService
 
         try
         {
-            //st = con.createStatement();
+            // st = con.createStatement();
 
             query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
                 + period.getId() + " AND sourceid = " + organisationUnit.getId();
-            //rs1 = st.executeQuery( query );
-            
+            // rs1 = st.executeQuery( query );
+
             SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
 
             while ( rs1.next() )
@@ -267,64 +224,51 @@ public class ReportService
             System.out.println( "SQL Exception : " + e.getMessage() );
             return null;
         }
-        /*finally
-        {
-            try
-            {
-                SqlRowSet rs1;
-                
-                if ( st != null )
-                    st.close();
-                if ( rs1 != null )
-                    rs1.close();
-
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-                return null;
-            }
-        }*/ // finally block end
+        /*
+         * finally { try { SqlRowSet rs1;
+         * 
+         * if ( st != null ) st.close(); if ( rs1 != null ) rs1.close();
+         * 
+         * if ( con != null ) con.close(); } catch ( Exception e ) {
+         * System.out.println( "SQL Exception : " + e.getMessage() ); return
+         * null; } }
+         */// finally block end
 
         return recordNosList;
     }
 
     public String getRAFolderName()
     {
-        //Connection con = dbConnection.openConnection();
+        // Connection con = dbConnection.openConnection();
 
-        //Statement st = null;
+        // Statement st = null;
 
-        //ResultSet rs1 = null;
+        // ResultSet rs1 = null;
 
         String raFolderName = "ra_national";
 
         try
         {
-            //st = con.createStatement();
+            // st = con.createStatement();
 
-           /* query = "SELECT mvalue FROM maintenancein WHERE mkey LIKE '" + KEY_RAFOLDER + "'";
-            //rs1 = st.executeQuery( query );
-            
-            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            /*
+             * query = "SELECT mvalue FROM maintenancein WHERE mkey LIKE '" +
+             * KEY_RAFOLDER + "'"; //rs1 = st.executeQuery( query );
+             * 
+             * SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+             * 
+             * if ( rs1.next() ) { raFolderName = rs1.getString( 1 ); }
+             */
 
-            if ( rs1.next() )
-            {
-                raFolderName = rs1.getString( 1 );
-            }*/
-            
-            raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue(); 
+            raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
 
         }
         catch ( Exception e )
         {
             System.out.println( "Exception : " + e.getMessage() );
             return null;
-        }  
-        
-            
+        }
+
         return raFolderName;
 
     }
@@ -373,8 +317,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -533,8 +477,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -711,8 +655,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 

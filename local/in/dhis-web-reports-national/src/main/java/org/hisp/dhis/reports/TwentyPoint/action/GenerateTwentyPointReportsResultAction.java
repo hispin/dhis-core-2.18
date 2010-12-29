@@ -1039,7 +1039,7 @@ public class GenerateTwentyPointReportsResultAction
         {
             tempDate.roll( Calendar.MONTH, -1 );
         }
-        PeriodType periodType = reportService.getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = reportService.getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ),
             periodType );
 
@@ -1060,7 +1060,7 @@ public class GenerateTwentyPointReportsResultAction
         {
             tempDate.roll( Calendar.MONTH, -1 );
         }
-        PeriodType periodType = reportService.getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = reportService.getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ),
             periodType );
 

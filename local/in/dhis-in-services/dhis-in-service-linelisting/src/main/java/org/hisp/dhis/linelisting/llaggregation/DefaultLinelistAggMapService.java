@@ -1,7 +1,6 @@
 package org.hisp.dhis.linelisting.llaggregation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -423,7 +422,7 @@ public class DefaultLinelistAggMapService
                     tableName = group.getShortName();
 //                    tableName="livebirth";
                     String columnName = "";
-                    List<LineListElement> listDe = new ArrayList(group.getLineListElements());
+                    List<LineListElement> listDe = new ArrayList<LineListElement>(group.getLineListElements());
                     if( listDe == null || listDe.size() == 0 )
                     {
                         throw new Exception("Line listing group does not have any Line listing data element");

@@ -96,6 +96,21 @@ public abstract class PeriodType
     {
         return periodTypeMap.get( name );
     }
+    
+    public static PeriodType getByNameIgnoreCase( String name )
+    {
+        for ( PeriodType periodType : getAvailablePeriodTypes() )
+        {
+            if ( periodType.getName().toLowerCase().trim().equals( name ) )
+            {
+                return periodType;
+            }
+        }
+
+        return null;
+    }
+
+
 
     // -------------------------------------------------------------------------
     // Persistable

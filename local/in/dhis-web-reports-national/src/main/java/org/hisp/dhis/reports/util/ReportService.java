@@ -2,7 +2,6 @@ package org.hisp.dhis.reports.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -83,7 +82,7 @@ public class ReportService
     {
         this.dataElementCategoryService = dataElementCategoryService;
     }
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -93,7 +92,7 @@ public class ReportService
 
     private DataSetService dataSetService;
 
-    public void setDataSetService( DataSetService dataSetStore )
+    public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
@@ -119,13 +118,11 @@ public class ReportService
     public List<Period> getMonthlyPeriods( Date start, Date end )
     {
         List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( start, end ) );
-        PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
+        PeriodType monthlyPeriodType = PeriodType.getByNameIgnoreCase( "monthly" );
 
         List<Period> monthlyPeriodList = new ArrayList<Period>();
-        Iterator it = periodList.iterator();
-        while ( it.hasNext() )
+        for ( Period period : periodList )
         {
-            Period period = (Period) it.next();
             if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
                 monthlyPeriodList.add( period );
@@ -168,33 +165,6 @@ public class ReportService
         Period newPeriod = new Period();
         newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
-    }
-
-    /*
-     * Returns the PeriodType Object based on the Period Type Name For ex:- if
-     * we pass name as Monthly then it returns the PeriodType Object for Monthly
-     * PeriodType If there is no such PeriodType returns null
-     */
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-                break;
-            }
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-        return periodType;
     }
 
     /*
@@ -319,18 +289,16 @@ public class ReportService
     }
 
     /*
+     * Only report period type if element is in a data set?
+     * 
      * Returns the PeriodType Object for selected DataElement, If no PeriodType
      * is found then by default returns Monthly Period type
      */
     public PeriodType getDataElementPeriodType( DataElement de )
     {
-        List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Iterator it = dataSetList.iterator();
-        while ( it.hasNext() )
+        for ( DataSet ds : dataSetService.getAllDataSets() )
         {
-            DataSet ds = (DataSet) it.next();
-            List<DataElement> dataElementList = new ArrayList<DataElement>( ds.getDataElements() );
-            if ( dataElementList.contains( de ) )
+            if ( ds.getDataElements().contains( de ) )
             {
                 return ds.getPeriodType();
             }
@@ -338,7 +306,7 @@ public class ReportService
 
         return null;
 
-    } // getDataElementPeriodType end
+    }
 
     private String getResultDataValue( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit )
     {
@@ -362,8 +330,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -522,8 +490,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -700,8 +668,8 @@ public class ReportService
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 

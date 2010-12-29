@@ -284,7 +284,6 @@ public class CaseAggregationResultAction
     }
 
     // Returns the OrgUnitTree for which Root is the orgUnit
-    @SuppressWarnings( "unchecked" )
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
@@ -293,14 +292,11 @@ public class CaseAggregationResultAction
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
         Collections.sort( children, new OrganisationUnitNameComparator() );
 
-        Iterator childIterator = children.iterator();
-        OrganisationUnit child;
-        while ( childIterator.hasNext() )
+        for ( OrganisationUnit child : children )
         {
-            child = (OrganisationUnit) childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
-    }// getChildOrgUnitTree end
+    }
 
 }

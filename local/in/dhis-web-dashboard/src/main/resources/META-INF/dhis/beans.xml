@@ -175,39 +175,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction"
 		class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataAction"
 		scope="prototype">
-        <property name="dataElementCategoryService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-        </property>
-        <property name="organisationUnitService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="indicatorService">
-            <ref bean="org.hisp.dhis.indicator.IndicatorService"/>
-        </property>
-        <property name="dataElementService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-        </property>
-        <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
-        </property>
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService"/>
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService"/>
 
-        <property name="aggregationService">
-            <ref bean="org.hisp.dhis.aggregation.AggregationService"/>
-        </property>
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService"/>
         <property name="statementManager" ref="statementManager"/>
 		
-        <property name="organisationUnitGroupService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-        </property>
-        <property name="dataValueService">
-            <ref bean="org.hisp.dhis.datavalue.DataValueService"/>
-        </property>
-        <property name="caseAggregationConditionService">
-            <ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"/>
-        </property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
+        <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+        <property name="caseAggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService"/>
     </bean>
 	
     <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartAction"

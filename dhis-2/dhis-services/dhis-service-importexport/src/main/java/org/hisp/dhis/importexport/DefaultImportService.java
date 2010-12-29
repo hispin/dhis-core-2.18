@@ -124,11 +124,6 @@ public class DefaultImportService
 
                 xmlDataStream = new BufferedInputStream( ZipAnalyzer.getTransformableStream( zipFile ) );
 
-                if ( xmlDataStream == null )
-                {
-                    state.setMessage( "Unknown file type" );
-                    throw new ImportException( "Unknown file type" );
-                }
             }
             else
             {

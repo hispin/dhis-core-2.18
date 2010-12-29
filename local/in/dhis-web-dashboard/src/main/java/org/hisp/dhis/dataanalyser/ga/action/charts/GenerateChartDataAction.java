@@ -115,13 +115,6 @@ public class GenerateChartDataAction
         this.dataElementService = dataElementService;
     }
 
-    private DashBoardService dashBoardService;
-
-    public void setDashBoardService( DashBoardService dashBoardService )
-    {
-        this.dashBoardService = dashBoardService;
-    }
-
     private AggregationService aggregationService;
 
     public void setAggregationService( AggregationService aggregationService )
@@ -1131,18 +1124,17 @@ public class GenerateChartDataAction
         {
             if ( ougSetCB == null )
             {
-                childOrgUnitList = new ArrayList<Object>( dashBoardService.getAllChildren( selectedOrgUnit ) );
+                childOrgUnitList = new ArrayList<Object>( selectedOrgUnit.getChildren() );
             }
             else
             {
                 // childOrgUnitList = new ArrayList<Object>(
                 // selectedOrgUnitGroup.getMembers() );
-                childOrgUnitList = new ArrayList<Object>();
-                Iterator<String> orgUnitGroupIte = orgUnitListCB.iterator();
-                while ( orgUnitGroupIte.hasNext() )
+
+                for ( String tmp : orgUnitListCB )
                 {
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                        .parseInt( (String) orgUnitGroupIte.next() ) );
+                        .parseInt( tmp ) );
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
                     Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
                     childOrgUnitList.addAll( tempOUList );
@@ -1428,8 +1420,7 @@ public class GenerateChartDataAction
                         {
                             if ( ougSetCB == null )
                             {
-                                noOfChildren = dashBoardService.getAllChildren( (OrganisationUnit) childOrgUnit )
-                                    .size();
+                                noOfChildren = childOrgUnit.getChildren().size();
                             }
                             else
                             {

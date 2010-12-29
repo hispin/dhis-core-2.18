@@ -283,11 +283,6 @@ public class DefaultReportService
         String path = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + report.getXmlTemplateName();
 
-        if ( path == null )
-        {
-            System.out.println( "DHIS2_HOME is not set" );
-        }
-
         try
         {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();

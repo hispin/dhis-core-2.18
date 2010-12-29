@@ -38,7 +38,6 @@ import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
  * @author Abyot Asalefew
- * @version $Id$
  */
 public class Program
     implements Serializable
@@ -271,7 +270,7 @@ public class Program
         return null;
     }
 
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
     public ValidationCriteria isValid( Patient patient )
     {
         try

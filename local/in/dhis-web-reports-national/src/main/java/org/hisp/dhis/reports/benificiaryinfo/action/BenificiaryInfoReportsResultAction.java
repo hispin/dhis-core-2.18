@@ -702,7 +702,6 @@ public class BenificiaryInfoReportsResultAction
      */
 
     // <editor-fold defaultstate="collapsed" desc="getChildOrgUnitTree method">
-    @SuppressWarnings( "unchecked" )
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
@@ -711,11 +710,8 @@ public class BenificiaryInfoReportsResultAction
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
         Collections.sort( children, new OrganisationUnitNameComparator() );
 
-        Iterator childIterator = children.iterator();
-        OrganisationUnit child;
-        while ( childIterator.hasNext() )
+        for ( OrganisationUnit child : children )
         {
-            child = (OrganisationUnit) childIterator.next();
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
@@ -804,7 +800,7 @@ public class BenificiaryInfoReportsResultAction
             tempDate.roll( Calendar.MONTH, -1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -828,7 +824,7 @@ public class BenificiaryInfoReportsResultAction
             tempDate.roll( Calendar.MONTH, +1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -869,33 +865,6 @@ public class BenificiaryInfoReportsResultAction
         Period newPeriod = new Period();
         newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
         return newPeriod;
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="getPeriodTypeObject method">
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-
-                break;
-
-            }
-        }
-        if ( periodType == null )
-        {
-            return null;
-        }
-
-        return periodType;
     }
 
     // </editor-fold>

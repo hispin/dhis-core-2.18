@@ -34,12 +34,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -73,17 +72,14 @@ public class DashBoardService
         this.dbConnection = dbConnection;
     }
 */
-    @SuppressWarnings( "unchecked" )
+
     public List<Period> getMonthlyPeriods( Date start, Date end )
     {
-        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( start, end ) );
-        PeriodType monthlyPeriodType = getPeriodTypeObject( "monthly" );
+        PeriodType monthlyPeriodType = PeriodType.getByNameIgnoreCase( "monthly" );
 
         List<Period> monthlyPeriodList = new ArrayList<Period>();
-        Iterator it = periodList.iterator();
-        while ( it.hasNext() )
+        for ( Period period : monthlyPeriodList )
         {
-            Period period = (Period) it.next();
             if ( period.getPeriodType().getId() == monthlyPeriodType.getId() )
             {
                 monthlyPeriodList.add( period );
@@ -143,51 +139,6 @@ public class DashBoardService
         Period newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
 
         return newPeriod;
-    }
-
-    /*
-     * Returns the PeriodType Object based on the Period Type Name For ex:- if
-     * we pass name as Monthly then it returns the PeriodType Object for Monthly
-     * PeriodType If there is no such PeriodType returns null
-     */
-    @SuppressWarnings( "unchecked" )
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-                break;
-            }
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-        return periodType;
-    }
-
-    /*
-     * Returns the child tree of the selected Orgunit
-     */
-    @SuppressWarnings( "unchecked" )
-    public List<OrganisationUnit> getAllChildren( OrganisationUnit selecteOU )
-    {
-        List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
-
-        Iterator it = selecteOU.getChildren().iterator();
-        while ( it.hasNext() )
-        {
-            OrganisationUnit orgU = (OrganisationUnit) it.next();
-            ouList.add( orgU );
-        }
-        return ouList;
     }
 
     /*
