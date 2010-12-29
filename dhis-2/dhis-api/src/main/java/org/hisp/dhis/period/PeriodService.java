@@ -39,18 +39,6 @@ import org.hisp.dhis.source.Source;
  * @author Kristian Nordal
  * @version $Id: PeriodService.java 5983 2008-10-17 17:42:44Z larshelg $
  */
-/**
- * @author storset
- *
- */
-/**
- * @author storset
- *
- */
-/**
- * @author storset
- *
- */
 public interface PeriodService
 {
     String ID = PeriodService.class.getName();
