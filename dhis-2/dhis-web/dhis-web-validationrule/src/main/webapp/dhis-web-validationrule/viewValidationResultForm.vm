@@ -63,7 +63,7 @@
 		  <td>$!format.formatPeriod( $result.period )</td>
 		  <td>$!result.validationRule.leftSide.description</td>
 		  <td>$!result.leftsideValue</td>
-		  <td style="text-align:center">$i18n.getString( $!result.validationRule.operator )</td>
+		  <td style="text-align:center">$i18n.getString( $!result.validationRule.operator.mathematicalOperator )</td>
 		  <td>$!result.rightsideValue</td>
 		  <td>$!result.validationRule.rightSide.description</td>
 		  <td style="text-align:center">

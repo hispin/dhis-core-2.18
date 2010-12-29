@@ -28,7 +28,7 @@
                 <td#alternate( $mark )>$!encoder.htmlEncode( $leftFormula ) $i18n.getString( $result.validationRule.operator ) $!encoder.htmlEncode( $rightFormula )</td>
                 <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.leftSide.description )</td>
                 <td#alternate( $mark )>$result.leftsideValue</td>
-                <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $result.validationRule.operator ) )</td>
+                <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $result.validationRule.operator.mathematicalOperator ) )</td>
                 <td#alternate( $mark )>$result.rightsideValue</td>
                 <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.rightSide.description )</td>
             </tr>
