@@ -101,8 +101,7 @@ public class GetUserListAction
 
     public String execute()
         throws Exception
-    {
-        
+    {        
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( userStore.getUserCountByName( key ) );
@@ -121,6 +120,7 @@ public class GetUserListAction
         UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
 
         currentUserName = userCredentials.getUsername();
+        
         return SUCCESS;
     }
 }

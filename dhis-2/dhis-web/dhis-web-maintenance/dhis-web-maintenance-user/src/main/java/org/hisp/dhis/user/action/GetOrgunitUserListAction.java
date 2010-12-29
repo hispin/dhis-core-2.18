@@ -30,9 +30,7 @@ package org.hisp.dhis.user.action;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -42,8 +40,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.comparator.UsernameComparator;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
