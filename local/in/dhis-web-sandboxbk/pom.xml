@@ -51,7 +51,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-jdbc</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
     </dependency>    
       -->    
     <dependency>
@@ -66,18 +66,18 @@
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
-	<version>${version}</version>
+	<version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-api</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-service-scheduler</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
     </dependency>
 	  
     <dependency>
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>com.opensymphony</groupId>
       <artifactId>webwork</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
     </dependency>
     -->
     <!-- Other -->

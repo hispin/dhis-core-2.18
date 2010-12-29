@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-api</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -37,17 +37,17 @@
      <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-service-linelisting</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>
      <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-service-dbmanager</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>
 <!--<dependency>
 	<groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-organisationunit</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
     </dependency>-->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>

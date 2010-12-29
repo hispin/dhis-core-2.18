@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-api</artifactId>
-        <version>${version}</version>
+        <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-in-service-survey</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
@@ -83,7 +83,7 @@
     <!--<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-support-webwork</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>-->
     
       <!-- Web -->
@@ -91,7 +91,7 @@
     <!--<dependency>
       <groupId>com.opensymphony</groupId>
       <artifactId>webwork</artifactId>
-	  <version>${version}</version>
+	  <version>${project.version}</version>
     </dependency>-->
     
     <!-- Other -->
