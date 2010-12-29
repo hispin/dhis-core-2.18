@@ -17,7 +17,7 @@ function analyseData()
 			"&toDate=" + $( "#toDate" ).val() + 
 			"&fromDate=" + $( "#fromDate" ).val() +
 			"&organisationUnit=" + selectedOrganisationUnit +
-			"&" + getParamString( "dataSets" );
+			"&" + getParamString( "dataSets", "dataSets" );
 			
 		if ( byId( "standardDeviation" ) != null )
 		{

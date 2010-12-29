@@ -89,7 +89,7 @@ function exportStatusReceived( xmlObject )
 
 function getDataMartExportParams()
 {
-    var params = getParamString( "selectedDataSets" );
+    var params = getParamString( "selectedDataSets", "selectedDataSets" );
     
     params += "startDate=" + document.getElementById( "startDate" ).value + "&";
     params += "endDate=" + document.getElementById( "endDate" ).value + "&";
