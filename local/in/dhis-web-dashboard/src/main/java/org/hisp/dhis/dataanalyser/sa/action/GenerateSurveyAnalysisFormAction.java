@@ -42,6 +42,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
 import com.opensymphony.xwork2.Action;
@@ -153,7 +154,9 @@ public class GenerateSurveyAnalysisFormAction implements Action
     {
         return simpleDateFormat;
     }
-
+   
+    Collection<Survey> surveyList;
+    
     public String execute()
         throws Exception
     {
@@ -167,8 +170,26 @@ public class GenerateSurveyAnalysisFormAction implements Action
         /* Indicators and Groups */
         //indicators = indicatorService.getAllIndicators();
         indicatorGroups = indicatorService.getAllIndicatorGroups();
+        //indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators());
+        
         indicators = surveyService.getAllSurveyIndicators();
-
+      /*  
+        // filter all the indicators which have not any survey
+        Iterator<Indicator> allIndicatorIterator = indicators.iterator();
+        while ( allIndicatorIterator.hasNext() )
+        {
+            Indicator indicator = allIndicatorIterator.next();
+            surveyList = surveyService.getSurveysByIndicator( indicator );
+            
+            if ( surveyList == null || surveyList.size()<=0 )
+            {
+                allIndicatorIterator.remove();
+            }
+            
+        }
+        
+        Collections.sort( indicators, new IndicatorNameComparator() );
+       */ 
         /* Monthly Periods */
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
         Iterator<Period> periodIterator = monthlyPeriods.iterator();

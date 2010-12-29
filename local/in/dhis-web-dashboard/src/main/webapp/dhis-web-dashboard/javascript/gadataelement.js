@@ -5,6 +5,11 @@ function getOUDeatilsForGADataElements( orgUnitIds )
 	document.getElementById( "ougGroupSetCB" ).disabled = false;
 	document.getElementById( "orgUnitGroupList" ).disabled = false;
 	
+	document.getElementById( "categoryLB" ).disabled = false;
+	document.getElementById( "periodTypeLB" ).disabled = false;
+	document.getElementById( "yearLB" ).disabled = false;
+	document.getElementById( "periodLB" ).disabled = false;
+	
 	var request = new Request();
 	request.setResponseTypeXML( 'orgunit' );
 	request.setCallbackSuccess( getOUDetailsForGARecevied );
@@ -36,11 +41,14 @@ function getOUDetailsForGARecevied(xmlObject)
     for ( var i = 0; i < orgUnits.length; i++ )
     {
        
+    	//var currentOrgUnitName = "";
+    	//var currentOrgUnitId = "";
     	var id = orgUnits[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-        var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+    	var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
 
-         currentOrgUnitId = id;
-         currentOrgUnitName = orgUnitName;
+    	
+    	currentOrgUnitId = id;
+        currentOrgUnitName = orgUnitName;
         // alert("orgUnit Id is : " + id + ", name is :" + orgUnitName );
         if(document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "period" || document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "children" )
         {
@@ -49,19 +57,19 @@ function getOUDetailsForGARecevied(xmlObject)
             {
                 document.ChartGenerationForm.orgUnitListCB.options[0] = null;
             }
-            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(orgUnitName,id,false,false);
+            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option( orgUnitName,id,false,false );
         }
         //22/10/2010
         else if( document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "random" && document.getElementById( 'ougGroupSetCB' ).checked )
         {
-        	//ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName,id,false,false);
+        //ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName,id,false,false);
         	
         	index = document.ChartGenerationForm.orgUnitListCB.options.length;
             for(i=0;i<index;i++)
             {
                 document.ChartGenerationForm.orgUnitListCB.options[0] = null;
             }
-            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(orgUnitName,id,false,false);
+            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option( orgUnitName,id,false,false );
             
         }
         else
@@ -258,18 +266,20 @@ function getOrgUnitGroupsDataElements()
 function categoryChangeFunction1(evt)
 {
     selCategory = $("select#categoryLB").val();
-
+    
+   // var currentOrgUnitName = "";
+	//var currentOrgUnitId = "";
 	if(selCategory == "period" || selCategory == "children" )
 	{
 		clearListById('orgUnitListCB');
-		document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(currentOrgUnitName,currentOrgUnitId,false,false);
+		document.ChartGenerationForm.orgUnitListCB.options[0] = new Option( currentOrgUnitName,currentOrgUnitId,false,false);
 	}
 	else
 	{
            	// $('#facilityLB').removeAttr('disabled');
 	}
 } 	
-	// categoryChangeFunction end
+// categoryChangeFunction end
 			          
 //Removes slected orgunits from the Organisation List
 function remOUFunction()

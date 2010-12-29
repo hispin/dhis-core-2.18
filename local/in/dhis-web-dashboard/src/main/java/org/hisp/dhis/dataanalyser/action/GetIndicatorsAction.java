@@ -28,14 +28,17 @@ package org.hisp.dhis.dataanalyser.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
 import com.opensymphony.xwork2.Action;
@@ -99,19 +102,26 @@ public class GetIndicatorsAction
     {
         this.id = id;
     }
-
+/*
     private String surveyflag;
     
     public void setSurveyflag( String surveyflag )
     {
         this.surveyflag = surveyflag;
     }
-
+*/
     private List<Indicator> indicators;
 
     public List<Indicator> getIndicators()
     {
         return indicators;
+    }
+    
+    private String surveyExist;
+    
+    public void setSurveyExist( String surveyExist )
+    {
+        this.surveyExist = surveyExist;
     }
 
     // -------------------------------------------------------------------------
@@ -138,20 +148,44 @@ public class GetIndicatorsAction
                 indicators = new ArrayList<Indicator>();
             }
         }
-
-        // To Filter the indicators that are assigned to any survey
         
+       
+        // To Filter the indicators that are assigned to any survey
+        /*
         if( surveyflag != null && surveyflag.equalsIgnoreCase( "yes" ) )
         {
             List<Indicator> surveyIndicators = new ArrayList<Indicator>( surveyService.getAllSurveyIndicators() );
             
             indicators.retainAll( surveyIndicators );
         }
-
-        Collections.sort( indicators, indicatorComparator );
+        System.out.println( "id = "+id + " indicator size = "+ indicators.size() );
+        */
         
-        displayPropertyHandler.handle( indicators );
+     // filter all the indicators which have not any survey
+        if( surveyExist != null && surveyExist.equalsIgnoreCase( "yes" ) )
+        {
+            System.out.println( "surveyExist" + surveyExist );
+            Iterator<Indicator> allIndicatorIterator = indicators.iterator();
+            while ( allIndicatorIterator.hasNext() )
+            {
+                Indicator indicator = allIndicatorIterator.next();
+                Collection<Survey> surveyList = surveyService.getSurveysByIndicator( indicator );
+                //surveyList = surveyService.getSurveysByIndicator( indicator );
+                
+                if ( surveyList == null || surveyList.size()<=0 )
+                {
+                    allIndicatorIterator.remove();
+                }
+                
+            }
+        }
+        
+       System.out.println("id = "+id + " indicator final size = "+ indicators.size());
+        
+       Collections.sort( indicators, indicatorComparator );
+        
+       displayPropertyHandler.handle( indicators );
 
-        return SUCCESS;
+       return SUCCESS;
     }
 }

@@ -192,7 +192,19 @@
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
-
+		
+<!-- Export Annual data to Excel -->
+        <action name="exportAnnualDataToExcel"
+            class="org.hisp.dhis.dataanalyser.action.ExportAnnualDataToExcelAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>       
+		
+		
 		<!-- Motion Chart -->
 
 		<action name="motionChartForm"

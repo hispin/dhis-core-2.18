@@ -380,17 +380,26 @@ function getSurveyIndicators()
 {
     var indicatorGroupList = document.getElementById( "indicatorGroupId" );
     var indicatorGroupId = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].value;
-  
+    var surveyExist = "yes";
     if ( indicatorGroupId != null )
     {
-		$.post("getIndicators.action",
+    	/*
+    	var url = "getIndicators.action?id=" + indicatorGroupId + "&surveyExist=" + surveyExist;
+		var request = new Request();
+		request.setResponseTypeXML('indicator');
+		request.setCallbackSuccess(getIndicatorsReceived);
+		request.send(url); 
+    	*/
+    	$.post("getIndicators.action",
 			{
-				id:indicatorGroupId
+				id : indicatorGroupId,
+				surveyExist : surveyExist
 			},
 			function (data)
 			{
 				getIndicatorsReceived(data);
 			},'xml');
+			
 			
     }
 }

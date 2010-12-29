@@ -45,11 +45,12 @@ public class SurveyChartResult
        
     }
    
-    public SurveyChartResult( String[] series, String[] series2, String[] categories, Double data[][], Double data2[][], Double numDataArray[][],Double denumDataArray[][],String chartTitle,String xAxis_Title,String yAxis_Title )
+    public SurveyChartResult( String[] series, String[] series2, String[] categories, String[] categories2, Double data[][], Double data2[][], Double numDataArray[][],Double denumDataArray[][],String chartTitle,String xAxis_Title,String yAxis_Title )
     {
         this.series = series; // Y-axis
         this.series2 = series2; // for Survey name
         this.categories = categories; // X-axis
+        this.categories2 = categories2;
         this.data = data;
         this.data2 = data2; // for survey value
         this.numDataArray = numDataArray;
@@ -103,6 +104,19 @@ public class SurveyChartResult
         this.categories = categories;
     }
    
+    private String[] categories2;
+    
+    public String[] getCategories2()
+    {
+        return categories2;
+    }
+
+    public void setCategories2( String[] categories2 )
+    {
+        this.categories2 = categories2;
+    }
+
+
     Double data[][];
 
     public Double[][] getData()

@@ -44,6 +44,7 @@ import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataanalyser.util.IndicatorChartResult;
+import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -138,7 +139,14 @@ public class GenerateChartIndicatorAction
     {
         this.format = format;
     }
+    
+    private ExpressionService expressionService;
 
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+    
     // --------------------------------------------------------------------------
     // Parameters
     // --------------------------------------------------------------------------
@@ -299,6 +307,19 @@ public class GenerateChartIndicatorAction
 
     private List<OrganisationUnit> selOUGroupMemberList = new ArrayList<OrganisationUnit>();
 
+    List<String> numDataElements;
+
+    public List<String> getNumDataElements()
+    {
+        return numDataElements;
+    }
+    
+    List<String> denumDataElements;
+    
+    public List<String> getDenumDataElements()
+    {
+        return denumDataElements;
+    }
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -335,7 +356,9 @@ public class GenerateChartIndicatorAction
 
         numeratorDEList = new ArrayList<String>();
         denominatorDEList = new ArrayList<String>();
-
+        
+        numDataElements = new ArrayList<String>();
+        denumDataElements = new ArrayList<String>();
         // ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
 
        // String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
@@ -508,7 +531,14 @@ public class GenerateChartIndicatorAction
             // String indicatorId = (String) deIterator.next();
             int serviceID = Integer.parseInt( (String) deIterator.next() );
             Indicator indicator = indicatorService.getIndicator( serviceID );
-
+            
+            // for numeratorDataElement,denominatorDataElement
+            String numeratorDataElement = expressionService.getExpressionDescription( indicator.getNumerator());
+            String denominatorDataElement = expressionService.getExpressionDescription( indicator.getDenominator());
+            
+            numDataElements.add( numeratorDataElement );
+            denumDataElements.add( denominatorDataElement );
+            
             indicatorList.add( indicator );
 
         }

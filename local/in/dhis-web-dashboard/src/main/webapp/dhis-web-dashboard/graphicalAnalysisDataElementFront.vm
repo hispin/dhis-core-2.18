@@ -147,7 +147,7 @@
 	      <table>
 	        <tr>
 	            <td class="NormalB"> $i18n.getString( "ga_viewby" )<br>
-	              <select id="categoryLB" name="categoryLB" onChange="categoryChangeFunction1(event)">
+	              <select id="categoryLB" name="categoryLB" onChange="categoryChangeFunction1(event)" disabled="true">
 	                <option value="period">Period Wise</option>
 	                <option value="children">Children</option>
 	                <option value="random">Selected</option>    
@@ -157,7 +157,7 @@
 	            </td>
 	        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 	            <td align="left" class="NormalB"> $i18n.getString( "periodType" )<br>
-	                <select id="periodTypeLB" name="periodTypeLB" onchange="getPeriods()" style="width: 150px;">                                
+	                <select id="periodTypeLB" name="periodTypeLB" onchange="getPeriods()" style="width: 150px;" disabled="true">                                
 	                    #foreach ( $periodType in $periodTypes )
 	                    <option value="$periodType.name" #if($periodType.name==$monthlyPeriodTypeName) selected #end>$periodType.name</option>                              
 	                     #end
@@ -189,7 +189,7 @@
         <table>
           <tr>
             <td class="NormalB"> $i18n.getString( "year" )<br>
-              <select id="yearLB" name="yearLB" onchange="getWeeklyPeriod()" size="5" multiple style="width: 150px;">                                                                                
+              <select id="yearLB" name="yearLB" onchange="getWeeklyPeriod()" size="5" multiple style="width: 150px;" disabled="true">                                                                                
                     #foreach($periodName in $periodNameList)
                     <option value="$periodName">$periodName</option>                                
                     #end
@@ -199,7 +199,7 @@
             </td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td class="NormalB"> $i18n.getString( "period" )<br>
-            <select id="periodLB" name="periodLB" size="5" multiple style="width: 175px;">                              
+            <select id="periodLB" name="periodLB" size="5" multiple style="width: 175px;" disabled="true">                              
             </select>
               <br />
               <br />
