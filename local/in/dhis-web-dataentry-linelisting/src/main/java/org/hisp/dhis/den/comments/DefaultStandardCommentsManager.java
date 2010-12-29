@@ -76,15 +76,8 @@ public class DefaultStandardCommentsManager
                 throw new StandardCommentsManagerException( "Unsupported encoding", e );
             }
             
-            if ( reader != null )
-            {
-                XStream xStream = new XStream();
-                standardComments = (List<String>) xStream.fromXML( reader );
-            }
-            else
-            {
-                standardComments = new ArrayList<String>();
-            }
+            XStream xStream = new XStream();
+            standardComments = (List<String>) xStream.fromXML( reader );
         }
 
         return standardComments;

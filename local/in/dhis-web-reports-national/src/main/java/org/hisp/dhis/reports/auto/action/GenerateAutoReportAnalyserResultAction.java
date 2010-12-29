@@ -31,7 +31,6 @@ package org.hisp.dhis.reports.auto.action;
  * @version $Id$
  */
 
-
 import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -93,12 +92,12 @@ import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-
 /**
  * @author Brajesh Murari
  * @version $Id$
  */
-public class GenerateAutoReportAnalyserResultAction extends ActionSupport
+public class GenerateAutoReportAnalyserResultAction
+    extends ActionSupport
 {
     private static final String NULL_REPLACEMENT = "0";
 
@@ -190,7 +189,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-   
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -199,13 +198,10 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     }
 
     /*
-    private String contentType;
-
-    public String getContentType()
-    {
-        return contentType;
-    }
-    */
+     * private String contentType;
+     * 
+     * public String getContentType() { return contentType; }
+     */
 
     private String fileName;
 
@@ -215,13 +211,10 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     }
 
     /*
-    private int bufferSize;
-
-    public int getBufferSize()
-    {
-        return bufferSize;
-    }
-    */
+     * private int bufferSize;
+     * 
+     * public int getBufferSize() { return bufferSize; }
+     */
 
     private MathTool mathTool;
 
@@ -357,7 +350,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     {
         return availablePeriods;
     }
-    
+
     private String aggCB;
 
     public void setAggCB( String aggCB )
@@ -385,12 +378,12 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     {
         return periodType;
     }
-     
+
     private String periodTypeId;
 
-    public void setPeriodTypeId(String periodTypeId)
+    public void setPeriodTypeId( String periodTypeId )
     {
-        this.periodTypeId=periodTypeId;
+        this.periodTypeId = periodTypeId;
     }
 
     private int Id;
@@ -399,7 +392,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     {
         return Id;
     }
-    
+
     private List<Period> periods;
 
     public List<Period> getPeriods()
@@ -415,21 +408,21 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
     {
         return childOrgUnits;
     }
-    
+
     private List<String> periodNameList;
-    
-    public List<String> getPeriodNameList() 
+
+    public List<String> getPeriodNameList()
     {
-            return periodNameList;
+        return periodNameList;
     }
-       
+
     private String statusMessage;
-    
+
     public String getStatusMessage()
     {
         return statusMessage;
     }
-    
+
     public void setStatusMessage( String statusMessage )
     {
         this.statusMessage = statusMessage;
@@ -460,15 +453,14 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         yearFormat = new SimpleDateFormat( "yyyy" );
         simpleYearFormat = new SimpleDateFormat( "yy" );
         deCodesXMLFileName = reportList + "DECodes.xml";
-        
-        System.out.println("Report Generation Start Time is : \t" + new Date());        
-        statusMessage = "Report Generation is Started.";        
+
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+        statusMessage = "Report Generation is Started.";
         String parentUnit = "";
 
         sheetList = new ArrayList<Integer>();
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
-
 
         if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
         {
@@ -481,7 +473,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         {
             orgUnitList = new ArrayList<OrganisationUnit>();
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );            
+            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
             parentUnit = orgUnit.getName();
         }
 
@@ -497,23 +489,23 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         if ( reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>();
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );           
-            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );            
-            parentUnit = orgUnit.getName();          
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
+            parentUnit = orgUnit.getName();
         }
 
         if ( reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>();
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );           
-            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );           
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+            orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
             parentUnit = orgUnit.getName();
         }
 
         if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-PARENT" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-            //OrganisationUnit parent = orgUnit.getParent();
+            // OrganisationUnit parent = orgUnit.getParent();
             orgUnitList = new ArrayList<OrganisationUnit>();
             Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
             orgUnitList.add( orgUnit );
@@ -540,7 +532,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         // Getting DataValues
         dataValueList = new ArrayList<String>();
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
-      
+
         int orgUnitCount = 0;
         int orgUnitGroupCount = 0;
         int rowCounter = 0;
@@ -567,1087 +559,1090 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         // ---------------------------------------------------------------------------------------------------
         // All other reports START
         // ---------------------------------------------------------------------------------------------------
-       
+
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        + "template" + File.separator + reportFileNameTB;
-        
+            + "template" + File.separator + reportFileNameTB;
+
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
-        
+
         while ( it.hasNext() && children != 0 )
         {
             simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
             PeriodType periodType = periodService.getPeriodTypeByName( periodTypeId );
 
-            Collection <Period> reportingPeriod = new ArrayList <Period>();
-            reportingPeriod = periodService.getPeriodsBetweenDates(periodType, format.parseDate( startDate ), format.parseDate( endDate ) ); 
-  
+            Collection<Period> reportingPeriod = new ArrayList<Period>();
+            reportingPeriod = periodService.getPeriodsBetweenDates( periodType, format.parseDate( startDate ),
+                format.parseDate( endDate ) );
+
             Iterator<Period> itr = reportingPeriod.iterator();
-            
+
             OrganisationUnit currentOrgUnit = it.next();
-            
+
             while ( itr.hasNext() )
             {
-              Period dateItrVal = itr.next();
-              sDate = dateItrVal.getStartDate();
-              eDate = dateItrVal.getEndDate();
-               
-            fileName = reportFileNameTB.replace( ".xls", "" );
-            fileName += "_" + currentOrgUnit.getShortName() + "_";
-            
-            fileName += "_" + simpleDateFormat.format( sDate ) + "_";
-            fileName += "_" + simpleDateFormat.format( eDate ) + ".xls";
-                    
-            String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-              + "output" + File.separator + fileName;
-            
-            Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+                Period dateItrVal = itr.next();
+                sDate = dateItrVal.getStartDate();
+                eDate = dateItrVal.getEndDate();
 
-            WritableWorkbook outputReportWorkbook = Workbook
-                .createWorkbook( new File( outputReportPath ), templateWorkbook );         
-            
-            int quarterPeriod = 0;
+                fileName = reportFileNameTB.replace( ".xls", "" );
+                fileName += "_" + currentOrgUnit.getShortName() + "_";
 
-            //OrganisationUnit currentOrgUnit = it.next();
+                fileName += "_" + simpleDateFormat.format( sDate ) + "_";
+                fileName += "_" + simpleDateFormat.format( eDate ) + ".xls";
 
-            Iterator<String> it1 = deCodesList.iterator();
-            int count1 = 0;
-            while ( it1.hasNext() )
-            {
-                String deCodeString = it1.next();
+                String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName
+                    + File.separator + "output" + File.separator + fileName;
 
-                String deType = deCodeType.get( count1 );
-                String sType = serviceType.get( count1 );
-                
-                String tempStr = "";
+                Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
-                Calendar tempStartDate = Calendar.getInstance();
-                Calendar tempEndDate = Calendar.getInstance();
-                List<Calendar> calendarList = new ArrayList<Calendar>( getStartingEndingPeriods( deType ) );
-                if ( calendarList == null || calendarList.isEmpty() )
+                WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ),
+                    templateWorkbook );
+
+                int quarterPeriod = 0;
+
+                // OrganisationUnit currentOrgUnit = it.next();
+
+                Iterator<String> it1 = deCodesList.iterator();
+                int count1 = 0;
+                while ( it1.hasNext() )
                 {
-                    tempStartDate.setTime( sDate );
-                    tempEndDate.setTime( eDate );
-                    return SUCCESS;
-                }
-                else
-                {
-                    tempStartDate = calendarList.get( 0 );
-                    tempEndDate = calendarList.get( 1 );
-                }
+                    String deCodeString = it1.next();
 
-                if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )
-                {
-                    tempStr = currentOrgUnit.getName();
+                    String deType = deCodeType.get( count1 );
+                    String sType = serviceType.get( count1 );
 
-                }
-                else if ( deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
-                {
-                    tempStr = parentUnit;
-                }
-                else if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
-                {
-                    tempStr = currentOrgUnit.getParent().getName();
+                    String tempStr = "";
 
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                {
-                    OrganisationUnit orgUnitP = new OrganisationUnit();
-
-                    orgUnitP = currentOrgUnit.getParent();
-
-                    tempStr = orgUnitP.getParent().getName();
-
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                {
-                    OrganisationUnit orgUnitP = new OrganisationUnit();
-
-                    OrganisationUnit orgUnitPP = new OrganisationUnit();
-
-                    orgUnitP = currentOrgUnit.getParent();
-
-                    orgUnitPP = orgUnitP.getParent();
-
-                    tempStr = orgUnitPP.getParent().getName();
-
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                {
-                    OrganisationUnit orgUnitP = new OrganisationUnit();
-
-                    OrganisationUnit orgUnitPP = new OrganisationUnit();
-
-                    OrganisationUnit orgUnitPPP = new OrganisationUnit();
-
-                    orgUnitP = currentOrgUnit.getParent();
-
-                    orgUnitPP = orgUnitP.getParent();
-
-                    orgUnitPPP = orgUnitPP.getParent();
-
-                    tempStr = orgUnitPPP.getParent().getName();
-
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                    || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" ) )
-                {
-                    tempStr = simpleDateFormat.format( sDate );
-
-                }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" ) )
-                {
-                    tempStr = monthFormat.format( sDate );
-
-                }
-                else if ( deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" ) )
-                {
-                    tempStr = simpleMonthFormat.format( sDate );
-
-                }
-                else if ( deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" ) )
-                {
-                    tempStr = simpleMonthFormat.format( eDate );
-
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "MONTH-START" ) )
-                {
-                    tempStr = monthFormat.format( sDate );
-
-                }
-                else if ( deCodeString.equalsIgnoreCase( "MONTH-END" ) )
-                {
-                    tempStr = monthFormat.format( eDate );
-
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
-                {
-                    tempStr = String.valueOf( tempStartDate.get( Calendar.WEEK_OF_MONTH ) );
-
-                }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
-                {
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDate );
-
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    Calendar tempStartDate = Calendar.getInstance();
+                    Calendar tempEndDate = Calendar.getInstance();
+                    List<Calendar> calendarList = new ArrayList<Calendar>( getStartingEndingPeriods( deType ) );
+                    if ( calendarList == null || calendarList.isEmpty() )
                     {
-                        tempStr = "Quarter I";
+                        tempStartDate.setTime( sDate );
+                        tempEndDate.setTime( eDate );
+                        return SUCCESS;
                     }
-
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
-                    {
-                        tempStr = "Quarter II";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "Quarter III";
-                    }
-
                     else
                     {
-                        tempStr = "Quarter IV";
-
-                        quarterPeriod = 1;
-
-                    }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" ) )
-                {
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDate );
-
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
-                    {
-                        tempStr = "Q1";
+                        tempStartDate = calendarList.get( 0 );
+                        tempEndDate = calendarList.get( 1 );
                     }
 
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )
                     {
-                        tempStr = "Q2";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "Q3";
-                    }
-
-                    else
-                    {
-                        tempStr = "Q4";
-
-                        quarterPeriod = 1;
+                        tempStr = currentOrgUnit.getName();
 
                     }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" ) )
-                {
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDate );
-
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
                     {
-                        tempStr = "Apr - Jun";
+                        tempStr = parentUnit;
+                    }
+                    else if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                    {
+                        tempStr = currentOrgUnit.getParent().getName();
+
                     }
 
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
                     {
-                        tempStr = "Jul - Sep";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "Oct - Dec";
-                    }
+                        OrganisationUnit orgUnitP = new OrganisationUnit();
 
-                    else
-                    {
-                        tempStr = "Jan - Mar";
+                        orgUnitP = currentOrgUnit.getParent();
 
-                        quarterPeriod = 1;
+                        tempStr = orgUnitP.getParent().getName();
 
                     }
-                }
 
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" ) )
-                {
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDate );
-
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
                     {
-                        tempStr = "April - June";
+                        OrganisationUnit orgUnitP = new OrganisationUnit();
+
+                        OrganisationUnit orgUnitPP = new OrganisationUnit();
+
+                        orgUnitP = currentOrgUnit.getParent();
+
+                        orgUnitPP = orgUnitP.getParent();
+
+                        tempStr = orgUnitPP.getParent().getName();
+
                     }
 
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
                     {
-                        tempStr = "July - September";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "October - December";
-                    }
+                        OrganisationUnit orgUnitP = new OrganisationUnit();
 
-                    else
-                    {
-                        tempStr = "January - March";
+                        OrganisationUnit orgUnitPP = new OrganisationUnit();
 
-                        quarterPeriod = 1;
+                        OrganisationUnit orgUnitPPP = new OrganisationUnit();
 
-                    }
-                }
+                        orgUnitP = currentOrgUnit.getParent();
 
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" ) )
-                {
-                    String startMonth = "";
+                        orgUnitPP = orgUnitP.getParent();
 
-                    startMonth = monthFormat.format( sDate );
+                        orgUnitPPP = orgUnitPP.getParent();
 
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
-                    {
-                        tempStr = "Apr";
+                        tempStr = orgUnitPPP.getParent().getName();
+
                     }
 
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                        || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" ) )
                     {
-                        tempStr = "Jul";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "Oct";
-                    }
-
-                    else
-                    {
-                        tempStr = "Jan";
-
-                        quarterPeriod = 1;
+                        tempStr = simpleDateFormat.format( sDate );
 
                     }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-START" ) )
-                {
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDate );
-
-                    if ( startMonth.equalsIgnoreCase( "April" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" ) )
                     {
-                        tempStr = "April";
-                    }
-
-                    else if ( startMonth.equalsIgnoreCase( "July" ) )
-                    {
-                        tempStr = "July";
-                    }
-                    else if ( startMonth.equalsIgnoreCase( "October" ) )
-                    {
-                        tempStr = "October";
-                    }
-
-                    else
-                    {
-                        tempStr = "January";
-
-                        quarterPeriod = 1;
+                        tempStr = monthFormat.format( sDate );
 
                     }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" ) )
-                {
-                    String endMonth = "";
-
-                    endMonth = monthFormat.format( eDate );
-
-                    if ( endMonth.equalsIgnoreCase( "June" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" ) )
                     {
-                        tempStr = "Jun";
-                    }
-
-                    else if ( endMonth.equalsIgnoreCase( "September" ) )
-                    {
-                        tempStr = "Sep";
-                    }
-                    else if ( endMonth.equalsIgnoreCase( "December" ) )
-                    {
-                        tempStr = "Dec";
-                    }
-
-                    else
-                    {
-                        tempStr = "Mar";
-
-                        quarterPeriod = 1;
+                        tempStr = simpleMonthFormat.format( sDate );
 
                     }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "QUARTER-END" ) )
-                {
-                    String endMonth = "";
-
-                    endMonth = monthFormat.format( eDate );
-
-                    if ( endMonth.equalsIgnoreCase( "June" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" ) )
                     {
-                        tempStr = "June";
+                        tempStr = simpleMonthFormat.format( eDate );
+
                     }
 
-                    else if ( endMonth.equalsIgnoreCase( "September" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "MONTH-START" ) )
                     {
-                        tempStr = "September";
-                    }
-                    else if ( endMonth.equalsIgnoreCase( "December" ) )
-                    {
-                        tempStr = "December";
-                    }
-
-                    else
-                    {
-                        tempStr = "March";
-
-                        quarterPeriod = 1;
+                        tempStr = monthFormat.format( sDate );
 
                     }
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
-                {
-                    sDateTemp = sDate;
-
-                    Calendar tempQuarterYear = Calendar.getInstance();
-
-                    tempQuarterYear.setTime( sDateTemp );
-
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDateTemp );
-
-                    //periodType = periodService.getPeriodType(periodTypeIdTB);
-
-                    if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "MONTH-END" ) )
                     {
-                        sDateTemp = sDate;
+                        tempStr = monthFormat.format( eDate );
+
                     }
 
-                    else
+                    else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
                     {
-                        if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
-                            .equalsIgnoreCase( "March" ))
-                            && periodType.getName().equalsIgnoreCase( "Quarterly" ) )
+                        tempStr = String.valueOf( tempStartDate.get( Calendar.WEEK_OF_MONTH ) );
+
+                    }
+                    else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
+                    {
+                        String startMonth = "";
+
+                        startMonth = monthFormat.format( sDate );
+
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
                         {
-                            tempQuarterYear.roll( Calendar.YEAR, -1 );
+                            tempStr = "Quarter I";
+                        }
 
-                            sDateTemp = tempQuarterYear.getTime();
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "Quarter II";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "Quarter III";
+                        }
+
+                        else
+                        {
+                            tempStr = "Quarter IV";
+
+                            quarterPeriod = 1;
 
                         }
                     }
 
-                    tempStr = yearFormat.format( sDateTemp );
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" ) )
-                {
-                    sDateTemp = sDate;
-
-                    Calendar tempQuarterYear = Calendar.getInstance();
-
-                    tempQuarterYear.setTime( sDateTemp );
-
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDateTemp );
-
-                   // periodType = periodService.getPeriodType(periodTypeIdTB);
-
-                    if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" ) )
                     {
-                        sDateTemp = sDate;
-                    }
+                        String startMonth = "";
 
-                    else
-                    {
-                        if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
-                            .equalsIgnoreCase( "March" ))
-                            && periodType.getName().equalsIgnoreCase( "Quarterly" ) )
+                        startMonth = monthFormat.format( sDate );
+
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
                         {
-                            tempQuarterYear.roll( Calendar.YEAR, -1 );
+                            tempStr = "Q1";
+                        }
 
-                            sDateTemp = tempQuarterYear.getTime();
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "Q2";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "Q3";
+                        }
+
+                        else
+                        {
+                            tempStr = "Q4";
+
+                            quarterPeriod = 1;
 
                         }
                     }
 
-                    tempStr = simpleYearFormat.format( sDateTemp );
-                }
-
-                else if ( deCodeString.equalsIgnoreCase( "YEAR-END" ) )
-                {
-
-                    sDateTemp = sDate;
-
-                    Calendar tempQuarterYear = Calendar.getInstance();
-
-                    tempQuarterYear.setTime( sDate );
-
-                    sDate = tempQuarterYear.getTime();
-
-                    String startMonth = "";
-
-                    startMonth = monthFormat.format( sDateTemp );
-
-                   // periodType = periodService.getPeriodType(periodTypeIdTB);
-
-                    if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" ) )
                     {
-                        tempQuarterYear.roll( Calendar.YEAR, 1 );
+                        String startMonth = "";
 
-                        sDateTemp = tempQuarterYear.getTime();
+                        startMonth = monthFormat.format( sDate );
 
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
+                        {
+                            tempStr = "Apr - Jun";
+                        }
+
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "Jul - Sep";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "Oct - Dec";
+                        }
+
+                        else
+                        {
+                            tempStr = "Jan - Mar";
+
+                            quarterPeriod = 1;
+
+                        }
                     }
 
-                    if ( !(startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
-                        .equalsIgnoreCase( "March" )) )
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" ) )
                     {
-                        tempQuarterYear.roll( Calendar.YEAR, 1 );
+                        String startMonth = "";
 
-                        sDateTemp = tempQuarterYear.getTime();
+                        startMonth = monthFormat.format( sDate );
 
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
+                        {
+                            tempStr = "April - June";
+                        }
+
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "July - September";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "October - December";
+                        }
+
+                        else
+                        {
+                            tempStr = "January - March";
+
+                            quarterPeriod = 1;
+
+                        }
                     }
 
-                    tempStr = yearFormat.format( sDateTemp );
-                }
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" ) )
+                    {
+                        String startMonth = "";
 
-                else if ( deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                {
+                        startMonth = monthFormat.format( sDate );
 
-                    sDateTemp = sDate;
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
+                        {
+                            tempStr = "Apr";
+                        }
 
-                    eDateTemp = eDate;
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "Jul";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "Oct";
+                        }
 
-                    Calendar tempQuarterYear = Calendar.getInstance();
+                        else
+                        {
+                            tempStr = "Jan";
 
-                    String startYear = "";
+                            quarterPeriod = 1;
 
-                    String endYear = "";
+                        }
+                    }
 
-                    String startMonth = "";
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-START" ) )
+                    {
+                        String startMonth = "";
 
-                    startMonth = monthFormat.format( sDateTemp );
+                        startMonth = monthFormat.format( sDate );
 
-                   // periodType = periodService.getPeriodType(periodTypeIdTB);
+                        if ( startMonth.equalsIgnoreCase( "April" ) )
+                        {
+                            tempStr = "April";
+                        }
 
-                    tempQuarterYear.setTime( sDateTemp );
+                        else if ( startMonth.equalsIgnoreCase( "July" ) )
+                        {
+                            tempStr = "July";
+                        }
+                        else if ( startMonth.equalsIgnoreCase( "October" ) )
+                        {
+                            tempStr = "October";
+                        }
 
-                    if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                        else
+                        {
+                            tempStr = "January";
+
+                            quarterPeriod = 1;
+
+                        }
+                    }
+
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" ) )
+                    {
+                        String endMonth = "";
+
+                        endMonth = monthFormat.format( eDate );
+
+                        if ( endMonth.equalsIgnoreCase( "June" ) )
+                        {
+                            tempStr = "Jun";
+                        }
+
+                        else if ( endMonth.equalsIgnoreCase( "September" ) )
+                        {
+                            tempStr = "Sep";
+                        }
+                        else if ( endMonth.equalsIgnoreCase( "December" ) )
+                        {
+                            tempStr = "Dec";
+                        }
+
+                        else
+                        {
+                            tempStr = "Mar";
+
+                            quarterPeriod = 1;
+
+                        }
+                    }
+
+                    else if ( deCodeString.equalsIgnoreCase( "QUARTER-END" ) )
+                    {
+                        String endMonth = "";
+
+                        endMonth = monthFormat.format( eDate );
+
+                        if ( endMonth.equalsIgnoreCase( "June" ) )
+                        {
+                            tempStr = "June";
+                        }
+
+                        else if ( endMonth.equalsIgnoreCase( "September" ) )
+                        {
+                            tempStr = "September";
+                        }
+                        else if ( endMonth.equalsIgnoreCase( "December" ) )
+                        {
+                            tempStr = "December";
+                        }
+
+                        else
+                        {
+                            tempStr = "March";
+
+                            quarterPeriod = 1;
+
+                        }
+                    }
+
+                    else if ( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
                     {
                         sDateTemp = sDate;
+
+                        Calendar tempQuarterYear = Calendar.getInstance();
+
+                        tempQuarterYear.setTime( sDateTemp );
+
+                        String startMonth = "";
+
+                        startMonth = monthFormat.format( sDateTemp );
+
+                        // periodType =
+                        // periodService.getPeriodType(periodTypeIdTB);
+
+                        if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                        {
+                            sDateTemp = sDate;
+                        }
+
+                        else
+                        {
+                            if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
+                                .equalsIgnoreCase( "March" )) && periodType.getName().equalsIgnoreCase( "Quarterly" ) )
+                            {
+                                tempQuarterYear.roll( Calendar.YEAR, -1 );
+
+                                sDateTemp = tempQuarterYear.getTime();
+
+                            }
+                        }
+
+                        tempStr = yearFormat.format( sDateTemp );
                     }
 
-                    else
+                    else if ( deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" ) )
                     {
-                        if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
+                        sDateTemp = sDate;
+
+                        Calendar tempQuarterYear = Calendar.getInstance();
+
+                        tempQuarterYear.setTime( sDateTemp );
+
+                        String startMonth = "";
+
+                        startMonth = monthFormat.format( sDateTemp );
+
+                        // periodType =
+                        // periodService.getPeriodType(periodTypeIdTB);
+
+                        if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                        {
+                            sDateTemp = sDate;
+                        }
+
+                        else
+                        {
+                            if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
+                                .equalsIgnoreCase( "March" )) && periodType.getName().equalsIgnoreCase( "Quarterly" ) )
+                            {
+                                tempQuarterYear.roll( Calendar.YEAR, -1 );
+
+                                sDateTemp = tempQuarterYear.getTime();
+
+                            }
+                        }
+
+                        tempStr = simpleYearFormat.format( sDateTemp );
+                    }
+
+                    else if ( deCodeString.equalsIgnoreCase( "YEAR-END" ) )
+                    {
+
+                        sDateTemp = sDate;
+
+                        Calendar tempQuarterYear = Calendar.getInstance();
+
+                        tempQuarterYear.setTime( sDate );
+
+                        sDate = tempQuarterYear.getTime();
+
+                        String startMonth = "";
+
+                        startMonth = monthFormat.format( sDateTemp );
+
+                        // periodType =
+                        // periodService.getPeriodType(periodTypeIdTB);
+
+                        if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                        {
+                            tempQuarterYear.roll( Calendar.YEAR, 1 );
+
+                            sDateTemp = tempQuarterYear.getTime();
+
+                        }
+
+                        if ( !(startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
                             .equalsIgnoreCase( "March" )) )
                         {
-                            tempQuarterYear.roll( Calendar.YEAR, -1 );
+                            tempQuarterYear.roll( Calendar.YEAR, 1 );
 
                             sDateTemp = tempQuarterYear.getTime();
 
                         }
+
+                        tempStr = yearFormat.format( sDateTemp );
                     }
 
-                    startYear = yearFormat.format( sDateTemp );
-
-                    tempQuarterYear.setTime( eDateTemp );
-
-                    if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
                     {
-                        tempQuarterYear.roll( Calendar.YEAR, 1 );
 
-                        eDateTemp = tempQuarterYear.getTime();
-                    }
+                        sDateTemp = sDate;
 
-                    if ( !(startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
-                        .equalsIgnoreCase( "March" )) )
-                    {
-                        tempQuarterYear.roll( Calendar.YEAR, 1 );
+                        eDateTemp = eDate;
 
-                        eDateTemp = tempQuarterYear.getTime();
+                        Calendar tempQuarterYear = Calendar.getInstance();
 
-                    }
-                    endYear = yearFormat.format( eDateTemp );
+                        String startYear = "";
 
-                    tempStr = startYear + " - " + endYear;
+                        String endYear = "";
 
-                }
+                        String startMonth = "";
 
-                else if ( deCodeString.equalsIgnoreCase( "SLNO" ) )
-                {
-                    tempStr = "" + (orgUnitCount + 1);
-                }
-                else if ( deCodeString.equalsIgnoreCase( "NA" ) )
-                {
-                    tempStr = " ";
-                }
-                else
-                {
-                    rowCounter += 1;
+                        startMonth = monthFormat.format( sDateTemp );
 
-                    if ( sType.equalsIgnoreCase( "dataelement" ) )
-                    {
-                        if ( aggCB == null )
+                        // periodType =
+                        // periodService.getPeriodType(periodTypeIdTB);
+
+                        tempQuarterYear.setTime( sDateTemp );
+
+                        if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
                         {
-                            tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate
-                                .getTime(), currentOrgUnit );
+                            sDateTemp = sDate;
                         }
+
                         else
                         {
-                            tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(),
-                                currentOrgUnit );
+                            if ( (startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
+                                .equalsIgnoreCase( "March" )) )
+                            {
+                                tempQuarterYear.roll( Calendar.YEAR, -1 );
+
+                                sDateTemp = tempQuarterYear.getTime();
+
+                            }
                         }
+
+                        startYear = yearFormat.format( sDateTemp );
+
+                        tempQuarterYear.setTime( eDateTemp );
+
+                        if ( periodType.getName().equalsIgnoreCase( "Yearly" ) )
+                        {
+                            tempQuarterYear.roll( Calendar.YEAR, 1 );
+
+                            eDateTemp = tempQuarterYear.getTime();
+                        }
+
+                        if ( !(startMonth.equalsIgnoreCase( "January" ) || startMonth.equalsIgnoreCase( "February" ) || startMonth
+                            .equalsIgnoreCase( "March" )) )
+                        {
+                            tempQuarterYear.roll( Calendar.YEAR, 1 );
+
+                            eDateTemp = tempQuarterYear.getTime();
+
+                        }
+                        endYear = yearFormat.format( eDateTemp );
+
+                        tempStr = startYear + " - " + endYear;
+
                     }
-                    else if ( sType.equalsIgnoreCase( "indicator-parent" ) )
+
+                    else if ( deCodeString.equalsIgnoreCase( "SLNO" ) )
                     {
-                        if ( aggCB == null )
-                        {
-                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
-                                tempEndDate.getTime(), currentOrgUnit.getParent() );
-                        }
-                        else
-                        {
-                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate
-                                .getTime(), currentOrgUnit.getParent() );
-                        }
+                        tempStr = "" + (orgUnitCount + 1);
                     }
-                    else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
+                    else if ( deCodeString.equalsIgnoreCase( "NA" ) )
                     {
-                        if ( aggCB == null )
-                        {
-                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
-                                tempEndDate.getTime(), currentOrgUnit );
-                        }
-                        else
-                        {
-                            tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
-                                tempEndDate.getTime(), currentOrgUnit );
-                        }
+                        tempStr = " ";
                     }
                     else
                     {
-                        if ( aggCB == null )
+                        rowCounter += 1;
+
+                        if ( sType.equalsIgnoreCase( "dataelement" ) )
                         {
-                            tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
-                                tempEndDate.getTime(), currentOrgUnit );
+                            if ( aggCB == null )
+                            {
+                                tempStr = getIndividualResultDataValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
+                            else
+                            {
+                                tempStr = getResultDataValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
+                        }
+                        else if ( sType.equalsIgnoreCase( "indicator-parent" ) )
+                        {
+                            if ( aggCB == null )
+                            {
+                                tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            }
+                            else
+                            {
+                                tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit.getParent() );
+                            }
+                        }
+                        else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
+                        {
+                            if ( aggCB == null )
+                            {
+                                tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
+                            else
+                            {
+                                tempStr = getBooleanDataValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
                         }
                         else
                         {
-                            tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate
-                                .getTime(), currentOrgUnit );
+                            if ( aggCB == null )
+                            {
+                                tempStr = getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
+                            else
+                            {
+                                tempStr = getResultIndicatorValue( deCodeString, tempStartDate.getTime(),
+                                    tempEndDate.getTime(), currentOrgUnit );
+                            }
                         }
                     }
-                }
-                int tempRowNo = rowList.get( count1 );
-                int tempColNo = colList.get( count1 );
-                int sheetNo = sheetList.get( count1 ) + orgUnitGroupCount;
-                WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
-                if ( tempStr == null || tempStr.equals( " " ) )
-                {
-                    tempColNo += orgUnitCount;
-
-                    WritableCellFormat wCellformat = new WritableCellFormat();
-                    wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                    wCellformat.setWrap( true );
-                    wCellformat.setAlignment( Alignment.CENTRE );
-
-                    sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
-                }
-                else
-                {
-
-                    if ( reportModelTB.equalsIgnoreCase( "STATIC" ) )
+                    int tempRowNo = rowList.get( count1 );
+                    int tempColNo = colList.get( count1 );
+                    int sheetNo = sheetList.get( count1 ) + orgUnitGroupCount;
+                    WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
+                    if ( tempStr == null || tempStr.equals( " " ) )
                     {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
-                        {
+                        tempColNo += orgUnitCount;
 
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                        {
-
-                        }
-                        else
-                        {
-                            // tempColNo +=
-                            // orgUnitCount;
-                        }
-
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
                         WritableCellFormat wCellformat = new WritableCellFormat();
                         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
                         wCellformat.setWrap( true );
                         wCellformat.setAlignment( Alignment.CENTRE );
 
-                        if ( cell.getType() == CellType.LABEL )
-                        {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
-                        }
-                        else
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
+                        sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
                     }
-
-                    if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
+                    else
                     {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
-                            || deCodeString.equalsIgnoreCase( "FACILITYPP" )
-                            || deCodeString.equalsIgnoreCase( "FACILITYPPP" )
-                            || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
 
+                        if ( reportModelTB.equalsIgnoreCase( "STATIC" ) )
+                        {
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+                            else
+                            {
+                                // tempColNo +=
+                                // orgUnitCount;
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setWrap( true );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
 
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                        if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
                         {
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                                || deCodeString.equalsIgnoreCase( "FACILITYPP" )
+                                || deCodeString.equalsIgnoreCase( "FACILITYPPP" )
+                                || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
 
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+
+                            else
+                            {
+                                tempColNo += orgUnitCount;
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+                            wCellformat.setWrap( true );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
 
-                        else
+                        if ( reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" )
+                            || reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) )
                         {
-                            tempColNo += orgUnitCount;
+                            if ( deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "FACILITY" ) )
+                            {
+
+                            }
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                            {
+
+                            }
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setWrap( true );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
 
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
-                        WritableCellFormat wCellformat = new WritableCellFormat();
-
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-                        wCellformat.setWrap( true );
-
-                        if ( cell.getType() == CellType.LABEL )
+                        if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-PARENT" ) )
                         {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+                            else
+                            {
+                                // tempColNo +=
+                                // (orgUnitCount * 2);
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
-                        else
+
+                        if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-SIBLINGS" )
+                            || reportModelTB.equalsIgnoreCase( "INDICATOR-FOR-FEEDBACK" ) )
                         {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+                            else
+                            {
+                                tempColNo += orgUnitCount;
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setWrap( true );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+                            wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
+                        }
+                        if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
+                        {
+                            if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                                || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                            {
+
+                            }
+
+                            else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-START" )
+                                || deCodeString.equalsIgnoreCase( "QUARTER-END" )
+                                || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-END" )
+                                || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            {
+
+                            }
+                            else
+                            {
+                                tempRowNo += orgUnitCount;
+                            }
+
+                            WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
+
+                            CellFormat cellFormat = cell.getCellFormat();
+                            WritableCellFormat wCellformat = new WritableCellFormat();
+
+                            wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                            wCellformat.setWrap( true );
+                            wCellformat.setAlignment( Alignment.CENTRE );
+                            wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+
+                            if ( cell.getType() == CellType.LABEL )
+                            {
+                                Label l = (Label) cell;
+                                l.setString( tempStr );
+                                l.setCellFormat( cellFormat );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                     }
+                    count1++;
+                }// inner while loop end
 
-                    if ( reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" )
-                        || reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) )
-                    {
-                        if ( deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "FACILITY" ) )
-                        {
+                outputReportWorkbook.write();
+                outputReportWorkbook.close();
 
-                        }
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
-                        {
-
-                        }
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                        {
-
-                        }
-
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
-                        WritableCellFormat wCellformat = new WritableCellFormat();
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setWrap( true );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-
-                        if ( cell.getType() == CellType.LABEL )
-                        {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
-                        }
-                        else
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
-                    }
-
-                    if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-PARENT" ) )
-                    {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                        {
-
-                        }
-                        else
-                        {
-                            // tempColNo +=
-                            // (orgUnitCount * 2);
-                        }
-
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
-                        WritableCellFormat wCellformat = new WritableCellFormat();
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-
-                        if ( cell.getType() == CellType.LABEL )
-                        {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
-                        }
-                        else
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
-                    }
-
-                    if ( reportModelTB.equalsIgnoreCase( "INDICATOR-AGAINST-SIBLINGS" )
-                        || reportModelTB.equalsIgnoreCase( "INDICATOR-FOR-FEEDBACK" ) )
-                    {
-                        
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                        {
-
-                        }
-                        else
-                        {
-                            tempColNo += orgUnitCount;
-                        }
-
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
-                        WritableCellFormat wCellformat = new WritableCellFormat();
-
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setWrap( true );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-                        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-
-                        if ( cell.getType() == CellType.LABEL )
-                        {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
-                        }
-                        else
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
-                    }
-                    if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
-                    {
-                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
-                            || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
-                        {
-
-                        }
-
-                        else if ( deCodeString.equalsIgnoreCase( "PERIOD" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "PERIOD-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "MONTH-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-MONTHS" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END-SHORT" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-START" )
-                            || deCodeString.equalsIgnoreCase( "QUARTER-END" )
-                            || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
-                        {
-
-                        }
-                        else
-                        {
-                            tempRowNo += orgUnitCount;
-                        }
-
-                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo );
-
-                        CellFormat cellFormat = cell.getCellFormat();
-                        WritableCellFormat wCellformat = new WritableCellFormat();
-
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setWrap( true );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-                        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-
-                        if ( cell.getType() == CellType.LABEL )
-                        {
-                            Label l = (Label) cell;
-                            l.setString( tempStr );
-                            l.setCellFormat( cellFormat );
-                        }
-                        else
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
-                    }
-                }
-                count1++;
-            }// inner while loop end
-                       
-            outputReportWorkbook.write();
-            outputReportWorkbook.close();
-         
-            }//intermediate while loop end
+            }// intermediate while loop end
             orgUnitCount++;
-            
-            System.out.println(currentOrgUnit.getName() + " is Completed ");
-            
+
+            System.out.println( currentOrgUnit.getName() + " is Completed " );
+
             statusMessage = "Report Generation is complited. Please collect your reports from OutPut folder.";
 
         }// outer while loop end
-        System.out.println("Report Generation End Time is : \t" + new Date());
+        System.out.println( "Report Generation End Time is : \t" + new Date() );
         statementManager.destroy();
         return SUCCESS;
     }
@@ -1745,7 +1740,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         {
             tempDate.roll( Calendar.MONTH, -1 );
         }
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -1785,29 +1780,6 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         newPeriod.setPeriodType( periodType );
 
         return newPeriod;
-    }
-
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-
-                break;
-            }
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-        return periodType;
     }
 
     public List<String> getDECodes( String fileName )
@@ -1895,7 +1867,7 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
         return null;
 
     } // getDataElementPeriodType end
-    
+
     /**
      * Converts an expression on the form<br>
      * [34] + [23], where the numbers are IDs of DataElements, to the form<br>
@@ -1926,8 +1898,8 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -2078,16 +2050,15 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
 
             String resultValue = "";
             boolean valueDoesNotExist = true;
-            
+
             while ( matcher.find() )
             {
-                
 
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 
@@ -2232,10 +2203,10 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
             {
                 resultValue = buffer.toString();
             }
-            
-            if(valueDoesNotExist)
+
+            if ( valueDoesNotExist )
                 resultValue = " ";
-            
+
             if ( resultValue.equalsIgnoreCase( "" ) )
                 resultValue = " ";
 
@@ -2263,8 +2234,8 @@ public class GenerateAutoReportAnalyserResultAction extends ActionSupport
                 String replaceString = matcher.group();
 
                 replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
-                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
-                    .length() );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1,
+                    replaceString.length() );
 
                 replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
 

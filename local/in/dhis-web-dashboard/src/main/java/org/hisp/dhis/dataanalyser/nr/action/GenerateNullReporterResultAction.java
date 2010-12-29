@@ -600,14 +600,7 @@ public class GenerateNullReporterResultAction
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
 
-        if ( children != null )
-        {
-            ouChildCountMap.put( orgUnit, children.size() );
-        }
-        else
-        {
-            ouChildCountMap.put( orgUnit, 0 );
-        }
+        ouChildCountMap.put( orgUnit, children.size() );
 
         Collections.sort( children, new OrganisationUnitNameComparator() );
 

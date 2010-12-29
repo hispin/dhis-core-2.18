@@ -1165,7 +1165,7 @@ public class PortalReportsResultAction implements Action
             tempDate.roll( Calendar.MONTH, -1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -1188,7 +1188,7 @@ public class PortalReportsResultAction implements Action
             tempDate.roll( Calendar.MONTH, +1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -1232,31 +1232,6 @@ public class PortalReportsResultAction implements Action
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="getPeriodTypeObject method">
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = ( PeriodType ) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-
-                break;
-
-            }
-        }
-        if ( periodType == null )
-        {
-            return null;
-        }
-
-        return periodType;
-    }
-    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="getStartingEndingPeriods method">
     public List<Calendar> getStartingEndingPeriods( String deType, Date sDate, Date eDate )

@@ -352,7 +352,7 @@ public class GenerateAnnualAnalysisDataAction
         }
 
         // Period Related Info
-        monthlyPeriodType = dashBoardService.getPeriodTypeObject("monthly");
+        monthlyPeriodType = PeriodType.getByNameIgnoreCase( "monthly" );
 
         data1 = getServiceValuesByPeriod();
         xAxis_Title = "Month";
@@ -385,13 +385,12 @@ public class GenerateAnnualAnalysisDataAction
         return SUCCESS;
     }// execute end
 
-    /*
+    /**
      * Returns the values for selected years by month wise for ex:- the months
      * are jan,feb,mar and the years are 2006 and 2007 then it returns the
      * values for 2006 - jan, feb, mar and 2007 - jan, feb, mar for the selected
      * orgunit and selected service
      */
-    @SuppressWarnings("unchecked")
     public Double[][] getServiceValuesByPeriod() 
     {
        // DecimalFormat decFormat = new DecimalFormat("0.0");
@@ -413,25 +412,26 @@ public class GenerateAnnualAnalysisDataAction
         series2 = new String[annualPeriodsListCB.size()];
         categories1 = new String[monthlyPeriodsListCB.size()];
         categories2 = new String[monthlyPeriodsListCB.size()];
-        Iterator iterator1 = annualPeriodsListCB.iterator();
-        while (iterator1.hasNext()) 
+
+        for ( String tmp : annualPeriodsListCB )
         {
+            int tempYear = Integer.parseInt(tmp);
+
             List<Double> dataValues = new ArrayList<Double>();
             //List<Double> numDataValue = new ArrayList<Double>();
             //List<Double> denumDataValue = new ArrayList<Double>();
             
-            int tempYear = Integer.parseInt((String) iterator1.next());
             //series1[count1] = "" + tempYear + "-" + (tempYear + 1);
             series1[count1] = "" + tempYear;
             series2[count1] = " ";
             //yseriesList.add("" + tempYear + "-" + (tempYear + 1));
             yseriesList.add("" + tempYear );
 
-            Iterator iterator2 = monthlyPeriodsListCB.iterator();
             count2 = 0;
-            while ( iterator2.hasNext() )
+            for ( String s : monthlyPeriodsListCB )
             {
-                int tempMonth = Integer.parseInt((String) iterator2.next());
+                int tempMonth = Integer.parseInt(s);
+
                 p = dashBoardService.getPeriodByMonth(tempMonth, tempYear, monthlyPeriodType);
                 if (p == null) 
                 {

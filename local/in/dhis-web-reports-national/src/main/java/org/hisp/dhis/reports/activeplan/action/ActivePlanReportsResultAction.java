@@ -1,7 +1,32 @@
 package org.hisp.dhis.reports.activeplan.action;
 
-//@23-06-2010 - Date from and to is solved.
-//Todo merging of cells for same village
+/*
+ * Copyright (c) 2004-2010, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +38,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +53,8 @@ import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.VerticalAlignment;
+import jxl.write.Label;
+import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -34,6 +62,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -43,9 +72,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -55,10 +89,13 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
-import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.reports.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,24 +105,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
-import java.util.HashSet;
-import jxl.write.Label;
-import jxl.write.WritableCell;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.relationship.Relationship;
-import org.hisp.dhis.relationship.RelationshipService;
-import org.hisp.dhis.relationship.RelationshipTypeService;
 
+/**
+ * @23-06-2010 - Date from and to is solved.
+ * TODO: merging of cells for same village
+ *
+ */
 public class ActivePlanReportsResultAction
     implements Action
 {
-
-    private static final String NULL_REPLACEMENT = "0";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -681,7 +709,7 @@ public class ActivePlanReportsResultAction
 
                 Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
                 Collection<ProgramStageInstance> completedProgramStageInstances = new ArrayList<ProgramStageInstance>();
-                Iterator itr1 = programStagesList.iterator();
+                Iterator<ProgramStage> itr1 = programStagesList.iterator();
                 while ( itr1.hasNext() )
                 {
                     ProgramStage PSName = (ProgramStage) itr1.next();
@@ -1238,7 +1266,7 @@ public class ActivePlanReportsResultAction
             tempDate.roll( Calendar.MONTH, -1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -1259,7 +1287,7 @@ public class ActivePlanReportsResultAction
             tempDate.roll( Calendar.MONTH, +1 );
         }
 
-        PeriodType periodType = getPeriodTypeObject( "monthly" );
+        PeriodType periodType = PeriodType.getByNameIgnoreCase( "monthly" );
         period = getPeriodByMonth( tempDate.get( Calendar.MONTH ), tempDate.get( Calendar.YEAR ), periodType );
 
         return period;
@@ -1295,36 +1323,8 @@ public class ActivePlanReportsResultAction
 
         }
         Date lastDay = new Date( cal.getTimeInMillis() );
-        // System.out.println( lastDay.toString() );
-        Period newPeriod = new Period();
-        newPeriod = periodService.getPeriod( firstDay, lastDay, periodType );
-        return newPeriod;
-    }
 
-    public PeriodType getPeriodTypeObject( String periodTypeName )
-    {
-        Collection periodTypes = periodService.getAllPeriodTypes();
-        PeriodType periodType = null;
-        Iterator iter = periodTypes.iterator();
-        while ( iter.hasNext() )
-        {
-            PeriodType tempPeriodType = (PeriodType) iter.next();
-            if ( tempPeriodType.getName().toLowerCase().trim().equals( periodTypeName ) )
-            {
-                periodType = tempPeriodType;
-
-                break;
-
-            }
-
-        }
-        if ( periodType == null )
-        {
-            System.out.println( "No Such PeriodType" );
-            return null;
-        }
-
-        return periodType;
+        return periodService.getPeriod( firstDay, lastDay, periodType );
     }
 
     public List<Calendar> getStartingEndingPeriods( String deType, Date sDate, Date eDate )

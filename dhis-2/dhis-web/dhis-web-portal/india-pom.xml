@@ -36,44 +36,44 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-datadictionary</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-dataset</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-organisationunit</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-user</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-dataadmin</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-settings</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 	
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-patient</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
    
@@ -82,26 +82,26 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-importexport</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-datamart</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 
@@ -109,14 +109,14 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>-->
 <!--	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard-integration</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 -->
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mapping</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 -->
@@ -132,7 +132,7 @@
    <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-excel-reporting</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 -->	
@@ -140,7 +140,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-caseentry</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
@@ -156,34 +156,34 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dashboard</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reports-national</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 
 	<dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-dataentry-national</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency> 
 	
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-excelimport</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-in</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 
@@ -192,7 +192,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-mobile</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency>
 
@@ -201,7 +201,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-validationrule-local-in</artifactId>
-      <version>${version}</version>
+      <version>${project.version}</version>
       <type>war</type>
     </dependency> -->
    

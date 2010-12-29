@@ -85,7 +85,7 @@ public class MotionChartResultAction
     }
 
     private DataSetService dataSetService;
-    
+
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
@@ -103,56 +103,56 @@ public class MotionChartResultAction
     // -------------------------------------------------------------------------
 
     private String xaxisIndicator;
-    
+
     public void setXaxisIndicator( String xaxisIndicator )
     {
         this.xaxisIndicator = xaxisIndicator;
     }
 
     private String yaxisIndicator;
-    
+
     public void setYaxisIndicator( String yaxisIndicator )
     {
         this.yaxisIndicator = yaxisIndicator;
     }
 
     private String zaxisDataelements;
-    
+
     public void setZaxisDataelements( String zaxisDataelements )
     {
         this.zaxisDataelements = zaxisDataelements;
     }
 
     private String ougSetCB;
-    
+
     public void setOugSetCB( String ougSetCB )
     {
         this.ougSetCB = ougSetCB;
     }
 
     private List<String> orgUnitListCB;
-    
+
     public void setOrgUnitListCB( List<String> orgUnitListCB )
     {
         this.orgUnitListCB = orgUnitListCB;
     }
 
     private String periodTypeLB;
-    
+
     public void setPeriodTypeLB( String periodTypeLB )
     {
         this.periodTypeLB = periodTypeLB;
     }
 
     private String facilityLB;
-    
+
     public void setFacilityLB( String facilityLB )
     {
         this.facilityLB = facilityLB;
     }
 
     private String startDate;
-    
+
     public void setStartDate( String startDate )
     {
         this.startDate = startDate;
@@ -164,10 +164,9 @@ public class MotionChartResultAction
     {
         this.endDate = endDate;
     }
-    
-    
+
     private Indicator xAxisInd;
-    
+
     public Indicator getXAxisInd()
     {
         return xAxisInd;
@@ -179,21 +178,21 @@ public class MotionChartResultAction
     {
         return yAxisInd;
     }
-    
+
     private DataElement zaxisDE;
-    
+
     public DataElement getZaxisDE()
     {
         return zaxisDE;
     }
 
     private List<MotionChart> mcList;
-    
+
     public List<MotionChart> getMcList()
     {
         return mcList;
     }
-    
+
     private Date sDate;
 
     private Date eDate;
@@ -201,7 +200,6 @@ public class MotionChartResultAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    @SuppressWarnings("unchecked")
     public String execute()
         throws Exception
     {
@@ -223,11 +221,10 @@ public class MotionChartResultAction
             else
             {
                 orgUnitList = new ArrayList<Object>();
-                Iterator orgUnitGroupIte = orgUnitListCB.iterator();
-                while ( orgUnitGroupIte.hasNext() )
+                for ( String tmp : orgUnitListCB )
                 {
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                        .parseInt( (String) orgUnitGroupIte.next() ) );
+                        .parseInt( tmp ) );
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
                     Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
                     orgUnitList.addAll( tempOUList );
@@ -236,24 +233,17 @@ public class MotionChartResultAction
         }
         else
         {
-            if ( ougSetCB == null )
+            for ( String tmp : orgUnitListCB )
             {
-                Iterator orgUnitIterator = orgUnitListCB.iterator();
-                while ( orgUnitIterator.hasNext() )
+                int id = Integer.parseInt( tmp );
+
+                if ( ougSetCB == null )
                 {
-                    OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                        .parseInt( (String) orgUnitIterator.next() ) );
-                    orgUnitList.add( o );
+                    orgUnitList.add( organisationUnitService.getOrganisationUnit( id ) );
                 }
-            }
-            else
-            {
-                Iterator orgUnitGroupIte = orgUnitListCB.iterator();
-                while ( orgUnitGroupIte.hasNext() )
+                else
                 {
-                    OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
-                        .parseInt( (String) orgUnitGroupIte.next() ) );
-                    orgUnitList.add( oug );
+                    orgUnitList.add( organisationUnitGroupService.getOrganisationUnitGroup( id ) );
                 }
             }
         }
@@ -262,7 +252,8 @@ public class MotionChartResultAction
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
         PeriodType selPeriodType = periodService.getPeriodTypeByName( periodTypeLB );
-        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( selPeriodType, sDate, eDate ));
+        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( selPeriodType, sDate,
+            eDate ) );
 
         // Axis Info
         xAxisInd = indicatorService.getIndicator( Integer.parseInt( xaxisIndicator ) );
@@ -390,7 +381,7 @@ public class MotionChartResultAction
         return SUCCESS;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public PeriodType getDataElementPeriodType( DataElement de )
     {
         List<DataSet> dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
@@ -408,7 +399,5 @@ public class MotionChartResultAction
         return null;
 
     } // getDataElementPeriodType end
-
-    
 
 }
