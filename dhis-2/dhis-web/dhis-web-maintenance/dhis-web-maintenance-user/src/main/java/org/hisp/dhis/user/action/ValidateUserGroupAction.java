@@ -27,6 +27,8 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
@@ -46,13 +48,37 @@ public class ValidateUserGroupAction
         this.userGroupService = userGroupService;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
 
     private Integer id;
 
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
     private String name;
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -61,13 +87,21 @@ public class ValidateUserGroupAction
     public String execute()
         throws Exception
     {
-        UserGroup group = userGroupService.getUserGroupByName( name );
 
-        if ( ( id == null && group != null ) || ( id != null && id != group.getId() ) )
+        if ( name != null )
         {
-            return INPUT;
+            UserGroup match = userGroupService.getUserGroupByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
+            {
+                message = i18n.getString( "name_in_use" );
+
+                return ERROR;
+            }
         }
-        
+
+        message = i18n.getString( "everything_is_ok" );
+
         return SUCCESS;
     }
 }

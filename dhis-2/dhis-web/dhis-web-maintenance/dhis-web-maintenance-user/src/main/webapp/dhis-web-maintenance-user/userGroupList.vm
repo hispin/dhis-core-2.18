@@ -13,14 +13,11 @@
         </table>
       <table class="listTable" id="listTable">
           <col/>          
-          <col width="20"/>
-          <col width="20"/>
-          <col width="20"/>
-            
+          <col width="100"/>
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
-            <th style="text-align:center" colspan="3" class="{sorter: false}">$i18n.getString( "operations" )</th>
+            <th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
           </tr>
           </thead>
           <tbody id="list">
@@ -28,12 +25,8 @@
               <tr id="tr${userGroup.id}">
                 <td onclick="showUserGroupDetails( $userGroup.id )">$encoder.htmlEncode( $userGroup.name )</td>
                 <td style="text-align:center">
-                  <a href="editUserGroupForm.action?userGroupId=$userGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-                </td>
-                <td style="text-align:center">
-                  <a href="javascript:removeUserGroup( '$userGroup.id', '$encoder.jsEncode( $userGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
-                </td>            
-                <td style="text-align:center">
+                  <a href="editUserGroupForm.action?userGroupId=$userGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>               
+                  <a href="javascript:removeUserGroup( '$userGroup.id', '$encoder.jsEncode( $userGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>               
                   <a href="javascript:showUserGroupDetails( $userGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
                 </td>
               </tr>

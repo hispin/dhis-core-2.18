@@ -147,6 +147,7 @@
     </action>
 
     <!--Delete current user-->
+    
     <action name="deleteCurrentUser" class="org.hisp.dhis.user.action.DeleteCurrentUserAction">
       <!--<result name="error" type="velocity">/dhis-web-maintenance-user/responseError.vm</result>-->
       <result name="input" type="velocity">/main.vm</result>
@@ -197,13 +198,15 @@
       getAllUserGroups.action</result>
   </action>
 
-  <action name="removeUserGroup" class="org.hisp.dhis.user.action.RemoveUserGroupAction">
-
-    <!-- <result name="success" type="redirect">getAllUserGroups.action</result> -->
-    <result name="success" type="velocity">
-      /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-    <!--<param name ="javascripts">javascript/user.js</param> -->
+  <action name="removeUserGroup" class="org.hisp.dhis.user.action.RemoveUserGroupAction">  
+    <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>    
   </action>
+  
+    <action name="validateUserGroup" class="org.hisp.dhis.user.action.ValidateUserGroupAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+    </action>
     
   </package>
 </struts>
