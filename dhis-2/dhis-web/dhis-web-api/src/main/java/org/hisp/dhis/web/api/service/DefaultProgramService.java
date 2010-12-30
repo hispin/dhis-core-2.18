@@ -95,7 +95,7 @@ public class DefaultProgramService
                 }
             }
             //Server has more program than client
-            if ( isExisted = false )
+            if ( isExisted == false )
             {
                 programs.add( program );
             }
