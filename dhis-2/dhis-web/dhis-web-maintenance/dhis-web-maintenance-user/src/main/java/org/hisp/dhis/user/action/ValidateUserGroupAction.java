@@ -28,7 +28,6 @@ package org.hisp.dhis.user.action;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 

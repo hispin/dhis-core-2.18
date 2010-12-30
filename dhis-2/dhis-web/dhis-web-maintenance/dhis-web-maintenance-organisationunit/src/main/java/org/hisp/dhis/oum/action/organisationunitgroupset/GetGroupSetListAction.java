@@ -33,13 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland
