@@ -36,18 +36,10 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.UserSetting;
-import org.hisp.dhis.user.UserStore;
 
 public class DeleteCurrentUserAction 
     implements Action
 {
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -111,9 +103,9 @@ public class DeleteCurrentUserAction
     public String execute() throws Exception
     {
         message = " ";
-        User user = userStore.getUser( currentUserService.getCurrentUser().getId() );
+        User user = userService.getUser( currentUserService.getCurrentUser().getId() );
 
-        UserCredentials userCredentials = userStore.getUserCredentials( user );
+        UserCredentials userCredentials = userService.getUserCredentials( user );
 
         username = userCredentials.getUsername();
         String oldPasswordFromDB = userCredentials.getPassword();
@@ -139,11 +131,11 @@ public class DeleteCurrentUserAction
         }
         else
         {
-            Collection<UserSetting> userSettings = userStore.getAllUserSettings( user );
+            Collection<UserSetting> userSettings = userService.getAllUserSettings( user );
 
             for ( UserSetting userSetting : userSettings )
             {
-                userStore.deleteUserSetting( userSetting );
+                userService.deleteUserSetting( userSetting );
             }
 
             if ( userService.isLastSuperUser( userCredentials ) )
@@ -153,8 +145,8 @@ public class DeleteCurrentUserAction
             }
             else
             {
-                userStore.deleteUserCredentials( userStore.getUserCredentials( user ) );
-                userStore.deleteUser( user );
+                userService.deleteUserCredentials( userService.getUserCredentials( user ) );
+                userService.deleteUser( user );
             }
             
             return "logout";

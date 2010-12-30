@@ -31,7 +31,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,7 +47,7 @@ public class UpdateUserAccountAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
     private PasswordManager passwordManager;
 
@@ -81,9 +81,9 @@ public class UpdateUserAccountAction
         this.passwordManager = passwordManager;
     }
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     public void setOldPassword( String oldPassword )
@@ -153,9 +153,9 @@ public class UpdateUserAccountAction
             rawPassword = null;
         }
 
-        User user = userStore.getUser( id );
+        User user = userService.getUser( id );
 
-        UserCredentials userCredentials = userStore.getUserCredentials( user );
+        UserCredentials userCredentials = userService.getUserCredentials( user );
 
         String encodeOldPassword = passwordManager.encodePassword( userCredentials.getUsername(), oldPassword );
         String currentPassword = userCredentials.getPassword();
@@ -182,11 +182,11 @@ public class UpdateUserAccountAction
         {
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
 
-            userStore.updateUserCredentials( userCredentials );
+            userService.updateUserCredentials( userCredentials );
 
         }
 
-        userStore.updateUser( user );
+        userService.updateUser( user );
 
         message = i18n.getString( "update_user_success" );
 

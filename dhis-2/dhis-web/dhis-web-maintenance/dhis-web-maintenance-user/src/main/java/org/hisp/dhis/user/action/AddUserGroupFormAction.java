@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,11 +42,11 @@ public class AddUserGroupFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
     
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
     
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class AddUserGroupFormAction
 
     public String execute() throws Exception
     {
-        availableUsers = new ArrayList<User>( userStore.getAllUsers() );
+        availableUsers = new ArrayList<User>( userService.getAllUsers() );
         
         return SUCCESS;
     }

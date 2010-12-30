@@ -39,7 +39,7 @@ import org.hisp.dhis.reportexcel.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -58,7 +58,7 @@ public class ListDataEntryStatusAction
 
     private CurrentUserService currentUserService;
 
-    private UserStore userStore;
+    private UserService userService;
 
     private DataSetService dataSetService;
 
@@ -77,9 +77,9 @@ public class ListDataEntryStatusAction
         this.dataSetService = dataSetService;
     }
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     public List<DataEntryStatus> getDataStatus()
@@ -104,7 +104,7 @@ public class ListDataEntryStatusAction
 
         if ( !currentUserService.currentUserIsSuper() )
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
 
             Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
 

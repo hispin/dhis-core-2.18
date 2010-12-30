@@ -33,7 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,11 +48,11 @@ public class UpdateRoleAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private DataSetService dataSetService;
@@ -115,7 +115,7 @@ public class UpdateRoleAction
     public String execute()
         throws Exception
     {
-        UserAuthorityGroup group = userStore.getUserAuthorityGroup( id );
+        UserAuthorityGroup group = userService.getUserAuthorityGroup( id );
 
         group.setName( name );
         group.setDescription( description );
@@ -132,7 +132,7 @@ public class UpdateRoleAction
 
         group.getAuthorities().addAll( selectedListAuthority );
 
-        userStore.updateUserAuthorityGroup( group );
+        userService.updateUserAuthorityGroup( group );
 
         return SUCCESS;
     }

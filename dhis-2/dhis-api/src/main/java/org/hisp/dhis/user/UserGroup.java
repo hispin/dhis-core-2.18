@@ -6,7 +6,6 @@ import java.util.Set;
 
 public class UserGroup implements Serializable
 {
-
     /**
      * id is the primary key which is auto generated
      */

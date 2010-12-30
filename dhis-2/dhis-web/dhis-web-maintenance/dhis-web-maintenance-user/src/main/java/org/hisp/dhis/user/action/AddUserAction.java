@@ -37,7 +37,7 @@ import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,11 +66,11 @@ public class AddUserAction
         this.selectionManager = selectionManager;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private PasswordManager passwordManager;
@@ -183,12 +183,12 @@ public class AddUserAction
 
         for ( String id : selectedList )
         {
-            UserAuthorityGroup group = userStore.getUserAuthorityGroup( Integer.parseInt( id ) );
+            UserAuthorityGroup group = userService.getUserAuthorityGroup( Integer.parseInt( id ) );
             userCredentials.getUserAuthorityGroups().add( group );
         }
         
-        userStore.addUser( user );
-        userStore.addUserCredentials( userCredentials );
+        userService.addUser( user );
+        userService.addUserCredentials( userCredentials );
 
         if ( orgUnits.size() > 0 )
         {

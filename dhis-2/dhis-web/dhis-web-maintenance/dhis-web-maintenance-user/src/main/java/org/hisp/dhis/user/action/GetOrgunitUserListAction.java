@@ -38,7 +38,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UsernameComparator;
 
 /**
@@ -52,11 +52,11 @@ public class GetOrgunitUserListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private OrganisationUnitSelectionManager selectionManager;
@@ -102,15 +102,15 @@ public class GetOrgunitUserListAction
         {
             if ( organisationUnit == null )
             {
-                this.paging = createPaging( userStore.getUsersWithoutOrganisationUnitCountByName( key ) );
+                this.paging = createPaging( userService.getUsersWithoutOrganisationUnitCountByName( key ) );
                 
-                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersWithoutOrganisationUnitBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersWithoutOrganisationUnitBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
             }
             else 
             {
-                this.paging = createPaging( userStore.getUsersByOrganisationUnitCountByName( organisationUnit, key ) );
+                this.paging = createPaging( userService.getUsersByOrganisationUnitCountByName( organisationUnit, key ) );
                 
-                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersByOrganisationUnitBetweenByName( organisationUnit, key, paging.getStartPos(), paging.getPageSize() ) );
+                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersByOrganisationUnitBetweenByName( organisationUnit, key, paging.getStartPos(), paging.getPageSize() ) );
                 
             }
         }
@@ -118,15 +118,15 @@ public class GetOrgunitUserListAction
         {
             if ( organisationUnit == null )
             {
-                this.paging = createPaging( userStore.getUsersWithoutOrganisationUnitCount(  ) );
+                this.paging = createPaging( userService.getUsersWithoutOrganisationUnitCount(  ) );
                 
-                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersWithoutOrganisationUnitBetween( paging.getStartPos(), paging.getPageSize() ) );
+                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersWithoutOrganisationUnitBetween( paging.getStartPos(), paging.getPageSize() ) );
             }
             else 
             {
-                this.paging = createPaging( userStore.getUsersByOrganisationUnitCount( organisationUnit ) );
+                this.paging = createPaging( userService.getUsersByOrganisationUnitCount( organisationUnit ) );
                 
-                userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
+                userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersByOrganisationUnitBetween( organisationUnit, paging.getStartPos(), paging.getPageSize() ) );
                 
             }
         }

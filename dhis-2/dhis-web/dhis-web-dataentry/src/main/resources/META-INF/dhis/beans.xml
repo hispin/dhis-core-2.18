@@ -19,7 +19,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.de.state.SelectedStateManager" class="org.hisp.dhis.de.state.DefaultSelectedStateManager">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>

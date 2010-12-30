@@ -39,7 +39,7 @@ import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,11 +75,11 @@ public class GetDataSetsAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class GetDataSetsAction
         {
             Set<DataSet> ds = new HashSet<DataSet>();
 
-            for ( UserAuthorityGroup u : userStore.getUserCredentials( currentUserService.getCurrentUser() )
+            for ( UserAuthorityGroup u : userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups() )
             {
                 ds.addAll( u.getDataSets() );

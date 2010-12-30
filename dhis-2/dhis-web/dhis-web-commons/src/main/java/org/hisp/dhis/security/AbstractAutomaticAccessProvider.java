@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
@@ -50,11 +50,11 @@ public abstract class AbstractAutomaticAccessProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
-    protected UserStore userStore;
+    protected UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     protected SystemAuthoritiesProvider systemAuthoritiesProvider;
@@ -84,7 +84,7 @@ public abstract class AbstractAutomaticAccessProvider
 
     private boolean isEnabled()
     {
-        return ( userStore.getAllUsers().size() == 0);
+        return ( userService.getAllUsers().size() == 0);
     }
 
     protected Collection<String> getAuthorities()

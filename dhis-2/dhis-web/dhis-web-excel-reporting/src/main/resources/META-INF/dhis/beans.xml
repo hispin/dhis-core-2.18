@@ -177,7 +177,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.action.OpenReportExcelUserRoleAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -185,7 +185,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.action.UpdateReportExcelUserRoleAction"
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<!-- REPORT EXCEL CATEGORY BEAN -->
@@ -519,7 +519,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
 
@@ -559,7 +559,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="reportService" ref="org.hisp.dhis.reportexcel.ReportExcelService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -573,7 +573,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.dataentrystatus.action.GetDataSetAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -1345,7 +1345,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.datasetcompleted.action.DataSetCompletedReportFormAction"
 		scope="prototype">
 		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 	</bean>
@@ -1379,7 +1379,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="jchartService" ref="org.hisp.dhis.jchart.JChartService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.jchart.action.AddJChartAction"
@@ -1414,7 +1414,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.jchart.action.UpdateJChartUserRoleAction"
 		scope="prototype">
 		<property name="jchartService" ref="org.hisp.dhis.jchart.JChartService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean
@@ -1422,7 +1422,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportexcel.jchart.action.UpdateJChartUserRoleFormAction"
 		scope="prototype">
 		<property name="jchartService" ref="org.hisp.dhis.jchart.JChartService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.jchart.action.draw.DrawJChartAction"

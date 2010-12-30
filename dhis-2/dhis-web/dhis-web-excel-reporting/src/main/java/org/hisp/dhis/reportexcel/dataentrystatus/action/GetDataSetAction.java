@@ -38,7 +38,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 /**
@@ -56,7 +56,7 @@ public class GetDataSetAction
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    private UserStore userStore;
+    private UserService userService;
 
     private CurrentUserService currentUserService;
 
@@ -75,9 +75,9 @@ public class GetDataSetAction
         return dataSets;
     }
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -107,7 +107,7 @@ public class GetDataSetAction
 
             if ( !currentUserService.currentUserIsSuper() )
             {
-                UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
+                UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
 
                 Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
 
