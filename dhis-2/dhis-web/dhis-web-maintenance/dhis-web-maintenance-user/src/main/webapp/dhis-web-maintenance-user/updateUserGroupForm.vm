@@ -1,9 +1,16 @@
-
+<script>
+	jQuery(document).ready(	function(){
+		validation( 'editUserGroupForm', function( form ){ form.submit() }, function(){
+			listValidator( 'memberValidator','groupMembers');
+		} );
+		checkValueIsExist( "name", "validateUserGroup.action", {id:$group.id});	
+	});		
+</script>
 <h3>$i18n.getString( "edit_user_group" )</h3>
 
-<form id="editUserGroupForm" name="editUserGroupForm" action="updateUserGroup.action" method="post" onsubmit="return editValidation();" >
+<form id="editUserGroupForm" name="editUserGroupForm" action="updateUserGroup.action" method="post">
 	
-<input type="hidden" name="userGroupId" id="userGroupId" value="$userGroupId" />
+<input type="hidden" name="userGroupId" id="userGroupId" value="$group.id" />
 <table id="detailsList">
 	<col/>
 	<col/>
@@ -15,7 +22,7 @@
 	<tbody>
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" onchange="nameChanged()" style="width:20em" maxlength="150" /></td>
+		<td><input type="text" id="name" name="name" value ="$encoder.htmlEncode( $group.name )" style="width:20em" maxlength="150" /></td>
 	</tr>
 	<tr><td colspan="2" style="height:15px"></td></tr>
     </tbody>
@@ -24,7 +31,7 @@
     <tr>
         <th>$i18n.getString( "available_users" )</th><td></td>
         <th>$i18n.getString( "group_members" )
-            <select id="memberValidator" multiple="multiple" style="display:none"/>
+            <select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
         </th>
     </tr>
     <tr>        
@@ -67,29 +74,3 @@
 <p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='getAllUserGroups.action'" style="width:10em"/></p>
 
 </form>
-<script type="text/javascript">
-   function editValidation ()
-{
-    var k =0 ;
-    var xyz=document.getElementById("name");
-    var abc =document.getElementById("groupMembers");
-    var c  = abc.length ;
-	
-    if( xyz.value == "") {
-    	alert ("please select name ");alert(' xyz.value is empty');
-		return false;
-    }
-    else if ( c <=0 ){
-		alert("please select at least one member");
-		return false ;
-    }else{
-    	if (c >0 )
-		{			
-			selectAllById("groupMembers");
-		}
-	}
-   
-    return true;
-}
-
-</script>

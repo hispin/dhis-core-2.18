@@ -12,27 +12,24 @@
 			</table>
             <table class="listTable" id="listTable">
                 <col/>
-                <col width="20"/>
-                <col width="20"/>
-                <col width="20"/>
-                <col width="20"/>
-                <col width="20"/>
-                <thead>           
-                
-                <tr>
-                    <th>$i18n.getString( "name" )</th>
-                    <th colspan="5" class="{sorter: false}">$i18n.getString( "operations" )</th>
-                </tr>
+                <col width="150"/>               
+                <thead>                          
+					<tr>
+						<th>$i18n.getString( "name" )</th>
+						<th class="{sorter: false}">$i18n.getString( "operations" )</th>
+					</tr>
                 </thead>
                 <tbody id="list">
                 #foreach( $export in $exports )
                 <tr>
                     <td onclick="showDataMartExportDetails( $export.id )">$encoder.htmlEncode( $export.name )</td>
-                    <td style="text-align:center"><a href="exportDataMartExport.action?id=$export.id" title="$i18n.getString( 'export' )"><img src="../images/start_process.png" alt="$i18n.getString( 'export' )"/></a></td>
-                    <td style="text-align:center"><a href="getOptions.action?id=$export.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a></td>
-                    <td style="text-align:center"><a href="javascript:removeDatamartExport( $export.id, '$encoder.jsEncode( $export.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a></td>
-                    <td style="text-align:center"><a href="javascript:addToDashboard( '$export.id' )"  title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"/></a></td>
-                    <td style="text-align:center"><a href="javascript:showDataMartExportDetails( $export.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a></td>
+                    <td style="text-align:center">
+						<a href="exportDataMartExport.action?id=$export.id" title="$i18n.getString( 'export' )"><img src="../images/start_process.png" alt="$i18n.getString( 'export' )"/></a>
+						<a href="getOptions.action?id=$export.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+						<a href="javascript:removeDatamartExport( $export.id, '$encoder.jsEncode( $export.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:addToDashboard( '$export.id' )"  title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"/></a>
+						<a href="javascript:showDataMartExportDetails( $export.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
+					</td>
                 </tr>
                 #end
                 </tbody>
