@@ -35,8 +35,12 @@ public class MobileImportParameters implements Serializable
 {
 
     public static final String FORM_TYPE_ANMREGFORM = "anmregform";
+    public static final String FORM_TYPE_ANMQUERYFORM = "anmqueryform";
     public static final String FORM_TYPE_DATAFORM = "dataform";
+    
     public static final String ANMREG_FORM_ID = "ANMRF";
+    public static final String ANMQUERY_FORM_ID = "ANMQUERY";
+    
     
     private String formType;
     
@@ -51,6 +55,8 @@ public class MobileImportParameters implements Serializable
     private Map<String, String> dataValues;
 
     private String anmName;
+    
+    private String anmQuery;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -131,5 +137,17 @@ public class MobileImportParameters implements Serializable
     {
         this.anmName = anmName;
     }
+
+    public String getAnmQuery()
+    {
+        return anmQuery;
+    }
+
+    public void setAnmQuery( String anmQuery )
+    {
+        this.anmQuery = anmQuery;
+    }
+    
+    
     
 }

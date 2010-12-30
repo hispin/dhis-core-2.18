@@ -56,6 +56,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.mobile.SmsService;
+import org.hisp.dhis.mobile.api.ReceiveSMSService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -91,6 +92,13 @@ public class DefaultMobileImportService
     public void setSendSMSService( SendSMSService sendSMSService )
     {
         this.sendSMSService = sendSMSService;
+    }
+
+    private ReceiveSMSService receiveSMSService;
+    
+    public void setReceiveSMSService( ReceiveSMSService receiveSMSService )
+    {
+        this.receiveSMSService = receiveSMSService;
     }
 
     SmsService smsService;
@@ -266,6 +274,7 @@ public class DefaultMobileImportService
         String periodType;
         String formType;
         String anmName;
+        String anmQuery;
 
         String tempDeid;
         String tempDataValue;
@@ -363,6 +372,16 @@ public class DefaultMobileImportService
                 anmName = anmNameInfoNameList.item( 0 ).getNodeValue().trim();
 
                 mobileImportParameters.setAnmName( anmName );
+            }
+            else if( formType.equalsIgnoreCase( MobileImportParameters.FORM_TYPE_ANMQUERYFORM ) )
+            {
+                // To get ANM Query
+                NodeList anmQueryInfo = doc.getElementsByTagName( "anmquery" );
+                Element anmQueryInfoElement = (Element) anmQueryInfo.item( 0 );
+                NodeList anmQueryInfoNameList = anmQueryInfoElement.getChildNodes();
+                anmQuery = anmQueryInfoNameList.item( 0 ).getNodeValue().trim();
+
+                mobileImportParameters.setAnmQuery( anmQuery );
             }
         }// try block end
         catch ( SAXParseException err )
@@ -1014,6 +1033,81 @@ public class DefaultMobileImportService
         return importStatus;
     }
     
+    @Transactional
+    public String importANMQueryData( String importFile, MobileImportParameters mobImportParameters )
+    {
+        String importStatus="";
+
+        try
+        {
+            User curUser = getUserInfo( mobImportParameters.getMobileNumber() );
+
+            if ( curUser != null )
+            {
+                UserCredentials userCredentials = userStore.getUserCredentials( curUser );
+
+                if ( (userCredentials != null)
+                    && (mobImportParameters.getMobileNumber().equals( curUser.getPhoneNumber() )) )
+                {
+                }
+                else
+                {
+                    LOG.error( " Import File Contains Unrecognised Phone Numbers : "
+                        + mobImportParameters.getMobileNumber() );
+                    moveFailedFile( importFile );
+                    return "Phone number is not registered to any facility. Please contact admin";
+                }
+
+                List<OrganisationUnit> sources = new ArrayList<OrganisationUnit>( curUser.getOrganisationUnits() );
+
+                if ( sources == null || sources.size() <= 0 )
+                {
+                    LOG.error( " No User Exists with corresponding Phone Numbers : "
+                        + mobImportParameters.getMobileNumber() );
+                    moveFailedFile( importFile );
+                    
+                    return "Phone number is not registered to any facility. Please contact admin";
+                }
+                
+                String anmQuery = mobImportParameters.getAnmQuery();
+
+                if ( anmQuery == null || anmQuery.trim().equalsIgnoreCase( "" ) )
+                {
+                    LOG.error( importFile + " Import File is not Properly Formated" );
+                    moveFailedFile( importFile );
+                    
+                    return "Data not Received Properly, Please send again";
+                }
+
+                ReceiveSMS receiveSMS = new ReceiveSMS( importFile, anmQuery );
+                receiveSMSService.addReceiveSMS( receiveSMS );
+                
+                moveImportedFile( importFile );
+                
+               importStatus = "YOUR Query IS REGISTERD SUCCESSFULLY";
+            }
+            else
+            {
+                LOG.error( importFile + " Phone number not found... Sending to Bounced" );
+                importStatus = "Phone number is not registered to any facility. Please contact admin";
+                moveFailedFile( importFile );
+            }
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            LOG.error( e.getMessage() );
+            LOG.error( "Exception caused in importing... Moving to Bounced" );
+            
+            importStatus = "Data not Received Properly, Please send again";
+            moveFailedFile( importFile );
+        }
+        finally
+        {
+        }
+
+        return importStatus;
+    }
     @Override
     @Transactional
     public String importXMLFile( String importFile )
@@ -1038,6 +1132,12 @@ public class DefaultMobileImportService
             if( mobImportParameters.getFormType().equalsIgnoreCase( MobileImportParameters.FORM_TYPE_ANMREGFORM ) )
             {
                 importStatus = importANMRegData( importFile, mobImportParameters );
+                
+                return importStatus;
+            }
+            else if( mobImportParameters.getFormType().equalsIgnoreCase( MobileImportParameters.FORM_TYPE_ANMQUERYFORM ) )
+            {
+                importStatus = importANMQueryData( importFile, mobImportParameters );
                 
                 return importStatus;
             }
