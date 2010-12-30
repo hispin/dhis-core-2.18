@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSevice;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,11 +54,11 @@ public class UpdateJChartUserRoleAction
         this.jchartService = jchartService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------
@@ -90,7 +90,7 @@ public class UpdateJChartUserRoleAction
 
         for ( Integer i : userRoles )
         {
-            jchart.addUserAuthorityGroup( userStore.getUserAuthorityGroup( i ) );
+            jchart.addUserAuthorityGroup( userService.getUserAuthorityGroup( i ) );
         }
         
         jchartService.updateJChart( jchart );

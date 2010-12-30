@@ -283,8 +283,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore"/>
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService"/>
 		</property>
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
@@ -480,8 +480,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService">
 			<ref bean="org.hisp.dhis.period.PeriodService"/>
 		</property>
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore"/>
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService"/>
 		</property>
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService"/>

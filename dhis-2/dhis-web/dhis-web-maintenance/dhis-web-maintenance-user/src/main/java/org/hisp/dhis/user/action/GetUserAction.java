@@ -33,7 +33,7 @@ import java.util.Collection;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,11 +48,11 @@ public class GetUserAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -87,11 +87,11 @@ public class GetUserAction
     public String execute()
         throws Exception
     {
-        User user = userStore.getUser( id );
+        User user = userService.getUser( id );
 
-        userCredentials = userStore.getUserCredentials( user );
+        userCredentials = userService.getUserCredentials( user );
 
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
 
         userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );        
         

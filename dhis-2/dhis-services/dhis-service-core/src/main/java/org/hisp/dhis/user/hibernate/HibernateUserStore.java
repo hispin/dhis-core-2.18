@@ -454,7 +454,10 @@ public class HibernateUserStore
         return findByName( toUserCredentials( getUsersByOrganisationUnit( orgUnit ) ), name ).size();
     }
 
-    // ===================
+    // -------------------------------------------------------------------------
+    // 
+    // -------------------------------------------------------------------------
+    
     public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
     {
         return getBlockUser( toUserCredentials( getUsersWithoutOrganisationUnit()), first, max );
@@ -476,10 +479,12 @@ public class HibernateUserStore
         return findByName( toUserCredentials( getUsersWithoutOrganisationUnit() ), name ).size();
     }
 
-    // ==============================
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+    
     private Collection<UserCredentials> findByName( Collection<UserCredentials> users, String key )
     {
-
         List<UserCredentials> returnList = new ArrayList<UserCredentials>();
 
         for ( UserCredentials user : users )
@@ -496,8 +501,8 @@ public class HibernateUserStore
     private List<UserCredentials> getBlockUser( Collection<UserCredentials> usersList, int startPos, int pageSize )
     {
         List<UserCredentials> returnList;
-
         List<UserCredentials> elementList = new ArrayList<UserCredentials>( usersList );
+        
         try
         {
             returnList = elementList.subList( startPos, startPos + pageSize );
@@ -506,6 +511,7 @@ public class HibernateUserStore
         {
             returnList = elementList.subList( startPos, elementList.size() );
         }
+        
         return returnList;
     }
     

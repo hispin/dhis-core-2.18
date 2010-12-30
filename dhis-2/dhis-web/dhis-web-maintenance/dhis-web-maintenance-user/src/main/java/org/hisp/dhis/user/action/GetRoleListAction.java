@@ -34,7 +34,7 @@ import java.util.List;
 
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 /**
  * @author Thanh Nguyen
@@ -47,11 +47,11 @@ public class GetRoleListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -87,15 +87,15 @@ public class GetRoleListAction
         
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( userStore.getUserRoleCountByName( key ) );
+            this.paging = createPaging( userService.getUserRoleCountByName( key ) );
             
-            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getUserRolesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getUserRolesBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
-            this.paging = createPaging( userStore.getUserRoleCount() );
+            this.paging = createPaging( userService.getUserRoleCount() );
             
-            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getUserRolesBetween( paging.getStartPos(), paging.getPageSize() ) );
+            userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getUserRolesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         return SUCCESS;

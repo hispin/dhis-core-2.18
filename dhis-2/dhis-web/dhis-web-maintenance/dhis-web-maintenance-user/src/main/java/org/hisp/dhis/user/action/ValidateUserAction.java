@@ -29,7 +29,7 @@ package org.hisp.dhis.user.action;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,11 +44,11 @@ public class ValidateUserAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private I18n i18n;
@@ -96,7 +96,7 @@ public class ValidateUserAction
     {
         if ( username != null )
         {
-            UserCredentials match = userStore.getUserCredentialsByUsername( username );
+            UserCredentials match = userService.getUserCredentialsByUsername( username );
 
             if ( match != null && (id == null || match.getId() != id) )
             {

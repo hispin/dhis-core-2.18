@@ -37,7 +37,7 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UsernameComparator;
 
 /**
@@ -51,11 +51,11 @@ public class GetUserListAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private CurrentUserService currentUserService;
@@ -104,20 +104,20 @@ public class GetUserListAction
     {        
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
-            this.paging = createPaging( userStore.getUserCountByName( key ) );
+            this.paging = createPaging( userService.getUserCountByName( key ) );
             
-            userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
-            this.paging = createPaging( userStore.getUserCount() );
+            this.paging = createPaging( userService.getUserCount() );
             
-            userCredentialsList = new ArrayList<UserCredentials>( userStore.getUsersBetween( paging.getStartPos(), paging.getPageSize() ) );
+            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
         Collections.sort( userCredentialsList, new UsernameComparator() );
-        User currentUser = userStore.getUser( currentUserService.getCurrentUser().getId() );
-        UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
+        User currentUser = userService.getUser( currentUserService.getCurrentUser().getId() );
+        UserCredentials userCredentials = userService.getUserCredentials( currentUser );
 
         currentUserName = userCredentials.getUsername();
         

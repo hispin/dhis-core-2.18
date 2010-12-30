@@ -2,6 +2,8 @@ package org.hisp.dhis.user;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -47,6 +49,10 @@ public class DefaultUserService
         this.userStore = userStore;
     }
 
+    // -------------------------------------------------------------------------
+    // Implementing methods
+    // -------------------------------------------------------------------------
+
     public boolean isSuperUser( UserCredentials userCredentials )
     {
         if ( userCredentials == null )
@@ -68,7 +74,7 @@ public class DefaultUserService
     public boolean isLastSuperUser( UserCredentials userCredentials )
     {
         Collection<UserCredentials> users = userStore.getAllUserCredentials();
-        
+
         for ( UserCredentials user : users )
         {
             if ( isSuperUser( user ) && user.getId() != userCredentials.getId() )
@@ -104,4 +110,236 @@ public class DefaultUserService
 
         return true;
     }
+
+    // -------------------------------------------------------------------------
+    // User
+    // -------------------------------------------------------------------------
+
+    public int addUser( User user )
+    {
+        return userStore.addUser( user );
+    }
+
+    public void deleteUser( User user )
+    {
+        userStore.deleteUser( user );
+    }
+
+    public void updateUser( User user )
+    {
+        userStore.updateUser( user );
+    }
+
+    public Collection<User> getAllUsers()
+    {
+        return userStore.getAllUsers();
+    }
+
+    public User getUser( int userId )
+    {
+        return userStore.getUser( userId );
+    }
+
+    public int getUserCount()
+    {
+        return userStore.getUserCount();
+    }
+
+    public int getUserCountByName( String userName )
+    {
+        return userStore.getUserCountByName( userName );
+    }
+
+    public Collection<User> getUsersByOrganisationUnit( OrganisationUnit unit )
+    {
+        return userStore.getUsersByOrganisationUnit( unit );
+    }
+
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit unit, int first, int max )
+    {
+        return userStore.getUsersByOrganisationUnitBetween( unit, first, max );
+    }
+
+    public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName,
+        int first, int max )
+    {
+        return userStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
+    }
+
+    public int getUsersByOrganisationUnitCount( OrganisationUnit unit )
+    {
+        return userStore.getUsersByOrganisationUnitCount( unit );
+    }
+
+    public int getUsersByOrganisationUnitCountByName( OrganisationUnit unit, String userName )
+    {
+        return userStore.getUsersByOrganisationUnitCountByName( unit, userName );
+    }
+
+    public Collection<User> getUsersByPhoneNumber( String phoneNumber )
+    {
+        return userStore.getUsersByPhoneNumber( phoneNumber );
+    }
+
+    public Collection<User> getUsersWithoutOrganisationUnit()
+    {
+        return userStore.getUsersWithoutOrganisationUnit();
+    }
+
+    public int getUsersWithoutOrganisationUnitCount()
+    {
+        return userStore.getUsersWithoutOrganisationUnitCount();
+    }
+
+    public int getUsersWithoutOrganisationUnitCountByName( String userName )
+    {
+        return userStore.getUsersWithoutOrganisationUnitCountByName( userName );
+    }
+
+    // -------------------------------------------------------------------------
+    // UserAuthorityGroup
+    // -------------------------------------------------------------------------
+
+    public int addUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
+    {
+        return userStore.addUserAuthorityGroup( userAuthorityGroup );
+    }
+
+    public void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
+    {
+        userStore.updateUserAuthorityGroup( userAuthorityGroup );
+    }
+
+    public void deleteUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
+    {
+        userStore.deleteUserAuthorityGroup( userAuthorityGroup );
+    }
+
+    public Collection<UserAuthorityGroup> getAllUserAuthorityGroups()
+    {
+        return userStore.getAllUserAuthorityGroups();
+    }
+
+    public UserAuthorityGroup getUserAuthorityGroup( int userAuthorityGroupId )
+    {
+        return userStore.getUserAuthorityGroup( userAuthorityGroupId );
+    }
+
+    public UserAuthorityGroup getUserAuthorityGroupByName( String userAuthorityGroupName )
+    {
+        return userStore.getUserAuthorityGroupByName( userAuthorityGroupName );
+    }
+
+    public Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max )
+    {
+        return userStore.getUserRolesBetween( first, max );
+    }
+
+    public Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max )
+    {
+        return userStore.getUserRolesBetweenByName( name, first, max );
+    }
+
+    // -------------------------------------------------------------------------
+    // UserCredentials
+    // -------------------------------------------------------------------------
+
+    public User addUserCredentials( UserCredentials userCredentials )
+    {
+        return userStore.addUserCredentials( userCredentials );
+    }
+
+    public void updateUserCredentials( UserCredentials userCredentials )
+    {
+        userStore.updateUserCredentials( userCredentials );
+    }
+
+    public void deleteUserCredentials( UserCredentials userCredentials )
+    {
+        userStore.deleteUserCredentials( userCredentials );
+    }
+
+    public Collection<UserCredentials> getAllUserCredentials()
+    {
+        return userStore.getAllUserCredentials();
+    }
+
+    public UserCredentials getUserCredentials( User user )
+    {
+        return userStore.getUserCredentials( user );
+    }
+
+    public UserCredentials getUserCredentialsByUsername( String userName )
+    {
+        return userStore.getUserCredentialsByUsername( userName );
+    }
+
+    public Collection<UserCredentials> getUsersBetween( int first, int max )
+    {
+        return userStore.getUsersBetween( first, max );
+    }
+
+    public Collection<UserCredentials> getUsersBetweenByName( String userName, int first, int max )
+    {
+        return userStore.getUsersBetweenByName( userName, first, max );
+    }
+
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetween( int first, int max )
+    {
+        return userStore.getUsersWithoutOrganisationUnitBetween( first, max );
+    }
+
+    public Collection<UserCredentials> getUsersWithoutOrganisationUnitBetweenByName( String userName, int first, int max )
+    {
+        return userStore.getUsersWithoutOrganisationUnitBetweenByName( userName, first, max );
+    }
+
+    public Collection<UserCredentials> searchUsersByName( String userName )
+    {
+        return userStore.searchUsersByName( userName );
+    }
+
+    // -------------------------------------------------------------------------
+    // UserSettings
+    // -------------------------------------------------------------------------
+
+    public void addUserSetting( UserSetting userSetting )
+    {
+        userStore.addUserSetting( userSetting );
+    }
+
+    public void updateUserSetting( UserSetting userSetting )
+    {
+        userStore.updateUserSetting( userSetting );
+    }
+
+    public void deleteUserSetting( UserSetting userSetting )
+    {
+        userStore.deleteUserSetting( userSetting );
+    }
+
+    public Collection<UserSetting> getAllUserSettings( User user )
+    {
+        return userStore.getAllUserSettings( user );
+    }
+
+    public UserSetting getUserSetting( User user, String name )
+    {
+        return userStore.getUserSetting( user, name );
+    }
+
+    // -------------------------------------------------------------------------
+    // UserRole
+    // -------------------------------------------------------------------------
+
+    public int getUserRoleCount()
+    {
+        return userStore.getUserRoleCount();
+    }
+
+    public int getUserRoleCountByName( String name )
+    {
+        return userStore.getUserRoleCountByName( name );
+    }
+
 }

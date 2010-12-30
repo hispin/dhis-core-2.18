@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -54,11 +54,11 @@ public class UpdateJChartUserRoleFormAction
         this.jchartService = jchartService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------
@@ -94,8 +94,7 @@ public class UpdateJChartUserRoleFormAction
     public String execute()
         throws Exception
     {
-
-        userRoles = userStore.getAllUserAuthorityGroups();
+        userRoles = userService.getAllUserAuthorityGroups();
 
         jchart = jchartService.getJChart( id );
 

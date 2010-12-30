@@ -38,7 +38,7 @@ import org.hisp.dhis.security.PasswordManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,11 +53,11 @@ public class UpdateUserAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private PasswordManager passwordManager;
@@ -161,14 +161,14 @@ public class UpdateUserAction
         
         Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        User user = userStore.getUser( id );
+        User user = userService.getUser( id );
         user.setSurname( surname );
         user.setFirstName( firstName );
         user.setEmail( email );
         user.setPhoneNumber( phoneNumber );
         user.setOrganisationUnits( units );
 
-        UserCredentials userCredentials = userStore.getUserCredentials( user );
+        UserCredentials userCredentials = userService.getUserCredentials( user );
         
         Set<UserAuthorityGroup> authorityGroups = userCredentials.getUserAuthorityGroups();
         
@@ -176,7 +176,7 @@ public class UpdateUserAction
 
         for ( String id : selectedList )
         {
-            authorityGroups.add( userStore.getUserAuthorityGroup( Integer.parseInt( id ) ) );
+            authorityGroups.add( userService.getUserAuthorityGroup( Integer.parseInt( id ) ) );
         }
         
         if ( rawPassword != null )
@@ -184,8 +184,8 @@ public class UpdateUserAction
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
         }
 
-        userStore.updateUserCredentials( userCredentials );
-        userStore.updateUser( user );
+        userService.updateUserCredentials( userCredentials );
+        userService.updateUser( user );
         
         if ( units.size() > 0 )
         {

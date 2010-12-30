@@ -41,7 +41,7 @@ import org.hisp.dhis.reportexcel.BookmarkService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,11 +71,11 @@ public class DataSetCompletedReportFormAction
         this.dataSetService = dataSetService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private CurrentUserService currentUserService;
@@ -124,7 +124,7 @@ public class DataSetCompletedReportFormAction
         }
         else
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
 
             for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
             {

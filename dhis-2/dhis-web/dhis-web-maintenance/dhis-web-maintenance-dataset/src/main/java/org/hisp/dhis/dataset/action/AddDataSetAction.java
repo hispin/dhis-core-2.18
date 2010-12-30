@@ -40,7 +40,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,11 +83,11 @@ public class AddDataSetAction
         this.currentUserService = currentUserService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -184,13 +184,13 @@ public class AddDataSetAction
 
         if ( !currentUserService.currentUserIsSuper() && currentUser != null )
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUser );
+            UserCredentials userCredentials = userService.getUserCredentials( currentUser );
 
             for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
             {
                 userAuthorityGroup.getDataSets().add( dataSet );
 
-                userStore.updateUserAuthorityGroup( userAuthorityGroup );
+                userService.updateUserAuthorityGroup( userAuthorityGroup );
             }
         }
     }

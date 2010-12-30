@@ -34,7 +34,7 @@ import java.util.Set;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,11 +45,11 @@ public class AddUserGroupAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserStore userStore;
+    private UserService userService;
     
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private UserGroupService userGroupService;
@@ -87,7 +87,7 @@ public class AddUserGroupAction
         
         for( Integer groupMember : groupMembers )
         {
-            User user = userStore.getUser( groupMember );
+            User user = userService.getUser( groupMember );
             userList.add( user ); 
         }
         

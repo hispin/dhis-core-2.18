@@ -71,14 +71,14 @@ public class DatabaseAutomaticAccessProvider
         user.setFirstName( username );
         user.setSurname( username );
 
-        userStore.addUser( user );
+        userService.addUser( user );
 
         UserAuthorityGroup userAuthorityGroup = new UserAuthorityGroup();
         userAuthorityGroup.setName( "Superuser" );
 
         userAuthorityGroup.setAuthorities( new HashSet<String>( getAuthorities() ) );
 
-        userStore.addUserAuthorityGroup( userAuthorityGroup );
+        userService.addUserAuthorityGroup( userAuthorityGroup );
 
         UserCredentials userCredentials = new UserCredentials();
         userCredentials.setUsername( username );
@@ -86,7 +86,7 @@ public class DatabaseAutomaticAccessProvider
         userCredentials.setUser( user );
         userCredentials.getUserAuthorityGroups().add( userAuthorityGroup );
 
-        userStore.addUserCredentials( userCredentials );
+        userService.addUserCredentials( userCredentials );
     }
 
     public void access()

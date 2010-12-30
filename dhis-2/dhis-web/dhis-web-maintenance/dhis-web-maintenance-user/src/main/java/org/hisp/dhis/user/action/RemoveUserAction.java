@@ -34,7 +34,6 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserSetting;
-import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -49,13 +48,6 @@ public class RemoveUserAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
 
     private CurrentUserService currentUserService;
 
@@ -103,20 +95,20 @@ public class RemoveUserAction
     public String execute()
         throws Exception
     {
-        User user = userStore.getUser( id );
+        User user = userService.getUser( id );
 
         User currentUser = currentUserService.getCurrentUser();
 
         boolean isCurrentUser = currentUser != null && currentUser.equals( user );
 
-        Collection<UserSetting> userSettings = userStore.getAllUserSettings( user );
+        Collection<UserSetting> userSettings = userService.getAllUserSettings( user );
 
         for ( UserSetting userSetting : userSettings )
         {
-            userStore.deleteUserSetting( userSetting );
+            userService.deleteUserSetting( userSetting );
         }
 
-        UserCredentials userCredentials = userStore.getUserCredentials( user );
+        UserCredentials userCredentials = userService.getUserCredentials( user );
         
         if ( userService.isLastSuperUser( userCredentials ) )
         {
@@ -126,8 +118,8 @@ public class RemoveUserAction
         }
         else
         {
-            userStore.deleteUserCredentials( userStore.getUserCredentials( user ) );
-            userStore.deleteUser( user );
+            userService.deleteUserCredentials( userService.getUserCredentials( user ) );
+            userService.deleteUser( user );
         }
 
         if ( isCurrentUser )

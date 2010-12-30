@@ -38,7 +38,7 @@ import org.hisp.dhis.jchart.JChartComparator;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -60,11 +60,11 @@ public class GetALLJchartAction
         this.jchartService = jchartService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private CurrentUserService currentUserService;
@@ -100,7 +100,7 @@ public class GetALLJchartAction
         }
         else
         {
-            Set<UserAuthorityGroup> userRoles = userStore.getUserCredentials( currentUserService.getCurrentUser() )
+            Set<UserAuthorityGroup> userRoles = userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups();
 
             for ( JChart jchart : jcharts_ )

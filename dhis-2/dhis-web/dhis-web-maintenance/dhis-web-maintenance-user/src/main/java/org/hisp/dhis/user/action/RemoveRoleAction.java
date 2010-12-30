@@ -31,7 +31,6 @@ import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.UserStore;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,13 +45,6 @@ public class RemoveRoleAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private UserStore userStore;
-
-    public void setUserStore( UserStore userStore )
-    {
-        this.userStore = userStore;
-    }
 
     private UserService userService;
 
@@ -93,7 +85,7 @@ public class RemoveRoleAction
     public String execute()
         throws Exception
     {
-        UserAuthorityGroup authorityGroup = userStore.getUserAuthorityGroup( id );
+        UserAuthorityGroup authorityGroup = userService.getUserAuthorityGroup( id );
 
         if ( authorityGroup != null )
         {
@@ -107,7 +99,7 @@ public class RemoveRoleAction
                 }
                 else
                 {
-                    userStore.deleteUserAuthorityGroup( authorityGroup );
+                    userService.deleteUserAuthorityGroup( authorityGroup );
                 }
             }
             catch ( DeleteNotAllowedException e )

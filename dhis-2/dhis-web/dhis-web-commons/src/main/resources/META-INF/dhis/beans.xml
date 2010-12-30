@@ -386,13 +386,13 @@
     <!-- Security : AccessProvider -->
     
 	<bean id="databaseAutomaticAccessProvider" class="org.hisp.dhis.security.DatabaseAutomaticAccessProvider">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="systemAuthoritiesProvider" ref="simpleSystemAuthoritiesProvider" />
 		<property name="passwordManager" ref="org.hisp.dhis.security.PasswordManager" />
 	</bean>
 
 	<bean id="ghostAutomaticAccessProvider" class="org.hisp.dhis.security.GhostAutomaticAccessProvider">
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 		<property name="systemAuthoritiesProvider" ref="simpleSystemAuthoritiesProvider" />
 	</bean>
 
@@ -653,7 +653,7 @@
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.commons.action.GetExpressionTextAction"
@@ -791,15 +791,15 @@
 		<property name="currentUserService">
 			<ref bean="org.hisp.dhis.user.CurrentUserService" />
 		</property>
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore" />
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService" />
 		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.useraccount.action.UpdateUserAccountAction"
 		class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction" scope="prototype">
-		<property name="userStore">
-			<ref bean="org.hisp.dhis.user.UserStore" />
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService" />
 		</property>
 		<property name="passwordManager">
 			<ref bean="org.hisp.dhis.security.PasswordManager" />

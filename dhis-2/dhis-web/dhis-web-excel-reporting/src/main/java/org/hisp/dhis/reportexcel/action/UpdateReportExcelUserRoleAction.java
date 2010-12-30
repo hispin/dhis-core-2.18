@@ -34,7 +34,7 @@ import java.util.Set;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelService;
 import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -46,7 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class UpdateReportExcelUserRoleAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -58,11 +57,11 @@ public class UpdateReportExcelUserRoleAction
         this.reportService = reportService;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     // -------------------------------------------------------------------------
@@ -93,7 +92,7 @@ public class UpdateReportExcelUserRoleAction
 
         for ( Integer i : this.userRoles )
         {
-            userAutorities.add( userStore.getUserAuthorityGroup( i ) );
+            userAutorities.add( userService.getUserAuthorityGroup( i ) );
         }
 
         report.setUserRoles( userAutorities );

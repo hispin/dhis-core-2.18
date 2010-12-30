@@ -49,7 +49,7 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -89,11 +89,11 @@ public class DefaultSelectedStateManager
         this.selectionManager = selectionManager;
     }
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     }
 
     private CurrentUserService currentUserService;
@@ -154,7 +154,7 @@ public class DefaultSelectedStateManager
 
         if ( !currentUserService.currentUserIsSuper() )
         {
-            UserCredentials userCredentials = userStore.getUserCredentials( currentUserService.getCurrentUser() );
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
 
             Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
 

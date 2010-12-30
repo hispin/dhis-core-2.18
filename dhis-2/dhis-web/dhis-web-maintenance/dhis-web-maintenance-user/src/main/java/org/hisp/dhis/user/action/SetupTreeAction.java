@@ -37,7 +37,7 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,11 +66,11 @@ public class SetupTreeAction
         this.selectionManager = selectionManager;
     }  
 
-    private UserStore userStore;
+    private UserService userService;
 
-    public void setUserStore( UserStore userStore )
+    public void setUserService( UserService userService )
     {
-        this.userStore = userStore;
+        this.userService = userService;
     } 
 
     // -------------------------------------------------------------------------
@@ -117,18 +117,18 @@ public class SetupTreeAction
         throws Exception
     {   
 
-        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userStore.getAllUserAuthorityGroups() );
+        userAuthorityGroups = new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() );
         
         if ( id != null )
         {
-            User user = userStore.getUser( id );
+            User user = userService.getUser( id );
 
             if ( user.getOrganisationUnits().size() > 0 )
             {
                 selectionTreeManager.setSelectedOrganisationUnits( user.getOrganisationUnits() );
             }
             
-            userCredentials = userStore.getUserCredentials( userStore.getUser( id ) );            
+            userCredentials = userService.getUserCredentials( userService.getUser( id ) );            
 
             userAuthorityGroups.removeAll( userCredentials.getUserAuthorityGroups() );
         }
