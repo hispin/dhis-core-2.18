@@ -591,7 +591,7 @@ public class DefaultReportService
                 {
                     Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
                         startDate, endDate, organisationUnit );
-                    System.out.println( dataElement.getId() + " : " + optionCombo.getId() + " : " + startDate + " : " + endDate + " : " + organisationUnit + " : " + aggregatedValue);
+                    //System.out.println( dataElement.getId() + " : " + optionCombo.getId() + " : " + startDate + " : " + endDate + " : " + organisationUnit + " : " + aggregatedValue);
                     if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
