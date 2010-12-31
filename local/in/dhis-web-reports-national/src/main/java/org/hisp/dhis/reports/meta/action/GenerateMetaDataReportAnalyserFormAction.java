@@ -20,7 +20,6 @@ import com.opensymphony.xwork2.Action;
 public class GenerateMetaDataReportAnalyserFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -52,8 +51,6 @@ public class GenerateMetaDataReportAnalyserFormAction
 
     private String raFolderName;
 
-    int count;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -66,8 +63,6 @@ public class GenerateMetaDataReportAnalyserFormAction
         reportIds = new ArrayList<String>();
 
         reportNames = new ArrayList<String>();
-
-        count = 0;
 
         getSelectedReportList( "metaDataReportsList.xml" );
 
@@ -89,14 +84,11 @@ public class GenerateMetaDataReportAnalyserFormAction
         }
         catch ( NullPointerException npe )
         {
-            // do nothing, but we might be using this somewhere without
-            // USER_HOME set, which will throw a NPE
+            System.out.println("DHIS2_HOME is not set.");
         }
 
         String reportId = "";
         String reportName = "";
-
-        // int count = 0;
 
         try
         {
@@ -121,7 +113,6 @@ public class GenerateMetaDataReportAnalyserFormAction
 
                 reportIds.add( reportId );
                 reportNames.add( reportName );
-
             }// end of for loop with s var
         }// try block end
         catch ( SAXParseException err )
@@ -138,9 +129,6 @@ public class GenerateMetaDataReportAnalyserFormAction
         {
             t.printStackTrace();
         }
-
     }// getReportList end
 
 }
-
-

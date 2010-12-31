@@ -53,10 +53,6 @@ import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-
 public class GenerateMetaDataReportResultAction
     implements Action
 {
@@ -211,76 +207,55 @@ public class GenerateMetaDataReportResultAction
 
         raFolderName = reportService.getRAFolderName();
 
+        System.out.println( "Report Generation Start Time is : \t" + new Date() );
+        
         if ( metaDataId.equalsIgnoreCase( ORGUNIT ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( ORGUNITGRP ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitGroupList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( DATAELEMENT ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateDataElementList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( DATAELEMENTGRP ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateDataElementGroupList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( INDIACTOR ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateIndicatorList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( INDICATORGRP ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateIndicatorGroupList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( DATASET ) )
         {
             generateDataSetList();
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
         }
         else if ( metaDataId.equalsIgnoreCase( VALIDATIONRULE ) )
         {
             generateValidationRuleList();
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
         }
         else if ( metaDataId.equalsIgnoreCase( VALIDATIONRULEGRP ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateValidationGroupList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( USER ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateUserList();
-
         }
         else if ( metaDataId.equalsIgnoreCase( ORGUNIT_USER ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateOrgUnitTreeAlongWithUsers();
-
         }
-
         else if ( metaDataId.equalsIgnoreCase( SUMMARY ) )
         {
-            System.out.println( "Report Generation Start Time is : \t" + new Date() );
             generateSummaryReport();
-
         }
 
         statementManager.destroy();
@@ -339,7 +314,6 @@ public class GenerateMetaDataReportResultAction
         // ----------------------------------------------------------------------
         // Coding For Printing MetaData
         // ----------------------------------------------------------------------
-        // -
 
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
