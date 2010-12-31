@@ -641,11 +641,14 @@ public class DefaultMappingService
     public Collection<MapView> getAllMapViews()
     {
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
-
-        for ( MapView mapView : mapViews )
+        
+        if ( mapViews.size() > 0 )
         {
-            mapView.getParentOrganisationUnit().setLevel(
-                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+            for ( MapView mapView : mapViews )
+            {
+                mapView.getParentOrganisationUnit().setLevel(
+                    organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+            }
         }
 
         return mapViews;

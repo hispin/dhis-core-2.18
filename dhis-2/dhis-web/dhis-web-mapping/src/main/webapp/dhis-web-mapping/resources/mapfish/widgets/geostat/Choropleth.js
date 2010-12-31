@@ -580,162 +580,23 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             xtype: 'textfield',
             name: 'boundary',
             fieldLabel: i18n_boundary,
-            typeAhead: true,
             editable: false,
-            valueField: 'id',
-            displayField: 'name',
-            mode: 'remote',
-            forceSelection: true,
-            triggerAction: 'all',
             emptyText: GLOBAL.conf.emptytext,
 			labelSeparator: GLOBAL.conf.labelseparator,
-            selectOnFocus: true,
             width: GLOBAL.conf.combo_width,
+            style: 'cursor:pointer',
             node: {attributes: {hasChildrenWithCoordinates: false}},
             selectedNode: null,
-            style: 'cursor:pointer',
+            treeWindow: false,
             listeners: {
                 'focus': {
                     scope: this,
                     fn: function(tf) {
-                        if (GLOBAL.vars.topLevelUnit) {
-                            Ext.getCmp('tree_w').show();
+                        if (tf.treeWindow) {
+                            tf.treeWindow.show();
                         }
                         else {
-                            Ext.Ajax.request({
-                                url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
-                                params: {level: 1},
-                                method: 'POST',
-                                scope: this,
-                                success: function(r) {
-                                    var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
-                                    GLOBAL.vars.topLevelUnit = {
-                                        id: rootNode.id,
-                                        name: rootNode.name,
-                                        hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
-                                    };
-                                    
-                                    var w = new Ext.Window({
-                                        id: 'tree_w',
-                                        title: 'Boundary and level',
-                                        closeAction: 'hide',
-                                        autoScroll: true,
-                                        height: 'auto',
-                                        autoHeight: true,
-                                        width: GLOBAL.conf.window_width,
-                                        items: [
-                                            {
-                                                xtype: 'panel',
-                                                bodyStyle: 'padding:8px; background-color:#ffffff',
-                                                items: [
-                                                    {html: '<div class="window-info">Select outer boundary</div>'},
-                                                    {
-                                                        xtype: 'treepanel',
-                                                        bodyStyle: 'background-color:#ffffff',
-                                                        height: screen.height / 3,
-                                                        autoScroll: true,
-                                                        lines: false,
-                                                        loader: new Ext.tree.TreeLoader({
-                                                            dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
-                                                        }),
-                                                        root: {
-                                                            id: GLOBAL.vars.topLevelUnit.id,
-                                                            text: GLOBAL.vars.topLevelUnit.name,
-                                                            hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
-                                                            nodeType: 'async',
-                                                            draggable: false,
-                                                            expanded: true
-                                                        },
-                                                        clickedNode: null,
-                                                        listeners: {
-                                                            'click': {
-                                                                scope: this,
-                                                                fn: function(n) {
-                                                                    this.form.findField('boundary').selectedNode = n;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                xtype: 'panel',
-                                                layout: 'form',
-                                                bodyStyle: 'padding:8px; background-color:#ffffff',
-                                                items: [
-                                                    {html: '<div class="window-info">Select organisation unit level</div>'},
-                                                    {
-                                                        xtype: 'combo',
-                                                        id: 'level_cb',
-                                                        fieldLabel: i18n_level,
-                                                        editable: false,
-                                                        valueField: 'level',
-                                                        displayField: 'name',
-                                                        mode: 'remote',
-                                                        forceSelection: true,
-                                                        triggerAction: 'all',
-                                                        selectOnFocus: true,
-                                                        emptyText: GLOBAL.conf.emptytext,
-                                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                                        fieldLabel: 'Level',
-                                                        width: GLOBAL.conf.combo_width_fieldset,
-                                                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                                        store: GLOBAL.stores.polygonOrganisationUnitLevel,
-                                                        listeners: {
-                                                            'select': {
-                                                                scope: this,
-                                                                fn: function(cb) {
-                                                                    this.form.findField('level').level = cb.getValue();
-                                                                    this.form.findField('level').levelName = cb.getRawValue();
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        bbar: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                text: i18n_apply,
-                                                iconCls: 'icon-assign',
-                                                scope: this,
-                                                handler: function() {
-                                                    var node = this.form.findField('boundary').selectedNode;
-                                                    if (!node || !Ext.getCmp('level_cb').getValue()) {
-                                                        return;
-                                                    }
-                                                    if (node.attributes.level > this.form.findField('level').level) {
-                                                        Ext.message.msg(false, 'Level is higher than boundary level');
-                                                        return;
-                                                    }
-                                                    
-                                                    if (Ext.getCmp('locatefeature_w')) {
-                                                        Ext.getCmp('locatefeature_w').destroy();
-                                                    }
-                                                    
-                                                    this.form.findField('mapview').clearValue();
-                                                    this.updateValues = true;
-                                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
-                                                        this.form.findField('level').level, this.form.findField('level').levelName);
-                                                        
-                                                    this.form.findField('boundary').setValue(node.attributes.text);
-                                                    this.form.findField('level').setValue(this.form.findField('level').levelName);
-                                                    Ext.getCmp('tree_w').hide();
-                                                    
-                                                    this.loadGeoJson();
-                                                }
-                                            }
-                                        ]
-                                    });
-                                    
-                                    var x = Ext.getCmp('center').x + 15;
-                                    var y = Ext.getCmp('center').y + 41;
-                                    w.setPosition(x,y);
-                                    w.show();
-                                }
-                            });
+							this.createSingletonCmp.treeWindow.call(this);
                         }
                     }
                 }
@@ -745,15 +606,27 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'textfield',
             name: 'level',
-            disabled: true,
-            disabledClass: 'combo-disabled',
             fieldLabel: i18n_level,
             editable: false,
             emptyText: GLOBAL.conf.emptytext,
 			labelSeparator: GLOBAL.conf.labelseparator,
             width: GLOBAL.conf.combo_width,
+            style: 'cursor:pointer',
             level: null,
-            levelName: null
+            levelName: null,
+            listeners: {
+                'focus': {
+                    scope: this,
+                    fn: function() {
+                        if (this.form.findField('boundary').treeWindow) {
+                            this.form.findField('boundary').treeWindow.show();
+                        }
+                        else {
+							this.createSingletonCmp.treeWindow.call(this);
+                        }
+                    }
+                }
+            }
         },
         
         { html: '<div class="thematic-br">' },
@@ -952,6 +825,145 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 
         ];
     },
+    
+	createSingletonCmp: {
+		treeWindow: function() {
+			Ext.Ajax.request({
+				url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
+				params: {level: 1},
+				method: 'POST',
+				scope: this,
+				success: function(r) {
+					var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
+					GLOBAL.vars.topLevelUnit = {
+						id: rootNode.id,
+						name: rootNode.name,
+						hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
+					};
+					
+					var w = new Ext.Window({
+						title: 'Boundary and level',
+						closeAction: 'hide',
+						autoScroll: true,
+						height: 'auto',
+						autoHeight: true,
+						width: GLOBAL.conf.window_width,
+						items: [
+							{
+								xtype: 'panel',
+								bodyStyle: 'padding:8px; background-color:#ffffff',
+								items: [
+									{html: '<div class="window-info">Select outer boundary</div>'},
+									{
+										xtype: 'treepanel',
+										bodyStyle: 'background-color:#ffffff',
+										height: screen.height / 3,
+										autoScroll: true,
+										lines: false,
+										loader: new Ext.tree.TreeLoader({
+											dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
+										}),
+										root: {
+											id: GLOBAL.vars.topLevelUnit.id,
+											text: GLOBAL.vars.topLevelUnit.name,
+											hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
+											nodeType: 'async',
+											draggable: false,
+											expanded: true
+										},
+										clickedNode: null,
+										listeners: {
+											'click': {
+												scope: this,
+												fn: function(n) {
+													this.form.findField('boundary').selectedNode = n;
+												}
+											}
+										}
+									}
+								]
+							},
+							{
+								xtype: 'panel',
+								layout: 'form',
+								bodyStyle: 'padding:8px; background-color:#ffffff',
+								items: [
+									{html: '<div class="window-info">Select organisation unit level</div>'},
+									{
+										xtype: 'combo',
+										id: 'level_cb',
+										fieldLabel: i18n_level,
+										editable: false,
+										valueField: 'level',
+										displayField: 'name',
+										mode: 'remote',
+										forceSelection: true,
+										triggerAction: 'all',
+										selectOnFocus: true,
+										emptyText: GLOBAL.conf.emptytext,
+										labelSeparator: GLOBAL.conf.labelseparator,
+										fieldLabel: 'Level',
+										width: GLOBAL.conf.combo_width_fieldset,
+										minListWidth: GLOBAL.conf.combo_width_fieldset,
+										store: GLOBAL.stores.polygonOrganisationUnitLevel,
+										listeners: {
+											'select': {
+												scope: this,
+												fn: function(cb) {
+													this.form.findField('level').level = cb.getValue();
+													this.form.findField('level').levelName = cb.getRawValue();
+												}
+											}
+										}
+									}
+								]
+							}
+						],
+						bbar: [
+							'->',
+							{
+								xtype: 'button',
+								text: i18n_apply,
+								iconCls: 'icon-assign',
+								scope: this,
+								handler: function() {
+									var node = this.form.findField('boundary').selectedNode;
+									if (!node || !Ext.getCmp('level_cb').getValue()) {
+										return;
+									}
+									if (node.attributes.level > this.form.findField('level').level) {
+										Ext.message.msg(false, 'Level is higher than boundary level');
+										return;
+									}
+									
+									if (Ext.getCmp('locatefeature_w')) {
+										Ext.getCmp('locatefeature_w').destroy();
+									}
+									
+									this.form.findField('mapview').clearValue();
+									this.updateValues = true;
+									this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
+										this.form.findField('level').level, this.form.findField('level').levelName);
+										
+									this.form.findField('boundary').setValue(node.attributes.text);
+									this.form.findField('level').setValue(this.form.findField('level').levelName);
+									
+									this.form.findField('boundary').treeWindow.hide();									
+									this.loadGeoJson();
+								}
+							}
+						]
+					});
+					
+					var x = Ext.getCmp('center').x + 15;
+					var y = Ext.getCmp('center').y + 41;
+					w.setPosition(x,y);
+					w.show();
+					this.form.findField('boundary').treeWindow = w;
+				}
+			});
+		}
+	},
     
     createSelectFeatures: function() {
         var scope = this;

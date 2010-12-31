@@ -29,7 +29,6 @@
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
         ],
-        sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -476,6 +475,7 @@
                     {
                         xtype: 'combo',
                         id: 'favorite_cb',
+                        fieldLabel: i18n_favorite,
                         editable: false,
                         valueField: 'id',
                         displayField: 'name',
@@ -484,7 +484,6 @@
                         triggerAction: 'all',
                         emptyText: GLOBAL.conf.emptytext,
                         labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_favorite,
                         selectOnFocus: true,
                         width: GLOBAL.conf.combo_width_fieldset,
                         minListWidth: GLOBAL.conf.combo_width_fieldset,
@@ -581,20 +580,19 @@
 				text: i18n_delete,
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
+					var rw = Ext.getCmp('favorite_cb').getRawValue();
 					
                     if (!v) {
 						Ext.message.msg(false, i18n_please_select_a_map_view);
 						return;
 					}
-                    
-					var name = GLOBAL.stores.mapView.getById(v).get('name');				
 					
 					Ext.Ajax.request({
 						url: GLOBAL.conf.path_mapping + 'deleteMapView' + GLOBAL.conf.type,
 						method: 'POST',
-						params: {id:v},
+						params: {id: v},
 						success: function(r) {
-							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + name + '</span> ' + i18n_deleted);
+							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + i18n_deleted);
                             GLOBAL.stores.mapView.load();
                             Ext.getCmp('favorite_cb').clearValue();
                             if (v == choropleth.form.findField('mapview').getValue()) {
@@ -2335,7 +2333,7 @@
 	var favoritesButton = new Ext.Button({
 		iconCls: 'icon-favorite',
 		tooltip: i18n_favorite_map_views,
-		hidden: !GLOBAL.vars.user.isAdmin,
+		disabled: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -2389,7 +2387,7 @@
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: i18n_create_predefined_legend_sets,
-		hidden: !GLOBAL.vars.user.isAdmin,
+		disabled: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2410,7 +2408,7 @@
 	var adminButton = new Ext.Button({
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
-		hidden: !GLOBAL.vars.user.isAdmin,
+		disabled: !GLOBAL.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2421,7 +2419,7 @@
 	
 	var helpButton = new Ext.Button({
 		iconCls: 'icon-help',
-		tooltip: i18n_help ,
+		tooltip: i18n_help,
 		handler: function() {
 			var c = Ext.getCmp('center').x;
 			var e = Ext.getCmp('east').x;
@@ -2459,9 +2457,9 @@
 			exitButton,' ',' '
 		]
 	});
-    
+
 	/* Section: viewport */
-    viewport = new Ext.Viewport({
+    var viewport = new Ext.Viewport({
         id: 'viewport',
         layout: 'border',
         margins: '0 0 5 0',

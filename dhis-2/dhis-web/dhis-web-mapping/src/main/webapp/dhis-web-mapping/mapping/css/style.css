@@ -12,19 +12,19 @@
     padding-left: 8px;
 }
 .x-form-field {
-	font:10px lucida sans unicode,ubuntu,arial,tahoma,helvetica,sans-serif;
+	font:10px lucida sans unicode,ubuntu,arial;
 }
 .x-form-item label.x-form-item-label {
     padding:3px 3px 3px 4px;
 }
 .x-combo-list {
-	font:10px lucida sans unicode,ubuntu,arial,tahoma,helvetica,sans-serif;
+	font:10px lucida sans unicode,ubuntu,arial;
 }
 .x-tree-node {
-	font:10px lucida sans unicode,ubuntu,arial,tahoma,helvetica,sans-serif;
+	font:10px lucida sans unicode,ubuntu,arial;
 }
 .x-panel-mc {
-	font:10px lucida sans unicode,ubuntu,arial,tahoma,helvetica,sans-serif;
+	font:10px lucida sans unicode,ubuntu,arial;
 }
 .x-tree-node a span, .x-dd-drag-ghost a span {
 	padding:1px 3px 1px 4px;
@@ -50,11 +50,11 @@
     padding:0;
 }
 .ux-mselect-item {
-	font:10px lucida sans unicode,ubuntu,tahoma,arial,helvetica,sans-serif;
+	font:10px lucida sans unicode,ubuntu,tahoma,arial;
 	padding:1px 1px 1px 3px;
 }
 .x-box-mc {
-	font-family:ubuntu,arial,tahoma,helvetica;
+	font-family:ubuntu,arial;
 	font-weight:normal;
 }
 .loading-indicator {
@@ -244,7 +244,8 @@
 
 /* Ext ComboBox */
 .combo-disabled {
-    opacity:0.70;
+    opacity:0.60;
+    filter:alpha(opacity=60);
     color:#000000;
     border-color:#9ca1b8;
     cursor: default;
