@@ -579,121 +579,23 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             xtype: 'textfield',
             name: 'boundary',
             fieldLabel: i18n_boundary,
-            typeAhead: true,
             editable: false,
-            valueField: 'id',
-            displayField: 'name',
-            mode: 'remote',
-            forceSelection: true,
-            triggerAction: 'all',
             emptyText: GLOBAL.conf.emptytext,
 			labelSeparator: GLOBAL.conf.labelseparator,
-            selectOnFocus: true,
             width: GLOBAL.conf.combo_width,
+            style: 'cursor:pointer',
             node: {attributes: {hasChildrenWithCoordinates: false}},
             selectedNode: null,
-            style: 'cursor:pointer',
+            treeWindow: false,
             listeners: {
                 'focus': {
                     scope: this,
                     fn: function(tf) {
-                        if (GLOBAL.vars.topLevelUnit) {
-                            Ext.getCmp('tree_w2').show();
+                        if (tf.treeWindow) {
+                            tf.treeWindow.show();
                         }
                         else {
-                            Ext.Ajax.request({
-                                url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
-                                params: {level: 1},
-                                method: 'POST',
-                                scope: this,
-                                success: function(r) {
-                                    var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
-                                    GLOBAL.vars.topLevelUnit = {
-                                        id: rootNode.id,
-                                        name: rootNode.name,
-                                        hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
-                                    };
-                                    
-                                    var w = new Ext.Window({
-                                        id: 'tree_w2',
-                                        title: 'Boundary',
-                                        closeAction: 'hide',
-                                        autoScroll: true,
-                                        height: 'auto',
-                                        autoHeight: true,
-                                        width: GLOBAL.conf.window_width,
-                                        items: [
-                                            {
-                                                xtype: 'panel',
-                                                bodyStyle: 'padding:8px; background-color:#ffffff',
-                                                items: [
-                                                    {html: '<div class="window-info">Select outer boundary</div>'},
-                                                    {
-                                                        xtype: 'treepanel',
-                                                        bodyStyle: 'background-color:#ffffff',
-                                                        height: screen.height / 3,
-                                                        autoScroll: true,
-                                                        lines: false,
-                                                        loader: new Ext.tree.TreeLoader({
-                                                            dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
-                                                        }),
-                                                        root: {
-                                                            id: GLOBAL.vars.topLevelUnit.id,
-                                                            text: GLOBAL.vars.topLevelUnit.name,
-                                                            hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
-                                                            nodeType: 'async',
-                                                            draggable: false,
-                                                            expanded: true
-                                                        },
-                                                        clickedNode: null,
-                                                        listeners: {
-                                                            'click': {
-                                                                scope: this,
-                                                                fn: function(n) {
-                                                                    this.form.findField('boundary').selectedNode = n;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        bbar: [
-                                            '->',
-                                            {
-                                                xtype: 'button',
-                                                text: i18n_apply,
-                                                iconCls: 'icon-assign',
-                                                scope: this,
-                                                handler: function() {
-                                                    var node = this.form.findField('boundary').selectedNode;
-                                                    if (!node) {
-                                                        return;
-                                                    }
-
-                                                    if (Ext.getCmp('locatefeature_w')) {
-                                                        Ext.getCmp('locatefeature_w').destroy();
-                                                    }
-                                                    
-                                                    this.form.findField('mapview').clearValue();
-                                                    this.updateValues = true;
-                                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level, null, null);
-                                                    
-                                                    this.form.findField('boundary').setValue(node.attributes.text);
-                                                    Ext.getCmp('tree_w2').hide();
-                                                    
-                                                    this.loadGeoJson();
-                                                }
-                                            }
-                                        ]
-                                    });
-                                    
-                                    var x = Ext.getCmp('center').x + 15;
-                                    var y = Ext.getCmp('center').y + 41;
-                                    w.setPosition(x,y);
-                                    w.show();
-                                }
-                            });
+							this.createSingletonCmp.treeWindow.call(this);
                         }
                     }
                 }
@@ -703,9 +605,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         {
             xtype: 'textfield',
             name: 'level',
+            fieldLabel: i18n_level,
             disabled: true,
             disabledClass: 'combo-disabled',
-            fieldLabel: i18n_level,
             editable: false,
             emptyText: GLOBAL.conf.emptytext,
 			labelSeparator: GLOBAL.conf.labelseparator,
@@ -938,6 +840,103 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
         ];
     },
+    
+    createSingletonCmp: {
+		treeWindow: function() {
+			Ext.Ajax.request({
+				url: GLOBAL.conf.path_commons + 'getOrganisationUnits' + GLOBAL.conf.type,
+				params: {level: 1},
+				method: 'POST',
+				scope: this,
+				success: function(r) {
+					var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
+					GLOBAL.vars.topLevelUnit = {
+						id: rootNode.id,
+						name: rootNode.name,
+						hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
+					};
+					
+					var w = new Ext.Window({
+						title: 'Boundary',
+						closeAction: 'hide',
+						autoScroll: true,
+						height: 'auto',
+						autoHeight: true,
+						width: GLOBAL.conf.window_width,
+						items: [
+							{
+								xtype: 'panel',
+								bodyStyle: 'padding:8px; background-color:#ffffff',
+								items: [
+									{html: '<div class="window-info">Select outer boundary</div>'},
+									{
+										xtype: 'treepanel',
+										bodyStyle: 'background-color:#ffffff',
+										height: screen.height / 3,
+										autoScroll: true,
+										lines: false,
+										loader: new Ext.tree.TreeLoader({
+											dataUrl: GLOBAL.conf.path_mapping + 'getOrganisationUnitChildren' + GLOBAL.conf.type
+										}),
+										root: {
+											id: GLOBAL.vars.topLevelUnit.id,
+											text: GLOBAL.vars.topLevelUnit.name,
+											hasChildrenWithCoordinates: GLOBAL.vars.topLevelUnit.hasChildrenWithCoordinates,
+											nodeType: 'async',
+											draggable: false,
+											expanded: true
+										},
+										clickedNode: null,
+										listeners: {
+											'click': {
+												scope: this,
+												fn: function(n) {
+													this.form.findField('boundary').selectedNode = n;
+												}
+											}
+										}
+									}
+								]
+							}
+						],
+						bbar: [
+							'->',
+							{
+								xtype: 'button',
+								text: i18n_apply,
+								iconCls: 'icon-assign',
+								scope: this,
+								handler: function() {
+									var node = this.form.findField('boundary').selectedNode;
+									if (!node) {
+										return;
+									}
+
+									if (Ext.getCmp('locatefeature_w')) {
+										Ext.getCmp('locatefeature_w').destroy();
+									}
+									
+									this.form.findField('mapview').clearValue();
+									this.updateValues = true;
+									this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level, null, null);
+									this.form.findField('boundary').setValue(node.attributes.text);
+									
+									this.form.findField('boundary').treeWindow.hide();									
+									this.loadGeoJson();
+								}
+							}
+						]
+					});
+					
+					var x = Ext.getCmp('center').x + 15;
+					var y = Ext.getCmp('center').y + 41;
+					w.setPosition(x,y);
+					w.show();
+					this.form.findField('boundary').treeWindow = w;
+				}
+			});
+		}
+	},
     
     createSelectFeatures: function() {
         var scope = this;
