@@ -27,16 +27,20 @@ package org.hisp.dhis.user.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.datadictionary.DataDictionary;
+import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
 
 import com.opensymphony.xwork2.Action;
 
 public class GetUserGroupListAction
-    implements Action
+    extends ActionPagingSupport<UserGroup>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -60,6 +64,17 @@ public class GetUserGroupListAction
         return userGroupList;
     }
 
+    private String key;
+    
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -67,7 +82,20 @@ public class GetUserGroupListAction
     public String execute()
         throws Exception
     {
-        userGroupList = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
+        if ( isNotBlank( key ) ) // Filter on key only if set
+        {
+            this.paging = createPaging( userGroupService.getUserGroupCountByName( key ) );
+            
+            userGroupList = new ArrayList<UserGroup>( userGroupService.getUserGroupsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+        }
+        else
+        {
+            this.paging = createPaging( userGroupService.getUserGroupCount() );
+            
+            userGroupList = new ArrayList<UserGroup>( userGroupService.getUserGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
+        }
+        
+//        userGroupList = new ArrayList<UserGroup>( userGroupService.getAllUserGroups() );
         
         return SUCCESS;
     }

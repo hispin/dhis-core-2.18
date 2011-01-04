@@ -18,4 +18,12 @@ public interface UserGroupService
     Collection<UserGroup> getAllUserGroups();
     
     UserGroup getUserGroupByName( String name );
+
+    Collection<UserGroup> getUserGroupsBetween( int first, int max );
+    
+    Collection<UserGroup> getUserGroupsBetweenByName( String name, int first, int max );
+    
+    int getUserGroupCount();
+    
+    int getUserGroupCountByName( String name );    
 }
