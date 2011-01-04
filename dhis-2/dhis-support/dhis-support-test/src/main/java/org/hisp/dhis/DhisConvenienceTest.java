@@ -91,6 +91,7 @@ import org.hisp.dhis.source.Source;
 import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.hisp.dhis.validation.ValidationRule;
@@ -882,6 +883,16 @@ public abstract class DhisConvenienceTest
         user.setPhoneNumber( "PhoneNumber" + uniqueCharacter );
 
         return user;
+    }
+    
+    public static UserGroup createUserGroup( char uniqueCharacter, Set<User> users )
+    {
+        UserGroup userGroup = new UserGroup();
+
+        userGroup.setName( "UserGroup" + uniqueCharacter );
+        userGroup.setMembers( users );
+
+        return userGroup;
     }
 
     protected static Program createProgram( char uniqueCharacter, Set<ProgramStage> programStages,
