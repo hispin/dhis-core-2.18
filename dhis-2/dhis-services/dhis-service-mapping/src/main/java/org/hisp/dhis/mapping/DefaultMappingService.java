@@ -627,8 +627,11 @@ public class DefaultMappingService
     {
         MapView mapView = mappingStore.getMapView( id );
 
-        mapView.getParentOrganisationUnit().setLevel(
-            organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+        if ( mapView != null )
+        {
+            mapView.getParentOrganisationUnit().setLevel(
+                organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
+        }
 
         return mapView;
     }
@@ -641,7 +644,7 @@ public class DefaultMappingService
     public Collection<MapView> getAllMapViews()
     {
         Collection<MapView> mapViews = mappingStore.getAllMapViews();
-        
+
         if ( mapViews.size() > 0 )
         {
             for ( MapView mapView : mapViews )
