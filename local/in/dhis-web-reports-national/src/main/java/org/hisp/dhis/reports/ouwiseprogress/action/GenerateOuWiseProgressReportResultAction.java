@@ -143,7 +143,8 @@ public class GenerateOuWiseProgressReportResultAction
 
         // Initialization
         raFolderName = reportService.getRAFolderName();
-        simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+        simpleDateFormat = new SimpleDateFormat( "MMM-dd" );
+        SimpleDateFormat dayFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         // Getting Report Details       
         String deCodesXMLFileName = "";
@@ -201,6 +202,22 @@ public class GenerateOuWiseProgressReportResultAction
                 {
                     tempStr = currentOrgUnit.getName();
                 }
+                else if( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
+                {
+                    tempStr = selectedOrgUnit.getParent().getName();
+                }
+                else if( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                {
+                    tempStr = selectedOrgUnit.getParent().getParent().getName();
+                }
+                else if ( deCodeString.equalsIgnoreCase( "DATE-FROM" ) )
+                {
+                    tempStr = dayFormat.format( sDate );
+                }
+                else if ( deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+                {
+                    tempStr = dayFormat.format( eDate );
+                }
                 else if ( deCodeString.equalsIgnoreCase( "MONTH-FROM" ) )
                 {
                     tempStr = simpleDateFormat.format( sDate );
@@ -221,62 +238,50 @@ public class GenerateOuWiseProgressReportResultAction
                     }
                 }
 
-                int tempColNo = 0;
                 int tempRowNo = report_inDesign.getRowno();
-                if ( tempRowNo > 6 )
-                {
-                    tempColNo = report_inDesign.getColno() + orgUnitCount;
-                }
-                else
-                {
-                    tempColNo = report_inDesign.getColno();
-                }
+                int tempColNo = report_inDesign.getColno();
                 int sheetNo = report_inDesign.getSheetno();
                 WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
 
-                if ( tempStr == null || tempStr.equals( " " ) )
+                if ( reportModelTB.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
                 {
-                    WritableCellFormat wCellformat = new WritableCellFormat();
-
-                    wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                    wCellformat.setWrap( true );
-                    wCellformat.setAlignment( Alignment.CENTRE );
-
-                    sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
-                }
-                else
-                {
-                    if ( reportModelTB.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
+                    if( deCodeString.equalsIgnoreCase( "FACILITY" ) || deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITYPP" ) 
+                        || deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || deCodeString.equalsIgnoreCase( "MONTH-TO" ) 
+                        || deCodeString.equalsIgnoreCase( "DATE-FROM" ) || deCodeString.equalsIgnoreCase( "DATE-TO" ) )
                     {
-                        if( deCodeString.equalsIgnoreCase( "FACILITY" ) || deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || deCodeString.equalsIgnoreCase( "MONTH-TO" ) )
-                        {
-                        }
+                    }
+                    else
+                    {
+                        tempColNo += orgUnitCount;
+                    }
 
-                        WritableCellFormat wCellformat;
+                    WritableCellFormat wCellformat;
 
-                        if( orgUnitCount == orgUnitList.size()-1 )
-                        {
-                            wCellformat = new WritableCellFormat( arialBold );
-                        }
-                        else
-                        {
-                            wCellformat = new WritableCellFormat();
-                        }
-                        
-                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-                        wCellformat.setAlignment( Alignment.CENTRE );
-                        wCellformat.setWrap( true );
+                    if( orgUnitCount == orgUnitList.size()-1 )
+                    {
+                        wCellformat = new WritableCellFormat( arialBold );
+                    }
+                    else
+                    {
+                        wCellformat = new WritableCellFormat();
+                    }
+                    
+                    wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                    wCellformat.setAlignment( Alignment.CENTRE );
+                    wCellformat.setWrap( true );
 
-                        try
-                        {
-                            sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
-                        }
-                        catch( Exception e )
-                        {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
-                        }
+                    System.out.println( tempColNo + " : " + tempRowNo + " : " + tempStr );
+                    
+                    try
+                    {
+                        sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
+                    }
+                    catch( Exception e )
+                    {
+                        sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
                     }
                 }
+                
                 count1++;
             }// inner while loop end
             orgUnitCount++;

@@ -1,18 +1,13 @@
 package org.hisp.dhis.reports.benificiaryinfo.action;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
-import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.util.Report;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,7 +21,6 @@ import com.opensymphony.xwork2.Action;
 public class BenificiaryInfoReportsFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -38,13 +32,6 @@ public class BenificiaryInfoReportsFormAction
         this.reportService = reportService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
@@ -54,20 +41,6 @@ public class BenificiaryInfoReportsFormAction
     public List<Report> getReportList()
     {
         return reportList;
-    }
-
-    private List<Period> periodList;
-
-    public List<Period> getPeriodList()
-    {
-        return periodList;
-    }
-
-    private SimpleDateFormat simpleDateFormat;
-
-    public SimpleDateFormat getSimpleDateFormat()
-    {
-        return simpleDateFormat;
     }
 
     private String raFolderName;
@@ -82,13 +55,7 @@ public class BenificiaryInfoReportsFormAction
     {
         raFolderName = reportService.getRAFolderName();
 
-        periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
-
         reportList = new ArrayList<Report>();
-
-        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-
-        System.out.println( "periodList.size " + periodList.size() );
 
         getSelectedReportList();
 

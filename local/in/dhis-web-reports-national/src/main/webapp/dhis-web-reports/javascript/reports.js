@@ -1,4 +1,22 @@
 
+
+function getSelectedOrgUnit( orgUnitIds )
+{
+	jQuery.postJSON("getOrgUnitName.action",{
+    	  id : orgUnitIds[0]
+     }, function( json ){
+           setFieldValue( "ouNameTB",json.organisationUnit.name );
+     });
+}
+
+function responseGetSelectedOrgUnitName( orgunit )
+{
+    var element = dataelement.getElementsByTagName("orgunit");
+    var orgUnitname = element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
+    document.reportForm.ouNameTB.value = orgUnitname;
+}
+
+
 function checkStartDate( dtStr )
 {
 	
