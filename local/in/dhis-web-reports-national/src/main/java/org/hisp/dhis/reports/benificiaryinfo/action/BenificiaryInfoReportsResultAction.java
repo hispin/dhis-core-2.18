@@ -3,7 +3,6 @@ package org.hisp.dhis.reports.benificiaryinfo.action;
 //@23-06-2010 - Date from and to is solved.
 //Todo merging of cells for same village
 
-// <editor-fold defaultstate="collapsed" desc="imports">
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,8 +27,10 @@ import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
+import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
-import jxl.format.Font;
+import jxl.write.Label;
+import jxl.write.WritableCell;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -37,11 +39,16 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -51,6 +58,7 @@ import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.relationship.RelationshipTypeService;
 import org.hisp.dhis.reports.ReportService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -60,27 +68,14 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.opensymphony.xwork2.Action;
-import java.util.Collections;
-import jxl.format.Colour;
-import jxl.write.Label;
-import jxl.write.WritableCell;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.relationship.RelationshipTypeService;
 
-// </editor-fold>
 public class BenificiaryInfoReportsResultAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    // <editor-fold defaultstate="collapsed" desc="dependencies">
     RelationshipTypeService relationshipTypeService;
 
     public void setRelationshipTypeService( RelationshipTypeService relationshipTypeService )
@@ -177,11 +172,10 @@ public class BenificiaryInfoReportsResultAction
         this.format = format;
     }
 
-    // </editor-fold>
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-    // <editor-fold defaultstate="collapsed" desc="Properties">
+
     private Map<Patient, Set<ProgramStageInstance>> visitsByPatients = new HashMap<Patient, Set<ProgramStageInstance>>();
 
     public Map<Patient, Set<ProgramStageInstance>> getVisitsByPatients()
@@ -316,9 +310,6 @@ public class BenificiaryInfoReportsResultAction
 
     private int rowCount;
 
-    // </editor-fold>
-    // private String orgUnitInfo = "-1";
-    // private String aggDataTableName;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -331,7 +322,7 @@ public class BenificiaryInfoReportsResultAction
         // Initialization
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         deCodesXMLFileName = reportList + "DECodes.xml";
-        // System.out.println( "reportList = " + reportList );
+
         deCodeType = new ArrayList<String>();
         serviceType = new ArrayList<String>();
 
@@ -340,18 +331,15 @@ public class BenificiaryInfoReportsResultAction
         colList = new ArrayList<Integer>();
         if ( includePeriod != null )
         {
-            // System.out.println( "startDate = " + startDate + " endDate = " +
-            // endDate + " reportname  = " + reportFileNameTB +
-            // " includePeriod = " + includePeriod );
             Calendar c = Calendar.getInstance();
             c.setTime( format.parseDate( startDate ) );
             c.add( Calendar.DATE, -1 ); // number of days to add
-            startDate = format.formatDate( c.getTime() ); // dt is now the new
-                                                          // date
+            startDate = format.formatDate( c.getTime() ); 
+            
             c.setTime( format.parseDate( endDate ) );
             c.add( Calendar.DATE, 1 ); // number of days to add
-            endDate = format.formatDate( c.getTime() ); // dt is now the new
-                                                        // date
+            endDate = format.formatDate( c.getTime() ); 
+            
             sDate = format.parseDate( startDate );
             eDate = format.parseDate( endDate );
         }
@@ -366,8 +354,6 @@ public class BenificiaryInfoReportsResultAction
         return SUCCESS;
     }
 
-    // <editor-fold defaultstate="collapsed"
-    // desc="generatFeedbackReport Method">
     public void generatFeedbackReport()
         throws Exception
     {
@@ -375,7 +361,7 @@ public class BenificiaryInfoReportsResultAction
 
         WritableWorkbook outputReportWorkbook = Workbook
             .createWorkbook( new File( outputReportPath ), templateWorkbook );
-        // System.out.println( "outputReportWorkbook = "+outputReportWorkbook );
+
         // Cell formatting
         WritableCellFormat wCellformat = new WritableCellFormat();
         wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
@@ -392,26 +378,21 @@ public class BenificiaryInfoReportsResultAction
 
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
-        // System.out.println( "______________ " + reportLevelTB );
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-        // Collection<PatientIdentifier> patientIdentifiers =
-        // patientIdentifierService.getPatientIdentifiersByOrgUnit(
-        // selectedOrgUnit );
-
         Collection<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>();
+
         // Getting Programs
         rowCount = 0;
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
         Program curProgram = programService.getProgram( Integer.parseInt( reportLevelTB ) );
-        // /System.out.println( "curProgram = " + curProgram.getName() );
+
         String tempStr = "";
 
         Map<OrganisationUnit, Integer> ouAndLevel = new HashMap<OrganisationUnit, Integer>();
         if ( curProgram != null )
         {
-
             WritableSheet sheet0 = outputReportWorkbook.getSheet( 0 );
-            // System.out.println( "curProgram = " + curProgram.getName() );
+
             int count1 = 0;
             int rowStart = 0;
 
@@ -420,48 +401,29 @@ public class BenificiaryInfoReportsResultAction
 
             orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
             List<Integer> levelsList = new ArrayList<Integer>();
-            // <editor-fold defaultstate="collapsed" desc="for loop for ou">
+            
             for ( OrganisationUnit ou : orgUnitList )
             {
-                // <editor-fold defaultstate="collapsed"
-                // desc="saving level of ou in map and list">
                 int level = organisationUnitService.getLevelOfOrganisationUnit( ou );
 
                 ouAndLevel.put( ou, level );
                 if ( !levelsList.contains( level ) )
                 {
-                    // System.out.println("ou "+ou.getName() +
-                    // " level = "+level);
                     levelsList.add( level );
                 }
-                // </editor-fold>
+
                 List<Patient> patientListByOuProgram = new ArrayList<Patient>();
                 List<Patient> patientListByOu = new ArrayList<Patient>();
-                // <editor-fold defaultstate="collapsed"
-                // desc="getting patientlist for ou and taking pi">
-                patientListByOu.addAll( patientService.getPatients( ou ) );// getting
-                                                                                    // all
-                                                                                    // the
-                                                                                    // patients
-                                                                                    // by
-                                                                                    // ou
+                patientListByOu.addAll( patientService.getPatients( ou ) );
+                
                 Iterator<Patient> patientIterator = patientListByOu.iterator();
                 while ( patientIterator.hasNext() )
                 {
-                    Patient patient = patientIterator.next();// taking patient
-                                                             // from
-                                                             // patientListByChild
-                    Set<Program> patientProgramList = patient.getPrograms(); // getting
-                                                                             // enrolled
-                                                                             // programs
-                                                                             // of
-                                                                             // patient
-                    // checking if patient is enrolled to curprog then adding
-                    // them in one list
+                    Patient patient = patientIterator.next();
+                    Set<Program> patientProgramList = patient.getPrograms();
                     Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
                     programInstances = programInstanceService.getProgramInstances( patient, curProgram );
-                    // System.out.println( "pi size  = "+programInstances.size()
-                    // );
+
                     for ( ProgramInstance pi : programInstances )
                     {
                         if ( patientProgramList != null )
@@ -486,33 +448,25 @@ public class BenificiaryInfoReportsResultAction
                         }
                     }
                 }
-                // System.out.println(
-                // "patientListByOuProgram = "+patientListByOuProgram.size() );
+
                 if ( patientListByOuProgram.size() > 0 )
                 {
                     ouList.add( ou );
                     ouPatientList.put( ou.getName(), patientListByOuProgram );
-                    // System.out.println( "ou = " + ou.getName() +
-                    // " patientssise = " + patientListByOuProgram.size() );
                 }
-                // </editor-fold>
             }
-            // </editor-fold>
 
-            // <editor-fold defaultstate="collapsed" desc="getting rowStart">
             for ( String deCodeString : deCodesList )
             {
-                String sType = (String) serviceType.get( count1 );//
+                String sType = (String) serviceType.get( count1 );
                 if ( sType.equalsIgnoreCase( "rowStart" ) )
                 {
                     rowStart = Integer.parseInt( deCodeString );
                 }
                 count1++;
             }
-            // </editor-fold>
+
             int lastColNo = colList.get( colList.size() - 1 );
-            // <editor-fold defaultstate="collapsed"
-            // desc="adding oulevelname in report as column name">
             for ( int i = levelsList.size() - 1; i >= 0; i-- )
             {
                 int level = levelsList.get( i );
@@ -520,27 +474,21 @@ public class BenificiaryInfoReportsResultAction
                 sheet0.addCell( new Label( lastColNo, rowStart - 1, organisationUnitService
                     .getOrganisationUnitLevelByLevel( level ).getName(), deWCellformat ) );
             }
-            // </editor-fold>
 
-            // <editor-fold defaultstate="collapsed" desc="for loop for ouList">
             for ( OrganisationUnit ou : ouList )
             {
                 List<Patient> patientsList = ouPatientList.get( ou.getName() );
-                // <editor-fold defaultstate="collapsed"
-                // desc="for loop for patientsList">
                 for ( Patient patient : patientsList )
                 {
                     int colNo = 0;
                     int rowNo = rowStart + rowCount;
                     count1 = 0;
-                    // <editor-fold defaultstate="collapsed"
-                    // desc="for loop for deCodesList">
+
                     for ( String deCodeString : deCodesList )
                     {
                         tempStr = "";
                         String sType = (String) serviceType.get( count1 );
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = caseProperty">
+
                         if ( sType.equalsIgnoreCase( "caseProperty" ) )
                         {
                             if ( deCodeString.equalsIgnoreCase( "Name" ) )
@@ -580,9 +528,6 @@ public class BenificiaryInfoReportsResultAction
                                 }
                             }
                         }
-                        // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = caseAttribute">
                         else if ( sType.equalsIgnoreCase( "caseAttribute" ) )
                         {
                             int deCodeInt = Integer.parseInt( deCodeString );
@@ -599,14 +544,9 @@ public class BenificiaryInfoReportsResultAction
                                 tempStr = " ";
                             }
                         }
-                        // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = identifiertype">
                         else if ( sType.equalsIgnoreCase( "identifiertype" ) )
                         {
                             int deCodeInt = Integer.parseInt( deCodeString );
-                            // _______________________Id.
-                            // no._______________________
                             PatientIdentifierType patientIdentifierType = patientIdentifierTypeService
                                 .getPatientIdentifierType( deCodeInt );
                             if ( patientIdentifierType != null )
@@ -623,51 +563,31 @@ public class BenificiaryInfoReportsResultAction
                                 }
                             }
                         }
-                        // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = srno">
                         else if ( sType.equalsIgnoreCase( "srno" ) )
                         {
                             int tempNum = 1 + rowCount;
                             tempStr = String.valueOf( tempNum );
                         }
-                        // </editor-fold>
-                        // <editor-fold defaultstate="collapsed"
-                        // desc="stype = rowStart">
                         if ( !sType.equalsIgnoreCase( "rowStart" ) && !sType.equalsIgnoreCase( "reportProperty" ) )
                         {
                             int tempColNo = colList.get( count1 );
                             int sheetNo = sheetList.get( count1 );
                             sheet0 = outputReportWorkbook.getSheet( sheetNo );
                             WritableCell cell = sheet0.getWritableCell( tempColNo, rowNo );
-                            // System.out.println(
-                            // "_______________________ count = "
-                            // +count1+"tempColNo = " + tempColNo + " rowNo = "
-                            // + rowNo + " value = " + tempStr );
                             sheet0.addCell( new Label( tempColNo, rowNo, tempStr, wCellformat ) );
                             colNo = tempColNo;
                         }
-                        // </editor-fold>
                         count1++;
                     }// end of decodelist for loop
-                    // </editor-fold>
 
-                    // <editor-fold defaultstate="collapsed"
-                    // desc="adding ou in report at the end column">
                     OrganisationUnit ouname = ou;
                     for ( int i = levelsList.size() - 1; i >= 0; i-- )
                     {
                         colNo++;
                         int level = organisationUnitService.getLevelOfOrganisationUnit( ouname );
-                        // System.out.println(
-                        // "___________i = "+i+" levelsList.get( i ) = "
-                        // +levelsList.get( i ) + " level = "+level +
-                        // " ou = "+ouname.getName() );
                         if ( levelsList.get( i ) == level )
                         {
                             sheet0.addCell( new Label( colNo, rowNo, ouname.getName(), wCellformat ) );
-                            // System.out.println( colNo+" "+ rowNo+" "+
-                            // ou.getName()+" "+ wCellformat );
                         }
                         ouname = ouname.getParent();
                     }
@@ -675,10 +595,7 @@ public class BenificiaryInfoReportsResultAction
                     rowCount++;
                     rowNo++;
                 }// end of patientlist
-                // </editor-fold>
             }// end of oulist
-            // </editor-fold>
-
         }// end of if program not null loop
 
         outputReportWorkbook.write();
@@ -686,8 +603,6 @@ public class BenificiaryInfoReportsResultAction
 
         fileName = reportFileNameTB.replace( ".xls", "" );
         fileName += "_" + selectedOrgUnit.getShortName() + ".xls";
-        // System.out.println( "fileName = " + fileName + " outputReportPath = "
-        // + outputReportPath );
 
         File outputReportFile = new File( outputReportPath );
 
@@ -696,12 +611,10 @@ public class BenificiaryInfoReportsResultAction
         outputReportFile.deleteOnExit();
     }
 
-    // </editor-fold>
     /*
      * Returns a list which contains the DataElementCodes
      */
 
-    // <editor-fold defaultstate="collapsed" desc="getChildOrgUnitTree method">
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
@@ -717,9 +630,7 @@ public class BenificiaryInfoReportsResultAction
         return orgUnitTree;
     }// getChildOrgUnitTree end
 
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="getDECodes method">
     public List<String> getDECodes( String fileName )
     {
         List<String> deCodes = new ArrayList<String>();
@@ -782,9 +693,6 @@ public class BenificiaryInfoReportsResultAction
         return deCodes;
     }
 
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="getPreviousPeriod method">
     public Period getPreviousPeriod( Date sDate )
     {
         Period period = new Period();
@@ -806,9 +714,6 @@ public class BenificiaryInfoReportsResultAction
         return period;
     }
 
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="getNextPeriod method">
     public Period getNextPeriod( Date sDate )
     {
         Period period = new Period();
@@ -830,9 +735,6 @@ public class BenificiaryInfoReportsResultAction
         return period;
     }
 
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="getPeriodByMonth method">
     public Period getPeriodByMonth( int month, int year, PeriodType periodType )
     {
         int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -867,10 +769,6 @@ public class BenificiaryInfoReportsResultAction
         return newPeriod;
     }
 
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed"
-    // desc="getStartingEndingPeriods method">
     public List<Calendar> getStartingEndingPeriods( String deType, Date sDate, Date eDate )
     {
 
@@ -931,5 +829,4 @@ public class BenificiaryInfoReportsResultAction
 
         return calendarList;
     }
-    // </editor-fold>
 }

@@ -60,19 +60,11 @@ public class GetReportsAction
 
     private String reportType;
     
-    
     public void setReportType( String reportType )
     {
         this.reportType = reportType;
     }
-/*
-    private String reportTypeName;
 
-    public void setReportTypeName( String reportTypeName )
-    {
-        this.reportTypeName = reportTypeName;
-    }
-*/
     private List<Report_in> reportList;
 
     public List<Report_in> getReportList()

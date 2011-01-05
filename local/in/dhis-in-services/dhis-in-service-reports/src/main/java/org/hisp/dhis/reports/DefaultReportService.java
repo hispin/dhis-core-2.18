@@ -34,6 +34,10 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.survey.Survey;
+import org.hisp.dhis.survey.SurveyService;
+import org.hisp.dhis.surveydatavalue.SurveyDataValue;
+import org.hisp.dhis.surveydatavalue.SurveyDataValueService;
 import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -130,6 +134,20 @@ public class DefaultReportService
         this.organisationUnitService = organisationUnitService;
     }
     
+    private SurveyService surveyService;
+
+    public void setSurveyService( SurveyService surveyService )
+    {
+        this.surveyService = surveyService;
+    }
+
+    private SurveyDataValueService surveyDataValueService;
+
+    public void setSurveyDataValueService( SurveyDataValueService surveyDataValueService )
+    {
+        this.surveyDataValueService = surveyDataValueService;
+    }
+
     // -------------------------------------------------------------------------
     // Report_in
     // -------------------------------------------------------------------------
@@ -1485,4 +1503,277 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
         return deInfo.toString();
     }
     
+    
+    public String getResultSurveyValue( String formula, OrganisationUnit organisationUnit )
+    {
+        try
+        {
+            int deFlag1 = 0;
+            int deFlag2 = 0;
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                String surveyIdString = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString.length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int indicatorId = Integer.parseInt( replaceString );
+
+                int surveyId = Integer.parseInt( surveyIdString );
+
+                Indicator indicator = indicatorService.getIndicator( indicatorId );
+
+                Survey survey = surveyService.getSurvey( surveyId );
+
+                if ( indicator == null || survey == null)
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+
+                SurveyDataValue surveyDataValue = new SurveyDataValue();
+
+                surveyDataValue = surveyDataValueService.getSurveyDataValue(organisationUnit, survey, indicator);
+
+                if ( surveyDataValue == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+
+                Double surveyValue = Double.valueOf( surveyDataValue.getValue() );
+
+                if ( surveyValue == null )
+                {
+                    replaceString = NULL_REPLACEMENT;
+                }
+                else
+                {
+                    replaceString = String.valueOf( surveyValue );
+                    deFlag2 = 1;
+                }
+
+                matcher.appendReplacement( buffer, replaceString );
+            }
+
+            matcher.appendTail( buffer );
+
+            String resultValue = "";
+            if ( deFlag1 == 0 )
+            {
+                double d = 0.0;
+                try
+                {
+                    d = MathUtils.calculateExpression( buffer.toString() );
+                }
+                catch ( Exception e )
+                {
+                    d = 0.0;
+                }
+                if ( d == -1 )
+                    d = 0.0;
+                else
+                {
+                    d = Math.round( d * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+                    resultValue = "" + d;
+                }
+
+                if ( deFlag2 == 0 )
+                {
+                    resultValue = " ";
+                }
+            }
+            else
+            {
+                resultValue = buffer.toString();
+            }
+            //System.out.println("Result in Survey : "+ resultValue);
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal Indicator and survey id", ex );
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Get Aggregated Result for dataelement expression from ReportTable
+    // -------------------------------------------------------------------------
+    public String getResultDataValueFromReportTable( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
+    {
+        int deFlag1 = 0;
+        int isAggregated = 0;
+
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( dataElement == null || optionCombo == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+                if ( dataElement.getType().equalsIgnoreCase( "int" ) )
+                {
+                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
+                        startDate, endDate, organisationUnit );
+                    if ( aggregatedValue == null )
+                    {
+                        replaceString = NULL_REPLACEMENT;
+                    }
+                    else
+                    {
+                        replaceString = String.valueOf( aggregatedValue );
+
+                        isAggregated = 1;
+                    }
+                }
+                else
+                {
+                    deFlag1 = 1;
+                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
+                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
+                    Period tempPeriod = new Period();
+                    if ( periodList == null || periodList.isEmpty() )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+                    else
+                    {
+                        tempPeriod = (Period) periodList.get( 0 );
+                    }
+
+                    DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
+                        optionCombo );
+
+                    if ( dataValue != null && dataValue.getValue() != null )
+                    {
+                        replaceString = dataValue.getValue();
+                    }
+                    else
+                    {
+                        replaceString = "";
+                    }
+
+                    if ( replaceString == null )
+                    {
+                        replaceString = "";
+                    }
+                }
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+            
+            if ( deFlag1 == 0 )
+            {
+                double d = 0.0;
+                try
+                {
+                    d = MathUtils.calculateExpression( buffer.toString() );
+                }
+                catch ( Exception e )
+                {
+                    d = 0.0;
+                    resultValue = "";
+                }
+                if ( d == -1 )
+                {
+                    d = 0.0;
+                    resultValue = "";
+                }
+                else
+                {
+                    // This is to display financial data as it is like 2.1476838
+                    resultValue = "" + d;
+
+                    // These lines are to display financial data that do not
+                    // have decimals
+                    d = d * 10;
+                    if ( d % 10 == 0 )
+                    {
+                        resultValue = "" + (int) d / 10;
+                    }
+
+                    d = d / 10;
+
+                    // These line are to display non financial data that do not
+                    // require decimals
+                    if ( !(reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" )) )
+                    {
+                        resultValue = "" + (int) d;
+                    }
+                }
+
+            }
+            else
+            {
+                resultValue = buffer.toString();
+            }
+
+            if( isAggregated == 0 )
+            {
+                resultValue = " ";
+            }
+
+            if ( resultValue.equalsIgnoreCase( "" ) )
+            {
+                resultValue = " ";
+            }
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    
+    Double getAggregatedDataValueFromReportTable( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit )
+    {
+        Double aggValue = null;
+        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+        Period tempPeriod = new Period();
+        
+        
+        
+        return aggValue;
+    }
 }

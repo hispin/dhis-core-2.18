@@ -39,6 +39,7 @@ import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.reports.ReportService;
@@ -942,9 +943,11 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         OrganisationUnit rootOrgUnit = organisationUnitService.getRootOrganisationUnits().iterator().next();
+        OrganisationUnitHierarchy organisationUnitHierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+        //organisationUnitHierarchy.
 
-        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>(
-            getChildOrgUnitTree( rootOrgUnit ) );
+        //List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( getChildOrgUnitTree( rootOrgUnit ) );
+        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
 
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
@@ -964,25 +967,18 @@ public class GenerateMetaDataReportResultAction
         // Heading
         if ( incID != null )
         {
-            // sheet0.addCell( new Label( colStart, rowStart, "OrgUnitID",
-            // getCellFormat1() ) );
-            // 30/06/2010
-
-            // for printing all attributes heading in Excel Sheet 30/06/2010
             if ( incID.equalsIgnoreCase( PRINT ) )
             {
                 sheet0.addCell( new Label( colStart, rowStart, "OrgUnitID", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 1, rowStart, "organisationUnitName", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 2, rowStart, "organisationUnitShortName", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 3, rowStart, "organisationUnitOpeningDate", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 4, rowStart, "organisationUnitClosedDate", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 5, rowStart, "organisationUnitParentName", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 6, rowStart, "organisationUnitCode", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 7, rowStart, "organisationUnitUrl", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 1, rowStart, "OrganisationUnitName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 2, rowStart, "OrganisationUnitShortName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 3, rowStart, "OrganisationUnitOpeningDate", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 4, rowStart, "OrganisationUnitClosedDate", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 5, rowStart, "OrganisationUnitParentName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 6, rowStart, "OrganisationUnitCode", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 7, rowStart, "OrganisationUnitUrl", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "Last Updated", getCellFormat1() ) );
-
             }
-
             else if ( incID.equalsIgnoreCase( SOURCE ) )
             {
                 sheet0.addCell( new Label( colStart, rowStart, "OrgUnitID", getCellFormat1() ) );
@@ -994,15 +990,12 @@ public class GenerateMetaDataReportResultAction
             }
             else
             {
-                // sheet0.addCell( new Label( colStart, rowStart, "OrgUnitID",
-                // getCellFormat1() ) );
                 int maxLevels = organisationUnitService.getNumberOfOrganisationalLevels();
                 for ( int i = 1; i <= maxLevels; i++ )
                 {
                     sheet0.addCell( new Label( colStart + i, rowStart, "Level-" + i, getCellFormat1() ) );
                 }
             }
-
         }
 
         rowStart++;
