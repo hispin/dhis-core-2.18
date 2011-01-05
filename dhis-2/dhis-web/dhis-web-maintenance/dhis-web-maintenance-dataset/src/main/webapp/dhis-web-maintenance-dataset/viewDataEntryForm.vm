@@ -238,13 +238,13 @@ function insertDataElement()
 	if (dataElementType == "bool")
 	{
 		id = boolDataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryselect\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>";
+		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>";
 		
 		
 	}else 
 	{	
 		id = dataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>" ;			
+		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>" ;			
 	}	
 	
 	if( checkExisted( id ) )

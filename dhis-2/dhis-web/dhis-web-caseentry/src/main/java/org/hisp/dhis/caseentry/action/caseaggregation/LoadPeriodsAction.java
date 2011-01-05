@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.caseentry.state.PeriodGenericManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -27,6 +28,13 @@ public class LoadPeriodsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private PeriodGenericManager periodGenericManager;
+
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
     }
 
     // -------------------------------------------------------------------------
@@ -72,6 +80,11 @@ public class LoadPeriodsAction
     public String execute()
     {
         DataSet selectedDataSet = dataSetService.getDataSet( dataSetId );
+
+        periodGenericManager.clearSelectedPeriod();
+        periodGenericManager.clearBasePeriod();
+
+        periodGenericManager.setPeriodType( selectedDataSet.getPeriodType().getName() );
 
         if ( selectedDataSet != null )
         {
