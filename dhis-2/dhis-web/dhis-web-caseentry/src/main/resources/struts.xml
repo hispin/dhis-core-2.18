@@ -237,6 +237,18 @@
       <param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
       <param name="menu">/dhis-web-caseentry/menu.vm</param>      
     </action>
+    
+    <action name="nextPeriods"
+			class="org.hisp.dhis.caseentry.state.NextPeriodsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
+		</action>
+
+		<action name="previousPeriods"
+			class="org.hisp.dhis.caseentry.state.PreviousPeriodsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPeriods.vm</result>
+		</action>
 		  
   </package>
 </struts>
