@@ -27,7 +27,7 @@ package org.hisp.dhis.aggregation.impl.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getDays;
+import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
 import java.util.Collection;
 import java.util.Date;
@@ -115,7 +115,7 @@ public class SumIntDataElementAggregation
             {
             }
 
-            double currentPeriodDuration = ( getDays( currentEndDate ) - getDays( currentStartDate ) );
+            double currentPeriodDuration = getDaysInclusive( currentStartDate, currentEndDate );
 
             if ( currentPeriodDuration > 0 )
             {
@@ -123,26 +123,26 @@ public class SumIntDataElementAggregation
 
                 if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 )
                 {
-                    relevantDays = getDays( endDate ) - getDays( startDate );
+                    relevantDays = getDaysInclusive( startDate, endDate );
                     totalSum += value;
                 }
                 else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
                     && currentEndDate.compareTo( endDate ) <= 0 )
                 {
-                    relevantDays = getDays( currentEndDate ) - getDays( startDate );
+                    relevantDays = getDaysInclusive( startDate, currentEndDate );
                     double factor = relevantDays / currentPeriodDuration;
                     totalSum += value * factor;
                 }
                 else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
                     && currentEndDate.compareTo( endDate ) >= 0 )
                 {
-                    relevantDays = getDays( endDate ) - getDays( currentStartDate );
+                    relevantDays = getDaysInclusive( currentStartDate, endDate );
                     double factor = relevantDays / currentPeriodDuration;
                     totalSum += value * factor;
                 }
                 else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 )
                 {
-                    relevantDays = getDays( endDate ) - getDays( startDate );
+                    relevantDays = getDaysInclusive( startDate, endDate );
                     double factor = relevantDays / currentPeriodDuration;
                     totalSum += value * factor;
                 }

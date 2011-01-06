@@ -27,7 +27,7 @@ package org.hisp.dhis.aggregation.impl.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getDays;
+import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
 import java.util.Collection;
 import java.util.Date;
@@ -108,7 +108,7 @@ public class AverageIntSingleValueDataElementAggregation
             {
             }
 
-            double currentPeriodDuration = ( getDays( currentEndDate ) - getDays( currentStartDate ) );
+            double currentPeriodDuration = getDaysInclusive( currentStartDate, currentEndDate );
 
             if ( currentPeriodDuration > 0 )
             {
@@ -116,7 +116,7 @@ public class AverageIntSingleValueDataElementAggregation
 
                 if ( currentStartDate.compareTo( endDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0 ) // Value is intersecting
                 {
-                    relevantDays = getDays( endDate ) - getDays( startDate );
+                    relevantDays = getDaysInclusive( startDate, endDate );
                     totalSum += value;
                 }
 
