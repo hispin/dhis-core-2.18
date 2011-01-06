@@ -39,7 +39,6 @@ public interface SystemSettingManager
 {
     final String ID = SystemSettingManager.class.getName();
     
-    final String KEY_ZERO_VALUE_SAVE_MODE = "zeroValueSaveMode";
     final String KEY_APPLICATION_TITLE = "applicationTitle";
     final String KEY_FLAG = "flag";
     final String KEY_START_MODULE = "startModule";

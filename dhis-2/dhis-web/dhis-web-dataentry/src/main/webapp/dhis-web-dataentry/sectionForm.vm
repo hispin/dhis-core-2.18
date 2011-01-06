@@ -1,5 +1,4 @@
 <input type="hidden" value="$organisationUnit.id" id="organisationUnitId"/>
-<input type="hidden" value="$zeroValueSaveMode" id="zeroValueSaveMode"/>
 
 #set( $marker = 0 )
 #set( $tabIndex = 1 )

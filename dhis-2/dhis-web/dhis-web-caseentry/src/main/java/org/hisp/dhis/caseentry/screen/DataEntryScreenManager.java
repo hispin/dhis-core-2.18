@@ -43,8 +43,8 @@ import org.hisp.dhis.program.ProgramStageInstance;
  * @author Abyot Asalefew
  * @version $Id$
  */
-public interface DataEntryScreenManager {
-
+public interface DataEntryScreenManager 
+{
     String getScreenType(ProgramStage programStage);
 
     boolean hasMixOfDimensions(ProgramStage programStage);
@@ -60,9 +60,8 @@ public interface DataEntryScreenManager {
 
     String populateCustomDataEntryScreenForMultiDimensional(String dataEntryFormCode, Collection<PatientDataValue> dataValues,
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap, String disabled, 
-        Boolean saveMode, I18n i18n,  ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit);
+        I18n i18n,  ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit);
     
     
     Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode );
-
 }
