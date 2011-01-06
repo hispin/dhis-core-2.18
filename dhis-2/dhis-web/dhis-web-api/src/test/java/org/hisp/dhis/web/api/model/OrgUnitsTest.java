@@ -50,6 +50,8 @@ public class OrgUnitsTest
         unit.setDownloadAllUrl( "downloadAllUrl" );
         unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
+        unit.setUpdateDataSetUrl( "updateDataSetUrl" );
+        unit.setUpdateProgramUrl( "updateProgramUrl" );
         return unit;
     }
 }
