@@ -75,16 +75,12 @@ public class ChartImporter
         match.setRegression( object.isRegression() );        
 
         match.getRelatives().setReportingMonth( object.getRelatives().isReportingMonth() );
-        match.getRelatives().setLast3Months( object.getRelatives().isLast3Months() );
-        match.getRelatives().setLast6Months( object.getRelatives().isLast6Months() );
-        match.getRelatives().setLast12Months( object.getRelatives().isLast12Months() );
-        match.getRelatives().setSoFarThisYear( object.getRelatives().isSoFarThisYear() );
-        match.getRelatives().setLast3To6Months( object.getRelatives().isLast3To6Months() );
-        match.getRelatives().setLast6To9Months( object.getRelatives().isLast6To9Months() );
-        match.getRelatives().setLast9To12Months( object.getRelatives().isLast9To12Months() );
-        match.getRelatives().setLast12IndividualMonths( object.getRelatives().isLast12IndividualMonths() );
-        match.getRelatives().setIndividualMonthsThisYear( object.getRelatives().isIndividualMonthsThisYear() );
-        match.getRelatives().setIndividualQuartersThisYear( object.getRelatives().isIndividualQuartersThisYear() );
+        match.getRelatives().setMonthsThisYear( object.getRelatives().isMonthsThisYear() );
+        match.getRelatives().setQuartersThisYear( object.getRelatives().isQuartersThisYear() );
+        match.getRelatives().setThisYear( object.getRelatives().isThisYear() );
+        match.getRelatives().setMonthsLastYear( object.getRelatives().isMonthsLastYear() );
+        match.getRelatives().setQuartersLastYear( object.getRelatives().isQuartersLastYear() );
+        match.getRelatives().setLastYear( object.getRelatives().isLastYear() );
         
         chartService.saveChart( match );
     }
@@ -130,52 +126,7 @@ public class ChartImporter
         {
             return false;
         }
-        
-        if ( object.getRelatives().isReportingMonth() != existing.getRelatives().isReportingMonth() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast3Months() != existing.getRelatives().isLast3Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast6Months() != existing.getRelatives().isLast6Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast12Months() != existing.getRelatives().isLast12Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isSoFarThisYear() != existing.getRelatives().isSoFarThisYear() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast3To6Months() != existing.getRelatives().isLast3To6Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast6To9Months() != existing.getRelatives().isLast6To9Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast9To12Months() != existing.getRelatives().isLast9To12Months() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isLast12IndividualMonths() != existing.getRelatives().isLast12IndividualMonths() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isIndividualMonthsThisYear() != existing.getRelatives().isIndividualMonthsThisYear() )
-        {
-            return false;
-        }
-        if ( object.getRelatives().isIndividualQuartersThisYear() != existing.getRelatives().isIndividualQuartersThisYear() )
-        {
-            return false;
-        }
-        
+                
         return true;
     }
 }

@@ -96,16 +96,12 @@ public class ReportTableBatchHandler
         statementBuilder.setColumn( "dounits" );
         
         statementBuilder.setColumn( "reportingmonth" );
-        statementBuilder.setColumn( "last3months" );
-        statementBuilder.setColumn( "last6months" );
-        statementBuilder.setColumn( "last12months" );
-        statementBuilder.setColumn( "sofarthisyear" );
-        statementBuilder.setColumn( "last3to6months" );
-        statementBuilder.setColumn( "last6to9months" );
-        statementBuilder.setColumn( "last9to12months" );
-        statementBuilder.setColumn( "last12individualmonths" );
-        statementBuilder.setColumn( "individualmonthsthisyear" );
-        statementBuilder.setColumn( "individualquartersthisyear" );
+        statementBuilder.setColumn( "monthsthisyear" );
+        statementBuilder.setColumn( "quartersthisyear" );
+        statementBuilder.setColumn( "thisyear" );
+        statementBuilder.setColumn( "monthslastyear" );
+        statementBuilder.setColumn( "quarterslastyear" );
+        statementBuilder.setColumn( "lastyear" );
         
         statementBuilder.setColumn( "paramreportingmonth" );
         statementBuilder.setColumn( "paramparentorganisationunit" );
@@ -124,16 +120,12 @@ public class ReportTableBatchHandler
         statementBuilder.setValue( reportTable.isDoUnits() );
         
         statementBuilder.setValue( reportTable.getRelatives().isReportingMonth() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast3Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast6Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast12Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isSoFarThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast3To6Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast6To9Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast9To12Months() );
-        statementBuilder.setValue( reportTable.getRelatives().isLast12IndividualMonths() );
-        statementBuilder.setValue( reportTable.getRelatives().isIndividualMonthsThisYear() );
-        statementBuilder.setValue( reportTable.getRelatives().isIndividualQuartersThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isMonthsThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isQuartersThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isThisYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isMonthsLastYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isQuartersLastYear() );
+        statementBuilder.setValue( reportTable.getRelatives().isLastYear() );
 
         statementBuilder.setValue( reportTable.getReportParams().isParamReportingMonth() );
         statementBuilder.setValue( reportTable.getReportParams().isParamParentOrganisationUnit() );
