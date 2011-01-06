@@ -32,12 +32,9 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserGroupService;
-
-import com.opensymphony.xwork2.Action;
 
 public class GetUserGroupListAction
     extends ActionPagingSupport<UserGroup>

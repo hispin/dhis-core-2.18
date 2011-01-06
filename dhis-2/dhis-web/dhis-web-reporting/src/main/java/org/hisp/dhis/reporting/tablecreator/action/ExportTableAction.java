@@ -30,6 +30,7 @@ package org.hisp.dhis.reporting.tablecreator.action;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -76,6 +77,13 @@ public class ExportTableAction
     {
         this.type = type;
     }
+    
+    private Boolean useLast = false;
+
+    public void setUseLast( boolean useLast )
+    {
+        this.useLast = useLast;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -96,7 +104,16 @@ public class ExportTableAction
     public String execute()
         throws Exception
     {
-        grid = reportTableService.getPrettyReportTableGrid( id, format );
+        if ( useLast )
+        {
+            grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID );
+        }
+        else
+        {
+            grid = reportTableService.getPrettyReportTableGrid( id, format );            
+        }
+        
+        SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
         
         return type != null ? type : DEFAULT_TYPE;
     }    

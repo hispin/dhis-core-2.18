@@ -2,8 +2,6 @@
 var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
-var outputFormat = null;
-
 // -----------------------------------------------------------------------------
 // Report params
 // -----------------------------------------------------------------------------
@@ -34,10 +32,8 @@ function validationError()
 // Report
 // -----------------------------------------------------------------------------
 
-function generateReport( format )
+function generateReport()
 {
-	outputFormat = format;
-	
 	if ( validationError() )
 	{
 		return false;
@@ -93,7 +89,7 @@ function reportStatusReceived( xmlObject )
         }
         else if ( $( "#mode" ).val() == MODE_TABLE )
         {
-        	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=" + outputFormat;
+        	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=html";
         }
     }
     else if ( statusMessage == null )
@@ -113,4 +109,9 @@ function reportStatusReceived( xmlObject )
 function waitAndGetReportStatus( millis )
 {
     setTimeout( "getReportStatus();", millis );
+}
+
+function exportReport( type )
+{
+	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=" + type + "&useLast=true";
 }
