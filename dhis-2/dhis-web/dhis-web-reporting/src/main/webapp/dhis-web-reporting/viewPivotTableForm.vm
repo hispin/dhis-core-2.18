@@ -14,8 +14,8 @@ div#criteria
 {
   position: relative;
   left: 2px;
-  width: 230px;
-  height: 300px;
+  width: 265px;
+  height: 470px;
   border: 1px solid #b0b0b0;
   background-color: #d9ece1;
   padding-left: 20px;
@@ -26,8 +26,8 @@ div#pivot
 {
   position: relative;
   left: 2px;
-  width: 230px;
-  height: 130px;
+  width: 265px;
+  height: 137px;
   border: 1px solid #b0b0b0;
   background-color: #d9ece1;
   padding-left: 20px;
@@ -74,33 +74,28 @@ div#pivotMenu
 
 <p>
 <label>$i18n.getString( "indicator_group" )</label>
-<select id="indicatorGroup" style="width:200px">
+<select id="indicatorGroup" style="width:250px">
   <option value="-1">[ All ]</option>
 </select>
 </p>
 
 <p>
 <label>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</label><br>
-<input type="text" id="startDate" style="width:180px">
+<input type="text" id="startDate" style="width:210px">
 </p>
 
 <p>
 <label>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</label><br>
-<input type="text" id="endDate" style="width:180px">
+<input type="text" id="endDate" style="width:210px">
 </p>
 
 <p>
 <label>$i18n.getString( "period_type" )</label>
-<select id="periodType" style="width:200px">
-  <option value="null">[ $i18n.getString( "select_period_type" )... ]</option>
-</select>
+<select id="periodType" style="width:250px"></select>
 </p>
 
 <p>
-<label>$i18n.getString( "organisation_unit_level" )</label>
-<select id="level" style="width:200px">
-  <option value="-1">[ $i18n.getString( "select_level" )... ]</option>
-</select>
+<div id="selectionTree" style="width:250px; height:200px"></div>
 </p>
 
 <p>
@@ -174,8 +169,12 @@ div#pivotMenu
 <script type="text/javascript">
   loadIndicatorGroups();
   loadPeriodTypes();
-  loadOrgunitLevels();
   loadListeners();
+  
+  selectionTreeSelection.setMultipleSelectionAllowed( false );
+  selectionTreeSelection.setListenerFunction( organisationUnitSelected );
+  selectionTree.clearSelectedOrganisationUnits();
+  selectionTree.buildSelectionTree();
 </script>
 
 <!-- Calendar setup -->

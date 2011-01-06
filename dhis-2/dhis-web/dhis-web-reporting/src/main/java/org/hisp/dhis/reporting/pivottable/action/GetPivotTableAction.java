@@ -102,11 +102,11 @@ public class GetPivotTableAction
         this.endDate = endDate;
     }
     
-    private Integer level;
+    private Integer organisationUnitId;
 
-    public void setLevel( Integer level )
+    public void setOrganisationUnitId( Integer organisationUnitId )
     {
-        this.level = level;
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -126,7 +126,7 @@ public class GetPivotTableAction
 
     public String execute()
     {
-        pivotTable = pivotTableService.getPivotTable( indicatorGroupId, periodTypeName, startDate, endDate, level );
+        pivotTable = pivotTableService.getPivotTable( indicatorGroupId, periodTypeName, startDate, endDate, organisationUnitId );
         
         for ( Period period : pivotTable.getPeriods() )
         {
