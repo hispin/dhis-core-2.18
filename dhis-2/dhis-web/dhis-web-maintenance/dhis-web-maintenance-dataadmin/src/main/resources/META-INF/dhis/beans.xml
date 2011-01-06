@@ -326,17 +326,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
 	</bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction"
-		class="org.hisp.dhis.dataadmin.action.sqlview.GetResourcePropertiesAction"
-		scope="prototype">
-		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataadmin.action.sqlview.AutoJoinResourceTablesAction"
-		class="org.hisp.dhis.dataadmin.action.sqlview.AutoJoinResourceTablesAction"
-		scope="prototype">
-		<property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
-	</bean>
-	
+		
 </beans>

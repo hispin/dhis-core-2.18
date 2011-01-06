@@ -1,23 +1,10 @@
 <script>
-//-----------------------------------------------------------------------
-//init jQuery validation for addSqlViewForm
-//-----------------------------------------------------------------------
+jQuery(document).ready(function() {
 
-	jQuery(document).ready(function() {
-	
-		validation( 'addSqlViewForm', function() {
-			validateAddUpdateSqlView( 'add' );
-		});
-		
-		hideById("mainDesignQueryDiv");
-		initHtml(i18n_resourcetables, i18n_sorttypes);
-		initField("resource-table-combo1", "sort-property-combo1");
-		applyAutocompleteSupporting(jQuery.merge(criteria_clone, keywords), "sqlquery", $("#sqlquery").width() );
-		applyAutocompleteSupporting(criteria_operators, "criteria_and_property1", 225 );
-		applyAutocompleteSupporting(criteria_operators, "criteria_or_property1", 225 );
-		
+	validation( 'addSqlViewForm', function() {
+		validateAddUpdateSqlView( 'add' );
 	});
-
+});
 </script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
@@ -44,97 +31,10 @@
 		<tr>
 			<td></td>
 			<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='showSqlViewListForm.action'" style="width:10em"/>
-			<input type="button" value="$i18n.getString( 'show_advance' )" id="advance_button" name="advance_button" onclick="showOrHideDesignQueryDiv()" style="width:10em"/></td>
+			<input type="button" value="$i18n.getString( 'cancel' )" id="cancel" name="cancel" onclick="window.location.href='showSqlViewListForm.action'" style="width:10em"/>			
 		</tr>
 	</table>
 
 </form>
-<br/><br/>
-
-<div id="mainDesignQueryDiv">
-	<table id="mainTable">
-		<tr id="mainRow">
-			<td id="appendedColumn1">
-			<table>
-				<tr>
-					<td></td>
-					<td align="center"><label style="color:white" class="ui-widget-header ui-corner-all">
-					$encoder.htmlEncode( $i18n.getString( "header_field" )) 1</label>
-					<img src="../images/transparent.gif" align="right"/></td>
-				</tr>
-				<tr><td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "resource_table" )): </label></td>
-					<td><select id="resource-table-combo1" style="width:180px" onchange="loadResourceProperties(this.value, 1)">
-					</select></td>
-				</tr>
-				<tr><td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "field" )): </label></td>
-					<td><select id="resource-property-combo1" style="width:180px" onchange="checkSelectedField(this.value, 1)">
-					</select></td>
-				</tr>
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "alias" )): </label></td>
-					<td><input id="alias-property1" style="width:175px" disabled /></td>
-				</tr>
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "show" )): </label></td>
-					<td align="center"><input type="checkbox" name="show-checkbox"/></td>
-				</tr>
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "sort" )): </label></td>
-					<td><select id="sort-property-combo1" style="width:180px" disabled >
-					</select></td>
-				</tr>
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "criteria_and" )): </label></td>
-					<td><input id="criteria_and_property1" style="width:175px" disabled /></td>
-				</tr>
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "criteria_or" )): </label></td>
-					<td><input id="criteria_or_property1" style="width:175px" disabled /></td>
-				</tr>	
-				<tr>
-					<td><label for="sql_statement">$encoder.htmlEncode($i18n.getString( "group_by" )): </label></td>
-					<td align="center"><input type="checkbox" id="groupby-property-checkbox1" disabled />
-					<a href="javascript:appendField(1)" title="$encoder.htmlEncode($i18n.getString( 'append' ))">
-					<img src="../images/add_small.png" alt="$encoder.htmlEncode($i18n.getString( 'append' ))" align="right"/></a>
-					</td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</table><br/>
-	<input type="button" id="designQueryButton" value="$i18n.getString( 'generate_query' )" style="width:10em" onclick="getJoinTable()"/>
-	<input type="button" value="$encoder.htmlEncode($i18n.getString( 'add_new_field' ))" onclick="generateQueryColumn('mainRow')"/>
-	<input type="button" value="$encoder.htmlEncode($i18n.getString( 'reset' ))" onclick="removeAllQueryColumn()"/>
-	<br/>
-</div>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-
-	/**
-		Global variables
-		@param comboBoxNo comboBoxNo is the default number of comboBoxes
-	*/
-	columnIndex = 1;
-	curAppendedColumnId = "";
-	advanceStatus = false;
-	
-	var i18n_header_field = "$encoder.jsEscape($i18n.getString( 'header_field' ) , "'")";
-	var i18n_resourcetables = "$encoder.jsEscape($i18n.getString( 'select_resourcetables' ) , "'")";
-	var i18n_properties = "$encoder.jsEscape($i18n.getString( 'select_properties' ) , "'")";
-	var i18n_properties_welformed = "$encoder.jsEscape($i18n.getString( 'properties_welformed' ) , "'")";
-	var i18n_syntax_error_parameter_required = "$encoder.jsEscape($i18n.getString( 'syntax_error_parameter_required' ) , "'")";
-	var i18n_sorttypes = "$encoder.jsEscape($i18n.getString( 'select_sorttypes' ) , "'")";
-	var i18n_ascending = "$encoder.jsEscape($i18n.getString( 'ascending' ) , "'")";
-	var i18n_descending = "$encoder.jsEscape($i18n.getString( 'descending' ) , "'")";
-	var i18n_cannot_remove_any_more = "$encoder.jsEscape($i18n.getString( 'cannot_remove_any_more' ) , "'")";
-	var i18n_show_advance = "$encoder.jsEscape($i18n.getString( 'show_advance' ) , "'")";
-	var i18n_hide_advance = "$encoder.jsEscape($i18n.getString( 'hide_advance' ) , "'")";
-	var i18n_close = "$encoder.jsEscape($i18n.getString( 'close' ) , "'")";
-	var i18n_append = "$encoder.jsEscape($i18n.getString( 'append' ) , "'")";
-	var i18n_resourcetable_at_position = "$encoder.jsEscape($i18n.getString( 'resourcetable_at_position' ) , "'")";
-	var i18n_unselected_yet = "$encoder.jsEscape($i18n.getString( 'unselected_yet' ) , "'")";
-	
-</script>
