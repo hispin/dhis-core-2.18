@@ -93,7 +93,7 @@ public class HibernateMappingStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Criteria criteria = session.createCriteria( MapLegendSet.class );
+        Criteria criteria = session.createCriteria( MapLegend.class );
 
         criteria.add( Restrictions.eq( "name", name ) );
 
