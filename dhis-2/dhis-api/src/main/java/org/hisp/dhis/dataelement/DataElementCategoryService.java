@@ -341,12 +341,19 @@ public interface DataElementCategoryService
     Collection<DataElementOperand> getOperands( Collection<DataElement> dataElements, boolean includeTotals );
     
     /**
+     * Gets the Operands for the DataElements whith names like the given name.
+     * 
+     * @param name the name.
+     * @return the Operands for the DataElements whith names like the given name.
+     */
+    Collection<DataElementOperand> getOperandsLikeName( String name );
+    
+    /**
      * Gets the Operands for the given Collection of DataElements. Operands will contain DataElement and CategoryOptionCombo object  
      * 
      * @param dataElements the Collection of DataElements.
      * @return the Operands for the given Collection of DataElements.
      */
-    
     Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements );
     
     Collection<DataElementCategory> getDataElementCategorysBetween( int first, int max );
