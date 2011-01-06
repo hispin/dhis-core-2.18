@@ -16,8 +16,6 @@ public interface SqlViewExpandStore
 
     Collection<String> getAllSqlViewNames();
 
-    Collection<String> getAllResourceProperties( String resourceTableName );
-
     boolean isViewTableExists( String viewTableName );
 
     boolean createView( SqlView sqlViewInstance );
@@ -29,6 +27,4 @@ public interface SqlViewExpandStore
     String setUpViewTableName( String input );
 
     String testSqlGrammar( String sql );
-
-    String setUpJoinQuery( Collection<String> tables );
 }

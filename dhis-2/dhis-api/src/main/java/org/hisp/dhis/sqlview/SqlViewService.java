@@ -63,8 +63,6 @@ public interface SqlViewService
 
     Collection<String> getAllSqlViewNames();
 
-    Collection<String> getAllResourceProperties( String resourceTableName );
-
     boolean isViewTableExists( String viewTableName );
 
     boolean createAllViewTables();
@@ -78,6 +76,4 @@ public interface SqlViewService
     SqlViewTable getDataSqlViewTable( String viewTableName );
 
     String testSqlGrammar( String sql );
-
-    String setUpJoinQuery( Collection<String> tableList );
 }

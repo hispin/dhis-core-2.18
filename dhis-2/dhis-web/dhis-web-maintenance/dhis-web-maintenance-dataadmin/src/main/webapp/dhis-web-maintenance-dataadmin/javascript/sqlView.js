@@ -1,6 +1,3 @@
-﻿/**
- * Sql View
- */
 
 function validateAddUpdateSqlView( mode )
 {
