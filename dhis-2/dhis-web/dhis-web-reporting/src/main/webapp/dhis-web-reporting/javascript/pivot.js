@@ -18,9 +18,19 @@ var currentIndicator = 0;
 var currentPeriod = 0;
 var currentOrgunit = 0;
 
+var organisationUnitId = -1;
+
 // -----------------------------------------------------------------------------
 // Public methods
 // -----------------------------------------------------------------------------
+
+/**
+ * Callback method from oust.
+ */
+function organisationUnitSelected( orgunits )
+{
+	organisationUnitId = orgunits ? orgunits[0] : null;
+}
 
 /**
  * This method is called from the UI and is responsible for retrieving data from 
@@ -30,23 +40,17 @@ function getData()
 {
   clearGlobalVariables();
   
-  var indicatorGroupList = document.getElementById( "indicatorGroup" );
-  var periodTypeList = document.getElementById( "periodType" );
-  var levelList = document.getElementById( "level" );
-  
-  var indicatorGroupId = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].value;
-  var indicatorGroupName = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].text;
-  var startDate = document.getElementById( "startDate" ).value;
-  var endDate = document.getElementById( "endDate" ).value;
-  var periodTypeName = periodTypeList.options[ periodTypeList.selectedIndex ].value;
-  var level = levelList.options[ levelList.selectedIndex ].value;
+  var indicatorGroupId = $( "#indicatorGroup" ).val();
+  var indicatorGroupName = $( "#indicatorGroup" ).text();
+  var startDate = $( "#startDate" ).val();
+  var endDate = $( "#endDate" ).val();
+  var periodTypeName = $( "#periodType" ).val();
   
   document.getElementById( "dataLabel" ).innerHTML = 
     i18n_indicator_group + ": " + indicatorGroupName +
     ", " + i18n_start_date + ": " + startDate + 
     ", " + i18n_end_date + ": " + endDate + 
-    ", " + i18n_period_type + ": " + periodTypeName +
-    ", " + i18n_organisation_unit_level + ": " + level;
+    ", " + i18n_period_type + ": " + periodTypeName;
   
   var url = "getPivotTable.action";
   
@@ -61,7 +65,7 @@ function getData()
       "periodTypeName": periodTypeName, 
       "startDate": startDate, 
       "endDate": endDate, 
-      "level": level 
+      "organisationUnitId": organisationUnitId 
     },
     function( json ) 
     {

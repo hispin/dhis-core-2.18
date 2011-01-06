@@ -13,7 +13,7 @@ function addOption( list, value, text )
 
 function loadIndicatorGroups()
 {
-  var list = document.getElementById( "indicatorGroup" );
+  var list = byId( "indicatorGroup" );
     
   $.getJSON(
     "getIndicatorGroups.action",
@@ -32,7 +32,7 @@ function loadIndicatorGroups()
 
 function loadPeriodTypes()
 {
-  var list = document.getElementById( "periodType" );
+  var list = byId( "periodType" );
     
   $.getJSON(
     "getPeriodTypes.action",
@@ -44,25 +44,8 @@ function loadPeriodTypes()
         
         addOption( list, name, name );
       }
-    }
-  );
-}
-
-function loadOrgunitLevels()
-{
-  var list = document.getElementById( "level" );
-  
-  $.getJSON(
-    "getOrganisationUnitLevels.action",
-    function( json )
-    {
-      for ( var i=0; i<json.organisationUnitLevels.length; i++ )
-      {
-        var level = json.organisationUnitLevels[i].level;
-        var name = json.organisationUnitLevels[i].name;
-        
-        addOption( list, level, name );
-      }
+      
+      $( "#periodType option[value=Monthly]" ).attr( "selected", "selected" );
     }
   );
 }

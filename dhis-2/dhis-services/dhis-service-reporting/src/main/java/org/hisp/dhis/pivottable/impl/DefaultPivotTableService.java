@@ -89,7 +89,7 @@ public class DefaultPivotTableService
     // PivotTableService implementation
     // -------------------------------------------------------------------------
 
-    public PivotTable getPivotTable( int indicatorGroupId, String periodTypeName, String startDate, String endDate, int level )
+    public PivotTable getPivotTable( int indicatorGroupId, String periodTypeName, String startDate, String endDate, int organisationUnitId )
     {
         PeriodType periodType = PeriodType.getPeriodTypeByName( periodTypeName );
         
@@ -97,7 +97,7 @@ public class DefaultPivotTableService
             periodService.getPeriodsBetweenDates( periodType, getMediumDate( startDate ), getMediumDate( endDate ) ) );
         
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
-            organisationUnitService.getOrganisationUnitsAtLevel( level ) );
+            organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildren() );
          
         List<Indicator> indicators = null;
         Collection<AggregatedIndicatorValue> indicatorValues = null;
