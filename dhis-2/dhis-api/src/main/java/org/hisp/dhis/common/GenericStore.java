@@ -76,6 +76,14 @@ public interface GenericStore<T>
     T load( int id );
     
     /**
+     * Retriveves a Collection of objects where the name is like the given name.
+     * 
+     * @param name hte name.
+     * @return a Collection of objects.
+     */
+    Collection<T> getLikeName( String name );
+    
+    /**
      * Retrieves a Collection of all objects.
      * 
      * @return a Collection of all objects.

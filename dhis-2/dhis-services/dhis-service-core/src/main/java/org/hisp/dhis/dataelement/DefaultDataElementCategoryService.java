@@ -432,6 +432,13 @@ public class DefaultDataElementCategoryService
         return getOperands( dataElements, false );
     }
 
+    public Collection<DataElementOperand> getOperandsLikeName( String name )
+    {
+        Collection<DataElement> dataElements = dataElementService.getDataElementsLikeName( name );
+        
+        return getOperands( dataElements );
+    }
+    
     public Collection<DataElementOperand> getFullOperands( Collection<DataElement> dataElements )
     {
         Collection<DataElementOperand> operands = new ArrayList<DataElementOperand>();

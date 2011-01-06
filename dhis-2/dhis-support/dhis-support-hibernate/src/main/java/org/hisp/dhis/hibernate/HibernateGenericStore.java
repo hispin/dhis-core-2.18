@@ -220,6 +220,13 @@ public class HibernateGenericStore<T>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public Collection<T> getLikeName( String name )
+    {
+        return getCriteria().add( Restrictions.ilike( "name", "%" + name + "%" ) ).list();
+    }
+
+    @Override
     @SuppressWarnings( "unchecked" )
     public final Collection<T> getAll()
     {

@@ -272,7 +272,6 @@ public class HibernateDataElementStore
 
         if ( !dataElementIds.isEmpty() )
         {
-
             sql = "update DataElement set zeroIsSignificant=true where id in (:dataElementIds)";
 
             query = session.createQuery( sql );
@@ -379,6 +378,11 @@ public class HibernateDataElementStore
 
     }
 
+    public Collection<DataElement> getDataElementsLikeName( String name )
+    {
+        return getLikeName( name );
+    }
+    
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
         return getBetween( first, max );

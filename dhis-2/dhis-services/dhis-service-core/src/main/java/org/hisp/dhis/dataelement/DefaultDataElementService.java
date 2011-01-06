@@ -357,6 +357,11 @@ public class DefaultDataElementService
     {
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
+    
+    public Collection<DataElement> getDataElementsLikeName( String name )
+    {
+        return dataElementStore.getDataElementsLikeName( name );
+    }
 
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {

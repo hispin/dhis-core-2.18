@@ -299,6 +299,8 @@ public interface DataElementService
 
     Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets );
     
+    Collection<DataElement> getDataElementsLikeName( String name );
+    
     Collection<DataElement> getDataElementsBetween( int first, int max );
     
     Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max );
