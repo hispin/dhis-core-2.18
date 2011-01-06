@@ -148,6 +148,11 @@ public class DataSet
         return sections != null && sections.size() > 0;
     }
     
+    public boolean isMobile()
+    {
+        return mobile != null && mobile;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

@@ -158,10 +158,12 @@ public class UpdateDataSetAction
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.setDataElements( dataElements );
         dataSet.setMobile( mobile );
-        if ( dataSet.getMobile() != null && dataSet.getMobile() )
+        
+        if ( dataSet.isMobile() )
         {
-            dataSet.setVersion( dataSet.getVersion() + 1 );
+            dataSet.setVersion( dataSet.getVersion() + 1 ); // TODO we should check if anything is actually updated before bumping version and push this to service layer
         }
+        
         dataSetService.updateDataSet( dataSet );
 
         return SUCCESS;
