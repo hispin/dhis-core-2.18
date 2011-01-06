@@ -27,7 +27,7 @@ package org.hisp.dhis.aggregation.impl.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.DateUtils.getDays;
+import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 
 import java.util.Collection;
 import java.util.Date;
@@ -148,21 +148,21 @@ public class AverageIntDataElementAggregation
 
             if ( currentStartDate.compareTo( startDate ) >= 0 && currentEndDate.compareTo( endDate ) <= 0 )
             {
-                relevantDays = getDays( currentEndDate ) - getDays( currentStartDate );
+                relevantDays = getDaysInclusive( currentStartDate, currentEndDate );
             }
             else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( startDate ) >= 0
                 && currentEndDate.compareTo( endDate ) <= 0 )
             {
-                relevantDays = getDays( currentEndDate ) - getDays( startDate );
+                relevantDays = getDaysInclusive( startDate, currentEndDate );
             }
             else if ( currentStartDate.compareTo( startDate ) >= 0 && currentStartDate.compareTo( endDate ) <= 0
                 && currentEndDate.compareTo( endDate ) >= 0 )
             {
-                relevantDays = getDays( endDate ) - getDays( currentStartDate );
+                relevantDays = getDaysInclusive( currentStartDate, endDate );
             }
             else if ( currentStartDate.compareTo( startDate ) <= 0 && currentEndDate.compareTo( endDate ) >= 0 )
             {
-                relevantDays = getDays( endDate ) - getDays( startDate );
+                relevantDays = getDaysInclusive( startDate, endDate );
             }
 
             totalSum += value * relevantDays;

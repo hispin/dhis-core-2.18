@@ -235,7 +235,7 @@ public class DateUtils
     {
         return date.getTime() / MS_PER_DAY;
     }
-
+    
     /**
      * Returns the number of days between the start date (inclusive) and end
      * date (exclusive). The value is rounded off to the floor value and does
@@ -261,11 +261,13 @@ public class DateUtils
      */
     public static long getDaysInclusive( Date startDate, Date endDate )
     {
-        return (getDays( startDate, endDate ) + 1);
+        return getDays( startDate, endDate ) + 1;
     }
 
     /**
-     * Calculates the number of days between the start and end-date.
+     * Calculates the number of days between the start and end-date. Note this
+     * method is taking daylight saving time into account and has a performance 
+     * overhead.
      * 
      * @param startDate the start date.
      * @param endDate the end date.
