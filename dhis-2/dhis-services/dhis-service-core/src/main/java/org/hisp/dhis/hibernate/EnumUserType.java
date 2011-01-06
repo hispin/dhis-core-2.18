@@ -63,12 +63,11 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
         return result; 
     } 
  
-    @SuppressWarnings( "rawtypes" )
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException { 
         if (null == value) { 
             preparedStatement.setNull(index, Types.VARCHAR); 
         } else { 
-            preparedStatement.setString(index, ((Enum)value).name()); 
+            preparedStatement.setString(index, ((Enum<?>)value).name()); 
         } 
     } 
  

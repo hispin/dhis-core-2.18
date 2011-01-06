@@ -49,16 +49,12 @@
 
     <component name="relatives">
       <property name="reportingMonth"/>
-      <property name="last3Months"/>
-      <property name="last6Months"/>
-      <property name="last12Months"/>
-      <property name="soFarThisYear"/>
-      <property name="last3To6Months"/>
-      <property name="last6To9Months"/>
-      <property name="last9To12Months"/>
-      <property name="last12IndividualMonths"/>
-      <property name="individualMonthsThisYear"/>
-      <property name="individualQuartersThisYear"/>
+      <property name="monthsThisYear"/>
+      <property name="quartersThisYear"/>
+      <property name="thisYear"/>
+      <property name="monthsLastYear"/>
+      <property name="quartersLastYear"/>
+      <property name="lastYear"/>
     </component>
     
   </class>

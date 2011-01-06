@@ -59,6 +59,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.junit.Test;
 
 /**
@@ -80,7 +81,8 @@ public class ReportTableServiceTest
     private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
 
-    private PeriodType periodType;
+    private PeriodType montlyPeriodType;
+    private PeriodType yearlyPeriodType;
 
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -159,7 +161,8 @@ public class ReportTableServiceTest
         relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
         
-        periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        yearlyPeriodType = PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );        
         
         // ---------------------------------------------------------------------
         // Setup Dimensions
@@ -230,8 +233,8 @@ public class ReportTableServiceTest
         // Setup DataSets
         // ---------------------------------------------------------------------
 
-        dataSetA = createDataSet( 'A', periodType );
-        dataSetB = createDataSet( 'B', periodType );
+        dataSetA = createDataSet( 'A', montlyPeriodType );
+        dataSetB = createDataSet( 'B', montlyPeriodType );
         
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
@@ -243,8 +246,8 @@ public class ReportTableServiceTest
         // Setup Periods
         // ---------------------------------------------------------------------
 
-        periodA = createPeriod( periodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
-        periodB = createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) );
+        periodA = createPeriod( montlyPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
+        periodB = createPeriod( montlyPeriodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) );
         
         periodIdA = periodService.addPeriod( periodA );
         periodIdB = periodService.addPeriod( periodB );
@@ -252,14 +255,14 @@ public class ReportTableServiceTest
         periods.add( periodA );
         periods.add( periodB );
 
-        periodC = createPeriod( periodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
-        periodD = createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 4, 30 ) );
+        periodC = createPeriod( montlyPeriodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
+        periodD = createPeriod( yearlyPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 12, 31 ) );
         
         periodService.addPeriod( periodC );
         periodService.addPeriod( periodD );
         
         periodC.setName( RelativePeriods.REPORTING_MONTH );
-        periodD.setName( RelativePeriods.LAST_3_MONTHS );
+        periodD.setName( RelativePeriods.THIS_YEAR );
         
         relativePeriods.add( periodC );
         relativePeriods.add( periodD );
@@ -280,7 +283,7 @@ public class ReportTableServiceTest
         relatives = new RelativePeriods();
         
         relatives.setReportingMonth( true );
-        relatives.setLast3Months( true );
+        relatives.setThisYear( true );
         
         i18nFormat = new MockI18nFormat();
         

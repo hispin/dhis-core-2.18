@@ -111,23 +111,3 @@ function validateCollections()
     
     return true;
 }
-
-function relativePeriodsChecked()
-{
-    if ( isChecked( "reportingMonth" ) == true ||
-         isChecked( "last3Months" ) == true ||
-         isChecked( "last6Months" ) == true ||
-         isChecked( "last12Months" ) == true ||
-         isChecked( "last3To6Months" ) == true ||
-         isChecked( "last6To9Months" ) == true ||
-         isChecked( "last9To12Months" ) == true ||
-         isChecked( "last12IndividualMonths" ) == true ||
-         isChecked( "soFarThisYear" ) == true ||
-         isChecked( "individualMonthsThisYear" ) == true ||
-         isChecked( "individualQuartersThisYear" ) == true )
-    {
-        return true;
-    }
-    
-    return false;
-}

@@ -1005,7 +1005,7 @@ public class ReportTable
             throw new IllegalStateException( falseMessage );
         }   
     }
-
+    
     // -------------------------------------------------------------------------
     // Equals and hashCode
     // -------------------------------------------------------------------------
