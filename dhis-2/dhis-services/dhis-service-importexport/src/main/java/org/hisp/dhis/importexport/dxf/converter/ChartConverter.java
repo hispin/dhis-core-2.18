@@ -41,17 +41,13 @@ public class ChartConverter
     private static final String FIELD_ORGANISATION_UNITS = "organisationUnits";
 
     private static final String FIELD_REPORTING_MONTH = "reportingMonth";
-    private static final String FIELD_LAST_3_MONTHS = "last3Months";
-    private static final String FIELD_LAST_6_MONTHS = "last6Months";
-    private static final String FIELD_LAST_12_MONTHS = "last12Months";
-    private static final String FIELD_SO_FAR_THIS_YEAR = "soFarThisYear";
-    private static final String FIELD_LAST_3_TO_6_MONTHS = "last3To6Months";
-    private static final String FIELD_LAST_6_TO_9_MONTHS = "last6To9Months";
-    private static final String FIELD_LAST_9_TO_12_MONTHS = "last9To12Months";
-    private static final String FIELD_LAST_12_INDIVIDUAL_MONHTS = "last12IndividualMonths";
-    private static final String FIELD_INDIVIDUAL_MONTHS_THIS_YEAR = "individualMonthsThisYear";
-    private static final String FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR = "individualQuartersThisYear";
-
+    private static final String FIELD_MONTHS_THIS_YEAR = "monthsThisYear";
+    private static final String FIELD_QUARTERS_THIS_YEAR = "quartersThisYear";
+    private static final String FIELD_THIS_YEAR = "thisYear";
+    private static final String FIELD_MONTHS_LAST_YEAR = "monthsLastYear";
+    private static final String FIELD_QUARTERS_LAST_YEAR = "quartersLastYear";
+    private static final String FIELD_LAST_YEAR = "lastYear";
+    
     private IndicatorService indicatorService;
     private PeriodService periodService;
     private OrganisationUnitService organisationUnitService;
@@ -139,16 +135,12 @@ public class ChartConverter
                 writer.closeElement();                
 
                 writer.writeElement( FIELD_REPORTING_MONTH, String.valueOf( chart.getRelatives().isReportingMonth() ) );
-                writer.writeElement( FIELD_LAST_3_MONTHS, String.valueOf( chart.getRelatives().isLast3Months() ) );
-                writer.writeElement( FIELD_LAST_6_MONTHS, String.valueOf( chart.getRelatives().isLast6Months() ) );
-                writer.writeElement( FIELD_LAST_12_MONTHS, String.valueOf( chart.getRelatives().isLast12Months() ) );
-                writer.writeElement( FIELD_SO_FAR_THIS_YEAR, String.valueOf( chart.getRelatives().isSoFarThisYear() ) );
-                writer.writeElement( FIELD_LAST_3_TO_6_MONTHS, String.valueOf( chart.getRelatives().isLast3To6Months() ) );
-                writer.writeElement( FIELD_LAST_6_TO_9_MONTHS, String.valueOf( chart.getRelatives().isLast6To9Months() ) );
-                writer.writeElement( FIELD_LAST_9_TO_12_MONTHS, String.valueOf( chart.getRelatives().isLast9To12Months() ) );
-                writer.writeElement( FIELD_LAST_12_INDIVIDUAL_MONHTS, String.valueOf( chart.getRelatives().isLast12IndividualMonths() ) );
-                writer.writeElement( FIELD_INDIVIDUAL_MONTHS_THIS_YEAR, String.valueOf( chart.getRelatives().isIndividualMonthsThisYear() ) );
-                writer.writeElement( FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR, String.valueOf( chart.getRelatives().isIndividualQuartersThisYear() ) );
+                writer.writeElement( FIELD_MONTHS_THIS_YEAR, String.valueOf( chart.getRelatives().isMonthsThisYear() ) );
+                writer.writeElement( FIELD_QUARTERS_THIS_YEAR, String.valueOf( chart.getRelatives().isQuartersThisYear() ) );
+                writer.writeElement( FIELD_THIS_YEAR, String.valueOf( chart.getRelatives().isThisYear() ) );
+                writer.writeElement( FIELD_MONTHS_LAST_YEAR, String.valueOf( chart.getRelatives().isMonthsLastYear() ) );
+                writer.writeElement( FIELD_QUARTERS_LAST_YEAR, String.valueOf( chart.getRelatives().isQuartersLastYear() ) );
+                writer.writeElement( FIELD_LAST_YEAR, String.valueOf( chart.getRelatives().isLastYear() ) );
 
                 writer.closeElement();
             }
@@ -212,38 +204,29 @@ public class ChartConverter
                 chart.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( id ) ) );
             }
             
-            reader.moveToStartElement( FIELD_REPORTING_MONTH );          
-            chart.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_3_MONTHS );
-            chart.getRelatives().setLast3Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_6_MONTHS );
-            chart.getRelatives().setLast6Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_12_MONTHS );
-            chart.getRelatives().setLast12Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_SO_FAR_THIS_YEAR );
-            chart.getRelatives().setSoFarThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_3_TO_6_MONTHS );
-            chart.getRelatives().setLast3To6Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_6_TO_9_MONTHS );
-            chart.getRelatives().setLast6To9Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_9_TO_12_MONTHS );
-            chart.getRelatives().setLast9To12Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_12_INDIVIDUAL_MONHTS );
-            chart.getRelatives().setLast12IndividualMonths( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_INDIVIDUAL_MONTHS_THIS_YEAR );
-            chart.getRelatives().setIndividualMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR );
-            chart.getRelatives().setIndividualQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+            if ( params.minorVersionGreaterOrEqual( DXFConverter.MINOR_VERSION_12 ) )
+            {
+                reader.moveToStartElement( FIELD_REPORTING_MONTH );          
+                chart.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_MONTHS_THIS_YEAR );
+                chart.getRelatives().setMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_QUARTERS_THIS_YEAR );
+                chart.getRelatives().setQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_THIS_YEAR );
+                chart.getRelatives().setThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_MONTHS_LAST_YEAR );
+                chart.getRelatives().setMonthsLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_QUARTERS_LAST_YEAR );
+                chart.getRelatives().setQuartersLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_LAST_YEAR );
+                chart.getRelatives().setLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+            }
             
             importObject( chart, params );
         }

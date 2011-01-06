@@ -85,18 +85,14 @@ public class ReportTableConverter
     private static final String FIELD_DO_INDICATORS = "doIndicators";
     private static final String FIELD_DO_PERIODS = "doPeriods";
     private static final String FIELD_DO_ORGANISATION_UNITS = "doOrganisationUnits";
-    
+
     private static final String FIELD_REPORTING_MONTH = "reportingMonth";
-    private static final String FIELD_LAST_3_MONTHS = "last3Months";
-    private static final String FIELD_LAST_6_MONTHS = "last6Months";
-    private static final String FIELD_LAST_12_MONTHS = "last12Months";
-    private static final String FIELD_SO_FAR_THIS_YEAR = "soFarThisYear";
-    private static final String FIELD_LAST_3_TO_6_MONTHS = "last3To6Months";
-    private static final String FIELD_LAST_6_TO_9_MONTHS = "last6To9Months";
-    private static final String FIELD_LAST_9_TO_12_MONTHS = "last9To12Months";
-    private static final String FIELD_LAST_12_INDIVIDUAL_MONHTS = "last12IndividualMonths";
-    private static final String FIELD_INDIVIDUAL_MONTHS_THIS_YEAR = "individualMonthsThisYear";
-    private static final String FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR = "individualQuartersThisYear";
+    private static final String FIELD_MONTHS_THIS_YEAR = "monthsThisYear";
+    private static final String FIELD_QUARTERS_THIS_YEAR = "quartersThisYear";
+    private static final String FIELD_THIS_YEAR = "thisYear";
+    private static final String FIELD_MONTHS_LAST_YEAR = "monthsLastYear";
+    private static final String FIELD_QUARTERS_LAST_YEAR = "quartersLastYear";
+    private static final String FIELD_LAST_YEAR = "lastYear";
     
     private static final String FIELD_PARAM_REPORTING_MONTH = "paramReportingMonth";
     private static final String FIELD_PARAM_PARENT_ORG_UNIT = "paramParentOrganisationUnit";
@@ -247,19 +243,15 @@ public class ReportTableConverter
                 writer.writeElement( FIELD_DO_INDICATORS, String.valueOf( reportTable.isDoIndicators() ) );
                 writer.writeElement( FIELD_DO_PERIODS, String.valueOf( reportTable.isDoPeriods() ) );
                 writer.writeElement( FIELD_DO_ORGANISATION_UNITS, String.valueOf( reportTable.isDoUnits() ) );
-                
+
                 writer.writeElement( FIELD_REPORTING_MONTH, String.valueOf( reportTable.getRelatives().isReportingMonth() ) );
-                writer.writeElement( FIELD_LAST_3_MONTHS, String.valueOf( reportTable.getRelatives().isLast3Months() ) );
-                writer.writeElement( FIELD_LAST_6_MONTHS, String.valueOf( reportTable.getRelatives().isLast6Months() ) );
-                writer.writeElement( FIELD_LAST_12_MONTHS, String.valueOf( reportTable.getRelatives().isLast12Months() ) );
-                writer.writeElement( FIELD_SO_FAR_THIS_YEAR, String.valueOf( reportTable.getRelatives().isSoFarThisYear() ) );
-                writer.writeElement( FIELD_LAST_3_TO_6_MONTHS, String.valueOf( reportTable.getRelatives().isLast3To6Months() ) );
-                writer.writeElement( FIELD_LAST_6_TO_9_MONTHS, String.valueOf( reportTable.getRelatives().isLast6To9Months() ) );
-                writer.writeElement( FIELD_LAST_9_TO_12_MONTHS, String.valueOf( reportTable.getRelatives().isLast9To12Months() ) );
-                writer.writeElement( FIELD_LAST_12_INDIVIDUAL_MONHTS, String.valueOf( reportTable.getRelatives().isLast12IndividualMonths() ) );
-                writer.writeElement( FIELD_INDIVIDUAL_MONTHS_THIS_YEAR, String.valueOf( reportTable.getRelatives().isIndividualMonthsThisYear() ) );
-                writer.writeElement( FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR, String.valueOf( reportTable.getRelatives().isIndividualQuartersThisYear() ) );
-                
+                writer.writeElement( FIELD_MONTHS_THIS_YEAR, String.valueOf( reportTable.getRelatives().isMonthsThisYear() ) );
+                writer.writeElement( FIELD_QUARTERS_THIS_YEAR, String.valueOf( reportTable.getRelatives().isQuartersThisYear() ) );
+                writer.writeElement( FIELD_THIS_YEAR, String.valueOf( reportTable.getRelatives().isThisYear() ) );
+                writer.writeElement( FIELD_MONTHS_LAST_YEAR, String.valueOf( reportTable.getRelatives().isMonthsLastYear() ) );
+                writer.writeElement( FIELD_QUARTERS_LAST_YEAR, String.valueOf( reportTable.getRelatives().isQuartersLastYear() ) );
+                writer.writeElement( FIELD_LAST_YEAR, String.valueOf( reportTable.getRelatives().isLastYear() ) );
+
                 writer.writeElement( FIELD_PARAM_REPORTING_MONTH, String.valueOf( reportTable.getReportParams().isParamReportingMonth() ) );
                 writer.writeElement( FIELD_PARAM_PARENT_ORG_UNIT, String.valueOf( reportTable.getReportParams().isParamParentOrganisationUnit() ) );
                 writer.writeElement( FIELD_PARAM_ORG_UNIT, String.valueOf( reportTable.getReportParams().isParamOrganisationUnit() ) ); 
@@ -354,39 +346,33 @@ public class ReportTableConverter
 
             reader.moveToStartElement( FIELD_DO_ORGANISATION_UNITS );
             reportTable.setDoUnits( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_REPORTING_MONTH );          
-            reportTable.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_3_MONTHS );
-            reportTable.getRelatives().setLast3Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_6_MONTHS );
-            reportTable.getRelatives().setLast6Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_12_MONTHS );
-            reportTable.getRelatives().setLast12Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_SO_FAR_THIS_YEAR );
-            reportTable.getRelatives().setSoFarThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_3_TO_6_MONTHS );
-            reportTable.getRelatives().setLast3To6Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_6_TO_9_MONTHS );
-            reportTable.getRelatives().setLast6To9Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_9_TO_12_MONTHS );
-            reportTable.getRelatives().setLast9To12Months( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_LAST_12_INDIVIDUAL_MONHTS );
-            reportTable.getRelatives().setLast12IndividualMonths( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_INDIVIDUAL_MONTHS_THIS_YEAR );
-            reportTable.getRelatives().setIndividualMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
-            
-            reader.moveToStartElement( FIELD_INDIVIDUAL_QUARTERS_THIS_YEAR );
-            reportTable.getRelatives().setIndividualQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+
+            if ( params.minorVersionGreaterOrEqual( DXFConverter.MINOR_VERSION_12 ) )
+            {
+                reader.moveToStartElement( FIELD_REPORTING_MONTH );          
+                reportTable.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
+    
+                reader.moveToStartElement( FIELD_REPORTING_MONTH );          
+                reportTable.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_MONTHS_THIS_YEAR );
+                reportTable.getRelatives().setMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_QUARTERS_THIS_YEAR );
+                reportTable.getRelatives().setQuartersThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_THIS_YEAR );
+                reportTable.getRelatives().setThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_MONTHS_LAST_YEAR );
+                reportTable.getRelatives().setMonthsLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_QUARTERS_LAST_YEAR );
+                reportTable.getRelatives().setQuartersLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+                
+                reader.moveToStartElement( FIELD_LAST_YEAR );
+                reportTable.getRelatives().setLastYear( Boolean.parseBoolean( reader.getElementValue() ) );
+            }
             
             reader.moveToStartElement( FIELD_PARAM_REPORTING_MONTH );
             reportTable.getReportParams().setParamReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );

@@ -41,8 +41,6 @@ import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
 
 /**
  * @author Lars Helge Overland
