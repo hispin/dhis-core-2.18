@@ -27,7 +27,6 @@ package org.hisp.dhis.de.screen;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_SUM;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
@@ -210,7 +209,7 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreen( String dataEntryFormCode, Collection<DataValue> dataValues,
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap,
-        String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
+        String disabled, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
         // Populating Custom Value data
@@ -454,17 +453,12 @@ public class DefaultDataEntryScreenManager
                     appendCode += " />";
                 }
 
-                if ( !dataElement.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" ); // TODO backwards compatibility, save mode removed
                 appendCode = appendCode.replace( "$DISABLED", disabled );
 
                 if ( minMaxDataElement == null )
@@ -490,7 +484,7 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
         Collection<DataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<String, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n, DataSet dataSet )
+        Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet )
     {
         // ---------------------------------------------------------------------
         // Populating Custom Value data
@@ -736,17 +730,12 @@ public class DefaultDataEntryScreenManager
                     appendCode += " />";
                 }
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 appendCode += metaDataCode;
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementValueType );
                 appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" ); // TODO backwards compatibility, save mode removed
                 appendCode = appendCode.replace( "$DISABLED", disabled );
 
                 if ( minMaxDataElement == null )

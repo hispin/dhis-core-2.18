@@ -27,8 +27,6 @@ package org.hisp.dhis.caseentry.action.caseentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_ZERO_VALUE_SAVE_MODE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,7 +43,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientIdentifier;
@@ -136,13 +133,6 @@ public class CustomDataEntryAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private DataEntryScreenManager dataEntryScreenManager;
 
     public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
@@ -166,13 +156,6 @@ public class CustomDataEntryAction
     public String getCustomDataEntryFormCode()
     {
         return this.customDataEntryFormCode;
-    }
-
-    private Boolean zeroValueSaveMode;
-
-    public Boolean getZeroValueSaveMode()
-    {
-        return zeroValueSaveMode;
     }
 
     private Collection<ProgramStageDataElement> programStageDataElements;
@@ -330,9 +313,6 @@ public class CustomDataEntryAction
     public String execute()
         throws Exception
     {
-
-        Boolean zeroValueSaveMode = (Boolean) systemSettingManager.getSystemSetting( KEY_ZERO_VALUE_SAVE_MODE, false );
-
         // ---------------------------------------------------------------------
         // Get the min/max values
         // ---------------------------------------------------------------------
@@ -400,7 +380,7 @@ public class CustomDataEntryAction
         {
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
                 dataEntryForm.getHtmlCode(), patientDataValues, calculatedValueMap, minMaxMap, disabled,
-                zeroValueSaveMode, i18n, programStage, programStageInstance, organisationUnit );
+                i18n, programStage, programStageInstance, organisationUnit );
 
             //programStageDataElements = dataEntryScreenManager.getProgramStageDataElements( dataEntryForm.getHtmlCode() );
         }

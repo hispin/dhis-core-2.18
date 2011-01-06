@@ -5,13 +5,12 @@
 
 function saveVal( dataElementId, optionComboId )
 {
-	var zeroValueSaveMode = document.getElementById( 'zeroValueSaveMode' ).value;
 	var dataElementName = document.getElementById( 'value[' + dataElementId + '].name' ).innerHTML;
 	
-	saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode );
+	saveValue( dataElementId, optionComboId, dataElementName, null );
 }
 
-function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode )
+function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSaveMode ) // ZeroValueSaveMode kept for CDE backwards compatibility
 {
     var field = document.getElementById( 'value[' + dataElementId + '].value' + ':' +  'value[' + optionComboId + '].value');
     var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   
@@ -43,9 +42,9 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
                 window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
                 return alertField( field );
             }
-            else if ( isZeroNumber( field.value ) && zeroValueSaveMode == false && significantZeros.indexOf( dataElementId ) == -1 )
+            else if ( isZeroNumber( field.value ) && significantZeros.indexOf( dataElementId ) == -1 )
             {
-                // If value is 0, and zeroValueSaveMode is false, and zero is not significant for data element, then skip value
+                // If value is 0 and zero is not significant for data element, then skip value
                 
                 field.style.backgroundColor = '#ccffcc';
                 return;

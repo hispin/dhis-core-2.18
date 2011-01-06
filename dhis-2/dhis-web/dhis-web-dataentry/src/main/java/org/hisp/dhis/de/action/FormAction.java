@@ -302,13 +302,6 @@ public class FormAction
         return this.customDataEntryFormCode;
     }
 
-    private Boolean zeroValueSaveMode;
-
-    public Boolean getZeroValueSaveMode()
-    {
-        return zeroValueSaveMode;
-    }
-
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -518,8 +511,7 @@ public class FormAction
         if ( cdeFormExists )
         {
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, zeroValueSaveMode,
-                i18n, dataSet );
+                dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, i18n, dataSet );
         }
 
         // ---------------------------------------------------------------------

@@ -264,7 +264,7 @@ public class DefaultDataEntryScreenManager
 
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n,
+        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n,
         ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit )
     {
         // ---------------------------------------------------------------------
@@ -275,15 +275,15 @@ public class DefaultDataEntryScreenManager
         String result = "";
 
         result = populateCustomDataEntryForTextBox( dataEntryFormCode, dataValues, calculatedValueMap, disabled,
-            saveMode, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
+            i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
         result = populateCustomDataEntryForBoolean( result, dataValues, calculatedValueMap, minMaxMap, disabled,
-            saveMode, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
+            i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
         result = populateCustomDataEntryForMutiDimentionalString( result, dataValues, calculatedValueMap, minMaxMap,
-            disabled, saveMode, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
+            disabled, i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
-        result = populateCustomDataEntryForDate( result, dataValues, calculatedValueMap, minMaxMap, disabled, saveMode,
+        result = populateCustomDataEntryForDate( result, dataValues, calculatedValueMap, minMaxMap, disabled,
             i18n, programStage, programStageInstance, organisationUnit, mapDataValue );
 
         result = populateI18nStrings( result, i18n );
@@ -293,7 +293,7 @@ public class DefaultDataEntryScreenManager
 
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        String disabled, Boolean saveMode, I18n i18n, ProgramStage programStage,
+        String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -481,11 +481,6 @@ public class DefaultDataEntryScreenManager
 
                 appendCode += " />";
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 // appendCode += metaDataCode;
 
                 // -----------------------------------------------------------
@@ -533,7 +528,7 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" );
                 // logger.info( "after add js : " + appendCode );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
@@ -547,7 +542,7 @@ public class DefaultDataEntryScreenManager
 
     private String populateCustomDataEntryForBoolean( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n,
+        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n,
         ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -747,11 +742,6 @@ public class DefaultDataEntryScreenManager
                     appendCode += calDataElementCode;
                 }
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 appendCode += metaDataCode;
 
                 // -----------------------------------------------------------
@@ -802,7 +792,7 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "i18n_yes", i18n.getString( "yes" ) );
                 appendCode = appendCode.replace( "i18n_no", i18n.getString( "no" ) );
                 appendCode = appendCode.replace( "i18n_select_value", i18n.getString( "select_value" ) );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" );
 
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
@@ -817,7 +807,7 @@ public class DefaultDataEntryScreenManager
 
     private String populateCustomDataEntryForMutiDimentionalString( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, Map<CalculatedDataElement, Integer> calculatedValueMap,
-        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, Boolean saveMode, I18n i18n,
+        Map<Integer, MinMaxDataElement> minMaxMap, String disabled, I18n i18n,
         ProgramStage programStage, ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -1012,11 +1002,6 @@ public class DefaultDataEntryScreenManager
                     appendCode += calDataElementCode;
                 }
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 appendCode += metaDataCode;
 
                 // -----------------------------------------------------------
@@ -1062,7 +1047,7 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "i18n_select_value", i18n.getString( "select_value" ) );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" );
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
@@ -1076,7 +1061,7 @@ public class DefaultDataEntryScreenManager
 
     private String populateCustomDataEntryForDate( String dataEntryFormCode, Collection<PatientDataValue> dataValues,
         Map<CalculatedDataElement, Integer> calculatedValueMap, Map<Integer, MinMaxDataElement> minMaxMap,
-        String disabled, Boolean saveMode, I18n i18n, ProgramStage programStage,
+        String disabled, I18n i18n, ProgramStage programStage,
         ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
         Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
@@ -1256,11 +1241,6 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForDate );
                 //appendCode += "</script>";
 
-                if ( !dataElement.getAggregationOperator().equalsIgnoreCase( DataElement.AGGREGATION_OPERATOR_SUM ) )
-                {
-                    saveMode = true;
-                }
-
                 appendCode += metaDataCode;
                 
 
@@ -1310,7 +1290,7 @@ public class DefaultDataEntryScreenManager
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
-                appendCode = appendCode.replace( "$SAVEMODE", "" + saveMode + "" );
+                appendCode = appendCode.replace( "$SAVEMODE", "false" );
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
@@ -1450,7 +1430,6 @@ public class DefaultDataEntryScreenManager
     @Override
     public Collection<ProgramStageDataElement> getProgramStageDataElements( String htmlCode )
     {
-
         Set<ProgramStageDataElement> result = new HashSet<ProgramStageDataElement>();
 
         Pattern identifierPattern = Pattern
