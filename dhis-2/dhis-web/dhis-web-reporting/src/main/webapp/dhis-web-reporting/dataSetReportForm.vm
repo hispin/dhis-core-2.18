@@ -31,7 +31,7 @@
 				#end
 			</select><br>
 			
-	        <select id="periodId" name="periodId" style="width:325px" onchange="displayCompleteness()">
+	        <select id="periodId" name="periodId" style="width:325px">
 	        </select>
 		</td>
   </tr>
