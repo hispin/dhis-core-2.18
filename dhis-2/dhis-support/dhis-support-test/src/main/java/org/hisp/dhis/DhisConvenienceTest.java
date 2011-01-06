@@ -70,6 +70,7 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.olap.OlapURL;
@@ -831,6 +832,18 @@ public abstract class DhisConvenienceTest
         importDataValue.setStatus( status.name() );
 
         return importDataValue;
+    }
+    
+    public static MapLegend createMapLegend( char uniqueCharacter, Double startValue, Double endValue )
+    {
+        MapLegend legend = new MapLegend();
+
+        legend.setName( "MapLegend" + uniqueCharacter );
+        legend.setStartValue( startValue );
+        legend.setEndValue( endValue );
+        legend.setColor( "Color" + uniqueCharacter );
+
+        return legend;
     }
 
     public static MapLegendSet createMapLegendSet( char uniqueCharacter, Indicator... indicators )
