@@ -1283,3 +1283,19 @@ function getRandomNumber()
 {
 	return Math.floor( 1000000 * Math.random() );
 }
+
+function relativePeriodsChecked()
+{
+    if ( isChecked( "reportingMonth" ) == true ||
+         isChecked( "monthsThisYear" ) == true ||
+         isChecked( "quartersThisYear" ) == true ||
+         isChecked( "thisYear" ) == true ||
+         isChecked( "monthsLastYear" ) == true ||
+         isChecked( "quartersLastYear" ) == true ||
+         isChecked( "lastYear" ) == true )
+    {
+        return true;
+    }
+    
+    return false;
+}

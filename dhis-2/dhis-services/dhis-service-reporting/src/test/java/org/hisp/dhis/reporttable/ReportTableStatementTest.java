@@ -49,6 +49,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
 import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
@@ -74,7 +75,8 @@ public class ReportTableStatementTest
 
     private DataElementCategoryCombo categoryCombo;
     
-    private PeriodType periodType;
+    private PeriodType monthlyPeriodType;
+    private PeriodType yearlyPeriodType;
     
     private IndicatorType indicatorType;
 
@@ -100,7 +102,8 @@ public class ReportTableStatementTest
         relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
         
-        periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        monthlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        yearlyPeriodType = PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
         
         dataElements.add( createDataElement( 'A' ) );
         dataElements.add( createDataElement( 'B' ) );
@@ -117,17 +120,17 @@ public class ReportTableStatementTest
         indicators.add( createIndicator( 'A', indicatorType ) );
         indicators.add( createIndicator( 'B', indicatorType ) );
         
-        dataSets.add( createDataSet( 'A', periodType ) );
-        dataSets.add( createDataSet( 'B', periodType ) );
+        dataSets.add( createDataSet( 'A', monthlyPeriodType ) );
+        dataSets.add( createDataSet( 'B', monthlyPeriodType ) );
                 
-        periods.add( createPeriod( periodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) ) );
-        periods.add( createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) ) );
+        periods.add( createPeriod( monthlyPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) ) );
+        periods.add( createPeriod( monthlyPeriodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) ) );
 
-        Period periodC = createPeriod( periodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
-        Period periodD = createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 4, 30 ) );
+        Period periodC = createPeriod( monthlyPeriodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
+        Period periodD = createPeriod( yearlyPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 12, 31 ) );
         
         periodC.setName( RelativePeriods.REPORTING_MONTH );
-        periodD.setName( RelativePeriods.LAST_3_MONTHS );
+        periodD.setName( RelativePeriods.THIS_YEAR );
         
         periods.add( periodC );
         periods.add( periodD );
@@ -138,7 +141,7 @@ public class ReportTableStatementTest
         relatives = new RelativePeriods();
         
         relatives.setReportingMonth( true );
-        relatives.setLast3Months( true );
+        relatives.setThisYear( true );
 
         i18nFormat = new MockI18nFormat();
     }

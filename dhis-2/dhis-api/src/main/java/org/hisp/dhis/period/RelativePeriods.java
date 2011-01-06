@@ -33,7 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**
@@ -43,29 +42,10 @@ import org.hisp.dhis.i18n.I18nFormat;
 public class RelativePeriods
     implements Serializable
 {
-    public static final String REPORTING_MONTH = "reporting_month";    
-    public static final String LAST_3_MONTHS = "last3_months";
-    public static final String LAST_6_MONTHS = "last6_months";
-    public static final String LAST_12_MONTHS = "last12_months";
-    public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
-    public static final String LAST_3_TO_6_MONTHS = "last3_6_months";
-    public static final String LAST_6_TO_9_MONTHS = "last6_9_months";
-    public static final String LAST_9_TO_12_MONTHS = "last9_12_months";
-    
-    public static final String[] PREVIOUS_MONTH_NAMES = { 
-        "previous_month_12",
-        "previous_month_11",
-        "previous_month_10",
-        "previous_month_9",
-        "previous_month_8",
-        "previous_month_7",
-        "previous_month_6",
-        "previous_month_5",
-        "previous_month_4",
-        "previous_month_3",
-        "previous_month_3",
-        "previous_month_1" };
-    
+    public static final String REPORTING_MONTH = "reporting_month";
+    public static final String THIS_YEAR = "year";    
+    public static final String LAST_YEAR = "last_year";
+        
     public static final String[] MONTHS_THIS_YEAR = {
         "january",
         "february",
@@ -79,34 +59,48 @@ public class RelativePeriods
         "october",
         "november",
         "december" };
+
+    public static final String[] MONTHS_LAST_YEAR = {
+        "january_last_year",
+        "february_last_year",
+        "march_last_year",
+        "april_last_year",
+        "may_last_year",
+        "june_last_year",
+        "july_last_year",
+        "august_last_year",
+        "september_last_year",
+        "october_last_year",
+        "november_last_year",
+        "december_last_year" };
     
     public static final String[] QUARTERS_THIS_YEAR = {
         "quarter1",
         "quarter2",
         "quarter3",
         "quarter4" };
+
+    public static final String[] QUARTERS_LAST_YEAR = {
+        "quarter1_last_year",
+        "quarter2_last_year",
+        "quarter3_last_year",
+        "quarter4_last_year" };
+
+    private static final int MONTHS_IN_YEAR = 12;
     
-    private Boolean reportingMonth;
+    private Boolean reportingMonth = false;
     
-    private Boolean last3Months;
+    private Boolean monthsThisYear = false;
     
-    private Boolean last6Months;
+    private Boolean quartersThisYear = false;
     
-    private Boolean last12Months;
+    private Boolean thisYear = false;
     
-    private Boolean soFarThisYear;
+    private Boolean monthsLastYear = false;
     
-    private Boolean last3To6Months;
+    private Boolean quartersLastYear = false;
     
-    private Boolean last6To9Months;
-    
-    private Boolean last9To12Months;
-    
-    private Boolean last12IndividualMonths;
-    
-    private Boolean individualMonthsThisYear;
-    
-    private Boolean individualQuartersThisYear;
+    private Boolean lastYear = false;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -115,23 +109,26 @@ public class RelativePeriods
     public RelativePeriods()
     {   
     }
-
-    public RelativePeriods( boolean reportingMonth, boolean last3Months,
-        boolean last6Months, boolean last12Months, boolean soFarThisYear,
-        boolean last3To6Months, boolean last6To9Months, boolean last9To12Months,
-        boolean last12IndividualMonths, boolean individualMonthsThisYear, boolean individualQuartersThisYear )
+    
+    /**
+     * @param reportingMonth reporting month
+     * @param monthsThisYear months this year
+     * @param quartersThisYear quarters this year
+     * @param thisYear this year
+     * @param monthsLastYear months last year
+     * @param quartersLastYear quarters last year
+     * @param lastYear last year
+     */
+    public RelativePeriods( boolean reportingMonth, boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
+        boolean monthsLastYear, boolean quartersLastYear, boolean lastYear )
     {
         this.reportingMonth = reportingMonth;
-        this.last3Months = last3Months;
-        this.last6Months = last6Months;
-        this.last12Months = last12Months;
-        this.soFarThisYear = soFarThisYear;
-        this.last3To6Months = last3To6Months;
-        this.last6To9Months = last6To9Months;
-        this.last9To12Months = last9To12Months;
-        this.last12IndividualMonths = last12IndividualMonths;
-        this.individualMonthsThisYear = individualMonthsThisYear;
-        this.individualQuartersThisYear = individualQuartersThisYear;
+        this.monthsThisYear = monthsThisYear;
+        this.quartersThisYear = quartersThisYear;
+        this.thisYear = thisYear;
+        this.monthsLastYear = monthsLastYear;
+        this.quartersLastYear = quartersLastYear;
+        this.lastYear = lastYear;
     }
 
     // -------------------------------------------------------------------------
@@ -166,7 +163,7 @@ public class RelativePeriods
     /**
      * Gets a list of Periods based on the given input and the state of this RelativePeriods.
      * 
-     * @param months the number of months back in time representing the current month.
+     * @param months the number of months back in time representing the current reporting month.
      * @param format the i18n format.
      * @param date the date representing now (for testing purposes).
      * @return a list of relative Periods.
@@ -183,85 +180,86 @@ public class RelativePeriods
             period.setName( dynamicNames ? format.formatPeriod( period ) : REPORTING_MONTH );
             periods.add( period );
         }
-        if ( isLast3Months() )
+        
+        if ( isMonthsThisYear() )
         {
-            Period period = new QuarterlyPeriodType().createPeriod( getDate( months + 2, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_3_MONTHS );
-            periods.add( period );
+            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_THIS_YEAR, current, dynamicNames, format ) );
         }
-        if ( isLast6Months() )
+        
+        if ( isQuartersThisYear() )
         {
-            Period period = new SixMonthlyPeriodType().createPeriod( getDate( months + 5, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_6_MONTHS );
-            periods.add( period );
+            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_THIS_YEAR, current, dynamicNames, format ) );
         }
-        if ( isLast12Months() )
+        
+        if ( isThisYear() )
         {
-            Period period = new YearlyPeriodType().createPeriod( getDate( months + 11, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_12_MONTHS );
-            periods.add( period );
+            periods.add( getRelativePeriod( new YearlyPeriodType(), THIS_YEAR, current, dynamicNames, format ) );
         }
-        if ( isSoFarThisYear() )
+        
+        current = getDate( MONTHS_IN_YEAR, current );
+        
+        if ( isMonthsLastYear() )
         {
-            Period period = new YearlyPeriodType().createPeriod( current );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : SO_FAR_THIS_YEAR );
-            periods.add( period );
+            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_YEAR, current, dynamicNames, format ) );
         }
-        if ( isLast3To6Months() )
+        
+        if ( isQuartersLastYear() )
         {
-            Period period = new QuarterlyPeriodType().createPeriod( getDate( months + 5, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_3_TO_6_MONTHS );
-            periods.add( period );
+            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_LAST_YEAR, current, dynamicNames, format ) );
         }
-        if ( isLast6To9Months() )
+        
+        if ( isLastYear() )
         {
-            Period period = new QuarterlyPeriodType().createPeriod( getDate( months + 8, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_6_TO_9_MONTHS );
-            periods.add( period );
+            periods.add( getRelativePeriod( new YearlyPeriodType(), LAST_YEAR, current, dynamicNames, format ) );
         }
-        if ( isLast9To12Months() )
-        {
-            Period period = new QuarterlyPeriodType().createPeriod( getDate( months + 11, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : LAST_9_TO_12_MONTHS );
-            periods.add( period );
-        }
-        if ( isLast12IndividualMonths() )
-        {
-            for ( int i = 11; i >= 0; i-- )
-            {
-                Period period = new MonthlyPeriodType().createPeriod( getDate( months + i, date ) );
-                period.setName( dynamicNames ? format.formatPeriod( period ) : PREVIOUS_MONTH_NAMES[i] );
-                periods.add( period );
-            }
-        }
-        if ( isIndividualMonthsThisYear() )
-        {
-            List<Period> individualMonths = new MonthlyPeriodType().generatePeriods( new MonthlyPeriodType().createPeriod( current ) );            
-            CollectionUtils.filter( individualMonths, new PastPeriodPredicate( current ) );
-            
-            int c = 0;
-            for ( Period period : individualMonths )
-            {
-                period.setName( dynamicNames ? format.formatPeriod( period ) : MONTHS_THIS_YEAR[c++] );
-                periods.add( period );
-            }
-        }
-        if ( isIndividualQuartersThisYear() )
-        {
-            List<Period> individualQuarters = new QuarterlyPeriodType().generatePeriods( new QuarterlyPeriodType().createPeriod( current ) );
-            CollectionUtils.filter( individualQuarters, new PastPeriodPredicate( current ) );
-            
-            int c = 0;
-            for ( Period period : individualQuarters )
-            {
-                period.setName( dynamicNames ? format.formatPeriod( period ) : QUARTERS_THIS_YEAR[c++] );
-                periods.add( period );
-            }
-        }
-            
+        
         return periods;
     }
 
+    /**
+     * Returns a list of relative periods.
+     * 
+     * @param periodType the period type.
+     * @param periodNames the array of period names.
+     * @param current the current date.
+     * @param dynamicNames indication of whether dynamic names should be used.
+     * @param format the I18nFormat.
+     * @return a list of periods.
+     */
+    private List<Period> getRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date current, boolean dynamicNames, I18nFormat format )
+    {
+        List<Period> relatives = periodType.generatePeriods( current );
+        List<Period> periods = new ArrayList<Period>();
+        
+        int c = 0;
+        
+        for ( Period period : relatives )
+        {
+            period.setName( dynamicNames ? format.formatPeriod( period ) : MONTHS_THIS_YEAR[c++] );
+            periods.add( period );
+        }
+        
+        return periods;
+    }
+
+    /**
+     * Returns relative period.
+     * 
+     * @param periodType the period type.
+     * @param periodName the period name.
+     * @param current the current date.
+     * @param dynamicNames indication of whether dynamic names should be used.
+     * @param format the I18nFormat.
+     * @return a list of periods.
+     */
+    private Period getRelativePeriod( CalendarPeriodType periodType, String periodName, Date current, boolean dynamicNames, I18nFormat format )
+    {
+        Period period = periodType.createPeriod( current );
+        period.setName( dynamicNames ? format.formatPeriod( period ) : periodName );
+        
+        return period;
+    }
+    
     /**
      * Returns a date.
      * 
@@ -288,54 +286,34 @@ public class RelativePeriods
         return reportingMonth != null && reportingMonth;
     }
     
-    public boolean isLast3Months()
+    public boolean isMonthsThisYear()
     {
-        return last3Months != null && last3Months;
+        return monthsThisYear != null && monthsThisYear;
     }
     
-    public boolean isLast6Months()
+    public boolean isQuartersThisYear()
     {
-        return last6Months != null && last6Months;
-    }
-        
-    public boolean isLast12Months()
-    {
-        return last12Months != null && last12Months;
+        return quartersThisYear != null && quartersThisYear;
     }
     
-    public boolean isSoFarThisYear()
+    public boolean isThisYear()
     {
-        return soFarThisYear != null && soFarThisYear;
-    }
-        
-    public boolean isLast3To6Months()
-    {
-        return last3To6Months != null && last3To6Months;
+        return thisYear != null && thisYear;
     }
     
-    public boolean isLast6To9Months()
+    public boolean isMonthsLastYear()
     {
-        return last6To9Months != null && last6To9Months;
+        return monthsLastYear != null && monthsLastYear;
     }
     
-    public boolean isLast9To12Months()
+    public boolean isQuartersLastYear()
     {
-        return last9To12Months != null && last9To12Months;
+        return quartersLastYear != null && quartersLastYear;
     }
     
-    public boolean isLast12IndividualMonths()
+    public boolean isLastYear()
     {
-        return last12IndividualMonths != null && last12IndividualMonths;
-    }
-    
-    public boolean isIndividualMonthsThisYear()
-    {
-        return individualMonthsThisYear != null && individualMonthsThisYear;
-    }
-    
-    public boolean isIndividualQuartersThisYear()
-    {
-        return individualQuartersThisYear != null && individualQuartersThisYear;
+        return lastYear != null && lastYear;
     }
         
     // -------------------------------------------------------------------------
@@ -351,105 +329,65 @@ public class RelativePeriods
     {
         this.reportingMonth = reportingMonth;
     }
-    
-    public Boolean getLast3Months()
+
+    public Boolean getMonthsThisYear()
     {
-        return last3Months;
+        return monthsThisYear;
     }
 
-    public void setLast3Months( Boolean last3Months )
+    public void setMonthsThisYear( Boolean monthsThisYear )
     {
-        this.last3Months = last3Months;
+        this.monthsThisYear = monthsThisYear;
     }
 
-    public Boolean getLast6Months()
+    public Boolean getQuartersThisYear()
     {
-        return last6Months;
+        return quartersThisYear;
     }
 
-    public void setLast6Months( Boolean last6Months )
+    public void setQuartersThisYear( Boolean quartersThisYear )
     {
-        this.last6Months = last6Months;
+        this.quartersThisYear = quartersThisYear;
     }
 
-    public Boolean getLast12Months()
+    public Boolean getThisYear()
     {
-        return last12Months;
+        return thisYear;
     }
 
-    public void setLast12Months( Boolean last12Months )
+    public void setThisYear( Boolean thisYear )
     {
-        this.last12Months = last12Months;
+        this.thisYear = thisYear;
     }
 
-    public Boolean getSoFarThisYear()
+    public Boolean getMonthsLastYear()
     {
-        return soFarThisYear;
+        return monthsLastYear;
     }
 
-    public void setSoFarThisYear( Boolean soFarThisYear )
+    public void setMonthsLastYear( Boolean monthsLastYear )
     {
-        this.soFarThisYear = soFarThisYear;
+        this.monthsLastYear = monthsLastYear;
     }
 
-    public Boolean getLast3To6Months()
+    public Boolean getQuartersLastYear()
     {
-        return last3To6Months;
+        return quartersLastYear;
     }
 
-    public void setLast3To6Months( Boolean last3To6Months )
+    public void setQuartersLastYear( Boolean quartersLastYear )
     {
-        this.last3To6Months = last3To6Months;
+        this.quartersLastYear = quartersLastYear;
     }
 
-    public Boolean getLast6To9Months()
+    public Boolean getLastYear()
     {
-        return last6To9Months;
+        return lastYear;
     }
 
-    public void setLast6To9Months( Boolean last6To9Months )
+    public void setLastYear( Boolean lastYear )
     {
-        this.last6To9Months = last6To9Months;
-    }
-
-    public Boolean getLast9To12Months()
-    {
-        return last9To12Months;
-    }
-
-    public void setLast9To12Months( Boolean last9To12Months )
-    {
-        this.last9To12Months = last9To12Months;
-    }
-
-    public Boolean getLast12IndividualMonths()
-    {
-        return last12IndividualMonths;
-    }
-
-    public void setLast12IndividualMonths( Boolean last12IndividualMonths )
-    {
-        this.last12IndividualMonths = last12IndividualMonths;
-    }
-
-    public Boolean getIndividualMonthsThisYear()
-    {
-        return individualMonthsThisYear;
-    }
-
-    public void setIndividualMonthsThisYear( Boolean individualMonthsThisYear )
-    {
-        this.individualMonthsThisYear = individualMonthsThisYear;
-    }
-
-    public Boolean getIndividualQuartersThisYear()
-    {
-        return individualQuartersThisYear;
-    }
-
-    public void setIndividualQuartersThisYear( Boolean individualQuartersThisYear )
-    {
-        this.individualQuartersThisYear = individualQuartersThisYear;
+        this.lastYear = lastYear;
     }
 
     // -------------------------------------------------------------------------
@@ -457,41 +395,19 @@ public class RelativePeriods
     // -------------------------------------------------------------------------
 
     @Override
-    public String toString()
-    {
-        String toString = "[Reporting month: " + reportingMonth +
-            ", Last 3 months: " + last3Months +
-            ", Last 6 months: " + last6Months +
-            ", Last 12 months: " + last12Months +
-            ", So far this year: " + soFarThisYear + 
-            ", Last 3 to 6 months: " + last3To6Months +
-            ", Last 6 to 9 months: " + last6To9Months +
-            ", Last 9 to 12 months: " + last9To12Months + 
-            ", Last 12 Individual months: " + last12IndividualMonths + 
-            ", Individual months this year: " + individualMonthsThisYear +
-            ", Individual quarters this year: " + individualQuartersThisYear + "]";
-        
-        return toString;
-    }
-
-    @Override
     public int hashCode()
     {
         final int prime = 31;
         
         int result = 1;
-        
-        result = prime * result + ( ( last12Months == null ) ? 0 : last12Months.hashCode() );
-        result = prime * result + ( ( last3Months == null ) ? 0 : last3Months.hashCode() );
-        result = prime * result + ( ( last3To6Months == null ) ? 0 : last3To6Months.hashCode() );
-        result = prime * result + ( ( last6Months == null ) ? 0 : last6Months.hashCode() );
-        result = prime * result + ( ( last6To9Months == null ) ? 0 : last6To9Months.hashCode() );
-        result = prime * result + ( ( last9To12Months == null ) ? 0 : last9To12Months.hashCode() );
+
         result = prime * result + ( ( reportingMonth == null ) ? 0 : reportingMonth.hashCode() );
-        result = prime * result + ( ( soFarThisYear == null ) ? 0 : soFarThisYear.hashCode() );
-        result = prime * result + ( ( last12IndividualMonths == null ) ? 0 : last12IndividualMonths.hashCode() );
-        result = prime * result + ( ( individualMonthsThisYear == null ) ? 0 : individualMonthsThisYear.hashCode() );
-        result = prime * result + ( ( individualQuartersThisYear == null ) ? 0 : individualQuartersThisYear.hashCode() );
+        result = prime * result + ( ( monthsThisYear == null ) ? 0 : monthsThisYear.hashCode() );
+        result = prime * result + ( ( quartersThisYear == null ) ? 0 : quartersThisYear.hashCode() );
+        result = prime * result + ( ( thisYear == null ) ? 0 : thisYear.hashCode() );
+        result = prime * result + ( ( monthsLastYear == null ) ? 0 : monthsLastYear.hashCode() );
+        result = prime * result + ( ( quartersLastYear == null ) ? 0 : quartersLastYear.hashCode() );
+        result = prime * result + ( ( lastYear == null ) ? 0 : lastYear.hashCode() );
         
         return result;
     }
@@ -516,78 +432,6 @@ public class RelativePeriods
         
         final RelativePeriods other = (RelativePeriods) object;
         
-        if ( last12Months == null )
-        {
-            if ( other.last12Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last12Months.equals( other.last12Months ) )
-        {
-            return false;
-        }
-        
-        if ( last3Months == null )
-        {
-            if ( other.last3Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last3Months.equals( other.last3Months ) )
-        {
-            return false;
-        }
-        
-        if ( last3To6Months == null )
-        {
-            if ( other.last3To6Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last3To6Months.equals( other.last3To6Months ) )
-        {
-            return false;
-        }
-        
-        if ( last6Months == null )
-        {
-            if ( other.last6Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last6Months.equals( other.last6Months ) )
-        {
-            return false;
-        }
-        
-        if ( last6To9Months == null )
-        {
-            if ( other.last6To9Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last6To9Months.equals( other.last6To9Months ) )
-        {
-            return false;
-        }
-                
-        if ( last9To12Months == null )
-        {
-            if ( other.last9To12Months != null )
-            {
-                return false;
-            }
-        }
-        else if ( !last9To12Months.equals( other.last9To12Months ) )
-        {
-            return false;
-        }
-        
         if ( reportingMonth == null )
         {
             if ( other.reportingMonth != null )
@@ -600,54 +444,78 @@ public class RelativePeriods
             return false;
         }
         
-        if ( soFarThisYear == null )
+        if ( monthsThisYear == null )
         {
-            if ( other.soFarThisYear != null )
+            if ( other.monthsThisYear != null )
             {
                 return false;
             }
         }
-        else if ( !soFarThisYear.equals( other.soFarThisYear ) )
+        else if ( !monthsThisYear.equals( other.monthsThisYear ) )
         {
             return false;
         }
         
-        if ( last12IndividualMonths == null )
+        if ( quartersThisYear == null )
         {
-            if ( other.last12IndividualMonths != null )
+            if ( other.quartersThisYear != null )
             {
                 return false;
             }
         }
-        else if ( !last12IndividualMonths.equals( other.last12IndividualMonths ) )
-        {
-            return false;
-        }
-
-        if ( individualMonthsThisYear == null )
-        {
-            if ( other.individualMonthsThisYear != null )
-            {
-                return false;
-            }
-        }
-        else if ( !individualMonthsThisYear.equals( other.individualMonthsThisYear ) )
-        {
-            return false;
-        }
-
-        if ( individualQuartersThisYear == null )
-        {
-            if ( other.individualQuartersThisYear != null )
-            {
-                return false;
-            }
-        }
-        else if ( !individualQuartersThisYear.equals( other.individualQuartersThisYear ) )
+        else if ( !quartersThisYear.equals( other.quartersThisYear ) )
         {
             return false;
         }
         
+        if ( thisYear == null )
+        {
+            if ( other.thisYear != null )
+            {
+                return false;
+            }
+        }
+        else if ( !thisYear.equals( other.thisYear ) )
+        {
+            return false;
+        }
+        
+        if ( monthsLastYear == null )
+        {
+            if ( other.monthsLastYear != null )
+            {
+                return false;
+            }
+        }
+        else if ( !monthsLastYear.equals( other.monthsLastYear ) )
+        {
+            return false;
+        }
+                
+        if ( quartersLastYear == null )
+        {
+            if ( other.quartersLastYear != null )
+            {
+                return false;
+            }
+        }
+        else if ( !quartersLastYear.equals( other.quartersLastYear ) )
+        {
+            return false;
+        }
+        
+        if ( lastYear == null )
+        {
+            if ( other.lastYear != null )
+            {
+                return false;
+            }
+        }
+        else if ( !lastYear.equals( other.lastYear ) )
+        {
+            return false;
+        }
+                
         return true;
     }
 }

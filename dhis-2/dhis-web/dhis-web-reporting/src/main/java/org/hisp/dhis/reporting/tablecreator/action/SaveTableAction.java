@@ -213,76 +213,48 @@ public class SaveTableAction
         this.reportingMonth = reportingMonth;
     }
 
-    private boolean last3Months;
+    private boolean monthsThisYear;
 
-    public void setLast3Months( boolean last3Months )
+    public void setMonthsThisYear( boolean monthsThisYear )
     {
-        this.last3Months = last3Months;
+        this.monthsThisYear = monthsThisYear;
     }
 
-    private boolean last6Months;
+    private boolean quartersThisYear;
 
-    public void setLast6Months( boolean last6Months )
+    public void setQuartersThisYear( boolean quartersThisYear )
     {
-        this.last6Months = last6Months;
+        this.quartersThisYear = quartersThisYear;
     }
+
+    private boolean thisYear;
+
+    public void setThisYear( boolean thisYear )
+    {
+        this.thisYear = thisYear;
+    }
+
+    private boolean monthsLastYear;
+
+    public void setMonthsLastYear( boolean monthsLastYear )
+    {
+        this.monthsLastYear = monthsLastYear;
+    }
+
+    private boolean quartersLastYear;
+
+    public void setQuartersLastYear( boolean quartersLastYear )
+    {
+        this.quartersLastYear = quartersLastYear;
+    }
+
+    private boolean lastYear;
     
-    private boolean last12Months;
-
-    public void setLast12Months( boolean last12Months )
+    public void setLastYear( boolean lastYear )
     {
-        this.last12Months = last12Months;
-    }
-    
-    private boolean last3To6Months;
-
-    public void setLast3To6Months( boolean last3To6Months )
-    {
-        this.last3To6Months = last3To6Months;
+        this.lastYear = lastYear;
     }
 
-    private boolean last6To9Months;
-
-    public void setLast6To9Months( boolean last6To9Months )
-    {
-        this.last6To9Months = last6To9Months;
-    }
-
-    private boolean last9To12Months;
-
-    public void setLast9To12Months( boolean last9To12Months )
-    {
-        this.last9To12Months = last9To12Months;
-    }
-    
-    private boolean last12IndividualMonths;
-
-    public void setLast12IndividualMonths( boolean last12IndividualMonths )
-    {
-        this.last12IndividualMonths = last12IndividualMonths;
-    }
-
-    private boolean soFarThisYear;
-
-    public void setSoFarThisYear( boolean soFarThisYear )
-    {
-        this.soFarThisYear = soFarThisYear;
-    }
-
-    private boolean individualMonthsThisYear;
-
-    public void setIndividualMonthsThisYear( boolean individualMonthsThisYear )
-    {
-        this.individualMonthsThisYear = individualMonthsThisYear;
-    }
-
-    private boolean individualQuartersThisYear;
-
-    public void setIndividualQuartersThisYear( boolean individualQuartersThisYear )
-    {
-        this.individualQuartersThisYear = individualQuartersThisYear;
-    }
-    
     private boolean paramReportingMonth;
 
     public void setParamReportingMonth( boolean paramReportingMonth )
@@ -333,19 +305,7 @@ public class SaveTableAction
 
         DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
         
-        RelativePeriods relatives = new RelativePeriods();
-        
-        relatives.setReportingMonth( reportingMonth );
-        relatives.setLast3Months( last3Months );
-        relatives.setLast6Months( last6Months );
-        relatives.setLast12Months( last12Months );
-        relatives.setSoFarThisYear( soFarThisYear );
-        relatives.setLast3To6Months( last3To6Months );
-        relatives.setLast6To9Months( last6To9Months );
-        relatives.setLast9To12Months( last9To12Months );
-        relatives.setLast12IndividualMonths( last12IndividualMonths );
-        relatives.setIndividualMonthsThisYear( individualMonthsThisYear );
-        relatives.setIndividualQuartersThisYear( individualQuartersThisYear );
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
         
         ReportParams reportParams = new ReportParams();
         

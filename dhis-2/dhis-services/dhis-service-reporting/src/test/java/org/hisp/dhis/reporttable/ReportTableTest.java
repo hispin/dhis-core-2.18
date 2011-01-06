@@ -51,6 +51,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.junit.Test;
 
 /**
@@ -68,7 +69,8 @@ public class ReportTableTest
     private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
 
-    private PeriodType periodType;
+    private PeriodType montlyPeriodType;
+    private PeriodType yearPeriodType;
 
     private DataElement dataElementA;
     private DataElement dataElementB;
@@ -114,7 +116,8 @@ public class ReportTableTest
         relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
         
-        periodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        yearPeriodType = PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
 
         dataElementA = createDataElement( 'A' );
         dataElementB = createDataElement( 'B' );
@@ -149,8 +152,8 @@ public class ReportTableTest
         indicators.add( indicatorA );
         indicators.add( indicatorB );
         
-        dataSetA = createDataSet( 'A', periodType );
-        dataSetB = createDataSet( 'B', periodType );
+        dataSetA = createDataSet( 'A', montlyPeriodType );
+        dataSetB = createDataSet( 'B', montlyPeriodType );
         
         dataSetA.setId( 'A' );
         dataSetB.setId( 'B' );
@@ -158,8 +161,8 @@ public class ReportTableTest
         dataSets.add( dataSetA );
         dataSets.add( dataSetB );        
         
-        periodA = createPeriod( periodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
-        periodB = createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) );
+        periodA = createPeriod( montlyPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 1, 31 ) );
+        periodB = createPeriod( montlyPeriodType, getDate( 2008, 2, 1 ), getDate( 2008, 2, 28 ) );
         
         periodA.setId( 'A' );
         periodB.setId( 'B' );
@@ -167,14 +170,14 @@ public class ReportTableTest
         periods.add( periodA );
         periods.add( periodB );
         
-        periodC = createPeriod( periodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
-        periodD = createPeriod( periodType, getDate( 2008, 2, 1 ), getDate( 2008, 4, 30 ) );
+        periodC = createPeriod( montlyPeriodType, getDate( 2008, 3, 1 ), getDate( 2008, 3, 31 ) );
+        periodD = createPeriod( yearPeriodType, getDate( 2008, 1, 1 ), getDate( 2008, 12, 31 ) );
         
         periodC.setId( 'C' );
         periodD.setId( 'D' );
         
         periodC.setName( RelativePeriods.REPORTING_MONTH );
-        periodD.setName( RelativePeriods.LAST_3_MONTHS );
+        periodD.setName( RelativePeriods.THIS_YEAR );
         
         relativePeriods.add( periodC );
         relativePeriods.add( periodD );
@@ -191,7 +194,7 @@ public class ReportTableTest
         relatives = new RelativePeriods();
         
         relatives.setReportingMonth( true );
-        relatives.setLast3Months( true );
+        relatives.setThisYear( true );
 
         i18nFormat = new MockI18nFormat();
     }
@@ -234,9 +237,9 @@ public class ReportTableTest
         assertEquals( 8, crossTabColumns.size() );
         
         assertTrue( crossTabColumns.contains( "shortnamea_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_year" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_year" ) );
         
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         
@@ -408,9 +411,9 @@ public class ReportTableTest
         assertEquals( 8, crossTabColumns.size() );
         
         assertTrue( crossTabColumns.contains( "shortnamea_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_year" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_year" ) );
         
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         
@@ -584,13 +587,13 @@ public class ReportTableTest
         assertEquals( 16, crossTabColumns.size() );
         
         assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiona_categoryoptionb_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiona_categoryoptionb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptiona_categoryoptionb_year" ) );
         assertTrue( crossTabColumns.contains( "shortnamea_categoryoptionc_categoryoptiond_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptionc_categoryoptiond_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_categoryoptionc_categoryoptiond_year" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiona_categoryoptionb_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiona_categoryoptionb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptiona_categoryoptionb_year" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_categoryoptionc_categoryoptiond_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptionc_categoryoptiond_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_categoryoptionc_categoryoptiond_year" ) );
         
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         
@@ -724,9 +727,9 @@ public class ReportTableTest
         assertNotNull( crossTabColumns );        
         assertEquals( 8, crossTabColumns.size() );        
         assertTrue( crossTabColumns.contains( "shortnamea_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnamea_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnamea_year" ) );
         assertTrue( crossTabColumns.contains( "shortnameb_reporting_month" ) );
-        assertTrue( crossTabColumns.contains( "shortnameb_last3_months" ) );
+        assertTrue( crossTabColumns.contains( "shortnameb_year" ) );
         
         List<String> crossTabIdentifiers = reportTable.getCrossTabIdentifiers();
         

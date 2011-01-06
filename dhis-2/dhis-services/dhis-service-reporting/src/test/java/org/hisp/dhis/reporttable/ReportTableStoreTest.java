@@ -172,7 +172,7 @@ public class ReportTableStoreTest
         relatives = new RelativePeriods();
         
         relatives.setReportingMonth( true );
-        relatives.setLast3Months( true );
+        relatives.setThisYear( true );
 
         i18nFormat = new MockI18nFormat();        
     }
