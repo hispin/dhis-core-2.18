@@ -30,6 +30,8 @@ package org.hisp.dhis.reporttable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -545,7 +547,7 @@ public class ReportTable
         else
         {
             crossTabPeriods.add( null );
-            reportPeriods = new ArrayList<Period>( allPeriods );
+            reportPeriods = new ArrayList<Period>( new HashSet<Period>( allPeriods ) ); // Remove potential duplicates from relative periods / params
             indexColumns.add( PERIOD_ID );
             indexNameColumns.add( PERIOD_NAME );
         }
@@ -559,7 +561,7 @@ public class ReportTable
         else
         {
             crossTabUnits.add( null );
-            reportUnits = new ArrayList<OrganisationUnit>( allUnits );
+            reportUnits = new ArrayList<OrganisationUnit>( new HashSet<OrganisationUnit>( allUnits ) ); // Remove potential duplicates from params
             indexColumns.add( ORGANISATIONUNIT_ID );
             indexNameColumns.add( ORGANISATIONUNIT_NAME );
         }
