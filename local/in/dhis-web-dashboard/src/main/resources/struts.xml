@@ -67,6 +67,29 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
+		<!-- DrillDown periodToOrgUnit Child/GroupMember -->
+		<action name="generatedrillDownPeriodToOrgChildChartDataElement" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction">
+			<result name="success" type="velocity">/popup.vm</result>
+			<param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		<!-- DrillDown OrgUnitToPeriod Child/GroupMember -->
+		<action name="generatedrillDownOurUnitToPeriodChartDataElement" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction">
+			<result name="success" type="velocity">/popup.vm</result>
+            <param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		
+		
+		
+		
+		
+		
 <!-- GraphicalAnalyser  DataElements end   --> 	
 			
 <!-- GraphicalAnalyser  Indicators -->
