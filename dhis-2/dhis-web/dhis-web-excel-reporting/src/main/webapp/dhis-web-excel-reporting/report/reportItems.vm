@@ -73,7 +73,7 @@
 			<td>$reportItem.sheetNo </td>
 			<td align="center">				
 				<a href="updateReportExcelItemForm.action?reportExcelItemId=$reportItem.id&reportId=$reportExcel.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-				<a href="javascript:translate( 'ReportExcelItem', '$reportItem.id' )" title="$i18n.getString( "translation_translate" )"><img src="../images/i18n.png" alt="$i18n.getString( "translation_translate" )"></a>
+				<a href="javascript:translate( 'ReportExcelItem', '$reportItem.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"></a>
 				<a href="javascript:removeItem($reportItem.id, '$reportItem.name','$i18n.getString( 'confirm_delete' )', 'deleteReportExcelItem.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 			</td>
 		</tr>		

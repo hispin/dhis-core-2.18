@@ -16,11 +16,11 @@
       <many-to-many class="org.hisp.dhis.dataelement.DataElementCategoryOption"
         column="categoryoptionid" foreign-key="fk_categoryoptioncombo_categoryoptionid"/> 
     </list>
-          
-    <join table="categorycombos_optioncombos">
+
+	<join table="categorycombos_optioncombos">
       <key column="categoryoptioncomboid"/>
       <many-to-one name="categoryCombo" column="categorycomboid"/>
-    </join>  
+    </join>
 
   </class>
 </hibernate-mapping>

@@ -64,39 +64,43 @@ public class DataElementCategoryOptionComboDeletionHandler
     {
         return DataElementCategoryOptionCombo.class.getSimpleName();
     }
-    
+
     @Override
     public boolean allowDeleteDataElementCategoryOption( DataElementCategoryOption categoryOption )
     {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : 
-            categoryService.getAllDataElementCategoryOptionCombos() )
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService
+            .getAllDataElementCategoryOptionCombos() )
         {
             if ( categoryOptionCombo.getCategoryOptions().contains( categoryOption ) )
             {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        for(DataElementCategoryOptionCombo eachOptionCombo : categoryCombo.getOptionCombos())
+        for ( DataElementCategoryOptionCombo eachOptionCombo : categoryCombo.getOptionCombos() )
         {
             String sql = "SELECT COUNT(*) FROM datavalue where categoryoptioncomboid=" + eachOptionCombo.getId();
-            
-            if( jdbcTemplate.queryForInt( sql ) > 0) return false;
+
+            if ( jdbcTemplate.queryForInt( sql ) > 0 )
+            {
+                return false;
+            }
         }
-        
+
         return true;
     }
-    
+
     @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
-        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService.getAllDataElementCategoryOptionCombos() )
+        for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryService
+            .getAllDataElementCategoryOptionCombos() )
         {
             if ( categoryOptionCombo.getCategoryCombo().equals( categoryCombo ) )
             {
