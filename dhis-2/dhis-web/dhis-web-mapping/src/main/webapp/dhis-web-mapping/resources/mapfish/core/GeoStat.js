@@ -93,15 +93,15 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.addFeatures(format.read(doc));
         this.requestSuccess(request);
 
-        if (GLOBAL.vars.activePanel.isPolygon()) {
+        if (G.vars.activePanel.isPolygon()) {
             if (!choropleth.formValidation.validateForm()) {
-                GLOBAL.vars.mask.hide();
+                G.vars.mask.hide();
             }
             choropleth.classify(false);
         }
-        else if (GLOBAL.vars.activePanel.isPoint()) {
+        else if (G.vars.activePanel.isPoint()) {
             if (!symbol.formValidation.validateForm()) {
-                GLOBAL.vars.mask.hide();
+                G.vars.mask.hide();
             }
             symbol.classify(false);
         }
@@ -215,7 +215,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
         var maxDec = 0;
         
         for (var l = 0; l < bounds.length; l++) {
-            var dec = GLOBAL.util.getNumberOfDecimals(bounds[l].toString(), ".");
+            var dec = G.util.getNumberOfDecimals(bounds[l].toString(), ".");
             maxDec = dec > maxDec ? dec : maxDec;
         }
         
@@ -229,10 +229,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 			imageLegend[m].label = bins[m].label.replace('&nbsp;&nbsp;', ' ');
         }
         
-        if (GLOBAL.vars.activePanel.isPolygon()) {
+        if (G.vars.activePanel.isPolygon()) {
             choropleth.imageLegend = imageLegend;
         }
-        else if (GLOBAL.vars.activePanel.isPoint()) {
+        else if (G.vars.activePanel.isPoint()) {
             symbol.imageLegend = imageLegend;
         }
         
@@ -278,13 +278,13 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     },
 	
     classify: function(method, nbBins, bounds) {
-        var mlt = GLOBAL.vars.activePanel.isPolygon() ?
-            choropleth.legend.value : GLOBAL.vars.activePanel.isPoint() ?
-                symbol.legend.value : GLOBAL.conf.map_legend_type_automatic;
+        var mlt = G.vars.activePanel.isPolygon() ?
+            choropleth.legend.value : G.vars.activePanel.isPoint() ?
+                symbol.legend.value : G.conf.map_legend_type_automatic;
     
-		if (mlt == GLOBAL.conf.map_legend_type_automatic) {
+		if (mlt == G.conf.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = GLOBAL.vars.activePanel.isPolygon() ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
+				var str = G.vars.activePanel.isPolygon() ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
 				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
@@ -306,7 +306,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				
 				var newInput = bounds.join(',');
                 
-                if (GLOBAL.vars.activePanel.isPolygon()) {
+                if (G.vars.activePanel.isPolygon()) {
                     Ext.getCmp('bounds_tf').setValue(newInput);
                 }
                 else {
@@ -324,12 +324,12 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				bounds.push(this.maxVal);
 			}
 		}
-		else if (mlt == GLOBAL.conf.map_legend_type_predefined) {
-			bounds = GLOBAL.vars.activePanel.isPolygon() ? choropleth.bounds : symbol.bounds;
+		else if (mlt == G.conf.map_legend_type_predefined) {
+			bounds = G.vars.activePanel.isPolygon() ? choropleth.bounds : symbol.bounds;
 
 			if (bounds[0] > this.minVal) {
 				bounds.unshift(this.minVal);
-                if (GLOBAL.vars.activePanel.isPolygon()) {
+                if (G.vars.activePanel.isPolygon()) {
                     choropleth.colorInterpolation.unshift(new mapfish.ColorRgb(240,240,240));
                 }
                 else {
@@ -339,7 +339,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 
 			if (bounds[bounds.length-1] < this.maxVal) {
 				bounds.push(this.maxVal);
-                if (GLOBAL.vars.activePanel.isPolygon()) {
+                if (G.vars.activePanel.isPolygon()) {
                     choropleth.colorInterpolation.push(new mapfish.ColorRgb(240,240,240));
                 }
                 else {

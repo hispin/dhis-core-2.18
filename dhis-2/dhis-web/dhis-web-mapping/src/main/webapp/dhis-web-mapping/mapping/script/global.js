@@ -1,6 +1,4 @@
-var GLOBAL = {};
-
-GLOBAL.conf = {
+G.conf = {
 
 //  Ajax requests
 
@@ -80,7 +78,7 @@ GLOBAL.conf = {
     ]
 };
 
-GLOBAL.util = {
+G.util = {
     
     /* Detect mapview parameter in URL */
     getUrlParam: function(strParam) {
@@ -289,7 +287,7 @@ GLOBAL.util = {
     }
 };
 
-GLOBAL.vars = {    
+G.vars = {
     map: null,
     
     parameter: null,
@@ -297,54 +295,54 @@ GLOBAL.vars = {
     mapSourceType: {
         value: null,
         setDatabase: function() {
-            this.value = GLOBAL.conf.map_source_type_database;
+            this.value = G.conf.map_source_type_database;
         },
         setGeojson: function() {
-            this.value = GLOBAL.conf.map_source_type_geojson;
+            this.value = G.conf.map_source_type_geojson;
         },
         setShapefile: function() {
-            this.value = GLOBAL.conf.map_source_type_shapefile;
+            this.value = G.conf.map_source_type_shapefile;
         },
         isDatabase: function() {
-            return this.value == GLOBAL.conf.map_source_type_database;
+            return this.value == G.conf.map_source_type_database;
         },
         isGeojson: function() {
-            return this.value == GLOBAL.conf.map_source_type_geojson;
+            return this.value == G.conf.map_source_type_geojson;
         },
         isShapefile: function() {
-            return this.value == GLOBAL.conf.map_source_type_shapefile;
+            return this.value == G.conf.map_source_type_shapefile;
         }
     },
     
     mapDateType: {
         value: null,
         setFixed: function() {
-            this.value = GLOBAL.conf.map_date_type_fixed;
+            this.value = G.conf.map_date_type_fixed;
         },
         setStartEnd: function() {
-            this.value = GLOBAL.conf.map_date_type_start_end;
+            this.value = G.conf.map_date_type_start_end;
         },
         isFixed: function() {
-            return this.value == GLOBAL.conf.map_date_type_fixed;
+            return this.value == G.conf.map_date_type_fixed;
         },
         isStartEnd: function() {
-            return this.value == GLOBAL.conf.map_date_type_start_end;
+            return this.value == G.conf.map_date_type_start_end;
         }
     },
     
     activePanel: {
-        value: GLOBAL.conf.thematicMap,
+        value: G.conf.thematicMap,
         setPolygon: function() {
-            this.value = GLOBAL.conf.thematicMap;
+            this.value = G.conf.thematicMap;
         },
         setPoint: function() {
-            this.value = GLOBAL.conf.thematicMap2;
+            this.value = G.conf.thematicMap2;
         },
         isPolygon: function() {
-            return this.value == GLOBAL.conf.thematicMap;
+            return this.value == G.conf.thematicMap;
         },
         isPoint: function() {
-            return this.value == GLOBAL.conf.thematicMap2;
+            return this.value == G.conf.thematicMap2;
         }
     },
     
@@ -356,5 +354,11 @@ GLOBAL.vars = {
     
     user: {
 		isAdmin: false
+	}
+};
+
+G.func = {
+	storeLoadListener: function() {
+		this.isLoaded = true;
 	}
 };
