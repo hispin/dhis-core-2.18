@@ -9,6 +9,7 @@
 	
 	<!-- Data source -->
 	
+	#if ( $aggregationStrategy == "realTime" )
     <tr>
         <th>$i18n.getString( "method" )</th>
     </tr>
@@ -23,7 +24,8 @@
     <tr>
         <td colspan="4" style="height:10px"></td>
     </tr>
-	
+    #end
+    	
     <!-- Reporting month -->
     
     #if ( $!reportParams.isParamReportingMonth() )

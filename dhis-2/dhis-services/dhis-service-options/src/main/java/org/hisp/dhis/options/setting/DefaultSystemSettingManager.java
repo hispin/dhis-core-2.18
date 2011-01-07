@@ -28,7 +28,9 @@ package org.hisp.dhis.options.setting;
  */
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -128,5 +130,10 @@ public class DefaultSystemSettingManager
     public SortedMap<String, String> getFlags()
     {
         return flags;
+    }
+    
+    public List<String> getAggregationStrategies()
+    {
+        return Arrays.asList( AGGREGATION_STRATEGY_REAL_TIME, AGGREGATION_STRATEGY_BATCH );
     }
 }

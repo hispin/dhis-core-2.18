@@ -7,12 +7,22 @@
 
 <p><input type="text" name="applicationTitle" style="width:30em" maxlength="40" value="$!applicationTitle"/></p>
 
+<h4>$i18n.getString( "aggregation_strategy" )</h4>
+
+<p>
+<select name="aggregationStrategy" style="width:30em">
+	#foreach( $strategy in $aggregationStrategies )
+	<option value="$strategy" #if( $aggregationStrategy == $strategy )selected="selected"#end>$i18n.getString( $strategy )</option>
+	#end
+</select>
+</p>
+
 <h4>$i18n.getString( "style" )</h4>
 
 <select style="min-width:250px" name='currentStyle' id='currentStyle'>
-#foreach( $style in $styles.entrySet() )
+	#foreach( $style in $styles.entrySet() )
 	<option value="$style.value" #if( $style.value == $currentStyle )selected="selected"#end>$i18n.getString( $style.key )</option>
-#end
+	#end
 </select>
 
 <h4>$i18n.getString( "max_attempts" )</h4>
@@ -29,7 +39,7 @@
 <select name="flag" style="width:30em">
 	<option value="NO_FLAG">$i18n.getString( "no_flag" )</option>
 	#foreach ( $f in $flags.entrySet() )
-		<option value="$f.value" #if( $f.value == $flag )selected="selected"#end>$i18n.getString( $f.key )</option>
+	<option value="$f.value" #if( $f.value == $flag )selected="selected"#end>$i18n.getString( $f.key )</option>
     #end
 </select>
 </p>
@@ -40,7 +50,7 @@
 <select name="startModule" style="width:30em">
     <option value="NO_START_PAGE">$i18n.getString( "no_start_page" )</option>
 	#foreach ( $module in $modules )
-		<option value="$module.name" #if ( $module.name == $startModule )selected="selected"#end>$i18n.getString( "$module.name" )</option>
+	<option value="$module.name" #if( $module.name == $startModule )selected="selected"#end>$i18n.getString( "$module.name" )</option>
 	#end
 </select>
 </p>
@@ -49,8 +59,8 @@
 
 <p>
 <select name="reportFramework" style="width:30em">
-    <option value="birt"#if ( "birt" == $reportFramework )selected#end>$i18n.getString( "birt" )</option>
-    <option value="jasper"#if ( "jasper" == $reportFramework )selected#end>$i18n.getString( "jasper" )</option>
+    <option value="birt" #if( "birt" == $reportFramework )selected="selected"#end>$i18n.getString( "birt" )</option>
+    <option value="jasper" #if( "jasper" == $reportFramework )selected="selected"#end>$i18n.getString( "jasper" )</option>
 </select>
 </p>
 
