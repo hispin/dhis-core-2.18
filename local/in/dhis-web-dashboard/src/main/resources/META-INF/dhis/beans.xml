@@ -83,6 +83,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
         </property>
     </bean>
+	<!-- DrillDown periodToOrgUnit Child/GroupMember -->
+	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" scope="prototype">
+		<property name="statementManager" ref="statementManager"/>
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
+		</property>
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
+		</property>
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+		</property>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+		</property>
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+		</property>
+	</bean>
+	<!-- DrillDown OrgUnitToPeriod Child/GroupMember -->
+	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" scope="prototype">
+		
+		<property name="statementManager" ref="statementManager"/>
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
+        </property>
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
+        </property>
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+	</bean>
+	
 	
 <!-- Graphical Analyser DataElements End -->
 		
@@ -1069,6 +1099,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
 		<property name="reportservice" ref="org.hisp.dhis.reports.ReportService">
+		</property>
+		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService">
+		</property>
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+		</property>
+		<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+		</property>
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
 		</property>
     </bean>
 	

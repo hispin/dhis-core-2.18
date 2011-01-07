@@ -41,6 +41,7 @@ import javax.servlet.http.HttpSession;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
+import org.apache.velocity.tools.generic.ListTool;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
@@ -227,6 +228,11 @@ public class GenerateChartDataElementAction implements Action
         this.deSelection = deSelection;
     }
     
+    public String getDeSelection()
+    {
+        return deSelection;
+    }
+    
 /*
     private List<String> ougGroupSetCB;
     
@@ -241,6 +247,8 @@ public class GenerateChartDataElementAction implements Action
     }
 */
      
+
+
     private String ougGroupSetCB;
     
     public void setOugGroupSetCB( String ougGroupSetCB )
@@ -273,6 +281,11 @@ public class GenerateChartDataElementAction implements Action
         this.aggDataCB = aggDataCB;
     }
     
+    public String getAggDataCB()
+    {
+        return aggDataCB;
+    }
+
     private List<String> orgUnitListCB;
     
     public void setOrgUnitListCB( List<String> orgUnitListCB )
@@ -390,21 +403,49 @@ public class GenerateChartDataElementAction implements Action
     {
         return selectedStatus;
     }
+    
+    private List<String> selectedDrillDownData;
+    
+    public List<String> getSelectedDrillDownData()
+    {
+        return selectedDrillDownData;
+    }
+    
+    ListTool listTool;
 
-   
+    public ListTool getListTool()
+    {
+        return listTool;
+    }
+    
+    private String drillDownPeriodStartDate;
+    private String drillDownPeriodEndDate;
+    private String drillDownPeriodNames;
+    
+    private String aggChecked;
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
     
-
-
-
     @SuppressWarnings( "unchecked" )
     public String execute()  throws Exception
     {
         statementManager.initialise();
         selectedOptionComboList = new ArrayList<DataElementCategoryOptionCombo>();
         
+        listTool = new ListTool();
+        
+        aggChecked = "";
+        
+        if( aggDataCB != null )
+        {
+            aggChecked = "1";
+        }
+        else
+        {
+            aggChecked = "0";
+        }
         selOUList = new ArrayList<OrganisationUnit>();
         System.out.println( "selected orgUnit  size : " + orgUnitListCB.size() );
         
@@ -423,8 +464,11 @@ public class GenerateChartDataElementAction implements Action
         
         yseriesList = new ArrayList<String>();
         
-        selectedValues = new ArrayList<String>();//for DrillDown
+        selectedValues = new ArrayList<String>();//for DrillDown ( for NBIT)
         selectedStatus = new ArrayList<String>();
+        
+        selectedDrillDownData = new ArrayList<String>();//drillDown for periodWise
+        
       //  DataElement dElement = new DataElement();
         
        // DataElementCategoryOptionCombo decoc1 = new DataElementCategoryOptionCombo();
@@ -442,7 +486,10 @@ public class GenerateChartDataElementAction implements Action
 
         String startD = "";
         String endD = "";
-
+        
+        drillDownPeriodStartDate = "";
+        drillDownPeriodEndDate = "";
+        drillDownPeriodNames = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
         periodNames = new ArrayList<String>();
@@ -451,6 +498,7 @@ public class GenerateChartDataElementAction implements Action
         if ( periodTypeLB.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
         {
            // System.out.println( " Inside  weekly" );
+            int periodCount = 0;
             for ( String periodStr : periodLB )
             {
                 String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
@@ -459,24 +507,55 @@ public class GenerateChartDataElementAction implements Action
                 startD = startWeekDate.trim();
                 endD = endWeekDate.trim();
                 
+                // for DrillDown Period String
+                if( periodCount == periodLB.size()-1 )
+                {
+                    drillDownPeriodStartDate += startD;
+                    drillDownPeriodEndDate += endD;
+                    drillDownPeriodNames += periodStr;
+                }
+                else
+                {
+                    drillDownPeriodStartDate += startD + ";";
+                    drillDownPeriodEndDate += endD + ";";
+                    drillDownPeriodNames += periodStr + ";";
+                }
+                
                 selStartPeriodList.add( format.parseDate( startD ) );
                 selEndPeriodList.add( format.parseDate( endD ) );
                 
                 periodNames.add( periodStr );
+                periodCount++;
                 //System.out.println( startD + " : " + endD );
             }
         }
         else
         {
+            int periodCount = 0;
             for ( String year : yearLB )
             {
                 //int selYear = Integer.parseInt( year.split( "-" )[0] );
                 int selYear = Integer.parseInt( year );
-            
+                
                 if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
                 {
+                    
                     startD = "" + selYear + "-01-01";
                     endD = "" + selYear  + "-12-31";
+                    
+                    // for DrillDown Period String
+                    if( periodCount == yearLB.size()-1 )
+                    {
+                        drillDownPeriodStartDate += startD;
+                        drillDownPeriodEndDate += endD;
+                        drillDownPeriodNames += selYear;
+                    }
+                    else
+                    {
+                        drillDownPeriodStartDate += startD + ";";
+                        drillDownPeriodEndDate += endD + ";";
+                        drillDownPeriodNames += selYear + ";";
+                    }
                     
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
@@ -489,6 +568,7 @@ public class GenerateChartDataElementAction implements Action
                     
                 }
                
+               // int periodCount = 0;
                 for ( String periodStr : periodLB )
                 {
                    // int period = Integer.parseInt( periodStr );
@@ -506,6 +586,19 @@ public class GenerateChartDataElementAction implements Action
                         {
                             endD = "" + selYear  + "-" + monthOrder[period] + "-" + ( monthDays[period] + 1 );
                         } 
+                        
+                        // for DrillDown Period String
+                        /*if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                        }
+                        else*/
+                      //  {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                            drillDownPeriodNames += simpleDateFormat.format( format.parseDate( startD ) ) + ";";
+                       // }
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
@@ -519,25 +612,42 @@ public class GenerateChartDataElementAction implements Action
                             startD = "" + selYear + "-01-01";
                             endD = "" + selYear + "-03-31";
                             periodNames.add( selYear + "-Q1" );
+                            drillDownPeriodNames += selYear + "-Q1" + ";";
                         }
                         else if ( period == 1 )
                         {
                             startD = "" + selYear + "-04-01";
                             endD = "" + selYear + "-06-30";
                             periodNames.add( selYear + "-Q2" );
+                            drillDownPeriodNames += selYear + "-Q2" + ";";
                         }
                         else if ( period == 2 )
                         {
                             startD = "" + selYear + "-07-01";
                             endD = "" + selYear + "-09-30";
                             periodNames.add( selYear + "-Q3" );
+                            drillDownPeriodNames += selYear + "-Q3" + ";";
                         }
                         else
                         {
                             startD = "" + selYear + "-10-01";
                             endD = "" + selYear + "-12-31";
                             periodNames.add( (selYear) + "-Q4" );
+                            drillDownPeriodNames += selYear + "-Q4" + ";";
                         }
+                        
+                        // for DrillDown Period String
+                        if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                        }
+                        else
+                        {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                        }
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                        // System.out.println( "Start Date : " + startD + " , End Date : " + endD );
@@ -550,13 +660,29 @@ public class GenerateChartDataElementAction implements Action
                             startD = "" + selYear + "-01-01";
                             endD = "" + selYear + "-06-30";
                             periodNames.add( selYear + "-HY1" );
+                            drillDownPeriodNames += selYear + "-HY1" + ";";
                         }
                         else
                         {
                             startD = "" + selYear + "-07-01";
                             endD = "" + selYear + "-12-31";
                             periodNames.add( selYear + "-HY2" );
+                            drillDownPeriodNames += selYear + "-HY2" + ";";
                         }
+                       
+                        // for DrillDown Period String
+                        /*
+                        if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                        }*/
+                        //else
+                       // {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                        //}
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                     }
@@ -582,15 +708,31 @@ public class GenerateChartDataElementAction implements Action
                             endD = selYear  + "-" + month + "-" + date;
                         }
                        
+                        // for DrillDown Period String
+                        if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                            drillDownPeriodNames += startD;
+                        }
+                        else
+                        {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                            drillDownPeriodNames += startD + ";";
+                        }
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         
                         periodNames.add( startD );
                        // System.out.println( startD + " : " + endD );
                     }
-                    System.out.println( startD + " : " + endD );
+                    //System.out.println( startD + " : " + endD );
+                    //periodCount++; 
                 }
-   
+               // periodCountYear++;
+                periodCount++;
             }
       }    
         
@@ -711,9 +853,17 @@ public class GenerateChartDataElementAction implements Action
             List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
             childOrgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren());
             
+            System.out.println( "length of childOrgUnitList :" + childOrgUnitList.size());
             
             dataElementChartResult = generateChartDataWithChildrenWise( selStartPeriodList,selEndPeriodList,periodNames,dataElementList,selectedOptionComboList,childOrgUnitList );
-  
+           /*
+            for( String drillDown : selectedDrillDownData )
+            {
+                System.out.println( "drill Down value is :" + drillDown);
+                System.out.println( "---------");
+            }
+            */
+           // dataElementChartResult.getSeries()
         }
         else if ( categoryLB.equalsIgnoreCase( SELECTED ) && ougGroupSetCB == null )
         {
@@ -949,6 +1099,7 @@ public class GenerateChartDataElementAction implements Action
            for( Date startDate : selStartPeriodList )
            {
                Date endDate = selEndPeriodList.get( periodCount );
+               String drillDownPeriodName = periodNames.get( periodCount );
                //format.formatDate( date )
                String tempStartDate = format.formatDate( startDate );
                String tempEndDate   = format.formatDate( endDate );
@@ -957,14 +1108,19 @@ public class GenerateChartDataElementAction implements Action
                PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
                
                String values = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":"  + periodType + ":" + tempStartDate + ":" + tempEndDate;
-               selectedValues.add(values);
+               selectedValues.add( values );
+               
+               String drillDownData = orgUnit.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + tempStartDate + ":" + tempEndDate + ":" + drillDownPeriodName + ":" + deSelection + ":" + aggChecked;
+               //String drillDownData = orgUnit.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
+               //selectedDrillDownData
+               selectedDrillDownData.add( drillDownData );
              //  System.out.println( "selectedValues Size  : " + selectedValues.size() );
                
                Double aggDataValue = 0.0;
                if( aggDataCB != null )
                {
                    aggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
-                   System.out.println( "start Date is   : " + startDate + " , End date is : " + endDate );
+                   //System.out.println( "start Date is   : " + startDate + " , End date is : " + endDate );
                    //System.out.println( "Agg data value before is  : " + aggDataValue );
                    if(aggDataValue == null ) aggDataValue = 0.0;
                    //System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
@@ -972,8 +1128,8 @@ public class GenerateChartDataElementAction implements Action
                else
                {
                  //  PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
-                   
+                  // Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                   Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                    for( Period period : periods )
                    {
                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
@@ -1070,20 +1226,29 @@ public class GenerateChartDataElementAction implements Action
            {
                categories[childCount] = orgChild.getName();
                
+               String drillDownData = orgChild.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggChecked;
+               selectedDrillDownData.add( drillDownData );
+               
                Double aggDataValue = 0.0;
 
                int periodCount = 0;
                for( Date startDate : selStartPeriodList )
                {
                    Date endDate = selEndPeriodList.get( periodCount );
-                   PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                  // PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                   //Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                   Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                    
-                   for( Period period : periods )
-                   {
+                   //String drillDownData = orgChild.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
+                   
+                   //System.out.println( drillDownData );
+                   //selectedDrillDownData.add( drillDownData );
+                   
+                  // for( Period period : periods )
+                   //{
                        if( aggDataCB != null )
                        {
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgChild );
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgChild );
                           // System.out.println( "Agg data value before is  : " + aggDataValue );
                           
                            if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
@@ -1091,18 +1256,23 @@ public class GenerateChartDataElementAction implements Action
                        }
                        else
                        {
-                           DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
-                           
-                           try
+                           for( Period period : periods )
                            {
-                               aggDataValue += Double.parseDouble( dataValue.getValue() );
-                           }
-                           catch( Exception e )
-                           {
+                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
                                
+                               try
+                               {
+                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               }
+                               catch( Exception e )
+                               {
+                                   
+                               }
                            }
+                           
+                          
                        }
-                   }
+                   //}
                    periodCount++;
                }
  
@@ -1180,20 +1350,24 @@ public class GenerateChartDataElementAction implements Action
            {             
                categories[orgUnitCount] = orgunit.getName();
                
+               String drillDownData = orgunit.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggChecked;
+               selectedDrillDownData.add( drillDownData );
+               
                Double aggDataValue = 0.0;
-
+               
                int periodCount = 0;
                for( Date startDate : selStartPeriodList )
                {
                    Date endDate = selEndPeriodList.get( periodCount );
-                   PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                  // PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                   //Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                   Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                    
-                   for( Period period : periods )
-                   {
+                   //for( Period period : periods )
+                   //{
                        if( aggDataCB != null )
                        {
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgunit );
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgunit );
                            //System.out.println( "Agg data value before is  : " + aggDataValue );
                           
                            if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
@@ -1201,18 +1375,22 @@ public class GenerateChartDataElementAction implements Action
                        }
                        else
                        {
-                           DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period, decoc );
-                           
-                           try
+                          
+                           for( Period period : periods )
                            {
-                               aggDataValue += Double.parseDouble( dataValue.getValue() );
-                           }
-                           catch( Exception e )
-                           {
+                               DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period, decoc );
                                
+                               try
+                               {
+                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               }
+                               catch( Exception e )
+                               {
+                                   
+                               }
                            }
                        }
-                   }
+                  // }
                    periodCount++;
                }
  
@@ -1254,7 +1432,7 @@ public class GenerateChartDataElementAction implements Action
        String[] series = new String[dataElementList.size()];
        String[] categories = new String[selStartPeriodList.size()];
        Double[][] data = new Double[dataElementList.size()][selStartPeriodList.size()];
-       String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName()+ "(" + selOrgUnitGroup.getName() +  ")";
+       String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName()+ "( Group- " + selOrgUnitGroup.getName() +  " )";
        String xAxis_Title = "Time Line";
        String yAxis_Title = "Value";
        
@@ -1282,19 +1460,31 @@ public class GenerateChartDataElementAction implements Action
                yseriesList.add( dataElement.getName() );
            }
                
-               Double aggDataValue = 0.0;
+               
               
                int periodCount = 0;
                for( Date startDate : selStartPeriodList )
                {
                    Date endDate = selEndPeriodList.get( periodCount );
                    categories[periodCount] = periodNames.get( periodCount );
+                   Double aggDataValue = 0.0;
                    
-                   PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
-  
-                   for( Period period : periods )
-                   {
+                 //format.formatDate( date )
+                   String tempStartDate = format.formatDate( startDate );
+                   String tempEndDate   = format.formatDate( endDate );
+                   String drillDownPeriodName = periodNames.get( periodCount );
+                   
+                  // PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                  // Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                   
+                   Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
+                  // String drillDownData = selectedOrgUnit.getId() + ":"+ selOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
+                   String drillDownData = selectedOrgUnit.getId() + ":"+ selOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + tempStartDate + ":" + tempEndDate + ":" + drillDownPeriodName + ":" + deSelection + ":" + aggChecked;
+                   //selectedDrillDownData
+                   selectedDrillDownData.add( drillDownData );
+                 
+                  // for( Period period : periods )
+                   //{
                        int orgGroupCount = 0;
                        
                        for( OrganisationUnit orgUnit : selOUGroupMemberList )
@@ -1302,29 +1492,33 @@ public class GenerateChartDataElementAction implements Action
                            
                            if( aggDataCB != null )
                            {
-                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgUnit );
+                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
                               // System.out.println( "Agg data value before is  : " + aggDataValue );
                               
-                               if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                               if(tempAggDataValue != null ) aggDataValue = tempAggDataValue;
                               // System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
                            }
-                       else
-                       {
-                           DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
-                           
-                           try
+                           else
                            {
-                               aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               for( Period period : periods )
+                               {
+                                   DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
+                                   
+                                   try
+                                   {
+                                       aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                   }
+                                   catch( Exception e )
+                                   {
+                                       
+                                   }
+                               }
+                              
                            }
-                           catch( Exception e )
-                           {
-                               
-                           }
-                       }
-                          orgGroupCount++;
+                              orgGroupCount++;
                    }
                    
-               }
+              // }
    
                data[serviceCount][periodCount] = aggDataValue;
                
@@ -1392,66 +1586,77 @@ public class GenerateChartDataElementAction implements Action
                
                yseriesList.add( dataElement.getName() );
            }
+   
+               int orgGroupCount = 0;
+              // int orgGroupCount1 = 0;
+          // Double aggDataValue = 0.0;
            
-                       int orgGroupCount = 0;
-                      // int orgGroupCount1 = 0;
-                      // Double aggDataValue = 0.0;
-                       
-                       for( OrganisationUnitGroup orgUnitGroup : orgUnitGroupMap.keySet() )
+           for( OrganisationUnitGroup orgUnitGroup : orgUnitGroupMap.keySet() )
+           {
+              // Double aggDataValue = 0.0;
+               Double aggDataValue = 0.0;
+               
+               categories[orgGroupCount] = orgUnitGroup.getName();
+               
+               String drillDownData = selectedOrgUnit.getId() + ":" + orgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggChecked;
+               selectedDrillDownData.add( drillDownData );
+               
+               //String drillDownData = selectedOrgUnit.getId() + ":"+ selOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ decoc.getId() + ":"  + periodTypeLB + ":" + tempStartDate + ":" + tempEndDate + ":" + deSelection + ":" + aggDataCB;
+               //selectedDrillDownData
+               //selectedDrillDownData.add( drillDownData );
+               
+               
+               if( serviceCount == 0 )
+               {
+                   chartTitle += orgUnitGroup.getName() + ",";
+               }
+               Collection<OrganisationUnit> orgUnitGroupMembers = orgUnitGroupMap.get( orgUnitGroup );
+               
+               if( orgUnitGroupMembers == null || orgUnitGroupMembers.size() == 0 )
+               {
+                   data[serviceCount][orgGroupCount] = aggDataValue;
+                   orgGroupCount++;
+                   continue;
+               }
+               for( OrganisationUnit orgUnit : orgUnitGroupMembers )
+               {
+                   int periodCount = 0;
+                   for( Date startDate : selStartPeriodList )
+                   {
+                       Date endDate = selEndPeriodList.get( periodCount );
+                     
+                       //PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
+                       //Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
+                       Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );                               
+                          //for( Period period : periods )
+                         // {
+                       if( aggDataCB != null )
                        {
-                          // Double aggDataValue = 0.0;
-                           Double aggDataValue = 0.0;
-                           
-                           categories[orgGroupCount] = orgUnitGroup.getName();
-                           
-                           if( serviceCount == 0 )
-                           {
-                               chartTitle += orgUnitGroup.getName() + ",";
-                           }
-                           Collection<OrganisationUnit> orgUnitGroupMembers = orgUnitGroupMap.get( orgUnitGroup );
-                           if( orgUnitGroupMembers == null || orgUnitGroupMembers.size() == 0 )
-                           {
-                               data[serviceCount][orgGroupCount] = aggDataValue;
-                               orgGroupCount++;
-                               continue;
-                           }
-                           for( OrganisationUnit orgUnit : orgUnitGroupMembers )
-                           {
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
+                         //  System.out.println( "Agg data value before is  : " + aggDataValue );
+                          
+                           if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                          // System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
+                       }
+                       else
+                       {
+                           for( Period period : periods )
+                           {    
+                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
                                
-                               int periodCount = 0;
-                               for( Date startDate : selStartPeriodList )
+                               try
                                {
-                                   Date endDate = selEndPeriodList.get( periodCount );
-                                 
-                                   PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                                   Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
-                                                                  
-                                      for( Period period : periods )
-                                      {
-                                           if( aggDataCB != null )
-                                           {
-                                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, period.getStartDate(), period.getEndDate(), orgUnit );
-                                             //  System.out.println( "Agg data value before is  : " + aggDataValue );
-                                              
-                                               if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
-                                              // System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
-                                           }
-                                           else
-                                           {
-                                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
-                                               
-                                               try
-                                               {
-                                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
-                                               }
-                                               catch( Exception e )
-                                               {
-                                                   
-                                               }
-                                           }
-                                      }
-                          periodCount++;  
-                 }  
+                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               }
+                               catch( Exception e )
+                               {
+                                   
+                               }
+                           }
+                       }
+                         // }
+                     periodCount++;  
+                   }  
                }
                data[serviceCount][orgGroupCount] = aggDataValue;
                
