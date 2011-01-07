@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -40,6 +41,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -49,6 +51,9 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Jan Henrik Overland
@@ -111,6 +116,20 @@ public class DefaultMappingService
         this.aggregationService = aggregationService;
     }
 
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
     // -------------------------------------------------------------------------
     // MappingService implementation
     // -------------------------------------------------------------------------
@@ -124,13 +143,13 @@ public class DefaultMappingService
     {
         Period period = periodService.getPeriod( periodId );
 
-        return getIndicatorMapValues( indicatorId, period.getStartDate(), period.getEndDate(), parentOrganisationUnitId );
+        return getIndicatorMapValuesInternal( indicatorId, period, null, null, parentOrganisationUnitId, null );
     }
 
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
         int parentOrganisationUnitId )
     {
-        return getIndicatorMapValuesInternal( indicatorId, startDate, endDate, parentOrganisationUnitId, null );
+        return getIndicatorMapValuesInternal( indicatorId, null, startDate, endDate, parentOrganisationUnitId, null );
     }
 
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
@@ -138,60 +157,62 @@ public class DefaultMappingService
     {
         Period period = periodService.getPeriod( periodId );
 
-        return getIndicatorMapValues( indicatorId, period.getStartDate(), period.getEndDate(),
-            parentOrganisationUnitId, level );
+        return getIndicatorMapValuesInternal( indicatorId, period, null, null, parentOrganisationUnitId, level );
     }
 
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, Date startDate, Date endDate,
         int parentOrganisationUnitId, int level )
     {
-        return getIndicatorMapValuesInternal( indicatorId, startDate, endDate, parentOrganisationUnitId, level );
+        return getIndicatorMapValuesInternal( indicatorId, null, startDate, endDate, parentOrganisationUnitId, level );
     }
 
     public Collection<AggregatedMapValue> getIndicatorMapValuesByLevel( int indicatorId, int periodId, int level )
     {
         Period period = periodService.getPeriod( periodId );
 
-        return getIndicatorMapValuesByLevel( indicatorId, period.getStartDate(), period.getEndDate(), level );
+        return getIndicatorMapValuesInternal( indicatorId, period, null, null, null, level );
     }
     
     public Collection<AggregatedMapValue> getIndicatorMapValuesByLevel( int indicatorId, Date startDate, Date endDate, 
         int level )
     {
-        return getIndicatorMapValuesInternal( indicatorId, startDate, endDate, null, level );
+        return getIndicatorMapValuesInternal( indicatorId, null, startDate, endDate, null, level );
     }
 
-    private Collection<AggregatedMapValue> getIndicatorMapValuesInternal( Integer indicatorId, Date startDate, Date endDate, 
+    /**
+     * Generates a collection AggregatedMapValues. Only one of Period and start/end
+     * date can be specified. At least one of parent organisation unit and level
+     * must be specified. Period should be specified with "real time" aggregation
+     * strategy, any may be specified with "batch" aggregation strategy.
+     * 
+     * @param indicatorId the Indicator identifier.
+     * @param period the Period identifier. Ignored if null.
+     * @param startDate the start date. Ignored if null.
+     * @param endDate the end date. Ignored if null.
+     * @param parentOrganisationUnitId the parent OrganisationUnit identifier. Ignored if null.
+     * @param level the OrganisationUnit level. Ignored if null.
+     * @return a collection of AggregatedMapValues.
+     */
+    private Collection<AggregatedMapValue> getIndicatorMapValuesInternal( Integer indicatorId, Period period, Date startDate, Date endDate, 
         Integer parentOrganisationUnitId, Integer level )
     {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
+        Assert.isTrue( !( period != null && ( startDate != null || endDate != null ) ) );
+        Assert.isTrue( !( aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) && period == null ) );
+        Assert.isTrue( !( parentOrganisationUnitId == null && level == null ) );
+        
         Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
 
         Indicator indicator = indicatorService.getIndicator( indicatorId );
-        
-        Collection<OrganisationUnit> organisationUnits = null;
-        
-        if ( parentOrganisationUnitId != null && level != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level, organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ) );
-        }
-        else if ( level != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level );
-        }
-        else if ( parentOrganisationUnitId != null )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ).getChildren();
-        }
-        else
-        {
-            throw new IllegalArgumentException( "Parent organisation unit or level must be specified" );
-        }
-
-        for ( OrganisationUnit organisationUnit : organisationUnits )
+                
+        for ( OrganisationUnit organisationUnit : getOrganisationUnits( parentOrganisationUnitId, level ) )
         {
             if ( organisationUnit.hasCoordinates() )
             {
-                Double value = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate, organisationUnit );
+                Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                    aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate, organisationUnit ) :
+                        aggregatedDataValueService.getAggregatedValue( indicator, period, organisationUnit );
 
                 value = value != null ? value : 0; // TODO improve
 
@@ -207,60 +228,16 @@ public class DefaultMappingService
         return values;        
     }
     
-    // -------------------------------------------------------------------------
-    // DataMapValues
-    // -------------------------------------------------------------------------
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId )
+    /**
+     * Returns the relevant OrganisationUnits for the given parent identifier
+     * and / or level.
+     * 
+     * @param parentOrganisationUnitId the OrganisationUnit level.
+     * @param level the OrganisationUnit level.
+     * @return a collection of OrganisationUnits.
+     */
+    private Collection<OrganisationUnit> getOrganisationUnits( Integer parentOrganisationUnitId, Integer level )
     {
-        Period period = periodService.getPeriod( periodId );
-
-        return getDataElementMapValues( dataElementId, period.getStartDate(), period.getEndDate(),
-            parentOrganisationUnitId );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId )
-    {
-        return getDataElementMapValuesInternal( dataElementId, startDate, endDate, parentOrganisationUnitId, null );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId, int level )
-    {
-        Period period = periodService.getPeriod( periodId );
-
-        return getDataElementMapValues( dataElementId, period.getStartDate(), period.getEndDate(),
-            parentOrganisationUnitId, level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId, int level )
-    {
-        return getDataElementMapValuesInternal( dataElementId, startDate, endDate, parentOrganisationUnitId, level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level )
-    {
-        Period period = periodService.getPeriod( periodId );
-
-        return getDataElementMapValuesByLevel( dataElementId, period.getStartDate(), period.getEndDate(), level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate,
-        Date endDate, int level )
-    {
-        return getDataElementMapValuesInternal( dataElementId, startDate, endDate, null, level );
-    }
-
-    public Collection<AggregatedMapValue> getDataElementMapValuesInternal( Integer dataElementId, Date startDate, Date endDate,
-        Integer parentOrganisationUnitId, Integer level )
-    {
-        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
-
-        DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
         Collection<OrganisationUnit> organisationUnits = null;
         
         if ( parentOrganisationUnitId != null && level != null )
@@ -275,12 +252,83 @@ public class DefaultMappingService
         {
             organisationUnits = organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ).getChildren();
         }
-        else
-        {
-            throw new IllegalArgumentException( "Parent organisation unit or level must be specified" );
-        }
 
-        for ( OrganisationUnit organisationUnit : organisationUnits )
+        return organisationUnits;
+    }
+    
+    // -------------------------------------------------------------------------
+    // DataMapValues
+    // -------------------------------------------------------------------------
+
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId )
+    {
+        Period period = periodService.getPeriod( periodId );
+
+        return getDataElementMapValuesInternal( dataElementId, period, null, null, parentOrganisationUnitId, null );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId )
+    {
+        return getDataElementMapValuesInternal( dataElementId, null, startDate, endDate, parentOrganisationUnitId, null );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId, int level )
+    {
+        Period period = periodService.getPeriod( periodId );
+
+        return getDataElementMapValuesInternal( dataElementId, period, null, null, parentOrganisationUnitId, level );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
+        int parentOrganisationUnitId, int level )
+    {
+        return getDataElementMapValuesInternal( dataElementId, null, startDate, endDate, parentOrganisationUnitId, level );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level )
+    {
+        Period period = periodService.getPeriod( periodId );
+
+        return getDataElementMapValuesInternal( dataElementId, period, null, null, null, level );
+    }
+
+    public Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate,
+        Date endDate, int level )
+    {
+        return getDataElementMapValuesInternal( dataElementId, null, startDate, endDate, null, level );
+    }
+
+    /**
+     * Generates a collection AggregatedMapValues. Only one of Period and start/end
+     * date can be specified. At least one of parent organisation unit and level
+     * must be specified. Period should be specified with "real time" aggregation
+     * strategy, any may be specified with "batch" aggregation strategy.
+     * 
+     * @param indicatorId the Indicator identifier.
+     * @param period the Period identifier. Ignored if null.
+     * @param startDate the start date. Ignored if null.
+     * @param endDate the end date. Ignored if null.
+     * @param parentOrganisationUnitId the parent OrganisationUnit identifier. Ignored if null.
+     * @param level the OrganisationUnit level. Ignored if null.
+     * @return a collection of AggregatedMapValues.
+     */
+    public Collection<AggregatedMapValue> getDataElementMapValuesInternal( Integer dataElementId, Period period, Date startDate, Date endDate,
+        Integer parentOrganisationUnitId, Integer level )
+    {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
+        Assert.isTrue( !( period != null && ( startDate != null || endDate != null ) ) );
+        Assert.isTrue( !( aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) && period == null ) );
+        Assert.isTrue( !( parentOrganisationUnitId == null && level == null ) );
+        
+        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
+
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+        
+        for ( OrganisationUnit organisationUnit : getOrganisationUnits( parentOrganisationUnitId, level ) )
         {
             if ( organisationUnit.hasCoordinates() )
             {

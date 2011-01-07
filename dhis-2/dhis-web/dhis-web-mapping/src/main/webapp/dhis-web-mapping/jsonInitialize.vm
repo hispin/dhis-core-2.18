@@ -36,6 +36,9 @@
   "userSettings": {
     "mapDateType": "$!encoder.jsonEncode( ${mapDateType} )"
   },
+  "systemSettings": {
+    "aggregationStrategy": "$!encoder.jsonEncode( ${aggregationStrategy} )"
+  },
   "baseLayers": [
 #foreach( $baseLayer in $baseLayers )
     {

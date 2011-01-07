@@ -24,6 +24,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.user.UserSettingService"/>
 	<property name="aggregationService"
 	  ref="org.hisp.dhis.aggregation.AggregationService"/>
+	<property name="systemSettingManager"
+	  ref="org.hisp.dhis.options.SystemSettingManager"/>
+	<property name="aggregatedDataValueService"
+	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
   </bean>
 		
   <!-- Store definitions -->
