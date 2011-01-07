@@ -4,25 +4,25 @@
 	Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
 	
-	GLOBAL.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
-	GLOBAL.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:i18n_loading,msgCls:'x-mask-loading2'});
-    GLOBAL.vars.parameter = GLOBAL.util.getUrlParam('view') ? {id: GLOBAL.util.getUrlParam('view')} : {id: null};
+	G.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
+    G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
 
     Ext.Ajax.request({
-        url: GLOBAL.conf.path_mapping + 'initialize' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'initialize' + G.conf.type,
         method: 'POST',
-        params: {id: GLOBAL.vars.parameter.id || null},
+        params: {id: G.vars.parameter.id || null},
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
-            GLOBAL.vars.parameter.mapView = init.mapView;
-            GLOBAL.vars.parameter.baseLayers = init.baseLayers;
-            GLOBAL.vars.parameter.overlays = init.overlays;
-            GLOBAL.vars.mapDateType.value = init.userSettings.mapDateType;
-            GLOBAL.vars.user.isAdmin = init.security.isAdmin;
+            G.vars.parameter.mapView = init.mapView;
+            G.vars.parameter.baseLayers = init.baseLayers;
+            G.vars.parameter.overlays = init.overlays;
+            G.vars.mapDateType.value = init.userSettings.mapDateType;
+            G.vars.user.isAdmin = init.security.isAdmin;
                         
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllMapViews' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllMapViews' + G.conf.type,
         root: 'mapViews',
         fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
@@ -32,15 +32,13 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var polygonMapViewStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapViewsByFeatureType' + GLOBAL.conf.type,
-        baseParams: {featureType: GLOBAL.conf.map_feature_type_multipolygon},
+        url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
+        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
         root: 'mapViews',
         fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
@@ -51,15 +49,13 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var pointMapViewStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapViewsByFeatureType' + GLOBAL.conf.type,
-        baseParams: {featureType: GLOBAL.conf.map_feature_type_point},
+        url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
+        baseParams: {featureType: G.conf.map_feature_type_point},
         root: 'mapViews',
         fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
@@ -70,14 +66,12 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
 
     var indicatorGroupStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllIndicatorGroups' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllIndicatorGroups' + G.conf.type,
         root: 'indicatorGroups',
         fields: ['id', 'name'],
         idProperty: 'id',
@@ -85,14 +79,12 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var indicatorsByGroupStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getIndicatorsByIndicatorGroup' + G.conf.type,
         root: 'indicators',
         fields: ['id', 'name', 'shortName'],
         idProperty: 'id',
@@ -114,34 +106,30 @@
     });
     
 	var indicatorStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllIndicators' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllIndicators' + G.conf.type,
         root: 'indicators',
         fields: ['id', 'shortName'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
   
     var dataElementGroupStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllDataElementGroups' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllDataElementGroups' + G.conf.type,
         root: 'dataElementGroups',
         fields: ['id', 'name'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var dataElementsByGroupStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getDataElementsByDataElementGroup' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getDataElementsByDataElementGroup' + G.conf.type,
         root: 'dataElements',
         fields: ['id', 'name', 'shortName'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -162,7 +150,7 @@
     });
     
     var dataElementStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllDataElements' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllDataElements' + G.conf.type,
         root: 'dataElements',
         fields: ['id', 'shortName'],
         autoLoad: false,
@@ -175,61 +163,53 @@
     });
     
     var periodTypeStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllPeriodTypes' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllPeriodTypes' + G.conf.type,
         root: 'periodTypes',
         fields: ['name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
         
     var periodsByTypeStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getPeriodsByPeriodType' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getPeriodsByPeriodType' + G.conf.type,
         root: 'periods',
         fields: ['id', 'name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var predefinedMapLegendStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllMapLegends' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllMapLegends' + G.conf.type,
         root: 'mapLegends',
         fields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });    
     
     var predefinedMapLegendSetStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapLegendSetsByType' + GLOBAL.conf.type,
-        baseParams: {type: GLOBAL.conf.map_legend_type_predefined},
+        url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
+        baseParams: {type: G.conf.map_legend_type_predefined},
         root: 'mapLegendSets',
         fields: ['id', 'name', 'indicators', 'dataelements'],
         sortInfo: {field:'name', direction:'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var organisationUnitLevelStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getAllOrganisationUnitLevels' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getAllOrganisationUnitLevels' + G.conf.type,
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: false,
@@ -251,21 +231,19 @@
     });
     
 	var polygonOrganisationUnitLevelStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitLevelsByFeatureType' + GLOBAL.conf.type,
-        baseParams: {featureType: GLOBAL.conf.map_feature_type_multipolygon},
+        url: G.conf.path_mapping + 'getOrganisationUnitLevelsByFeatureType' + G.conf.type,
+        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var organisationUnitsAtLevelStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getOrganisationUnitsAtLevel' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getOrganisationUnitsAtLevel' + G.conf.type,
         baseParams: {level: 1},
         root: 'organisationUnits',
         fields: ['id', 'name'],
@@ -273,79 +251,67 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var geojsonFilesStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getGeoJsonFiles' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getGeoJsonFiles' + G.conf.type,
         root: 'files',
         fields: ['name'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var wmsCapabilitiesStore = new GeoExt.data.WMSCapabilitiesStore({
-        url: GLOBAL.conf.path_geoserver + GLOBAL.conf.ows,
+        url: G.conf.path_geoserver + G.conf.ows,
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
 	var baseLayerStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapLayersByType' + GLOBAL.conf.type,
-        baseParams: {type: GLOBAL.conf.map_layer_type_baselayer},
+        url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
+        baseParams: {type: G.conf.map_layer_type_baselayer},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var overlayStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapLayersByType' + GLOBAL.conf.type,
-        baseParams: {type: GLOBAL.conf.map_layer_type_overlay},
+        url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
+        baseParams: {type: G.conf.map_layer_type_overlay},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });
     
     var userSettingStore = new Ext.data.JsonStore({
-        url: GLOBAL.conf.path_mapping + 'getMapUserSettings' + GLOBAL.conf.type,
+        url: G.conf.path_mapping + 'getMapUserSettings' + G.conf.type,
         fields: ['mapDateType'],
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-            }
+            'load': G.func.storeLoadListener
         }
     });	
     
-    GLOBAL.stores = {
+    G.stores = {
 		mapView: mapViewStore,
         polygonMapView: polygonMapViewStore,
         pointMapView: pointMapViewStore,
@@ -370,24 +336,24 @@
 	
 	/* Add base layers */	
 	function addBaseLayersToMap(init) {
-		GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
-		GLOBAL.vars.map.layers[0].setVisibility(false);
+		G.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
+		G.vars.map.layers[0].setVisibility(false);
         
         if (init) {
-            var layers = GLOBAL.vars.parameter.baseLayers || [];
+            var layers = G.vars.parameter.baseLayers || [];
 			if (layers.length) {
 				for (var i = 0; i < layers.length; i++) {
-					GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(layers[i].data.name, layers[i].data.mapSource, {layers: layers[i].data.layer})]);
-					GLOBAL.vars.map.layers[GLOBAL.vars.map.layers.length-1].setVisibility(false);
+					G.vars.map.addLayers([new OpenLayers.Layer.WMS(layers[i].data.name, layers[i].data.mapSource, {layers: layers[i].data.layer})]);
+					G.vars.map.layers[G.vars.map.layers.length-1].setVisibility(false);
 				}
 			}
         }
         else {
-            GLOBAL.stores.baseLayer.load({callback: function(r) {
+            G.stores.baseLayer.load({callback: function(r) {
                 if (r.length) {
                     for (var i = 0; i < r.length; i++) {
-                        GLOBAL.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
-                        GLOBAL.vars.map.layers[GLOBAL.vars.map.layers.length-1].setVisibility(false);
+                        G.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
+                        G.vars.map.layers[G.vars.map.layers.length-1].setVisibility(false);
                     }
                 }
             }});
@@ -399,11 +365,11 @@
         function add(r) {
             if (r.length) {
                 var loadStart = function() {
-                    GLOBAL.vars.mask.msg = i18n_loading;
-                    GLOBAL.vars.mask.show();
+                    G.vars.mask.msg = G.i18n.loading;
+                    G.vars.mask.show();
                 };
                 var loadEnd = function() {
-                    GLOBAL.vars.mask.hide();
+                    G.vars.mask.hide();
                 };
                 
                 for (var i = 0; i < r.length; i++) {
@@ -423,7 +389,7 @@
                         }),
                         'strategies': [new OpenLayers.Strategy.Fixed()],
                         'protocol': new OpenLayers.Protocol.HTTP({
-                            'url': GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource,
+                            'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource,
                             'format': new OpenLayers.Format.GeoJSON()
                         })
                     });
@@ -431,16 +397,16 @@
                     overlay.events.register('loadstart', null, loadStart);					
                     overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
-                    GLOBAL.vars.map.addLayer(overlay);
+                    G.vars.map.addLayer(overlay);
                 }
             }
         }
         
         if (init) {
-            add(GLOBAL.vars.parameter.overlays);
+            add(G.vars.parameter.overlays);
         }
         else {
-            GLOBAL.stores.overlay.load({callback: function(r) {
+            G.stores.overlay.load({callback: function(r) {
                 add(r);
             }});
         }
@@ -450,10 +416,10 @@
 	/* Section: mapview */
 	var favoriteWindow = new Ext.Window({
         id: 'favorite_w',
-        title: '<span id="window-favorites-title">' + i18n_favorites + '</span>',
+        title: '<span id="window-favorites-title">' + G.i18n.favorites + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: GLOBAL.conf.window_width,
+		width: G.conf.window_width,
         height: 180,
         items: [
             {
@@ -464,10 +430,10 @@
                     {
                         xtype: 'textfield',
                         id: 'favoritename_tf',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_display_name,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.display_name,
+                        width: G.conf.combo_width_fieldset,
                         autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
                     },
                     {html: '<div class="window-p"></div>'},
@@ -475,19 +441,19 @@
                     {
                         xtype: 'combo',
                         id: 'favorite_cb',
-                        fieldLabel: i18n_favorite,
+                        fieldLabel: G.i18n.favorite,
                         editable: false,
                         valueField: 'id',
                         displayField: 'name',
                         mode: 'remote',
                         forceSelection: true,
                         triggerAction: 'all',
-                        emptyText: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        emptyText: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
                         selectOnFocus: true,
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        minListWidth: GLOBAL.conf.combo_width_fieldset,
-                        store:GLOBAL.stores.mapView
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
+                        store:G.stores.mapView
                     }
                 ]
             }
@@ -499,37 +465,37 @@
                 id: 'newview_b',
                 iconCls: 'icon-add',
 				hideLabel: true,
-				text: i18n_register,
+				text: G.i18n.register,
 				handler: function() {
 					var vn = Ext.getCmp('favoritename_tf').getValue();
                     
                     if (!vn) {
-						Ext.message.msg(false, i18n_form_is_not_complete);
+						Ext.message.msg(false, G.i18n.form_is_not_complete);
 						return;
 					}
                     
                     var formValues;
                     
-                    if (GLOBAL.vars.activePanel.isPolygon()) {
+                    if (G.vars.activePanel.isPolygon()) {
                         if (!choropleth.formValidation.validateForm(true)) {
                             return;
                         }
                         formValues = choropleth.formValues.getAllValues.call(choropleth);
                     }
-                    else if (GLOBAL.vars.activePanel.isPoint()) {
+                    else if (G.vars.activePanel.isPoint()) {
                         if (!symbol.formValidation.validateForm(true)) {
                             return;
                         }
                         formValues = symbol.getFormValues();
                     }
                     
-                    if (GLOBAL.stores.mapView.find('name', vn) !== -1) {
-                        Ext.message.msg(false, i18n_there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
+                    if (G.stores.mapView.find('name', vn) !== -1) {
+                        Ext.message.msg(false, G.i18n.there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
                         return;
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapView' + GLOBAL.conf.type,
+                        url: G.conf.path_mapping + 'addOrUpdateMapView' + G.conf.type,
                         method: 'POST',
                         params: {
                             name: vn,
@@ -559,13 +525,13 @@
                             zoom: formValues.zoom
                         },
                         success: function(r) {
-                            Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + i18n_registered);
-                            GLOBAL.stores.mapView.load();
-                            if (formValues.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
-								GLOBAL.stores.polygonMapView.load();
+                            Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + G.i18n.registered);
+                            G.stores.mapView.load();
+                            if (formValues.featureType == G.conf.map_feature_type_multipolygon) {
+								G.stores.polygonMapView.load();
 							}
-							else if (formValues.featureType == GLOBAL.conf.map_feature_type_multipolygon) {
-								GLOBAL.stores.pointMapView.load();
+							else if (formValues.featureType == G.conf.map_feature_type_multipolygon) {
+								G.stores.pointMapView.load();
 							}
                             Ext.getCmp('favoritename_tf').reset();
                         }
@@ -577,23 +543,23 @@
                 id: 'deleteview_b',
                 iconCls: 'icon-remove',
 				hideLabel: true,
-				text: i18n_delete,
+				text: G.i18n.delete,
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rw = Ext.getCmp('favorite_cb').getRawValue();
 					
                     if (!v) {
-						Ext.message.msg(false, i18n_please_select_a_map_view);
+						Ext.message.msg(false, G.i18n.please_select_a_map_view);
 						return;
 					}
 					
 					Ext.Ajax.request({
-						url: GLOBAL.conf.path_mapping + 'deleteMapView' + GLOBAL.conf.type,
+						url: G.conf.path_mapping + 'deleteMapView' + G.conf.type,
 						method: 'POST',
 						params: {id: v},
 						success: function(r) {
-							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + i18n_deleted);
-                            GLOBAL.stores.mapView.load();
+							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
+                            G.stores.mapView.load();
                             Ext.getCmp('favorite_cb').clearValue();
                             if (v == choropleth.form.findField('mapview').getValue()) {
                                 choropleth.form.findField('mapview').clearValue();
@@ -610,22 +576,22 @@
                 id: 'dashboardview_b',
                 iconCls: 'icon-assign',
 				hideLabel: true,
-				text: i18n_add,
+				text: G.i18n.add,
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rv = Ext.getCmp('favorite_cb').getRawValue();
 					
 					if (!v) {
-						Ext.message.msg(false, i18n_please_select_a_map_view);
+						Ext.message.msg(false, G.i18n.please_select_a_map_view);
 						return;
 					}
 					
 					Ext.Ajax.request({
-						url: GLOBAL.conf.path_mapping + 'addMapViewToDashboard' + GLOBAL.conf.type,
+						url: G.conf.path_mapping + 'addMapViewToDashboard' + G.conf.type,
 						method: 'POST',
 						params: {id:v},
 						success: function(r) {
-							Ext.message.msg(true, i18n_favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + i18n_added_to_dashboard);
+							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + G.i18n.added_to_dashboard);
                             Ext.getCmp('favorite_cb').clearValue();
 						}
 					});
@@ -640,7 +606,7 @@
         title: '<span id="window-image-title">Image export</span>',
         layout: 'fit',
         closeAction: 'hide',
-		width: GLOBAL.conf.window_width,
+		width: G.conf.window_width,
         height: 220,
         items: [
             {
@@ -651,12 +617,12 @@
                     {
                         xtype: 'textfield',
                         id: 'exportimagetitle_tf',
-                        fieldLabel: i18n_title,
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: G.i18n.title,
+                        labelSeparator: G.conf.labelseparator,
                         editable: true,
                         valueField: 'id',
                         displayField: 'text',
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
                         mode: 'local',
                         triggerAction: 'all'
                     },
@@ -664,12 +630,12 @@
                         xtype: 'combo',
                         id: 'exportimagelayers_cb',
                         fieldLabel: 'Layers',
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        labelSeparator: G.conf.labelseparator,
                         editable: false,
                         valueField: 'id',
                         displayField: 'layer',
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
                         mode: 'local',
                         triggerAction: 'all',
                         value: 1,
@@ -683,13 +649,13 @@
                         xtype: 'combo',
                         id: 'exportimagewidth_cb',
                         fieldLabel: 'Width',
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        labelSeparator: G.conf.labelseparator,
                         editable: true,
                         emptyText: 'Custom px',
                         valueField: 'width',
                         displayField: 'text',
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
                         mode: 'local',
                         triggerAction: 'all',
                         store: new Ext.data.ArrayStore({
@@ -701,13 +667,13 @@
                         xtype: 'combo',
                         id: 'exportimageheight_cb',
                         fieldLabel: 'Height',
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        labelSeparator: G.conf.labelseparator,
                         editable: true,
                         emptyText: 'Custom px',
                         valueField: 'height',
                         displayField: 'text',
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
                         mode: 'local',
                         triggerAction: 'all',
                         store: {
@@ -719,7 +685,7 @@
                     {
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
-                        fieldLabel: i18n_include_legend,
+                        fieldLabel: G.i18n.include_legend,
                         labelSeparator: '',				
                         isFormField: true,
                         checked: true
@@ -732,9 +698,9 @@
             {
                 xtype: 'button',
                 id: 'exportimage_b',
-				labelSeparator: GLOBAL.conf.labelseparator,
+				labelSeparator: G.conf.labelseparator,
                 iconCls: 'icon-export',
-				text: i18n_export,
+				text: G.i18n.export,
 				handler: function() {
                     var values, svgElement, svg;
                     if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
@@ -743,7 +709,7 @@
 							document.getElementById('layerField').value = 1;
 							document.getElementById('periodField').value = values.dateValue;
 							document.getElementById('indicatorField').value = values.mapValueTypeValue;
-							document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(choropleth);
+							document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
 							svgElement = document.getElementsByTagName('svg')[0];
 							svg = svgElement.parentNode.innerHTML;
 						}
@@ -758,7 +724,7 @@
 							document.getElementById('layerField').value = 2;
 							document.getElementById('periodField').value = values.dateValue;  
 							document.getElementById('indicatorField').value = values.mapValueTypeValue;
-							document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(symbol);
+							document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
 							svgElement = document.getElementsByTagName('svg')[1];
 							svg = svgElement.parentNode.innerHTML;
 						}
@@ -776,12 +742,12 @@
 								values = choropleth.formValues.getImageExportValues.call(choropleth);
 								document.getElementById('periodField').value = values.dateValue;
 								document.getElementById('indicatorField').value = values.mapValueTypeValue;
-								document.getElementById('legendsField').value = GLOBAL.util.getLegendsJSON.call(choropleth);
+								document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
 								
 								values = symbol.formValues.getImageExportValues.call(symbol);
 								document.getElementById('periodField2').value = values.dateValue;
 								document.getElementById('indicatorField2').value = values.mapValueTypeValue;
-								document.getElementById('legendsField2').value = GLOBAL.util.getLegendsJSON.call(symbol);
+								document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
 								
 								svgElement = document.getElementsByTagName('svg')[0];
 								var str1 = svgElement.parentNode.innerHTML;
@@ -804,7 +770,7 @@
 					var title = Ext.getCmp('exportimagetitle_tf').getValue();
 					
 					if (!title) {
-						Ext.message.msg(false, i18n_form_is_not_complete);
+						Ext.message.msg(false, G.i18n.form_is_not_complete);
 					}
 					else {
 						var exportForm = document.getElementById('exportForm');
@@ -829,15 +795,15 @@
 	/* Section: predefined map legend set */
     var predefinedMapLegendSetWindow = new Ext.Window({
         id: 'predefinedmaplegendset_w',
-        title: '<span id="window-predefinedlegendset-title">'+i18n_predefined_legend_sets+'</span>',
+        title: '<span id="window-predefinedlegendset-title">'+G.i18n.predefined_legend_sets+'</span>',
 		layout: 'accordion',
         closeAction: 'hide',
-		width: GLOBAL.conf.window_width,
+		width: G.conf.window_width,
         height: Ext.isChrome ? 348:346,
         items: [
             {
                 id: 'newpredefinedmaplegend_p',
-                title: i18n_legend,
+                title: G.i18n.legend,
                 items: [
                     {
                         xtype: 'form',
@@ -847,35 +813,35 @@
                             {
                                 xtype: 'textfield',
                                 id: 'predefinedmaplegendname_tf',
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_display_name,
-                                width: GLOBAL.conf.combo_width_fieldset
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.display_name,
+                                width: G.conf.combo_width_fieldset
                             },
                             {
                                 xtype: 'numberfield',
                                 id: 'predefinedmaplegendstartvalue_nf',
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_start_value,
-                                width: GLOBAL.conf.combo_number_width_small
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.start_value,
+                                width: G.conf.combo_number_width_small
                             },
                             {
                                 xtype: 'numberfield',
                                 id: 'predefinedmaplegendendvalue_nf',
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_end_value,
-                                width: GLOBAL.conf.combo_number_width_small
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.end_value,
+                                width: G.conf.combo_number_width_small
                             },
                             {
                                 xtype: 'colorfield',
                                 id: 'predefinedmaplegendcolor_cp',
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_color,
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.color,
                                 allowBlank: false,
-                                width: GLOBAL.conf.combo_width_fieldset,
+                                width: G.conf.combo_width_fieldset,
                                 value:"#C0C0C0"
                             },
                             {html: '<div class="window-p"></div>'},
@@ -890,12 +856,12 @@
                                 forceSelection: true,
                                 triggerAction: 'all',
                                 selectOnFocus: true,
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_legend,
-                                width: GLOBAL.conf.combo_width_fieldset,
-                                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                store: GLOBAL.stores.predefinedMapLegend
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.legend,
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                store: G.stores.predefinedMapLegend
                             }
                         ]
                     },
@@ -910,7 +876,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'newpredefinedmaplegend_b',
-                                        text: i18n_register,
+                                        text: G.i18n.register,
                                         iconCls: 'icon-add',
                                         handler: function() {
                                             var mln = Ext.getCmp('predefinedmaplegendname_tf').getValue();
@@ -919,32 +885,32 @@
                                             var mlc = Ext.getCmp('predefinedmaplegendcolor_cp').getValue();
                                             
                                             if (!Ext.isNumber(parseFloat(mlsv)) || !Ext.isNumber(mlev)) {
-                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
                                             
                                             if (!mln || !mlsv || !mlev || !mlc) {
-                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
                                             
-                                            if (!GLOBAL.util.validateInputNameLength(mln)) {
-                                                Ext.message.msg(false, i18n_name + ': ' + i18n_max + ' 25 ' + i18n_characters);
+                                            if (!G.util.validateInputNameLength(mln)) {
+                                                Ext.message.msg(false, G.i18n.name + ': ' + G.i18n.max + ' 25 ' + G.i18n.characters);
                                                 return;
                                             }
                                             
-                                            if (GLOBAL.stores.predefinedMapLegend.find('name', mln) !== -1) {
-                                                Ext.message.msg(false, i18n_legend + '<span class="x-msg-hl">' + mln + '</span> ' + i18n_already_exists);
+                                            if (G.stores.predefinedMapLegend.find('name', mln) !== -1) {
+                                                Ext.message.msg(false, G.i18n.legend + '<span class="x-msg-hl">' + mln + '</span> ' + G.i18n.already_exists);
                                                 return;
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegend' + GLOBAL.conf.type,
+                                                url: G.conf.path_mapping + 'addOrUpdateMapLegend' + G.conf.type,
                                                 method: 'POST',
                                                 params: {name: mln, startValue: mlsv, endValue: mlev, color: mlc},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_was_registered);
-                                                    GLOBAL.stores.predefinedMapLegend.load();
+                                                    Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.was_registered);
+                                                    G.stores.predefinedMapLegend.load();
                                                     Ext.getCmp('predefinedmaplegendname_tf').reset();
                                                     Ext.getCmp('predefinedmaplegendstartvalue_nf').reset();
                                                     Ext.getCmp('predefinedmaplegendendvalue_nf').reset();
@@ -956,24 +922,24 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegend_b',
-                                        text: i18n_delete,
+                                        text: G.i18n.delete,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
                                             var mlrv = Ext.getCmp('predefinedmaplegend_cb').getRawValue();
                                             
                                             if (!mlv) {
-                                                Ext.message.msg(false, i18n_please_select_a_legend);
+                                                Ext.message.msg(false, G.i18n.please_select_a_legend);
                                                 return;
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'deleteMapLegend' + GLOBAL.conf.type,
+                                                url: G.conf.path_mapping + 'deleteMapLegend' + G.conf.type,
                                                 method: 'POST',
                                                 params: {id: mlv},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + i18n_was_deleted);
-                                                    GLOBAL.stores.predefinedMapLegend.load();
+                                                    Ext.message.msg(true, G.i18n.legend + ' <span class="x-msg-hl">' + mlrv + '</span> ' + G.i18n.was_deleted);
+                                                    G.stores.predefinedMapLegend.load();
                                                     Ext.getCmp('predefinedmaplegend_cb').clearValue();
                                                 }
                                             });
@@ -995,7 +961,7 @@
             },
             
             {
-                title: i18n_legendset,
+                title: G.i18n.legendset,
                 items: [
                     {
                         xtype: 'form',
@@ -1005,12 +971,12 @@
                             {
                                 xtype: 'textfield',
                                 id: 'predefinedmaplegendsetname_tf',
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_display_name,
-                                width: GLOBAL.conf.combo_width_fieldset
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.display_name,
+                                width: G.conf.combo_width_fieldset
                             },
-                            {html: '<div class="window-field-label">'+i18n_legends+'</div>'},
+                            {html: '<div class="window-field-label">'+G.i18n.legends+'</div>'},
                             {
                                 xtype: 'multiselect',
                                 id: 'predefinednewmaplegend_ms',
@@ -1018,9 +984,9 @@
                                 dataFields: ['id', 'name', 'startValue', 'endValue', 'color', 'displayString'],
                                 valueField: 'id',
                                 displayField: 'displayString',
-                                width: GLOBAL.conf.multiselect_width,
-                                height: GLOBAL.util.getMultiSelectHeight() / 2,
-                                store: GLOBAL.stores.predefinedMapLegend
+                                width: G.conf.multiselect_width,
+                                height: G.util.getMultiSelectHeight() / 2,
+                                store: G.stores.predefinedMapLegend
                             },
                             {html: '<div class="window-p"></div>'},
                             {html: '<div class="window-info">Delete legend set</div>'},
@@ -1034,12 +1000,12 @@
                                 forceSelection: true,
                                 triggerAction: 'all',
                                 selectOnFocus: true,
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_legendset,
-                                width: GLOBAL.conf.combo_width_fieldset,
-                                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                store:GLOBAL.stores.predefinedMapLegendSet
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.legendset,
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                store:G.stores.predefinedMapLegendSet
                             }
                         ]
                     },
@@ -1054,7 +1020,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'newpredefinedmaplegendset_b',
-                                        text: i18n_register,
+                                        text: G.i18n.register,
                                         iconCls: 'icon-add',
                                         handler: function() {
                                             var mlsv = Ext.getCmp('predefinedmaplegendsetname_tf').getValue();
@@ -1065,15 +1031,15 @@
                                                 array = mlms.split(',');
                                                 if (array.length > 1) {
                                                     for (var i = 0; i < array.length; i++) {
-                                                        var sv = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('startValue');
-                                                        var ev = GLOBAL.stores.predefinedMapLegend.getById(array[i]).get('endValue');
+                                                        var sv = G.stores.predefinedMapLegend.getById(array[i]).get('startValue');
+                                                        var ev = G.stores.predefinedMapLegend.getById(array[i]).get('endValue');
                                                         for (var j = 0; j < array.length; j++) {
                                                             if (j != i) {
-                                                                var temp_sv = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('startValue');
-                                                                var temp_ev = GLOBAL.stores.predefinedMapLegend.getById(array[j]).get('endValue');
+                                                                var temp_sv = G.stores.predefinedMapLegend.getById(array[j]).get('startValue');
+                                                                var temp_ev = G.stores.predefinedMapLegend.getById(array[j]).get('endValue');
                                                                 for (var k = sv+1; k < ev; k++) {
                                                                     if (k > temp_sv && k < temp_ev) {
-                                                                        Ext.message.msg(false, i18n_overlapping_legends_are_not_allowed);
+                                                                        Ext.message.msg(false, G.i18n.overlapping_legends_are_not_allowed);
                                                                         return;
                                                                     }
                                                                 }
@@ -1083,12 +1049,12 @@
                                                 }
                                             }
                                             else {
-                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
                                             
                                             if (!mlsv) {
-                                                Ext.message.msg(false, i18n_form_is_not_complete);
+                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
                                             
@@ -1102,12 +1068,12 @@
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
+                                                url: G.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
                                                 method: 'POST',
-                                                params: {name: mlsv, type: GLOBAL.conf.map_legend_type_predefined},
+                                                params: {name: mlsv, type: G.conf.map_legend_type_predefined},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + i18n_was_registered);
-                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.message.msg(true, G.i18n.new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + G.i18n.was_registered);
+                                                    G.stores.predefinedMapLegendSet.load();
                                                     Ext.getCmp('predefinedmaplegendsetname_tf').reset();
                                                     Ext.getCmp('predefinednewmaplegend_ms').reset();							
                                                 }
@@ -1117,24 +1083,24 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegendset_b',
-                                        text: i18n_delete,
+                                        text: G.i18n.delete,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
                                             var mlsrv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getRawValue();
                                             
                                             if (!mlsv) {
-                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
                                                 return;
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'deleteMapLegendSet' + GLOBAL.conf.type,
+                                                url: G.conf.path_mapping + 'deleteMapLegendSet' + G.conf.type,
                                                 method: 'POST',
                                                 params: {id: mlsv},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + i18n_was_deleted);
-                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.message.msg(true, G.i18n.legendset + ' <span class="x-msg-hl">' + mlsrv + '</span> ' + G.i18n.was_deleted);
+                                                    G.stores.predefinedMapLegendSet.load();
                                                     Ext.getCmp('predefinedmaplegendsetindicator_cb').clearValue();
                                                     if (mlsv == Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue) {
                                                         Ext.getCmp('predefinedmaplegendsetindicator2_cb').clearValue();
@@ -1153,7 +1119,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight((GLOBAL.util.getMultiSelectHeight() / 2) + (Ext.isChrome ? 299:295));
+                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + (Ext.isChrome ? 299:295));
                     },
                     collapse: function() {
                         predefinedMapLegendSetWindow.setHeight(123);
@@ -1162,7 +1128,7 @@
             },
             
             {
-                title: i18n_indicators,
+                title: G.i18n.indicators,
                 items: [
                     {
                         xtype: 'form',
@@ -1179,12 +1145,12 @@
                                 forceSelection: true,
                                 triggerAction: 'all',
                                 selectOnFocus: true,
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_legendset,
-                                width: GLOBAL.conf.combo_width_fieldset,
-                                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                store: GLOBAL.stores.predefinedMapLegendSet,
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.legendset,
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                store: G.stores.predefinedMapLegendSet,
                                 listeners: {
                                     'select': {
                                         fn: function(cb, record) {
@@ -1203,7 +1169,7 @@
                                     }
                                 }	
                             },
-                            {html: '<div class="window-field-label">' + i18n_indicators + '</div>'},
+                            {html: '<div class="window-field-label">' + G.i18n.indicators + '</div>'},
                             {
                                 xtype: 'multiselect',
                                 id: 'predefinedmaplegendsetindicator_ms',
@@ -1211,9 +1177,9 @@
                                 dataFields: ['id', 'shortName'],
                                 valueField: 'id',
                                 displayField: 'shortName',
-                                width:GLOBAL.conf.multiselect_width,
-                                height: GLOBAL.util.getMultiSelectHeight(),
-                                store:GLOBAL.stores.indicator
+                                width:G.conf.multiselect_width,
+                                height: G.util.getMultiSelectHeight(),
+                                store:G.stores.indicator
                             }
                         ]
                     },
@@ -1228,7 +1194,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'assignpredefinedmaplegendsetindicator_b',
-                                        text: i18n_assign,
+                                        text: G.i18n.assign,
                                         iconCls: 'icon-assign',
                                         handler: function() {
                                             var ls = Ext.getCmp('predefinedmaplegendsetindicator2_cb').getValue();
@@ -1236,12 +1202,12 @@
                                             var lims = Ext.getCmp('predefinedmaplegendsetindicator_ms').getValue();
                                             
                                             if (!ls) {
-                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
                                                 return;
                                             }
                                             
                                             if (!lims) {
-                                                Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
+                                                Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
                                                 return;
                                             }
                                             
@@ -1257,12 +1223,12 @@
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
+                                                url: G.conf.path_mapping + 'assignIndicatorsToMapLegendSet.action' + params,
                                                 method: 'POST',
                                                 params: {id: ls},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
+                                                    G.stores.predefinedMapLegendSet.load();
                                                 }
                                             });
                                         }
@@ -1274,10 +1240,10 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 243:240));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome ? 243:240));
                         
-                        if (!GLOBAL.stores.indicator.isLoaded) {
-                            GLOBAL.stores.indicator.load();
+                        if (!G.stores.indicator.isLoaded) {
+                            G.stores.indicator.load();
                         }
                     },
                     collapse: function() {
@@ -1287,7 +1253,7 @@
             },
             
             {
-                title: i18n_dataelements,
+                title: G.i18n.dataelements,
                 items: [
                     {
                         xtype: 'form',
@@ -1304,12 +1270,12 @@
                                 forceSelection: true,
                                 triggerAction: 'all',
                                 selectOnFocus: true,
-                                emptyText: GLOBAL.conf.emptytext,
-                                labelSeparator: GLOBAL.conf.labelseparator,
-                                fieldLabel: i18n_legendset,
-                                width: GLOBAL.conf.combo_width_fieldset,
-                                minListWidth: GLOBAL.conf.combo_width_fieldset,
-                                store: GLOBAL.stores.predefinedMapLegendSet,
+                                emptyText: G.conf.emptytext,
+                                labelSeparator: G.conf.labelseparator,
+                                fieldLabel: G.i18n.legendset,
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                store: G.stores.predefinedMapLegendSet,
                                 listeners:{
                                     'select': {
                                         fn: function(cb, record) {
@@ -1328,7 +1294,7 @@
                                     }
                                 }					
                             },
-                            {html: '<div class="window-field-label">' + i18n_dataelements + '</div>'},
+                            {html: '<div class="window-field-label">' + G.i18n.dataelements + '</div>'},
                             {
                                 xtype: 'multiselect',
                                 id: 'predefinedmaplegendsetdataelement_ms',
@@ -1336,9 +1302,9 @@
                                 dataFields: ['id', 'shortName'],
                                 valueField: 'id',
                                 displayField: 'shortName',
-                                width: GLOBAL.conf.multiselect_width,
-                                height: GLOBAL.util.getMultiSelectHeight(),
-                                store: GLOBAL.stores.dataElement
+                                width: G.conf.multiselect_width,
+                                height: G.util.getMultiSelectHeight(),
+                                store: G.stores.dataElement
                             }
                         ]
                     },
@@ -1353,7 +1319,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'assignpredefinedmaplegendsetdataelement_b',
-                                        text: i18n_assign,
+                                        text: G.i18n.assign,
                                         iconCls: 'icon-assign',
                                         handler: function() {
                                             var ls = Ext.getCmp('predefinedmaplegendsetdataelement_cb').getValue();
@@ -1361,12 +1327,12 @@
                                             var lims = Ext.getCmp('predefinedmaplegendsetdataelement_ms').getValue();
                                             
                                             if (!ls) {
-                                                Ext.message.msg(false, i18n_please_select_a_legend_set);
+                                                Ext.message.msg(false, G.i18n.please_select_a_legend_set);
                                                 return;
                                             }
                                             
                                             if (!lims) {
-                                                Ext.message.msg(false, i18n_please_select_at_least_one_indicator);
+                                                Ext.message.msg(false, G.i18n.please_select_at_least_one_indicator);
                                                 return;
                                             }
                                             
@@ -1382,12 +1348,12 @@
                                             }
                                             
                                             Ext.Ajax.request({
-                                                url: GLOBAL.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
+                                                url: G.conf.path_mapping + 'assignDataElementsToMapLegendSet.action' + params,
                                                 method: 'POST',
                                                 params: {id: ls},
                                                 success: function(r) {
-                                                    Ext.message.msg(true, i18n_legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + i18n_was_updated);
-                                                    GLOBAL.stores.predefinedMapLegendSet.load();
+                                                    Ext.message.msg(true, G.i18n.legendset+' <span class="x-msg-hl">' + lsrw + '</span> ' + G.i18n.was_updated);
+                                                    G.stores.predefinedMapLegendSet.load();
                                                 }
                                             });
                                         }
@@ -1399,10 +1365,10 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(GLOBAL.util.getMultiSelectHeight() + (Ext.isChrome ? 241:238));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome ? 241:238));
                         
-                        if (!GLOBAL.stores.dataElement.isLoaded) {
-                            GLOBAL.stores.dataElement.load();
+                        if (!G.stores.dataElement.isLoaded) {
+                            G.stores.dataElement.load();
                         }
                     },
                     collapse: function() {
@@ -1432,7 +1398,7 @@
     
 	var helpWindow = new Ext.Window({
         id: 'help_w',
-        title: '<span id="window-help-title">'+i18n_help+'</span>',
+        title: '<span id="window-help-title">'+G.i18n.help+'</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: 556,
@@ -1448,31 +1414,31 @@
                 listeners: {
                     tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
-							setHelpText(GLOBAL.conf.thematicMap, tab);
+							setHelpText(G.conf.thematicMap, tab);
                             helpWindow.setHeight(Ext.isChrome ? 242:223);
                         }
                         else if (tab.id == 'help1') {
-							setHelpText(GLOBAL.conf.favorites, tab);
+							setHelpText(G.conf.favorites, tab);
                             helpWindow.setHeight(Ext.isChrome ? 146:135);
                         }
                         else if (tab.id == 'help2') {
-                            setHelpText(GLOBAL.conf.legendSets, tab);
+                            setHelpText(G.conf.legendSets, tab);
                             helpWindow.setHeight(Ext.isChrome ? 161:150);
                         }
 						if (tab.id == 'help3') { 
-                            setHelpText(GLOBAL.conf.imageExport, tab);
+                            setHelpText(G.conf.imageExport, tab);
                             helpWindow.setHeight(Ext.isChrome ? 235:215);
                         }
                         else if (tab.id == 'help4') {
-                            setHelpText(GLOBAL.conf.administration, tab);
+                            setHelpText(G.conf.administration, tab);
                             helpWindow.setHeight(Ext.isChrome ? 161:149);
                         }
                         else if (tab.id == 'help5') {
-                            setHelpText(GLOBAL.conf.overlayRegistration, tab);
+                            setHelpText(G.conf.overlayRegistration, tab);
                             helpWindow.setHeight(Ext.isChrome ? 398:367);
                         }
                         else if (tab.id == 'help6') {
-                            setHelpText(GLOBAL.conf.setup, tab);
+                            setHelpText(G.conf.setup, tab);
                             helpWindow.setHeight(Ext.isChrome ? 537:485);
                         }
                     }
@@ -1480,31 +1446,31 @@
                 items: [
                     {
                         id: 'help0',
-                        title: '<span class="panel-tab-title">' + i18n_thematic_map + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.thematic_map + '</span>'
                     },
                     {
                         id: 'help1',
-                        title: '<span class="panel-tab-title">' + i18n_favorites + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.favorites + '</span>'
                     },
                     {
                         id: 'help2',
-                        title: '<span class="panel-tab-title">' + i18n_legendset + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.legendset + '</span>'
                     },
                     {
                         id: 'help3',
-                        title: '<span class="panel-tab-title">' + i18n_image_export + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.image_export + '</span>'
                     },
                     {
                         id: 'help4',
-                        title: '<span class="panel-tab-title">' + i18n_administrator + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.administrator + '</span>'
                     },
                     {
                         id: 'help5',
-                        title: '<span class="panel-tab-title">' + i18n_overlays + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.overlays + '</span>'
                     },
                     {
                         id: 'help6',
-                        title: '<span class="panel-tab-title">' + i18n_setup + '</span>'
+                        title: '<span class="panel-tab-title">' + G.i18n.setup + '</span>'
                     }
                 ]
             }
@@ -1514,11 +1480,11 @@
     /* Section: overlays */
 	var overlaysWindow = new Ext.Window({
         id: 'overlays_w',
-        title: '<span id="window-maplayer-title">' + i18n_overlays + '</span>',
+        title: '<span id="window-maplayer-title">' + G.i18n.overlays + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
         height: 307,
-		width: GLOBAL.conf.window_width,
+		width: G.conf.window_width,
         items: [
             {
                 xtype: 'form',
@@ -1528,10 +1494,10 @@
                     {
                         xtype: 'textfield',
                         id: 'maplayername_tf',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_display_name,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.display_name,
+                        width: G.conf.combo_width_fieldset,
                         autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
                     },
                     {
@@ -1542,20 +1508,20 @@
                         valueField: 'name',
                         triggerAction: 'all',
                         mode: 'remote',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_geojson_file,
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        store:GLOBAL.stores.geojsonFiles
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.geojson_file,
+                        width: G.conf.combo_width_fieldset,
+                        store:G.stores.geojsonFiles
                     },
                     {
                         xtype: 'colorfield',
                         id: 'maplayerfillcolor_cf',
-                        emptyText: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_fill_color,
+                        emptyText: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.fill_color,
                         allowBlank: false,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
                         value:"#C0C0C0"
                     },
                     {
@@ -1566,10 +1532,10 @@
                         displayField: 'value',
                         mode: 'local',
                         triggerAction: 'all',
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_fill_opacity,
-                        width: GLOBAL.conf.combo_number_width,
-                        minListWidth: GLOBAL.conf.combo_number_width,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.fill_opacity,
+                        width: G.conf.combo_number_width,
+                        minListWidth: G.conf.combo_number_width,
                         value: 0.5,
                         store: {
                             xtype: 'arraystore',
@@ -1580,11 +1546,11 @@
                     {
                         xtype: 'colorfield',
                         id: 'maplayerstrokecolor_cf',
-                        emptyText: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_stroke_color,
+                        emptyText: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.stroke_color,
                         allowBlank: false,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
                         value:"#000000"
                     },
                     {
@@ -1595,10 +1561,10 @@
                         displayField: 'value',
                         mode: 'local',
                         triggerAction: 'all',
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_stroke_width,
-                        width: GLOBAL.conf.combo_number_width,
-                        minListWidth: GLOBAL.conf.combo_number_width,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.stroke_width,
+                        width: G.conf.combo_number_width,
+                        minListWidth: G.conf.combo_number_width,
                         value: 2,
                         store: {
                             xtype: 'arraystore',
@@ -1617,11 +1583,11 @@
                         mode: 'remote',
                         forceSelection: true,
                         triggerAction: 'all',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_overlays,
-                        width: GLOBAL.conf.combo_width_fieldset,                
-                        store:GLOBAL.stores.overlay
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.overlays,
+                        width: G.conf.combo_width_fieldset,                
+                        store:G.stores.overlay
                     }
                 ]
             }
@@ -1642,24 +1608,24 @@
                     var mlmsf = Ext.getCmp('maplayermapsourcefile_cb').getValue();
                     
                     if (!mln || !mlmsf) {
-                        Ext.message.msg(false, i18n_form_is_not_complete);
+                        Ext.message.msg(false, G.i18n.form_is_not_complete);
                         return;
                     }
                     
-                    if (GLOBAL.stores.overlay.find('name', mln) !== -1) {
-                        Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mln + '</span> ' + i18n_is_already_in_use);
+                    if (G.stores.overlay.find('name', mln) !== -1) {
+                        Ext.message.msg(false, G.i18n.name + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.is_already_in_use);
                         return;
                     }
                         
                     Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
+                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
                         method: 'POST',
                         params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
                         success: function(r) {
-                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + i18n_registered);
-                            GLOBAL.stores.overlay.load();
+                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
+                            G.stores.overlay.load();
                     
-                            GLOBAL.vars.map.addLayer(
+                            G.vars.map.addLayer(
                                 new OpenLayers.Layer.Vector(mln, {
                                     'visibility': false,
                                     'styleMap': new OpenLayers.StyleMap({
@@ -1672,7 +1638,7 @@
                                     }),
                                     'strategies': [new OpenLayers.Strategy.Fixed()],
                                     'protocol': new OpenLayers.Protocol.HTTP({
-                                        'url': GLOBAL.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
+                                        'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
                                         'format': new OpenLayers.Format.GeoJSON()
                                     })
                                 })
@@ -1687,29 +1653,29 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayer_b',
-                text: i18n_delete,
+                text: G.i18n.delete,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayer_cb').getValue();
                     var mln = Ext.getCmp('maplayer_cb').getRawValue();
                     
                     if (!ml) {
-                        Ext.message.msg(false, i18n_please_select_an_overlay);
+                        Ext.message.msg(false, G.i18n.please_select_an_overlay);
                         return;
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
+                        url: G.conf.path_mapping + 'deleteMapLayer' + G.conf.type,
                         method: 'POST',
                         params: {id:ml},
                         success: function(r) {
-                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> '+ i18n_deleted);
-                            GLOBAL.stores.overlay.load();
+                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> '+ G.i18n.deleted);
+                            G.stores.overlay.load();
                             Ext.getCmp('maplayer_cb').clearValue();
                         }
                     });
                     
-                    GLOBAL.vars.map.getLayersByName(mln)[0].destroy();
+                    G.vars.map.getLayersByName(mln)[0].destroy();
                 }
             }
         ]
@@ -1718,10 +1684,10 @@
     /* Section: base layers */
     var baselayersWindow = new Ext.Window({
         id: 'baselayers_w',
-        title: '<span id="window-maplayer-title">' + i18n_baselayers + '</span>',
+        title: '<span id="window-maplayer-title">' + G.i18n.baselayers + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: GLOBAL.conf.window_width,
+		width: G.conf.window_width,
         height: 229,
         items: [
             {
@@ -1732,27 +1698,27 @@
                     {
                         xtype: 'textfield',
                         id: 'maplayerbaselayersname_tf',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_display_name,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.display_name,
+                        width: G.conf.combo_width_fieldset,
                         autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
                     },
                     {
                         xtype: 'textfield',
                         id: 'maplayerbaselayersurl_tf',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_url,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.url,
+                        width: G.conf.combo_width_fieldset,
                     },
                     {
                         xtype: 'textfield',
                         id: 'maplayerbaselayerslayer_tf',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_layer,
-                        width: GLOBAL.conf.combo_width_fieldset,
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.layer,
+                        width: G.conf.combo_width_fieldset,
                     },
                     {html: '<div class="window-p"></div>'},
                     {html: '<div class="window-info">Delete overlay</div>'},
@@ -1765,11 +1731,11 @@
                         mode: 'remote',
                         forceSelection: true,
                         triggerAction: 'all',
-                        emptytext: GLOBAL.conf.emptytext,
-                        labelSeparator: GLOBAL.conf.labelseparator,
-                        fieldLabel: i18n_baselayer,
-                        width: GLOBAL.conf.combo_width_fieldset,                
-                        store: GLOBAL.stores.baseLayer
+                        emptytext: G.conf.emptytext,
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: G.i18n.baselayer,
+                        width: G.conf.combo_width_fieldset,                
+                        store: G.stores.baseLayer
                     }
                 ]
             }
@@ -1779,7 +1745,7 @@
             {
 				xtype: 'button',
 				id: 'newmaplayerbaselayers_b',
-				text: i18n_register,
+				text: G.i18n.register,
 				iconCls: 'icon-add',
 				handler: function() {
 					var mlbn = Ext.getCmp('maplayerbaselayersname_tf').getValue();
@@ -1787,26 +1753,26 @@
 					var mlbl = Ext.getCmp('maplayerbaselayerslayer_tf').getValue();
 					
 					if (!mlbn || !mlbu || !mlbl) {
-						Ext.message.msg(false, i18n_form_is_not_complete);
+						Ext.message.msg(false, G.i18n.form_is_not_complete);
 						return;
 					}
 					
-                    if (GLOBAL.stores.baseLayer.find('name', mlbn) !== -1) {
-                        Ext.message.msg(false, i18n_name + ' <span class="x-msg-hl">' + mlbn + '</span> ' + i18n_is_already_in_use);
+                    if (G.stores.baseLayer.find('name', mlbn) !== -1) {
+                        Ext.message.msg(false, G.i18n.name + ' <span class="x-msg-hl">' + mlbn + '</span> ' + G.i18n.is_already_in_use);
                         return;
                     }
 					
                     Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'addOrUpdateMapLayer' + GLOBAL.conf.type,
+                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
                         method: 'POST',
-                        params: {name: mlbn, type: GLOBAL.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
+                        params: {name: mlbn, type: G.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_baselayer + '<span class="x-msg-hl"> ' + mlbn + '</span> ' + i18n_registered);                            
-                            GLOBAL.vars.map.addLayers([
+                            Ext.message.msg(true, G.i18n.baselayer + '<span class="x-msg-hl"> ' + mlbn + '</span> ' + G.i18n.registered);                            
+                            G.vars.map.addLayers([
                                 new OpenLayers.Layer.WMS(mlbn, mlbu, {layers: mlbl})
                             ]);
 
-                            GLOBAL.stores.baseLayer.load();
+                            G.stores.baseLayer.load();
                             Ext.getCmp('maplayerbaselayersname_tf').reset();
                             Ext.getCmp('maplayerbaselayersurl_tf').reset();
                             Ext.getCmp('maplayerbaselayerslayer_tf').reset();
@@ -1817,32 +1783,32 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayerbaselayers_b',
-                text: i18n_delete,
+                text: G.i18n.delete,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
                     var mln = Ext.getCmp('maplayerbaselayers_cb').getRawValue();
                     
                     if (!ml) {
-                        Ext.message.msg(false, i18n_please_select_a_baselayer);
+                        Ext.message.msg(false, G.i18n.please_select_a_baselayer);
                         return;
                     }
                     
                     Ext.Ajax.request({
-                        url: GLOBAL.conf.path_mapping + 'deleteMapLayer' + GLOBAL.conf.type,
+                        url: G.conf.path_mapping + 'deleteMapLayer' + G.conf.type,
                         method: 'POST',
                         params: {id: ml},
                         success: function(r) {
-                            Ext.message.msg(true, i18n_baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+i18n_deleted);
-                            GLOBAL.stores.baseLayer.load({callback: function() {
+                            Ext.message.msg(true, G.i18n.baselayer + ' <span class="x-msg-hl">' + mln + '</span> '+G.i18n.deleted);
+                            G.stores.baseLayer.load({callback: function() {
                                 Ext.getCmp('maplayerbaselayers_cb').clearValue();
-                                var names = GLOBAL.stores.baseLayer.collect('name');
+                                var names = G.stores.baseLayer.collect('name');
                                 
                                 for (var i = 0; i < names.length; i++) {
-                                    GLOBAL.vars.map.getLayersByName(names[i])[0].setVisibility(false);
+                                    G.vars.map.getLayersByName(names[i])[0].setVisibility(false);
                                 }
                                 
-                                GLOBAL.vars.map.getLayersByName(mln)[0].destroy(false);
+                                G.vars.map.getLayersByName(mln)[0].destroy(false);
                             }});
                         }
                     });
@@ -1858,7 +1824,7 @@
         title: '<span id="window-admin-title">Administrator settings</span>',
         layout: 'accordion',
         closeAction: 'hide',
-        width: GLOBAL.conf.window_width,
+        width: G.conf.window_width,
         height: 119,
         items: [
             {
@@ -1870,34 +1836,34 @@
                     {
                         xtype: 'combo',
                         id: 'mapdatetype_cb',
-                        fieldLabel: i18n_date_type,
-                        labelSeparator: GLOBAL.conf.labelseparator,
+                        fieldLabel: G.i18n.date_type,
+                        labelSeparator: G.conf.labelseparator,
                         editable: false,
                         valueField: 'value',
                         displayField: 'text',
                         mode: 'local',
-                        value: GLOBAL.conf.map_date_type_fixed,
+                        value: G.conf.map_date_type_fixed,
                         triggerAction: 'all',
-                        width: GLOBAL.conf.combo_width_fieldset,
-                        minListWidth: GLOBAL.conf.combo_width_fieldset,
+                        width: G.conf.combo_width_fieldset,
+                        minListWidth: G.conf.combo_width_fieldset,
                         store: {
                             xtype: 'arraystore',
                             fields: ['value', 'text'],
                             data: [
-                                [GLOBAL.conf.map_date_type_fixed, i18n_fixed_periods],
-                                [GLOBAL.conf.map_date_type_start_end, i18n_start_end_dates]
+                                [G.conf.map_date_type_fixed, G.i18n.fixed_periods],
+                                [G.conf.map_date_type_start_end, G.i18n.start_end_dates]
                             ]
                         },
                         listeners: {
                             'select': function(cb) {
-                                if (cb.getValue() != GLOBAL.vars.mapDateType.value) {
-                                    GLOBAL.vars.mapDateType.value = cb.getValue();
+                                if (cb.getValue() != G.vars.mapDateType.value) {
+                                    G.vars.mapDateType.value = cb.getValue();
                                     Ext.Ajax.request({
-                                        url: GLOBAL.conf.path_mapping + 'setMapUserSettings' + GLOBAL.conf.type,
+                                        url: G.conf.path_mapping + 'setMapUserSettings' + G.conf.type,
                                         method: 'POST',
-                                        params: {mapDateType: GLOBAL.vars.mapDateType.value},
+                                        params: {mapDateType: G.vars.mapDateType.value},
                                         success: function() {
-                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+i18n_saved_as_date_type);
+                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+G.i18n.saved_as_date_type);
                                             choropleth.prepareMapViewDateType();
                                             symbol.prepareMapViewDateType();
                                         }
@@ -1944,10 +1910,10 @@
         })
     });
     
-    GLOBAL.vars.map.addLayers([choroplethLayer, symbolLayer]);
+    G.vars.map.addLayers([choroplethLayer, symbolLayer]);
         
     var layerTree = new Ext.tree.TreePanel({
-        title: '<span class="panel-title">' + i18n_map_layers + '</span>',
+        title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
         enableDD: true,
         bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
@@ -2011,7 +1977,7 @@
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
                     menu: { 
-                        items: GLOBAL.conf.opacityItems,
+                        items: G.conf.opacityItems,
                         listeners: {
                             'itemclick': function(item) {
                                 item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
@@ -2027,7 +1993,7 @@
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
                     menu: { 
-                        items: GLOBAL.conf.opacityItems,
+                        items: G.conf.opacityItems,
                         listeners: {
                             'itemclick': function(item) {
                                 item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
@@ -2039,7 +2005,7 @@
         }),
         contextMenuVector: new Ext.menu.Menu({
             showLocateFeatureWindow: function(cm) {
-                var layer = GLOBAL.vars.map.getLayersByName(cm.contextNode.attributes.layer)[0];
+                var layer = G.vars.map.getLayersByName(cm.contextNode.attributes.layer)[0];
 
                 var data = [];
                 for (var i = 0; i < layer.features.length; i++) {
@@ -2064,8 +2030,8 @@
                         id: 'locatefeature_w',
                         title: 'Locate features',
                         layout: 'fit',
-                        width: GLOBAL.conf.window_width,
-                        height: GLOBAL.util.getMultiSelectHeight() + 140,
+                        width: G.conf.window_width,
+                        height: G.util.getMultiSelectHeight() + 140,
                         items: [
                             {
                                 xtype: 'form',
@@ -2075,20 +2041,20 @@
                                     {
                                         xtype: 'colorfield',
                                         id: 'highlightcolor_cf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_highlight_color,
+                                        emptyText: G.conf.emptytext,
+                                        labelSeparator: G.conf.labelseparator,
+                                        fieldLabel: G.i18n.highlight_color,
                                         allowBlank: false,
-                                        width: GLOBAL.conf.combo_width_fieldset,
+                                        width: G.conf.combo_width_fieldset,
                                         value: "#0000FF"
                                     },
                                     {
                                         xtype: 'textfield',
                                         id: 'locatefeature_tf',
-                                        emptyText: GLOBAL.conf.emptytext,
-                                        labelSeparator: GLOBAL.conf.labelseparator,
-                                        fieldLabel: i18n_feature_filter,
-                                        width: GLOBAL.conf.combo_width_fieldset,
+                                        emptyText: G.conf.emptytext,
+                                        labelSeparator: G.conf.labelseparator,
+                                        fieldLabel: G.i18n.feature_filter,
+                                        width: G.conf.combo_width_fieldset,
                                         enableKeyEvents: true,
                                         listeners: {
                                             'keyup': function(tf) {
@@ -2100,7 +2066,7 @@
                                     {
                                         xtype: 'grid',
                                         id: 'featuregrid_gp',
-                                        height: GLOBAL.util.getMultiSelectHeight(),
+                                        height: G.util.getMultiSelectHeight(),
                                         cm: new Ext.grid.ColumnModel({
                                             columns: [{id: 'name', header: 'Features', dataIndex: 'name', width: 250}]
                                         }),
@@ -2127,14 +2093,14 @@
                                                     var color = Ext.getCmp('highlightcolor_cf').getValue();
                                                     var symbolizer;
                                                     
-                                                    if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_multipolygon ||
-                                                        feature.attributes.featureType == GLOBAL.conf.map_feature_type_polygon) {
+                                                    if (feature.attributes.featureType == G.conf.map_feature_type_multipolygon ||
+                                                        feature.attributes.featureType == G.conf.map_feature_type_polygon) {
                                                         symbolizer = new OpenLayers.Symbolizer.Polygon({
                                                             'strokeColor': color,
                                                             'fillColor': color
                                                         });
                                                     }
-                                                    else if (feature.attributes.featureType == GLOBAL.conf.map_feature_type_point) {
+                                                    else if (feature.attributes.featureType == G.conf.map_feature_type_point) {
                                                         symbolizer = new OpenLayers.Symbolizer.Point({
                                                             'pointRadius': 7,
                                                             'fillColor': color
@@ -2155,7 +2121,7 @@
                             }
                         }
                     });
-                    locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    locateFeatureWindow.setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
                     locateFeatureWindow.show();
                 }
                 else {
@@ -2174,14 +2140,14 @@
                     text: 'Show/hide labels',
                     iconCls: 'menu-layeroptions-labels',
                     handler: function(item, e) {
-                        var layer = GLOBAL.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];
+                        var layer = G.vars.map.getLayersByName(item.parentMenu.contextNode.attributes.layer)[0];
                         
                         if (layer.features.length) {
                             if (layer.name == 'Polygon layer') {
-                                GLOBAL.util.toggleFeatureLabels(choropleth);
+                                G.util.toggleFeatureLabels(choropleth);
                             }
                             else if (layer.name == 'Point layer') {
-                                GLOBAL.util.toggleFeatureLabels(symbol);
+                                G.util.toggleFeatureLabels(symbol);
                             }
                         }
                         else {
@@ -2193,7 +2159,7 @@
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
                     menu: { 
-                        items: GLOBAL.conf.opacityItems,
+                        items: G.conf.opacityItems,
                         listeners: {
                             'itemclick': function(item) {
                                 item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
@@ -2235,7 +2201,7 @@
                 text: 'Base layers',
                 iconCls: 'icon-add',
                 handler: function() {
-                    Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
                     Ext.getCmp('baselayers_w').show();
                 }
             },
@@ -2245,7 +2211,7 @@
                 text: 'Overlays',
                 iconCls: 'icon-add',
                 handler: function() {
-                    Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (GLOBAL.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
+                    Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
                     Ext.getCmp('overlays_w').show();
                 }
             }
@@ -2255,34 +2221,34 @@
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
-        map: GLOBAL.vars.map,
+        map: G.vars.map,
         layer: choroplethLayer,
-		title: '<span class="panel-title">' + i18n_polygon_layer + '</span>',
+		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         featureSelection: false,
         legendDiv: 'polygonlegend',
         defaults: {width: 130},
         listeners: {
             'expand': function() {
-                GLOBAL.vars.activePanel.setPolygon();
+                G.vars.activePanel.setPolygon();
             }
         }
     });
 
     symbol = new mapfish.widgets.geostat.Symbol({
         id: 'symbol',
-        map: GLOBAL.vars.map,
+        map: G.vars.map,
         layer: symbolLayer,
-		title: '<span class="panel-title">' + i18n_point_layer + '</span>',
+		title: '<span class="panel-title">' + G.i18n.point_layer + '</span>',
         featureSelection: false,
         legendDiv: 'pointlegend',
         defaults: {width: 130},
         listeners: {
             'expand': function() {
-                GLOBAL.vars.activePanel.setPoint();
+                G.vars.activePanel.setPoint();
                 
                 if (!this.form.findField('level').getValue()) {
-					if (!GLOBAL.stores.organisationUnitLevel.isLoaded) {
-						GLOBAL.stores.organisationUnitLevel.load();
+					if (!G.stores.organisationUnitLevel.isLoaded) {
+						G.stores.organisationUnitLevel.load();
 					}
 				}
             }
@@ -2293,38 +2259,38 @@
 	
 	/* Section: map toolbar */
 	var mapLabel = new Ext.form.Label({
-		text: i18n_map,
+		text: G.i18n.map,
 		style: 'font:bold 11px arial; color:#333;'
 	});
 	
 	var zoomInButton = new Ext.Button({
 		iconCls: 'icon-zoomin',
-		tooltip: i18n_zoom_in,
+		tooltip: G.i18n.zoom_in,
 		handler: function() {
-			GLOBAL.vars.map.zoomIn();
+			G.vars.map.zoomIn();
 		}
 	});
 	
 	var zoomOutButton = new Ext.Button({
 		iconCls: 'icon-zoomout',
-		tooltip: i18n_zoom_out,
+		tooltip: G.i18n.zoom_out,
 		handler:function() {
-			GLOBAL.vars.map.zoomOut();
+			G.vars.map.zoomOut();
 		}
 	});
 	
 	var zoomToVisibleExtentButton = new Ext.Button({
 		iconCls: 'icon-zoommin',
-		tooltip: i18n_zoom_to_visible_extent,
+		tooltip: G.i18n.zoom_to_visible_extent,
 		handler: function() {
-            if (GLOBAL.vars.activePanel.isPolygon()) {
+            if (G.vars.activePanel.isPolygon()) {
                 if (choropleth.layer.getDataExtent()) {
-                    GLOBAL.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
+                    G.vars.map.zoomToExtent(choropleth.layer.getDataExtent());
                 }
             }
-            else if (GLOBAL.vars.activePanel.isPoint()) {
+            else if (G.vars.activePanel.isPoint()) {
                 if (symbol.layer.getDataExtent()) {
-                    GLOBAL.vars.map.zoomToExtent(symbol.layer.getDataExtent());
+                    G.vars.map.zoomToExtent(symbol.layer.getDataExtent());
                 }
             }
         }
@@ -2332,8 +2298,8 @@
 	
 	var favoritesButton = new Ext.Button({
 		iconCls: 'icon-favorite',
-		tooltip: i18n_favorite_map_views,
-		disabled: !GLOBAL.vars.user.isAdmin,
+		tooltip: G.i18n.favorite_map_views,
+		disabled: !G.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -2350,7 +2316,7 @@
 	
 	var exportImageButton = new Ext.Button({
 		iconCls: 'icon-image',
-		tooltip: i18n_export_map_as_image,
+		tooltip: G.i18n.export_map_as_image,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
@@ -2368,7 +2334,7 @@
 	
 	var exportExcelButton = new Ext.Button({
 		iconCls: 'icon-excel',
-		tooltip: i18n_export_map_as_excel,
+		tooltip: G.i18n.export_map_as_excel,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
@@ -2386,8 +2352,8 @@
 	
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
-		tooltip: i18n_create_predefined_legend_sets,
-		disabled: !GLOBAL.vars.user.isAdmin,
+		tooltip: G.i18n.create_predefined_legend_sets,
+		disabled: !G.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2398,8 +2364,8 @@
 			}
 			else {
 				predefinedMapLegendSetWindow.show();
-                if (!GLOBAL.stores.predefinedMapLegend.isLoaded) {
-                    GLOBAL.stores.predefinedMapLegend.load();
+                if (!G.stores.predefinedMapLegend.isLoaded) {
+                    G.stores.predefinedMapLegend.load();
                 }
 			}
 		}
@@ -2408,7 +2374,7 @@
 	var adminButton = new Ext.Button({
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
-		disabled: !GLOBAL.vars.user.isAdmin,
+		disabled: !G.vars.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2419,7 +2385,7 @@
 	
 	var helpButton = new Ext.Button({
 		iconCls: 'icon-help',
-		tooltip: i18n_help,
+		tooltip: G.i18n.help,
 		handler: function() {
 			var c = Ext.getCmp('center').x;
 			var e = Ext.getCmp('east').x;
@@ -2429,9 +2395,9 @@
 	});
 	
 	var exitButton = new Ext.Button({
-		text: i18n_exit_gis,
+		text: G.i18n.exit_gis,
         iconCls: 'icon-exit',
-		tooltip: i18n_return_to_DHIS_2_dashboard,
+		tooltip: G.i18n.return_to_DHIS_2_dashboard,
 		handler: function() {
 			window.location.href = '../../dhis-web-portal/redirect.action';
 		}
@@ -2488,11 +2454,11 @@
                 [
                     layerTree,
                     {
-                        title: '<span class="panel-title">' + i18n_overview_map + '</span>',
+                        title: '<span class="panel-title">' + G.i18n.overview_map + '</span>',
                         html:'<div id="overviewmap" style="height:97px; padding-top:0px;"></div>'
                     },
                     {
-                        title: '<span class="panel-title">'+ i18n_cursor_position +'</span>',
+                        title: '<span class="panel-title">'+ G.i18n.cursor_position +'</span>',
                         height: 65,
                         contentEl: 'position',
                         anchor: '100%',
@@ -2500,7 +2466,7 @@
                     },
 					{
 						xtype: 'panel',
-						title: '<span class="panel-title">' + i18n_feature_data + '</span>',
+						title: '<span class="panel-title">' + G.i18n.feature_data + '</span>',
 						height: 65,
 						anchor: '100%',
 						bodyStyle: 'padding-left: 4px;',
@@ -2508,13 +2474,13 @@
 						[
 							new Ext.form.Label({
 								id: 'featureinfo_l',
-								text: i18n_no_feature_selected,
+								text: G.i18n.no_feature_selected,
 								style: 'color:#666'
 							})
 						]
 					},
                     {
-                        title: '<span class="panel-title">' + i18n_map_legend_polygon + '</span>',
+                        title: '<span class="panel-title">' + G.i18n.map_legend_polygon + '</span>',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'polygonlegendpanel',
@@ -2522,7 +2488,7 @@
 						bodyStyle: 'padding-left: 4px;'
                     },
                     {
-                        title: '<span class="panel-title">' + i18n_map_legend_point + '</span>',
+                        title: '<span class="panel-title">' + G.i18n.map_legend_point + '</span>',
                         minHeight: 65,
                         autoHeight: true,
                         contentEl: 'pointlegendpanel',
@@ -2538,7 +2504,7 @@
 				header: false,
                 collapsible: true,
 				collapseMode: 'mini',
-                width: GLOBAL.conf.west_width,
+                width: G.conf.west_width,
                 minSize: 175,
                 maxSize: 500,
                 margins: '0 0 0 5',
@@ -2558,21 +2524,21 @@
                 id: 'center',
                 height: 1000,
                 width: 800,
-                map: GLOBAL.vars.map,
+                map: G.vars.map,
                 zoom: 3,
 				tbar: mapToolbar
             }
         ]
     });
 	
-	GLOBAL.vars.map.addControl(new OpenLayers.Control.MousePosition({
+	G.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
         prefix: '<span style="color:#666;">x: &nbsp;</span>',
         separator: '<br/><span style="color:#666;">y: &nbsp;</span>'
     }));
     
-    GLOBAL.vars.map.addControl(new OpenLayers.Control.OverviewMap({
+    G.vars.map.addControl(new OpenLayers.Control.OverviewMap({
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
@@ -2585,20 +2551,20 @@
         ]
     }));
     
-    GLOBAL.vars.map.addControl(new OpenLayers.Control.ZoomBox());
+    G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
     
     function toggleSelectFeatures(e) {
-        if (GLOBAL.stores.overlay.find('name', e.layer.name) !== -1) {
-            var names = GLOBAL.stores.overlay.collect('name');
+        if (G.stores.overlay.find('name', e.layer.name) !== -1) {
+            var names = G.stores.overlay.collect('name');
             var visibleOverlays = false;
             
             for (var i = 0; i < names.length; i++) {
-                if (GLOBAL.vars.map.getLayersByName(names[i])[0].visibility) {
+                if (G.vars.map.getLayersByName(names[i])[0].visibility) {
                     visibleOverlays = true;
                 }
             }
             
-            var widget = GLOBAL.vars.activePanel.isPolygon() ? choropleth : symbol;
+            var widget = G.vars.activePanel.isPolygon() ? choropleth : symbol;
             
             if (visibleOverlays) {
                 widget.selectFeatures.deactivate();
@@ -2609,12 +2575,12 @@
         }
     }
 	
-	GLOBAL.vars.map.events.on({
+	G.vars.map.events.on({
         changelayer: function(e) {
             if (e.layer.name != 'Polygon layer' && e.layer.name != 'Point layer') {
                 if (e.property == 'visibility') {
-                    if (!GLOBAL.stores.overlay.isLoaded) {
-                        GLOBAL.stores.overlay.load({callback: function() {
+                    if (!G.stores.overlay.isLoaded) {
+                        G.stores.overlay.load({callback: function() {
                             toggleSelectFeatures(e);
                         }});
                     }
@@ -2626,7 +2592,7 @@
         }
     });
             
-    Ext.getCmp('mapdatetype_cb').setValue(GLOBAL.vars.mapDateType.value);
+    Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
     
     choropleth.prepareMapViewValueType();
     symbol.prepareMapViewValueType();
