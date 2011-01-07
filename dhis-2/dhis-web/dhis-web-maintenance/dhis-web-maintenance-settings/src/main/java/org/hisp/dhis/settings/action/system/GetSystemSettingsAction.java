@@ -27,6 +27,7 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -106,6 +107,13 @@ public class GetSystemSettingsAction
         return currentStyle;
     }
     
+    private Collection<String> aggregationStrategies;
+
+    public Collection<String> getAggregationStrategies()
+    {
+        return aggregationStrategies;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -121,6 +129,8 @@ public class GetSystemSettingsAction
         styles = styleManager.getStyles();
         
         currentStyle = styleManager.getCurrentStyle();
+        
+        aggregationStrategies = systemSettingManager.getAggregationStrategies();
         
         return SUCCESS;
     }

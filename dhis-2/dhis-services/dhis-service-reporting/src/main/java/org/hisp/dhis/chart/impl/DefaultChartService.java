@@ -48,6 +48,7 @@ import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
@@ -60,6 +61,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -80,6 +82,8 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -141,6 +145,20 @@ public class DefaultChartService
     public void setAggregationService( AggregationService aggregationService )
     {
         this.aggregationService = aggregationService;
+    }
+
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -439,6 +457,8 @@ public class DefaultChartService
      */
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
 
@@ -462,8 +482,9 @@ public class DefaultChartService
 
                     for ( Period period : chart.getAllPeriods() )
                     {
-                        final Double value = aggregationService.getAggregatedIndicatorValue( indicator, period
-                            .getStartDate(), period.getEndDate(), selectedOrganisationUnit );
+                        final Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                            aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), selectedOrganisationUnit ) :
+                                aggregatedDataValueService.getAggregatedValue( indicator, period, selectedOrganisationUnit );
 
                         if ( chart.isDimension( DIMENSION_PERIOD ) )
                         {
@@ -516,8 +537,9 @@ public class DefaultChartService
 
                     for ( OrganisationUnit unit : chart.getOrganisationUnits() )
                     {
-                        final Double value = aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod
-                            .getStartDate(), selectedPeriod.getEndDate(), unit );
+                        final Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                            aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit ) :
+                                aggregatedDataValueService.getAggregatedValue( indicator, selectedPeriod, unit );
 
                         regularDataSet.addValue( value != null ? value : 0, indicator.getShortName(), unit
                             .getShortName() );

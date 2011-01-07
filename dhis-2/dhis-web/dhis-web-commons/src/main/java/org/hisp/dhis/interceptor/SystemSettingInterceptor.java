@@ -27,7 +27,7 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_FACTOR_OF_DEVIATION;
+import static org.hisp.dhis.options.SystemSettingManager.*;
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_MAX_NUMBER_OF_ATTEMPTS;
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_TIMEFRAME_MINUTES;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
@@ -95,6 +95,7 @@ public class SystemSettingInterceptor
         map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );
         map.put( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, systemSettingManager.getSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, false ) );
         map.put( KEY_FACTOR_OF_DEVIATION, systemSettingManager.getSystemSetting( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION ) );
+        map.put( KEY_AGGREGATION_STRATEGY, systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY ) );
         
         invocation.getStack().push( map );
         

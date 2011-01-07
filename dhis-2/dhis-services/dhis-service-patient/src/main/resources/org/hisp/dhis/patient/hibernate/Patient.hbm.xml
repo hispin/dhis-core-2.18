@@ -16,7 +16,7 @@
 
 		<property name="lastName" column="lastname" length="50" />
 		
-		<property name="fullName" formula="concat(firstname, ' ', middleName,' ', lastname)"/>
+		<property name="fullName" formula="concat(firstname, lastname)"/>
 
 		<property name="birthDate" column="birthdate" not-null="true"/>
 		

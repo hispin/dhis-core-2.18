@@ -33,6 +33,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -41,11 +42,14 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
+
+import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Abyot Asalefew
@@ -76,6 +80,20 @@ public class DefaultDataSetReportService
     {
         this.aggregationService = aggregationService;
     }
+    
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
 
     // -------------------------------------------------------------------------
     // DataSetReportService implementation
@@ -83,6 +101,8 @@ public class DefaultDataSetReportService
     
     public Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly )
     {
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        
         Collection<DataElement> dataElements = dataSet.getDataElements();
         
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
@@ -103,9 +123,12 @@ public class DefaultDataSetReportService
                     value = ( dataValue != null ) ? dataValue.getValue() : null;
                 }
                 else
-                {                                   
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit );                                    
-                    value = ( aggregatedValue != null ) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;                                                       
+                {
+                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) :
+                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
+                                        
+                    value = ( aggregatedValue != null ) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
                 }                 
                 
                 if ( value != null )

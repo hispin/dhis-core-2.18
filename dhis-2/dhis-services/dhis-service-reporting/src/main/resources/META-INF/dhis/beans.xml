@@ -98,8 +98,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.chart.ChartService"
     class="org.hisp.dhis.chart.impl.DefaultChartService">
-	<property name="aggregationService"
-	  ref="org.hisp.dhis.aggregation.AggregationService"/>
     <property name="chartStore"
       ref="org.hisp.dhis.chart.ChartStore"/>
 	<property name="periodService"
@@ -108,6 +106,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	  ref="org.hisp.dhis.datavalue.DataValueService"/>
 	<property name="minMaxDataElementService"
 	  ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
+	<property name="aggregationService"
+	  ref="org.hisp.dhis.aggregation.AggregationService"/>
+	<property name="systemSettingManager"
+	  ref="org.hisp.dhis.options.SystemSettingManager"/>
+	<property name="aggregatedDataValueService"
+	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
   </bean>
   
   <!-- Document -->
@@ -208,6 +212,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	class="org.hisp.dhis.datasetreport.impl.DefaultDataSetReportService">
 	<property name="dataValueService"
 	  ref="org.hisp.dhis.datavalue.DataValueService"/>
+	<property name="systemSettingManager"
+	  ref="org.hisp.dhis.options.SystemSettingManager"/>
+	<property name="aggregatedDataValueService"
+	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
 	<property name="aggregationService"
 	  ref="org.hisp.dhis.aggregation.AggregationService"/>
   </bean>

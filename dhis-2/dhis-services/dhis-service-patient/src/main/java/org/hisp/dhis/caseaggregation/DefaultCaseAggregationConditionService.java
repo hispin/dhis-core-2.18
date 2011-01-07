@@ -67,6 +67,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
+    private final String regExp = "\\[(" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
+        + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
+        + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -209,10 +213,6 @@ public class DefaultCaseAggregationConditionService
 
         String[] expression = aggregationCondition.getAggregationExpression().split( "(AND|OR)" );
 
-        String regExp = "\\[(" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|"
-            + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
-            + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
-
         // ---------------------------------------------------------------------
         // parse expressions
         // ---------------------------------------------------------------------
@@ -311,7 +311,7 @@ public class DefaultCaseAggregationConditionService
 
             conditions.add( condition );
         }
-        
+
         return getSQL( conditions, operators );
 
     }
@@ -433,28 +433,5 @@ public class DefaultCaseAggregationConditionService
 
         return patientIds.size();
     }
-
-    // public static void main( String[] args )
-    // {
-    //
-    // CaseAggregationCondition aggregationCondition = new
-    // CaseAggregationCondition();
-    //
-    // aggregationCondition.setOperator(
-    // CaseAggregationCondition.AGGRERATION_COUNT );
-    //
-    // // aggregationCondition.setAggregationExpression(
-    // // "( [DE:1.1.1] + [DE:1.1.1] + [DE:1.1.1] > 0 " );
-    // aggregationCondition.setAggregationExpression(
-    // " [DE:15.1.1]  +  [DE:16.2.1] > 0" );
-    // //
-    // aggregationCondition.setAggregationExpression("[PP:enrollmentdate - dateofincident]  > 0");
-    // // );
-    //
-    // DefaultCaseAggregationConditionService service = new
-    // DefaultCaseAggregationConditionService();
-    //
-    // service.parseConditition( aggregationCondition, null, null );
-    // }
-
+    
 }

@@ -29,6 +29,7 @@ package org.hisp.dhis.options;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.SortedMap;
 
 /**
@@ -52,6 +53,7 @@ public interface SystemSettingManager
     final String KEY_GIS_LATITUDE = "latitude";
     final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
+    final String KEY_AGGREGATION_STRATEGY = "aggregationStrategy";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
     
     final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
@@ -60,6 +62,10 @@ public interface SystemSettingManager
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
+    
+    final String AGGREGATION_STRATEGY_REAL_TIME = "real_time";
+    final String AGGREGATION_STRATEGY_BATCH = "batch";
+    final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
     
     void saveSystemSetting( String name, Serializable value );   
 
@@ -72,4 +78,6 @@ public interface SystemSettingManager
     void deleteSystemSetting( String name );
     
     SortedMap<String, String> getFlags();
+    
+    List<String> getAggregationStrategies();
 }
