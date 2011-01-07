@@ -27,94 +27,84 @@ package org.hisp.dhis.importexport.action.exp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.datamart.DataMartInternalProcess.PROCESS_TYPE;
-import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
-import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_EXPORT;
-import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.amplecode.cave.process.ProcessCoordinator;
-import org.amplecode.cave.process.ProcessExecutor;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datamart.DataMartExport;
-import org.hisp.dhis.datamart.DataMartInternalProcess;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.StreamUtils;
+import java.util.zip.GZIPOutputStream;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Bob Jolliffe
+ *
+ * This action is called to export a csv formatted selection of aggregated indicator or
+ * data values from datamart.
+ * It requires 4 parameters:
+ * startdate and enddate: 8 character string representation of date - 20100624
+ * root: id of root organization unit
+ * level: level number to fetch aggregated values for
  */
 public class ExportDataMartAction
     implements Action
 {
+    // TODO: experiment with different sizes for this to stop data dribbling out
+    private static int GZIPBUFFER = 8192;
+
+    private static final Log log = LogFactory.getLog( ExportDataMartAction.class );
+
+    private static final DateFormat dateFormat = new SimpleDateFormat( "yyyyMMdd" );
+    // parameter errors
+
+    private static final String NO_STARTDATE = "The request is missing a startDate parameter";
+
+    private static final String NO_ENDDATE = "The request is missing an endDate parameter";
+
+    private static final String BAD_STARTDATE = "The request has a bad startDate parameter. Required format is YYYMMDD";
+
+    private static final String BAD_ENDDATE = "The request has a bad endDate parameter. Required format is YYYMMDD";
+
+    private static final String NO_ROOT = "The request is missing a non-zero dataSourceRoot parameter";
+
+    private static final String NO_LEVEL = "The request is missing a non-zero dataSourceLevel parameter";
+
+    // http header result type
+    private static final String CLIENT_ERROR = "client-error";
+
+    private static final int HTTP_ERROR = 400;
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProcessCoordinator processCoordinator;
-
-    public void setProcessCoordinator( ProcessCoordinator processCoordinator )
-    {
-        this.processCoordinator = processCoordinator;
-    }
-    
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
-    private SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    private ExportPivotViewService exportPivotViewService;
+
+    public void setExportPivotViewService( ExportPivotViewService exportPivotViewService )
     {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
+        this.exportPivotViewService = exportPivotViewService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private Collection<String> selectedDataSets;
-
-    public void setSelectedDataSets( Collection<String> selectedDataSets )
-    {
-        this.selectedDataSets = selectedDataSets;
-    }
 
     private String startDate;
 
@@ -122,7 +112,7 @@ public class ExportDataMartAction
     {
         this.startDate = startDate;
     }
-    
+
     private String endDate;
 
     public void setEndDate( String endDate )
@@ -136,79 +126,111 @@ public class ExportDataMartAction
     {
         this.dataSourceLevel = dataSourceLevel;
     }
-    
+
+    private int dataSourceRoot;
+
+    public void setDataSourceRoot( int dataSourceRoot )
+    {
+        this.dataSourceRoot = dataSourceRoot;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-
-    // TODO CompleteDataSetRegistrations
-    // TODO intersecting periods?
-    
-    public String execute()
+    public String execute() throws IOException
     {
-        DataMartExport export = new DataMartExport();
+        // do a basic audit log
+        HttpServletRequest request = ServletActionContext.getRequest();
+
+        log.info( "PivotView export request from " + currentUserService.getCurrentUsername() +
+            " @ " + request.getRemoteAddr() );
+
+        HttpServletResponse response = ServletActionContext.getResponse();
 
         // ---------------------------------------------------------------------
-        // Get DataElements
+        // Check all parameters
         // ---------------------------------------------------------------------
 
-        if ( selectedDataSets != null )
+
+        // first see how we action was called
+        String servletPath = request.getServletPath();
+        String requestType = servletPath.substring(servletPath.lastIndexOf( '/') + 1 );
+
+        log.info( "Request type : " + requestType );
+
+        String paramError = null;
+
+        if ( startDate == null )
         {
-            Set<DataElement> distinctDataElements = new HashSet<DataElement>();
-            
-            for ( String dataSetId : selectedDataSets )
+            paramError = NO_STARTDATE;
+        }
+
+        if ( endDate == null )
+        {
+            paramError = NO_ENDDATE;
+        }
+
+        if ( dataSourceRoot == 0 )
+        {
+            paramError = NO_ROOT;
+        }
+
+        if ( dataSourceLevel == 0 )
+        {
+            paramError = NO_LEVEL;
+        }
+
+        Date start = null;
+        Date end = null;
+
+        if ( paramError == null )
+        {
+            try
             {
-                DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-                
-                distinctDataElements.addAll( dataSet.getDataElements() );
-            }
-            
-            export.setDataElements( distinctDataElements );
-        }
-        
-        // ---------------------------------------------------------------------
-        // Get Periods
-        // ---------------------------------------------------------------------
+                start = dateFormat.parse( startDate );
 
-        if ( startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0 )
-        {
-            Date selectedStartDate = getMediumDate( startDate );
-        
-            Date selectedEndDate = getMediumDate( endDate );
-        
-            export.getPeriods().addAll( periodService.getPeriodsBetweenDates( selectedStartDate, selectedEndDate ) );
-        }
-        
-        // ---------------------------------------------------------------------
-        // Get OrganisationUnit
-        // ---------------------------------------------------------------------
-        
-        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
-        
-        if ( selectedUnits != null )
-        {
-            for ( OrganisationUnit unit : selectedUnits )
+                if ( start == null )
+                {
+                    paramError = BAD_STARTDATE;
+                }
+
+                end = dateFormat.parse( endDate );
+
+                if ( end == null )
+                {
+                    paramError = BAD_ENDDATE;
+                }
+            } catch ( java.text.ParseException ex )
             {
-                export.getOrganisationUnits().addAll( organisationUnitService.getOrganisationUnitsAtLevel( dataSourceLevel, unit ) );
+                paramError = ex.getMessage();
             }
         }
 
-        // ---------------------------------------------------------------------
-        // Start DataMartInternalProcess
-        // ---------------------------------------------------------------------
-        
-        String owner = currentUserService.getCurrentUsername();
-        
-        ProcessExecutor executor = processCoordinator.newProcess( PROCESS_TYPE, owner );
-        
-        DataMartInternalProcess process = (DataMartInternalProcess) executor.getProcess();
-        
-        process.setExport( export );
-        
-        processCoordinator.requestProcessExecution( executor );
-        
-        setCurrentRunningProcess( PROCESS_KEY_EXPORT, executor.getId() );
-        
+        if ( paramError != null )
+        {
+            response.sendError( HTTP_ERROR, paramError );
+            log.info( paramError );
+            return CLIENT_ERROR;
+        }
+
+        // prepare to write output
+        OutputStream out = null;
+
+        response.setContentType( "application/gzip");
+        response.addHeader( "Content-Disposition", "attachment; filename=\"datavalues.csv.gz\"" );
+        response.addHeader( "Cache-Control", "no-cache" );
+        response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+
+        try
+        {
+            out = new GZIPOutputStream(response.getOutputStream(), GZIPBUFFER);
+            exportPivotViewService.execute(out, start, end, dataSourceLevel, dataSourceRoot);
+        }
+        finally
+        {
+            StreamUtils.closeOutputStream( out );
+        }
+
         return SUCCESS;
     }
 }

@@ -191,12 +191,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="exportPivotView" class="org.hisp.dhis.importexport.action.exp.ExportPivotViewAction">
-      <result name="success" type="outputStreamResult" />
-      <result name="client-error" type="httpheader">
-      </result>
-    </action>
-
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- Dhis 1.4 Configuration                                        -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -217,5 +211,22 @@
       <result name="input" type="velocity-xml">/dhis-web-importexport/responseInput.vm</result>
     </action>
     
+  </package>
+
+  <!-- Create a new namespace to map actions for exporting datamart -->
+  <package name="dhis-web-exportdatamart" extends="dhis-web-commons" namespace="/dhis-web-exportdatamart">
+
+      <!-- route all export value requests through same action -->
+
+      <action name="dataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+        <result name="success" type="outputStreamResult" />
+        <result name="client-error" type="httpheader" />
+      </action>
+
+      <action name="indicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+        <result name="success" type="outputStreamResult" />
+        <result name="client-error" type="httpheader" />
+      </action>
+
   </package>
 </struts>

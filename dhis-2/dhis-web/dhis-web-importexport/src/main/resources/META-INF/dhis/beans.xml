@@ -173,21 +173,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
-		class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
-		scope="prototype">
-		<property name="processCoordinator" ref="processCoordinator" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="selectionTreeManager"
-			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
 
-        <bean id="org.hisp.dhis.importexport.action.exp.ExportPivotViewAction"
-		class="org.hisp.dhis.importexport.action.exp.ExportPivotViewAction"
+    <bean id="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
+		class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
 		scope="prototype">
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
