@@ -192,7 +192,7 @@
 		<th colspan="3">$i18n.getString( "relative_periods" )</th>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="3">
 		    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
 			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $reportTable.relatives.isReportingMonth() ) checked#end>&nbsp;
 			<label for="monthsThisYear">$i18n.getString( "months_this_year" )</label>
