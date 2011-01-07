@@ -4,11 +4,11 @@
 	jQuery(document).ready(function(){	
 		deExpressionValidator = validation( 'dataelement-form', function(){ 
 			updateDeExpression();
-		});	
-		#if(!$reportExcel.isCategory()) 
-		remoteValidate( jQuery( "#dataelement textarea[id=formula]"), '../dhis-web-commons-ajax-json/getExpressionText.action' );	
+		});
+
+		#if( !$reportExcel.isCategory() )
+			remoteValidate( jQuery( "#dataelement textarea[id=formula]"), '../dhis-web-commons-ajax-json/getExpressionText.action' );	
 		#end
-	
 	});	
 	
 	

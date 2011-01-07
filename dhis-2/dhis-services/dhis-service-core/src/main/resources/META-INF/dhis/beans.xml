@@ -1387,6 +1387,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
 		<property name="categoryService" 
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="conceptService"
+			ref="org.hisp.dhis.concept.ConceptService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"
