@@ -27,10 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.concept.Concept.DEFAULT_CONCEPT_NAME;
-
 import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -51,13 +48,6 @@ public class DataElementCategoryDeletionHandler
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
-    }
-
-    private ConceptService conceptService;
-
-    public void setConceptService( ConceptService conceptService )
-    {
-        this.conceptService = conceptService;
     }
 
     // -------------------------------------------------------------------------
@@ -92,8 +82,6 @@ public class DataElementCategoryDeletionHandler
     @Override
     public void deleteConcept( Concept concept )
     {
-        Concept _default = conceptService.getConceptByName( DEFAULT_CONCEPT_NAME );
-
         for ( DataElementCategory category : categoryService.getAllDataElementCategories() )
         {
             Concept categoryConcept = category.getConcept();
@@ -102,7 +90,7 @@ public class DataElementCategoryDeletionHandler
             {
                 if ( categoryConcept.equals( concept ) )
                 {
-                    category.setConcept( _default );
+                    category.setConcept( null );
                     categoryService.updateDataElementCategory( category );
                 }
             }

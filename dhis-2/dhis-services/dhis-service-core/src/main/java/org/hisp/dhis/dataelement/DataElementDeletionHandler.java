@@ -67,20 +67,6 @@ public class DataElementDeletionHandler
     }
 
     @Override
-    public boolean allowDeleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
-    {
-        for ( DataElement dataElement : dataElementService.getAllDataElements() )
-        {
-            if ( dataElement.getCategoryCombo().equals( categoryCombo ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public void deleteDataElementCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         DataElementCategoryCombo default_ = categoryService

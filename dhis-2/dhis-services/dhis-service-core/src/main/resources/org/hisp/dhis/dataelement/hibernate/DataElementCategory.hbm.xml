@@ -17,7 +17,7 @@
     <property name="name">
       <column name="name" not-null="true" unique="true" length="160"/>
     </property>
-
+		
 	<many-to-one name="concept" class="org.hisp.dhis.concept.Concept"
 		column="conceptid" foreign-key="fk_dataelementcategory_conceptid"/>
     
