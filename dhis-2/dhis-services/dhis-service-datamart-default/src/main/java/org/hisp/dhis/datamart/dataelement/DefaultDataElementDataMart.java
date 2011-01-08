@@ -117,8 +117,6 @@ public class DefaultDataElementDataMart
                     
                     final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperandIndexMap, period, unit, level, hierarchy, key );
                     
-                    final PeriodType periodType = period.getPeriodType();
-                    
                     for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
                     {
                         value.clear();
@@ -126,7 +124,7 @@ public class DefaultDataElementDataMart
                         value.setDataElementId( entry.getKey().getDataElementId() );
                         value.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
                         value.setPeriodId( period.getId() );
-                        value.setPeriodTypeId( periodType.getId() );
+                        value.setPeriodTypeId( period.getPeriodType().getId() );
                         value.setOrganisationUnitId( unit.getId() );
                         value.setLevel( level );
                         value.setValue( getRounded( entry.getValue(), DECIMALS ) );

@@ -80,7 +80,7 @@ public interface CrossTabStore
      * Creates a trimmed crosstab table based on the regular crosstab table.
      * Trimming implies removing columns without data.
      * 
-     * @param operands the DataElementOperands.
+     * @param operands the DataElementOperands with data.
      */
     void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key );
     

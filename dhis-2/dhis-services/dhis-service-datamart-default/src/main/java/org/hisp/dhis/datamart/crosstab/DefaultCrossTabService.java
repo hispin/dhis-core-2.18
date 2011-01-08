@@ -170,7 +170,6 @@ public class DefaultCrossTabService
         }
 
         return null;
-
     }
 
     public void dropCrossTabTable( String key )

@@ -60,9 +60,9 @@ public interface CrossTabService
     /**
      * Trims the crosstab table.
      * 
-     * @param emptyOperands the DataElementOperands without data.
+     * @param operands the DataElementOperands with data.
      */
-    void trimCrossTabTable( Collection<DataElementOperand> emptyOperands, String key );
+    void trimCrossTabTable( Collection<DataElementOperand> operands, String key );
 
     /**
      * Provides a Map with information about the crosstab table where the key is
