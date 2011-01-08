@@ -203,7 +203,8 @@ public class SumIntAggregator
         
         for ( final DataElementOperand operand : operands )
         {
-            if ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) )
+            if ( operand.getValueType().equals( VALUE_TYPE_INT ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) &&
+                 operand.getFrequencyOrder() <= periodType.getFrequencyOrder() ) // Ignore disaggregation
             {
                 sumOperandIndexMap.put( operand, operandIndexMap.get( operand ) );
             }

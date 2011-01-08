@@ -192,7 +192,8 @@ public class SumBoolAggregator
         
         for ( final DataElementOperand operand : operands )
         {
-            if ( operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) )
+            if ( operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) &&
+                operand.getFrequencyOrder() <= periodType.getFrequencyOrder() ) // Ignore disaggregation
             {
                 sumOperandIndexMap.put( operand, operandIndexMap.get( operand ) );
             }
