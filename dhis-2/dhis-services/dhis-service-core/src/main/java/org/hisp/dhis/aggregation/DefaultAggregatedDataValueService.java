@@ -80,7 +80,7 @@ public class DefaultAggregatedDataValueService
 
     public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
-       return aggregatedDataValueStore.getAggregateDataValuesAtLevel(orgunit, level, periods);
+       return aggregatedDataValueStore.getAggregatedDataValuesAtLevel(orgunit, level, periods);
     }
 
     // -------------------------------------------------------------------------
@@ -126,6 +126,11 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.deleteAggregatedIndicatorValues();
     }
 
+    @Override
+    public StoreIterator<AggregatedIndicatorValue> getAggregateIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
+    {
+        return aggregatedDataValueStore.getAggregatedIndicatorValuesAtLevel( orgunit, level, periods );
+    }
     // -------------------------------------------------------------------------
     // AggregatedIndicatorMapValue
     // -------------------------------------------------------------------------
@@ -163,4 +168,5 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.getDataValueMap( periodId, sourceId );
     }
+
 }

@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
+import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.StoreIterator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
@@ -124,10 +125,24 @@ public class ExportPivotViewService {
 
         log.info( "Exporting for " + rootOrgUnit.getName() + " at level: " + orgUnitLevel.getName());
 
-        StoreIterator<AggregatedDataValue> advIterator
+        if (requestType == RequestType.DATAVALUE)
+        {
+            processDataValues(writer, rootOrgUnit , orgUnitLevel, periods );
+        }
+       else
+        {
+            processIndicatorValues(writer, rootOrgUnit , orgUnitLevel, periods );
+        }
+
+    }
+
+     void processDataValues(Writer writer, OrganisationUnit rootOrgUnit , OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
+         throws IOException
+     {
+        StoreIterator<AggregatedDataValue> Iterator
             = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
 
-        AggregatedDataValue adv = advIterator.next();
+        AggregatedDataValue adv = Iterator.next();
 
         while (adv != null)
         {
@@ -141,10 +156,41 @@ public class ExportPivotViewService {
             writer.write( adv.getCategoryOptionComboId() + ",");
             writer.write( adv.getValue() + "\n");
 
-            adv = advIterator.next();
+            adv = Iterator.next();
         }
 
         writer.flush();
-    }
 
+     }
+
+
+     void processIndicatorValues(Writer writer, OrganisationUnit rootOrgUnit , OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
+         throws IOException
+     {
+        StoreIterator<AggregatedIndicatorValue> Iterator
+            = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
+
+        AggregatedIndicatorValue aiv = Iterator.next();
+
+        while (aiv != null)
+        {
+            // process adv ..
+            int periodId = aiv.getPeriodId();
+            String period = periodService.getPeriod( periodId).getIsoDate();
+
+            writer.write( period + ",");
+            writer.write( aiv.getOrganisationUnitId() + ",");
+            writer.write( aiv.getIndicatorId() + ",");
+            writer.write( aiv.getFactor() + ",");
+            writer.write( aiv.getNumeratorValue() + ",");
+            writer.write( aiv.getDenominatorValue() + ",");
+            writer.write( aiv.getAnnualized() + ",");
+            writer.write( aiv.getValue() + "\n");
+
+            aiv = Iterator.next();
+        }
+
+        writer.flush();
+
+     }
 }
