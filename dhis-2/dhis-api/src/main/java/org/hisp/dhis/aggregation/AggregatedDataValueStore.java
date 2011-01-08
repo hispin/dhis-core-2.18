@@ -92,6 +92,15 @@ public interface AggregatedDataValueStore
      */
     int deleteAggregatedDataValues();
 
+        /**
+     * Returns values for children of an orgunit at a particular level
+     * @param orgunit the root organisationunit
+     * @param level the level to retrieve values at
+     * @param periods the period to retrieve values for
+     * @return an iterator type object for retrieving the values
+     */
+    public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
+
     // ----------------------------------------------------------------------
     // AggregatedDataMapValue
     // ----------------------------------------------------------------------
@@ -166,7 +175,7 @@ public interface AggregatedDataValueStore
      * @param periods the period to retrieve values for
      * @return an iterator type object for retrieving the values
      */
-    public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
+    public StoreIterator<AggregatedIndicatorValue> getAggregatedIndicatorValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
 
 
     // ----------------------------------------------------------------------

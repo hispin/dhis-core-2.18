@@ -156,7 +156,7 @@ public class JdbcAggregatedDataValueStore
     }
 
     @Override
-    public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
         final StatementHolder holder = statementManager.getHolder();
 
@@ -188,7 +188,7 @@ public class JdbcAggregatedDataValueStore
         }
         catch ( SQLException ex )
         {
-            throw new RuntimeException( "Failed to get aggregated data value", ex );
+            throw new RuntimeException( "Failed to get aggregated data values", ex );
         }
         finally
         {
@@ -336,6 +336,47 @@ public class JdbcAggregatedDataValueStore
     {
         return statementManager.getHolder().executeUpdate( "DELETE FROM aggregatedindicatorvalue" );
     }
+
+    @Override
+    public StoreIterator<AggregatedIndicatorValue> getAggregatedIndicatorValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    {
+        final StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            int rootlevel = rootOrgunit.getLevel();
+
+            String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
+
+            final String sql =
+                "SELECT aiv.* " +
+                "FROM aggregatedindicatorvalue AS aiv " +
+                "INNER JOIN _orgunitstructure AS ous on aiv.organisationunitid=ous.organisationunitid " +
+                "WHERE aiv.level = " + level.getLevel() +
+                " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
+                " AND aiv.periodid IN (" + periodids + ") ";
+
+            log.info("sql: " + sql);
+
+            Statement statement = holder.getStatement();
+
+            statement.setFetchSize(FETCH_SIZE);
+
+            final ResultSet resultSet = statement.executeQuery( sql );
+
+            RowMapper<AggregatedIndicatorValue> rm = new AggregatedIndicatorValueRowMapper();
+            return new JdbcStoreIterator<AggregatedIndicatorValue>(resultSet, holder, rm);
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated indicator values", ex );
+        }
+        finally
+        {
+            // holder.close();
+        }
+    }
+
 
     // -------------------------------------------------------------------------
     // AggregatedIndicatorMapValue
