@@ -28,16 +28,16 @@ package org.hisp.dhis.aggregation;
  */
 
 /**
- * @interface AggregatedDataValueStoreIterator
- * Provides an object for processing a collection of Aggregateddatavalues, such
- *  as from a jdbc resultset
+ * @interface StoreIterator
+ * Provides an object for processing a collection of Objects, such
+ *  as from a jdbc resultset with a rowmapper
  *
  * @author bobj
  */
 public interface StoreIterator<T> {
 
     // ----------------------------------------------------------------------
-    // AggregatedDataValueStoreIterator
+    // StoreIterator
     // ----------------------------------------------------------------------
 
     /**

@@ -83,7 +83,7 @@ public class JdbcStoreIterator<T> implements StoreIterator<T> {
                 this.close();
             }
         } catch (SQLException ex) {
-            log.warn("Error reading aggregateddatavalue row: " + ex);
+            log.warn("Error reading row: " + ex);
         }
         return row;
     }
