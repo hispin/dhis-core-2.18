@@ -189,13 +189,6 @@ public class GenerateMetaDataReportResultAction
         this.incID = incID;
     }
 
-    private List<OrganisationUnit> orgUnitList;
-
-    public List<OrganisationUnit> getOrgUnitList()
-    {
-        return orgUnitList;
-    }
-
     private String raFolderName;
 
     // -------------------------------------------------------------------------
@@ -943,9 +936,10 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         OrganisationUnit rootOrgUnit = organisationUnitService.getRootOrganisationUnits().iterator().next();
-        OrganisationUnitHierarchy organisationUnitHierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+        //OrganisationUnitHierarchy organisationUnitHierarchy = organisationUnitService.getOrganisationUnitHierarchy();
         //organisationUnitHierarchy.
 
+        
         //List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( getChildOrgUnitTree( rootOrgUnit ) );
         List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
 

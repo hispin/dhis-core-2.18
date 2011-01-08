@@ -53,6 +53,11 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement.getId(), categoryOptionCombo.getId(), period.getId(), organisationUnit.getId() );
     }
 
+    public Double getAggregatedValue( int dataElement, int categoryOptionCombo, String periodIds, int organisationUnit )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValue( dataElement, categoryOptionCombo, periodIds, organisationUnit );
+    }
+    
     public Double getAggregatedValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, dimensionOption, period, organisationUnit );

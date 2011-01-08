@@ -53,6 +53,17 @@ public interface AggregatedDataValueStore
     Double getAggregatedDataValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit );
     
     /**
+     * Gets the aggregated value from the datamart table for the given parameters.
+     * 
+     * @param dataElement The DataElement identifier.
+     * @param categoryOptionCombo The DataElementCategoryOptionCombo identifier.
+     * @param periods The collection of Periods.
+     * @param organisationUnit The OrganisationUnit identifier.
+     * @return the aggregated value.
+     */
+    Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, String periodIds, int organisationUnit );
+    
+    /**
      * Gets a collection of AggregatedDataValues.
      * 
      * @param dataElementId the DataElement identifier.

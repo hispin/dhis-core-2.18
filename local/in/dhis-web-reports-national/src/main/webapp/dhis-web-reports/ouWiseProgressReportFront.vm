@@ -78,10 +78,6 @@
 			</td>
 			<td>&nbsp;</td>
 		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -89,10 +85,16 @@
 		<tr>
 			<td>&nbsp;</td>
 			<td>
+				<input type="radio" id="aggRadio" name="aggRadio" value="useexistingaggdata" checked >
+		        $i18n.getString( "use_existing_agg_data" )
+				<br/>
+				<input type="radio" id="aggRadio" name="aggRadio" value="generateaggdata" >
+				$i18n.getString( "generate_agg_data" )
+				<br/><br/>
 				<input type="submit" name="generate" style="width:200px" value="$i18n.getString( 'generate_report' )"/>
-				<input type="hidden" name="ouIDTB" id="ouIDTB">
-				<input type="hidden" name="autogen" id="autogen" value="0" >
-				<input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName">
+				<input type="hidden" name="ouIDTB" id="ouIDTB" />
+				<input type="hidden" name="autogen" id="autogen" value="0" />
+				<input type="hidden" name="reportTypeNameTB" id="reportTypeNameTB" value="$reportTypeName" />
 			</td>
 		</tr>
 	</table>

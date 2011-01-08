@@ -122,4 +122,6 @@ public interface ReportService
     List<OrganisationUnit> getDataNotSentOrgUnits( DataSet dataSet, Period period, OrganisationUnit rootOrgunit );
 
     String getResultSurveyValue( String formula, OrganisationUnit organisationUnit );
+    
+    String getResultDataValueFromAggregateTable( String formula, String periodIds, OrganisationUnit organisationUnit , String reportModelTB );
 }

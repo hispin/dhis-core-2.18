@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
@@ -146,6 +147,13 @@ public class DefaultReportService
     public void setSurveyDataValueService( SurveyDataValueService surveyDataValueService )
     {
         this.surveyDataValueService = surveyDataValueService;
+    }
+
+    private AggregatedDataValueService aggregatedDataValueService;
+    
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -1607,13 +1615,13 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
     }
 
     // -------------------------------------------------------------------------
-    // Get Aggregated Result for dataelement expression from ReportTable
+    // Get Aggregated Result for dataelement expression from Aggregated Table
     // -------------------------------------------------------------------------
-    public String getResultDataValueFromReportTable( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit , String reportModelTB )
+    public String getResultDataValueFromAggregateTable( String formula, String periodIds, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
         int isAggregated = 0;
-
+        
         try
         {
             Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
@@ -1647,8 +1655,26 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
                 }
                 if ( dataElement.getType().equalsIgnoreCase( "int" ) )
                 {
-                    Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo,
-                        startDate, endDate, organisationUnit );
+                    //PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
+                    //List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+                    
+                    Double aggregatedValue = aggregatedDataValueService.getAggregatedValue( dataElement.getId(), optionCombo.getId(), periodIds, organisationUnit.getId() );
+                    
+                    /*
+                    for( Period period : periodList )
+                    {
+                        Double tempAggValue = aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, organisationUnit );
+                        if( tempAggValue != null )
+                        {
+                            aggregatedValue += tempAggValue;
+                            isAggregated = 1;
+                        }
+                    }
+                    
+                    replaceString = String.valueOf( aggregatedValue );
+                    */
+                    
                     if ( aggregatedValue == null )
                     {
                         replaceString = NULL_REPLACEMENT;
@@ -1659,24 +1685,33 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
 
                         isAggregated = 1;
                     }
+                    
                 }
                 else
                 {
                     deFlag1 = 1;
-                    PeriodType dePeriodType = getDataElementPeriodType( dataElement );
+                    //PeriodType dePeriodType = getDataElementPeriodType( dataElement );
                     //List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriodsByPeriodType( dePeriodType, startDate, endDate ) );
-                    List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
+                    //periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
+                    //Period tempPeriod = new Period();
+                    
+                    
                     Period tempPeriod = new Period();
-                    if ( periodList == null || periodList.isEmpty() )
+                    tempPeriod = periodService.getPeriod( Integer.parseInt( periodIds.split( "," )[0] ) );
+                    
+                    //if ( periodList == null || periodList.isEmpty() )
+                    if ( tempPeriod == null )
                     {
                         replaceString = "";
                         matcher.appendReplacement( buffer, replaceString );
                         continue;
                     }
+                    /*
                     else
                     {
                         tempPeriod = (Period) periodList.get( 0 );
                     }
+                    */
 
                     DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
                         optionCombo );
@@ -1766,14 +1801,4 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
         }
     }
     
-    Double getAggregatedDataValueFromReportTable( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate, OrganisationUnit organisationUnit )
-    {
-        Double aggValue = null;
-        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
-        Period tempPeriod = new Period();
-        
-        
-        
-        return aggValue;
-    }
 }
