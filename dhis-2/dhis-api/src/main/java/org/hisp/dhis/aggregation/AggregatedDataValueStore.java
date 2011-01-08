@@ -155,7 +155,7 @@ public interface AggregatedDataValueStore
      * @param periods the period to retrieve values for
      * @return an iterator type object for retrieving the values
      */
-    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
+    public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
 
 
     // ----------------------------------------------------------------------

@@ -39,7 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregatedDataValueStoreIterator;
+import org.hisp.dhis.aggregation.StoreIterator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -58,6 +58,9 @@ import org.hisp.dhis.period.PeriodService;
 public class ExportPivotViewService {
 
     private static final Log log = LogFactory.getLog( ExportPivotViewService.class );
+
+    // service can export either aggregated datavalues or aggregated indicator values
+    public enum RequestType { DATAVALUE, INDICATORVALUE };
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -84,7 +87,7 @@ public class ExportPivotViewService {
         this.periodService = periodService;
     }
 
-    public void execute (OutputStream out, Date startDate, Date endDate, int level, int root)
+    public void execute (OutputStream out, RequestType requestType, Date startDate, Date endDate, int level, int root)
         throws IOException
     {
         Writer writer = new BufferedWriter(new OutputStreamWriter(out));
@@ -92,7 +95,7 @@ public class ExportPivotViewService {
         Collection<Period> periods 
             = periodService.getIntersectingPeriodsByPeriodType( new MonthlyPeriodType(), startDate, endDate );
 
-        if (periods.size() == 0)
+        if (periods.isEmpty())
         {
             log.info( "no periods to export");
             return;
@@ -121,7 +124,8 @@ public class ExportPivotViewService {
 
         log.info( "Exporting for " + rootOrgUnit.getName() + " at level: " + orgUnitLevel.getName());
 
-        AggregatedDataValueStoreIterator advIterator = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
+        StoreIterator<AggregatedDataValue> advIterator
+            = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
 
         AggregatedDataValue adv = advIterator.next();
 

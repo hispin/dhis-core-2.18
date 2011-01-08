@@ -73,7 +73,7 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.deleteAggregatedDataValues();
     }
 
-    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
        return aggregatedDataValueStore.getAggregateDataValuesAtLevel(orgunit, level, periods);
     }
