@@ -32,19 +32,18 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.mapper.RowMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.aggregation.AggregatedDataValueStoreIterator;
-import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
+import org.hisp.dhis.aggregation.StoreIterator;
 
 /**
  *
+ * @param <T>
  * @author bobj
  */
-public class JdbcAggregatedDataValueStoreIterator implements AggregatedDataValueStoreIterator {
+public class JdbcStoreIterator<T> implements StoreIterator<T> {
 
-    private static final Log log = LogFactory.getLog(AggregatedDataValueStoreIterator.class);
+    private static final Log log = LogFactory.getLog(JdbcStoreIterator.class);
 
-    static RowMapper<AggregatedDataValue> rowmapper = new AggregatedDataValueRowMapper();
+    private RowMapper<T> rowmapper;
 
     private ResultSet resultSet;
 
@@ -68,14 +67,15 @@ public class JdbcAggregatedDataValueStoreIterator implements AggregatedDataValue
         this.holder = holder;
     }
 
-    public JdbcAggregatedDataValueStoreIterator(ResultSet resultSet, StatementHolder holder) {
+    public JdbcStoreIterator(ResultSet resultSet, StatementHolder holder, RowMapper<T> rowmapper) {
         this.resultSet = resultSet;
         this.holder = holder;
+        this.rowmapper = rowmapper;
     }
 
     @Override
-    public AggregatedDataValue next() {
-        AggregatedDataValue row = null;
+    public T next() {
+        T row = null;
         try {
             if (resultSet.next()) {
                 row = rowmapper.mapRow(resultSet);

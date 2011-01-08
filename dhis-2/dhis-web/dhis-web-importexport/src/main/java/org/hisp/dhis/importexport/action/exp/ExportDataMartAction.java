@@ -31,6 +31,11 @@ package org.hisp.dhis.importexport.action.exp;
 import java.util.Date;
 
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestType;
+
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.StreamUtils;
 
 import com.opensymphony.xwork2.Action;
 import java.io.IOException;
@@ -42,9 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
-import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.StreamUtils;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -61,7 +63,7 @@ public class ExportDataMartAction
     implements Action
 {
     // TODO: experiment with different sizes for this to stop data dribbling out
-    private static int GZIPBUFFER = 8192;
+    private static final int GZIPBUFFER = 8192;
 
     private static final Log log = LogFactory.getLog( ExportDataMartAction.class );
 
@@ -142,7 +144,7 @@ public class ExportDataMartAction
         // do a basic audit log
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        log.info( "PivotView export request from " + currentUserService.getCurrentUsername() +
+        log.info( "DataMart export request from " + currentUserService.getCurrentUsername() +
             " @ " + request.getRemoteAddr() );
 
         HttpServletResponse response = ServletActionContext.getResponse();
@@ -151,12 +153,14 @@ public class ExportDataMartAction
         // Check all parameters
         // ---------------------------------------------------------------------
 
-
-        // first see how we action was called
+        // first see how action was called
         String servletPath = request.getServletPath();
-        String requestType = servletPath.substring(servletPath.lastIndexOf( '/') + 1 );
+        String requestTypeStr = servletPath.substring(servletPath.lastIndexOf( '/') + 1 );
 
-        log.info( "Request type : " + requestType );
+        log.info( "Request type : " + requestTypeStr );
+
+        RequestType requestType
+            = requestTypeStr.equals( "dataValues") ? RequestType.DATAVALUE : RequestType.INDICATORVALUE ;
 
         String paramError = null;
 
@@ -224,7 +228,7 @@ public class ExportDataMartAction
         try
         {
             out = new GZIPOutputStream(response.getOutputStream(), GZIPBUFFER);
-            exportPivotViewService.execute(out, start, end, dataSourceLevel, dataSourceRoot);
+            exportPivotViewService.execute(out, requestType, start, end, dataSourceLevel, dataSourceRoot);
         }
         finally
         {

@@ -1,6 +1,5 @@
 package org.hisp.dhis.aggregation.jdbc;
 
-import org.hisp.dhis.aggregation.AggregatedDataValueStoreIterator;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
@@ -15,12 +14,14 @@ import java.util.Map;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.amplecode.quick.mapper.ObjectMapper;
+import org.amplecode.quick.mapper.RowMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueStore;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.aggregation.StoreIterator;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -140,7 +141,7 @@ public class JdbcAggregatedDataValueStore
     }
 
     @Override
-    public AggregatedDataValueStoreIterator getAggregateDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
         final StatementHolder holder = statementManager.getHolder();
 
@@ -166,7 +167,8 @@ public class JdbcAggregatedDataValueStore
 
             final ResultSet resultSet = statement.executeQuery( sql );
 
-            return new JdbcAggregatedDataValueStoreIterator(resultSet, holder);
+            RowMapper<AggregatedDataValue> rm = new AggregatedDataValueRowMapper();
+            return new JdbcStoreIterator(resultSet, holder, rm);
         }
         catch ( SQLException ex )
         {
