@@ -183,7 +183,8 @@ public class JdbcAggregatedDataValueStore
             final ResultSet resultSet = statement.executeQuery( sql );
 
             RowMapper<AggregatedDataValue> rm = new AggregatedDataValueRowMapper();
-            return new JdbcStoreIterator(resultSet, holder, rm);
+            
+            return new JdbcStoreIterator<AggregatedDataValue>(resultSet, holder, rm);
         }
         catch ( SQLException ex )
         {
