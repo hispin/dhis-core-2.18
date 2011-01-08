@@ -70,8 +70,8 @@ public class GenerateLinelistingReportAnalyserFormAction
     public String execute()
         throws Exception
     {
-
         reportTypeName = ReportType.RT_LINELIST;
+
         /* Monthly Periods */
         monthlyPeriodType = new MonthlyPeriodType();
 
@@ -87,6 +87,7 @@ public class GenerateLinelistingReportAnalyserFormAction
             }
 
         }
+        
         Collections.sort( monthlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 

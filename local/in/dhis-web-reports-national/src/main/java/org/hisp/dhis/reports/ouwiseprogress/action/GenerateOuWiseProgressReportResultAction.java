@@ -1,6 +1,9 @@
 
 package org.hisp.dhis.reports.ouwiseprogress.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +20,6 @@ import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
-import jxl.write.Blank;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
@@ -30,6 +32,8 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
@@ -54,6 +58,13 @@ public class GenerateOuWiseProgressReportResultAction
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -116,6 +127,13 @@ public class GenerateOuWiseProgressReportResultAction
         this.ouIDTB = ouIDTB;
     }
 
+    private String aggRadio;
+    
+    public void setAggRadio( String aggRadio )
+    {
+        this.aggRadio = aggRadio;
+    }
+
     private OrganisationUnit selectedOrgUnit;
 
     private List<OrganisationUnit> orgUnitList;
@@ -143,7 +161,7 @@ public class GenerateOuWiseProgressReportResultAction
 
         // Initialization
         raFolderName = reportService.getRAFolderName();
-        simpleDateFormat = new SimpleDateFormat( "MMM-dd" );
+        simpleDateFormat = new SimpleDateFormat( "MMM-yy" );
         SimpleDateFormat dayFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
         // Getting Report Details       
@@ -178,6 +196,10 @@ public class GenerateOuWiseProgressReportResultAction
         // Period Info
         sDate = format.parseDate( startDate );
         eDate = format.parseDate( endDate );
+        
+        List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( sDate, eDate ) );
+        
+        String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periodList ));
 
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
@@ -234,7 +256,14 @@ public class GenerateOuWiseProgressReportResultAction
                 {
                     if ( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                        if( aggRadio.equalsIgnoreCase( "generateaggdata" ) )
+                        {
+                            tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                        }
+                        else
+                        {
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodids, currentOrgUnit, reportModelTB );
+                        }
                     }
                 }
 
@@ -270,8 +299,6 @@ public class GenerateOuWiseProgressReportResultAction
                     wCellformat.setAlignment( Alignment.CENTRE );
                     wCellformat.setWrap( true );
 
-                    System.out.println( tempColNo + " : " + tempRowNo + " : " + tempStr );
-                    
                     try
                     {
                         sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
