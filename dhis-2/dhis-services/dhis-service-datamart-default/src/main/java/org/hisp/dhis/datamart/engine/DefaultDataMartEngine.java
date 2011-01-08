@@ -290,17 +290,17 @@ public class DefaultDataMartEngine
 
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         
-        final Collection<DataElementOperand> emptyOperands = crossTabService.populateCrossTabTable(
+        final Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable(
             allOperands, intersectingPeriodIds, childrenIds, key );
         
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
-        if ( emptyOperands == null )
+        if ( operandsWithData == null )
         {
            return 0;
         }
         
-        crossTabService.trimCrossTabTable( emptyOperands, key );
+        crossTabService.trimCrossTabTable( operandsWithData, key );
 
         log.info( "Trimmed crosstab table: " + TimeUtils.getHMS() );
 

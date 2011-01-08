@@ -179,9 +179,11 @@ public class Period
      *
      * @return the period string
      */
-    public String getIsoDate() {
+    public String getIsoDate() 
+    {
         return periodType.getIsoDate(this);
     }
+    
     /**
      * Copies the transient properties (name) from the argument Period
      * to this Period.
@@ -206,7 +208,17 @@ public class Period
     {
         return periodType.getName() + SEPARATOR + getMediumDateString( startDate ) + SEPARATOR + getMediumDateString( endDate );
     }
-    
+
+    /**
+     * Returns the frequency order of the period type of the period.
+     * 
+     * @return the frequency order.
+     */
+    public int frequencyOrder()
+    {
+        return periodType != null ? periodType.getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER;
+    }
+
     /**
      * Formats a Date to the format YYYY-MM-DD.
      * 
@@ -243,7 +255,7 @@ public class Period
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
     }
-
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
