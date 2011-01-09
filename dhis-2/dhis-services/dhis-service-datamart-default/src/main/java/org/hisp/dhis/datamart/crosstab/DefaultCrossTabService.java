@@ -87,6 +87,16 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
+    public boolean populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
+        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
+    {
+        Collection<DataElementOperand> operandsWithData = populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
+        
+        trimCrossTabTable( operandsWithData, key );
+        
+        return operandsWithData != null;
+    }
+    
     public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
     {
@@ -181,11 +191,14 @@ public class DefaultCrossTabService
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
 
-        crossTabStore.createTrimmedCrossTabTable( operands, key );
-
-        crossTabStore.dropCrossTabTable( key );
-
-        crossTabStore.renameTrimmedCrossTabTable( key );
+        if ( operands != null && key != null )
+        {
+            crossTabStore.createTrimmedCrossTabTable( operands, key );
+    
+            crossTabStore.dropCrossTabTable( key );
+    
+            crossTabStore.renameTrimmedCrossTabTable( key );
+        }
     }
 
     public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key )

@@ -281,8 +281,6 @@ public class DefaultDataMartEngine
             return 0;
         }
 
-        log.info( "Validated crosstab table: " + TimeUtils.getHMS() );
-
         state.setMessage( "crosstabulating_data" );
 
         Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
@@ -290,19 +288,14 @@ public class DefaultDataMartEngine
 
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         
-        final Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable(
-            allOperands, intersectingPeriodIds, childrenIds, key );
-        
-        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
+        boolean valid = crossTabService.populateAndTrimCrossTabTable( allOperands, intersectingPeriodIds, childrenIds, key );
 
-        if ( operandsWithData == null )
+        if ( !valid )
         {
-           return 0;
+            return 0;
         }
         
-        crossTabService.trimCrossTabTable( operandsWithData, key );
-
-        log.info( "Trimmed crosstab table: " + TimeUtils.getHMS() );
+        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Data element export
