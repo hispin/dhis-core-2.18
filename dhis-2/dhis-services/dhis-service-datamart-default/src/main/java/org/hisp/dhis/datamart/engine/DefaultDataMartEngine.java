@@ -235,7 +235,7 @@ public class DefaultDataMartEngine
         }
         
         // ---------------------------------------------------------------------
-        // Filter and get operands
+        // Get operands
         // ---------------------------------------------------------------------
         
         Collection<DataElementOperand> nonCalculatedOperands = categoryService.getOperands( nonCalculatedDataElements );
@@ -268,20 +268,27 @@ public class DefaultDataMartEngine
 
         state.setMessage( "crosstabulating_data" );
 
-        Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
-            organisationUnitIds );
-
+        Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         
-        boolean valid = crossTabService.populateAndTrimCrossTabTable( allOperands, intersectingPeriodIds, childrenIds, key );
+        Collection<DataElementOperand> operandsWithData = crossTabService.populateAndTrimCrossTabTable( allOperands, intersectingPeriodIds, childrenIds, key );
 
-        if ( !valid )
+        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
+
+        if ( operandsWithData == null )
         {
             return 0;
         }
         
-        log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
+        // ---------------------------------------------------------------------
+        // Remove operands without data
+        // ---------------------------------------------------------------------
 
+        nonCalculatedOperands.retainAll( operandsWithData );
+        indicatorOperands.retainAll( operandsWithData );
+        calculatedOperands.retainAll( operandsWithData );
+        allOperands.retainAll( operandsWithData );
+        
         // ---------------------------------------------------------------------
         // Data element export
         // ---------------------------------------------------------------------

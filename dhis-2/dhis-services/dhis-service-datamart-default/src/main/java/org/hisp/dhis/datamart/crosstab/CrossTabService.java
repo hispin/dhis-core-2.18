@@ -49,7 +49,7 @@ public interface CrossTabService
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      * @return the DataElementOperands where data exists.
      */
-    boolean populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
+    Collection<DataElementOperand> populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key );
     
     /**
