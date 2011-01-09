@@ -87,14 +87,14 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
-    public boolean populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
+    public Collection<DataElementOperand> populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
     {
         Collection<DataElementOperand> operandsWithData = populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
         
         trimCrossTabTable( operandsWithData, key );
         
-        return operandsWithData != null;
+        return operandsWithData;
     }
     
     public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands,
@@ -102,7 +102,7 @@ public class DefaultCrossTabService
     {
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
-            final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>( operands );
+            final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
 
             final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( operands );
 
@@ -116,8 +116,7 @@ public class DefaultCrossTabService
 
             log.info( "Created crosstab table" );
 
-            final BatchHandler<Object> batchHandler = batchHandlerFactory
-                .createBatchHandler( GenericBatchHandler.class );
+            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
             batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
             batchHandler.init();
 
@@ -190,7 +189,8 @@ public class DefaultCrossTabService
     public void trimCrossTabTable( Collection<DataElementOperand> operands, String key )
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
-
+        // TODO more compact crosstab tables by dividing up based on periodtype?
+        
         if ( operands != null && key != null )
         {
             crossTabStore.createTrimmedCrossTabTable( operands, key );
