@@ -394,7 +394,7 @@
                         })
                     });
                     
-                    overlay.events.register('loadstart', null, loadStart);					
+                    overlay.events.register('loadstart', null, loadStart);
                     overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
                     G.vars.map.addLayer(overlay);
