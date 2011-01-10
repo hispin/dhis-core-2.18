@@ -9,7 +9,7 @@
 	
 	<!-- Data source -->
 	
-	#if ( $aggregationStrategy == "realTime" )
+	#if ( $aggregationStrategy == "real_time" )
     <tr>
         <th>$i18n.getString( "method" )</th>
     </tr>
