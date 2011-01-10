@@ -113,5 +113,9 @@ function waitAndGetReportStatus( millis )
 
 function exportReport( type )
 {
-	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=" + type + "&useLast=true";
+	var url = "exportTable.action?type=" + type + "&useLast=true";
+	
+	url += $( "#id" ).length ? ( "&id=" + $( "#id" ).val() ) : "";
+	
+	window.location.href = url;
 }
