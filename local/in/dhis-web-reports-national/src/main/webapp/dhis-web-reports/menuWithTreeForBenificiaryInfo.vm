@@ -1,6 +1,6 @@
 <h2>Report Analyser</h2>
 <ul>
-    <li>Report Analysis</li>
+    <li>NameBased Reports</li>
     <ul>
     	<li>
             NBITS Benificiary Info
@@ -24,6 +24,7 @@
 
 		if(orgUnitIds == null || orgUnitIds == "" )
 		{
+			document.reportForm.ouNameTB.value = "";
 			return;
 		}
 

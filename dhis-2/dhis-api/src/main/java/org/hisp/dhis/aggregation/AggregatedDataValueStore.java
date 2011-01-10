@@ -61,7 +61,7 @@ public interface AggregatedDataValueStore
      * @param organisationUnit The OrganisationUnit identifier.
      * @return the aggregated value.
      */
-    Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, String periodIds, int organisationUnit );
+    Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, Collection<Integer> periodIds, int organisationUnit );
     
     /**
      * Gets a collection of AggregatedDataValues.

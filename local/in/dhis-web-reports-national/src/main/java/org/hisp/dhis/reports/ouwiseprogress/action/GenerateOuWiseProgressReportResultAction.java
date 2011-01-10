@@ -2,7 +2,6 @@
 package org.hisp.dhis.reports.ouwiseprogress.action;
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -10,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -199,7 +199,9 @@ public class GenerateOuWiseProgressReportResultAction
         
         List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( sDate, eDate ) );
         
-        String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periodList ));
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        
+        //String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periodList ));
 
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
@@ -262,7 +264,7 @@ public class GenerateOuWiseProgressReportResultAction
                         }
                         else
                         {
-                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodids, currentOrgUnit, reportModelTB );
+                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
                         }
                     }
                 }

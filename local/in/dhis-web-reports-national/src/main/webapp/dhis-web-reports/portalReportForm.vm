@@ -1,143 +1,120 @@
 
-		<script>
-			//Global Variables
-		            
-			var reportModels = new HashTable();
-			var reportFileNames = new HashTable();
-			var reportLevels = new HashTable();
-						
-		    // Report ids and its Models
-			#foreach($report in $reportList)
-				var reportId = ""+"$report.id";
-			    reportModels.put(reportId,"$report.model");
-				reportFileNames.put(reportId,"$report.fileName");
-				reportLevels.put(reportId,"$report.level");
-			#end
+<script>
 
-			 // OrganisationUnit ids and its Names
-			var orgUnits = new HashTable();
-			#foreach($orgUnit in $organisationUnits)
-				var orgUnitId = ""+$orgUnit.getId();
-			    orgUnits.put(orgUnitId,"$orgUnit.getShortName()");
-			#end
-			            
-			// OrganisationUnit ids and its Level
-			var orgUnitLevels = new HashTable();
-			#foreach($orgUnit in $organisationUnits)
-				var orgUnitId = ""+$orgUnit.getId();
-			    orgUnitLevels.put(orgUnitId,"$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit )");
-			#end
+	//Global Variables
 
-                        function showOrHideDates()
-                        {
-                            var includePeriodChecked = document.getElementById( "includePeriod" ).checked
-                            if(includePeriodChecked==true)
-                            {
-                                jQuery("#lblStartDate").show();
-                                jQuery("#startDate").show();
-                                jQuery("#getStartDate").show();
-                                jQuery("#lblEndDate").show();
-                                jQuery("#endDate").show();
-                                jQuery("#getEndDate").show();
-                            }
-                            else
-                            {
-                                jQuery("#lblStartDate").hide();
-                                jQuery("#startDate").hide();
-                                jQuery("#getStartDate").hide();
-                                jQuery("#lblEndDate").hide();
-                                jQuery("#endDate").hide();
-                                jQuery("#getEndDate").hide();
-                            }
-                        }
-			function formValidations()
-			{
-                                var includePeriodChecked = document.getElementById( "includePeriod" ).checked
-				var reportListIndex = document.reportForm.reportList.selectedIndex;
-				var orgunitIdValue = document.reportForm.ouIDTB.value;
-			    var startDateValue = document.reportForm.startDate.value;
-                            var endDateValue = document.reportForm.endDate.value;
-           			            
-			    if(reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
-                            else if(orgunitIdValue == null || orgunitIdValue == "") {alert("Please Select OrganisationUnit"); return false;}
-                            else if(includePeriodChecked==true)
-                            {
-                                if(startDateValue == null || startDateValue== "" || endDateValue == null || endDateValue=="")
-                                {   alert("Please Select Start Date And End Date"); return false;}
-                                else if(startDateValue > endDateValue)
-                                {   alert("Start Date Is Greater Than End Date"); return false;}
-                            }
-                            document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
-                            document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
-                            document.reportForm.reportLevelTB.value = reportLevels.get(document.reportForm.reportList.options[reportListIndex].value);
-                
-			    return true;
-			}			
-		</script>
-		<h1>NBITS GOI Report Analyser</h1><hr /><br />
-	        
-		<form id="reportForm" name="reportForm" action="generatePortalReport.action" method="post" onsubmit="return formValidations()" target="_blank">
-                    <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
-                        <tr>
-                            <td><input type="checkbox" name="includePeriod" onChange="return showOrHideDates()" id="includePeriod" checked>Report With Specified Period</td>
-                        </tr>
-                        <tr>
-                           
-                            <td class="NormalB">
-                                Reports :<br />
-                                <select id="reportList" name="reportList" style="width:200px">
-                                    #foreach($report in $reportList)
-                                        <option value="$report.id">$report.name</option>
-                                    #end
-                                </select>
-                            </td>
-                            <td class="NormalB">
-                            OrganisationUnit : <br />
-                                <input type="text" name="ouNameTB" id="ouNameTB" size="20" disabled = "disabled">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="NormalB">
-                                <label for="startDate" id="lblStartDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
-                                <input type="text" id="startDate" name="startDate" style="width:20em">
-                                
-                            </td>
-                            <td class="NormalB">
-                                <label for="endDate" id="lblEndDate">$i18n.getString( 'end_date' ) ($i18n.getString( "format.date.label" ))</label><br />
-                                <input type="text" id="endDate" name="endDate" style="width:20em">
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                
-                            <td>
-                                <input type="submit" name="generate" value='Generate Report'/>
-                                <input type="hidden" name="ouIDTB" id="ouIDTB">
-                                <input type="hidden" name="ouLevelTB" id="ouLevelTB">
-                                <input type="hidden" name="reportModelTB" id="reportModelTB">
-                                <input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-                                <input type="hidden" name="reportLevelTB" id="reportLevelTB">
-                            </td>
-                        </tr>
-                    </table>
-		</form>
+	var reportModels = new HashTable();
+	var reportFileNames = new HashTable();
+	var reportLevels = new HashTable();
+
+	// Report ids and its Models
+	#foreach($report in $reportList)
+		var reportId = ""+"$report.id";
+		reportModels.put(reportId,"$report.model");
+		reportFileNames.put(reportId,"$report.fileName");
+		reportLevels.put(reportId,"$report.level");
+	#end
+
+    function showOrHideDates()
+    {
+        var includePeriodChecked = document.getElementById( "includePeriod" ).checked;
+
+        if( includePeriodChecked == true )
+        {
+            jQuery("#periodTR").show();
+        }
+        else
+        {
+            jQuery("#periodTR").hide();
+        }
+    }
+
+	function formValidations()
+	{
+		var includePeriodChecked = document.getElementById( "includePeriod" ).checked;
+		var reportListIndex = document.reportForm.reportList.selectedIndex;
+		var orgunitIdValue = document.reportForm.ouIDTB.value;
+		var startDateValue = document.reportForm.startDate.value;
+		var endDateValue = document.reportForm.endDate.value;
+
+		if(reportListIndex < 0 || document.reportForm.reportList.options[reportListIndex].text == null) {alert("Please Select Report"); return false;}
+		else if(orgunitIdValue == null || orgunitIdValue == "") {alert("Please Select OrganisationUnit"); return false;}
+		else if(includePeriodChecked==true)
+		{
+			if( startDateValue == null || startDateValue== "" || endDateValue == null || endDateValue=="" ) { alert("Please Select Start Date And End Date"); return false; }
+			else if( startDateValue > endDateValue ) { alert("Start Date Is Greater Than End Date"); return false; }
+		}
+
+		document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
+		document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
+		document.reportForm.reportLevelTB.value = reportLevels.get(document.reportForm.reportList.options[reportListIndex].value);
+
+		return true;
+	}
+
+</script>
+
+<h1>NBITS GOI Report Analyser</h1>
+<hr /><br />
+
+<form id="reportForm" name="reportForm" action="generatePortalReport.action" method="post" onsubmit="return formValidations()" target="_blank">
+	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
+		<tr>
+			<td class="NormalB">
+				Reports :<br />
+				<select id="reportList" name="reportList" style="width:200px">
+				#foreach($report in $reportList)
+					<option value="$report.id">$report.name</option>
+				#end
+				</select>
+			</td>
+			<td class="NormalB">
+				OrganisationUnit : <br />
+				<input type="text" name="ouNameTB" id="ouNameTB" style="width:175px" disabled = "disabled">
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+            <td>&nbsp;</td>
+		</tr>
+		<tr id="periodTR">
+			<td class="NormalB">
+				<label for="startDate" id="lblStartDate">$i18n.getString( 'start_date' ) ($i18n.getString( "format.date.label" ))</label><br/>
+				<input type="text" id="startDate" name="startDate" style="width:175px">
+			</td>
+			<td class="NormalB">
+				<label for="endDate" id="lblEndDate">$i18n.getString( 'end_date' ) ($i18n.getString( "format.date.label" ))</label><br />
+				<input type="text" id="endDate" name="endDate" style="width:175px">
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+			<td>
+                <input type="checkbox" name="includePeriod" onChange="return showOrHideDates()" id="includePeriod" checked>Report With Specified Period
+                <br/><br/>
+				<input type="submit" name="generate" value='Generate Report'/>
+				<input type="hidden" name="ouIDTB" id="ouIDTB">
+				<input type="hidden" name="ouLevelTB" id="ouLevelTB">
+				<input type="hidden" name="reportModelTB" id="reportModelTB">
+				<input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
+				<input type="hidden" name="reportLevelTB" id="reportLevelTB">
+			</td>
+		</tr>
+	</table>
+</form>
 
 <script type="text/javascript">
 	jQuery( function(){
 			datePickerInRange( "startDate", "endDate", false, false );
-	});		
+	});
 </script>
 
 
