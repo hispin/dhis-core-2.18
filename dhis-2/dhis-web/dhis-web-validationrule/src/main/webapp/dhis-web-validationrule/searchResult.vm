@@ -16,7 +16,7 @@
 	<tr>
 		<th>$i18n.getString( "data_element" )</th>
 		<th>$i18n.getString( "organisation_unit" )</th>
-		<th>$i18n.getString( "period" )</th>
+		<th class="{sorter: 'period'}">$i18n.getString( "period" )</th>
 		<th style="text-align:center">$i18n.getString( "min" )</th>
 		<th style="width: 100px; text-align:center" class="{sorter: false}">$i18n.getString( "value" )</th>
 		<th style="text-align:center">$i18n.getString( "max" )</th>
@@ -32,7 +32,7 @@
 		
 		<td>$value.sourceName</td>
 		
-		<td>$format.formatPeriod( $value.period )</td>
+		<td value="$format.formatDate($value.period.startDate)">$format.formatPeriod( $value.period )</td>
 		
 		<td style="text-align:center">$value.min</td>
 		
