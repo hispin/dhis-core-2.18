@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.dataelement;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -47,7 +48,6 @@ import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultDataElementDataMart.java 6049 2008-10-28 09:36:17Z larshelg $
  */
 public class DefaultDataElementDataMart
     implements DataElementDataMart
@@ -84,7 +84,7 @@ public class DefaultDataElementDataMart
     // -------------------------------------------------------------------------
     
     public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Period> periods, 
-        final Collection<OrganisationUnit> organisationUnits, final DataElementAggregator dataElementAggregator, String key )
+        final Collection<OrganisationUnit> organisationUnits, final DataElementAggregator dataElementAggregator, List<String> keys )
     {
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
         
@@ -104,7 +104,7 @@ public class DefaultDataElementDataMart
                 {
                     final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                     
-                    final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperands, period, unit, level, hierarchy, key );
+                    final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperands, period, unit, level, hierarchy, keys );
                     
                     for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
                     {

@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -40,14 +41,13 @@ import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DataElementAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
  */
 public interface DataElementAggregator
 {
     final String TRUE = "true";
 
     Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
-        final Period period, final OrganisationUnit unit, int unitLevel, final OrganisationUnitHierarchy hierarchy, String key );
+        final Period period, final OrganisationUnit unit, int unitLevel, final OrganisationUnitHierarchy hierarchy, List<String> keys );
     
     Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel );

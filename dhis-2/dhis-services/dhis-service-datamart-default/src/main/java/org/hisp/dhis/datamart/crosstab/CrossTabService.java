@@ -28,28 +28,29 @@ package org.hisp.dhis.datamart.crosstab;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: CrossTabService.java 6217 2008-11-06 18:53:04Z larshelg $
  */
 public interface CrossTabService
 {
     String ID = CrossTabService.class.getName();
 
     /**
-     * Creates and populates the crosstab table.
+     * Creates and populates the crosstab table. Operands without data will be
+     * removed from the operands argument collection.
      * 
      * @param operands the collection of DataElementOperands.
      * @param periodIds the collection of Period identifiers.
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
-     * @return the DataElementOperands where data exists.
+     * @return a List of random keys for each generated crosstab table. 
      */
-    Collection<DataElementOperand> populateCrossTabTable( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
+    List<String> populateCrossTabTable( Collection<DataElementOperand> operands, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
 
     /**
      * Drops the crosstab table.
@@ -64,15 +65,6 @@ public interface CrossTabService
     void trimCrossTabTable( Collection<DataElementOperand> operands, String key );
 
     /**
-     * Validates whether the number of columns in the crosstab table will be valid
-     * for the current DBMS.
-     * 
-     * @param operands the DataElementOperands.
-     * @return 0 if OK, the number of excess columns if not.
-     */
-    int validateCrossTabTable( Collection<DataElementOperand> operands );
-
-    /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
      * @param dataElementIds the dataelement identifiers.
@@ -81,7 +73,7 @@ public interface CrossTabService
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        Collection<Integer> sourceIds, String key );
+        Collection<Integer> sourceIds, List<String> keys );
 
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and the source id.
@@ -92,5 +84,5 @@ public interface CrossTabService
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        int sourceId, String key );
+        int sourceId, List<String> keys );
 }

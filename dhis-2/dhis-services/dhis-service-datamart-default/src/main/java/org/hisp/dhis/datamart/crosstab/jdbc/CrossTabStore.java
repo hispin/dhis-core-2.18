@@ -71,15 +71,6 @@ public interface CrossTabStore
     void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key );
     
     /**
-     * Validates whether the number of columns in the crosstab table will be valid
-     * for the current DBMS.
-     * 
-     * @param operands the DataElementOperands.
-     * @return 0 if OK, the number of excess columns if not.
-     */
-    int validateCrossTabTable( Collection<DataElementOperand> operands );
-    
-    /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
      * @param dataElementIds the dataelement identifiers.
@@ -88,7 +79,7 @@ public interface CrossTabStore
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        Collection<Integer> sourceIds, String key );
+        Collection<Integer> sourceIds, List<String> keys );
 
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and the source id.
@@ -99,5 +90,5 @@ public interface CrossTabStore
      * @return collection of CrossTabDataValues.
      */
     Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
-        int sourceId, String key );
+        int sourceId, List<String> keys );
 }
