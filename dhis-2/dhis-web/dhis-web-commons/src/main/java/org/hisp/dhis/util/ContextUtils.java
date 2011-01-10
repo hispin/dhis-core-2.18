@@ -47,8 +47,8 @@ public class ContextUtils
     public static final String CONTENT_TYPE_JSON = "application/json";
     public static final String CONTENT_TYPE_HTML = "text/html";
     public static final String CONTENT_TYPE_TEXT = "text/plain";
-    public static final String CONTENT_TYPE_XML = "text/xml";
-    public static final String CONTENT_TYPE_CSV = "text/csv";
+    public static final String CONTENT_TYPE_XML = "application/xml";
+    public static final String CONTENT_TYPE_CSV = "application/csv";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     
     private static final String SEPARATOR = "/";
@@ -98,7 +98,7 @@ public class ContextUtils
 
         if ( filename != null )
         {
-            response.addHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
+            response.addHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
         }
     }
 }
