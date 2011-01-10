@@ -85,18 +85,6 @@
             <result name="success" type="velocity-json">
                 /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
         </action>
-        
-        <action name="getDataElementMapValuesByParent"
-            class="org.hisp.dhis.mapping.action.GetDataElementMapValuesByParentAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
-        </action>
-        
-        <action name="getDataElementMapValuesByLevel"
-            class="org.hisp.dhis.mapping.action.GetDataElementMapValuesByLevelAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-mapping/jsonminAggregatedMapValues.vm</result>
-        </action>
 
 		<!-- MapLegend -->
 
