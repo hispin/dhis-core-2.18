@@ -43,7 +43,6 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
-import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.options.SystemSettingManager;
@@ -97,13 +96,6 @@ public class DefaultIndicatorDataMart
     {
         this.averageIntSingleValueAggregator = averageIntSingleValueAggregator;
     }
-
-    private CrossTabService crossTabService;
-
-    public void setCrossTabService( CrossTabService crossTabService )
-    {
-        this.crossTabService = crossTabService;
-    }    
     
     private AggregationCache aggregationCache;
 
@@ -133,8 +125,6 @@ public class DefaultIndicatorDataMart
     public int exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
         final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
     {
-        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
-        
         final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
 
         final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
@@ -154,17 +144,17 @@ public class DefaultIndicatorDataMart
         {
             final PeriodType periodType = period.getPeriodType();
             
-            final Map<DataElementOperand, Integer> sumOperandIndexMap = sumIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
-            final Map<DataElementOperand, Integer> averageOperandIndexMap = averageIntAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
-            final Map<DataElementOperand, Integer> averageSingleValueOperandIndexMap = averageIntSingleValueAggregator.getOperandIndexMap( operands, periodType, operandIndexMap );
+            final Collection<DataElementOperand> sumOperands = sumIntAggregator.filterOperands( operands, periodType );
+            final Collection<DataElementOperand> averageOperands = averageIntAggregator.filterOperands( operands, periodType );
+            final Collection<DataElementOperand> averageSingleValueOperands = averageIntSingleValueAggregator.filterOperands( operands, periodType );
 
             for ( final OrganisationUnit unit : organisationUnits )
             {
                 final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                 
-                final Map<DataElementOperand, Double> sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperandIndexMap, period, unit, level, hierarchy, key );                
-                final Map<DataElementOperand, Double> averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperandIndexMap, period, unit, level, hierarchy, key );
-                final Map<DataElementOperand, Double> averageIntSingleValueMap = averageIntSingleValueAggregator.getAggregatedValues( averageSingleValueOperandIndexMap, period, unit, level, hierarchy, key );
+                final Map<DataElementOperand, Double> sumIntValueMap = sumIntAggregator.getAggregatedValues( sumOperands, period, unit, level, hierarchy, key );                
+                final Map<DataElementOperand, Double> averageIntValueMap = averageIntAggregator.getAggregatedValues( averageOperands, period, unit, level, hierarchy, key );
+                final Map<DataElementOperand, Double> averageIntSingleValueMap = averageIntSingleValueAggregator.getAggregatedValues( averageSingleValueOperands, period, unit, level, hierarchy, key );
                 
                 final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( sumIntValueMap );
                 valueMap.putAll( averageIntValueMap );

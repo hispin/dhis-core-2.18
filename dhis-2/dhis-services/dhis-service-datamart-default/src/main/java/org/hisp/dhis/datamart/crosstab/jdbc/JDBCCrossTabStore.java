@@ -30,13 +30,10 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -102,39 +99,6 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-
-    public Map<String, Integer> getCrossTabTableColumns( String key )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "SELECT * FROM " + TABLE_NAME + key + " LIMIT 0";
-            
-            final ResultSetMetaData metaData = holder.getStatement().executeQuery( sql ).getMetaData();
-            
-            final Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
-            
-            for ( int i = 0; i < metaData.getColumnCount(); i++ )
-            {
-                final int index = i + 1;
-                
-                final String columnName = metaData.getColumnName( index ).toLowerCase();
-                
-                columnIndexMap.put( columnName, index );
-            }
-            
-            return columnIndexMap;
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get crosstab table columns", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
     
     public void dropCrossTabTable( String key )
     {
@@ -149,26 +113,6 @@ public class JDBCCrossTabStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to drop datavalue crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    public void dropTrimmedCrossTabTable( String key )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "DROP TABLE IF EXISTS " + TABLE_NAME_TRIMMED + key;
-            
-            holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to drop trimmed datavalue crosstab table", ex );
         }
         finally
         {
@@ -240,7 +184,7 @@ public class JDBCCrossTabStore
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, 
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
         Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -255,7 +199,7 @@ public class JDBCCrossTabStore
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            return getCrossTabDataValues( resultSet, operandIndexMap );
+            return getCrossTabDataValues( resultSet, operands );
         }
         catch ( SQLException ex )
         {
@@ -267,7 +211,8 @@ public class JDBCCrossTabStore
         }
     }
     
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, int sourceId, String key )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
+        Collection<Integer> periodIds, int sourceId, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
         
@@ -281,7 +226,7 @@ public class JDBCCrossTabStore
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            return getCrossTabDataValues( resultSet, operandIndexMap );
+            return getCrossTabDataValues( resultSet, operands );
         }
         catch ( SQLException ex )
         {
@@ -297,7 +242,7 @@ public class JDBCCrossTabStore
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Map<DataElementOperand, Integer> operandIndexMap )
+    private Collection<CrossTabDataValue> getCrossTabDataValues( ResultSet resultSet, Collection<DataElementOperand> operands )
         throws SQLException
     {
         final Collection<CrossTabDataValue> values = new ArrayList<CrossTabDataValue>();
@@ -309,13 +254,15 @@ public class JDBCCrossTabStore
             value.setPeriodId( resultSet.getInt( 1 ) );
             value.setSourceId( resultSet.getInt( 2 ) );
             
-            for ( Map.Entry<DataElementOperand, Integer> entry : operandIndexMap.entrySet() )
+            for ( DataElementOperand operand : operands )
             {
-                String columnValue = resultSet.getString( entry.getValue() );
+                final String columnName = operand.getColumnName();
+                
+                final String columnValue = resultSet.getString( columnName );
                 
                 if ( columnValue != null )
                 {
-                    value.getValueMap().put( entry.getKey(), columnValue );
+                    value.getValueMap().put( operand, columnValue );
                 }
             }
             

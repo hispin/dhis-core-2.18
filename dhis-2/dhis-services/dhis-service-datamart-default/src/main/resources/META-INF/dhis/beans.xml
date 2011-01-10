@@ -150,8 +150,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
-    <property name="crossTabService"
-      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
   </bean>
@@ -168,8 +166,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
 	<property name="averageIntSingleValueAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
-    <property name="crossTabService"
-      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="aggregationCache"
       ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache"/>
     <property name="systemSettingManager"
@@ -189,8 +185,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntAggregator"/>
 	<property name="averageIntSingleValueAggregator"
       ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator"/>
-    <property name="crossTabService"
-      ref="org.hisp.dhis.datamart.crosstab.CrossTabService"/>
     <property name="categoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="aggregationCache"

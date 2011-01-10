@@ -1,10 +1,7 @@
 package org.hisp.dhis.datamart.crosstab;
 
-import static junit.framework.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
@@ -46,22 +43,6 @@ public class CrossTabStoreTest
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
-
-    @Test
-    public void testCreateGetCrossTabTable()
-    {
-        crossTabStore.createCrossTabTable( operands, key );
-        
-        Map<String, Integer> columnNames = crossTabStore.getCrossTabTableColumns( key );
-        
-        assertEquals( 6, columnNames.size() );
-        assertEquals( new Integer( 1 ), columnNames.get( "periodid" ) );
-        assertEquals( new Integer( 2 ), columnNames.get( "sourceid" ) );
-        assertEquals( new Integer( 3 ), columnNames.get( "de1_1" ) );
-        assertEquals( new Integer( 4 ), columnNames.get( "de1_2" ) );
-        assertEquals( new Integer( 5 ), columnNames.get( "de2_1" ) );
-        assertEquals( new Integer( 6 ), columnNames.get( "de2_2" ) );        
-    }
     
     @Test
     public void testDropCrossTabTable()

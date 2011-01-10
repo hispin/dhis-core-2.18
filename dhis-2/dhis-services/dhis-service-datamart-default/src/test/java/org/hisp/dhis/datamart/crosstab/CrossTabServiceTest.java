@@ -35,7 +35,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
@@ -183,10 +182,8 @@ public class CrossTabServiceTest
     public void testPopulateCrossTabValue()
     {
         crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
-
-        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
-
-        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operandIndexMap, periodIds, organisationUnitIds, key );
+        
+        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, key );
         
         assertNotNull( values );
         
@@ -214,30 +211,5 @@ public class CrossTabServiceTest
         Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
         
         crossTabService.trimCrossTabTable( operandsWithData, key );
-    }
-    
-    @Test
-    public void testGetOperandIndexMap()
-    {
-        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
-
-        Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
-        
-        assertEquals( operands.size(), operandIndexMap.size() );
-        
-        Iterator<DataElementOperand> iterator = operands.iterator();
-        
-        int minIndex = 3;
-        int maxIndex = operands.size() + 2;
-        
-        while ( iterator.hasNext() )
-        {
-            DataElementOperand operand = iterator.next();
-            Integer index = operandIndexMap.get( operand );
-            
-            assertNotNull( index );
-            assertTrue( index >= minIndex );
-            assertTrue( index <= maxIndex );
-        }            
     }
 }
