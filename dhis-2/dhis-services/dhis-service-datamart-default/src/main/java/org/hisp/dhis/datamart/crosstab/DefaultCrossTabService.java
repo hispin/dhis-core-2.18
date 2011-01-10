@@ -30,7 +30,6 @@ package org.hisp.dhis.datamart.crosstab;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -120,30 +119,22 @@ public class DefaultCrossTabService
             batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
             batchHandler.init();
 
-            Map<DataElementOperand, String> map = null;
-
-            List<String> valueList = null;
-
-            boolean hasValues = false;
-
-            String value = null;
-
             for ( final Integer periodId : periodIds )
             {
                 for ( final Integer sourceId : organisationUnitIds )
                 {
-                    map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
+                    final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
 
-                    valueList = new ArrayList<String>( operandList.size() + 2 );
+                    final List<String> valueList = new ArrayList<String>( operandList.size() + 2 );
 
                     valueList.add( String.valueOf( periodId ) );
                     valueList.add( String.valueOf( sourceId ) );
 
-                    hasValues = false;
+                    boolean hasValues = false;
 
                     for ( DataElementOperand operand : operandList )
                     {
-                        value = map.get( operand );
+                        String value = map.get( operand );
 
                         if ( value != null && value.length() > MAX_LENGTH )
                         {
@@ -201,40 +192,21 @@ public class DefaultCrossTabService
         }
     }
 
-    public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key )
-    {
-        final Map<String, Integer> columnNameIndexMap = crossTabStore.getCrossTabTableColumns( key );
-
-        final Map<DataElementOperand, Integer> operandMap = new HashMap<DataElementOperand, Integer>();
-
-        for ( DataElementOperand operand : operands )
-        {
-            final String col = operand.getColumnName();
-
-            if ( columnNameIndexMap.containsKey( col ) )
-            {
-                operandMap.put( operand, columnNameIndexMap.get( col ) );
-            }
-        }
-
-        return operandMap;
-    }
-
     public int validateCrossTabTable( Collection<DataElementOperand> operands )
     {
         return crossTabStore.validateCrossTabTable( operands );
     }
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap,
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
         Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
-        return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceIds, key );
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, key );
     }
 
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap,
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
         Collection<Integer> periodIds, int sourceId, String key )
     {
-        return crossTabStore.getCrossTabDataValues( operandIndexMap, periodIds, sourceId, key );
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, key );
     }
 
     // -------------------------------------------------------------------------

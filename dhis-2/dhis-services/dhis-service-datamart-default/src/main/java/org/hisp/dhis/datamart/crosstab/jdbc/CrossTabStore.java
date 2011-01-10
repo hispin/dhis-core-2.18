@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart.crosstab.jdbc;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -54,22 +53,9 @@ public interface CrossTabStore
     void createCrossTabTable( List<DataElementOperand> operands, String key );
 
     /**
-     * Retrieves a Map with information about the column names in the crosstab
-     * table where they key is the column name and the value is the column index.
-     * 
-     * @return a Map with information about the columns in the crosstab table.
-     */
-    Map<String, Integer> getCrossTabTableColumns( String key );
-    
-    /**
      * Drops the crosstab table.
      */
     void dropCrossTabTable( String key );
-    
-    /**
-     * Drops the trimmed crosstab table.
-     */
-    void dropTrimmedCrossTabTable( String key );
     
     /**
      * Renames the trimmed crosstab table to the regular crosstab table.
@@ -101,7 +87,7 @@ public interface CrossTabStore
      * @param sourceIds the source identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         Collection<Integer> sourceIds, String key );
 
     /**
@@ -112,6 +98,6 @@ public interface CrossTabStore
      * @param sourceId the source identifier.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         int sourceId, String key );
 }

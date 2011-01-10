@@ -28,7 +28,6 @@ package org.hisp.dhis.datamart.crosstab;
  */
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -76,15 +75,6 @@ public interface CrossTabService
     void trimCrossTabTable( Collection<DataElementOperand> operands, String key );
 
     /**
-     * Provides a Map with information about the crosstab table where the key is
-     * the DataElementOperand and the value is the column index.
-     * 
-     * @param operands the collection of DataElementOperands.
-     * @return a Map with information about the crosstab table.
-     */
-    Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, String key );
-    
-    /**
      * Validates whether the number of columns in the crosstab table will be valid
      * for the current DBMS.
      * 
@@ -101,7 +91,7 @@ public interface CrossTabService
      * @param sourceIds the source identifiers.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         Collection<Integer> sourceIds, String key );
 
     /**
@@ -112,6 +102,6 @@ public interface CrossTabService
      * @param sourceId the source identifier.
      * @return collection of CrossTabDataValues.
      */
-    Collection<CrossTabDataValue> getCrossTabDataValues( Map<DataElementOperand, Integer> operandIndexMap, Collection<Integer> periodIds, 
+    Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, Collection<Integer> periodIds, 
         int sourceId, String key );
 }

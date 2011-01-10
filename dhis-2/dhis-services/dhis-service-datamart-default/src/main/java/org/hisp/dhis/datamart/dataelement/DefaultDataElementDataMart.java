@@ -39,7 +39,6 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
-import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -72,14 +71,7 @@ public class DefaultDataElementDataMart
     {
         this.batchHandlerFactory = batchHandlerFactory;
     }
-    
-    private CrossTabService crossTabService;
-
-    public void setCrossTabService( CrossTabService crossTabService )
-    {
-        this.crossTabService = crossTabService;
-    }
-    
+        
     private AggregationCache aggregationCache;
 
     public void setAggregationCache( AggregationCache aggregationCache )
@@ -94,8 +86,6 @@ public class DefaultDataElementDataMart
     public int exportDataValues( final Collection<DataElementOperand> operands, final Collection<Period> periods, 
         final Collection<OrganisationUnit> organisationUnits, final DataElementAggregator dataElementAggregator, String key )
     {
-        final Map<DataElementOperand, Integer> operandIndexMap = crossTabService.getOperandIndexMap( operands, key );
-        
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
         
         final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
@@ -106,15 +96,15 @@ public class DefaultDataElementDataMart
         
         for ( final Period period : periods )
         {
-            final Map<DataElementOperand, Integer> currentOperandIndexMap = dataElementAggregator.getOperandIndexMap( operands, period.getPeriodType(), operandIndexMap );
+            final Collection<DataElementOperand> currentOperands = dataElementAggregator.filterOperands( operands, period.getPeriodType() );
             
-            if ( currentOperandIndexMap != null && currentOperandIndexMap.size() > 0 )
+            if ( currentOperands != null && currentOperands.size() > 0 )
             {
                 for ( final OrganisationUnit unit : organisationUnits )
                 {
                     final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                     
-                    final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperandIndexMap, period, unit, level, hierarchy, key );
+                    final Map<DataElementOperand, Double> valueMap = dataElementAggregator.getAggregatedValues( currentOperands, period, unit, level, hierarchy, key );
                     
                     for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
                     {

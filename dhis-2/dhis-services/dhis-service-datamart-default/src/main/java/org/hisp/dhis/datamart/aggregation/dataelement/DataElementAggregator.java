@@ -46,11 +46,11 @@ public interface DataElementAggregator
 {
     final String TRUE = "true";
 
-    Map<DataElementOperand, Double> getAggregatedValues( final Map<DataElementOperand, Integer> operandIndexMap, 
+    Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
         final Period period, final OrganisationUnit unit, int unitLevel, final OrganisationUnitHierarchy hierarchy, String key );
     
     Map<DataElementOperand, double[]> getAggregate( final Collection<CrossTabDataValue> crossTabValues, 
         final Date startDate, final Date endDate, final Date aggregationStartDate, final Date aggregationEndDate, int unitLevel );
     
-    Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, PeriodType periodType, Map<DataElementOperand, Integer> operandIndexMap );
+    Collection<DataElementOperand> filterOperands( Collection<DataElementOperand> operands, PeriodType periodType );
 }

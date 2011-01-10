@@ -34,6 +34,7 @@ import static org.hisp.dhis.system.util.DateUtils.getDaysInclusive;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -75,15 +76,15 @@ public class AverageBoolAggregator
     // DataElementAggregator implementation
     // -------------------------------------------------------------------------
 
-    public Map<DataElementOperand, Double> getAggregatedValues( final Map<DataElementOperand, Integer> operandIndexMap, 
+    public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
         final Period period, final OrganisationUnit unit, int unitLevel, final OrganisationUnitHierarchy hierarchy, String key )
     {
-        if ( operandIndexMap == null || operandIndexMap.size() == 0 )
+        if ( operands == null || operands.size() == 0 )
         {
             return new HashMap<DataElementOperand, Double>();
         }
         
-        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operandIndexMap, 
+        final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
             aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), hierarchy.getChildren( unit.getId() ), key );
         
         final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
@@ -181,18 +182,18 @@ public class AverageBoolAggregator
         return totalSums;
     }
 
-    public Map<DataElementOperand, Integer> getOperandIndexMap( Collection<DataElementOperand> operands, PeriodType periodType, Map<DataElementOperand, Integer> operandIndexMap )
+    public Collection<DataElementOperand> filterOperands( Collection<DataElementOperand> operands, PeriodType periodType )
     {
-        Map<DataElementOperand, Integer> avgOperandIndexMap = new HashMap<DataElementOperand, Integer>();
+        Collection<DataElementOperand> filteredOperands = new HashSet<DataElementOperand>();
         
         for ( final DataElementOperand operand : operands )
         {
             if ( operand.getValueType().equals( VALUE_TYPE_BOOL ) && operand.getAggregationOperator().equals( AGGREGATION_OPERATOR_AVERAGE ) )
             {
-                avgOperandIndexMap.put( operand, operandIndexMap.get( operand ) );
+                filteredOperands.add( operand );
             }
         }
         
-        return avgOperandIndexMap;
+        return filteredOperands;
     }
 }
