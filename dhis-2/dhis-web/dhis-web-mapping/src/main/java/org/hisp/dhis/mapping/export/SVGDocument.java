@@ -31,10 +31,6 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.indicator.Indicator;
-
-import sun.rmi.runtime.Log;
 
 /**
  * @author Tran Thanh Tri

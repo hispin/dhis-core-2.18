@@ -32,6 +32,8 @@ import java.util.Collection;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -54,11 +56,11 @@ public class GetIndicatorMapValuesAction
         this.mappingService = mappingService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private PeriodService periodService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
@@ -117,7 +119,7 @@ public class GetIndicatorMapValuesAction
     {
         return object;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -125,16 +127,10 @@ public class GetIndicatorMapValuesAction
     public String execute()
         throws Exception
     {
-        if ( periodId != null ) // Period
-        {
-            object = mappingService.getIndicatorMapValues( id, periodId, parentId, level );
-        }
-        else
-        // Start and end date
-        {
-            object = mappingService.getIndicatorMapValues( id, DateUtils.getMediumDate( startDate ),
-                DateUtils.getMediumDate( endDate ), parentId, level );
-        }
+        Period period = periodService.getPeriod( periodId );
+        
+        object = mappingService.getIndicatorMapValues( id, period, DateUtils.getMediumDate( startDate ), DateUtils
+            .getMediumDate( endDate ), parentId, level );
 
         return SUCCESS;
     }

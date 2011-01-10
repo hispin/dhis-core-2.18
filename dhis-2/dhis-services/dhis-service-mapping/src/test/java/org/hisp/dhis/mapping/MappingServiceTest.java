@@ -34,6 +34,7 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -520,7 +521,6 @@ public class MappingServiceTest
     public void testMapValues()
     {
         mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId() );
-        mappingService.getIndicatorMapValues( indicator.getId(), period.getId(), organisationUnit.getId() );
+        mappingService.getIndicatorMapValues( indicator.getId(), period, new Date(), new Date(), organisationUnit.getId(), 1 );
     }
-
 }
