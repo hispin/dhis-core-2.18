@@ -41,24 +41,24 @@ import org.junit.Test;
 public class PaginatedListTest
 {
     @Test
-    public void testGetPage()
+    public void testNextPage()
     {
         PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
         
-        List<String> page = list.getPage();
+        List<String> page = list.nextPage();
         
         assertNotNull( page );
         assertEquals( 2, page.size() );
         assertTrue( page.contains( "A" ) );
         assertTrue( page.contains( "B" ) );
         
-        page = list.getPage();
+        page = list.nextPage();
         
         assertNotNull( page );
         assertEquals( 1, page.size() );
         assertTrue( page.contains( "C" ) );
         
-        page = list.getPage();
+        page = list.nextPage();
         
         assertNull( page );
     }
@@ -68,7 +68,7 @@ public class PaginatedListTest
     {
         PaginatedList<String> list = new PaginatedList<String>( new ArrayList<String>(), 2 );
         
-        List<String> page = list.getPage();
+        List<String> page = list.nextPage();
         
         assertNull( page );
     }

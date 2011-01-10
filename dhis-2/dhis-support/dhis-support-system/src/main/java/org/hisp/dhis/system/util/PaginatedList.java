@@ -52,7 +52,7 @@ public class PaginatedList<T>
      * given in the constructor. If there is no more pages, null is returned. The
      * returned page is not guaranteed to have the same size as the page size.
      */
-    public List<T> getPage()
+    public List<T> nextPage()
     {
         int size = size();
         
