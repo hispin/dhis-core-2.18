@@ -36,6 +36,7 @@ import java.util.Set;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -43,11 +44,10 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
+import org.hisp.dhis.system.util.PaginatedList;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DefaultCrossTabService.java 6268 2008-11-12 15:16:02Z larshelg
- *          $
  */
 public class DefaultCrossTabService
     implements CrossTabService
@@ -55,6 +55,7 @@ public class DefaultCrossTabService
     private static final Log log = LogFactory.getLog( DefaultCrossTabService.class );
 
     private static final int MAX_LENGTH = 20;
+    private static final int MAX_COLUMNS = 1500;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -85,77 +86,94 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands,
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
+    public List<String> populateCrossTabTable( final Collection<DataElementOperand> operands,
+        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
             final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
 
-            final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( operands );
+            final PaginatedList<DataElementOperand> operandList = new PaginatedList<DataElementOperand>( operands, MAX_COLUMNS );
 
-            crossTabStore.dropCrossTabTable( key );
-
-            log.info( "Dropped crosstab table" );
-
-            crossTabStore.createCrossTabTable( operandList, key );
-
-            log.info( "Created crosstab table" );
-
-            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-            batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
-            batchHandler.init();
-
-            for ( final Integer periodId : periodIds )
+            final List<String> crossTabTableKeys = new ArrayList<String>();
+            
+            List<DataElementOperand> operandPage = new ArrayList<DataElementOperand>();
+            
+            while ( ( operandPage = operandList.nextPage() ) != null )
             {
-                for ( final Integer sourceId : organisationUnitIds )
+                final String key = RandomStringUtils.randomAlphanumeric( 8 );
+                
+                crossTabTableKeys.add( key );
+                
+                final Set<DataElementOperand> operandsWithDataInPage = new HashSet<DataElementOperand>();
+                
+                crossTabStore.dropCrossTabTable( key );
+    
+                crossTabStore.createCrossTabTable( operandPage, key );
+    
+                log.debug( "Created crosstab table for key: " + key );
+    
+                final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
+                batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
+                batchHandler.init();
+    
+                for ( final Integer periodId : periodIds )
                 {
-                    final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
-
-                    final List<String> valueList = new ArrayList<String>( operandList.size() + 2 );
-
-                    valueList.add( String.valueOf( periodId ) );
-                    valueList.add( String.valueOf( sourceId ) );
-
-                    boolean hasValues = false;
-
-                    for ( DataElementOperand operand : operandList )
+                    for ( final Integer sourceId : organisationUnitIds )
                     {
-                        String value = map.get( operand );
-
-                        if ( value != null && value.length() > MAX_LENGTH )
+                        final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
+    
+                        final List<String> valueList = new ArrayList<String>( operandPage.size() + 2 );
+    
+                        valueList.add( String.valueOf( periodId ) );
+                        valueList.add( String.valueOf( sourceId ) );
+    
+                        boolean hasValues = false;
+    
+                        for ( DataElementOperand operand : operandPage )
                         {
-                            log.warn( "Value ignored, too long: '" + value + "', for dataelement id: '"
-                                + operand.getDataElementId() + "', categoryoptioncombo id: '"
-                                + operand.getOptionComboId() + "', period id: '" + periodId + "', source id: '"
-                                + sourceId + "'" );
-
-                            value = null;
+                            String value = map.get( operand );
+    
+                            if ( value != null && value.length() > MAX_LENGTH )
+                            {
+                                log.warn( "Value ignored, too long: '" + value + "', for dataelement: '"
+                                    + operand.getDataElementId() + "', categoryoptioncombo: '"
+                                    + operand.getOptionComboId() + "', period: '" + periodId + "', source: '"
+                                    + sourceId + "'" );
+    
+                                value = null;
+                            }
+    
+                            if ( value != null )
+                            {
+                                hasValues = true;
+                                operandsWithData.add( operand );
+                                operandsWithDataInPage.add( operand );
+                            }
+    
+                            valueList.add( value );
                         }
-
-                        if ( value != null )
+    
+                        if ( hasValues )
                         {
-                            hasValues = true;
-                            operandsWithData.add( operand );
+                            batchHandler.addObject( valueList );
                         }
-
-                        valueList.add( value );
                     }
-
-                    if ( hasValues )
-                    {
-                        batchHandler.addObject( valueList );
-                    }
+    
+                    log.debug( "Crosstabulated data for period " + periodId );
                 }
+    
+                batchHandler.flush();
+                
+                trimCrossTabTable( operandsWithDataInPage, key );                
 
-                log.debug( "Crosstabulated data for period " + periodId );
+                log.info( "Populated crosstab table for key: " + key );
+    
             }
-
-            batchHandler.flush();
             
-            trimCrossTabTable( operandsWithData, key );
+            operands.retainAll( operandsWithData ); // Remove operands without data
             
-            return operandsWithData;
+            return crossTabTableKeys;
         }
 
         return null;
@@ -169,7 +187,7 @@ public class DefaultCrossTabService
     public void trimCrossTabTable( Collection<DataElementOperand> operands, String key )
     {
         // TODO use H2 in-memory table for datavaluecrosstab table ?
-        // TODO more compact crosstab tables by dividing up based on periodtype?
+        // TODO optimize retrieval by dividing up based on agg operator / type?
         
         if ( operands != null && key != null )
         {
@@ -181,21 +199,16 @@ public class DefaultCrossTabService
         }
     }
 
-    public int validateCrossTabTable( Collection<DataElementOperand> operands )
+    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
+        Collection<Integer> periodIds, Collection<Integer> sourceIds, List<String> keys )
     {
-        return crossTabStore.validateCrossTabTable( operands );
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, keys );
     }
 
     public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+        Collection<Integer> periodIds, int sourceId, List<String> keys )
     {
-        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceIds, key );
-    }
-
-    public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
-        Collection<Integer> periodIds, int sourceId, String key )
-    {
-        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, key );
+        return crossTabStore.getCrossTabDataValues( operands, periodIds, sourceId, keys );
     }
 
     // -------------------------------------------------------------------------

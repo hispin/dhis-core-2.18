@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -50,7 +51,6 @@ import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: SumBoolAggregator.java 6049 2008-10-28 09:36:17Z larshelg $
  */
 public class SumBoolAggregator
     implements DataElementAggregator
@@ -78,7 +78,7 @@ public class SumBoolAggregator
     // -------------------------------------------------------------------------
 
     public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
-        final Period period, final OrganisationUnit unit, int unitLevel, OrganisationUnitHierarchy hierarchy, String key )
+        final Period period, final OrganisationUnit unit, int unitLevel, OrganisationUnitHierarchy hierarchy, List<String> keys )
     {
         if ( operands == null || operands.size() == 0 )
         {
@@ -86,7 +86,7 @@ public class SumBoolAggregator
         }
         
         final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
-            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), hierarchy.getChildren( unit.getId() ), key );
+            aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), hierarchy.getChildren( unit.getId() ), keys );
         
         final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
             period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <data element id, [total value, total relevant days]>

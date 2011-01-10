@@ -39,7 +39,6 @@ import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
-import org.hisp.dhis.jdbc.StatementBuilder;
 
 /**
  * @author Lars Helge Overland
@@ -48,6 +47,8 @@ import org.hisp.dhis.jdbc.StatementBuilder;
 public class JDBCCrossTabStore
     implements CrossTabStore
 {
+    private static final String ALIAS_PREFIX = "c";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,13 +58,6 @@ public class JDBCCrossTabStore
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
-    }
-
-    private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
     }
 
     // -------------------------------------------------------------------------
@@ -172,30 +166,28 @@ public class JDBCCrossTabStore
             holder.close();
         }
     }
-    
-    public int validateCrossTabTable( final Collection<DataElementOperand> operands )
-    {
-        int maxColumns = statementBuilder.getMaximumNumberOfColumns();
         
-        return ( operands != null && operands.size() > maxColumns ) ? operands.size() - maxColumns : 0;
-    }
-    
     // -------------------------------------------------------------------------
     // CrossTabDataValue
     // -------------------------------------------------------------------------
 
     public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
+        Collection<Integer> periodIds, Collection<Integer> sourceIds, List<String> keys )
     {
         final StatementHolder holder = statementManager.getHolder();
-        
+                
         try
         {
-            final String sql =
-                "SELECT * " +
-                "FROM " + TABLE_NAME + key + " " +
-                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND sourceid IN ( " + getCommaDelimitedString( sourceIds ) + " )";
+            String sql = "SELECT * FROM " + TABLE_NAME + keys.get( 0 ) + " AS c0 ";
+            
+            for ( int i = 1; i < keys.size(); i++ )
+            {
+                final String alias = ALIAS_PREFIX + i;
+                
+                sql += "FULL JOIN " + TABLE_NAME + keys.get( i ) + " AS " + alias + " ON c0.periodid=" + alias + ".periodid AND c0.sourceid=" + alias + ".sourceid ";
+            }
+            
+            sql += "WHERE c0.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c0.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
@@ -212,18 +204,23 @@ public class JDBCCrossTabStore
     }
     
     public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands, 
-        Collection<Integer> periodIds, int sourceId, String key )
+        Collection<Integer> periodIds, int sourceId, List<String> keys )
     {
         final StatementHolder holder = statementManager.getHolder();
         
         try
         {
-            final String sql = 
-                "SELECT * " +
-                "FROM " + TABLE_NAME + key + " " +
-                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-                "AND sourceid = " + sourceId;
+            String sql = "SELECT * FROM " + TABLE_NAME + keys.get( 0 ) + " AS c0 ";
             
+            for ( int i = 1; i < keys.size(); i++ )
+            {
+                final String alias = ALIAS_PREFIX + i;
+                
+                sql += "FULL JOIN " + TABLE_NAME + keys.get( i ) + " AS " + alias + " ON c0.periodid=" + alias + ".periodid AND c0.sourceid=" + alias + ".sourceid ";
+            }
+            
+            sql += "WHERE c0.periodid IN (" + getCommaDelimitedString( periodIds ) + ") AND c0.sourceid=" + sourceId;
+
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return getCrossTabDataValues( resultSet, operands );

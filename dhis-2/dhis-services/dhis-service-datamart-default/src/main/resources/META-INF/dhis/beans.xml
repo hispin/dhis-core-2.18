@@ -79,7 +79,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore"
     class="org.hisp.dhis.datamart.crosstab.jdbc.JDBCCrossTabStore">
     <property name="statementManager" ref="statementManager"/>
-	<property name="statementBuilder" ref="statementBuilder"/>
   </bean>
   
   <bean id="org.hisp.dhis.datamart.crosstab.CrossTabService"

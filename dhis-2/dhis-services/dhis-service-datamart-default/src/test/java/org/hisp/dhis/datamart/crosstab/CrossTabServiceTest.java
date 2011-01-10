@@ -35,8 +35,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -69,8 +69,6 @@ public class CrossTabServiceTest
     private Collection<DataElementOperand> operands;
     private Collection<Integer> periodIds;
     private Collection<Integer> organisationUnitIds;
-
-    private String key = RandomStringUtils.randomAlphanumeric( 8 );
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -181,9 +179,9 @@ public class CrossTabServiceTest
     @Test
     public void testPopulateCrossTabValue()
     {
-        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
+        List<String> keys = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
         
-        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, key );
+        Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, keys );
         
         assertNotNull( values );
         
@@ -203,13 +201,5 @@ public class CrossTabServiceTest
                 assertEquals( "10", value );
             }
         }
-    }
-
-    @Test
-    public void testTrimCrossTabTable()
-    {
-        Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
-        
-        crossTabService.trimCrossTabTable( operandsWithData, key );
     }
 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.datamart.dataelement;
  */
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
@@ -36,10 +37,9 @@ import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: DataElementDataMart.java 5510 2008-07-30 16:30:27Z larshelg $
  */
 public interface DataElementDataMart
 {
     int exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, DataElementAggregator dataElementAggregator, String key );
+        Collection<OrganisationUnit> organisationUnits, DataElementAggregator dataElementAggregator, List<String> keys );
 }
