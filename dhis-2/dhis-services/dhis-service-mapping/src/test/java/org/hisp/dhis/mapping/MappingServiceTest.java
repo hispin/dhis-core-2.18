@@ -520,7 +520,7 @@ public class MappingServiceTest
     @Test
     public void testMapValues()
     {
-        mappingService.getDataElementMapValues( dataElement.getId(), period.getId(), organisationUnit.getId() );
+        mappingService.getDataElementMapValues( dataElement.getId(), period, new Date(), new Date(), organisationUnit.getId(), 1 );
         mappingService.getIndicatorMapValues( indicator.getId(), period, new Date(), new Date(), organisationUnit.getId(), 1 );
     }
 }

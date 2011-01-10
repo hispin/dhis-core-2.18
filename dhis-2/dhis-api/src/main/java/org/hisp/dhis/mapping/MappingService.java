@@ -77,22 +77,8 @@ public interface MappingService
     // DataMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId, int level );
-
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, Date startDate, Date endDate,
-        int parentOrganisationUnitId, int level );
-
-    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, int periodId, int level );
-
-    Collection<AggregatedMapValue> getDataElementMapValuesByLevel( int dataElementId, Date startDate, Date endDate,
-        int level );
+    Collection<AggregatedMapValue> getDataElementMapValues( Integer dataElementId, Period period, Date startDate, Date endDate, 
+        Integer parentOrganisationUnitId, Integer level );
 
     // -------------------------------------------------------------------------
     // MapLegend
