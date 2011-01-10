@@ -90,16 +90,14 @@ public class JdbcAggregatedDataValueStore
         return statementManager.getHolder().queryForDouble( sql );
     }
 
-    public Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, String periodIds, int organisationUnit )
+    public Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, Collection<Integer> periodIds, int organisationUnit )
     {
-        //String periidIds = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
-        
         final String sql =
             "SELECT SUM(value) " +
             "FROM aggregateddatavalue " +
             "WHERE dataelementid = " + dataElement + " " +
             "AND categoryoptioncomboid = " + categoryOptionCombo + " " +
-            "AND periodid IN ( " + periodIds + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid = " + organisationUnit;
         
         return statementManager.getHolder().queryForDouble( sql );

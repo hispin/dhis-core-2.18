@@ -1617,7 +1617,7 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
     // -------------------------------------------------------------------------
     // Get Aggregated Result for dataelement expression from Aggregated Table
     // -------------------------------------------------------------------------
-    public String getResultDataValueFromAggregateTable( String formula, String periodIds, OrganisationUnit organisationUnit , String reportModelTB )
+    public String getResultDataValueFromAggregateTable( String formula, Collection<Integer> periodIds, OrganisationUnit organisationUnit , String reportModelTB )
     {
         int deFlag1 = 0;
         int isAggregated = 0;
@@ -1695,23 +1695,20 @@ public List<Calendar> getStartingEndingPeriods( String deType , Period selectedP
                     //periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( dePeriodType, startDate, endDate ) );
                     //Period tempPeriod = new Period();
                     
-                    
                     Period tempPeriod = new Period();
-                    tempPeriod = periodService.getPeriod( Integer.parseInt( periodIds.split( "," )[0] ) );
+                    //tempPeriod = periodService.getPeriod( Integer.parseInt( periodIds.split( "," )[0] ) );
                     
-                    //if ( periodList == null || periodList.isEmpty() )
-                    if ( tempPeriod == null )
+                    if ( periodIds == null || periodIds.isEmpty() )
+                    //if ( tempPeriod == null )
                     {
                         replaceString = "";
                         matcher.appendReplacement( buffer, replaceString );
                         continue;
                     }
-                    /*
                     else
                     {
-                        tempPeriod = (Period) periodList.get( 0 );
+                        tempPeriod = periodService.getPeriod( periodIds.iterator().next() );
                     }
-                    */
 
                     DataValue dataValue = dataValueService.getDataValue( organisationUnit, dataElement, tempPeriod,
                         optionCombo );

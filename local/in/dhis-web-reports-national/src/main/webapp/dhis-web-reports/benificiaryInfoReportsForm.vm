@@ -13,20 +13,6 @@
 		reportLevels.put(reportId,"$report.level");
 	#end
 
-	// OrganisationUnit ids and its Names
-	var orgUnits = new HashTable();
-	#foreach($orgUnit in $organisationUnits)
-		var orgUnitId = ""+$orgUnit.getId();
-		orgUnits.put(orgUnitId,"$orgUnit.getShortName()");
-	#end
-
-	// OrganisationUnit ids and its Level
-	var orgUnitLevels = new HashTable();
-	#foreach($orgUnit in $organisationUnits)
-		var orgUnitId = ""+$orgUnit.getId();
-		orgUnitLevels.put(orgUnitId,"$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit )");
-	#end
-
 	function showOrHideDates()
 	{
 		var includePeriodChecked = document.getElementById( "includePeriod" ).checked;
@@ -87,11 +73,6 @@
 
 <form id="reportForm" name="reportForm" action="generateBenificiaryInfoReport.action" method="post" onsubmit="return formValidations()" target="_blank">
 	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
-		<tr>
-			<td>
-			</td>
-            <td>&nbsp;</td>
-        </tr>
         <tr>
 			<td class="NormalB">
 				Program :<br />

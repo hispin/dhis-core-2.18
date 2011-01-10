@@ -123,5 +123,5 @@ public interface ReportService
 
     String getResultSurveyValue( String formula, OrganisationUnit organisationUnit );
     
-    String getResultDataValueFromAggregateTable( String formula, String periodIds, OrganisationUnit organisationUnit , String reportModelTB );
+    String getResultDataValueFromAggregateTable( String formula, Collection<Integer> periodIds, OrganisationUnit organisationUnit , String reportModelTB );
 }

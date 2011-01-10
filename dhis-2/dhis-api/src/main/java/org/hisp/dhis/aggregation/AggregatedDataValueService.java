@@ -84,7 +84,7 @@ public interface AggregatedDataValueService
      * @param organisationUnit The OrganisationUnit identifier.
      * @return the aggregated value.
      */
-    Double getAggregatedValue( int dataElement, int categoryOptionCombo, String periodIds, int organisationUnit );
+    Double getAggregatedValue( int dataElement, int categoryOptionCombo, Collection<Integer> periodIds, int organisationUnit );
     
     
     /**
