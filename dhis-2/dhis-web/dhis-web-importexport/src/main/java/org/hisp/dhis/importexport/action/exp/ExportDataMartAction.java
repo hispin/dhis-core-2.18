@@ -160,7 +160,7 @@ public class ExportDataMartAction
         log.info( "Request type : " + requestTypeStr );
 
         RequestType requestType
-            = requestTypeStr.equals( "dataValues") ? RequestType.DATAVALUE : RequestType.INDICATORVALUE ;
+            = requestTypeStr.equals( "dataValues.action") ? RequestType.DATAVALUE : RequestType.INDICATORVALUE ;
 
         String paramError = null;
 
