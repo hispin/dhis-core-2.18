@@ -29,7 +29,6 @@ package org.hisp.dhis.datamart.crosstab;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -86,16 +85,6 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
-    public Collection<DataElementOperand> populateAndTrimCrossTabTable( final Collection<DataElementOperand> operands,
-        final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
-    {
-        Collection<DataElementOperand> operandsWithData = populateCrossTabTable( operands, periodIds, organisationUnitIds, key );
-        
-        trimCrossTabTable( operandsWithData, key );
-        
-        return operandsWithData;
-    }
-    
     public Collection<DataElementOperand> populateCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds, String key )
     {
@@ -104,8 +93,6 @@ public class DefaultCrossTabService
             final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
 
             final List<DataElementOperand> operandList = new ArrayList<DataElementOperand>( operands );
-
-            Collections.sort( operandList );
 
             crossTabStore.dropCrossTabTable( key );
 
@@ -165,6 +152,8 @@ public class DefaultCrossTabService
             }
 
             batchHandler.flush();
+            
+            trimCrossTabTable( operandsWithData, key );
             
             return operandsWithData;
         }

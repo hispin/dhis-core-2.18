@@ -271,7 +271,7 @@ public class DefaultDataMartEngine
         Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
         
-        Collection<DataElementOperand> operandsWithData = crossTabService.populateAndTrimCrossTabTable( allOperands, intersectingPeriodIds, childrenIds, key );
+        Collection<DataElementOperand> operandsWithData = crossTabService.populateCrossTabTable( allOperands, intersectingPeriodIds, childrenIds, key );
 
         log.info( "Populated crosstab table: " + TimeUtils.getHMS() );
 
