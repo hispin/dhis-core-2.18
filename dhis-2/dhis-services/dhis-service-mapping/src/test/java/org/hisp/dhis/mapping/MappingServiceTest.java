@@ -512,15 +512,4 @@ public class MappingServiceTest
         assertEquals( mappingService.getMapLayer( idD ), mappingService.getMapLayerByMapSource( "mapSourceD" ) );
 
     }
-
-    // -------------------------------------------------------------------------
-    // Map value tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testMapValues()
-    {
-        mappingService.getDataElementMapValues( dataElement.getId(), period, new Date(), new Date(), organisationUnit.getId(), 1 );
-        mappingService.getIndicatorMapValues( indicator.getId(), period, new Date(), new Date(), organisationUnit.getId(), 1 );
-    }
 }
