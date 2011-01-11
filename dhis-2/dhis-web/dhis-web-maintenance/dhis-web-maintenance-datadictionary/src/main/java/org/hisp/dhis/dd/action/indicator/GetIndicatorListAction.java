@@ -49,7 +49,7 @@ import org.hisp.dhis.paging.ActionPagingSupport;
  *          ch_bharath1 $
  */
 public class GetIndicatorListAction
-    extends ActionPagingSupport<Indicator>
+extends ActionPagingSupport<Indicator>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -133,7 +133,7 @@ public class GetIndicatorListAction
     }
 
     private String key;
-
+    
     public String getKey()
     {
         return key;
@@ -157,15 +157,14 @@ public class GetIndicatorListAction
         else if ( dataDictionaryId == -1 ) // All, reset current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( null );
-
+            
             dataDictionaryId = null;
         }
-        else
-        // Specified, set current data dictionary
+        else // Specified, set current data dictionary
         {
             dataDictionaryModeManager.setCurrentDataDictionary( dataDictionaryId );
         }
-
+        
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
 
         Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
@@ -177,27 +176,24 @@ public class GetIndicatorListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( indicatorService.getIndicatorCountByName( key ) );
-
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging
-                .getStartPos(), paging.getPageSize() ) );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else if ( dataDictionaryId != null )
         {
-            indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId )
-                .getIndicators() );
-
+            indicators = new ArrayList<Indicator>( dataDictionaryService.getDataDictionary( dataDictionaryId ).getIndicators() );
+            
             this.paging = createPaging( indicators.size() );
-
+            
             indicators = getBlockElement( indicators, paging.getStartPage(), paging.getEndPos() );
         }
         else
         {
             this.paging = createPaging( indicatorService.getIndicatorCount() );
-
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging
-                .getPageSize() ) );
+            
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-
+        
         Collections.sort( indicators, indicatorComparator );
 
         displayPropertyHandler.handle( indicators );
