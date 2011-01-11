@@ -81,13 +81,6 @@ public class DefaultDataMartService
     // -------------------------------------------------------------------------
 
     @Transactional
-    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
-    {
-        return export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
-    }
-    
-    @Transactional
     public int export( int id )
     {
         DataMartExport dataMartExport = getDataMartExport( id );
@@ -96,7 +89,7 @@ public class DefaultDataMartService
         
         if ( dataMartExport.getRelatives() != null )
         {
-            allPeriods.addAll( periodService.reloadPeriods( dataMartExport.getRelatives().getRelativePeriods( 1, null, false ) ) );
+            allPeriods.addAll( periodService.reloadPeriods( dataMartExport.getRelatives().getRelativePeriods() ) );
         }
         
         return dataMartEngine.export( 
@@ -105,6 +98,13 @@ public class DefaultDataMartService
             getIdentifiers( Period.class, allPeriods ),
             getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ), 
             new OutputHolderState() );
+    }
+
+    @Transactional
+    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
     }
     
     @Transactional

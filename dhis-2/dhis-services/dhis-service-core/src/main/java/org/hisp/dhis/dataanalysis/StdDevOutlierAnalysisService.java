@@ -78,6 +78,8 @@ public class StdDevOutlierAnalysisService
 
         for ( DataElement dataElement : dataElements )
         {
+            // TODO filter periods with data element period type
+            
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {
                 Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo()
@@ -106,8 +108,7 @@ public class StdDevOutlierAnalysisService
     {
         Double stdDev = dataAnalysisStore.getStandardDeviation( dataElement, categoryOptionCombo, organisationUnit );
 
-        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist
-        // when 0.0
+        if ( !isEqual( stdDev, 0.0 ) ) // No values found or no outliers exist when 0.0
         {
             Double avg = dataAnalysisStore.getAverage( dataElement, categoryOptionCombo, organisationUnit );
 

@@ -136,11 +136,8 @@ public class DefaultCrossTabService
     
                             if ( value != null && value.length() > MAX_LENGTH )
                             {
-                                log.warn( "Value ignored, too long: '" + value + "', for dataelement: '"
-                                    + operand.getDataElementId() + "', categoryoptioncombo: '"
-                                    + operand.getOptionComboId() + "', period: '" + periodId + "', source: '"
-                                    + sourceId + "'" );
-    
+                                log.warn( "Value ignored, too long: '" + value + "'" );
+                                
                                 value = null;
                             }
     
@@ -159,8 +156,6 @@ public class DefaultCrossTabService
                             batchHandler.addObject( valueList );
                         }
                     }
-    
-                    log.debug( "Crosstabulated data for period " + periodId );
                 }
     
                 batchHandler.flush();

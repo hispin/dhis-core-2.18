@@ -149,6 +149,14 @@ public class RelativePeriods
     }
     
     /**
+     * Gets a list of Periods relative to current date.
+     */
+    public List<Period> getRelativePeriods()
+    {
+        return getRelativePeriods( 1, null, null, false );
+    }
+    
+    /**
      * Gets a list of Periods based on the given input and the state of this RelativePeriods.
      * 
      * @param months the number of months back in time representing the current month.
@@ -164,8 +172,8 @@ public class RelativePeriods
      * Gets a list of Periods based on the given input and the state of this RelativePeriods.
      * 
      * @param months the number of months back in time representing the current reporting month.
-     * @param format the i18n format.
      * @param date the date representing now (for testing purposes).
+     * @param format the i18n format.
      * @return a list of relative Periods.
      */
     protected List<Period> getRelativePeriods( int months, Date date, I18nFormat format, boolean dynamicNames )
