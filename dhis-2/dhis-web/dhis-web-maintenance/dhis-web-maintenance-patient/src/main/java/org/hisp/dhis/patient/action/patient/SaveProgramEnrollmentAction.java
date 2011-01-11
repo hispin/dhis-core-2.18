@@ -35,8 +35,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramAttribute;
-import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
@@ -91,13 +89,6 @@ public class SaveProgramEnrollmentAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }
-
-    private ProgramAttributeService programAttributeService;
-
-    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
-    {
-        this.programAttributeService = programAttributeService;
     }
 
     private I18nFormat format;
@@ -196,13 +187,6 @@ public class SaveProgramEnrollmentAction
         return message;
     }
 
-    private Collection<ProgramAttribute> attributes;
-
-    public Collection<ProgramAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -278,8 +262,6 @@ public class SaveProgramEnrollmentAction
                 programStageInstances.add( programStageInstance );
             }
         }
-        
-        attributes = programAttributeService.getAllProgramAttributes();
         
         return SUCCESS;
     }

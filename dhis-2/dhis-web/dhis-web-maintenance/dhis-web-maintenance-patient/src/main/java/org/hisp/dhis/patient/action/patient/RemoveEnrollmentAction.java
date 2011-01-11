@@ -324,7 +324,7 @@ public class RemoveEnrollmentAction
                 }
             }
         }
-
+System.out.println("\n\n ++++++++ \n programAttributes : " + programAttributes );
         programInstance.setAttributes( programAttributes );
 
         programInstanceService.updateProgramInstance( programInstance );

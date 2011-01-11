@@ -537,10 +537,36 @@
 				../dhis-web-commons/javascripts/date.js,
 				javascript/patient.js</param>
 		</action>
-
+		
+		<action name="showProgramUnEnrollmentForm"
+			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentSelectAction">
+			<result name="enrollmentform" type="chain">enrollChain</result>
+			<result name="success" type="chain">unEnrollmentFormChain</result>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+		</action>
+		
+		<action name="enrollChain"
+			class="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction">
+			<result name="success" type="chain">unEnrollmentFormChain</result>
+		</action>
+		
+		<action name="unEnrollmentFormChain"
+			class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenuWithTree.vm</param>
+			<param name="menuTreeHeight">321</param>
+			<param name="page">/dhis-web-maintenance-patient/programUnenrollmentForm.vm</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,
+				../dhis-web-commons/javascripts/date.js,
+				javascript/patient.js</param>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE</param>
+		</action>
+		
 		<action name="removeEnrollment"
 			class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction">
-			<result name="success" type="redirect">showProgramEnrollmentForm.action
+			<result name="success" type="redirect">showProgramUnEnrollmentForm.action?id=${id}
 			</result>
 			<param name="requiredAuthorities">F_PATIENT_DELETE</param>
 		</action>

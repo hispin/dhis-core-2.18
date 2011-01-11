@@ -33,8 +33,6 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramAttribute;
-import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramService;
 
@@ -72,13 +70,6 @@ public class ProgramEnrollmentSelectAction
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
-    }
-
-    private ProgramAttributeService programAttributeService;
-
-    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
-    {
-        this.programAttributeService = programAttributeService;
     }
 
     // -------------------------------------------------------------------------
@@ -140,13 +131,6 @@ public class ProgramEnrollmentSelectAction
         this.programInstance = programInstance;
     }
 
-    private Collection<ProgramAttribute> attributes;
-
-    public Collection<ProgramAttribute> getAttributes()
-    {
-        return attributes;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -154,7 +138,6 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
-
         // ---------------------------------------------------------------------
         // Validate selected Patient
         // ---------------------------------------------------------------------
@@ -207,7 +190,6 @@ public class ProgramEnrollmentSelectAction
             programId = selectedProgram.getId();
             selectedStateManager.setSelectedProgram( selectedProgram );
         }
-
         else
         {
             programId = null;
@@ -216,12 +198,6 @@ public class ProgramEnrollmentSelectAction
 
             return SUCCESS;
         }
-
-        // ---------------------------------------------------------------------
-        // Load Program Attribute
-        // ---------------------------------------------------------------------
-
-        attributes = programAttributeService.getAllProgramAttributes();
 
         return PROGRAM_ENROLLMENT_FORM;
     }
