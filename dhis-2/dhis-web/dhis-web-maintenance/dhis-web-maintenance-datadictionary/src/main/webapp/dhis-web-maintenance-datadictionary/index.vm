@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dhis-web-maintenance-datadictionary" )</h3>
 
-<ul class="introList">
+<ul id="introList">
 	#introListImgItem( "dataElement.action" "data_element" "dataelement" )
 	#introListImgItem( "dataElementGroup.action" "data_element_group" "dataelement" )
     #introListImgItem( "dataElementGroupEditor.action" "data_element_group_editor" "dataelement" )

@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dhis-web-maintenance-settings" )</h3>
 
-<ul class="introList">
+<ul id="introList">
     #introListImgItem( "userSettings.action" "user_settings" "usersettings" )
     #introListImgItem( "systemSettings.action" "system_settings" "systemsettings" )
 </ul>

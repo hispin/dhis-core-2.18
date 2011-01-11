@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dhis-web-maintenance-organisationunit" ) #openHelp( "ou_hierarchy" )</h3>
 
-<ul class="introList">
+<ul id="introList">
     #introListImgItem( "organisationUnit.action" "org_unit" "organisationunit" )
     #introListImgItem( "organisationUnitGroup.action" "org_unit_group" "organisationunit" )
     #introListImgItem( "organisationUnitGroupSet.action" "org_unit_group_set" "organisationunit" )
