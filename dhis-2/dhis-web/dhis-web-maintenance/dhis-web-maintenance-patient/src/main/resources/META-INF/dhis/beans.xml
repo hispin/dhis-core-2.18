@@ -526,8 +526,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="programAttributeService"
-			ref="org.hisp.dhis.program.ProgramAttributeService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.ProgramEnrollmentAction"
@@ -550,9 +548,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
-		<property name="programAttributeService">
-			<ref bean="org.hisp.dhis.program.ProgramAttributeService" />
-		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.SaveDueDateAction"
@@ -561,6 +556,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
+	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
+		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentSelectAction"
+		scope="prototype">
+		<property name="programAttributeService"
+			ref="org.hisp.dhis.program.ProgramAttributeService" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
 		class="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
 		scope="prototype">

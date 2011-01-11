@@ -6,7 +6,7 @@
 	jQuery(document).ready(
 			function()
 			{
-				jQuery("#programEnrollmentForm").validate({
+				jQuery("#programUnenrollmentForm").validate({
 					 meta:"validate"
 					,errorElement:"td"
 					,submitHandler: function(form)
@@ -22,9 +22,9 @@
 
 </script>
 
-#parse( "/dhis-web-maintenance-patient/programEnrollmentSelectForm.vm" )
+<form id="programEnrollmentForm" name="programEnrollmentForm" method="post" action='showProgramUnEnrollmentForm.action'>
 
-<form id="programEnrollmentForm" name="programEnrollmentForm" method="post" action="saveProgramEnrollment.action" onsubmit="return validateProgramEnrollment()">
+#parse( "/dhis-web-maintenance-patient/programUnenrollmentSelectForm.vm" )
 
 <table width="100%">
     <tr>
@@ -38,68 +38,60 @@
     </tr>
 	<tr>
         <td></td>
-        <td></td>   
-        <td></td>                             
+        <td></td>                           
+    </tr>
+
+#if($!programInstance.enrollmentDate) 
+	<tr>
+		<td colspan='2'><hr/></td>	
+	<tr>
+	#foreach($attribute in $programAttributes)
+	<tr>
+        <td>$attribute.name</td>
+		<td class="input-column">
+			#if( $attribute.valueType == "YES/NO" )
+				<select id="attr$attribute.id"  name="attr$attribute.id" style="width:100"> 
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					<option value="true">$i18n.getString( "yes" )</option>
+					<option value="false" selected="selected">$i18n.getString( "no" )</option>
+				</select>                
+			#elseif( $attribute.valueType == "DATE" )
+				<input type="text" id="attr$attribute.id"  name="attr$attribute.id">
+				<script type="text/javascript">
+					datePickerValid( 'attr$attribute.id' );
+				</script>                    
+			#elseif( $attribute.valueType == "COMBO" )
+				<select  id="attr$attribute.id"  name="attr$attribute.id">
+					<option value="">[$i18n.getString( "please_select" )]</option>
+					#foreach ($option in $attribute.attributeOptions )
+						<option value="$option.id" >$option.name</option>
+					#end
+				</select>
+			#else 
+				<input type="text"  id="attr$attribute.id"  name="attr$attribute.id">
+			#end
+			
+			#if($!programAttribute.description) <i>($!programAttribute.description)</i> #end
+		</td>		
+    </tr>
+	#end
+	<tr>
+        <td></td>
+        <td></td>                            
     </tr>
 	
 </table>
+#end
 
 <table>
 	<tr>
 		<td style="width:180px">
-			<input type="submit" #if( $programInstance ) value="$i18n.getString( "update" )#else value="$i18n.getString( "enroll" 	) #end">
+			<input type="button" value='$i18n.getString( "unenroll" )' onclick="javascript: removeEnrollment();" #if( $!programInstance.enrollmentDate ) #else disabled #end>
 		</td>                                        
 	</tr>
 </table>
 
-#if( $programInstance )
-<table class="mainPageTable">
-    <col id="noCol">
-    <col id="stageCol">    
-    <col id="entryCol">    
-    <tr>
-        <th>$i18n.getString( "nr" )</th>
-        <th>$i18n.getString( "program_stage" )</th>                   
-        <th>$i18n.getString( "due_date" )</th>        
-    </tr>
-    
-#set( $rowCount = 0 )
-#set( $mark = 0 )
-#set( $tabIndex = 1 )
-
-#foreach( $programStageInstance in $programStageInstances )
-    #set( $rowCount = $rowCount + 1 )    
-    #if( $mark == 1 )
-        #set( $mark = 0 )
-    #else
-        #set( $mark = 1 )
-    #end       
-    <tr #if( $mark == 0 ) style="background-color:#dddddd" #end>
-        ##rowCount
-        <td style="text-align:right">$rowCount</td>        
-        ##stage name
-        <td>
-            <span id="value[$programStageInstance.id].name" title="$!encoder.htmlEncode( $programStageInstance.programStage.description )">
-                $encoder.htmlEncode( $programStageInstance.programStage.name )            
-            </span>
-        </td>        
-               
-        ##entry
-		#set( $duedateId = "value_"+$programStageInstance.id+"_date" )        
-        <td>        
-            <input type="text" id="$duedateId" name="entryfield" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" tabindex="$tabIndex" >
-        </td>
-		<script type="text/javascript">
-			datePickerValid( '$duedateId' );
-		</script>       
-    </tr>
-    #set( $tabIndex = $tabIndex + 1 )
-#end
-</table>
-
 </form>
- 
-#end
 
 <span id="message"></span>
 
