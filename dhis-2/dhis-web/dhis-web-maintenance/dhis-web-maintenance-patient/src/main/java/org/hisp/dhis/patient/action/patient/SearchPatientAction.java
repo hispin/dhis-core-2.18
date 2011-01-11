@@ -39,6 +39,7 @@ import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.Relationship;
@@ -51,15 +52,13 @@ import org.hisp.dhis.relationship.RelationshipService;
 public class SearchPatientAction
     extends ActionPagingSupport<Patient>
 {
-    public static String LIST_ALL_PATIENT = "All";
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private OrganisationUnitSelectionManager selectionManager;
 
-    // private SelectedStateManager selectedStateManager;
+    private SelectedStateManager selectedStateManager;
 
     private PatientService patientService;
 
@@ -75,7 +74,7 @@ public class SearchPatientAction
 
     private String searchText;
 
-    private boolean listAll;
+    private Boolean listAll;
 
     private Integer searchingAttributeId;
 
@@ -96,6 +95,10 @@ public class SearchPatientAction
     private Map<Patient, String> mapPatientPatientAttr = new HashMap<Patient, String>();
 
     private Map<Patient, String> mapPatientOrgunit = new HashMap<Patient, String>();
+
+    private PatientAttribute sortingPatientAttribute = null;
+
+    private PatientAttribute searchingPatientAttribute = null;
 
     // -------------------------------------------------------------------------
     // Getters/Setters
@@ -141,7 +144,7 @@ public class SearchPatientAction
         return searchText;
     }
 
-    public void setListAll( boolean listAll )
+    public void setListAll( Boolean listAll )
     {
         this.listAll = listAll;
     }
@@ -186,6 +189,11 @@ public class SearchPatientAction
         this.sortPatientAttributeId = sortPatientAttributeId;
     }
 
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     public Map<Patient, String> getMapPatientPatientAttr()
     {
         return mapPatientPatientAttr;
@@ -203,8 +211,7 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
-        System.out.println("\n\n ============ \n sortPatientAttributeId : " + sortPatientAttributeId);       
-        System.out.println("\n searchingAttributeId : " + searchingAttributeId);       
+        OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
         // Get all of Patient-Attributes
@@ -212,61 +219,135 @@ public class SearchPatientAction
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
 
-        // ---------------------------------------------------------------------
-        // Get sorting patient-attribute
-        // ---------------------------------------------------------------------
+        getParamsToSearch();
 
-        PatientAttribute sortingPatientAttribute = null;
-        if ( sortPatientAttributeId != null )
-        {
-            sortingPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
-        }
-        
-        // ---------------------------------------------------------------------
-        // Get and searching patient-attribute
-        // ---------------------------------------------------------------------
-       
-        PatientAttribute searchingPatientAttribute = null;
-        if ( searchingAttributeId != null )
-        {
-            searchingPatientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
-        }
-        
         // ---------------------------------------------------------------------
         // Get all of patient into the selected organisation unit
         // ---------------------------------------------------------------------
-        
-        if ( listAll || ( searchText != null && searchText.equalsIgnoreCase( LIST_ALL_PATIENT ) ) )
-        {System.out.println("\n 1");
-            searchText = LIST_ALL_PATIENT;
-            
-            OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
-            
+
+        if ( listAll != null && listAll )
+        {
+            selectedStateManager.clearSearchingAttributeId();
+            selectedStateManager.clearSortingAttributeId();
+            selectedStateManager.clearSearchText();
+            selectedStateManager.setListAll( listAll );
+
+            searchText = "list_all_patients";
+
             listAllPatient( organisationUnit, sortingPatientAttribute );
-            
+
+            return SUCCESS;
         }
 
         // ---------------------------------------------------------------------
         // Get patients by searchingAttributeId and searchText
         // and sort result by sortingAttributeId
         // ---------------------------------------------------------------------
+        
+        if ( searchingPatientAttribute != null && searchText != null )
+        {
+            selectedStateManager.clearListAll();
+            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
+            
+            if( sortPatientAttributeId != null )
+            {
+                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
+            }else
+            {
+                selectedStateManager.clearSortingAttributeId();
+            }
+            
+            selectedStateManager.setSearchText( searchText );
 
-        else if ( searchingPatientAttribute != null && searchText != null )
-        {System.out.println("\n 2");
             searchPatientByAttribute( searchingPatientAttribute, searchText, sortingPatientAttribute );
-        }
-        else if ( searchingPatientAttribute == null && searchText != null )
-        {System.out.println("\n 3");
-            searchPatientByAttribute( searchText, sortingPatientAttribute );
-        }
-        System.out.println("\n 4");
-        return SUCCESS;
 
+            return SUCCESS;
+        }
+
+        if ( searchingPatientAttribute == null && searchText != null )
+        {
+            selectedStateManager.clearListAll();
+            
+            selectedStateManager.clearSearchingAttributeId();
+            
+            if( sortPatientAttributeId != null )
+            {
+                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
+            }else
+            {
+                selectedStateManager.clearSortingAttributeId();
+            }
+            
+           
+            selectedStateManager.setSearchText( searchText );
+            
+            searchPatientByAttribute( searchText, sortingPatientAttribute );
+            
+            return SUCCESS;
+        }
+        
+        // ---------------------------------------------------------------------
+        // Search patients by values into section
+        // ---------------------------------------------------------------------
+
+        listAll = selectedStateManager.getListAll();
+
+        if ( listAll )
+        {
+            patients = patientService.getPatients( organisationUnit );
+
+            searchText = "list_all_patients";
+
+            return SUCCESS;
+
+        }
+
+        searchingAttributeId = selectedStateManager.getSearchingAttributeId();
+        sortPatientAttributeId = selectedStateManager.getSortAttributeId();
+        searchText = selectedStateManager.getSearchText();
+        
+        getParamsToSearch();
+
+        if ( searchingAttributeId != null && searchText != null )
+        {
+            searchPatientByAttribute( searchText, sortingPatientAttribute );
+
+            return SUCCESS;
+        }
+
+        if ( searchingAttributeId == null && searchText != null )
+        {
+            searchPatientByAttribute( searchText, sortingPatientAttribute );
+            return SUCCESS;
+        }
+        
+        return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
+
+    private void getParamsToSearch()
+    {
+        // ---------------------------------------------------------------------
+        // Get sorting patient-attribute
+        // ---------------------------------------------------------------------
+
+        if ( sortPatientAttributeId != null )
+        {
+            sortingPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
+        }
+
+        // ---------------------------------------------------------------------
+        // Get and searching patient-attribute
+        // ---------------------------------------------------------------------
+
+        if ( searchingAttributeId != null )
+        {
+            searchingPatientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
+        }
+    }
 
     private void listAllPatient( OrganisationUnit organisationUnit, PatientAttribute sortingPatientAttribute )
     {
@@ -343,17 +424,14 @@ public class SearchPatientAction
 
     private void searchPatientByAttribute( String searchText, PatientAttribute sortingPatientAttribute )
     {
-System.out.println("\n\n *********** \n 1 ");
         total = patientService.countGetPatients( searchText );
-System.out.println("\n total : " + total );
+
         this.paging = createPaging( total );
-System.out.println("\n paging.getStartPos() : " + paging.getStartPos() );
-System.out.println("\n paging.getPageSize() : " + paging.getPageSize() );
         patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
-System.out.println("\n patients : " + patients );
+
         if ( patients != null && patients.size() > 0 )
         {
-            if ( sortPatientAttributeId != null && sortingPatientAttribute != null )
+            if ( sortingPatientAttribute != null )
             {
                 patients = patientService.sortPatientsByAttribute( patients, sortingPatientAttribute );
             }
@@ -384,14 +462,14 @@ System.out.println("\n patients : " + patients );
     private String getHierarchyOrgunit( OrganisationUnit orgunit )
     {
         String hierarchyOrgunit = orgunit.getName();
-        
+
         while ( orgunit.getParent() != null )
         {
             hierarchyOrgunit = orgunit.getParent().getName() + " / " + hierarchyOrgunit;
-        
+
             orgunit = orgunit.getParent();
         }
-        
+
         return hierarchyOrgunit;
     }
 }

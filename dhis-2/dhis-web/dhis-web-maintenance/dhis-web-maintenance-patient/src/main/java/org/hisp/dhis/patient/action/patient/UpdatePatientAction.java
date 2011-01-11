@@ -94,6 +94,7 @@ public class UpdatePatientAction
     // -------------------------------------------------------------------------
     // Input - demographics
     // -------------------------------------------------------------------------
+    
     private String birthDate;
 
     private Integer age;

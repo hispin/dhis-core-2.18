@@ -17,8 +17,10 @@
             G.vars.parameter.mapView = init.mapView;
             G.vars.parameter.baseLayers = init.baseLayers;
             G.vars.parameter.overlays = init.overlays;
-            G.vars.mapDateType.value = init.userSettings.mapDateType;
-            G.vars.user.isAdmin = init.security.isAdmin;
+            G.user.isAdmin = init.security.isAdmin;
+            G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
+            G.vars.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
+				G.conf.map_date_type_fixed : init.userSettings.mapDateType;
                         
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
@@ -589,7 +591,7 @@
 					Ext.Ajax.request({
 						url: G.conf.path_mapping + 'addMapViewToDashboard' + G.conf.type,
 						method: 'POST',
-						params: {id:v},
+						params: {id: v},
 						success: function(r) {
 							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + G.i18n.added_to_dashboard);
                             Ext.getCmp('favorite_cb').clearValue();
@@ -1838,6 +1840,7 @@
                         id: 'mapdatetype_cb',
                         fieldLabel: G.i18n.date_type,
                         labelSeparator: G.conf.labelseparator,
+						disabled: G.system.aggregationStrategy == G.conf.aggregation_strategy_batch,
                         editable: false,
                         valueField: 'value',
                         displayField: 'text',
@@ -1863,7 +1866,7 @@
                                         method: 'POST',
                                         params: {mapDateType: G.vars.mapDateType.value},
                                         success: function() {
-                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+G.i18n.saved_as_date_type);
+                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+ G.i18n.saved_as_date_type);
                                             choropleth.prepareMapViewDateType();
                                             symbol.prepareMapViewDateType();
                                         }
@@ -1873,7 +1876,7 @@
                         }
                     }
                 ]
-            }
+            }			
         ]
     });
 	
@@ -2299,7 +2302,7 @@
 	var favoritesButton = new Ext.Button({
 		iconCls: 'icon-favorite',
 		tooltip: G.i18n.favorite_map_views,
-		disabled: !G.vars.user.isAdmin,
+		disabled: !G.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
@@ -2353,7 +2356,7 @@
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: G.i18n.create_predefined_legend_sets,
-		disabled: !G.vars.user.isAdmin,
+		disabled: !G.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
@@ -2374,7 +2377,7 @@
 	var adminButton = new Ext.Button({
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
-		disabled: !G.vars.user.isAdmin,
+		disabled: !G.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;

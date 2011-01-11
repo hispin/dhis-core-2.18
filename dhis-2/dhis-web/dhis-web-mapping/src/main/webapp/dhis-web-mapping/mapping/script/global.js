@@ -55,6 +55,8 @@ G.conf = {
     map_feature_type_multipolygon: 'MultiPolygon',
     map_feature_type_polygon: 'Polygon',
     map_feature_type_point: 'Point',
+    aggregation_strategy_real_time: 'real_time',
+    aggregation_strategy_batch: 'batch',
     
 //  MapFish
 
@@ -350,11 +352,15 @@ G.vars = {
     
     exportValues: null,
     
-    topLevelUnit: null,
-    
-    user: {
-		isAdmin: false
-	}
+    topLevelUnit: null
+};
+
+G.user = {
+    isAdmin: false
+};
+
+G.system = {
+    aggregationStrategy: null
 };
 
 G.func = {

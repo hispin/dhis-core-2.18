@@ -38,15 +38,22 @@ import org.hisp.dhis.program.ProgramStage;
  */
 public interface SelectedStateManager
 {
-    
-    
+
     OrganisationUnit getSelectedOrganisationUnit();
+
+    // -------------------------------------------------------------------------
+    // for Patient
+    // -------------------------------------------------------------------------
 
     void setSelectedPatient( Patient patient );
 
     Patient getSelectedPatient();
 
     void clearSelectedPatient();
+
+    // -------------------------------------------------------------------------
+    // for Program
+    // -------------------------------------------------------------------------
 
     void setSelectedProgram( Program program );
 
@@ -60,16 +67,10 @@ public interface SelectedStateManager
 
     void clearSelectedProgramStage();
 
-    void setListAll( boolean listAll );
-
-    boolean getListAll();
-
-    void clearListAll();
-
-    
+   
 
     // -------------------------------------------------------------------------
-    // Search patients by patient-attribute
+    // for Searching patients - SearchingAttribute
     // -------------------------------------------------------------------------
 
     void setSearchingAttributeId( int searchingAttributeId );
@@ -77,22 +78,29 @@ public interface SelectedStateManager
     Integer getSearchingAttributeId();
 
     void clearSearchingAttributeId();
-    
 
+    
     void setSearchText( String searchText );
 
     String getSearchText();
 
     void clearSearchText();
     
-    // -------------------------------------------------------------------------
-    // Sort by patient-attribute
-    // -------------------------------------------------------------------------
     
+    void setListAll( boolean listAll );
+
+    boolean getListAll();
+
+    void clearListAll();
+
+    // -------------------------------------------------------------------------
+    // for Sorting patients - Sort by patient-attribute
+    // -------------------------------------------------------------------------
+
     void setSortingAttributeId( int sortAttributeId );
-    
+
     Integer getSortAttributeId();
-    
+
     void clearSortingAttributeId();
 
 }
