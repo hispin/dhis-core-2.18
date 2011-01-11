@@ -1052,6 +1052,28 @@
             </result>
         </action>
 		
+		<!--Mobile Report-->
+		<action name="mobileReportAnalyser"
+			class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">
+				/dhis-web-reports/mobileReportAnalysisFront.vm</param>
+			<param name="menu">
+				/dhis-web-reports/menuWithTreeForMobileReport.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/datasetLockReport.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		<action name="generateMobileReport"
+			class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction">
+			<result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>S </result>
+        </action>
+		
 		<!-- CS Review Reports Start -->
         <action name="csReviewReportForm"
             class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction">

@@ -46,6 +46,9 @@
 			#if( $auth.hasAccess( "dhis-web-reports", "quarterlyPhysicalReport") )
 				<li><a href = "quarterlyPhysicalReport.action ">Quarterly Physical Output Reports</a></li>
 			#end
+			#if( $auth.hasAccess( "dhis-web-reports", "mobileReportAnalyser") )
+				<li><a href = "mobileReportAnalyser.action">Mobile Reports</a></li>
+			#end
 			#if( $auth.hasAccess( "dhis-web-reports", "csReviewReportForm") )
 				<li><a href = "csReviewReportForm.action">CS Review Reports</a></li>
 			#end

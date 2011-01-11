@@ -954,6 +954,39 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		
 	</bean>
 	
+	<!--Mobile Reports-->
+	
+	<bean
+		id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
+		class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction"
+		scope="prototype">
+		
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
+		class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction"
+		scope="prototype">
+		
+		<property name="organisationunitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+		<property name="statementManager" ref="statementManager"/>
+		<property name="reportService">
+			<ref bean="org.hisp.dhis.reports.ReportService"/>
+		</property>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+		<property name="userService">
+			<ref bean="org.hisp.dhis.user.UserService"/>
+		</property>
+		
+		
+	</bean>
+	
 	<!-- Report Service -->
 	<bean id="org.hisp.dhis.reports.util.ReportService"
 		class="org.hisp.dhis.reports.util.ReportService" scope="prototype">
@@ -1320,8 +1353,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             </property>
     </bean>
     <!-- CS Review Reports End 09/08/2010-->
-	
-	
-	
 	
 </beans>
