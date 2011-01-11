@@ -5,11 +5,8 @@
 
 function validateAddRelationshipPatient()
 {
-	
 	var params = '&checkedDuplicate='+checkedDuplicate 
-				+'&firstName=' + getFieldValue( 'firstName' ) 
-				+'&middleName=' + getFieldValue( 'middleName' ) 
-				+'&lastName=' + getFieldValue( 'lastName' ) 
+				+'&fullName=' + getFieldValue( 'fullName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
 				+'&dobType=' + getFieldValue( 'dobType' ) 
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 

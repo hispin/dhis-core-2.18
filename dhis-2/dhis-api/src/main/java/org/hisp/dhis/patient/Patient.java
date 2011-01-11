@@ -62,8 +62,6 @@ public class Patient
 
     private String lastName;
 
-    private String fullName;
-
     private String gender;
 
     private Date birthDate;
@@ -452,14 +450,9 @@ public class Patient
     // Getter && Setter
     // -------------------------------------------------------------------------
 
-    public void setFullName( String fullName )
-    {
-        this.fullName = fullName;
-    }
-
     public String getFullName()
     {
-        return fullName;
+        return firstName + " " + middleName + " " + lastName;
     }
 
     public String getBloodGroup()

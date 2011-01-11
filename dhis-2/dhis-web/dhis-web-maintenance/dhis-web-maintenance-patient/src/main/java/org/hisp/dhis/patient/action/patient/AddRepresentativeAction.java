@@ -68,12 +68,8 @@ public class AddRepresentativeAction
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-  
-    private String firstName;
 
-    private String middleName;
-
-    private String lastName;
+    private String fullName;
 
     // -------------------------------------------------------------------------
     // Input - demographics
@@ -114,9 +110,38 @@ public class AddRepresentativeAction
 
         patient = new Patient();
 
-        patient.setFirstName( firstName.trim() );
-        patient.setMiddleName( middleName.trim() );
-        patient.setLastName( lastName.trim() );
+        // ---------------------------------------------------------------------
+        // Get FirstName, MiddleName, LastName by FullName
+        // ---------------------------------------------------------------------
+
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String name = fullName.substring( 0, startIndex );
+        patient.setFirstName( name );
+
+        if ( startIndex == endIndex )
+        {
+            patient.setMiddleName( "" );
+            
+            name = fullName.substring( startIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        else
+        {
+            name = fullName.substring( startIndex + 1, endIndex );
+            patient.setMiddleName( name );
+            
+            name = fullName.substring( endIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        
+        patient.setLastName( fullName.substring( endIndex, fullName.length() ) );
+
+        // ---------------------------------------------------------------------
+        // Get Other information for patient
+        // ---------------------------------------------------------------------
+
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setOrganisationUnit( organisationUnit );
@@ -229,21 +254,11 @@ public class AddRepresentativeAction
         this.selectionManager = selectionManager;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
+        this.fullName = fullName;
     }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
-    }
-
+    
     public void setAge( Integer age )
     {
         this.age = age;

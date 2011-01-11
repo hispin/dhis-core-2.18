@@ -27,9 +27,15 @@
 
 package org.hisp.dhis.patient.hibernate;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -38,6 +44,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
@@ -53,6 +60,29 @@ public class HibernatePatientStore
     extends HibernateGenericStore<Patient>
     implements PatientStore
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
+
     @SuppressWarnings( "unchecked" )
     public Collection<Patient> get( Boolean isDead )
     {
@@ -71,16 +101,40 @@ public class HibernatePatientStore
         return getCriteria( Restrictions.eq( "birthDate", birthDate ) ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getByNames( String name )
     {
-//        String hql = "From Patient p where lower( p.firstName + ' ' + p.middleName + ' ' + p.lastName ) like :name order by p.id";
-//
-//        return getQuery( hql ).setString( "name", "%" + name + "%" ).list();
+        String sql = statementBuilder.getPatientsByFullName( name );
+
+        StatementHolder holder = statementManager.getHolder();
+
+        Set<Patient> patients = new HashSet<Patient>();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            while ( resultSet.next() )
+            {
+                Patient p = get( resultSet.getInt( 1 ) ) ;
+                patients.add( p );
+            }
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return patients;
         
-         return getCriteria(
-            Restrictions.disjunction().add( Restrictions.ilike( "fullName", "%" + name + "%") ) ).addOrder(
-            Order.asc( "firstName" ) ).list();
+//         return getCriteria(
+//            Restrictions.disjunction().add( Restrictions.ilike( "fullName", "%" + name + "%") ) ).addOrder(
+//            Order.asc( "firstName" ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -146,11 +200,30 @@ public class HibernatePatientStore
 
     public int countGetPatientsByName( String name )
     {
-        Number rs = (Number) getCriteria(
-            Restrictions.ilike( "fullName", "%" + name + "%") ).setProjection( Projections.rowCount() )
-            .uniqueResult();
+        String sql = statementBuilder.countPatientsByFullName( name );
+        StatementHolder holder = statementManager.getHolder();
+        
+        try
+        {
+            Statement statement = holder.getStatement();
 
-        return rs != null ? rs.intValue() : 0;
+            ResultSet resultSet = statement.executeQuery( sql );
+
+            if ( resultSet.next() )
+            {
+                return resultSet.getInt( 1 );
+            }
+        }
+        catch ( Exception ex )
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return 0;
     }
 
     @Override

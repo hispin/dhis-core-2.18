@@ -24,9 +24,8 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
-
 public class ValidateAddRelationshipPatientAction
-implements Action
+    implements Action
 {
     public static final String PATIENT_DUPLICATE = "duplicate";
 
@@ -50,12 +49,8 @@ implements Action
     // Input
     // -------------------------------------------------------------------------
 
-    private String firstName;
+    private String fullName;
 
-    private String middleName;
-
-    private String lastName;
-    
     private Character dobType;
 
     private String birthDate;
@@ -69,11 +64,11 @@ implements Action
     private Integer id;
 
     private boolean checkedDuplicate;
-    
+
     private boolean underAge;
-    
+
     private Integer relationshipId;
-    
+
     private Integer relationshipTypeId;
 
     // -------------------------------------------------------------------------
@@ -108,34 +103,6 @@ implements Action
             return INPUT;
         }
 
-        if ( firstName == null && middleName == null && lastName == null )
-        {
-            message = i18n.getString( "specfiy_name_s" );
-
-            return INPUT;
-        }
-
-        if ( firstName != null )
-        {
-            firstName = firstName.trim();
-        }
-
-        if ( middleName != null )
-        {
-            middleName = middleName.trim();
-        }
-
-        if ( lastName != null )
-        {
-            lastName = lastName.trim();
-        }
-        if ( firstName.length() == 0 && middleName.length() == 0 && lastName.length() == 0 )
-        {
-            message = i18n.getString( "specfiy_name_s" );
-
-            return INPUT;
-        }
-
         if ( age == null && birthDate == null )
         {
             message = i18n.getString( "specfiy_birth_date_or_age" );
@@ -143,38 +110,71 @@ implements Action
             return INPUT;
         }
 
-        if ( dobType == 'V' || dobType == 'D')
+        if ( dobType == 'V' || dobType == 'D' )
         {
             birthDate = birthDate.trim();
 
-               dateOfBirth = format.parseDate( birthDate );
+            dateOfBirth = format.parseDate( birthDate );
 
-                if ( dateOfBirth == null || dateOfBirth.after( new Date() ) )
-                {
-                    message = i18n.getString( "please_enter_a_valid_birth_date" );
+            if ( dateOfBirth == null || dateOfBirth.after( new Date() ) )
+            {
+                message = i18n.getString( "please_enter_a_valid_birth_date" );
 
-                    return INPUT;
-                }
+                return INPUT;
+            }
+        }
+
+        fullName = fullName.trim();
+        
+        if( fullName.indexOf( ' ' ) == -1 )
+        {
+            message = i18n.getString( "please_enter_a_valid_full_name" );
+
+            return INPUT;
         }
         
+        // ---------------------------------------------------------------------
+        // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
+        // ---------------------------------------------------------------------
+
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String firstName = fullName.substring( 0, startIndex );
+        String middleName = "";
+        String lastName = "";
+        
+        if ( startIndex == endIndex )
+        {
+            middleName = "";
+            lastName = fullName.substring( startIndex, fullName.length() );
+        }
+        else
+        {
+            middleName = fullName.substring( startIndex + 1, endIndex );
+            lastName = fullName.substring( endIndex, fullName.length() );
+        }
+
         if ( !checkedDuplicate )
         {
+
             // Check duplication name, birthdate, gender
-            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ), gender );
+            patients = patientService.getPatient( firstName, middleName, lastName, format.parseDate( birthDate ),
+                gender );
 
             if ( patients != null && patients.size() > 0 )
             {
                 message = i18n.getString( "patient_duplicate" );
-                
+
                 boolean flagDuplicate = false;
                 for ( Patient p : patients )
                 {
-                    if ( id == null ||  ( id != null &&  p.getId().intValue() != id.intValue() ) )
+                    if ( id == null || (id != null && p.getId().intValue() != id.intValue()) )
                     {
                         flagDuplicate = true;
                         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
                             .getPatientAttributeValues( p );
-                        
+
                         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
                         {
                             patientAttributeValueMap
@@ -183,12 +183,11 @@ implements Action
                         }
                     }
                 }
-                if( flagDuplicate )
+                if ( flagDuplicate )
                     return PATIENT_DUPLICATE;
             }
         }
-        
-        
+
         // Check Identifiers duplicate
 
         Patient p = new Patient();
@@ -199,7 +198,7 @@ implements Action
         }
         else
         {
-           p.setBirthDateFromAge( age.intValue(), ageType  );
+            p.setBirthDateFromAge( age.intValue(), ageType );
         }
 
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -212,14 +211,16 @@ implements Action
             String idDuplicate = "";
             for ( PatientIdentifierType idType : identifiers )
             {
-                // If underAge is TRUE : Only check duplicate on PatientIdentifierType which related is FALSE
-                if(  !underAge ||  ( underAge && !idType.isRelated() )   )
+                // If underAge is TRUE : Only check duplicate on
+                // PatientIdentifierType which related is FALSE
+                if ( !underAge || (underAge && !idType.isRelated()) )
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
                     if ( StringUtils.isNotBlank( value ) )
                     {
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
-                        if ( identifier != null && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
+                        if ( identifier != null
+                            && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
                         {
                             idDuplicate += idType.getName() + ", ";
                         }
@@ -283,21 +284,11 @@ implements Action
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
+        this.fullName = fullName;
     }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
-    }
-
+    
     public void setBirthDate( String birthDate )
     {
         this.birthDate = birthDate;
@@ -362,7 +353,7 @@ implements Action
     {
         this.relationshipId = relationshipId;
     }
-    
+
     public void setAgeType( char ageType )
     {
         this.ageType = ageType;

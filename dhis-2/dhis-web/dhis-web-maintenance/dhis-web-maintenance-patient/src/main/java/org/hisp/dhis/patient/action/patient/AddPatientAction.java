@@ -91,12 +91,8 @@ public class AddPatientAction
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-    
-    private String firstName;
 
-    private String middleName;
-
-    private String lastName;
+    private String fullName;
 
     // -------------------------------------------------------------------------
     // Input - demographics
@@ -105,11 +101,11 @@ public class AddPatientAction
     private String birthDate;
 
     private char ageType;
-    
+
     private Integer age;
 
     private Character dobType;
-    
+
     private String gender;
 
     private String bloodGroup;
@@ -161,24 +157,54 @@ public class AddPatientAction
 
         patient = new Patient();
 
-        patient.setFirstName( firstName.trim() );
-        patient.setMiddleName( middleName.trim() );
-        patient.setLastName( lastName.trim() );
+        // ---------------------------------------------------------------------
+        // Set FirstName, MiddleName, LastName by FullName
+        // ---------------------------------------------------------------------
+        
+        fullName = fullName.trim();
+        
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String name = fullName.substring( 0, startIndex );
+        patient.setFirstName( name );
+
+        if ( startIndex == endIndex )
+        {
+            patient.setMiddleName( "" );
+            
+            name = fullName.substring( startIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        else
+        {
+            name = fullName.substring( startIndex + 1, endIndex );
+            patient.setMiddleName( name );
+            
+            name = fullName.substring( endIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        
+       
+        // ---------------------------------------------------------------------
+        // Set Other information for patient
+        // ---------------------------------------------------------------------
+
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED)
+        if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
             patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-           patient.setBirthDateFromAge( age.intValue(), ageType );
+            patient.setBirthDateFromAge( age.intValue(), ageType );
         }
-        
+
         patient.setDobType( dobType );
 
         patient.setRegistrationDate( new Date() );
@@ -199,7 +225,7 @@ public class AddPatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if (  identifierType.getFormat()!= null && identifierType.getFormat().equals( "State Format" ) )
+                if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
                 {
                     value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
                         + request.getParameter( "benicode" );
@@ -347,19 +373,9 @@ public class AddPatientAction
         this.patientAttributeService = patientAttributeService;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
-    }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
+        this.fullName = fullName;
     }
 
     public void setAge( Integer age )

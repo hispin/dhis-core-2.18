@@ -52,6 +52,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.patient.PatientStore" class="org.hisp.dhis.patient.hibernate.HibernatePatientStore">
 		<property name="clazz" value="org.hisp.dhis.patient.Patient" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="statementManager" ref="statementManager"/>
+		<property name="statementBuilder" ref="statementBuilder"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.PatientIdentifierStore"

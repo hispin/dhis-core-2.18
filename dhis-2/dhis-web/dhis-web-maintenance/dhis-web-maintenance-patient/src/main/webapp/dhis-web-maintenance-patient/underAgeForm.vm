@@ -28,9 +28,7 @@ jQuery(document).ready(function()
 						}
 		,rules : {
 			relationshipTypeId  : { required: true },
-			firstName : {required_group:true,rangelength:[2,30], unicodechars:true},
-			middleName : {required_group:true,rangelength:[2,30], unicodechars:true},
-			lastName : {required_group:true,rangelength:[2,30], unicodechars:true},
+			fullName : {required:true,rangelength:[3,30], unicodechars:true},
 			gender : { required: true },
 			birthDate :{required:false,dateISO:true,datelessthanequaltoday:true}
 		},beforeValidateHandler: function(form)
@@ -166,17 +164,15 @@ jQuery(document).ready(function()
 		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" style="width:15em"  maxlength="30" class="required_group"></td>
+		<td><label for="required">$i18n.getString( "full_name" )</label></td>
+		<td class="input-column" >
+			<input type="text" id="fullName" name="fullName" style="width:15em" class="{validate:{required:true, unicodechars:true, rangelength:[2,30]}}" onkeyup="startSearch(event)">
+			<span id='searchIcon' style="display:none"><img src="../images/loader.gif"></span>
+		</td>
 	</tr>
 	<tr>
-		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td><input type="text" id="middleName" name="middleName" maxlength="30" style="width:15em" class="required_group"></td>
-	</tr>
-	<tr>
-		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" maxlength="30" style="width:15em" class="required_group"></td>
-	</tr>	
+        <td id="similarPatients" style="display:none" colspan='2'> $i18n.getString( "similar_patients" ): <span id="patientCount"></span> <a href="javascript:showSearchPatients();">(show/hide)</a></td>
+    </tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
 		<th colspan="2">$i18n.getString( "demographics" )</th>
@@ -185,7 +181,7 @@ jQuery(document).ready(function()
 	<tr>
 		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="gender" name="gender" style="min-width:15em" class="{validate:{required:true}}">
+			<select id="gender" name="gender" style="min-width:15em">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="M" >$i18n.getString( "male" )</option>
 				<option value="F">$i18n.getString( "female" )</option>

@@ -88,11 +88,8 @@ public class UpdatePatientAction
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
+   
+    private String fullName;
 
     // -------------------------------------------------------------------------
     // Input - demographics
@@ -131,13 +128,43 @@ public class UpdatePatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
-        // Update patient
+        // Get patient by Id
         // ---------------------------------------------------------------------
 
         patient = patientService.getPatient( id );
-        patient.setFirstName( firstName );
-        patient.setMiddleName( middleName );
-        patient.setLastName( lastName );
+     
+        // ---------------------------------------------------------------------
+        // Set FirstName, MiddleName, LastName by FullName
+        // ---------------------------------------------------------------------
+
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+        
+        String name = fullName.substring( 0, startIndex );
+        patient.setFirstName( name);
+        
+        if ( startIndex == endIndex )
+        {
+            patient.setMiddleName( "" );
+            
+            name = fullName.substring( startIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        else
+        {
+            name = fullName.substring( startIndex + 1, endIndex );
+            patient.setMiddleName( name );
+            
+            name = fullName.substring( endIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        
+        patient.setLastName( fullName.substring( endIndex, fullName.length() ) );
+    
+        // ---------------------------------------------------------------------
+        // Set Other information for patient
+        // ---------------------------------------------------------------------
+
         patient.setGender( gender );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
@@ -341,19 +368,9 @@ public class UpdatePatientAction
         this.id = id;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
-    }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
+        this.fullName = fullName;
     }
 
     public void setBirthDate( String birthDate )

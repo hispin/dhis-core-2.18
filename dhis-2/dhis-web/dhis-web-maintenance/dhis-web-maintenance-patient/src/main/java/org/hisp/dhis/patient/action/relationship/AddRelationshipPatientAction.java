@@ -68,11 +68,8 @@ public class AddRelationshipPatientAction
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-    private String firstName;
 
-    private String middleName;
-
-    private String lastName;
+    private String fullName;
 
     // -------------------------------------------------------------------------
     // Input - demographics
@@ -83,7 +80,7 @@ public class AddRelationshipPatientAction
     private char ageType;
 
     private Integer age;
-    
+
     private Character dobType;
 
     private String gender;
@@ -125,10 +122,38 @@ public class AddRelationshipPatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = new Patient();
+        // ---------------------------------------------------------------------
+        // Set FirstName, MiddleName, LastName by FullName
+        // ---------------------------------------------------------------------
 
-        patient.setFirstName( firstName.trim() );
-        patient.setMiddleName( middleName.trim() );
-        patient.setLastName( lastName.trim() );
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+
+        String name = fullName.substring( 0, startIndex );
+        patient.setFirstName( name );
+
+        if ( startIndex == endIndex )
+        {
+            patient.setMiddleName( "" );
+            
+            name = fullName.substring( startIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        else
+        {
+            name = fullName.substring( startIndex + 1, endIndex );
+            patient.setMiddleName( name );
+            
+            name = fullName.substring( endIndex, fullName.length() );
+            patient.setLastName( name );
+        }
+        
+        patient.setLastName( fullName.substring( endIndex, fullName.length() ) );
+
+        // ---------------------------------------------------------------------
+        // Set Other information for patient
+        // ---------------------------------------------------------------------
+
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
@@ -136,16 +161,16 @@ public class AddRelationshipPatientAction
 
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
-           birthDate = birthDate.trim();
-           patient.setBirthDate( format.parseDate( birthDate ) );
+            birthDate = birthDate.trim();
+            patient.setBirthDate( format.parseDate( birthDate ) );
         }
         else
         {
-           patient.setBirthDateFromAge( age.intValue(), ageType );
+            patient.setBirthDateFromAge( age.intValue(), ageType );
         }
 
         patient.setDobType( dobType );
-        
+
         patient.setRegistrationDate( new Date() );
 
         // --------------------------------------------------------------------------------
@@ -326,26 +351,16 @@ public class AddRelationshipPatientAction
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
-    }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
+        this.fullName = fullName;
     }
 
     public void setAge( Integer age )
     {
         this.age = age;
     }
-    
+
     public void setGender( String gender )
     {
         this.gender = gender;
@@ -385,12 +400,12 @@ public class AddRelationshipPatientAction
     {
         this.relationshipId = relationshipId;
     }
-    
+
     public void setDobType( Character dobType )
     {
         this.dobType = dobType;
     }
-    
+
     public void setAgeType( char ageType )
     {
         this.ageType = ageType;

@@ -344,4 +344,18 @@ public class MySQLStatementBuilder
                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                "AND a.timestamp<=d.timestamp;";
    }
+   
+   public String getPatientsByFullName( String fullName )
+   {
+       return "SELECT patientid FROM patient " +
+               "where lower(concat( firstname, \" \",middleName , \" \" , lastname) ) " +
+               "like lower('%" + fullName + "%')";
+   }
+   
+   public String countPatientsByFullName( String fullName )
+   {
+       return "SELECT count(patientid) FROM patient " +
+               "where lower(concat( firstname, \" \",middleName , \" \" , lastname) ) " +
+               "like lower('%" + fullName + "%')";
+   }
 }
