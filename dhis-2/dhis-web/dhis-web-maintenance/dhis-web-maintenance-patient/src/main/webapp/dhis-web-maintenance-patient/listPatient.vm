@@ -26,123 +26,104 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 </table>
 
 <table class="mainPageTable">
-  	
-  <tr>
-    <td style="vertical-align:top">    
-      <table class="listTable">                   
-          <col>
+	<tr>
+		<td colspan="14" style="text-align:right">			
+			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em; align:right;">
+		</td>
+	</tr>	
+	
+	<tr>
+    <td>    
+      <table class="listTable" id="listTable" width='100%'>               
+          <col/>
             #if($mapPatientPatientAttr.size()!=0)
-                <col>
+                <col/>
             #end
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
-          <col>
-          <col width="20">
-          <col width="20">
-          <col width="20">
-          <!--<col width="20">-->
-          <col width="20">
-          <col width="20">   
-          <col width="20">     
-          
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td colspan="7" style="text-align:right">			
-				<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patient.action'" style="width:10em">
-			</td>
-          <tr>
-            <th>#</th>
-            #if($mapPatientPatientAttr.size()!=0)
-                <th id="patientAttributeName"></th>
-				<script>
-					var selectedAttr = byId("sortPatientAttributeId");
-					byId('patientAttributeName').innerHTML = selectedAttr.options[selectedAttr.selectedIndex].text;
-				</script>
-            #end
-            <th>$i18n.getString( "first_name" )</th>
-            <th>$i18n.getString( "middle_name" )</th>
-            <th>$i18n.getString( "last_name" )</th>            
-            <th>$i18n.getString( "gender" )</th>
-            <th>$i18n.getString( "date_of_birth" )</th> 
-            <th>$i18n.getString( "age" )</th>
-			#if($mapPatientOrgunit.size()!=0)
-			<th>$i18n.getString( "hierachy_orgunit" )</th>
-			#end
-            <th colspan="8" style="text-align:center">$i18n.getString( "operations" )</th>
-          </tr>
-          
+          <col/>
+          <col/>
+          <col/>
+          <col/>
+          <col/>
+          <col/>
+		  #if($mapPatientOrgunit.size()!=0)
+          <col/>
+		  #end
+          <col width="200"/>    
+		  
+		  <thead>
+			<tr>
+				<th class="{sorter: false}">#</th>
+				#if($mapPatientPatientAttr.size()!=0)
+					<th id="patientAttributeName"></th>
+					<script>
+						var selectedAttr = byId("sortPatientAttributeId");
+						byId('patientAttributeName').innerHTML = selectedAttr.options[selectedAttr.selectedIndex].text;
+					</script>
+				#end
+				<th>$i18n.getString( "first_name" )</th>
+				<th>$i18n.getString( "middle_name" )</th>
+				<th>$i18n.getString( "last_name" )</th>            
+				<th>$i18n.getString( "gender" )</th>
+				<th>$i18n.getString( "date_of_birth" )</th> 
+				<th>$i18n.getString( "age" )</th>
+				#if($mapPatientOrgunit.size()!=0)
+				<th>$i18n.getString( "hierachy_orgunit" )</th>
+				#end
+				<th style="text-align:center" class="{sorter: false}">$i18n.getString( "operations" )</th>
+			  </tr>
+          </thead>
+		  
           <tbody id="list">	
 		  
           #foreach( $patient in $patients )
           	<tr id="tr${patient.id}">
-          	<td>
-                    #set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
-                    $nr
-			</td>
-                #if($!mapPatientPatientAttr.size()!=0)
-                    <td>
-                        $!mapPatientPatientAttr.get($patient)
-                    </td>
-                #end
-                
-		<td>			
-                    $!patient.firstName
-		</td>
-		<td>			
-                    $!patient.middleName
-		</td>
-		<td>			
-                    $!patient.lastName
-		</td>				
-		<td>			
-                    $!patient.gender
-		</td>
-		<td>			
-                    $format.formatDate( $!patient.birthDate)
-		</td>
-		<td>            
-                    $!patient.getAge()
-        </td>
-        <td>
-					$!mapPatientOrgunit.get($patient)
-        </td>
-		<td style="text-align:center"#alternate( $mark )>
-                  <a href="showProgramEnrollmentForm.action?id=$patient.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
-                </td>                
-                
-                <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
-                </td>
+				<td>
+						#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+						$nr
+				</td>
+				#if($!mapPatientPatientAttr.size()!=0)
+				<td>
+						$!mapPatientPatientAttr.get($patient)
+				</td>
+				#end
+					
+				<td>			
+						$!patient.firstName
+				</td>
+				<td>			
+						$!patient.middleName
+				</td>
+				<td>			
+						$!patient.lastName
+				</td>				
+				<td>			
+						$!patient.gender
+				</td>
+				<td>			
+						$format.formatDate( $!patient.birthDate)
+				</td>
+				<td>            
+						$!patient.getAge()
+				</td>
+				#if($mapPatientOrgunit.size()!=0)
+				<td>
+						$!mapPatientOrgunit.get($patient)
+				</td>
+				#end
 				
-                <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
-                </td>        
-                
-                <td style="text-align:center"#alternate( $mark )>                  
-                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="../images/add.png" alt="$i18n.getString( "add_dependent" )"></a>
-                </td>                        
- 
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-                </td>            
-                
-                <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
-                </td>
+				<td style="text-align:center">
+				  <a href="showProgramEnrollmentForm.action?id=$patient.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'></a>                  
+				  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
+				  <a href="showRelationshipList.action?id=$patient.id" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
+				  <a href="showAddRelationshipPatient.action?id=$patient.id" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'></a>
+				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:showPatientDetails( $patient.id )" title='$i18n.getString( "show_details" )'><img src="../images/information.png" alt='$i18n.getString( "show_details" )'></a>
+				</td>
 				
 			</tr>
 			#set( $relationships = $mapRelationShip.get($patient.id))
 			 #foreach( $relationship in $relationships )
-               <tr class="relationship-row listrow" >
+               <tr class="relationship-row listrow" id="tr${patient.id}">
                    #set( $partnerId = false )    
                    #if( $relationship.patientA.id == $patient.id )
                        #set( $partnerId = $relationship.patientB.id )
@@ -179,31 +160,31 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 	                </td>
 					
 					<td style="text-align:center">
-	                  <a href="showProgramEnrollmentForm.action?id=$partner.id" title="$i18n.getString( "manage_program_enrollment" )"><img src="../images/enroll.png" alt="$i18n.getString( "manage_program_enrollment" )"></a>                  
+	                  <a href="showProgramEnrollmentForm.action?id=$partner.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'></a>                  
 	                </td>                
 	                
 	                <td style="text-align:center">                  
-	                  <a href="showUpdatePatientForm.action?id=$patient.id" title="$i18n.getString( "edit_profile" )"><img src="../images/edit.png" alt="$i18n.getString( "edit_profile" )"></a>
+	                  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
 	                </td>
 	                
 	                <td style="text-align:center">
-	                  <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title="$i18n.getString( "edit_attribute_values" )"><img src="../images/attribute.png" alt="$i18n.getString( "edit_attribute_values" )"></a>
+	                  <a href="showUpdatePatientAttributeValueForm.action?id=$patient.id" title='$i18n.getString( "edit_attribute_values" )'><img src="../images/attribute.png" alt='$i18n.getString( "edit_attribute_values" )'></a>
 	                </td>
 	                
 	                <td style="text-align:center">                  
-	                  <a href="showRelationshipList.action?id=$patient.id" title="$i18n.getString( "manage_relationship" )"><img src="../images/relationship.png" alt="$i18n.getString( "manage_relationship" )"></a>
+	                  <a href="showRelationshipList.action?id=$patient.id" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
 	                </td>        
 	                
 	                <td style="text-align:center">                  
-	                  <a href="showAddRelationshipPatient.action?id=$patient.id" title="$i18n.getString( "add_dependent" )"><img src="../images/add.png" alt="$i18n.getString( "add_dependent" )"></a>
+	                  <a href="showAddRelationshipPatient.action?id=$patient.id" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'></a>
 	                </td>                        
 	 
 	                <td style="text-align:center">
-	                  <a href="javascript:removePatient( '$partner.id', '$encoder.jsEncode( $partner.getFullName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+	                  <a href="javascript:removePatient( '$partner.id', '$encoder.jsEncode( $partner.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
 	                </td>            
 	                
 	                <td style="text-align:center">
-	                  <a href="javascript:showPatientDetails( $partner.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+	                  <a href="javascript:showPatientDetails( $partner.id )" title='$i18n.getString( "show_details" )'><img src="../images/information.png" alt='$i18n.getString( "show_details" )'></a>
 	                </td>
                </tr>
 			#end
@@ -223,7 +204,19 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
   	<td></td>
   </tr>
 </table>
+
+<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
+	<div style="float:right">
+		<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+	</div>
+	<p><label>$i18n.getString( "common_info" ):</label><br><span id="commonInfoField"></span></p>	
+	<p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>
+	<p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
+	<p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
+</div>
+
 <script type="text/javascript">
+	
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient" ) , "'" )';
 	var i18n_adding_patient_failed = '$encoder.jsEscape( $i18n.getString( "adding_patient_failed" ), "'")';
 	var i18n_updating_patient_failed = '$encoder.jsEscape( $i18n.getString( "updating_patient_failed" ), "'")';	
@@ -235,14 +228,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 	var i18n_dob_type = '$encoder.jsEscape( $i18n.getString( "dob_type" ), "'")';
 	var i18n_date_of_birth = '$encoder.jsEscape( $i18n.getString( "date_of_birth" ), "'")';
 	var i18n_blood_group = '$encoder.jsEscape( $i18n.getString( "blood_group" ), "'")';
+	
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+	});
+	
 </script>
-
-<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
-	<div style="float:right">
-		<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
-	</div>
-	<p><label>$i18n.getString( "common_info" ):</label><br><span id="commonInfoField"></span></p>	
-	<p><label>$i18n.getString( "identifier" ):</label><br><span id="identifierField"></span></p>
-	<p><label>$i18n.getString( "attributes" ):</label><br><span id="attributeField"></span></p>
-	<p><label>$i18n.getString( "enrolled_in_program" ):</label><br><span id="programField"></span></p>
-</div>
