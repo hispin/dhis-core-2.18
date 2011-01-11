@@ -5,5 +5,4 @@
     #introListImgItem( "dataSet.action" "dataset" "dataset" )
     #introListImgItem( "section.action" "dataset_section" "dataset" )
     #introListImgItem( "showAssignMultiDataSetForOrgunitForm.action" "assign_multidataset" "dataset" )
-    #introListImgItem( "displayAssociationTableForm.action" "dataset_association_management" "dataset" )
 </ul>

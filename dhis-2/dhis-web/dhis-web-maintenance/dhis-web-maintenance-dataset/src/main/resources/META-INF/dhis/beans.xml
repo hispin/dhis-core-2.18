@@ -179,37 +179,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dataset.action.pivotassociation.GetPivotDataSetAssocicationTableAction"
-		class="org.hisp.dhis.dataset.action.pivotassociation.GetPivotDataSetAssocicationTableAction"
-		scope="prototype">
-		<property name="associationTableService">
-			<ref bean="org.hisp.dhis.dataset.PivotDataSetAssociationTableService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.pivotassociation.GetOrganisationUnitLevelsAction"
-   	 	class="org.hisp.dhis.dataset.action.pivotassociation.GetOrganisationUnitLevelsAction"
-    	scope="prototype">
-	    <property name="organisationUnitService"
-	      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-    </bean>
-    
-    <bean id="org.hisp.dhis.dataset.action.pivotassociation.GetPeriodTypesAction"
-    	class="org.hisp.dhis.dataset.action.pivotassociation.GetPeriodTypesAction"
-    	scope="prototype">
-    	<property name="periodService"
-      	  ref="org.hisp.dhis.period.PeriodService"/>
-    </bean>
-  
-  	<bean id="org.hisp.dhis.dataset.action.pivotassociation.DefineAssociationAction"
-    	class="org.hisp.dhis.dataset.action.pivotassociation.DefineAssociationAction"
-    	scope="prototype">
-	    <property name="dataSetService"
-	      ref="org.hisp.dhis.dataset.DataSetService"/>
-	    <property name="organisationUnitService"
-	      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  	</bean>
-  
 	<!-- Validation -->
 	
 	<bean id="org.hisp.dhis.dataset.action.ValidateDataSetAction"
