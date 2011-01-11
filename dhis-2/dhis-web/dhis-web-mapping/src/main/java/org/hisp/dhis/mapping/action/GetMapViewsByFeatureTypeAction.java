@@ -27,6 +27,10 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +38,9 @@ import java.util.List;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
+import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.system.filter.MapViewFixedDateTypeFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,6 +60,13 @@ public class GetMapViewsByFeatureTypeAction
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -84,6 +98,14 @@ public class GetMapViewsByFeatureTypeAction
     public String execute()
     {
         object = new ArrayList<MapView>( mappingService.getMapViewsByFeatureType( featureType ) );
+
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY );
+
+        if ( aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) )
+        {
+            FilterUtils.filter( object, new MapViewFixedDateTypeFilter() );
+        }
 
         Collections.sort( object, new MapViewNameComparator() );
 

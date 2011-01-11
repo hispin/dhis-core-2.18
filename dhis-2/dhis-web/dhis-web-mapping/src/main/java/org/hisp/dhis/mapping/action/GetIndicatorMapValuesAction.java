@@ -127,7 +127,12 @@ public class GetIndicatorMapValuesAction
     public String execute()
         throws Exception
     {
-        Period period = periodService.getPeriod( periodId );
+        Period period = null;
+        
+        if ( periodId != null )
+        {
+            period = periodService.getPeriod( periodId );
+        }
         
         object = mappingService.getIndicatorMapValues( id, period, DateUtils.getMediumDate( startDate ), DateUtils
             .getMediumDate( endDate ), parentId, level );
