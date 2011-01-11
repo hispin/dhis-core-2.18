@@ -440,14 +440,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.i18n.locale.LocaleManagerDb" class="org.hisp.dhis.i18n.locale.DatabaseLocaleManager">
 		<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
 	</bean>
-
-	<bean id="org.hisp.dhis.dataset.PivotDataSetAssociationTableService"
-		class="org.hisp.dhis.dataset.DefaultPivotDataSetAssociationTableService">
-		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-	</bean>
 	
 	<bean id="org.hisp.dhis.aggregation.AggregatedDataValueService"
 		class="org.hisp.dhis.aggregation.DefaultAggregatedDataValueService">

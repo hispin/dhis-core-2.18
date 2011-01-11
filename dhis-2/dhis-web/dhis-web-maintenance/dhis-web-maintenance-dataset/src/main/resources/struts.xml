@@ -364,35 +364,5 @@
 		<param name="onExceptionReturn">plainTextError</param>
 	</action>
 
-	 <!-- PivotDataSetAssociationTableService -->
-    
-    <action name="displayAssociationTableForm" class="org.hisp.dhis.dataset.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/viewPivotAssociationTableForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-      <param name="javascripts">javascript/pivotAssociationTable.js,javascript/criteria.js</param>
-      <param name="stylesheets">css/pivot.css</param>
-    </action>
-    
-    <action name="getPivotAssociationTable" class="org.hisp.dhis.dataset.action.pivotassociation.GetPivotDataSetAssocicationTableAction">
-      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responsePivotAssociationTable.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.dataset.action.pivotassociation.GetOrganisationUnitLevelsAction">
-      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responseOrganisationUnitLevel.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="getPeriodTypes" class="org.hisp.dhis.dataset.action.pivotassociation.GetPeriodTypesAction">
-      <result name="success" type="velocity-json">/dhis-web-maintenance-dataset/responsePeriodType.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="defineAssociation" class="org.hisp.dhis.dataset.action.pivotassociation.DefineAssociationAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
   </package>
 </struts>

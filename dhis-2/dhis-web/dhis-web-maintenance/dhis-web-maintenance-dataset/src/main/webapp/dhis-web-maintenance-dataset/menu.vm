@@ -4,5 +4,4 @@
 	<li><a href="dataSet.action">$i18n.getString( "dataset" )&nbsp;</a></li>
 	<li><a href="section.action">$i18n.getString( "dataset_section" )&nbsp;</a></li>
 	<li><a href="showAssignMultiDataSetForOrgunitForm.action">$i18n.getString( "dataset_assignment_editor" )&nbsp;</a></li>
-	<li><a href="displayAssociationTableForm.action">$i18n.getString( "dataset_association_management" )&nbsp;</a></li>
 </ul>
