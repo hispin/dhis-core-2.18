@@ -105,15 +105,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
  -->
 
 <!-- CheckDataStatus Job -->
+
     <bean id="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob"
-        class="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob">
-    </bean>
+        class="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob" />
 
     <bean name="schedulerForCheckDataStatusJob"
         class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob" />
         <property name="jobDataAsMap">
             <map>
+                <entry key="jdbcTemplate" value-ref="jdbcTemplate"/>
                 <entry key="smsService" value-ref="org.hisp.dhis.mobile.SmsService"/>
                 <entry key="reportService" value-ref="org.hisp.dhis.reports.ReportService"/>
 				<entry key="dataSetService" value-ref="org.hisp.dhis.dataset.DataSetService"/>

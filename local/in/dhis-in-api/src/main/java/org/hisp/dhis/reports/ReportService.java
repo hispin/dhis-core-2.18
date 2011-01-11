@@ -119,7 +119,7 @@ public interface ReportService
     
     Period getPreviousPeriod( Period selectedPeriod );
     
-    List<OrganisationUnit> getDataNotSentOrgUnits( DataSet dataSet, Period period, OrganisationUnit rootOrgunit );
+    // List<OrganisationUnit> getDataNotSentOrgUnits( DataSet dataSet, Period period, OrganisationUnit rootOrgunit );
 
     String getResultSurveyValue( String formula, OrganisationUnit organisationUnit );
     
