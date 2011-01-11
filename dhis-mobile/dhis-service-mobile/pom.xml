@@ -32,11 +32,6 @@
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-core</artifactId>
-		</dependency>
-		<dependency>
-		  <groupId>org.hisp.dhis</groupId>
-		  <artifactId>dhis-in-service-reports</artifactId>
-		  <version>${project.version}</version>
 		</dependency>   
 	
 		<!-- Other -->
@@ -44,7 +39,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>3.0.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>			
 		<dependency>
 			<groupId>opensymphony</groupId>

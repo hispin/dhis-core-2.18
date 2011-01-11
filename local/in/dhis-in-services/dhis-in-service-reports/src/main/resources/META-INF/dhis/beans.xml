@@ -26,7 +26,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="surveyService" ref="org.hisp.dhis.survey.SurveyService" />
         <property name="surveyDataValueService" ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
