@@ -162,8 +162,8 @@ public class ViewDataEntryFormAction
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getFullOperands( dataSet
-            .getDataElements() ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService
+            .getOperands( dataSet.getDataElements() ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
