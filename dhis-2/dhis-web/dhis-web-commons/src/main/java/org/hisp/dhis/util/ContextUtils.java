@@ -83,7 +83,7 @@ public class ContextUtils
         return baseUrl;
     }
     
-    public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache, String filename )
+    public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache, String filename, boolean attachment )
     {
         if ( contentType != null )
         {
@@ -98,7 +98,9 @@ public class ContextUtils
 
         if ( filename != null )
         {
-            response.addHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
+            String type = attachment ? "attachment" : "inline";
+            
+            response.addHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
         }
     }
 }

@@ -106,7 +106,7 @@ public class GridXlsResult
 
         String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".xls";
                 
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename, false );
         
         // ---------------------------------------------------------------------
         // Create workbook and write to output stream
