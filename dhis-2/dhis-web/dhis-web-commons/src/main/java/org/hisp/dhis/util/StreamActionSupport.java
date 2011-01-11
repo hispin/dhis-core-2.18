@@ -54,7 +54,7 @@ public abstract class StreamActionSupport
         
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename() );
+        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename(), true );
         
         try
         {
