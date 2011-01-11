@@ -52,11 +52,7 @@ public class GetPatientsByNameAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
+    private String fullName;
 
     private List<Patient> patients;
 
@@ -69,21 +65,11 @@ public class GetPatientsByNameAction
         this.patientService = patientService;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
+        this.fullName = fullName;
     }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
-    }
-
+    
     public List<Patient> getPatients()
     {
         return patients;
@@ -95,8 +81,6 @@ public class GetPatientsByNameAction
 
     public String execute()
     {
-        String fullName = StringUtils.join( new String[] { firstName, middleName, lastName }, ' ' );
-        
         patients = new ArrayList<Patient>( patientService.getPatients( fullName ) );
 
         return SUCCESS;

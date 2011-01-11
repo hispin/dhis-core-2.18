@@ -203,6 +203,9 @@ public class SearchPatientAction
     public String execute()
         throws Exception
     {
+        System.out.println("\n\n ============ \n sortPatientAttributeId : " + sortPatientAttributeId);       
+        System.out.println("\n searchingAttributeId : " + searchingAttributeId);       
+
         // ---------------------------------------------------------------------
         // Get all of Patient-Attributes
         // ---------------------------------------------------------------------
@@ -214,7 +217,6 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
 
         PatientAttribute sortingPatientAttribute = null;
-        
         if ( sortPatientAttributeId != null )
         {
             sortingPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
@@ -235,7 +237,7 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
         
         if ( listAll || ( searchText != null && searchText.equalsIgnoreCase( LIST_ALL_PATIENT ) ) )
-        {
+        {System.out.println("\n 1");
             searchText = LIST_ALL_PATIENT;
             
             OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
@@ -250,14 +252,14 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
 
         else if ( searchingPatientAttribute != null && searchText != null )
-        {
+        {System.out.println("\n 2");
             searchPatientByAttribute( searchingPatientAttribute, searchText, sortingPatientAttribute );
         }
         else if ( searchingPatientAttribute == null && searchText != null )
-        {
+        {System.out.println("\n 3");
             searchPatientByAttribute( searchText, sortingPatientAttribute );
         }
-        
+        System.out.println("\n 4");
         return SUCCESS;
 
     }
@@ -341,10 +343,14 @@ public class SearchPatientAction
 
     private void searchPatientByAttribute( String searchText, PatientAttribute sortingPatientAttribute )
     {
+System.out.println("\n\n *********** \n 1 ");
         total = patientService.countGetPatients( searchText );
+System.out.println("\n total : " + total );
         this.paging = createPaging( total );
+System.out.println("\n paging.getStartPos() : " + paging.getStartPos() );
+System.out.println("\n paging.getPageSize() : " + paging.getPageSize() );
         patients = patientService.getPatients( searchText, paging.getStartPos(), paging.getPageSize() );
-
+System.out.println("\n patients : " + patients );
         if ( patients != null && patients.size() > 0 )
         {
             if ( sortPatientAttributeId != null && sortingPatientAttribute != null )

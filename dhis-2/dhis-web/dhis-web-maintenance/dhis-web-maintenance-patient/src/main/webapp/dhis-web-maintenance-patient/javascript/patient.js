@@ -273,7 +273,7 @@ function searchValidationCompleted( messageElement )
 
 function disableForm()
 {
-    $('#firstName').attr("disabled", true);
+    $('#fullName').attr("disabled", true);
 }
 // -----------------------------------------------------------------------------
 // Add Patient
@@ -296,9 +296,7 @@ function validateAddPatient()
 	}
 
 	var params = '&checkedDuplicate='+checkedDuplicate 
-				+'&firstName=' + getFieldValue( 'firstName' ) 
-				+'&middleName=' + getFieldValue( 'middleName' ) 
-				+'&lastName=' + getFieldValue( 'lastName' ) 
+				+'&fullName=' + getFieldValue( 'fullName' ) 
 				+'&gender=' + getFieldValue( 'gender' ) 
 				+'&dobType=' + getFieldValue( 'dobType' ) 
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 
@@ -353,14 +351,9 @@ function addValidationCompleted( messageElement )
 function validateUpdatePatient()
 {
     var params = 'id=' + getFieldValue( 'id' ) 
-				+'&firstName=' + getFieldValue( 'firstName' ) 
-				+'&middleName=' + getFieldValue( 'middleName' ) 
-				+'&lastName=' + getFieldValue( 'lastName' ) 
+				+'&fullName=' + getFieldValue( 'fullName' )
 				+'&gender=' + getFieldValue( 'gender' ) 
 				+'&birthDate=' + getFieldValue( 'birthDate' ) 
-//				+'&underAge=' + jQuery("#underAge").is(":checked")
-//				+'&representativeId=' + getFieldValue('representativeId')
-//				+'&relationshipTypeId=' + getFieldValue('relationshipTypeId')
 				+ getIdParams();
 	
 	var request = new Request();
@@ -499,9 +492,7 @@ function bdOnchange()
 function checkDuplicate()
 {
 	var params = 
-				'&firstName=' + getFieldValue( 'firstName' ) +
-				'&middleName=' + getFieldValue( 'middleName' ) +
-				'&lastName=' + getFieldValue( 'lastName' ) +
+				'&fullName=' + getFieldValue( 'fullName' ) +
 				'&dobType=' + getFieldValue( 'dobType' ) +
 				'&gender=' + getFieldValue( 'gender' ) +
 				'&birthDate=' + getFieldValue( 'birthDate' ) +	        
@@ -695,45 +686,4 @@ function f_filterResults(n_win, n_docel, n_body) {
 function removeEnrollment(){
 	byId('programEnrollmentForm').action = "removeEnrollment.action";
 	byId('programEnrollmentForm').submit();
-}
-
-// ----------------------------------------------------------------------------
-// Search patients by name
-// ----------------------------------------------------------------------------
-
-function startSearch()
-{	
-	var firstName = getFieldValue('firstName');
-	var middleName = getFieldValue('middleName');
-	var lastName = getFieldValue('lastName');
-	
-	var fullName = firstName + middleName + lastName; 
-	if( fullName.length < 3 ){
-		$("#similarPatients").hide();
-		return;
-	}
-	
-	$.post("getPatientsByName.action",
-		{
-			firstName: firstName,
-			middleName: middleName,
-			lastName: lastName
-		},
-		function (html)
-		{
-			jQuery("#similarPatients").show();
-			var patientCount = $('<div/>').html(html).find('#matchCount');
-			jQuery('#patientCount').html( patientCount );
-			jQuery('#searchResults').html( html );
-		},'html');
-}
-
-// ----------------------------------------------------------------------------
-// Show patients
-// ----------------------------------------------------------------------------
-
-function showSearchPatients(){
-	// tb_show(i18n_child_representative,'getPatientsByName.action?firstName='+ firstName +'&middleName=' + middleName + '&lastName=' + lastName +'&height=450&width=600',null);
-	tb_show( i18n_child_representative, "#TB_inline?height=350&width=580&inlineId=searchResults",null);
-	
 }

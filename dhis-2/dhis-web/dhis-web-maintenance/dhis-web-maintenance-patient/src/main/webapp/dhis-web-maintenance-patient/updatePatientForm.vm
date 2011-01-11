@@ -56,31 +56,23 @@
 </div>
 
 <table>
-	<tr><th colspan="2">$i18n.getString( "system_identifier" )</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "system_identifier" )</th></tr>
 	<tr><td></td><td>$systemIdentifier</td></tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></th>
+		<th colspan="2" class="heading-column">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $patient.firstName )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
-	</tr>
-	<tr>
-		<td><label for="middleName">$i18n.getString( "middle_name" )</label></td>
-		<td><input type="text" id="middleName" name="middleName" value="$encoder.htmlEncode( $patient.middleName )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
-	</tr>
-	<tr>
-		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td><input type="text" id="lastName" name="lastName" value="$encoder.htmlEncode( $patient.lastName )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
+		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
+		<td class="input-column" ><input type="text" id="fullName" name="fullName" value="$encoder.htmlEncode( $patient.getFullName() )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "demographics" )</th>
+		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
 	<tr>
 		<td><label for="gender">$i18n.getString( "gender" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
+		<td class="input-column" >
 			<select id="gender" name="gender" style="min-width:30em">
 				<option value="M" #if( $patient.gender == 'M' ) selected="selected" #end>$i18n.getString( "male" )</option>
 				<option value="F" #if( $patient.gender == 'F' ) selected="selected" #end>$i18n.getString( "female" )</option>
@@ -91,7 +83,7 @@
 
 	<tr>
 		<td><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td>
+		<td class="input-column" >
 			<select id='dobType' name="dobType" style="min-width:30em" onchange="dobTypeOnChange();" class="{validate:{required:false}}">
 				<option value="" selected="selected">[$i18n.getString( "please_select" )]</option>
 				<option value="V" #if($patient.dobType=='V') selected #end>$i18n.getString( "verified" )</option>
@@ -104,7 +96,7 @@
 	
 	<tr id='birthdaySpan' style="display:none" >
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>			
+		<td class="input-column" >			
 			<input type="text" id="birthDate" name="birthDate" style="width:26.5em" onchange="bdOnchange()" value="$format.formatDate( $patient.birthDate )" >
 		</td>
 		<td></td>
@@ -112,7 +104,7 @@
 	
 	<tr id='ageSpan' style="display:none" >
 		<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>
+		<td class="input-column" >
 			<select id="ageType" name="ageType" style="width:15em" >
 				<option value="D" #if($patient.getAgeType()=='D') selected #end> $i18n.getString('day')</option>
 				<option value="M" #if($patient.getAgeType()=='M') selected #end> $i18n.getString('month')</option>
@@ -125,12 +117,12 @@
 	
 	<tr>
 		<td></td>
-		<td><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
+		<td class="input-column" ><input id="memberValidator" style="display:none" class="{validate:{required:true}}"/></td>
 	</tr>
 	
 	<tr>
 		<td><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
-		<td>
+		<td class="input-column" >
 			<select type="text" id="bloodGroup" name="bloodGroup" style="width:30em" >
 				 <option value="">[$i18n.getString( "please_select" )]</option>
 				<option value="A+"  #if($patient.bloodGroup == "A+") selected="selected" #end>A+</option>
@@ -150,7 +142,7 @@
 	
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
-		<td>
+		<td class="input-column" >
 			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($patient.underAge) checked="checked" #end/>
 		</td>
 	</tr>
@@ -165,13 +157,13 @@
 	#end
 	
 	<!--IDENTIFIERS -->
-	<tr><th colspan="2">$i18n.getString("patient_identifiers")</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString("patient_identifiers")</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 	#set( $identifier = "" )
 	#set( $identifier = $identiferMap.get( $identifierType.id ) )
 	<tr>
 		<td><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-		<td><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
+		<td class="input-column" ><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" style="width:30em" /></td>	
 	</tr>
 	#end
 	<tr><td>&nbsp;</td></tr>
@@ -181,14 +173,14 @@
 	
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>	
-		<tr><th colspan="2">$attributeGroup.name</th></tr>
+		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes)
 			#if($!attribute)
 				#set( $attributeValue = "" )
 				#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
 				<tr>
 					<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-					<td>
+					<td class="input-column" >
 						#if( $attribute.valueType == "YES/NO" )
 							<select id="attr$attribute.id"  name="attr$attribute.id"  style="width:30em" >              
 								<option value="">[$i18n.getString( "please_select" )]</option>
@@ -220,13 +212,13 @@
 	<!-- ATTRIBUTES NOT IN GROUPS -->
 	
 	#if ( $noGroupAttributes.size() > 0) 	
-		<tr><th colspan="2">$i18n.getString( "Other details" )</th></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
 		#set( $attributeValue = "" )
 		#set( $attributeValue = $patientAttributeValueMap.get( $attribute.id ) )
 			<tr>
 				<td><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-				<td>
+				<td class="input-column" >
 					#if( $attribute.valueType == "YES/NO" )
 		                <select id="attr$attribute.id"  name="attr$attribute.id"   style="width:30em" >              
 		                    <option value="">[$i18n.getString( "please_select" )]</option>

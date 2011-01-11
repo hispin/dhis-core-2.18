@@ -19,7 +19,7 @@
 				<td>$!patient.gender</td>
 				<td>$!patient.dobType</td>
 				<td>$!patient.birthDate</td>
-				<td>$!patient.organisationUnit</td>
+				<td>$!patient.organisationUnit.name</td>
 			</tr>
 		#set($mark = !$mark)
 		#end

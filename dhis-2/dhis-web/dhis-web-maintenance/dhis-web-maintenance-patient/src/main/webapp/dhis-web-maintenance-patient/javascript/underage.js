@@ -6,15 +6,12 @@ function validateAddRepresentative()
 {	
 	$.post("validatePatient.action?" + getIdParams(),
 		{
-			firstName: getFieldValue( 'firstName' ),
-			middleName: getFieldValue( 'middleName' ),
-			lastName: getFieldValue( 'lastName' ),
+			fullName: getFieldValue( 'fullName' )
 			gender: getFieldValue( 'gender' ) ,
 			birthDate: getFieldValue( 'birthDate' ), 	        
 			age: getFieldValue( 'age' ) ,
 			dobType: getFieldValue( 'dobType' ) ,
-			ageType: getFieldValue( 'ageType' ) ,
-			genre: getFieldValue('gender') 
+			ageType: getFieldValue( 'ageType' )
 		},
 		function (data)
 		{

@@ -79,11 +79,7 @@ public class ValidatePatientAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
+    private String fullName;
 
     private Character dobType;
 
@@ -137,34 +133,6 @@ public class ValidatePatientAction
             return INPUT;
         }
 
-        if ( firstName == null && middleName == null && lastName == null )
-        {
-            message = i18n.getString( "specfiy_name_s" );
-
-            return INPUT;
-        }
-
-        if ( firstName != null )
-        {
-            firstName = firstName.trim();
-        }
-
-        if ( middleName != null )
-        {
-            middleName = middleName.trim();
-        }
-
-        if ( lastName != null )
-        {
-            lastName = lastName.trim();
-        }
-        if ( firstName.length() == 0 && middleName.length() == 0 && lastName.length() == 0 )
-        {
-            message = i18n.getString( "specfiy_name_s" );
-
-            return INPUT;
-        }
-
         if ( age == null && birthDate == null )
         {
             message = i18n.getString( "specfiy_birth_date_or_age" );
@@ -186,6 +154,36 @@ public class ValidatePatientAction
             }
         }
 
+        fullName = fullName.trim();
+        
+        if( fullName.indexOf( ' ' )== -1 )
+        {
+            message = i18n.getString( "please_enter_a_valid_full_name" );
+
+            return INPUT;
+        }
+        // ---------------------------------------------------------------------
+        // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
+        // ---------------------------------------------------------------------
+
+        int startIndex = fullName.indexOf( ' ' );
+        int endIndex = fullName.lastIndexOf( ' ' );
+        
+        String firstName = fullName.substring( 0, startIndex );        
+        String middleName = "";
+        String lastName = "";
+        
+        if ( startIndex == endIndex )
+        {
+            middleName = "";
+            lastName = fullName.substring( startIndex, fullName.length() );
+        }
+        else
+        {
+            middleName = fullName.substring( startIndex + 1, endIndex );
+            lastName = fullName.substring( endIndex, fullName.length() );
+        }
+        
         if ( !checkedDuplicate )
         {
             // Check duplication name, birthdate, gender
@@ -339,19 +337,9 @@ public class ValidatePatientAction
         this.patientAttributeValueService = patientAttributeValueService;
     }
 
-    public void setFirstName( String firstName )
+    public void setFullName( String fullName )
     {
-        this.firstName = firstName;
-    }
-
-    public void setMiddleName( String middleName )
-    {
-        this.middleName = middleName;
-    }
-
-    public void setLastName( String lastName )
-    {
-        this.lastName = lastName;
+        this.fullName = fullName;
     }
 
     public void setBirthDate( String birthDate )

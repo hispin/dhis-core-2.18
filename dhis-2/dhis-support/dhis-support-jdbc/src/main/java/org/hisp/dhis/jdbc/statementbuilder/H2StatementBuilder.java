@@ -350,4 +350,19 @@ public class H2StatementBuilder
                 "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND a.timestamp<=d.timestamp;";
     }
+    
+    public String getPatientsByFullName( String fullName )
+    {
+        return "SELECT patientid, birthdate, deathdate, registrationdate, isdead, bloodgroup, " +
+                "gender, dobType, firstname, middlename, lastname FROM patient " +
+                "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+                "like lower('%" + fullName + "%') ";
+    }
+    
+    public String countPatientsByFullName( String fullName )
+    {
+        return "SELECT count(patientid) FROM patient " +
+        "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
+        "like lower('%" + fullName + "%')";
+    }
 }

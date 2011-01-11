@@ -143,4 +143,8 @@ public interface StatementBuilder
     String deleteOldestOverlappingPatientDataValue();
     
     String deleteOldestOverlappingPatientArchiveData();
+    
+    String getPatientsByFullName( String fullName );
+    
+    String countPatientsByFullName( String fullName );
 }

@@ -1,11 +1,3 @@
-
-<style>
-.heading-column { width : 30.5em;}
-td.input-column { width : 30.5em;}
-td.input-column input, td.input-column select { width: 28.5em;}
-td.error {padding-left:1em}
-</style>
-
 ## Macro for generating the jQuery validation rules 
 #macro( validate $type $require )
   #if( $type == "NUMBER" )
@@ -49,7 +41,7 @@ td.error {padding-left:1em}
 <table>	
 	<tr>
 		<td ><strong>$i18n.getString("relationship_type")</strong></td>
-		<td >
+		<td  class="input-column">
 			<select name="relationshipTypeId" id="relationshipTypeId" class="{validate:{required:true}}" >
 				<option value="">[$i18n.getString( "please_select" )]</option>        
 				#foreach ($relationship in $relationshipTypes)
@@ -60,23 +52,21 @@ td.error {padding-left:1em}
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<th colspan="2">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
+		<th colspan="2" class="heading-column">$i18n.getString( "name" )<em title="$i18n.getString( "required" )" class="required">*</em></th>
 	</tr>
 	<tr>
-		<td><label for="firstName">$i18n.getString( "first_name" )</label></td>
-		<td class="input-column"><input type="text" id="firstName" name="firstName"  maxlength="30" class="required_group {validate:{required_group:true,rangelength:[2,30]}}" ></td>
+		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
+		<td class="input-column" >
+			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[2,30]}}" onkeyup="startSearch(event)">
+			<span id='searchIcon' style="display:none"><img src="../images/loader.gif"></span>
+		</td>
 	</tr>
 	<tr>
-		<td><label for="middleName">$i18n.getString( "middle_name" ) </label></td>
-		<td class="input-column"><input type="text" id="middleName" name="middleName" maxlength="30"    class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
-	</tr>
-	<tr>
-		<td><label for="lastName">$i18n.getString( "last_name" )</label></td>
-		<td class="input-column"><input type="text" id="lastName" name="lastName" maxlength="30"   class="required_group {validate:{required_group:true,rangelength:[2,30]}}"></td>
-	</tr>	
+        <td id="similarPatients" style="display:none" colspan='2'> $i18n.getString( "similar_patients" ): <span id="patientCount"></span> <a href="javascript:showSearchPatients();">(show/hide)</a></td>
+    </tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2">$i18n.getString( "demographics" )</th>
+		<th colspan="2" class="heading-column">$i18n.getString( "demographics" )</th>
 	</tr>
 		
 	<tr>
@@ -106,7 +96,7 @@ td.error {padding-left:1em}
 	
 	<tr id='birthdaySpan' style="display:none" >
 		<td><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>			
+		<td class="input-column">			
 			<input type="text" id="birthDate" name="birthDate" style="width:26.5em" onchange="bdOnchange()" >
 		</td>
 		<td></td>
@@ -114,7 +104,7 @@ td.error {padding-left:1em}
 	
 	<tr id='ageSpan' style="display:none" >
 		<td><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( "required" )" class="required">*</em> </label></td>
-		<td>
+		<td class="input-column">
 			<select id="ageType" name="ageType" style="width:18em" >
 				<option value="D"> $i18n.getString('day')</option>
 				<option value="M"> $i18n.getString('month')</option>
@@ -154,7 +144,7 @@ td.error {padding-left:1em}
 	
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
-		<td>
+		<td class="input-column">
 			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderage(this);" value="true"/>
 		</td>
 	</tr>
@@ -162,7 +152,7 @@ td.error {padding-left:1em}
 	<!--IDENTIFIERS -->
 	
 	<tr><td colspan="2">&nbsp;</td></tr>	
-	<tr><th colspan="2">$i18n.getString( "patient_identifiers" )</th></tr>
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
 		#set( $identifier = "" )
 		#set( $identifier = $identiferMap.get( $identifierType.id ) )
@@ -176,7 +166,7 @@ td.error {padding-left:1em}
 	
 	#foreach ($attributeGroup in $attributeGroups )
 		<tr><td>&nbsp;</td></tr>
-		<tr><th colspan="2">$attributeGroup.name</th></tr>
+		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes )
 		#set( $attributeValue = "" ) 
 		#set( $attributeValue = $attributeMap.get( $attribute.id ) ) 
@@ -213,7 +203,7 @@ td.error {padding-left:1em}
 	
 	<tr><td>&nbsp;</td></tr>
 	#if ( $noGroupAttributes.size() > 0) 	
-		<tr><th colspan="2">$i18n.getString( "other_details" )</th></tr>
+		<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
 		#set( $attributeValue = "" ) 
 		#set( $attributeValue = $attributeMap.get( $attribute.id ) ) 

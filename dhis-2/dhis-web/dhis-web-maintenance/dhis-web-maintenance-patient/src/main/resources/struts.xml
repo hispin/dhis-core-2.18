@@ -186,7 +186,7 @@
 				,javascript/relationshipPatient.js
 				,javascript/commons.js
 			</param>
-			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css</param>
+			<param name="stylesheets">javascript/jquery/thickbox/thickbox.css, style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 
@@ -409,8 +409,8 @@
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js
 				,../dhis-web-commons/javascripts/date.js				
+				,javascript/commons.js
 				,javascript/patient.js
-				,javascript/commons.js				
 			</param>	
 			<param name="stylesheets">style/basic.css</param>		
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
@@ -459,7 +459,7 @@
 			class="org.hisp.dhis.patient.action.patient.ShowAddRepresentativeAction">
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/underAgeForm.vm</param>
-			<param name="javascripts">javascript/underage.js,javascript/commons.js	</param>			
+			<param name="javascripts">javascript/underage.js, javascript/commons.js	</param>			
 		</action>
 
 		<action name="searchPerson"
