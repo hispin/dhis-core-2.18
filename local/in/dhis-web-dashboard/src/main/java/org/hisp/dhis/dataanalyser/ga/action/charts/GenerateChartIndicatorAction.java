@@ -320,6 +320,18 @@ public class GenerateChartIndicatorAction
     {
         return denumDataElements;
     }
+    private List<String> selectedDrillDownData;
+    
+    public List<String> getSelectedDrillDownData()
+    {
+        return selectedDrillDownData;
+    }
+    
+    
+    private String drillDownPeriodStartDate;
+    private String drillDownPeriodEndDate;
+    private String drillDownPeriodNames;
+    private String aggChecked;
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -346,7 +358,22 @@ public class GenerateChartIndicatorAction
         /*
          * double d = 4.57767; System.out.println(Math.round(d));
          */
-
+        
+        selectedDrillDownData = new ArrayList<String>();//drillDown for periodWise to OrgChildWise and OrgChildWise to periodWise
+        
+        
+        aggChecked = "";
+        
+        if( aggDataCB != null )
+        {
+            aggChecked = "1";
+        }
+        else
+        {
+            aggChecked = "0";
+        }
+        
+        
         // int flag = 0;
         // selOUList = new ArrayList<OrganisationUnit>();
         selStartPeriodList = new ArrayList<Date>();
@@ -371,7 +398,11 @@ public class GenerateChartIndicatorAction
 
         String startD = "";
         String endD = "";
-
+        
+        drillDownPeriodStartDate = "";
+        drillDownPeriodEndDate = "";
+        drillDownPeriodNames = "";
+        
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
         periodNames = new ArrayList<String>();
@@ -380,6 +411,7 @@ public class GenerateChartIndicatorAction
         if ( periodTypeLB.equalsIgnoreCase( WeeklyPeriodType.NAME ) )
         {
           //  System.out.println( " Inside  weekly" );
+            int periodCount = 0;
             for ( String periodStr : periodLB )
             {
                 String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
@@ -388,15 +420,30 @@ public class GenerateChartIndicatorAction
                 startD = startWeekDate.trim();
                 endD = endWeekDate.trim();
                 
+                // for DrillDown Period String
+                if( periodCount == periodLB.size()-1 )
+                {
+                    drillDownPeriodStartDate += startD;
+                    drillDownPeriodEndDate += endD;
+                    drillDownPeriodNames += periodStr;
+                }
+                else
+                {
+                    drillDownPeriodStartDate += startD + ";";
+                    drillDownPeriodEndDate += endD + ";";
+                    drillDownPeriodNames += periodStr + ";";
+                }
+                
                 selStartPeriodList.add( format.parseDate( startD ) );
                 selEndPeriodList.add( format.parseDate( endD ) );
                 
                 periodNames.add( periodStr );
+                periodCount++;
                 //System.out.println( startD + " : " + endD );
             }
         }
         else
-        {
+        {   int periodCount = 0;    
             for ( String year : yearLB )
             {
                // int selYear = Integer.parseInt( year.split( "-" )[0] );
@@ -406,6 +453,21 @@ public class GenerateChartIndicatorAction
                 {
                     startD = "" + selYear + "-01-01";
                     endD = "" + selYear  + "-12-31";
+                    
+                   
+                     // for DrillDown Period String
+                    if( periodCount == yearLB.size()-1 )
+                    {
+                        drillDownPeriodStartDate += startD;
+                        drillDownPeriodEndDate += endD;
+                        drillDownPeriodNames += selYear;
+                    }
+                    else
+                    {
+                        drillDownPeriodStartDate += startD + ";";
+                        drillDownPeriodEndDate += endD + ";";
+                        drillDownPeriodNames += selYear + ";";
+                    }
                     
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
@@ -436,6 +498,10 @@ public class GenerateChartIndicatorAction
                             endD = "" + selYear  + "-" + monthOrder[period] + "-" + ( monthDays[period] + 1 );
                         } 
                         
+                        drillDownPeriodStartDate += startD + ";";
+                        drillDownPeriodEndDate += endD + ";";
+                        drillDownPeriodNames += simpleDateFormat.format( format.parseDate( startD ) ) + ";";
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
@@ -449,25 +515,44 @@ public class GenerateChartIndicatorAction
                             startD = "" + selYear + "-01-01";
                             endD = "" + selYear + "-03-31";
                             periodNames.add( selYear + "-Q1" );
+                            drillDownPeriodNames += selYear + "-Q1" + ";";
                         }
                         else if ( period == 1 )
                         {
                             startD = "" + selYear + "-04-01";
                             endD = "" + selYear + "-06-30";
                             periodNames.add( selYear + "-Q2" );
+                            drillDownPeriodNames += selYear + "-Q2" + ";";
                         }
                         else if ( period == 2 )
                         {
                             startD = "" + selYear + "-07-01";
                             endD = "" + selYear + "-09-30";
                             periodNames.add( selYear + "-Q3" );
+                            drillDownPeriodNames += selYear + "-Q3" + ";";
                         }
                         else
                         {
                             startD = "" + selYear + "-10-01";
                             endD = "" + selYear + "-12-31";
                             periodNames.add( (selYear) + "-Q4" );
+                            drillDownPeriodNames += selYear + "-Q4" + ";";
                         }
+                       
+                        
+                        // for DrillDown Period String
+                        if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                        }
+                        else
+                        {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                        }
+                        
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
@@ -480,13 +565,19 @@ public class GenerateChartIndicatorAction
                             startD = "" + selYear + "-01-01";
                             endD = "" + selYear + "-06-30";
                             periodNames.add( selYear + "-HY1" );
+                            drillDownPeriodNames += selYear + "-HY1" + ";";
                         }
                         else
                         {
                             startD = "" + selYear + "-07-01";
                             endD = "" + selYear + "-12-31";
                             periodNames.add( selYear + "-HY2" );
+                            drillDownPeriodNames += selYear + "-HY2" + ";";
                         }
+                        
+                        drillDownPeriodStartDate += startD + ";";
+                        drillDownPeriodEndDate += endD + ";";
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                     }
@@ -512,6 +603,20 @@ public class GenerateChartIndicatorAction
                             endD = selYear  + "-" + month + "-" + date;
                         }
                         
+                      // for DrillDown Period String
+                        if( periodCount == periodLB.size()-1 )
+                        {
+                            drillDownPeriodStartDate += startD;
+                            drillDownPeriodEndDate += endD;
+                            drillDownPeriodNames += startD;
+                        }
+                        else
+                        {
+                            drillDownPeriodStartDate += startD + ";";
+                            drillDownPeriodEndDate += endD + ";";
+                            drillDownPeriodNames += startD + ";";
+                        }
+                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         
@@ -520,7 +625,7 @@ public class GenerateChartIndicatorAction
                     }
                     System.out.println( startD + " : " + endD );
                 }
-        
+                periodCount++;
             }
     }
         // Indicator Information
@@ -560,8 +665,16 @@ public class GenerateChartIndicatorAction
             System.out.println( "Inside PeriodWise Chart Data and group not selected" );
             //System.out.println( "\n\nsize of OrgUnit List : " + selOUList.size() + " , size of Indicator List : " + indicatorList.size() );
             System.out.println( "Chart Generation Start Time is : \t" + new Date() );
-            indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList, selEndPeriodList, periodNames,
-                indicatorList, selOUList.iterator().next() );
+            indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList, selEndPeriodList, periodNames, indicatorList, selOUList.iterator().next() );
+            
+           
+            for( String drillDown : selectedDrillDownData )
+            {
+                System.out.println( "drill Down value is :" + drillDown );
+                System.out.println( "---------");
+            }
+            
+           // dataElementChartResult.getSeries()
 
         }
         else if ( categoryLB.equalsIgnoreCase( CHILDREN ) && ougGroupSetCB == null )
@@ -610,8 +723,7 @@ public class GenerateChartIndicatorAction
 
             selOUGroupMemberList.retainAll( orgUnitChildList );
 
-            indicatorChartResult = generateChartDataOrgGroupPeriodWise( selStartPeriodList, selEndPeriodList,
-                periodNames, indicatorList, selOUGroupMemberList );
+            indicatorChartResult = generateChartDataOrgGroupPeriodWise( selStartPeriodList, selEndPeriodList, periodNames, indicatorList, selOUGroupMemberList );
 
         }
 
@@ -643,8 +755,7 @@ public class GenerateChartIndicatorAction
 
             selOUGroupMemberList.retainAll( orgUnitChildList );
 
-            indicatorChartResult = generateChartDataSelectedOrgUnitWise( selStartPeriodList, selEndPeriodList,
-                periodNames, indicatorList, selOUGroupMemberList );
+            indicatorChartResult = generateChartDataSelectedOrgUnitWise( selStartPeriodList, selEndPeriodList, periodNames, indicatorList, selOUGroupMemberList );
 
         }
 
@@ -703,9 +814,7 @@ public class GenerateChartIndicatorAction
     // Methods for getting Chart Data only Period Wise start
     // -------------------------------------------------------------------------
 
-    public IndicatorChartResult generateChartDataPeriodWise( List<Date> selStartPeriodList,
-        List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList, OrganisationUnit orgUnit )
-        throws Exception
+    public IndicatorChartResult generateChartDataPeriodWise( List<Date> selStartPeriodList, List<Date> selEndPeriodList, List<String> periodNames, List<Indicator> indicatorList, OrganisationUnit orgUnit )throws Exception
     {
 
         IndicatorChartResult indicatorChartResult;
@@ -717,10 +826,8 @@ public class GenerateChartIndicatorAction
         Double[][] numDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
         Double[][] denumDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
 
-        // Map<Integer, List<Double>> numData = new HashMap<Integer,
-        // List<Double>>();
-        // Map<Integer, List<Double>> denumData = new HashMap<Integer,
-        // List<Double>>();
+        // Map<Integer, List<Double>> numData = new HashMap<Integer, List<Double>>();
+        // Map<Integer, List<Double>> denumData = new HashMap<Integer, List<Double>>();
 
         String chartTitle = "OrganisationUnit : " + orgUnit.getShortName();
         String xAxis_Title = "Time Line";
@@ -742,36 +849,37 @@ public class GenerateChartIndicatorAction
             for ( Date startDate : selStartPeriodList )
             {
                 Date endDate = selEndPeriodList.get( periodCount );
+                String drillDownPeriodName = periodNames.get( periodCount );
 
                 categories[periodCount] = periodNames.get( periodCount );
+                
+                String tempStartDate = format.formatDate( startDate );
+                String tempEndDate   = format.formatDate( endDate );
 
                 Double aggIndicatorValue = 0.0;
                 Double aggIndicatorNumValue = 0.0;
                 Double aggIndicatorDenumValue = 0.0;
+                String drillDownData = orgUnit.getId() + ":" + "0" + ":" + indicator.getId() + ":" + periodTypeLB + ":" + tempStartDate + ":" + tempEndDate + ":" + drillDownPeriodName + ":" + aggChecked;
+                selectedDrillDownData.add( drillDownData );
+                
                 if ( aggDataCB != null )
                 {
-                    aggIndicatorValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate,
-                        orgUnit );
+                    aggIndicatorValue = aggregationService.getAggregatedIndicatorValue( indicator, startDate, endDate, orgUnit );
 
-                    aggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator, startDate,
-                        endDate, orgUnit );
-                    aggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue( indicator, startDate,
-                        endDate, orgUnit );
+                    aggIndicatorNumValue = aggregationService.getAggregatedNumeratorValue( indicator, startDate, endDate, orgUnit );
+                    aggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue( indicator, startDate, endDate, orgUnit );
 
-                    if ( aggIndicatorValue == null )
-                        aggIndicatorValue = 0.0;
+                    if ( aggIndicatorValue == null ) aggIndicatorValue = 0.0;
 
                 }
                 else
                 {
-                    aggIndicatorValue = dashBoardService.getIndividualIndicatorValue( indicator, orgUnit, startDate,
-                        endDate );
+                    aggIndicatorValue = dashBoardService.getIndividualIndicatorValue( indicator, orgUnit, startDate, endDate );
 
                    // System.out.println( " \nIndicator Numerator value  : " + indicator.getNumerator()
                       //  + ", Start Date :- " + startDate + ", End Date :- " + endDate + ", Org Unit :- " + orgUnit );
 
-                    String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(), startDate,
-                        endDate, orgUnit, "" );
+                    String tempStr = reportService.getIndividualResultDataValue( indicator.getNumerator(), startDate, endDate, orgUnit, "" );
                    // System.out.println( " \nIndicatorNumerator valu is " + tempStr );
 
                     try
@@ -783,8 +891,7 @@ public class GenerateChartIndicatorAction
                         aggIndicatorNumValue = 0.0;
                     }
 
-                    tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
-                        endDate, orgUnit, "" );
+                    tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate, endDate, orgUnit, "" );
 
                     try
                     {
@@ -864,6 +971,9 @@ public class GenerateChartIndicatorAction
             {
 
                 categories[childCount] = orgChild.getName();
+                
+                String drillDownData = orgChild.getId() + ":" + "0" + ":" + indicator.getId() + ":"+ periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + aggChecked;
+                selectedDrillDownData.add( drillDownData );
 
                 Double aggIndicatorValue = 0.0;
                 Double aggIndicatorNumValue = 0.0;
@@ -1005,6 +1115,8 @@ public class GenerateChartIndicatorAction
             for ( OrganisationUnit orgUnit : selOUList )
             {
                 categories[orgUnitCount] = orgUnit.getName();
+                String drillDownData = orgUnit.getId() + ":" + "0" + ":" + indicator.getId() + ":" + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + aggChecked;
+                selectedDrillDownData.add( drillDownData );
 
                 Double aggIndicatorValue = 0.0;
                 Double aggIndicatorNumValue = 0.0;
@@ -1137,8 +1249,7 @@ public class GenerateChartIndicatorAction
         Double[][] denumDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
         Double[][] data = new Double[indicatorList.size()][selStartPeriodList.size()];
 
-        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName() + "(" + selOrgUnitGroup.getName()
-            + ")";
+        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName() + "( Group - " + selOrgUnitGroup.getName() + " )";
         String xAxis_Title = "Time Line";
         String yAxis_Title = "Value";
 
@@ -1161,7 +1272,15 @@ public class GenerateChartIndicatorAction
             {
                 Date endDate = selEndPeriodList.get( periodCount );
                 categories[periodCount] = periodNames.get( periodCount );
-
+                
+                String tempStartDate = format.formatDate( startDate );
+                String tempEndDate   = format.formatDate( endDate );
+                String drillDownPeriodName = periodNames.get( periodCount );
+                
+                
+                String drillDownData = selectedOrgUnit.getId() + ":"+ selOrgUnitGroup.getId() + ":" + indicator.getId() + ":"  + periodTypeLB + ":" + tempStartDate + ":" + tempEndDate + ":" + drillDownPeriodName + ":" + aggChecked;
+                //selectedDrillDownData
+                selectedDrillDownData.add( drillDownData );
                 int orgGroupCount = 0;
 
                 for ( OrganisationUnit orgUnit : selOUGroupMemberList )
@@ -1313,6 +1432,9 @@ public class GenerateChartIndicatorAction
                 Double aggIndicatorDenumValue = 0.0;
 
                 categories[orgGroupCount] = orgUnitGroup.getName();
+                
+                String drillDownData = selectedOrgUnit.getId() + ":" + orgUnitGroup.getId() + ":" + indicator.getId() + ":" + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":"  + aggChecked;
+                selectedDrillDownData.add( drillDownData );
 
                 if ( serviceCount == 0 )
                 {

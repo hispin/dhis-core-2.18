@@ -83,7 +83,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService">
         </property>
     </bean>
-	<!-- DrillDown periodToOrgUnit Child/GroupMember -->
+	<!-- DrillDown periodToOrgUnit Child/GroupMember dataElements-->
 	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartDataElementResultAction" scope="prototype">
 		<property name="statementManager" ref="statementManager"/>
 		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
@@ -97,7 +97,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
 		</property>
 	</bean>
-	<!-- DrillDown OrgUnitToPeriod Child/GroupMember -->
+	<!-- DrillDown OrgUnitToPeriod Child/GroupMember dataElements -->
 	<bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartDataElementResultAction" scope="prototype">
 		
 		<property name="statementManager" ref="statementManager"/>
@@ -174,7 +174,31 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
 		</property>
-    </bean>	
+    </bean>
+<!-- DrillDown periodToOrgUnit Child/GroupMember dataElements -->
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartIndicatorResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownPeriodToOrgChildChartIndicatorResultAction" scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
+        </property>
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+    </bean>
+<!-- DrillDown OrgUnitToPeriod Child/GroupMember indicator -->
+    <bean id="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartIndicatorResultAction" class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateDrillDownOrgUnitToPeriodChartIndicatorResultAction" scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
+        </property>
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService">
+        </property>
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+        </property>
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService">
+        </property>
+    </bean>
 <!-- Graphical Analyser Indicators End-->	
 	
 		
