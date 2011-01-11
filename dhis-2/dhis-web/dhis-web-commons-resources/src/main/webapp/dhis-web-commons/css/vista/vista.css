@@ -396,8 +396,9 @@ div#menuDropDown3
 /* Intro                                                                      */
 /*----------------------------------------------------------------------------*/
 
-.introList
-{    
+#introList
+{
+  display: none;
   list-style-type:none;
   width: 450px;
   background-color: #d5efd5;

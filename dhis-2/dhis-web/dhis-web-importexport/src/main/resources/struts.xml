@@ -9,9 +9,11 @@
   <package name="dhis-web-importexport" extends="dhis-web-commons" namespace="/dhis-web-importexport">
 
     <action name="index" class="org.hisp.dhis.importexport.action.NoAction">
-      <result name="success" type="redirect">setImportFormat.action?importFormat=DXF</result>
+	  <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/index.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
-		
+
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
     <!-- Menu                                                          -->
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

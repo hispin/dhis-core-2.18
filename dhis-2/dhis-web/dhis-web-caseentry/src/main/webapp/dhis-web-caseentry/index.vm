@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dhis-web-caseentry" )</h3>
 
-<ul class="introList">
+<ul id="introList">
     #introListImgItem( "dataEntrySelect.action" "data_entry" "dataentry" )
     #introListImgItem( "reportSelect.action" "summary_report" "summaryreport" )
     #introListImgItem( "visitPlanSelect.action" "visit_plan" "visitplan" )

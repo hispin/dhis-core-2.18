@@ -97,6 +97,10 @@ function pageInit()
 		{
 			window.location.href = currentPath + 'about.action' + backURL;
 		});
+	
+	// Intro fade in
+	
+	$( "#introList" ).fadeIn();
 }
 
 // -----------------------------------------------------------------------------
