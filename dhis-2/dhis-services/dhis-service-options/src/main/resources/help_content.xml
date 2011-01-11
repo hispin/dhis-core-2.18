@@ -1938,7 +1938,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
     map, but that is not neccsarily linked ot data contained in the DHIS
     database. The <guimenu>Register Overlay</guimenu> panel will allow you to
     add new layers and determine how they will be represented visually on the
-    map. </para>
+    map.</para>
       <itemizedlist>
         <listitem>
           <para><guilabel>Display name: </guilabel>Represents your overlay in
@@ -1950,7 +1950,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
         </listitem>
         <listitem>
           <para><guilabel>Fill color: </guilabel>Decides the fill color if the
-        layer is a polygon layer. </para>
+        layer is a polygon layer.</para>
         </listitem>
         <listitem>
           <para><guilabel>Fill opacity: </guilabel>Select an opacity level
@@ -1996,16 +1996,11 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
     </section>
     <section id="gisLegendSet">
       <title>Register legend sets</title>
-      <para>A legend set may be connected to many indicators, but an indicator
-    may only have one legend set. Thus, you may select many indicators when
-    you create a legend set. When an indicator that has a legend set is
-    selected in the <guimenu>thematic map</guimenu> panel, the number of
-    classes, low color and high color is automatically set.</para>
+      <para>A legend set may be connected to many indicators, but an indicator may only have one legend set. Thus, you may select many indicators when you create a legend set. When an indicator that has a legend set is selected in the <guimenu>thematic map</guimenu> panel, the number of classes, low color and high color is automatically set.</para><para>Example usage (vaccination coverage): Firstly, create the legends that are going to constitute the legend set. The first one could be &quot;Low bad&quot; (display name), 0 (start value), 30 (end value), red (color). Then create &quot;Medium&quot; / 30 / 70 / yellow and finally &quot;High good&quot; / 70 / 100 / green. Now, open the &quot;legend set&quot; panel, type e.g. &quot;High is good&quot; as display name and select the desired legends below. Multi-select your three legends by pressing and holding the Ctrl/Shift button when selecting. Then click the register button to store the legend set. Assign indicators/data elements to your legend set in one of the two last panels. Select the legend set in the combo box and multi-select items in the list below. Click the assign button to update the legend set.</para>
     </section>
     <section id="gisImageExport">
       <title>Exporting/saving map images</title>
-      <para>Click the PDF icon on the map toolbar and the left side print panel will open. You may add several pages to your PDF document by clicking the &quot;add page&quot; button on the bottom toolbar. Change the size of the focus rectangle in the &quot;scale&quot; column. The rectangle can be rotated by inserting a number (degrees) &quot;rotation&quot; column or by dragging the rotation knob. Your &quot;map title&quot; and &quot;comment&quot; will appear above and below the picture in the PDF document respectively. The higher &quot;dots per inch&quot; value you choose, the better quality of the image and the larger file size of the document.</para>
-      <para>To get out of print mode you can simply expand a different panel or hide the print panel by clicking the PDF icon on the map toolbar again.</para>
+      <para>Click the image icon on the map toolbar and the print window will open. Title: Image title, will appear as a headline in the image. Layers: Choose whether polygons, points or both will be printed. Width/Height: The pixel resolution of the image. Choose among the predefined &quot;small&quot; (800x600), &quot;medium&quot; (1190x880), &quot;large&quot; (1920x1200) or type the exact number of pixels yourself (type the number only, avoid text like &quot;px&quot;). If you want to exclude the legend from the image, untick the legend checkbox. Finally click the export button to print the image (PNG).</para>
     </section>
   </section>
   </chapter>
