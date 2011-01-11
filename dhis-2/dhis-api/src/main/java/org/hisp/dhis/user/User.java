@@ -31,6 +31,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -107,9 +108,24 @@ public class User
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Returns the concatenated first name and surname.
+     */
     public String getName()
     {
         return firstName + " " + surname;
+    }
+    
+    /**
+     * Returns the first of the organisation units associated with the user. Null
+     * is returned if the user has no organisation units. Which organisation unit
+     * to return is undefined if the user has multiple organisation units.
+     * 
+     * @return an organisation unit associated with the user.
+     */
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return CollectionUtils.isEmpty( organisationUnits ) ? null : organisationUnits.iterator().next();
     }
     
     // -------------------------------------------------------------------------
