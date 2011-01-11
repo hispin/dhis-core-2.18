@@ -27,12 +27,19 @@ package org.hisp.dhis.datamart.task;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartScheduler;
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
@@ -42,7 +49,7 @@ import org.springframework.scheduling.support.CronTrigger;
 public class SpringDataMartScheduler
     implements DataMartScheduler
 {
-    private Map<Integer, ScheduledFuture<?>> scheduledFutureMap = new HashMap<Integer, ScheduledFuture<?>>(); // Gives class state but no better way to handle this?
+    private ScheduledFuture<?> scheduledFuture = null; // Gives class state but no better way to handle this?
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -62,37 +69,60 @@ public class SpringDataMartScheduler
         this.taskScheduler = taskScheduler;
     }
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // DataMartSceduler implementation
     // -------------------------------------------------------------------------
 
-    public void scheduleDataMartExport( int id )
+    public void scheduleDataMartExport()
     {
-        ScheduledFuture<?> future = taskScheduler.schedule( new DataMartTask( dataMartService, id ), new CronTrigger( CRON_NIGHTLY ) );
+        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
+        Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
+        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
         
-        scheduledFutureMap.put( id, future );
+        RelativePeriods relatives = new RelativePeriods( false, true, true, true, false, false, false );
+        
+        DataMartTask task = new DataMartTask( dataMartService, dataElementIds, indicatorIds, organisationUnitIds, relatives );
+        
+        scheduledFuture = taskScheduler.schedule( task, new CronTrigger( CRON_NIGHTLY ) );        
     }
     
-    public boolean stopDataMartExport( int id )
+    public boolean stopDataMartExport()
     {
-        ScheduledFuture<?> future = scheduledFutureMap.get( id );
-        
-        return future.cancel( true );
+        return scheduledFuture != null ? scheduledFuture.cancel( true ) : false;
     }
     
-    public String getDataMartExportStatus( int id )
+    public String getDataMartExportStatus()
     {
-        ScheduledFuture<?> future = scheduledFutureMap.get( id );
-        
-        if ( future == null )
+        if ( scheduledFuture == null )
         {
             return STATUS_NOT_STARTED;
         }
-        else if ( future.isCancelled() )
+        else if ( scheduledFuture.isCancelled() )
         {
             return STATUS_STOPPED;
         }
-        else if ( future.isDone() )
+        else if ( scheduledFuture.isDone() )
         {
             return STATUS_DONE;
         }

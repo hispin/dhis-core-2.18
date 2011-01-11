@@ -27,7 +27,11 @@ package org.hisp.dhis.datamart.task;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.period.RelativePeriods;
 
 /**
  * @author Lars Helge Overland
@@ -36,18 +40,25 @@ public class DataMartTask
     implements Runnable
 {
     private DataMartService dataMartService;
-    
-    private int id;
  
-    public DataMartTask( DataMartService dataMartService, int id )
+    private Collection<Integer> dataElementIds;
+    private Collection<Integer> indicatorIds;
+    private Collection<Integer> organisationUnitIds;
+    private RelativePeriods relatives;
+    
+    public DataMartTask( DataMartService dataMartService, Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> organisationUnitIds, RelativePeriods relatives )
     {
         this.dataMartService = dataMartService;
-        this.id = id;
+        this.dataElementIds = dataElementIds;
+        this.indicatorIds = indicatorIds;
+        this.organisationUnitIds = organisationUnitIds;
+        this.relatives = relatives;
     }
     
     @Override
     public void run()
     {
-        dataMartService.export( id );
+        dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives );
     }
 }

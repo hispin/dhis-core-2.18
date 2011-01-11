@@ -74,6 +74,8 @@ public class GapAnalysisService
         
         for ( DataElement dataElement : dataElements )
         {
+            // TODO filter periods with data element period type
+            
             if ( dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) )
             {                    
                 Collection<DataElementCategoryOptionCombo> categoryOptionCombos = dataElement.getCategoryCombo().getOptionCombos();

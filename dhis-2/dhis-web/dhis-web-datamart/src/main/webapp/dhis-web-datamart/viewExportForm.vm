@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "data_mart_management" ) #openHelp( "datamart" ) </h3>
+<h3>$i18n.getString( "data_mart_export_management" ) #openHelp( "datamart" ) </h3>
 
 <table class="mainPageTable">
     <tr>

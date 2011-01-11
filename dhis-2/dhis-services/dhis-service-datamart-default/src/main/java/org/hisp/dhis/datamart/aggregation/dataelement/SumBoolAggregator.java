@@ -48,6 +48,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -80,7 +81,7 @@ public class SumBoolAggregator
     public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
         final Period period, final OrganisationUnit unit, int unitLevel, OrganisationUnitHierarchy hierarchy, List<String> keys )
     {
-        if ( operands == null || operands.size() == 0 )
+        if ( CollectionUtils.isEmpty( operands ) )
         {
             return new HashMap<DataElementOperand, Double>();
         }

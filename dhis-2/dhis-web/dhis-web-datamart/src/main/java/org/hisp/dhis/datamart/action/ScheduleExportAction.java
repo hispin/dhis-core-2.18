@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart;
+package org.hisp.dhis.datamart.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,21 +27,45 @@ package org.hisp.dhis.datamart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.datamart.DataMartScheduler.STATUS_RUNNING;
+
+import org.hisp.dhis.datamart.DataMartScheduler;
+
+import com.opensymphony.xwork2.Action;
+
 /**
  * @author Lars Helge Overland
  */
-public interface DataMartScheduler
+public class ScheduleExportAction
+    implements Action
 {
-    final String CRON_NIGHTLY = "0 0 2 * * ?";
-    
-    final String STATUS_RUNNING = "running";
-    final String STATUS_DONE = "done";
-    final String STATUS_STOPPED  = "stopped";
-    final String STATUS_NOT_STARTED = "not_started";
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    public void scheduleDataMartExport();
-    
-    boolean stopDataMartExport();
-    
-    String getDataMartExportStatus();
+    private DataMartScheduler dataMartScheduler;
+
+    public void setDataMartScheduler( DataMartScheduler dataMartScheduler )
+    {
+        this.dataMartScheduler = dataMartScheduler;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String execute()
+    {
+        if ( dataMartScheduler.getDataMartExportStatus().equals( STATUS_RUNNING ) )
+        {
+            dataMartScheduler.stopDataMartExport();
+        }
+        else
+        {
+            dataMartScheduler.scheduleDataMartExport();
+        }
+        
+        return SUCCESS;
+    }
 }
