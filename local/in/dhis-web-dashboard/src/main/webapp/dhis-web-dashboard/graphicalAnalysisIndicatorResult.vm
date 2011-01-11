@@ -4,7 +4,100 @@
   {
     evt.target.href = "drillDownResult.action?selectedValues="+selVal;
   }
-    
+   
+    // method called when  view by   period and group not check or group checked
+    function drillDownPeriodToOrgChildResult(evt, selDrillDownData )
+    {
+        //var aggDataCB = '$aggDataCB';
+       
+       // alert( " First method " );
+        //alert( " Period To OrgUnit View by period and Group checked or not checked " );
+        var selectedButton  = '$selectedButton';
+        
+        var viewBy = 'children';
+        
+       // alert( viewBy + ":" + selectedButton );
+       
+        //alert( selDrillDownData );
+        
+        var arugDetails = selDrillDownData.split(":");
+        var orgUnitId = arugDetails[0];
+        var orgUnitGroupId = arugDetails[1];
+        var indicatorId = arugDetails[2];
+        
+        var periodTypeName = arugDetails[3];
+        var startDate = arugDetails[4];
+        var endDate = arugDetails[5];
+        var drillDownPeriodName = arugDetails[6];
+        var aggDataCB = arugDetails[7];
+        //alert( aggDataCB );
+        
+       // alert( orgUnitId + ","  + orgUnitGroupId + "," + indicatorId + "," + periodTypeName + "," + startDate + "," + endDate + "," + drillDownPeriodName + "," + aggDataCB );
+       
+        evt.target.href = "generateDrillDownPeriodToOrgChildChartIndicator.action?selDrillDownData="+selDrillDownData + "&selectedButton=" + selectedButton + "&categoryLB=" + viewBy + "&aggDataCB=" + aggDataCB;
+    }
+     
+     // method called when  view by  children  or  random  and  Group not check , and view by children and Group checked
+    function drillDownOrgUnitToPeriodResult(evt, selDrillDownData )
+    {
+        var selectedButton  = '$selectedButton';
+        //alert( " OrgUnit To Period  view by  children or  selected and Group not checked / view by children and Group checked " );
+        
+        //alert( " Second method " );
+        var viewBy = 'period';
+        
+        //alert( viewBy + ":" + selectedButton );
+       
+        //alert( selDrillDownData );
+        
+        var arugDetails = selDrillDownData.split(":");
+        var orgUnitId = arugDetails[0];
+        var orgUnitGroupId = arugDetails[1];
+        var indicatorId = arugDetails[2];
+        
+        var periodTypeName = arugDetails[3];
+        var startDate = arugDetails[4];
+        var endDate = arugDetails[5];
+        var drillDownPeriodName = arugDetails[6];
+        var aggDataCB = arugDetails[7];
+        //alert( aggDataCB );
+        
+       // alert( orgUnitId + ","  + orgUnitGroupId + "," + indicatorId + "," + periodTypeName + "," + startDate + "," + endDate + "," + drillDownPeriodName + "," + aggDataCB );
+       
+        evt.target.href = "generatedrillDownOugUnitToPeriodChartIndicator.action?selDrillDownData="+selDrillDownData + "&selectedButton=" + selectedButton + "&categoryLB=" + viewBy + "&aggDataCB=" + aggDataCB;
+    }
+
+     // method called when  view by  selected  and Group checked
+    function drillDownOrgUnitGroupToPeriodResult(evt, selDrillDownData )
+    {
+       
+        var selectedButton  = '$selectedButton';
+        //alert( " OrgUnitGroup To Period view by  selected  and Group checked " );
+        //alert( " Third method " );
+        var viewBy = 'period';
+        
+        //alert( viewBy + ":" + selectedButton );
+       
+        //alert( selDrillDownData );
+        
+        var arugDetails = selDrillDownData.split(":");
+        var orgUnitId = arugDetails[0];
+        var orgUnitGroupId = arugDetails[1];
+        var indicatorId = arugDetails[2];
+        
+        var periodTypeName = arugDetails[3];
+        var startDate = arugDetails[4];
+        var endDate = arugDetails[5];
+        var drillDownPeriodName = arugDetails[6];
+        var aggDataCB = arugDetails[7];
+        //alert( aggDataCB );
+        
+        //alert( orgUnitId + ","  + orgUnitGroupId + "," + indicatorId + "," + periodTypeName + "," + startDate + "," + endDate + "," + drillDownPeriodName + "," + aggDataCB );
+        evt.target.href = "generatedrillDownOugUnitToPeriodChartIndicator.action?selDrillDownData="+selDrillDownData + "&selectedButton=" + selectedButton + "&categoryLB=" + viewBy + "&aggDataCB=" + aggDataCB;
+    }
+
+
+
 // Chart Display Option change start
 
   function chartTypeOptionChange(evt)
@@ -172,6 +265,7 @@ function exportToExcelFunction2( summaryOption )
                     #end
         </tr>
          #set($count1 = 0) 
+         #set( $count4 = 0 )
          #foreach($onedataList in $indicatorChartResult.data )
       
         <tr>  
@@ -179,9 +273,11 @@ function exportToExcelFunction2( summaryOption )
 		        #set( $denumValCimpleteResult = $indicatorChartResult.denumDataArray )
 		        #set( $numValList = $listTool.get($numValCimpleteResult, $count1) )
 		        #set( $denumValList = $listTool.get($denumValCimpleteResult, $count1) )
-		        #set( $count2 = 0 ) 	  	
+		        #set( $count2 = 0 )
+		        	  	
 		       
-		       <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="3">$yseriesList.get($count1).name</td> 
+		      <!-- <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="3">$yseriesList.get($count1).name</td>-->
+		       <td class="TableHeadingCellStyles" style="border-style: dotted; border-width: 1" rowspan="3">$listTool.get( $indicatorChartResult.series, $count1 )</td>  
 		       <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Num</strong></td>
 		        #foreach($data in $onedataList) 
 		       <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($numValList, $count2)</td>
@@ -190,39 +286,68 @@ function exportToExcelFunction2( summaryOption )
         </tr>
            
         <tr>           
-                  <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
-                   #set( $count2 = 0 )
-                   #foreach($data in $onedataList) 
-                    <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
-                   #set( $count2 = $count2 + 1 )
-                   #end
-       </tr> 
+              <td class="TableHeadingCellStyles" align="center" bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Den</strong></td>
+              #set( $count2 = 0 )
+              #foreach($data in $onedataList)
+                <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1">$listTool.get($denumValList, $count2)</td>
+              #set( $count2 = $count2 + 1 )
+              #end
+       </tr>
                 
-       <tr>           
-                 <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td> 
-                 #set( $count2 = 0 )
-                 #foreach($data in $onedataList) 
-                 <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$data</strong></td>
-                 #set( $count2 = $count2 + 1 )
-                 #end 
-                
-      </tr>  
-             #set( $count1 = $count1 + 1 )
-              
-        #end 
+       <tr>
+             <td class="TableHeadingCellStyles" align="center"  bgcolor="#C0C0C0" style="border-style: dotted; border-width: 1" ><strong>Val</strong></td>
+             
+             #if( $categoryLB.equals( "period" ) && !$ougGroupSetCB )
+                #foreach($data in $onedataList)
+                    <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong><a href="#" onclick="javascript:drillDownPeriodToOrgChildResult( event, '$selectedDrillDownData.get($count4)' )">$data</a></strong></td>
+             #set( $count4 = $count4 + 1 )
+                #end
+             #elseif( $categoryLB.equals( "period" ) && $ougGroupSetCB )
+                #foreach($data in $onedataList)
+                    <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong><a href="#" onclick="javascript:drillDownPeriodToOrgChildResult( event, '$selectedDrillDownData.get($count4)' )">$data</a></strong></td>
+             #set( $count4 = $count4 + 1 )
+                #end 
+             #elseif( ( $categoryLB.equals( "children" ) || $categoryLB.equals( "random" )) && !$ougGroupSetCB )
+                #foreach($data in $onedataList)
+                   <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong><a href="#" onclick="javascript:drillDownOrgUnitToPeriodResult( event, '$selectedDrillDownData.get($count4)' )">$data</a></strong></td>
+             #set( $count4 = $count4 + 1 )
+                #end        
+             #elseif( $categoryLB.equals( "children" ) && $ougGroupSetCB )
+                 #foreach($data in $onedataList)
+                   <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong><a href="#" onclick="javascript:drillDownOrgUnitToPeriodResult( event, '$selectedDrillDownData.get($count4)' )">$data</a></strong></td>
+             #set( $count4 = $count4 + 1 )
+                #end        
+             #elseif( $categoryLB.equals( "random" ) && $ougGroupSetCB )
+                 #foreach($data in $onedataList)
+                   <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong><a href="#" onclick="javascript:drillDownOrgUnitGroupToPeriodResult( event, '$selectedDrillDownData.get($count4)' )">$data</a></strong></td>
+             #set( $count4 = $count4 + 1 )
+                #end        
+            
+             #else
+             #set( $count2 = 0 )
+               #foreach($data in $onedataList)
+                    <td class="TableDataCellStyles" align="center" style="border-style: dotted; border-width: 1"><strong>$data</strong></td>
+               #set( $count2 = $count2 + 1 )
+               #end
+             #end
+             
+      </tr>
+      #set( $count1 = $count1 + 1 )
+        #end
     </table>
 </div>
 </div>   
 #if($selectedButton.equals("ViewSummary"))
-         <br><br>
+     <br><br>
      #else
-    <br>
+     <br>
          <div align="center">
              <iframe name="iframeForChart" id="iframeForChart" src="generateChart1.action?currentChart=Vertical3DBarChart" width="850px" height="550px" scrolling=auto frameborder="0"></iframe>
          </div>    
     <br>
 #end 
 </div> 
+#if( $!yseriesList && $yseriesList.size() != 0 )
    
         <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-style: solid" bordercolor="black" width="100%" WRAP="HARD">
               <tr>
@@ -245,7 +370,7 @@ function exportToExcelFunction2( summaryOption )
                      #set($count1 = $count1 + 1) 
                      #end 
        </table> 
-
+#end
                        
     <textarea id="testId" rows="10" cols="70" style="display:none">&nbsp;</textarea>                                                                       
 </form>

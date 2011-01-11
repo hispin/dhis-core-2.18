@@ -63,7 +63,7 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
 
     private final String CHILDREN = "children";
 
-   private final String SELECTED = "random";
+    private final String SELECTED = "random";
     
     //private final String OPTIONCOMBO = "optioncombo";
     // -------------------------------------------------------------------------
@@ -365,11 +365,11 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
 */       
         if ( orgUnitGroup != 0 )
         {
-            dataElementChartResult = dashBoardService.generateChartDataWithGroupMemberWise( selStartPeriodList, selEndPeriodList, periodTypeLB, dataElementList, deSelection, selectedOptionComboList, selectedOrgUnit, selectedOrgUnitGroup ,aggDataCB );
+            dataElementChartResult = dashBoardService.generateDataElementChartDataWithGroupMemberWise( selStartPeriodList, selEndPeriodList, periodTypeLB, dataElementList, deSelection, selectedOptionComboList, selectedOrgUnit, selectedOrgUnitGroup ,aggDataCB );
         }
         else
         {
-            dataElementChartResult = dashBoardService.generateChartDataWithChildrenWise( selStartPeriodList, selEndPeriodList, periodTypeLB, dataElementList, deSelection, selectedOptionComboList, selectedOrgUnit, aggDataCB );
+            dataElementChartResult = dashBoardService.generateDataElementChartDataWithChildrenWise( selStartPeriodList, selEndPeriodList, periodTypeLB, dataElementList, deSelection, selectedOptionComboList, selectedOrgUnit, aggDataCB );
         }
 
         ActionContext ctx = ActionContext.getContext();

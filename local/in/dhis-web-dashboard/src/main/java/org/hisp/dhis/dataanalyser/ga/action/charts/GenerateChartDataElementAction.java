@@ -467,7 +467,7 @@ public class GenerateChartDataElementAction implements Action
         selectedValues = new ArrayList<String>();//for DrillDown ( for NBIT)
         selectedStatus = new ArrayList<String>();
         
-        selectedDrillDownData = new ArrayList<String>();//drillDown for periodWise
+        selectedDrillDownData = new ArrayList<String>();//drillDown for periodWise to OrgChildWise and OrgChildWise to periodWise
         
       //  DataElement dElement = new DataElement();
         
