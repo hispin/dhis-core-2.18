@@ -57,7 +57,7 @@
 	<tr>
 		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column" >
-			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[2,30]}}" onchange="startSearch(event)">
+			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[2,30]}}" onkeyup="startSearch(event)">
 			<span id='searchIcon' style="display:none"><img src="../images/loader.gif"></span>
 		</td>
 	</tr>

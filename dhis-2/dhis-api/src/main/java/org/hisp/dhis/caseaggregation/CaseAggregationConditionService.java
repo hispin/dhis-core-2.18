@@ -59,4 +59,5 @@ public interface CaseAggregationConditionService
         
     Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
     
+    String getConditionDescription( String condition );
 }

@@ -56,3 +56,16 @@ function showSearchPatients()
 {
 	tb_show( i18n_child_representative, "#TB_inline?height=350&width=580&inlineId=searchResults",null);	
 }
+
+function isDeathOnChange()
+{
+	var isDeath = byId('isDead').checked;
+	if(isDeath)
+	{
+		showById('deathDateTR');
+	}
+	else
+	{
+		hideById('deathDateTR');
+	}
+}

@@ -44,7 +44,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -52,6 +54,8 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.system.util.DateUtils;
 import org.nfunk.jep.JEP;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +87,10 @@ public class DefaultCaseAggregationConditionService
 
     private PatientDataValueService dataValueService;
 
+    private ProgramStageService programStageService;
+
+    private DataElementCategoryService categoryService;
+
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -90,6 +98,16 @@ public class DefaultCaseAggregationConditionService
     public void setAggregationConditionStore( CaseAggregationConditionStore aggregationConditionStore )
     {
         this.aggregationConditionStore = aggregationConditionStore;
+    }
+
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
     }
 
     public void setDataElementService( DataElementService dataElementService )
@@ -154,7 +172,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = createSQL( aggregationCondition, orgunit, period );
-
+        
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         return calValue( patientIds, aggregationCondition.getOperator() );
@@ -168,7 +186,7 @@ public class DefaultCaseAggregationConditionService
 
         String sql = createSQL( aggregationCondition, orgunit, period );
 
-        Collection<DataElement> dataElements = getDataElementsInExpression( aggregationCondition
+        Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
             .getAggregationExpression() );
 
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
@@ -184,6 +202,47 @@ public class DefaultCaseAggregationConditionService
         }
 
         return result;
+    }
+
+    public String getConditionDescription( String condition )
+    {
+        StringBuffer decription = new StringBuffer();
+
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
+        
+        // ---------------------------------------------------------------------
+        // parse expressions
+        // ---------------------------------------------------------------------
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( condition );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+            String[] ids = info[1].split( SEPARATOR_ID );
+
+            int programStageId = Integer.parseInt( ids[0] );
+            ProgramStage programStage = programStageService.getProgramStage( programStageId );
+
+            int dataElementId = Integer.parseInt( ids[1] );
+            DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
+            int categoryOptionId = Integer.parseInt( ids[2] );
+            DataElementCategory category = categoryService.getDataElementCategory( categoryOptionId );
+
+            matcher.appendReplacement( decription, "[" + programStage.getName() + SEPARATOR_ID +
+                dataElement.getName() + SEPARATOR_ID + category.getName() + "]" );
+        }
+
+        matcher.appendTail( decription );
+        
+        return decription.toString();
     }
 
     // -------------------------------------------------------------------------
@@ -316,7 +375,7 @@ public class DefaultCaseAggregationConditionService
 
     }
 
-    private Collection<DataElement> getDataElementsInExpression( String aggregationExpression )
+    private Collection<DataElement> getDataElementsInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
             + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
