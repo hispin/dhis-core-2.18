@@ -28,57 +28,69 @@ package org.hisp.dhis.web.api.service;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import org.hisp.dhis.web.api.model.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.web.api.model.Model;
 import org.hisp.dhis.web.api.model.ModelList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
-public class ModelMapping
-{
-    
-    public static DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
-    {
-        DataElement de = new DataElement();
-        de.setId( dataElement.getId() );
+public class ModelMapping {
+	private DataElementCategoryService categoryService;
 
-        // Name defaults to alternative name with fallback to name if empty
-        String name = dataElement.getAlternativeName();
-        if (name == null || name.trim().isEmpty()) {
-            name = dataElement.getName();
-        }
-        de.setName( name );
-        de.setType( dataElement.getType() );
-        
-        de.setCategoryOptionCombos( getCategoryOptionCombos( dataElement ) );
-        return de;
-    }
-    
-    public static ModelList getCategoryOptionCombos( org.hisp.dhis.dataelement.DataElement dataElement )
-    {
-        Set<DataElementCategoryOptionCombo> deCatOptCombs = dataElement.getCategoryCombo().getOptionCombos();
+	@Required
+	public void setCategoryService(
+			org.hisp.dhis.dataelement.DataElementCategoryService categoryService) {
+		this.categoryService = categoryService;
+	}
 
-//        if ( deCatOptCombs.size() < 2 )
-//        {
-//            return null;
-//        }
+	public DataElement getDataElement(
+			org.hisp.dhis.dataelement.DataElement dataElement) {
+		DataElement de = new DataElement();
+		de.setId(dataElement.getId());
 
-        // Client DataElement
-        ModelList deCateOptCombo = new ModelList();
-        List<Model> listCateOptCombo = new ArrayList<Model>();
-        deCateOptCombo.setModels( listCateOptCombo );
+		// Name defaults to alternative name with fallback to name if empty
+		String name = dataElement.getAlternativeName();
+		if (name == null || name.trim().isEmpty()) {
+			name = dataElement.getName();
+		}
+		de.setName(name);
+		de.setType(dataElement.getType());
 
-        for ( DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs )
-        {
-            Model oneCateOptCombo = new Model();
-            oneCateOptCombo.setId( oneCatOptCombo.getId() );
-            oneCateOptCombo.setName( oneCatOptCombo.getName() );
-            listCateOptCombo.add( oneCateOptCombo );
-        }
-        return deCateOptCombo;
-    }
+		de.setCategoryOptionCombos(getCategoryOptionCombos(dataElement));
+		return de;
+	}
 
-    
+	public ModelList getCategoryOptionCombos(
+			org.hisp.dhis.dataelement.DataElement dataElement) {
+		DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();
+		Collection<DataElementCategoryOptionCombo> deCatOptCombs = categoryService
+				.sortOptionCombos(categoryCombo);
+		// Set<DataElementCategoryOptionCombo> deCatOptCombs =
+		// dataElement.getCategoryCombo().getOptionCombos();
+
+		// if ( deCatOptCombs.size() < 2 )
+		// {
+		// return null;
+		// }
+
+		// Client DataElement
+		ModelList deCateOptCombo = new ModelList();
+		List<Model> listCateOptCombo = new ArrayList<Model>();
+		deCateOptCombo.setModels(listCateOptCombo);
+
+		for (DataElementCategoryOptionCombo oneCatOptCombo : deCatOptCombs) {
+			Model oneCateOptCombo = new Model();
+			oneCateOptCombo.setId(oneCatOptCombo.getId());
+			oneCateOptCombo.setName(oneCatOptCombo.getName());
+			listCateOptCombo.add(oneCateOptCombo);
+		}
+		return deCateOptCombo;
+	}
+
 }

@@ -52,6 +52,8 @@ public class DefaultProgramService
     private org.hisp.dhis.program.ProgramService programService;
 
     private org.hisp.dhis.i18n.I18nService i18nService;
+    
+    private org.hisp.dhis.web.api.service.ModelMapping modelMapping;
 
     // -------------------------------------------------------------------------
     // ProgramService
@@ -135,7 +137,7 @@ public class DefaultProgramService
 
                 org.hisp.dhis.dataelement.DataElement dataElement = programStagedataElement.getDataElement();
 
-                DataElement de = ModelMapping.getDataElement( dataElement );
+                DataElement de = modelMapping.getDataElement( dataElement );
 
                 de.setCompulsory( programStagedataElement.isCompulsory() );
 
@@ -164,4 +166,10 @@ public class DefaultProgramService
     {
         this.i18nService = i18nService;
     }
+    
+    @Required
+	public void setModelMapping(
+			org.hisp.dhis.web.api.service.ModelMapping modelMapping) {
+		this.modelMapping = modelMapping;
+	}
 }
