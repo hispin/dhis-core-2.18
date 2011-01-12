@@ -1077,6 +1077,13 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<action name="getCaseAggregationDescription"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetAggConditionDescriptionAction">
+			<result name="success" type="velocity">
+				/dhis-web-maintenance-patient/responseCaseAggDescription.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"

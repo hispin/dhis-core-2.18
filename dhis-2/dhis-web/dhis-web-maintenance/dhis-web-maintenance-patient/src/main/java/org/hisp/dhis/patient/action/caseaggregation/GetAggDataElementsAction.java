@@ -97,7 +97,7 @@ public class GetAggDataElementsAction
 
         dataElementList = new ArrayList<DataElement>( dataElementService.getDataElementGroup( dataElementGroupId )
             .getMembers() );
-
+        
         Iterator<DataElement> deIterator = dataElementList.iterator();
 
         while ( deIterator.hasNext() )
@@ -108,6 +108,7 @@ public class GetAggDataElementsAction
             {
                 deIterator.remove();
             }
+            
         }
 
         if ( dataElementList != null && !dataElementList.isEmpty() )
