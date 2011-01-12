@@ -137,7 +137,7 @@
 		
 		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");	
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator} );	
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator} , usepaging:true );	
 
 		checkAggregationOperator();
 	}	

@@ -8,4 +8,6 @@
     "operandName": "$!encoder.jsonEncode( ${operand.operandName} )"
   }#if( $velocityCount < $size ),#end
 #end
-] }
+] ,
+	"paging":#parse( "/dhis-web-commons/ajax/jsonPaging.vm" )
+}

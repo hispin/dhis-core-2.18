@@ -65,16 +65,28 @@ public abstract class ActionPagingSupport<T>
     {
         return paging;
     }
-    
-    @SuppressWarnings("unchecked")
+
+    protected boolean usepaging;
+
+    public boolean isUsepaging()
+    {
+        return usepaging;
+    }
+
+    public void setUsepaging( boolean usepaging )
+    {
+        this.usepaging = usepaging;
+    }
+
+    @SuppressWarnings( "unchecked" )
     private String getCurrentLink()
     {
         HttpServletRequest request = ServletActionContext.getRequest();
-        
+
         String baseLink = request.getRequestURI() + "?";
 
         Enumeration<String> paramNames = request.getParameterNames();
-        
+
         while ( paramNames.hasMoreElements() )
         {
             String paramName = paramNames.nextElement();
@@ -85,7 +97,7 @@ public abstract class ActionPagingSupport<T>
             }
         }
 
-        return baseLink.substring( 0, baseLink.length()-1 );
+        return baseLink.substring( 0, baseLink.length() - 1 );
     }
 
     protected Paging createPaging( Integer totalRecord )
