@@ -1,16 +1,17 @@
 <script>
 	var deExpressionValidator = null;
 	
-	jQuery(document).ready(function(){	
-		deExpressionValidator = validation( 'dataelement-form', function(){ 
+	jQuery(document).ready(function(){
+		deExpressionValidator = validation( 'dataelement-form', function(){
 			updateDeExpression();
-		});	
-		#if(!$reportExcel.isCategory()) 
-		remoteValidate( jQuery( "#dataelement textarea[id=formula]"), '../dhis-web-commons-ajax-json/getExpressionText.action' );	
+		});
+		
+		#if( !$reportExcel.isCategory() )
+		remoteValidate( jQuery( "#dataelement textarea[id=formula]" ), '../dhis-web-commons-ajax-json/getExpressionText.action' );
 		#end
-	
-	});	
-	
+		
+		changeItemType();
+	});
 	
 </script>
 
@@ -33,7 +34,7 @@
 			</td>
 			<td>
 				#if(!$reportExcel.isCategory()) 
-				<select id="groupSelect" style="width:500px"onchange="getDataElements(this.value, '#dataelement select[id=elementSelect]')"></select>												
+				<select id="groupSelect" style="width:500px" onchange="getDataElements(this.value, '#dataelement select[id=elementSelect]')"></select>												
 				#end
 				<select id="elementSelect" size="15" style="width:500px;" ondblclick="insertExpression()"></select>	
 			</td>			

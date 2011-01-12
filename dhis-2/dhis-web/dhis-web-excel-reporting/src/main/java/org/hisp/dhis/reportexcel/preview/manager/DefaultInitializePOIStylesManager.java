@@ -40,10 +40,10 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 public class DefaultInitializePOIStylesManager
     implements InitializePOIStylesManager
 {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
 
-    /** ************************************************** */
-    /** Variables */
-    /** ************************************************** */
     private static final String STYLE_DEFAULT_TITLE_CENTER = "Center Header";
 
     private static final String STYLE_DEFAULT_TITLE_LEFT = "Left Header";
@@ -67,9 +67,9 @@ public class DefaultInitializePOIStylesManager
 
     private static final short STYLE_DEFAULT_BORDER_COLOR = IndexedColors.LIGHT_ORANGE.getIndex();
 
-    /***************************************************************************
-     * Default Methods - Using for XLS Extension
-     **************************************************************************/
+    // -------------------------------------------------------------------------
+    // Default Methods - Using for XLS Extension
+    // -------------------------------------------------------------------------
 
     @SuppressWarnings( "static-access" )
     public void initDefaultHeader( HSSFHeader poi_header )
@@ -77,7 +77,7 @@ public class DefaultInitializePOIStylesManager
         poi_header.setCenter( this.STYLE_DEFAULT_TITLE_CENTER );
         poi_header.setLeft( this.STYLE_DEFAULT_TITLE_LEFT );
         poi_header.setRight( this.STYLE_DEFAULT_TITLE_RIGHT );
-        
+
     }
 
     @SuppressWarnings( "static-access" )
@@ -87,7 +87,7 @@ public class DefaultInitializePOIStylesManager
         poi_font.setFontHeightInPoints( this.STYLE_DEFAULT_FONT_HEIGHT );
         poi_font.setBoldweight( this.STYLE_DEFAULT_FONT_WEIGHT );
         poi_font.setColor( this.STYLE_DEFAULT_FONT_COLOR );
-        
+
     }
 
     @SuppressWarnings( "static-access" )
@@ -108,10 +108,10 @@ public class DefaultInitializePOIStylesManager
 
     }
 
-    /** ************************************************** */
-    /** Customized Methods - Using for XLS Extension */
-    /** ************************************************** */
-
+    // -------------------------------------------------------------------------
+    // Customized Methods - Using for XLS Extension
+    // -------------------------------------------------------------------------
+    
     public void initHeader( HSSFHeader poi_header, String center, String left, String right )
     {
 
@@ -124,7 +124,7 @@ public class DefaultInitializePOIStylesManager
     public void initFont( Font poi_font, String fontName, short fontHeightInPoints, short boldWeight, short fontColor )
     {
 
-    	poi_font.setFontName( fontName );
+        poi_font.setFontName( fontName );
         poi_font.setFontHeightInPoints( fontHeightInPoints );
         poi_font.setBoldweight( boldWeight );
         poi_font.setColor( fontColor );
