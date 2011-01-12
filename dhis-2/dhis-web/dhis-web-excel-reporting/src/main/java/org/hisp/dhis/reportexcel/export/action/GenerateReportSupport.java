@@ -93,7 +93,8 @@ import com.opensymphony.xwork2.Action;
 public abstract class GenerateReportSupport
     implements Action
 {
-
+    private static final String NULL_REPLACEMENT = "0";
+    
     protected static final short CELLSTYLE_ALIGN_LEFT = CellStyle.ALIGN_LEFT;
 
     protected static final short CELLSTYLE_ALIGN_CENTER = CellStyle.ALIGN_CENTER;
@@ -105,8 +106,6 @@ public abstract class GenerateReportSupport
     protected static final short CELLSTYLE_BORDER = CellStyle.BORDER_THIN;
 
     protected static final short CELLSTYLE_BORDER_COLOR = IndexedColors.DARK_BLUE.getIndex();
-
-    private static final String NULL_REPLACEMENT = "0";
 
     protected static final String[] chappter = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI",
         "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI",

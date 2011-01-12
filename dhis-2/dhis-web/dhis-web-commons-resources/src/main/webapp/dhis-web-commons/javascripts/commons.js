@@ -1052,12 +1052,12 @@ function remoteValidate( input , url, params )
 */
 function addValidatorRulesById( inputId, rules )
 {
-	addValidatorRules(jQuery("#" + inputId), rules);
+	addValidatorRules( jQuery("#" + inputId), rules );
 }
 
 function addValidatorRules( input, rules )
 {
-	jQuery(input).rules("add",rules );
+	jQuery(input).rules( "add", rules );
 }
 
 /**
@@ -1068,12 +1068,12 @@ function addValidatorRules( input, rules )
 */
 function removeValidatorRulesById( inputId, rules )
 {
-	removeValidatorRules( jQuery("#" + inputId) );
+	removeValidatorRules( jQuery("#" + inputId), rules );
 }
 
 function removeValidatorRules( input, rules )
 {
-	jQuery(input).rules("remove", rules );
+	jQuery(input).rules( "remove", rules );
 }
 
 function listValidator( validatorId, selectedListId )

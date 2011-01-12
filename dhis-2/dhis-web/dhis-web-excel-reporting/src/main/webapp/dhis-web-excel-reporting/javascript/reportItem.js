@@ -3,52 +3,30 @@ function changeItemType()
 	value = getFieldValue( 'itemType' );
 	enable( 'expression-button' );
 	
-	if( value == 'dataelement' ){
-		byId('expression-button' ).onclick = deExpressionBuilderForm;
-	}else if( value == 'indicator' ){
-		byId('expression-button' ).onclick =  inExpressionBuilderForm ;
-	}else if( value == 'formulaexcel' ){
-		byId('expression-button' ).onclick =  excelFormulaExpressionBuilderForm ;
-	}else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name' ){
-		disable( 'expression-button' );
-		setFieldValue( 'expression', value );
-	}	
-}
-
-function cleanFormula()
-{
-	setFieldValue( 'formula','');
-}
-
-function insertOperation( value ) {
-	byId('formula').value += value;	
-} 
-
-function changeItemType()
-{
-	value = getFieldValue( 'itemType' );
-	enable( 'expression-button' );
+	setFieldValue( 'reportItem input[id=expression]', getFieldValue( 'reportItem input[id=currentExpression]') );
 	
 	if( value == 'dataelement' ){
 		byId('expression-button' ).onclick = deExpressionBuilderForm;
 	}else if( value == 'indicator' ){
-		byId('expression-button' ).onclick =  inExpressionBuilderForm ;
+		byId('expression-button' ).onclick = inExpressionBuilderForm ;
 	}else if( value == 'formulaexcel' ){
-		byId('expression-button' ).onclick =  excelFormulaExpressionBuilderForm ;
-	}else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name'){
+		byId('expression-button' ).onclick = excelFormulaExpressionBuilderForm ;
+	}else if( value == 'organisation' || value == 'serial' || value == 'dataelement_code' || value == 'dataelement_name' ){
 		disable( 'expression-button' );
-		setFieldValue( 'expression', value );
-	}	
+		setFieldValue( 'reportItem input[id=expression]', value );
+		removeValidatorRulesById( 'reportItem input[id=expression]' );
+		removeValidatorRulesById( 'dataelement textarea[id=formula]' );
+	}
+}
+
+function insertOperation( value ) {
+	byId('formula').value += value;	
 }
 
 function cleanFormula()
 {
 	setFieldValue( 'formula','');
 	setInnerHTML( 'expression-description', '');
-}
-
-function insertOperation( value ) {
-	byId('formula').value += value;	
 } 
 
 function insertExpression() 
@@ -61,7 +39,7 @@ function insertExpression()
 }
 
 function getExpression()
-{	
+{
 	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action',
 	{ expression: getFieldValue('formula')}, function( json ){
 		if(json.response == 'success'){
