@@ -174,6 +174,9 @@ public class TableAlteror
         // update periodType field to ValidationRule
         executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
 
+        // update dataelement.domainTypes of which values is null
+        executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
+        
         // set varchar to text
         executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
         executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
