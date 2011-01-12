@@ -2,6 +2,7 @@
 //------------------------------------------------------------------------------
 // Get Aggregated Dataelements
 //------------------------------------------------------------------------------
+
 function getAggDataElements( )
 {
   var dataElementGroup = document.getElementById( 'dataElementGroup' );
@@ -25,7 +26,7 @@ function getAggDataElementsCompleted( dataelementElement )
   var de = document.getElementById( 'aggregationDataElementId' );
   
   clearList( de );
-  	
+  
   var dataElementList = dataelementElement.getElementsByTagName( 'dataelement' );
   
   for ( var i = 0; i < dataElementList.length; i++ )
@@ -41,6 +42,36 @@ function getAggDataElementsCompleted( dataelementElement )
         de.add(option, null);  
         
       
+    }	    
+}
+
+//------------------------------------------------------------------------------
+// Get Program Stages
+//------------------------------------------------------------------------------
+
+function filterDE( event, value )
+{
+  var dataElementList = document.getElementById( 'programstageDE' );
+  
+  for ( var index = 0; index < dataElementList.options.length; index++ )
+    {
+		var option = dataElementList.options[index];
+		
+		if(value.length == 0 )
+		{
+			option.style.display = "block";
+		}
+		else
+		{
+			if (option.text.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
+			{
+				option.style.display = "block";
+			}
+			else
+			{
+				option.style.display = "none";
+			}
+		}
     }	    
 }
 
@@ -150,12 +181,14 @@ function getPrgramStageDataElementsCompleted( dataelementElement )
 function insertInfo( element )
 {
 	byId('aggregationCondition').value += " " + element.options[element.selectedIndex].value + " ";
+	getConditionDescription();
 }
 
 
 function insertOperator( value )
 {
 	byId('aggregationCondition').value += " " + value + " ";
+	getConditionDescription();
 }
 
 // -----------------------------------------------------------------------------
@@ -189,4 +222,20 @@ function caseAggregationReceived( caseAggregationElement )
     setInnerHTML( 'aggregationExpressionField', getElementValue( caseAggregationElement, 'aggregationExpression' ) );
     
     showDetails();
+}
+
+// -----------------------------------------------------------------------------
+// View details
+// -----------------------------------------------------------------------------
+
+function getConditionDescription()
+{
+	$.post("getCaseAggregationDescription.action",
+		{
+			condition: getFieldValue('aggregationCondition')
+		},
+		function (data)
+		{
+			byId('aggregationDescription').innerHTML = data;
+		},'html');
 }
