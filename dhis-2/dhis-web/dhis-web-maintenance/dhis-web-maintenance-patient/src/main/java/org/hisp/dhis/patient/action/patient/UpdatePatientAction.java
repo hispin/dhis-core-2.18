@@ -28,6 +28,7 @@ package org.hisp.dhis.patient.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,14 +89,28 @@ public class UpdatePatientAction
     // -------------------------------------------------------------------------
     // Input - name
     // -------------------------------------------------------------------------
-   
+
     private String fullName;
 
     // -------------------------------------------------------------------------
     // Input - demographics
     // -------------------------------------------------------------------------
-    
+
     private String birthDate;
+
+    private boolean isDead;
+
+    private String deathDate;
+
+    public void setDead( boolean isDead )
+    {
+        this.isDead = isDead;
+    }
+
+    public void setDeathDate( String deathDate )
+    {
+        this.deathDate = deathDate;
+    }
 
     private Integer age;
 
@@ -133,21 +148,21 @@ public class UpdatePatientAction
         // ---------------------------------------------------------------------
 
         patient = patientService.getPatient( id );
-     
+
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
-        
+
         String name = fullName.substring( 0, startIndex );
-        patient.setFirstName( name);
-        
+        patient.setFirstName( name );
+
         if ( startIndex == endIndex )
         {
             patient.setMiddleName( "" );
-            
+
             name = fullName.substring( startIndex, fullName.length() );
             patient.setLastName( name );
         }
@@ -155,21 +170,28 @@ public class UpdatePatientAction
         {
             name = fullName.substring( startIndex + 1, endIndex );
             patient.setMiddleName( name );
-            
+
             name = fullName.substring( endIndex, fullName.length() );
             patient.setLastName( name );
         }
-        
+
         patient.setLastName( fullName.substring( endIndex, fullName.length() ) );
-    
+
         // ---------------------------------------------------------------------
         // Set Other information for patient
         // ---------------------------------------------------------------------
 
         patient.setGender( gender );
+       
+        patient.setIsDead( isDead );
+        if ( deathDate != null )
+        {
+            deathDate = deathDate.trim();
+            patient.setDeathDate( format.parseDate( deathDate ) );
+        }
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
-        
+
         if ( birthDate != null && !birthDate.isEmpty() )
         {
             birthDate = birthDate.trim();
@@ -179,7 +201,7 @@ public class UpdatePatientAction
         {
             patient.setBirthDateFromAge( age.intValue(), ageType );
         }
-        
+
         patient.setDobType( dobType );
 
         // -------------------------------------------------------------------------------------
@@ -197,7 +219,7 @@ public class UpdatePatientAction
         {
             for ( PatientIdentifierType identifierType : identifierTypes )
             {
-                if (  identifierType.getFormat()!= null && identifierType.getFormat().equals( "State Format" ) )
+                if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
                 {
                     value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
                         + request.getParameter( "benicode" );
@@ -208,11 +230,11 @@ public class UpdatePatientAction
                 }
 
                 identifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
-               
+
                 if ( StringUtils.isNotBlank( value ) )
                 {
                     value = value.trim();
-                    
+
                     if ( identifier == null )
                     {
                         identifier = new PatientIdentifier();
@@ -228,9 +250,9 @@ public class UpdatePatientAction
                     }
                 }
                 else if ( identifier != null )
-                { 
-                   patient.getIdentifiers().remove( identifier );
-                   patientIdentifierService.deletePatientIdentifier( identifier );
+                {
+                    patient.getIdentifiers().remove( identifier );
+                    patientIdentifierService.deletePatientIdentifier( identifier );
                 }
             }
         }
@@ -413,12 +435,12 @@ public class UpdatePatientAction
     {
         this.relationshipTypeId = relationshipTypeId;
     }
-    
+
     public void setDobType( Character dobType )
     {
         this.dobType = dobType;
     }
-    
+
     public void setAgeType( char ageType )
     {
         this.ageType = ageType;
