@@ -1417,7 +1417,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             G.vars.mask.msg = G.i18n.aggregating_map_values;
             G.vars.mask.show();
             
-            if (!position) {
+            if (!position && this.layer.features.length) {
                 G.vars.map.zoomToExtent(this.layer.getDataExtent());
             }
             

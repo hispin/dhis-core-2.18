@@ -1399,10 +1399,10 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             G.vars.mask.msg = G.i18n.aggregating_map_values;
             G.vars.mask.show();
             
-            if (!position) {
+            if (!position && this.layer.features.length) {
                 G.vars.map.zoomToExtent(this.layer.getDataExtent());
             }
-            
+
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
                     G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
@@ -1423,7 +1423,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     parentId: this.organisationUnitSelection.parent.id,
                     level: this.organisationUnitSelection.level.level
                 };
-
+                
                 Ext.Ajax.request({
                     url: G.conf.path_mapping + dataUrl + G.conf.type,
                     method: 'POST',
