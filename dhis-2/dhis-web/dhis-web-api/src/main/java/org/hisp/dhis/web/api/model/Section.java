@@ -39,7 +39,7 @@ public class Section
 
     private List<DataElement> dataElements;
 
-    @XmlElement(name="dataElement")
+    @XmlElement( name = "dataElement" )
     public List<DataElement> getDataElements()
     {
         return dataElements;

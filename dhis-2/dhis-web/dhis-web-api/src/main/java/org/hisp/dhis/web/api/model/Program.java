@@ -37,7 +37,7 @@ public class Program
 {
 
     private int version;
-    
+
     public int getVersion()
     {
         return version;

@@ -75,7 +75,7 @@ public class DataSetValue
         this.dataValues = dataValues;
     }
 
-    @XmlElement(name="dataValue")
+    @XmlElement( name = "dataValue" )
     public List<DataValue> getDataValues()
     {
         return dataValues;

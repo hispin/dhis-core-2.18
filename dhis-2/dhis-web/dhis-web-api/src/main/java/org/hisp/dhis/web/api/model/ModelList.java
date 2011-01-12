@@ -41,7 +41,7 @@ public class ModelList
 
     private List<Model> models;
 
-    @XmlElement(name="model")
+    @XmlElement( name = "model" )
     public List<Model> getModels()
     {
         return models;
@@ -56,10 +56,11 @@ public class ModelList
     public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
-        if (models == null) {
-            dataOutputStream.writeInt( 0 );            
+        if ( models == null )
+        {
+            dataOutputStream.writeInt( 0 );
         }
-        
+
         dataOutputStream.writeInt( models.size() );
 
         for ( int i = 0; i < models.size(); i++ )

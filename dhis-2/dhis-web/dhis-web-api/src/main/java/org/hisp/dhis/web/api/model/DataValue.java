@@ -81,7 +81,7 @@ public class DataValue
         throws IOException
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override

@@ -83,7 +83,8 @@ public class MobileModel
         {
             dout.writeInt( 0 );
         }
-        else {
+        else
+        {
             dout.writeInt( programs.size() );
 
             for ( Program prog : programs )
@@ -101,7 +102,6 @@ public class MobileModel
         {
             this.activityPlan.serialize( dout );
         }
-
 
         // Write DataSets
         if ( datasets == null )

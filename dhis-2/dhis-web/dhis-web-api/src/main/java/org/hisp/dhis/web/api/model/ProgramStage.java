@@ -65,7 +65,7 @@ public class ProgramStage
             dout.writeUTF( de.getName() );
             dout.writeUTF( de.getType() );
             dout.writeBoolean( de.isCompulsory() );
-            
+
             List<Model> cateOptCombos = de.getCategoryOptionCombos().getModels();
             if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
             {
@@ -80,7 +80,7 @@ public class ProgramStage
                     dout.writeUTF( each.getName() );
                 }
             }
-            
+
         }
     }
 
