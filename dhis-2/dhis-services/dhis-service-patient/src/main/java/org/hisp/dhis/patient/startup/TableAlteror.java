@@ -83,6 +83,8 @@ public class TableAlteror
         executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
 
         executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
+        
+        executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
 
     }
 
