@@ -151,7 +151,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     	<property name="aggregationConditionStore" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionStore" />
     	<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />     	
         <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />     	
-        <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />     	     	
+        <property name="dataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+        <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />     	
+        <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />     	     	
     </bean>
     
     <bean id="org.hisp.dhis.program.ProgramStageDataElementService"
