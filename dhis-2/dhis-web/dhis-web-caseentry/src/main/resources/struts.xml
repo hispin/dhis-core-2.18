@@ -228,11 +228,11 @@
 		<result name="success" type="velocity-json">/dhis-web-caseentry/responsePeriods.vm</result>
 	</action>
 	
-	<action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
+	<!-- <action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.LoadPeriodsAction">
 		<result name="success" type="chain">caseAggregationResultChain</result>
-	</action>
+	</action>  -->
 	
-    <action name="caseAggregationResultChain" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction">                 
+    <action name="caseAggregationResult" class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction">                 
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
       <param name="menu">/dhis-web-caseentry/menu.vm</param>      

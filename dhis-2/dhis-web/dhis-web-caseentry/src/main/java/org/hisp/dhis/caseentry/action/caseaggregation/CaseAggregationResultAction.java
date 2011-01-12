@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.caseentry.state.PeriodGenericManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -50,7 +51,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -61,9 +64,10 @@ public class CaseAggregationResultAction
 
     Log log = LogFactory.getLog( getClass() );
 
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependencies
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
+
     private SelectionTreeManager selectionTreeManager;
 
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
@@ -99,6 +103,13 @@ public class CaseAggregationResultAction
         this.currentUserService = currentUserService;
     }
 
+    private PeriodGenericManager periodGenericManager;
+
+    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
+    {
+        this.periodGenericManager = periodGenericManager;
+    }
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -113,9 +124,9 @@ public class CaseAggregationResultAction
         this.i18n = i18n;
     }
 
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output Parameters
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private int sDateLB;
 
@@ -136,18 +147,6 @@ public class CaseAggregationResultAction
     public void setFacilityLB( String facilityLB )
     {
         this.facilityLB = facilityLB;
-    }
-
-    private List<Period> periods;
-
-    public List<Period> getPeriods()
-    {
-        return periods;
-    }
-
-    public void setPeriods( List<Period> periods )
-    {
-        this.periods = periods;
     }
 
     private Integer dataSetId;
@@ -174,6 +173,7 @@ public class CaseAggregationResultAction
         mapDataValues = new HashMap<DataValue, String>();
 
         String storedBy = currentUserService.getCurrentUsername() + "_CAE";
+
         // ---------------------------------------------------------------------
         // Get selected orgunits
         // ---------------------------------------------------------------------
@@ -216,11 +216,23 @@ public class CaseAggregationResultAction
 
         List<Period> periodList = new ArrayList<Period>();
 
+        periodGenericManager.setSelectedPeriodIndex( PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
+            sDateLB );
+        Period startPeriod = periodGenericManager.getSelectedPeriod(
+            PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
+            PeriodGenericManager.SESSION_KEY_BASE_PERIOD_START );
+
+        periodGenericManager.setSelectedPeriodIndex( PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
+            eDateLB );
+        Period endPeriod = periodGenericManager.getSelectedPeriod(
+            PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
+            PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END );
+     
         if ( sDateLB != -1 && eDateLB != -1 )
         {
-            periodList = periods.subList( sDateLB, eDateLB + 1 );
+            periodList = getPeriodList( (CalendarPeriodType)selectedDataSet.getPeriodType(), startPeriod, endPeriod );
         }
-        
+
         // ---------------------------------------------------------------------
         // Aggregation
         // ---------------------------------------------------------------------
@@ -282,8 +294,12 @@ public class CaseAggregationResultAction
         return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Support methods
+    // -------------------------------------------------------------------------
+
     // Returns the OrgUnitTree for which Root is the orgUnit
-    public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
+    private List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
         orgUnitTree.add( orgUnit );
@@ -296,6 +312,26 @@ public class CaseAggregationResultAction
             orgUnitTree.addAll( getChildOrgUnitTree( child ) );
         }
         return orgUnitTree;
+    }
+
+    private List<Period> getPeriodList( CalendarPeriodType periodType, Period startPeriod, Period endPeriod )
+    {
+        Period period = periodType.createPeriod( startPeriod.getStartDate());
+
+        List<Period> periods = new ArrayList<Period>();
+        
+        periods.add( period );
+        
+        while ( period.getEndDate().before( endPeriod.getEndDate() ))
+        {
+            period = periodType.getNextPeriod( period ) ;
+            periods.add( period );
+        }
+
+        period = periodType.createPeriod( endPeriod.getStartDate() ) ;
+        periods.add( period );
+        
+        return periods;
     }
 
 }
