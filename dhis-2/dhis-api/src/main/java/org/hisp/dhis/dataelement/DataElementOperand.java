@@ -240,7 +240,6 @@ public class DataElementOperand
      */
     public void updateProperties( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {        
-        this.categoryOptionCombo = categoryOptionCombo;
         this.dataElementId = dataElement.getId();
         this.optionComboId = categoryOptionCombo.getId();
         this.operandId = dataElement.getId() + SEPARATOR + categoryOptionCombo.getId();
@@ -249,7 +248,6 @@ public class DataElementOperand
         this.frequencyOrder = dataElement.getFrequencyOrder();
         this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
         this.valueType = dataElement.getType();
-        this.dataElement = dataElement;
     }
 
     /**
@@ -266,8 +264,7 @@ public class DataElementOperand
         this.aggregationOperator = dataElement.getAggregationOperator();
         this.frequencyOrder = dataElement.getFrequencyOrder();
         this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );
-        this.valueType = dataElement.getType();
-        this.dataElement = dataElement;
+        this.valueType = dataElement.getType();        
     }
 
     /**
