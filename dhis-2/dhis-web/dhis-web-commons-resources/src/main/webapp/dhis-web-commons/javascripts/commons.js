@@ -1068,7 +1068,7 @@ function addValidatorRules( input, rules )
 */
 function removeValidatorRulesById( inputId, rules )
 {
-	removeValidatorRules( jQuery("#" + inputId) );
+	removeValidatorRules( jQuery("#" + inputId), rules);
 }
 
 function removeValidatorRules( input, rules )
