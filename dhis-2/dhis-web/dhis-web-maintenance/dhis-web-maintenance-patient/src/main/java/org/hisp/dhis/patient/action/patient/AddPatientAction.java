@@ -191,6 +191,7 @@ public class AddPatientAction
         // ---------------------------------------------------------------------
 
         patient.setGender( gender );
+        patient.setIsDead( false );
         patient.setBloodGroup( bloodGroup );
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );

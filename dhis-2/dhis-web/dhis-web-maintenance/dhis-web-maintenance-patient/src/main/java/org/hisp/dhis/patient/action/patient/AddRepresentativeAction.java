@@ -143,6 +143,7 @@ public class AddRepresentativeAction
         // ---------------------------------------------------------------------
 
         patient.setGender( gender );
+        patient.setIsDead( false );
         patient.setBloodGroup( bloodGroup );
         patient.setOrganisationUnit( organisationUnit );
 
