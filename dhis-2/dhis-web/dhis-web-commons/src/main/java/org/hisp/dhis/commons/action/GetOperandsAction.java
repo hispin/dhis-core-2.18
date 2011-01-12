@@ -38,14 +38,13 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
  */
 public class GetOperandsAction
-    implements Action
+    extends ActionPagingSupport<DataElementOperand>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -98,7 +97,7 @@ public class GetOperandsAction
     }
 
     private boolean includeTotals = false;
-    
+
     public void setIncludeTotals( boolean includeTotals )
     {
         this.includeTotals = includeTotals;
@@ -140,9 +139,19 @@ public class GetOperandsAction
             dataElements.retainAll( dataElementService.getDataElementsByAggregationOperator( aggregationOperator ) );
         }
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements, includeTotals ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements,
+            includeTotals ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
+
+        if ( this.usepaging )
+        {
+
+            this.paging = createPaging( operands.size() );
+
+            operands = operands.subList( paging.getStartPos(), paging.getEndPos() );
+
+        }
 
         return SUCCESS;
     }

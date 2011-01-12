@@ -18,6 +18,12 @@ function DataDictionary()
 	
 	var operandsByDataElementGroup = new Array();
 	
+	var params = {};
+	
+	var jQuerySelectionString;
+	
+	var url;
+	
 	this.loadDataElementGroups = function( jQuerySelectionString )
 	{
 		var target = jQuery( jQuerySelectionString );
@@ -160,6 +166,18 @@ function DataDictionary()
 			});		
 		}
 		
+	}
+	
+	this.reloadOperands = function( currentpage )
+	{
+		this.params.currentPage = currentpage;
+		this.loadOperands( this.jQuerySelectionString, this.params );
+	}
+	
+	this.changeOperandsPageSize = function( pagesize )
+	{
+		this.params.pageSize = pagesize;
+		this.loadOperands( this.jQuerySelectionString, this.params );
 	}	
 	
 	this.loadOperands = function ( jQuerySelectionString, params )
@@ -167,12 +185,34 @@ function DataDictionary()
 		var target = jQuery( jQuerySelectionString );
 		target.children().remove();	
 		
-		jQuery.getJSON('../dhis-web-commons-ajax-json/getOperands.action'	
-			, params
+		this.params = params;
+		this.jQuerySelectionString = jQuerySelectionString;
+		
+		jQuery.getJSON(	'../dhis-web-commons-ajax-json/getOperands.action'
+			, this.params
 			, function( json ){
 				jQuery.each( json.operands, function(i, item){					
 					target.append('<option value="[' + item.operandId + ']">' + item.operandName + '</option>');
-				});				
+				});
+			if( params.usepaging ){
+				var numberOfPages = json.paging.numberOfPages;
+				var currentPage = json.paging.currentPage;
+				var baseLink = json.paging.baseLink;
+				var pageSize = json.paging.pageSize;
+				var startPage = json.paging.startPage;			
+				
+				var html = '<div id="abcd1234">';
+				if( numberOfPages > 1 ){
+					html += 'Page: <select onchange="dataDictionary.reloadOperands( this.value )">';
+					for(var i=1;i<=numberOfPages;i++){
+						html += '<option value="' + i + '"' + ( currentPage==i?'selected=true':'' ) + '>' + i + '</option>';
+					}
+					html += '</select>';
+				}
+				html += 'Size: <input type="text" style="width:50px" onchange="dataDictionary.changeOperandsPageSize( this.value )" value="' + pageSize + '"/></div>';					
+				jQuery( '#abcd1234' ).remove();;
+				jQuery( html ).insertAfter( target );				
+			}
 		});	
 		
 	}
