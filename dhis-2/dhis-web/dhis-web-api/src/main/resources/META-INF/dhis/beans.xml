@@ -27,6 +27,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
+	<property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.ActivityReportingService" class="org.hisp.dhis.web.api.service.ActivityReportingServiceImpl">
@@ -42,6 +43,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.web.api.service.IProgramService" class="org.hisp.dhis.web.api.service.DefaultProgramService">
     <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	<property name="modelMapping" ref="org.hisp.dhis.web.api.service.ModelMapping" />
   </bean>
 
   <!-- Jax-RS providers for (de-)serialization, exception mapping, json configuration -->
@@ -69,6 +71,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="orgUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
-
+	
+	<!-- ModelMapping beans -->
+  <bean id="org.hisp.dhis.web.api.service.ModelMapping" class="org.hisp.dhis.web.api.service.ModelMapping">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+	
 </beans>
+
+
 
