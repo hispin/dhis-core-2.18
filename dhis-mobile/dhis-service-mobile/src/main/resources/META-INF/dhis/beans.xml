@@ -106,8 +106,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 <!-- CheckDataStatus Job -->
 
-    <bean id="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob"
-        class="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob" />
+<!--    <bean id="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob"-->
+<!--        class="org.hisp.dhis.mobile.scheduler.CheckDataStatusJob" /> -->
 
     <bean name="schedulerForCheckDataStatusJob"
         class="org.springframework.scheduling.quartz.JobDetailBean">
@@ -116,7 +116,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <map>
                 <entry key="jdbcTemplate" value-ref="jdbcTemplate"/>
                 <entry key="smsService" value-ref="org.hisp.dhis.mobile.SmsService"/>
-                <entry key="reportService" value-ref="org.hisp.dhis.reports.ReportService"/>
 				<entry key="dataSetService" value-ref="org.hisp.dhis.dataset.DataSetService"/>
 				<entry key="organisationUnitService" value-ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
 				<entry key="periodService" value-ref="org.hisp.dhis.period.PeriodService"/>
