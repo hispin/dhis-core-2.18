@@ -70,7 +70,6 @@ public class CaseAggregationFormAction
     public String execute()
         throws Exception
     {
-
         datasets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
         Iterator<DataSet> dataSetListIterator = datasets.iterator();

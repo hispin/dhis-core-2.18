@@ -361,6 +361,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="periodGenericManager" ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.state.PeriodGenericManager"
