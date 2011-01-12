@@ -42,12 +42,15 @@
 			</select>
 		</td>				
 	</tr>
+	
 	<tr>
-		<td width="20em"><label for="operator">$i18n.getString( "operator" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'>
+			
+		<!-- <td width="20em"><label for="operator">$i18n.getString( "operator" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<input type="radio" id="operator" name="operator" value="COUNT" checked>$i18n.getString( "count" )
-			<!-- <input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString( "sum" ) -->
-		</td>				
+			<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'> $i18n.getString( "count" ) 
+			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString( "sum" )
+		</td> -->		
 	</tr>
 	<tr>
         <td colspan="2"><p></p></td>
@@ -109,6 +112,11 @@
 			</tr>
 			<tr>
 				<td>
+					<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value);">
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<select id="programstageDE" name="programstageDE" size="5" style="width:20em" ondblclick="insertInfo(this);">
 					</select>
 				</td>
@@ -126,7 +134,7 @@
 		
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
+					<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:15em; height:16.5em" >
 						<option value="[CP:gender]">$i18n.getString( "gender" )</option>
 						<option value="[CP:dobType]">$i18n.getString( "dobType" )</option>
 					</select>
@@ -141,7 +149,7 @@
 			<table>
 			<tr>
 				<td>
-					<select id="caseAttribute" name="caseAttribute" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
+					<select id="caseAttribute" name="caseAttribute" size="8" ondblclick="insertInfo(this);" style="width:15em; height:16.5em" >
 					#foreach( $patientAttribute in $patientAttributes )
 						<option value="[CA:$patientAttribute.id]">$encoder.htmlEncode( $patientAttribute.name )</option>
 					#end                            
@@ -160,8 +168,10 @@
 		
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
+					<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:15em; height:16.5em" >
 						<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
+						<option value="[PP:enrollmentdate]">$i18n.getString( "date_of_enrollment" )</option>
+						<option value="[PP:incidentdate]">$i18n.getString( "date_of_incident" )</option>
 					</select>
 				</td>
 			</tr>
@@ -194,11 +204,18 @@
 		<td colspan='4'>
 			<fieldset style="border: 1px solid #3f5d8e; ">
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" style="width:72.5em; height:10em" class="{validate:{required:true}}" ></textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" style="width:72.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
 			</fieldset>
 		</td>
 	</tr>
-	
+	<tr>
+		<td colspan='4'>
+			<fieldset style="border: 1px solid #3f5d8e; ">
+				<legend>$i18n.getString( "description" )</legend>
+				<div id='aggregationDescription'></div>
+			</fieldset>
+		</td>
+	</tr>
 	
 	<tr>
 		<td colspan='3'>
@@ -213,5 +230,5 @@
 <script>
 	byId('description').focus();
 	getAggDataElements();
-	getProgramStages()
+	getProgramStages();
 </script>
