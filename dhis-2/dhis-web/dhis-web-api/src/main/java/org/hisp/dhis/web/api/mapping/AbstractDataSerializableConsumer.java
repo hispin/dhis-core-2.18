@@ -42,13 +42,17 @@ import org.hisp.dhis.web.api.model.DataStreamSerializable;
 import org.hisp.dhis.web.api.resources.DhisMediaType;
 
 /**
- * An abstract class mapping from the {@link DhisMediaType.MOBILE_SERIALIZED} to implementations of {@link DataStreamSerializable}
+ * An abstract class mapping from the {@link DhisMediaType.MOBILE_SERIALIZED} to
+ * implementations of {@link DataStreamSerializable}
  * 
- * <p>Implementations only need to define T and specify the relevant annotations
+ * <p>
+ * Implementations only need to define T and specify the relevant annotations
  * 
- * @param <T> The concrete implementation of {@link DataStreamSerializable} this consumer creates and populates
+ * @param <T> The concrete implementation of {@link DataStreamSerializable} this
+ *        consumer creates and populates
  */
-public abstract class AbstractDataSerializableConsumer<T extends DataStreamSerializable> implements MessageBodyReader<T>
+public abstract class AbstractDataSerializableConsumer<T extends DataStreamSerializable>
+    implements MessageBodyReader<T>
 {
     @Override
     public boolean isReadable( Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType )
@@ -70,11 +74,11 @@ public abstract class AbstractDataSerializableConsumer<T extends DataStreamSeria
         }
         catch ( InstantiationException e )
         {
-            throw new IOException("Can't instantiate class " + type.getName(), e);
+            throw new IOException( "Can't instantiate class " + type.getName(), e );
         }
         catch ( IllegalAccessException e )
         {
-            throw new IOException("Not allowed to instantiate class " + type.getName(), e);
+            throw new IOException( "Not allowed to instantiate class " + type.getName(), e );
         }
     }
 }

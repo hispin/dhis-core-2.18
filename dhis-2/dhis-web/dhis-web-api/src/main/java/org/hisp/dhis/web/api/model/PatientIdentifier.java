@@ -6,13 +6,14 @@ import java.io.IOException;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class PatientIdentifier implements DataStreamSerializable
+public class PatientIdentifier
+    implements DataStreamSerializable
 {
     private String identifierType;
-    
+
     private String identifier;
-    
-    public PatientIdentifier( )
+
+    public PatientIdentifier()
     {
     }
 
@@ -59,7 +60,5 @@ public class PatientIdentifier implements DataStreamSerializable
         identifierType = dataInputStream.readUTF();
         identifier = dataInputStream.readUTF();
     }
-    
-    
 
 }

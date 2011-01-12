@@ -110,8 +110,8 @@ public class MobileResource
         orgUnit.setId( unit.getId() );
         orgUnit.setName( unit.getShortName() );
 
-        orgUnit.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" ).build( unit.getId() )
-            .toString() );
+        orgUnit.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" )
+            .build( unit.getId() ).toString() );
         orgUnit.setDownloadActivityPlanUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activitiyplan" )
             .build( unit.getId() ).toString() );
         orgUnit.setUploadFacilityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "dataSets" )
@@ -121,7 +121,7 @@ public class MobileResource
         orgUnit.setUpdateProgramUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "programs" )
             .build( unit.getId() ).toString() );
         orgUnit.setUpdateDataSetUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "updateDataSets" )
-            .build( unit.getId() ).toString()  );
+            .build( unit.getId() ).toString() );
         return orgUnit;
     }
 

@@ -96,19 +96,19 @@ public class Activity
         dout.writeBoolean( late );
         dout.writeLong( this.getDueDate().getTime() );
     }
-    
+
     @Override
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
         this.task = new Task();
         task.deSerialize( dataInputStream );
-        
+
         this.beneficiary = new Beneficiary();
         beneficiary.deSerialize( dataInputStream );
-        
+
         this.late = dataInputStream.readBoolean();
-        this.dueDate = new Date(dataInputStream.readLong());
+        this.dueDate = new Date( dataInputStream.readLong() );
     }
 
 }

@@ -61,8 +61,8 @@ public class Beneficiary
     @XmlAttribute
     private int age;
 
-    @XmlElementWrapper(name="attributes")
-    @XmlElement(name="attribute")
+    @XmlElementWrapper( name = "attributes" )
+    @XmlElement( name = "attribute" )
     private List<PatientAttribute> patientAttValues;
 
     private PatientAttribute groupAttribute;

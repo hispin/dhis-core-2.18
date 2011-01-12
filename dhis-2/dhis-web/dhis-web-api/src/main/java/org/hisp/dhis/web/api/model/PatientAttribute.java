@@ -33,7 +33,8 @@ import java.io.IOException;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-public class PatientAttribute implements DataStreamSerializable
+public class PatientAttribute
+    implements DataStreamSerializable
 {
     private String name;
 
@@ -44,11 +45,11 @@ public class PatientAttribute implements DataStreamSerializable
         this.name = name;
         this.value = value;
     }
-    
+
     public PatientAttribute()
-    {   
+    {
     }
-    
+
     @XmlAttribute
     public String getName()
     {

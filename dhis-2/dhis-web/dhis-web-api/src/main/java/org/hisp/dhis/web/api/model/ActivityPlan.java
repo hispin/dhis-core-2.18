@@ -42,7 +42,7 @@ public class ActivityPlan
 
     private List<Activity> activitiesList;
 
-    @XmlElement(name="activity")
+    @XmlElement( name = "activity" )
     public List<Activity> getActivitiesList()
     {
         return activitiesList;

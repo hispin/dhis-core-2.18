@@ -47,11 +47,10 @@ public class OrgUnit
     private String uploadFacilityReportUrl;
 
     private String uploadActivityReportUrl;
-    
-    private String updateProgramUrl;
-    
-    private String updateDataSetUrl;
 
+    private String updateProgramUrl;
+
+    private String updateDataSetUrl;
 
     @XmlAttribute
     public int getId()
@@ -113,7 +112,7 @@ public class OrgUnit
     public void setUploadActivityReportUrl( String uploadActivityReportUrl )
     {
         this.uploadActivityReportUrl = uploadActivityReportUrl;
-    }    
+    }
 
     public String getUpdateDataSetUrl()
     {

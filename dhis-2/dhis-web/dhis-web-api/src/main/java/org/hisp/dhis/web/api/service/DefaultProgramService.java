@@ -52,7 +52,7 @@ public class DefaultProgramService
     private org.hisp.dhis.program.ProgramService programService;
 
     private org.hisp.dhis.i18n.I18nService i18nService;
-    
+
     private org.hisp.dhis.web.api.service.ModelMapping modelMapping;
 
     // -------------------------------------------------------------------------
@@ -75,20 +75,20 @@ public class DefaultProgramService
     {
         List<Program> programs = new ArrayList<Program>();
         boolean isExisted = false;
-        
-        //Get all Program belong to this OrgUnit
+
+        // Get all Program belong to this OrgUnit
         List<Program> serverPrograms = this.getPrograms( unit, localeString );
         for ( int i = 0; i < serverPrograms.size(); i++ )
         {
             Program program = serverPrograms.get( i );
-            
-            //Loop thought the list of program from client
+
+            // Loop thought the list of program from client
             for ( int j = 0; j < programsFromClient.getModels().size(); j++ )
             {
                 Model model = programsFromClient.getModels().get( j );
                 if ( program.getId() == model.getId() )
                 {
-                    //Version is different
+                    // Version is different
                     if ( program.getVersion() != Integer.parseInt( model.getName() ) )
                     {
                         programs.add( program );
@@ -96,7 +96,7 @@ public class DefaultProgramService
                     }
                 }
             }
-            //Server has more program than client
+            // Server has more program than client
             if ( isExisted == false )
             {
                 programs.add( program );
@@ -166,10 +166,10 @@ public class DefaultProgramService
     {
         this.i18nService = i18nService;
     }
-    
+
     @Required
-	public void setModelMapping(
-			org.hisp.dhis.web.api.service.ModelMapping modelMapping) {
-		this.modelMapping = modelMapping;
-	}
+    public void setModelMapping( org.hisp.dhis.web.api.service.ModelMapping modelMapping )
+    {
+        this.modelMapping = modelMapping;
+    }
 }

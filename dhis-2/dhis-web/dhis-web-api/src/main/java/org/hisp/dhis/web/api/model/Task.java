@@ -31,14 +31,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Task implements DataStreamSerializable
+public class Task
+    implements DataStreamSerializable
 {
-    private int id;   
-    
+    private int id;
+
     private int programStageId;
-    
+
     private int programId;
-    
+
     private boolean completed;
 
     public int getId()
@@ -49,7 +50,7 @@ public class Task implements DataStreamSerializable
     public void setId( int id )
     {
         this.id = id;
-    }    
+    }
 
     public int getProgramStageId()
     {
@@ -60,7 +61,7 @@ public class Task implements DataStreamSerializable
     {
         this.programStageId = programStageId;
     }
-    
+
     public int getProgramId()
     {
         return programId;
@@ -85,10 +86,10 @@ public class Task implements DataStreamSerializable
     public void serialize( DataOutputStream dout )
         throws IOException
     {
-        dout.writeInt(this.getId());
-        dout.writeInt(this.getProgramStageId()); 
+        dout.writeInt( this.getId() );
+        dout.writeInt( this.getProgramStageId() );
         dout.writeInt( this.getProgramId() );
-        dout.writeBoolean(this.isCompleted());
+        dout.writeBoolean( this.isCompleted() );
     }
 
     @Override
@@ -96,6 +97,6 @@ public class Task implements DataStreamSerializable
         throws IOException
     {
         // Fixme
-        
+
     }
 }
