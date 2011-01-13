@@ -187,7 +187,7 @@ public class DefaultIndicatorDataMart
                         indicatorValue.setOrganisationUnitId( unit.getId() );
                         indicatorValue.setLevel( level );
                         indicatorValue.setAnnualized( getAnnualizationString( indicator.getAnnualized() ) );
-                        indicatorValue.setFactor( annualizedFactor );
+                        indicatorValue.setFactor( getRounded( annualizedFactor, DECIMALS ) );
                         indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
                         indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );
                         indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
