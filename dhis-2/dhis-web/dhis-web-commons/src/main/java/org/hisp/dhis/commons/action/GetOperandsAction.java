@@ -110,6 +110,13 @@ public class GetOperandsAction
         return operands;
     }
 
+    private String key;
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -120,11 +127,13 @@ public class GetOperandsAction
 
         if ( id == null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
+            dataElements = new ArrayList<DataElement>( dataElementService
+                .searchAggregateableDataElementsByName( key != null ? key : "" ) );
         }
         else
         {
-            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsByGroupId( id ) );
+            dataElements = new ArrayList<DataElement>( dataElementService.searchDataElementsByGroupAndName( id,
+                key != null ? key : "" ) );
         }
 
         if ( dataSetId != null )
@@ -149,7 +158,7 @@ public class GetOperandsAction
 
             this.paging = createPaging( operands.size() );
 
-            operands = operands.subList( paging.getStartPos(), paging.getEndPos() );
+            operands = operands.subList( paging.getStartPos(), paging.getEndPos() + 1 );
 
         }
 

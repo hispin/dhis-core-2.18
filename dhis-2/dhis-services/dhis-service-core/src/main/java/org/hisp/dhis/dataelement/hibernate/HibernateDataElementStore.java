@@ -27,6 +27,8 @@ package org.hisp.dhis.dataelement.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -43,6 +45,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
@@ -58,7 +61,8 @@ import org.hisp.dhis.system.util.TextUtils;
  *          larshelg $
  */
 public class HibernateDataElementStore
-    extends HibernateGenericStore<DataElement> implements DataElementStore
+    extends HibernateGenericStore<DataElement>
+    implements DataElementStore
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -191,6 +195,43 @@ public class HibernateDataElementStore
         Criteria criteria = session.createCriteria( DataElement.class );
 
         criteria.add( Restrictions.in( "type", types ) );
+
+        return criteria.list();
+    }
+
+    @Override
+    public Collection<DataElement> searchAggregateableDataElementsByName( String key )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Set<String> types = new HashSet<String>();
+
+        types.add( DataElement.VALUE_TYPE_INT );
+        types.add( DataElement.VALUE_TYPE_BOOL );
+
+        Criteria criteria = session.createCriteria( DataElement.class );
+
+        criteria.add( Restrictions.in( "type", types ) );
+        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
+
+        return criteria.list();
+    }
+
+    public Collection<DataElement> searchDataElementsByGroupAndName( DataElementGroup group, String key )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Set<Integer> ids = new HashSet<Integer>();
+
+        for ( DataElement dataElement : group.getMembers() )
+        {
+            ids.add( dataElement.getId() );
+        }
+
+        Criteria criteria = session.createCriteria( DataElement.class );
+
+        criteria.add( Restrictions.in( "id", ids ) );
+        criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
 
         return criteria.list();
     }
@@ -382,7 +423,7 @@ public class HibernateDataElementStore
     {
         return getLikeName( name );
     }
-    
+
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
         return getBetween( first, max );
@@ -402,7 +443,7 @@ public class HibernateDataElementStore
     {
         return getCountByName( name );
     }
-    
+
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
@@ -454,4 +495,5 @@ public class HibernateDataElementStore
             throw new RuntimeException( "Failed to get all operands", ex );
         }
     }
+
 }

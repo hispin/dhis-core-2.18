@@ -42,7 +42,9 @@
 		<td></td>
 		<td valign="top">
 			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
-			<input type="text" id="filter" name="filter" style="width:450px" onkeyup="filterList( this.value, 'dataElementId' )"/><br/>
+			<input type="text" id="filter" name="filter" style="width:400px"/>
+			<a href="javascript:void()" onclick="getOperandsByDataElementGroup()"><img src="../images/search.png"/></a>
+			<br/>
 
 			<select id="dataElementGroupId" name="dataElementGroupId" style="width:450px" onchange="getOperandsByDataElementGroup(this.value)">
 			</select><br/>
@@ -92,7 +94,7 @@
 	{
 		numerator = true;
 		
-		dataDictionary.loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]" );	
+		dataDictionary.loadDataElementGroups( "#indicator-expression-container select[id=dataElementGroupId]");	
 		
 		validator.resetForm();
 		
@@ -135,9 +137,11 @@
 	{
 		var aggregationOperator = getRadioValue( 'aggregationOperator' );
 		
-		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");	
+		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");
+		
+		var key = getFieldValue( "indicator-expression-container input[id=filter]");
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator} , usepaging:true );	
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator, usepaging:true, key:key } );	
 
 		checkAggregationOperator();
 	}	
