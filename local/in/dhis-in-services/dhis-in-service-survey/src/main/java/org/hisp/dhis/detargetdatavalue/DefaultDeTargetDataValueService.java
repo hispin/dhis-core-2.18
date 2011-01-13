@@ -26,12 +26,129 @@
  */
 package org.hisp.dhis.detargetdatavalue;
 
+import java.util.Collection;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.detarget.DeTarget;
+import org.hisp.dhis.detarget.DeTargetMember;
+import org.hisp.dhis.source.Source;
+
 /**
  * @author Mithilesh Kumar Thakur
  *
  * @version DefaultDeTargetDataValueService.java Jan 13, 2011 10:36:40 AM
  */
-public class DefaultDeTargetDataValueService
+public class DefaultDeTargetDataValueService implements DeTargetDataValueService
 {
+    
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private DeTargetDataValueStore deTargetDataValueStore;
+
+    public void setDeTargetDataValueStore( DeTargetDataValueStore deTargetDataValueStore )
+    {
+        this.deTargetDataValueStore = deTargetDataValueStore;
+    }
+
+    // -------------------------------------------------------------------------
+    // Basic DeTargetDataValue
+    // -------------------------------------------------------------------------
+    
+    public void addDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        if ( deTargetDataValue.getValue() != null )
+        {
+            deTargetDataValueStore.addDeTargetDataValue( deTargetDataValue );
+        }
+    }
+    
+    public void updateDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        deTargetDataValueStore.updateDeTargetDataValue( deTargetDataValue );
+    }
+
+    public void deleteDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        deTargetDataValueStore.deleteDeTargetDataValue( deTargetDataValue );
+    }
+        
+    public  int deleteDeTargetDataValuesBySource( Source source )
+    {
+        return deTargetDataValueStore.deleteDeTargetDataValuesBySource( source );
+    }
+    
+    public int deleteDeTargetDataValuesByDeTarget( DeTarget deTarget )
+    {
+        return deTargetDataValueStore.deleteDeTargetDataValuesByDeTarget( deTarget );
+    }
+    
+    public int deleteDeTargetDataValuesByDataElementAndCategoryOptionCombo( DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    {
+        return deTargetDataValueStore.deleteDeTargetDataValuesByDataElementAndCategoryOptionCombo( dataelement, deoptioncombo );
+    }
+    
+    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, Source source )
+    {
+        return deTargetDataValueStore.deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( deTarget, dataelement, deoptioncombo, source );
+    }
+    
+    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget )
+    {
+        return deTargetDataValueStore.getDeTargetDataValue( source, deTarget );
+    }
+    
+    public Collection<DeTargetDataValue> getAllDeTargetDataValues()
+    {
+        return deTargetDataValueStore.getAllDeTargetDataValues();
+    }
+    
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source )
+    {
+        return deTargetDataValueStore.getDeTargetDataValues( source );
+    }
+   
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget )
+    {
+        return deTargetDataValueStore.getDeTargetDataValues( source, deTarget );
+    }
+    
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<Source> sources, DeTarget deTarget )
+    {
+        return deTargetDataValueStore.getDeTargetDataValues( sources, deTarget );
+    }
+    
+   public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, Collection<DeTarget> deTargets )
+   {
+       return deTargetDataValueStore.getDeTargetDataValues( source, deTargets );
+   }
+   
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<? extends Source> sources )
+   {
+       return deTargetDataValueStore.getDeTargetDataValues( deTarget, sources );
+   }
+    
+   public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults )
+   {
+       return deTargetDataValueStore.getDeTargetDataValues( deTargets, sources, firstResult, maxResults );
+   }
+    
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget )
+   {
+       return deTargetDataValueStore.getDeTargetDataValues( deTarget );
+   }
+   
+   public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   {
+       return deTargetDataValueStore.getDeTargetDataValue( source, deTarget, dataelement, deoptioncombo );
+   }
+   
+   public Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
+   {
+       return deTargetDataValueStore.getDeTargetMemberDataValues( deTargetMember ,dataelement ,decategoryOptionCombo );
+   }
 
 }
+

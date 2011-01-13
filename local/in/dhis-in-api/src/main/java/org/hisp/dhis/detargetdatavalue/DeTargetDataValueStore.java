@@ -31,6 +31,7 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
+import org.hisp.dhis.detarget.DeTargetMember;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -40,6 +41,7 @@ import org.hisp.dhis.source.Source;
  */
 public interface DeTargetDataValueStore
 {
+    
     String ID = DeTargetDataValueStore.class.getName();
     
     // -------------------------------------------------------------------------
@@ -185,7 +187,7 @@ public interface DeTargetDataValueStore
      *         and Sources, limited by the firstResult and maxResults property.
      */
     Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults );    
-    
+    Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo );
     /**
      * Returns all DeTargetDataValue for a given collection of DeTarget.
      * 
