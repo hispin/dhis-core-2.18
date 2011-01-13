@@ -112,6 +112,7 @@ public class GetDataElementsForTabularAnalysisAction implements Action
 
         if ( id == null || id == ALL )
         {
+            System.out.println("The id is null");
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         } 
         else

@@ -313,6 +313,25 @@
             </result>
         </action>       
 		
+		<!-- Target Analyser Module Stuff -->
+		
+		<action name="targetAnalyser"
+			class="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-dashboard/targetAnalysisFront.vm</param>
+			<param name="menu">/dhis-web-dashboard/menuWithTreeForTarget.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ta.js,javascript/db.js,javascript/tr.js,javascript/hashtable.js,javascript/date.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>
+		
+		<action name="getOrgUnitName"
+			class="org.hisp.dhis.dataanalyser.action.GetOrgUnitNameAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-dashboard/responseOrgUnitName.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
 		
 		
 		<!-- DataStatus Module Stuff -->
@@ -620,15 +639,15 @@
 		<!-- TabularAnalysis Module Stuff -->
 		
 		<action name="tabularAnalysisForm"
-			class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-dashboard/tabularAnalysisFront.vm</param>
-			<param name="menu">/dhis-web-dashboard/menuWithTreeForTA.vm</param>
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ta.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
+            class="org.hisp.dhis.dataanalyser.ta.action.GenerateTabularAnalysisFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-dashboard/tabularAnalysisFront.vm</param>
+            <param name="menu">/dhis-web-dashboard/menuWithTreeForTA.vm</param>
+            <param name="javascripts">
+                ../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ta.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
 		
 		<!--
 		<action name="tabularAnalysisResult"
