@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -56,6 +57,7 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.DataValue;
+import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
 import org.hisp.dhis.web.api.utils.PeriodUtil;
@@ -134,7 +136,7 @@ public class FacilityReportingServiceImpl
         ds.setId( dataSet.getId() );
         // Name defaults to short name with fallback to name if empty
         String name = dataSet.getShortName();
-        if ( name == null || name.trim().isEmpty() )
+        if ( emptyString( name ) )
         {
             name = dataSet.getName();
         }
@@ -220,29 +222,84 @@ public class FacilityReportingServiceImpl
             throw new NotAllowedException( "DATASET_LOCKED" );
         }
 
-        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
-        Collection<Integer> dataElementIds = new ArrayList<Integer>( dataSetValue.getDataValues().size() );
-
-        for ( DataValue dv : dataSetValue.getDataValues() )
-        {
-            dataElementIds.add( dv.getId() );
-        }
-
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
-        for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
+        for ( org.hisp.dhis.dataelement.DataElement dataElement : dataSet.getDataElements() )
         {
-            if ( !dataElementIds.contains( dataElement.getId() ) )
-            {
-                log.info( "Dataset '" + dataSet.getName() + "' for org unit '" + unit.getName()
-                    + "' missing data element '" + dataElement.getName() + "'" );
-            }
             dataElementMap.put( dataElement.getId(), dataElement );
         }
 
-        // Everything is fine, hence save
-        saveDataValues( dataSetValue, dataElementMap, selectedPeriod, unit,
-            categoryService.getDefaultDataElementCategoryOptionCombo() );
+        Set<Integer> handled = new HashSet<Integer>();
 
+        for ( DataValue dv : dataSetValue.getDataValues() )
+        {
+            int elementId = dv.getId();
+
+            if ( handled.contains( elementId ) )
+            {
+                log.info( "Multiple values for element " + elementId + " submitted. Not handling this value." );
+                continue;
+            }
+
+            org.hisp.dhis.dataelement.DataElement dataElement = dataElementMap.get( elementId );
+
+            if ( dataElement == null )
+            {
+                log.info( "Data element value submitted for data element " + elementId + ", that is not in data set '"
+                    + dataSet.getName() + "'" );
+                handled.add( elementId );
+                continue;
+            }
+
+            if ( emptyString( dv.getValue() ) )
+            {
+                log.info( "Empty data value for data element " + elementId + " not saved" );
+                handled.add( elementId );
+                continue;
+            }
+
+            saveValue(unit, selectedPeriod, dataElement, dv);
+
+            handled.add( elementId );
+        }
+        reportMissingValues( dataSet, handled );
+    }
+
+    private void saveValue(OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement, DataValue dv) {
+
+        String value = dv.getValue().trim();
+
+        DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
+            .getCategoryOptComboID() );
+
+        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( unit, dataElement,
+            period, cateOptCombo );
+
+        if ( dataValue == null )
+        {
+            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, value, "",
+                new Date(), "", cateOptCombo );
+            dataValueService.addDataValue( dataValue );
+        }
+        else
+        {
+            dataValue.setValue( value );
+            dataValue.setTimestamp( new Date() );
+            dataValueService.updateDataValue( dataValue );
+        }
+
+    }
+    
+    private void reportMissingValues( org.hisp.dhis.dataset.DataSet dataSet, Set<Integer> handled )
+    {
+        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
+        for ( org.hisp.dhis.dataelement.DataElement element : dataElements )
+        {
+            if ( !handled.contains( element.getId() ) )
+            {
+                log.info( "Submitted values for dataset '" + dataSet.getName() + "' missing data element '" + element.getName() + "'" );
+
+            }
+        }
     }
 
     // -------------------------------------------------------------------------
@@ -256,53 +313,9 @@ public class FacilityReportingServiceImpl
         return false;
     }
 
-    private void saveDataValues( DataSetValue dataSetValue,
-        Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap, Period period, OrganisationUnit orgUnit,
-        DataElementCategoryOptionCombo optionCombo )
+    private boolean emptyString( String value )
     {
-
-        org.hisp.dhis.dataelement.DataElement dataElement;
-        String value;
-
-        for ( DataValue dv : dataSetValue.getDataValues() )
-        {
-            value = dv.getValue();
-            DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
-                .getCategoryOptComboID() );
-            if ( value != null && value.trim().length() == 0 )
-            {
-                value = null;
-            }
-
-            if ( value != null )
-            {
-                value = value.trim();
-            }
-
-            dataElement = dataElementMap.get( dv.getId() );
-            org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period,
-                cateOptCombo );
-
-            if ( dataValue == null )
-            {
-                if ( value != null )
-                {
-                    dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, orgUnit, value, "",
-                        new Date(), "", cateOptCombo );
-                    dataValueService.addDataValue( dataValue );
-                }
-            }
-            else
-            {
-                if ( value != null )
-                {
-                    dataValue.setValue( value );
-                    dataValue.setTimestamp( new Date() );
-                    dataValueService.updateDataValue( dataValue );
-                }
-            }
-
-        }
+        return value == null || value.trim().isEmpty();
     }
 
     public Period getPeriod( String periodName, PeriodType periodType )
