@@ -114,8 +114,7 @@ public interface DataElementService
      * 
      * @param key the name of the DataElement to return.
      * @return List of DataElements with a given key, or all dataelements if no match.
-     */  
-    
+     */
     Collection<DataElement> searchDataElementByName( String key );
     /**
      * Returns a DataElement with a given short name.
@@ -182,16 +181,7 @@ public interface DataElementService
      * 
      * @return a collection of all active DataElements, or an empty collection
      *         if there are no active DataElements.
-     */    
-    Collection<DataElement> searchAggregateableDataElementsByName( String key );
-
-    /**
-     * Returns all active DataElements.
-     * 
-     * @return a collection of all active DataElements, or an empty collection
-     *         if there are no active DataElements.
      */
-    
     Collection<DataElement> getAllActiveDataElements();
 
     /**
@@ -473,14 +463,6 @@ public interface DataElementService
      * @return data elements with identifier in the given id.
      */
     Collection<DataElement> getDataElementsByGroupId( int groupId );
-    
-    /**
-     * Returns data elements with identifier in the given id.
-     * 
-     * @param groupId is the id of data element group.
-     * @return data elements with identifier in the given id.
-     */
-    Collection<DataElement> searchDataElementsByGroupAndName( int groupId, String key );
 
     /**
      * Defines the given data elements as zero is significant. All other data elements

@@ -27,6 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * @author Kristian Nordal
@@ -219,18 +221,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getAggregateableDataElements() );
     }
 
-    public Collection<DataElement> searchAggregateableDataElementsByName( String key )
-    {
-        return i18n( i18nService, dataElementStore.searchAggregateableDataElementsByName( key ) );
-    }
-
-    @Override
-    public Collection<DataElement> searchDataElementsByGroupAndName( int id, String key )
-    {
-        return i18n( i18nService, dataElementStore.searchDataElementsByGroupAndName( dataElementGroupStore.get( id ),
-            key ) );
-    }
-
     public Collection<DataElement> getAllActiveDataElements()
     {
         return i18n( i18nService, dataElementStore.getAllActiveDataElements() );
@@ -240,10 +230,9 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementByName( name ) );
     }
-
-    public Collection<DataElement> searchDataElementByName( String key )
-    {
-        return i18n( i18nService, dataElementStore.searchDataElementByName( key ) );
+    
+    public Collection<DataElement> searchDataElementByName( String key ){
+    	return i18n( i18nService, dataElementStore.searchDataElementByName( key ) );
     }
 
     public DataElement getDataElementByAlternativeName( String alternativeName )
@@ -368,7 +357,7 @@ public class DefaultDataElementService
     {
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
-
+    
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
         return dataElementStore.getDataElementsLikeName( name );
@@ -378,7 +367,7 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElementsBetween( first, max );
     }
-
+    
     public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
         return dataElementStore.getDataElementsBetweenByName( name, first, max );
@@ -388,12 +377,12 @@ public class DefaultDataElementService
     {
         return dataElementStore.getDataElementCount();
     }
-
+    
     public int getDataElementCountByName( String name )
     {
         return dataElementStore.getDataElementCountByName( name );
     }
-
+    
     // -------------------------------------------------------------------------
     // CalculatedDataElement
     // -------------------------------------------------------------------------
@@ -524,7 +513,7 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------
@@ -616,7 +605,7 @@ public class DefaultDataElementService
     {
         return dataElementGroupStore.getBetween( first, max );
     }
-
+    
     public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
     {
         return dataElementGroupStore.getBetweenByName( name, first, max );
@@ -626,12 +615,12 @@ public class DefaultDataElementService
     {
         return dataElementGroupStore.getCount();
     }
-
+    
     public int getDataElementGroupCountByName( String name )
     {
         return dataElementGroupStore.getCountByName( name );
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElementGroupSet
     // -------------------------------------------------------------------------
@@ -706,7 +695,6 @@ public class DefaultDataElementService
     {
         return dataElementGroupSetStore.getBetweenByName( name, first, max );
     }
-
     // -------------------------------------------------------------------------
     // DataElementOperand
     // -------------------------------------------------------------------------
@@ -720,5 +708,6 @@ public class DefaultDataElementService
     {
         return dataElementStore.getAllGeneratedOperands( dataElements );
     }
+
 
 }
