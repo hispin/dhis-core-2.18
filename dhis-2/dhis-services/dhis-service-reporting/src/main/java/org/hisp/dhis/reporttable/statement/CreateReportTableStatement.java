@@ -92,6 +92,12 @@ public class CreateReportTableStatement
         // ---------------------------------------------------------------------
 
         buffer.append( ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME + SPACE + LONG_TEXT_COLUMN_TYPE + SEPARATOR );
+
+        // ---------------------------------------------------------------------
+        // Organisation unit is parent
+        // ---------------------------------------------------------------------
+
+        buffer.append( ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME + SPACE + SHORT_TEXT_COLUMN_TYPE + SEPARATOR );
         
         // ---------------------------------------------------------------------
         // Crosstab

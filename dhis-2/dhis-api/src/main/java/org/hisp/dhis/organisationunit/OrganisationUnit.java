@@ -79,8 +79,6 @@ public class OrganisationUnit
 
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
     
-    private transient int level;
-    
     private String contactPerson;
     
     private String address;
@@ -88,6 +86,10 @@ public class OrganisationUnit
     private String email;
     
     private String phoneNumber;
+
+    private transient int level;
+    
+    private transient boolean currentParent;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -488,16 +490,6 @@ public class OrganisationUnit
         this.groups = groups;
     }
 
-    public int getLevel()
-    {
-        return level;
-    }
-
-    public void setLevel( int level )
-    {
-        this.level = level;
-    }
-
     public String getContactPerson()
     {
         return contactPerson;
@@ -537,5 +529,24 @@ public class OrganisationUnit
     {
         this.phoneNumber = phoneNumber;
     }
-    
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel( int level )
+    {
+        this.level = level;
+    }
+
+    public boolean isCurrentParent()
+    {
+        return currentParent;
+    }
+
+    public void setCurrentParent( boolean currentParent )
+    {
+        this.currentParent = currentParent;
+    }
 }
