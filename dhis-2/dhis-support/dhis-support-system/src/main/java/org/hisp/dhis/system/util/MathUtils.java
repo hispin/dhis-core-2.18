@@ -27,6 +27,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -134,7 +136,22 @@ public class MathUtils
         
         return Math.round( value * factor ) / factor;
     }
-    
+
+    /**
+     * Returns a string representation of number rounded to given number
+     * of significant figures
+     * 
+     * @param value
+     * @param significantFigures
+     * @return
+     */
+    public static String roundToString(double value, int significantFigures)
+    {
+        MathContext mc = new MathContext(significantFigures);
+        BigDecimal num = new BigDecimal(value);
+        return num.round( mc ).toPlainString();
+    }
+
     /**
      * Returns the given number if larger or equal to minimun, otherwise minimum.
      * 
