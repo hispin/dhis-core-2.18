@@ -47,6 +47,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.util.MathUtils;
 
 /**
  * Exports pivot view synchronously (using calling thread)
@@ -61,6 +62,9 @@ public class ExportPivotViewService {
 
     // service can export either aggregated datavalues or aggregated indicator values
     public enum RequestType { DATAVALUE, INDICATORVALUE };
+
+    // precision to use when formatting double values
+    public static int PRECISION = 5;
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -172,7 +176,7 @@ public class ExportPivotViewService {
 
         AggregatedIndicatorValue aiv = Iterator.next();
 
-        writer.write("# period, orgunit, indicator, factor, numerator, denominator, annualized, value\n");
+        writer.write("# period, orgunit, indicator, factor, numerator, denominator\n");
         while (aiv != null)
         {
             // process adv ..
@@ -182,11 +186,9 @@ public class ExportPivotViewService {
             writer.write( "'" + period + "',");
             writer.write( aiv.getOrganisationUnitId() + ",");
             writer.write( aiv.getIndicatorId() + ",");
-            writer.write( aiv.getFactor() + ",");
-            writer.write( aiv.getNumeratorValue() + ",");
-            writer.write( aiv.getDenominatorValue() + ",");
-            writer.write( "'" + aiv.getAnnualized() + "',");
-            writer.write( aiv.getValue() + "\n");
+            writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION) + ",");
+            writer.write( MathUtils.roundToString(aiv.getNumeratorValue(), PRECISION) + ",");
+            writer.write( MathUtils.roundToString(aiv.getDenominatorValue(), PRECISION) + "\n");
 
             aiv = Iterator.next();
         }
