@@ -83,7 +83,7 @@ public class ActivePlanReportsFormAction
 
         periodList = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
 
-       reportList = new ArrayList<Report>();
+        reportList = new ArrayList<Report>();
 
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
@@ -116,7 +116,7 @@ public class ActivePlanReportsFormAction
         String reportId = "";
         String reportName = "";
         String reportType = "";
-        String reportLevel = "";
+        Integer reportProgramId = 0;
         String reportModel = "";
         String reportFileName = "";
 
@@ -161,12 +161,12 @@ public class ActivePlanReportsFormAction
                     NodeList textreportFileNameList = reportFileNameElement.getChildNodes();
                     reportFileName = ((Node) textreportFileNameList.item( 0 )).getNodeValue().trim();
 
-                    NodeList reportLevelList = reportElement.getElementsByTagName( "level" );
+                    NodeList reportLevelList = reportElement.getElementsByTagName( "program" );
                     Element reportLevelElement = (Element) reportLevelList.item( 0 );
                     NodeList textreportLevelList = reportLevelElement.getChildNodes();
-                    reportLevel = ((Node) textreportLevelList.item( 0 )).getNodeValue().trim();
+                    reportProgramId = Integer.parseInt( ((Node) textreportLevelList.item( 0 )).getNodeValue().trim() );
 
-                   Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,reportLevel );
+                   Report reportObj = new Report( reportId, reportName, reportType, reportModel, reportFileName,reportProgramId );
                    reportList.add( reportObj );
 
                 }

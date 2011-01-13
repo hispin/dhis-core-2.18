@@ -475,6 +475,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
 		<property name="reportService" ref="org.hisp.dhis.reports.ReportService"/>
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
 	<!-- Advanced Reports -->

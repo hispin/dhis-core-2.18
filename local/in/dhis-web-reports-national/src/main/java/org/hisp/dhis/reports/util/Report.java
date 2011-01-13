@@ -41,6 +41,11 @@ public class Report
      */
     private String level;
 
+    /**
+     * program is the NBITS Program id
+     */
+    private Integer program;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -58,6 +63,16 @@ public class Report
         this.model = model;
         this.fileName = fileName;
         this.level = level;
+    }
+
+    public Report( String id, String name, String type, String model, String fileName, Integer program )
+    {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.model = model;
+        this.fileName = fileName;
+        this.program = program;
     }
     
     public Report( String id, String name, String type, String model, String fileName, String set, String level )
@@ -143,6 +158,16 @@ public class Report
     public String getLevel()
     {
         return level;
+    }
+
+    public Integer getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Integer program )
+    {
+        this.program = program;
     }
 
 }
