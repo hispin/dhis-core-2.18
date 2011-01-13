@@ -143,6 +143,25 @@ public interface DataElementStore
      * @return a collection of all active DataElements, or an empty collection
      *         if there are no active DataElements.
      */
+    
+    Collection<DataElement> searchAggregateableDataElementsByName( String key );
+
+    /**
+     * Returns all active DataElements.
+     * 
+     * @return a collection of all active DataElements, or an empty collection
+     *         if there are no active DataElements.
+     */
+    
+    Collection<DataElement> searchDataElementsByGroupAndName( DataElementGroup dataElementGroup, String key );
+
+    /**
+     * Returns all active DataElements.
+     * 
+     * @return a collection of all active DataElements, or an empty collection
+     *         if there are no active DataElements.
+     */
+    
     Collection<DataElement> getAllActiveDataElements();
 
     /**
