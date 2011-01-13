@@ -223,11 +223,13 @@
       <action name="dataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
         <result name="success" type="outputStreamResult" />
         <result name="client-error" type="httpheader" />
+        <param name="requestType">DATAVALUE</param>
       </action>
 
       <action name="indicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
         <result name="success" type="outputStreamResult" />
         <result name="client-error" type="httpheader" />
+        <param name="requestType">INDICATORVALUE</param>
       </action>
 
   </package>

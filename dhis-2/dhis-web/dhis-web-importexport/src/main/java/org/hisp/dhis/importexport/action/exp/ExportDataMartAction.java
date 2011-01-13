@@ -28,6 +28,7 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import org.hisp.dhis.user.CurrentUserService;
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
@@ -135,6 +137,13 @@ public class ExportDataMartAction
     {
         this.dataSourceRoot = dataSourceRoot;
     }
+    
+    private RequestType requestType;
+
+    public void setRequestType( RequestType requestType )
+    {
+        this.requestType = requestType;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -152,15 +161,6 @@ public class ExportDataMartAction
         // ---------------------------------------------------------------------
         // Check all parameters
         // ---------------------------------------------------------------------
-
-        // first see how action was called
-        String servletPath = request.getServletPath();
-        String requestTypeStr = servletPath.substring(servletPath.lastIndexOf( '/') + 1 );
-
-        log.info( "Request type : " + requestTypeStr );
-
-        RequestType requestType
-            = requestTypeStr.equals( "dataValues.action") ? RequestType.DATAVALUE : RequestType.INDICATORVALUE ;
 
         String paramError = null;
 
@@ -217,11 +217,15 @@ public class ExportDataMartAction
             return CLIENT_ERROR;
         }
 
+        // timestamp filename
+        SimpleDateFormat format = new SimpleDateFormat( "_yyyy_MM_dd_HHmm_ss" );
+        String fileName = requestType + format.format(Calendar.getInstance().getTime()) + ".csv.gz";
+
         // prepare to write output
         OutputStream out = null;
 
         response.setContentType( "application/gzip");
-        response.addHeader( "Content-Disposition", "attachment; filename=\"datavalues.csv.gz\"" );
+        response.addHeader( "Content-Disposition", "attachment; filename=\""+fileName+"\"" );
         response.addHeader( "Cache-Control", "no-cache" );
         response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
 
