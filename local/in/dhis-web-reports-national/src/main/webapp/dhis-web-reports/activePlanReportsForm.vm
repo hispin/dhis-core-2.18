@@ -5,14 +5,14 @@
 
 	var reportModels = new HashTable();
 	var reportFileNames = new HashTable();
-	var reportLevels = new HashTable();
+	var reportPrograms = new HashTable();
 
 	// Report ids and its Models
 	#foreach($report in $reportList)
 		var reportId = ""+"$report.id";
 		reportModels.put(reportId,"$report.model");
 		reportFileNames.put(reportId,"$report.fileName");
-		reportLevels.put(reportId,"$report.level");
+		reportPrograms.put(reportId,"$report.program");
 	#end
 
 	function formValidations()
@@ -29,7 +29,7 @@
 
 		document.reportForm.reportModelTB.value = reportModels.get(document.reportForm.reportList.options[reportListIndex].value);
 		document.reportForm.reportFileNameTB.value = reportFileNames.get(document.reportForm.reportList.options[reportListIndex].value);
-		document.reportForm.reportLevelTB.value = reportLevels.get(document.reportForm.reportList.options[reportListIndex].value);
+		document.reportForm.reportProgramTB.value = reportPrograms.get(document.reportForm.reportList.options[reportListIndex].value);
 
 		return true;
 	}
@@ -86,7 +86,7 @@
 				<input type="hidden" name="ouLevelTB" id="ouLevelTB">
 				<input type="hidden" name="reportModelTB" id="reportModelTB">
 				<input type="hidden" name="reportFileNameTB" id="reportFileNameTB">
-				<input type="hidden" name="reportLevelTB" id="reportLevelTB">
+				<input type="hidden" name="reportProgramTB" id="reportProgramTB">
 			</td>
 		</tr>
 	</table>
