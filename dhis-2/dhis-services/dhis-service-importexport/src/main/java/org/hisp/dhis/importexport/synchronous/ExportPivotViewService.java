@@ -52,7 +52,6 @@ import org.hisp.dhis.period.PeriodService;
  * Exports pivot view synchronously (using calling thread)
  *
  * TODO: use exportparams and abstract service
- * TODO: implement indicator and width-wise queries
  *
  * @author bobj
  */
@@ -144,13 +143,14 @@ public class ExportPivotViewService {
 
         AggregatedDataValue adv = Iterator.next();
 
+        writer.write("# period, orgunit, dataelement, catoptcombo, value\n");
         while (adv != null)
         {
             // process adv ..
             int periodId = adv.getPeriodId();
             String period = periodService.getPeriod( periodId).getIsoDate();
 
-            writer.write( period + ",");
+            writer.write( "'" + period + "',");
             writer.write( adv.getOrganisationUnitId() + ",");
             writer.write( adv.getDataElementId() + ",");
             writer.write( adv.getCategoryOptionComboId() + ",");
@@ -172,19 +172,20 @@ public class ExportPivotViewService {
 
         AggregatedIndicatorValue aiv = Iterator.next();
 
+        writer.write("# period, orgunit, indicator, factor, numerator, denominator, annualized, value\n");
         while (aiv != null)
         {
             // process adv ..
             int periodId = aiv.getPeriodId();
             String period = periodService.getPeriod( periodId).getIsoDate();
 
-            writer.write( period + ",");
+            writer.write( "'" + period + "',");
             writer.write( aiv.getOrganisationUnitId() + ",");
             writer.write( aiv.getIndicatorId() + ",");
             writer.write( aiv.getFactor() + ",");
             writer.write( aiv.getNumeratorValue() + ",");
             writer.write( aiv.getDenominatorValue() + ",");
-            writer.write( aiv.getAnnualized() + ",");
+            writer.write( "'" + aiv.getAnnualized() + "',");
             writer.write( aiv.getValue() + "\n");
 
             aiv = Iterator.next();
