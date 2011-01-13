@@ -181,6 +181,8 @@ public class DefaultReportTableService
             if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
             {
                 OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+                organisationUnit.setCurrentParent( true );
+                reportTable.getRelativeUnits().add( organisationUnit );
                 reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
                 reportTable.setOrganisationUnitName( organisationUnit.getName() );
                 
@@ -507,6 +509,12 @@ public class DefaultReportTableService
                         // -----------------------------------------------------
 
                         grid.addValue( reportTable.getOrganisationUnitName() );
+
+                        // ---------------------------------------------------------------------
+                        // Organisation unit is parent
+                        // ---------------------------------------------------------------------
+
+                        grid.addValue( unit != null && unit.isCurrentParent() ? ReportTable.TRUE : ReportTable.FALSE );
                         
                         // -----------------------------------------------------
                         // Values
