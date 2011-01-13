@@ -201,7 +201,7 @@ public class DeTargetDataValue implements Serializable
         return period;
     }
 
-    public void setPeriodId( Period period )
+    public void setPeriod( Period period )
     {
         this.period = period;
     }

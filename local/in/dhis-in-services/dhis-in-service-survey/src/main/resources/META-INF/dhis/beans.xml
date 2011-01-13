@@ -52,19 +52,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="deTargetStore"
       ref="org.hisp.dhis.detarget.DeTargetStore"/>
   </bean>
-<!--  
-  <bean id="org.hisp.dhis.surveydatavalue.SurveyDataValueService"
-    class="org.hisp.dhis.surveydatavalue.DefaultSurveyDataValueService">
-    <property name="surveyDataValueStore"
-      ref="org.hisp.dhis.surveydatavalue.SurveyDataValueStore"/>
+ 
+  <bean id="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"
+    class="org.hisp.dhis.detargetdatavalue.DefaultDeTargetDataValueService">
+    <property name="deTargetDataValueStore"
+      ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore"/>
   </bean>   
-  
-  <bean id="org.hisp.dhis.target.DeTargetMappingService"
-    class="org.hisp.dhis.target.DefaultDeTargetMappingService">
-    <property name="deTargetMappingStore"
-      ref="org.hisp.dhis.target.DeTargetMappingStore"/>
-  </bean>	
--->	
+
 <!-- DeTarget Store definitions -->
 
   <bean id="org.hisp.dhis.detarget.DeTargetStore"
@@ -73,16 +67,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="deTargetDataValueService"
       ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/>        
   </bean>
- <!-- 
-  <bean id="org.hisp.dhis.surveydatavalue.SurveyDataValueStore"
-    class="org.hisp.dhis.surveydatavalue.hibernate.HibernateSurveyDataValueStore">
+ 
+  <bean id="org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore"
+    class="org.hisp.dhis.detargetdatavalue.hibernate.HibernateDeTargetDataValueStore">
       <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
-    
-  <bean id="org.hisp.dhis.target.DeTargetMappingStore"
-    class="org.hisp.dhis.target.HibernateDeTargetMappingStore">
-    <property name="sessionFactory" ref="sessionFactory"/>    
-  </bean>
--->	
-	
+
 </beans>

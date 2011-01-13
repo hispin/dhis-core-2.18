@@ -26,12 +26,245 @@
  */
 package org.hisp.dhis.detargetdatavalue.hibernate;
 
+import java.util.Collection;
+
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.detarget.DeTarget;
+import org.hisp.dhis.detarget.DeTargetMember;
+import org.hisp.dhis.detargetdatavalue.DeTargetDataValue;
+import org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore;
+
+import org.hisp.dhis.source.Source;
+
+
 /**
  * @author Mithilesh Kumar Thakur
  *
  * @version HibernateDeTargetDataValueStore.java Jan 13, 2011 10:37:20 AM
  */
-public class HibernateDeTargetDataValueStore
+public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
+    private SessionFactory sessionFactory;
 
+    public void setSessionFactory( SessionFactory sessionFactory )
+    {
+        this.sessionFactory = sessionFactory;
+    }
+    
+    // -------------------------------------------------------------------------
+    // HibernateSurveyDataValueStore's methods
+    // -------------------------------------------------------------------------
+
+    public void addDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.save( deTargetDataValue );
+    }
+        
+    public void updateDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( deTargetDataValue );
+    }
+    
+    public void deleteDeTargetDataValue( DeTargetDataValue deTargetDataValue )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.delete( deTargetDataValue );
+    }
+    
+    public int deleteDeTargetDataValuesBySource( Source source )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "delete DataValue where source = :source" );
+        query.setEntity( "source", source );
+
+        return query.executeUpdate();
+    }
+    
+    public int deleteDeTargetDataValuesByDeTarget( DeTarget deTarget )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "delete SurveyDataValue where survey = :survey" );
+        query.setEntity( "survey", deTarget );
+
+        return query.executeUpdate();
+    }
+    
+    public int deleteDeTargetDataValuesByDataElementAndCategoryOptionCombo( DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "delete SurveyDataValue where dataelement = :dataelement ,deoptioncombo =:deoptioncombo" );
+        query.setEntity( "dataelement", dataelement );
+        query.setEntity( "dataelement", dataelement );
+
+        return query.executeUpdate();
+    }
+    
+    public int deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo, Source source )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery( "delete SurveyDataValue where survey = :survey,dataelement = :dataelement, deoptioncombo = :deoptioncombo ,source = :source" );
+        query.setEntity( "deTarget", deTarget );
+        query.setEntity( "dataelement", dataelement );
+        query.setEntity( "deoptioncombo", deoptioncombo );
+        query.setEntity( "source", source );
+
+        return query.executeUpdate();
+    }
+   
+    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+
+        return (DeTargetDataValue) criteria.uniqueResult();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getAllDeTargetDataValues()
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public  Collection<DeTargetDataValue> getDeTargetDataValues( Collection<Source> sources, DeTarget deTarget )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.in( "sources", sources ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, Collection<DeTarget> deTargets )
+    {
+       Session session = sessionFactory.getCurrentSession();
+
+       Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+       criteria.add( Restrictions.eq( "source", source ) );
+       criteria.add( Restrictions.in( "deTargets", deTargets ) );
+
+       return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget, Collection<? extends Source> sources )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.in( "source", sources ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Collection<DeTarget> deTargets,  Collection<? extends Source> sources, int firstResult, int maxResults )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataValue.class );
+        criteria.add( Restrictions.in( "deTargets", deTargets ) );
+        criteria.add( Restrictions.in( "source", sources ) );
+
+        if ( maxResults != 0 )
+        {
+            criteria.addOrder( Order.asc( "deTargets" ) );
+            criteria.addOrder( Order.asc( "source" ) );
+
+            criteria.setFirstResult( firstResult );
+            criteria.setMaxResults( maxResults );
+        }
+
+        return criteria.list();
+    }
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "deTargetMember", deTargetMember ) );
+        criteria.add( Restrictions.eq( "dataelement", dataelement ) );
+        criteria.add( Restrictions.eq( "decategoryOptionCombo", decategoryOptionCombo ) );
+
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+
+        return criteria.list();
+    }
+   
+    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+        criteria.add( Restrictions.eq( "dataelement", dataelement ) );
+        criteria.add( Restrictions.eq( "deoptioncombo", deoptioncombo ) );
+
+        return (DeTargetDataValue) criteria.uniqueResult();
+    }
+    
 }
+
+    
+    
+
