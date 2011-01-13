@@ -514,7 +514,7 @@ public class DefaultReportTableService
                         // Organisation unit is parent
                         // ---------------------------------------------------------------------
 
-                        grid.addValue( unit != null && unit.isCurrentParent() ? ReportTable.TRUE : ReportTable.FALSE );
+                        grid.addValue( unit != null && unit.isCurrentParent() ? String.valueOf( 1 ) : String.valueOf( 0 ) );
                         
                         // -----------------------------------------------------
                         // Values

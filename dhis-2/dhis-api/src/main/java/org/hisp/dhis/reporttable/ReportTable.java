@@ -91,9 +91,6 @@ public class ReportTable
     public static final String TOTAL_COLUMN_PRETTY_PREFIX = "Total ";
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
-
-    public static final String TRUE = "true";
-    public static final String FALSE = "false";
     
     public static final List<String> DB_COLUMNS = Arrays.asList( DATAELEMENT_ID, CATEGORYCOMBO_ID, INDICATOR_ID, DATASET_ID, 
         PERIOD_ID, ORGANISATIONUNIT_ID, REPORTING_MONTH_COLUMN_NAME, PARAM_ORGANISATIONUNIT_COLUMN_NAME, ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME );
