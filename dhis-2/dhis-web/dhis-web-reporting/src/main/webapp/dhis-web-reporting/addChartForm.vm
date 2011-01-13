@@ -59,6 +59,12 @@
         <td><label for="regression">$i18n.getString( "include_regression_line" )</label></td>
         <td><input type="checkbox" id="regression" name="regression" value="true"#if( $!chart.regression ) checked#end></td>
     </tr>
+    #if ( $currentUser && $currentUser.hasOrganisationUnit() )
+    <tr>
+        <td><label for="userOrganisationUnit">$i18n.getString( "user_organisation_unit" )</label></td>
+        <td><input type="checkbox" id="userOrganisationUnit" name="userOrganisationUnit" value="true"#if( $!chart.userOrganisationUnit ) checked#end></td>
+    </tr>
+    #end
     <tr>
         <td colspan="2" style="height:15px"></td>
     </tr>

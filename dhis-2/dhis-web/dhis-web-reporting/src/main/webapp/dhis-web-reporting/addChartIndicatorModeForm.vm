@@ -133,7 +133,7 @@
 <!-- OrganisationUnit -->
 
 <tr>
-    <th colspan="2">$i18n.getString( "filter_available_organisationunits" )</th>
+    <th colspan="2">$i18n.getString( "filter_available_organisationunits" ) - <a href="javascript:clearListById( 'selectedOrganisationUnits' )">$i18n.getString( 'clear' )</a></th>
 </tr>
 <tr>
     <td colspan="2">

@@ -112,7 +112,7 @@ public class GetChartOptionsAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------

@@ -57,5 +57,7 @@
       <property name="lastYear"/>
     </component>
     
+    <property name="userOrganisationUnit"/>
+    
   </class>
 </hibernate-mapping>  

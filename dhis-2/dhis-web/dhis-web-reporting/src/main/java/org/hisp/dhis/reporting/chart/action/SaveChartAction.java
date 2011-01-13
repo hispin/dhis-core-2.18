@@ -152,6 +152,13 @@ public class SaveChartAction
         this.regression = regression;
     }
     
+    private boolean userOrganisationUnit;
+    
+    public void setUserOrganisationUnit( boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
     private List<String> selectedIndicators = new ArrayList<String>();
 
     public void setSelectedIndicators( List<String> selectedIndicators )
@@ -254,6 +261,7 @@ public class SaveChartAction
         chart.setVerticalLabels( verticalLabels );
         chart.setHorizontalPlotOrientation( horizontalPlotOrientation );
         chart.setRegression( regression );
+        chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
