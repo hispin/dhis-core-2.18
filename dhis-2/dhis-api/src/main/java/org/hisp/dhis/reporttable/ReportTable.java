@@ -653,8 +653,6 @@ public class ReportTable
             dimensionType = dimensionSet.getDimensionType().name();
             categoryCombo = dimensionType.equals( DimensionType.CATEGORY.name() ) ? (DataElementCategoryCombo)dimensionSet : null;
             dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET.name() ) ? (List<DataElementGroupSet>)dimensionSet.getDimensions() : null;
-            
-            verify( dimensionType != null, "Dimension type cannot be null" );
         }
     }
     
