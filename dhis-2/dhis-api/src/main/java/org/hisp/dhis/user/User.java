@@ -128,6 +128,11 @@ public class User
         return CollectionUtils.isEmpty( organisationUnits ) ? null : organisationUnits.iterator().next();
     }
     
+    public boolean hasOrganisationUnit()
+    {
+        return !CollectionUtils.isEmpty( organisationUnits );
+    }
+    
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

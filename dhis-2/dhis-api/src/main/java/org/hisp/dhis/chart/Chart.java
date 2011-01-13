@@ -81,6 +81,8 @@ public class Chart
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
     
     private RelativePeriods relatives;
+    
+    private Boolean userOrganisationUnit;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -91,6 +93,10 @@ public class Chart
     private List<Period> relativePeriods = new ArrayList<Period>();
     
     private List<Period> allPeriods = new ArrayList<Period>();
+    
+    private OrganisationUnit organisationUnit;
+    
+    private List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -108,7 +114,9 @@ public class Chart
     public void init()
     {
         allPeriods.addAll( periods );
-        allPeriods.addAll( relativePeriods );        
+        allPeriods.addAll( relativePeriods );
+        allOrganisationUnits.addAll( organisationUnits );
+        allOrganisationUnits.add( organisationUnit );
     }
     
     // -------------------------------------------------------------------------
@@ -197,6 +205,11 @@ public class Chart
     public int getHeight()
     {
         return isSize( SIZE_TALL ) ? 800 : 500;
+    }
+    
+    public boolean isUserOrganisationUnit()
+    {
+        return userOrganisationUnit != null && userOrganisationUnit;
     }
 
     // -------------------------------------------------------------------------
@@ -357,6 +370,16 @@ public class Chart
         this.relatives = relatives;
     }
 
+    public Boolean getUserOrganisationUnit()
+    {
+        return userOrganisationUnit;
+    }
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+
     public List<Period> getRelativePeriods()
     {
         return relativePeriods;
@@ -375,5 +398,25 @@ public class Chart
     public void setAllPeriods( List<Period> allPeriods )
     {
         this.allPeriods = allPeriods;
+    }
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
+
+    public List<OrganisationUnit> getAllOrganisationUnits()
+    {
+        return allOrganisationUnits;
+    }
+
+    public void setAllOrganisationUnits( List<OrganisationUnit> allOrganisationUnits )
+    {
+        this.allOrganisationUnits = allOrganisationUnits;
     }
 }

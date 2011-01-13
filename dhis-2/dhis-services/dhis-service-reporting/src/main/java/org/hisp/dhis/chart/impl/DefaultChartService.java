@@ -68,6 +68,8 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -160,6 +162,13 @@ public class DefaultChartService
     {
         this.systemSettingManager = systemSettingManager;
     }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // ChartService implementation
@@ -175,8 +184,15 @@ public class DefaultChartService
 
         if ( chart.getRelatives() != null )
         {
-            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( 1, null,
-                false ) ) );
+            chart.setRelativePeriods( periodService.reloadPeriods( 
+                chart.getRelatives().getRelativePeriods( 1, null, false ) ) );            
+        }
+        
+        User user = currentUserService.getCurrentUser();
+        
+        if ( chart.isUserOrganisationUnit() && user != null && user.getOrganisationUnit() != null )
+        {
+            chart.setOrganisationUnit( user.getOrganisationUnit() );
         }
 
         chart.setFormat( format );
@@ -465,7 +481,7 @@ public class DefaultChartService
         if ( chart != null )
         {
             Period selectedPeriod = chart.getAllPeriods().get( 0 );
-            OrganisationUnit selectedOrganisationUnit = chart.getOrganisationUnits().get( 0 );
+            OrganisationUnit selectedOrganisationUnit = chart.getAllOrganisationUnits().get( 0 );
 
             for ( Indicator indicator : chart.getIndicators() )
             {
@@ -535,7 +551,7 @@ public class DefaultChartService
                     // Regular dataset
                     // ---------------------------------------------------------
 
-                    for ( OrganisationUnit unit : chart.getOrganisationUnits() )
+                    for ( OrganisationUnit unit : chart.getAllOrganisationUnits() )
                     {
                         final Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
                             aggregationService.getAggregatedIndicatorValue( indicator, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit ) :
@@ -601,9 +617,9 @@ public class DefaultChartService
 
         subTitle.setFont( subTitleFont );
 
-        if ( chart.isDimension( DIMENSION_PERIOD ) && chart.getOrganisationUnits().size() > 0 )
+        if ( chart.isDimension( DIMENSION_PERIOD ) && chart.getAllOrganisationUnits().size() > 0 )
         {
-            subTitle.setText( chart.getOrganisationUnits().get( 0 ).getName() );
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
         else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT ) && chart.getAllPeriods().size() > 0 )
         {
