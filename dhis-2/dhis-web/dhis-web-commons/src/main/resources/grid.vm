@@ -39,7 +39,7 @@
 				<textElement>
 					<font fontName="Ubuntu" size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{organisationunitname}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{param_organisationunit_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="265" y="67" width="24" height="20"/>
@@ -53,7 +53,9 @@
 					<reportElement x="12" y="114" width="532" height="210"/>
 					<chartTitle/>
 					<chartSubtitle/>
-					<chartLegend/>
+					<chartLegend>
+						<font fontName="Ubuntu"/>
+					</chartLegend>
 				</chart>
 				<categoryDataset>
 					<dataset>
@@ -72,7 +74,7 @@
 				<bar3DPlot isShowLabels="true">
 					<plot/>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF">
-						<font isBold="true"/>
+						<font fontName="Ubuntu" isBold="true"/>
 					</itemLabel>
 					<categoryAxisFormat>
 						<axisFormat>
@@ -96,10 +98,8 @@
 	<columnHeader>
 		<band height="51" splitType="Stretch">
 			#set( $x = 10 )
-			#foreach( $header in $grid.getVisibleHeaders() )
-			
-			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
-			
+			#foreach( $header in $grid.getVisibleHeaders() )			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end			
 			<staticText>
 				<reportElement x="${x}" y="26" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
@@ -117,10 +117,8 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			#set( $x = 10 )
-			#foreach( $header in $grid.getVisibleHeaders() )
-			
-			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
-			
+			#foreach( $header in $grid.getVisibleHeaders() )			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end			
 			<textField>
 				<reportElement x="${x}" y="0" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>

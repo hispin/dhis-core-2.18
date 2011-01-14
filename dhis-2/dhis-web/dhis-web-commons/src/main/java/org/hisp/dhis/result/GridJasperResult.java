@@ -39,12 +39,14 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -60,6 +62,7 @@ public class GridJasperResult
     private static final String KEY_GRID = "grid";
     private static final String TEMPLATE = "grid.vm";
     private static final String RESOURCE_LOADER_NAME = "class";
+    private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -105,7 +108,9 @@ public class GridJasperResult
 
         HttpServletResponse response = ServletActionContext.getResponse();
 
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, null, false );
+        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".pdf";
+        
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
         
         // ---------------------------------------------------------------------
         // Write jrxml based on Velocity template
