@@ -38,10 +38,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.detarget.DeTarget;
-import org.hisp.dhis.detarget.DeTargetMember;
 import org.hisp.dhis.detargetdatavalue.DeTargetDataValue;
 import org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore;
-
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
 
@@ -102,7 +101,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery( "delete SurveyDataValue where survey = :survey" );
+        Query query = session.createQuery( "delete DeTargetDataValue where deTarget = :deTarget" );
         query.setEntity( "survey", deTarget );
 
         return query.executeUpdate();
@@ -112,7 +111,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery( "delete SurveyDataValue where dataelement = :dataelement ,deoptioncombo =:deoptioncombo" );
+        Query query = session.createQuery( "delete DeTargetDataValue where dataelement = :dataelement ,deoptioncombo =:deoptioncombo" );
         query.setEntity( "dataelement", dataelement );
         query.setEntity( "dataelement", dataelement );
 
@@ -123,7 +122,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        Query query = session.createQuery( "delete SurveyDataValue where survey = :survey,dataelement = :dataelement, deoptioncombo = :deoptioncombo ,source = :source" );
+        Query query = session.createQuery( "delete DeTargetDataValue where deTarget = :deTarget,dataelement = :dataelement, deoptioncombo = :deoptioncombo ,source = :source" );
         query.setEntity( "deTarget", deTarget );
         query.setEntity( "dataelement", dataelement );
         query.setEntity( "deoptioncombo", deoptioncombo );
@@ -131,7 +130,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 
         return query.executeUpdate();
     }
-   
+    /*  
     public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget )
     {
         Session session = sessionFactory.getCurrentSession();
@@ -142,6 +141,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 
         return (DeTargetDataValue) criteria.uniqueResult();
     }
+    */
     @SuppressWarnings( "unchecked" )
     public Collection<DeTargetDataValue> getAllDeTargetDataValues()
     {
@@ -225,6 +225,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 
         return criteria.list();
     }
+    /*
     @SuppressWarnings( "unchecked" )
     public Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
     {
@@ -237,6 +238,33 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 
         return criteria.list();
     }
+*/    
+    @SuppressWarnings( "unchecked" )
+     public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "period", period ) );
+
+        return criteria.list();
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+        criteria.add( Restrictions.eq( "dataelement", dataelement ) );
+        criteria.add( Restrictions.eq( "decategoryOptionCombo", decategoryOptionCombo ) );
+
+        return criteria.list();
+    }
+    
     
     @SuppressWarnings( "unchecked" )
     public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget )
@@ -262,6 +290,22 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
 
         return (DeTargetDataValue) criteria.uniqueResult();
     }
+    
+    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DeTargetDataValue.class );
+        criteria.add( Restrictions.eq( "source", source ) );
+        criteria.add( Restrictions.eq( "deTarget", deTarget ) );
+        criteria.add( Restrictions.eq( "period", period ) );
+        criteria.add( Restrictions.eq( "dataelement", dataelement ) );
+        criteria.add( Restrictions.eq( "deoptioncombo", deoptioncombo ) );
+
+        return (DeTargetDataValue) criteria.uniqueResult();
+    }
+    
+    
     
 }
 

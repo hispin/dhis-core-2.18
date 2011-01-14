@@ -26,12 +26,16 @@
  */
 package org.hisp.dhis.detargetdatavalue;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
-import org.hisp.dhis.detarget.DeTargetMember;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -52,7 +56,14 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
     {
         this.deTargetDataValueStore = deTargetDataValueStore;
     }
+    
+    private OrganisationUnitService organisationUnitService;
 
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
     // -------------------------------------------------------------------------
     // Basic DeTargetDataValue
     // -------------------------------------------------------------------------
@@ -94,12 +105,12 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
     {
         return deTargetDataValueStore.deleteDeTargetDataValuesByDeTargetDataElementCategoryOptionComboAndSource( deTarget, dataelement, deoptioncombo, source );
     }
-    
+ /*   
     public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget )
     {
         return deTargetDataValueStore.getDeTargetDataValue( source, deTarget );
     }
-    
+ */   
     public Collection<DeTargetDataValue> getAllDeTargetDataValues()
     {
         return deTargetDataValueStore.getAllDeTargetDataValues();
@@ -144,11 +155,57 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
    {
        return deTargetDataValueStore.getDeTargetDataValue( source, deTarget, dataelement, deoptioncombo );
    }
+
+   public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   {
+       return deTargetDataValueStore.getDeTargetDataValue( source, deTarget, period, dataelement, deoptioncombo );
+   }
    
+   
+   /*   
    public Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
    {
        return deTargetDataValueStore.getDeTargetMemberDataValues( deTargetMember ,dataelement ,decategoryOptionCombo );
    }
+*/
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo )
+   {
+       return deTargetDataValueStore.getDeTargetDataValues( deTarget ,dataelement ,decategoryOptionCombo );
+   }
+   
 
+   public Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period)
+   {
+        return deTargetDataValueStore.getDeTargetDataValues( deTarget ,source , period );
+   }
+   
+   public Double getAggregatedDeTargetDataValue( Source source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   {
+       List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
+       childOrgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( source.getId() ) );
+       
+       Double aggDataValue = 0.0;
+       
+       for( OrganisationUnit orgChild : childOrgUnitList )
+       {
+           DeTargetDataValue tempAggDataValue = getDeTargetDataValue(  orgChild,  deTarget,  dataelement , deoptioncombo );
+           
+           if( tempAggDataValue != null && tempAggDataValue.getValue() != null ) 
+           {
+               try
+               {
+                   aggDataValue += Double.parseDouble( tempAggDataValue.getValue() );
+               }
+               catch( Exception e )
+               {
+                   
+               }
+           }
+               
+       }
+       
+       
+       return aggDataValue;
+       
+   }
 }
-
