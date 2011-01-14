@@ -38,31 +38,15 @@
 					<dataset>
 						<datasetRun subDataset="chart"/>
 					</dataset>
+					#foreach( $header in $grid.getHeaders() )
+					#if ( !$header.meta )					
 					<categorySeries>
-						<seriesExpression><![CDATA["DPT 1"]]></seriesExpression>
+						<seriesExpression><![CDATA["${header.name}"]]></seriesExpression>
 						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{dpt1_doses_given}]]></valueExpression>
+						<valueExpression><![CDATA[${dollar}F{${header.column}}]]></valueExpression>
 					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["DPT 2"]]></seriesExpression>
-						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{dpt2_doses_given}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["DPT 3"]]></seriesExpression>
-						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{dpt3_doses_given}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["Measles"]]></seriesExpression>
-						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{measles_doses_given}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA["Fully Imm"]]></seriesExpression>
-						<categoryExpression><![CDATA[""]]></categoryExpression>
-						<valueExpression><![CDATA[${dollar}F{fully_immunised}]]></valueExpression>
-					</categorySeries>
+					#end
+					#end
 				</categoryDataset>
 				<bar3DPlot>
 					<plot/>
@@ -88,94 +72,38 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="51" splitType="Stretch">
+			#set( $x = 10 )
+			#foreach( $header in $grid.getVisibleHeaders() )
+			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
+			
 			<staticText>
-				<reportElement x="170" y="26" width="64" height="20"/>
-				<textElement textAlignment="Center">
+				<reportElement x="${x}" y="26" width="${offset}" height="20"/>
+				<textElement #if( !$header.meta )textAlignment="Center"#end>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DPT 1 given]]></text>
+				<text><![CDATA[${header.name}]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="234" y="26" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DPT 2 given]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="298" y="26" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DPT 3 given]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="362" y="26" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Measles given]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="426" y="26" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fully imm]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="12" y="26" width="148" height="20"/>
-				<textElement>
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Organisation unit]]></text>
-			</staticText>
+			#set( $x = ( $x + $offset ) )
+			#end
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
+			#set( $x = 10 )
+			#foreach( $header in $grid.getVisibleHeaders() )
+			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
+			
 			<textField>
-				<reportElement x="170" y="0" width="64" height="20"/>
-				<textElement textAlignment="Center">
+				<reportElement x="${x}" y="0" width="${offset}" height="20"/>
+				<textElement #if( !$header.meta )textAlignment="Center"#end>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[${dollar}F{dpt1_doses_given}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="234" y="0" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[${dollar}F{dpt2_doses_given}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="298" y="0" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[${dollar}F{dpt3_doses_given}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="362" y="0" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[${dollar}F{measles_doses_given}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="426" y="0" width="64" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression class="java.lang.Double"><![CDATA[${dollar}F{fully_immunised}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="12" y="0" width="148" height="20"/>
-				<textElement>
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{organisationunitname}]]></textFieldExpression>
-			</textField>
+				<textFieldExpression class="${header.type}"><![CDATA[${dollar}F{${header.column}}]]></textFieldExpression>
+			</textField>			
+			#set( $x = ( $x + $offset ) )
+			#end
 		</band>
 	</detail>
 	<columnFooter>
