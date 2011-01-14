@@ -251,6 +251,8 @@
       <result name="csv" type="gridCsvResult"/>
       <result name="xls" type="gridXlsResult"/>
       <result name="pdf" type="gridPdfResult"/>
+      <result name="jasper" type="gridJasperResult"/>
+      <result name="jrxml" type="gridJrxmlResult"/>
       <result name="html" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/reportTableGrid.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>   
