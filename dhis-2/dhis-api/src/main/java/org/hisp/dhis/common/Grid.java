@@ -55,6 +55,16 @@ public interface Grid
     Grid setSubtitle( String subtitle );
 
     /**
+     * Returns the grid table.
+     */
+    String getTable();
+    
+    /**
+     * Sets the grid table.
+     */
+    Grid setTable( String table );
+    
+    /**
      * Returns all header values.
      */
     List<GridHeader> getHeaders();
