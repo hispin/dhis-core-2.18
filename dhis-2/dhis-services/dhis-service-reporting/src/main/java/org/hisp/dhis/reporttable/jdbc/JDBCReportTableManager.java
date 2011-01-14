@@ -210,7 +210,7 @@ public class JDBCReportTableManager
         {
             ResultSet resultSet = holder.getStatement().executeQuery( "SELECT * FROM " + reportTable.getExistingTableName() );
             
-            Grid grid = new ListGrid().setTitle( reportTable.getName() );
+            Grid grid = new ListGrid().setTitle( reportTable.getName() ).setTable( reportTable.getExistingTableName() );
 
             // -----------------------------------------------------------------
             // Columns

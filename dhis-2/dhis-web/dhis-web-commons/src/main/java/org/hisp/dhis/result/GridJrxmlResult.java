@@ -1,5 +1,22 @@
 package org.hisp.dhis.result;
 
+import java.io.Writer;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.util.ContextUtils;
+
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.Result;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -27,31 +44,15 @@ package org.hisp.dhis.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.OutputStream;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.util.ContextUtils;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPTable;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
-
-import static org.hisp.dhis.system.util.PDFUtils.*;
-
 /**
  * @author Lars Helge Overland
  */
-public class GridPdfResult
+public class GridJrxmlResult
     implements Result
 {
+    private static final String KEY_GRID = "grid";
+    private static final String TEMPLATE = "grid.vm";
+    private static final String RESOURCE_LOADER_NAME = "class";
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------
@@ -86,45 +87,27 @@ public class GridPdfResult
         // ---------------------------------------------------------------------
 
         HttpServletResponse response = ServletActionContext.getResponse();
-
-        OutputStream out = response.getOutputStream();
-
-        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".pdf";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
+        Writer writer = response.getWriter();
 
+        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".jrxml";
+        
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, true, filename, false );
+        
         // ---------------------------------------------------------------------
-        // Write PDF to output stream
+        // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
-        
-        Document document = openDocument( out );
-        
-        PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
-        
-        table.setHeaderRows( 1 );
 
-        table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
-        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
+        VelocityEngine velocity = new VelocityEngine();
         
-        for ( GridHeader header : grid.getVisibleHeaders() )
-        {
-            table.addCell( getItalicCell( header.getName() ) );
-        }
-
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
+        velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
+        velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
+        velocity.init();
         
-        for ( List<String> row : grid.getVisibleRows() )
-        {
-            for ( String col : row )
-            {
-                table.addCell( getTextCell( col ) );
-            }
-        }
-
-        addTableToDocument( document, table );
-
-        closeDocument( document );
+        VelocityContext context = new VelocityContext();
+        
+        context.put( KEY_GRID, grid );
+        
+        velocity.getTemplate( TEMPLATE ).merge( context, writer );
     }
 }
