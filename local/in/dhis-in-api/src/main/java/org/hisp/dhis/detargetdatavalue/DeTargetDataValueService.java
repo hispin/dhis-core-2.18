@@ -31,7 +31,7 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
-import org.hisp.dhis.detarget.DeTargetMember;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 
 
@@ -110,7 +110,21 @@ public interface DeTargetDataValueService
      * @return the DeTargetDataValue which corresponds to the given parameters, or null
      *         if no match.
      */
-    DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget );
+   // DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget );
+    
+    /**
+     * Returns a DeTargetDataValue.
+     * 
+     * @param source the Source of the DeTargetDataValue.
+     * @param deTarget the DeTarget of the DeTargetDataValue.
+     * @param period the DeTarget of the DeTargetDataValue.
+     * @param source the DeTarget of the DeTargetDataValue.
+     * @param dataElement the DeTarget of the DeTargetDataValue.
+     * @param optioncombo the DeTarget of the DeTargetDataValue.
+     * @return the DeTargetDataValue which corresponds to the given parameters, or null
+     *         if no match.
+     */
+    DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
     // -------------------------------------------------------------------------
     // Collections of DataValues
@@ -200,7 +214,17 @@ public interface DeTargetDataValueService
      */
     Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget );
     
-    Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo );
+    //Collection<DeTargetDataValue> getDeTargetMemberDataValues( DeTargetMember deTargetMember ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo );
+    
+    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget ,DataElement dataelement ,DataElementCategoryOptionCombo decategoryOptionCombo );
+    
+    /**
+     * Returns all DeTargetDataValue for a given collection of DeTarget.
+     * 
+     * @param deTarget the DeTarget of the DeTargetDataValue.
+     * @return a collection of all DeTargetDataValue which mach the given collection of DeTarget.
+     */
+    Collection<DeTargetDataValue> getDeTargetDataValues( DeTarget deTarget , Source source, Period period);
     
     
     /**
@@ -212,5 +236,7 @@ public interface DeTargetDataValueService
      * @return
      */
     DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
-
+    
+    Double getAggregatedDeTargetDataValue( Source source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    
 }
