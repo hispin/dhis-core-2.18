@@ -1,12 +1,13 @@
 
-<h2>Survey</h2>
+<h2>$i18n.getString( "survey" )</h2>
     <ul>
-        <li><a href="index.action">Survey Management</a></li>
-        <li><a href="surveydataentry.action">Survey Data Entry</a></li>
+        <li><a href="index.action">$i18n.getString( "survey_mamagement" )</a></li>
+        <li><a href="surveydataentry.action">$i18n.getString( "survey_data_entry" )</a></li>
     </ul>
 
-<h2>Target</h2> 
+<h2>$i18n.getString( "de_target" )</h2> 
     <ul>               
-        <li><a href="generateTarget.action">Target Mapping</a></li>
+     <!--   <li><a href="generateTarget.action">$i18n.getString( "detarget_mamagement" )</a></li> -->
+            <li><a href="deTargetManagement.action">$i18n.getString( "detarget_mamagement" )</a></li>
     </ul>
         
