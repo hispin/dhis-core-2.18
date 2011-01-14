@@ -53,7 +53,6 @@ import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameCompar
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;

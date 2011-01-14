@@ -54,6 +54,11 @@ public class ListGrid
     private String subtitle;
     
     /**
+     * The name of a potential corresponding table.
+     */
+    private String table;
+    
+    /**
      * A List which represents the column headers of the grid.
      */
     private List<GridHeader> headers;
@@ -102,6 +107,18 @@ public class ListGrid
     public Grid setSubtitle( String subtitle )
     {
         this.subtitle = subtitle;
+        
+        return this;
+    }
+    
+    public String getTable()
+    {
+        return table;
+    }
+    
+    public Grid setTable( String table )
+    {
+        this.table = table;
         
         return this;
     }

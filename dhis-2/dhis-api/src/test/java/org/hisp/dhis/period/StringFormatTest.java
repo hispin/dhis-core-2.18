@@ -57,9 +57,9 @@ public class StringFormatTest {
     public void testStringFormat()
     {
         Period day1 = new Period(new DailyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
-        Period week52 = new Period(new WeeklyPeriodType(),getDate(2009,12,21), getDate(2009,12,27));
-        Period week53 = new Period(new WeeklyPeriodType(),getDate(2009,12,28), getDate(2010,1,3));
-        Period week1 = new Period(new WeeklyPeriodType(),getDate(2010,1,4), getDate(2010,1,11));
+        //Period week52 = new Period(new WeeklyPeriodType(),getDate(2009,12,21), getDate(2009,12,27));
+        //Period week53 = new Period(new WeeklyPeriodType(),getDate(2009,12,28), getDate(2010,1,3));
+        //Period week1 = new Period(new WeeklyPeriodType(),getDate(2010,1,4), getDate(2010,1,11));
         Period month1 = new Period(new MonthlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
         Period year1 = new Period(new YearlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));
         Period quarter1 = new Period(new QuarterlyPeriodType(),getDate(2010,1,1), getDate(2010,1,1));

@@ -28,28 +28,27 @@ package org.hisp.dhis.importexport.action.exp;
  */
 
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
-import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestType;
-
-import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.system.util.StreamUtils;
-
-import com.opensymphony.xwork2.Action;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.zip.GZIPOutputStream;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import java.util.zip.GZIPOutputStream;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestType;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.user.CurrentUserService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bob Jolliffe
@@ -70,8 +69,8 @@ public class ExportDataMartAction
     private static final Log log = LogFactory.getLog( ExportDataMartAction.class );
 
     private static final DateFormat dateFormat = new SimpleDateFormat( "yyyyMMdd" );
+    
     // parameter errors
-
     private static final String NO_STARTDATE = "The request is missing a startDate parameter";
 
     private static final String NO_ENDDATE = "The request is missing an endDate parameter";
