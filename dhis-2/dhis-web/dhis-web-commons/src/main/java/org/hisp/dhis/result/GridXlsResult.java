@@ -45,6 +45,7 @@ import jxl.write.WritableWorkbook;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -126,14 +127,14 @@ public class GridXlsResult
 
         rowNumber++;
 
-        for ( String header : grid.getHeaders() )
+        for ( GridHeader header : grid.getVisibleHeaders() )
         {
-            sheet.addCell( new Label( columnIndex++, rowNumber, header, FORMAT_LABEL ) );
+            sheet.addCell( new Label( columnIndex++, rowNumber, header.getName(), FORMAT_LABEL ) );
         }
 
         rowNumber++;
 
-        for ( List<String> row : grid.getRows() )
+        for ( List<String> row : grid.getVisibleRows() )
         {
             columnIndex = 0;
 

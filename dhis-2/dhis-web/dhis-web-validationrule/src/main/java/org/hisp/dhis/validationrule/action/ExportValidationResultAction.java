@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.apache.commons.lang.xwork.StringUtils;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -114,15 +115,14 @@ public class ExportValidationResultAction
         Grid grid = new ListGrid();
         
         grid.setTitle( i18n.getString( "data_quality_report" ) );
-        //TODO subtitle
         
-        grid.addHeader( i18n.getString( "source" ) );
-        grid.addHeader( i18n.getString( "period" ) );
-        grid.addHeader( i18n.getString( "left_side_description" ) );
-        grid.addHeader( i18n.getString( "value" ) );
-        grid.addHeader( i18n.getString( "operator" ) );
-        grid.addHeader( i18n.getString( "value" ) );
-        grid.addHeader( i18n.getString( "right_side_description" ) );
+        grid.addHeader( new GridHeader( i18n.getString( "source" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "period" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "left_side_description" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "operator" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "right_side_description" ), false, true ) );
     
         for ( ValidationResult validationResult : results )
         {

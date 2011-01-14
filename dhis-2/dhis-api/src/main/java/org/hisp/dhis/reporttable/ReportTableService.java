@@ -134,7 +134,7 @@ public interface ReportTableService
      * @param format the I18nFormat.
      * @return a Grid.
      */
-    Grid getPrettyReportTableGrid( int id, I18nFormat format );
+    Grid getReportTableGrid( int id, I18nFormat format );
     
     /**
      * Tests whether the report table has been generated in the database.

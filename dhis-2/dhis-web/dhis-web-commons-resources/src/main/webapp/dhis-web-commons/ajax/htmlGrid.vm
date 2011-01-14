@@ -19,17 +19,18 @@
 
 <thead>
 <tr>
-#foreach( $header in $grid.getHeaders() )
-<th>$!encoder.htmlEncode( $header )</th>
+#foreach( $header in $grid.getVisibleHeaders() )
+<th #if( $header.meta )style="text-align:left"#end>$!encoder.htmlEncode( $header.name )</th>
 #end
 </tr>
 </thead>
 
 <tbody>
-#foreach( $row in $grid.getRows() )
+#foreach( $row in $grid.getVisibleRows() )
 <tr>
 #foreach( $col in $row )
-<td #if( $velocityCount == 1 )style="text-align:left"#end>$!encoder.htmlEncode( $col )</td>
+#set( $index = ( $velocityCount - 1 ) )
+<td #if( $grid.getVisibleHeaders().get( $index ).meta )style="text-align:left"#end>$!encoder.htmlEncode( $col )</td>
 #end
 </tr>
 #end

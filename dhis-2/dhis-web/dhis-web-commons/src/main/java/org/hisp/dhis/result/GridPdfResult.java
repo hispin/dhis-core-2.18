@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -98,23 +99,23 @@ public class GridPdfResult
         
         Document document = openDocument( out );
         
-        PdfPTable table = new PdfPTable( grid.getWidth() );
+        PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
         
         table.setHeaderRows( 1 );
 
-        table.addCell( getTitleCell( grid.getTitle(), grid.getWidth() ) );
-        table.addCell( getEmptyCell( grid.getWidth(), 30 ) );
-        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getWidth() ) );
-        table.addCell( getEmptyCell( grid.getWidth(), 30 ) );
+        table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
+        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
         
-        for ( String header : grid.getHeaders() )
+        for ( GridHeader header : grid.getVisibleHeaders() )
         {
-            table.addCell( getItalicCell( header ) );
+            table.addCell( getItalicCell( header.getName() ) );
         }
 
-        table.addCell( getEmptyCell( grid.getWidth(), 10 ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
         
-        for ( List<String> row : grid.getRows() )
+        for ( List<String> row : grid.getVisibleRows() )
         {
             for ( String col : row )
             {

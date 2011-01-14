@@ -270,7 +270,7 @@ public class Program
         return null;
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes" } )
+    @SuppressWarnings( "unchecked" )
     public ValidationCriteria isValid( Patient patient )
     {
         try

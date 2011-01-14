@@ -29,14 +29,12 @@ package org.hisp.dhis.system.grid;
 
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 
 /**
  * @author Lars Helge Overland
@@ -58,7 +56,7 @@ public class ListGrid
     /**
      * A List which represents the column headers of the grid.
      */
-    private List<String> headers;
+    private List<GridHeader> headers;
     
     /**
      * A two dimensional List which simulates a grid where the first list
@@ -76,10 +74,10 @@ public class ListGrid
      */
     public ListGrid()
     {
-        headers = new ArrayList<String>();
+        headers = new ArrayList<GridHeader>();
         grid = new ArrayList<List<String>>();
     }
-
+    
     // ---------------------------------------------------------------------
     // Public methods
     // ---------------------------------------------------------------------
@@ -107,29 +105,34 @@ public class ListGrid
         
         return this;
     }
-
-    public List<String> getHeaders()
+    
+    public List<GridHeader> getHeaders()
     {
         return headers;
     }
-    
-    public Grid addHeader( String value )
+
+    public List<GridHeader> getVisibleHeaders()
     {
-        headers.add( value );
+        List<GridHeader> tempHeaders = new ArrayList<GridHeader>();
         
-        return this;
-    }
-    
-    public Grid replaceHeader( String currentHeader, String newHeader )
-    {
-        if ( headers.contains( currentHeader ) )
+        for ( GridHeader header : headers )
         {
-            headers.set( headers.indexOf( currentHeader ), newHeader );
+            if ( !header.isHidden() )
+            {
+                tempHeaders.add( header );
+            }
         }
         
-        return this;
+        return tempHeaders;
     }
     
+    public Grid addHeader( GridHeader header )
+    {
+        headers.add( header );
+        
+        return this;
+    }
+        
     public int getHeight()
     {        
         return ( grid != null && grid.size() > 0 ) ? grid.size() : 0;
@@ -140,6 +143,13 @@ public class ListGrid
         verifyGridState();
         
         return ( grid != null && grid.size() > 0 ) ? grid.get( 0 ).size() : 0;
+    }
+    
+    public int getVisibleWidth()
+    {
+        verifyGridState();
+        
+        return ( grid != null && grid.size() > 0 )  ? getVisibleRows().get( 0 ).size() : 0;
     }
     
     public Grid nextRow()
@@ -168,6 +178,33 @@ public class ListGrid
         return grid;
     }
     
+    public List<List<String>> getVisibleRows()
+    {
+        verifyGridState();
+        
+        List<List<String>> tempGrid = new ArrayList<List<String>>();
+        
+        if ( headers != null && headers.size() > 0 )
+        {
+            for ( List<String> row : grid )
+            {
+                List<String> tempRow = new ArrayList<String>();
+                
+                for ( int i = 0; i < row.size(); i++ )
+                {
+                    if ( !headers.get( i ).isHidden() )
+                    {
+                        tempRow.add( row.get( i ) );
+                    }
+                }
+                
+                tempGrid.add( tempRow );
+            }
+        }
+        
+        return tempGrid;
+    }
+        
     public List<String> getColumn( int columnIndex )
     {
         List<String> column = new ArrayList<String>();
@@ -227,7 +264,7 @@ public class ListGrid
         return this;
     }
     
-    public Grid removeColumn( String header )
+    public Grid removeColumn( GridHeader header )
     {
         int index = headers.indexOf( header );
         
@@ -282,34 +319,6 @@ public class ListGrid
         return this;
     }
     
-    public Grid fromResultSet( ResultSet resultSet )
-        throws SQLException
-    {
-        headers = new ArrayList<String>();
-        grid = new ArrayList<List<String>>();
-                
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        
-        int cols = metaData.getColumnCount();
-        
-        for ( int i = 0; i < cols; i++ )
-        {
-            this.addHeader( String.valueOf( metaData.getColumnName( i + 1 ) ) );
-        }
-        
-        while ( resultSet.next() )
-        {
-            this.nextRow();
-            
-            for ( int i = 0; i < cols; i++ )
-            {
-                this.addValue( String.valueOf( resultSet.getObject( i + 1 ) ) );
-            }
-        }
-        
-        return this;
-    }
-
     // ---------------------------------------------------------------------
     // Supportive methods
     // ---------------------------------------------------------------------
@@ -334,10 +343,11 @@ public class ListGrid
         
         if ( rowLength != null && headers.size() != 0 && headers.size() != rowLength )
         {
-            throw new IllegalStateException( "Number of headers is not 0 and not equal to the number of columns" );
+            throw new IllegalStateException( 
+                "Number of headers is not 0 and not equal to the number of columns (headers: " + headers.size() + ", cols: " + rowLength + ")" );
         }
     }
-
+    
     // ---------------------------------------------------------------------
     // toString
     // ---------------------------------------------------------------------
@@ -346,6 +356,18 @@ public class ListGrid
     public String toString()
     {
         StringBuffer buffer = new StringBuffer( "[" );
+        
+        if ( headers != null && headers.size() > 0 )
+        {
+            List<String> headerNames = new ArrayList<String>();
+            
+            for ( GridHeader header : headers )
+            {
+                headerNames.add( header.getName() );
+            }
+            
+            buffer.append( headerNames );
+        }
         
         for ( List<String> row : grid )
         {

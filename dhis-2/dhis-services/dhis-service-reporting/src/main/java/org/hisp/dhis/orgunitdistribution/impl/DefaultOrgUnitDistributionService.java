@@ -39,6 +39,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -63,6 +64,7 @@ public class DefaultOrgUnitDistributionService
     private static final Comparator<OrganisationUnitGroup> ORGUNIT_GROUP_COMPARATOR = new OrganisationUnitGroupNameComparator();
 
     private static final String TITLE_SEP = " - ";
+    private static final String FIRST_COLUMN_TEXT = "Organisation unit";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -96,7 +98,7 @@ public class DefaultOrgUnitDistributionService
         
         for ( int i = 1; i < grid.getWidth(); i++ ) // Skip name column
         {
-            categoryValues.put( grid.getHeaders().get( i ), Double.valueOf( grid.getRow( 0 ).get( i ) ) );
+            categoryValues.put( grid.getHeaders().get( i ).getName(), Double.valueOf( grid.getRow( 0 ).get( i ) ) );
         }
         
         String title = groupSet.getName() + TITLE_SEP + organisationUnit.getName();
@@ -120,11 +122,11 @@ public class DefaultOrgUnitDistributionService
         Collections.sort( units, ORGUNIT_COMPARATOR );
         Collections.sort( groups, ORGUNIT_GROUP_COMPARATOR );
         
-        grid.addHeader( null ); // First header row column is empty
+        grid.addHeader( new GridHeader( FIRST_COLUMN_TEXT, FIRST_COLUMN_TEXT, null, false, true ) );
         
         for ( OrganisationUnitGroup group : groups )
         {
-            grid.addHeader( group.getName() );
+            grid.addHeader( new GridHeader( group.getName(), false, false )  );
         }
         
         for ( OrganisationUnit unit : units )
