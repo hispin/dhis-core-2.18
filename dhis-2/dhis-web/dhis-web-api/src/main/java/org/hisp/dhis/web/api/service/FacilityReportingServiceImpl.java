@@ -57,7 +57,6 @@ import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.DataValue;
-import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.model.Section;
 import org.hisp.dhis.web.api.utils.LocaleUtil;
 import org.hisp.dhis.web.api.utils.PeriodUtil;
