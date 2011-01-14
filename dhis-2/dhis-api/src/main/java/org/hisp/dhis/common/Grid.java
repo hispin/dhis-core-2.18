@@ -27,8 +27,6 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -55,23 +53,22 @@ public interface Grid
      * Sets the grid subtitle.
      */
     Grid setSubtitle( String subtitle );
-    
+
     /**
      * Returns all header values.
      */
-    List<String> getHeaders();
+    List<GridHeader> getHeaders();
+    
+    /**
+     * Returns all visible headers, ie. headers which are not hidden.
+     */
+    List<GridHeader> getVisibleHeaders();
     
     /**
      * Adds a header value.
      */
-    Grid addHeader( String value );
-    
-    /**
-     * Replaces the header String given in the first argument with the header
-     * String given in the second argument if the former exists.
-     */
-    Grid replaceHeader( String currentHeader, String newHeader );
-    
+    Grid addHeader( GridHeader header );
+        
     /**
      * Returns the current height / number of rows in the grid.
      */
@@ -81,6 +78,11 @@ public interface Grid
      * Returns the current width / number of columns in the grid.
      */
     int getWidth();
+    
+    /**
+     * Returns the current width / number of visible columns in the grid.
+     */
+    int getVisibleWidth();
 
     /**
      * Adds a new row the the grid and moves the cursor accordingly.
@@ -105,6 +107,12 @@ public interface Grid
      * Returns all rows.
      */
     List<List<String>> getRows();
+    
+    /**
+     * Returns all visible rows, ie. rows with a corresponding header that is
+     * not hidden.
+     */
+    List<List<String>> getVisibleRows();
 
     /**
      * Returns the column with the given index.
@@ -141,7 +149,7 @@ public interface Grid
      * Removes the header and the column at the index of the given header if it
      * exists.
      */
-    Grid removeColumn( String header );
+    Grid removeColumn( GridHeader header );
     
     /**
      * Adds a regression column to the grid. Column must hold numeric data.
@@ -149,12 +157,4 @@ public interface Grid
      * @param columnIndex the index of the base column.
      */
     Grid addRegressionColumn( int columnIndex );
-    
-    /**
-     * Instantiates and populates a Grid based on the given result set. The
-     * column names are used as headers and result rows are represented as grid
-     * rows.
-     */
-    Grid fromResultSet( ResultSet resultSet )
-        throws SQLException;
 }

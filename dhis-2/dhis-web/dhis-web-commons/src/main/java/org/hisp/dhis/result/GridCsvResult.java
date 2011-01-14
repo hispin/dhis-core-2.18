@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -95,11 +96,11 @@ public class GridCsvResult
         // Write CSV to output stream
         // ---------------------------------------------------------------------
 
-        Iterator<String> headers = grid.getHeaders().iterator();
+        Iterator<GridHeader> headers = grid.getHeaders().iterator();
         
         while ( headers.hasNext() )
         {
-            out.write( csvEncode( headers.next() ).getBytes() );
+            out.write( csvEncode( headers.next().getName() ).getBytes() );
             
             if ( headers.hasNext() )
             {

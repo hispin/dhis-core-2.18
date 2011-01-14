@@ -27,7 +27,7 @@ package org.hisp.dhis.reporttable.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
+import static org.hisp.dhis.reporttable.ReportTable.*;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -38,6 +38,7 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -209,7 +210,60 @@ public class JDBCReportTableManager
         {
             ResultSet resultSet = holder.getStatement().executeQuery( "SELECT * FROM " + reportTable.getExistingTableName() );
             
-            return new ListGrid().fromResultSet( resultSet );
+            Grid grid = new ListGrid().setTitle( reportTable.getName() );
+
+            // -----------------------------------------------------------------
+            // Columns
+            // -----------------------------------------------------------------
+
+            for ( String column : reportTable.getIndexColumns() )
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) );
+            }
+            
+            for ( String column : reportTable.getIndexNameColumns() )
+            {
+                grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) );
+            }
+            
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME, String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ), PARAM_ORGANISATIONUNIT_COLUMN_NAME, String.class.getName(), true, true ) );
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ), ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
+            
+            for ( String column : reportTable.getPrettyCrossTabColumns().keySet() )
+            {
+                grid.addHeader( new GridHeader( reportTable.getPrettyCrossTabColumns().get( column ), column, Double.class.getName(), false, false ) );
+            }
+
+            // -----------------------------------------------------------------
+            // Values
+            // -----------------------------------------------------------------
+
+            while ( resultSet.next() )
+            {
+                grid.nextRow();
+                
+                for ( String column : reportTable.getIndexColumns() )
+                {
+                    grid.addValue( String.valueOf( resultSet.getInt( column ) ) );
+                }
+                
+                for ( String column : reportTable.getIndexNameColumns() )
+                {
+                    grid.addValue( resultSet.getString( column ) );
+                }
+                
+                grid.addValue( resultSet.getString( REPORTING_MONTH_COLUMN_NAME ) );
+                grid.addValue( resultSet.getString( PARAM_ORGANISATIONUNIT_COLUMN_NAME ) );
+                grid.addValue( resultSet.getString( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ) );
+                
+                for ( String column : reportTable.getPrettyCrossTabColumns().keySet() )
+                {
+                    grid.addValue( String.valueOf( resultSet.getDouble( column ) ) );
+                }
+            }
+            
+            return grid;
         }
         catch ( Exception ex )
         {

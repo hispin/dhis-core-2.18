@@ -110,7 +110,7 @@ public class ExportTableAction
         }
         else
         {
-            grid = reportTableService.getPrettyReportTableGrid( id, format );            
+            grid = reportTableService.getReportTableGrid( id, format );            
         }
         
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );

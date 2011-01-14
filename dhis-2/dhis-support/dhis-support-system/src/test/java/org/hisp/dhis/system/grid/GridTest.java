@@ -27,13 +27,16 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -41,16 +44,24 @@ import static junit.framework.Assert.*;
  */
 public class GridTest
 {
-    private ListGrid grid;
+    private Grid grid;
+    
+    private GridHeader headerA;
+    private GridHeader headerB;
+    private GridHeader headerC;
     
     @Before
     public void setUp()
     {
         grid = new ListGrid();
-
-        grid.addHeader( "col1" );
-        grid.addHeader( "col2" );
-        grid.addHeader( "col3" );
+        
+        headerA = new GridHeader( "ColA", "colA", String.class.getName(), false, false );
+        headerB = new GridHeader( "ColB", "colB", String.class.getName(), false, false );
+        headerC = new GridHeader( "ColC", "colC", String.class.getName(), true, false );
+        
+        grid.addHeader( headerA );
+        grid.addHeader( headerB );
+        grid.addHeader( headerC );
         
         grid.nextRow();        
         grid.addValue( "11" );
@@ -66,12 +77,17 @@ public class GridTest
         grid.addValue( "31" );
         grid.addValue( "32" );
         grid.addValue( "33" );
+
+        grid.nextRow();        
+        grid.addValue( "41" );
+        grid.addValue( "42" );
+        grid.addValue( "43" );
     }
     
     @Test
     public void testGetHeight()
     {
-        assertEquals( 3, grid.getHeight() );
+        assertEquals( 4, grid.getHeight() );
     }
     
     @Test
@@ -79,18 +95,7 @@ public class GridTest
     {
         assertEquals( 3, grid.getWidth() );
     }
-    
-    @Test
-    public void testReplaceHeader()
-    {
-        assertTrue( grid.getHeaders().contains( "col2" ) );
         
-        grid.replaceHeader( "col2", "Column2" );
-
-        assertFalse( grid.getHeaders().contains( "col2" ) );
-        assertTrue( grid.getHeaders().contains( "Column2" ) );
-    }
-    
     @Test
     public void testGetRow()
     {
@@ -108,55 +113,84 @@ public class GridTest
         assertTrue( rowB.contains( "22" ) );
         assertTrue( rowB.contains( "23" ) );
     }
+
+    @Test
+    public void testGetHeaders()
+    {
+        assertEquals( 3, grid.getHeaders().size() );
+    }
     
+    @Test
+    public void tetsGetVisibleHeaders()
+    {
+        assertEquals( 2, grid.getVisibleHeaders().size() );
+        assertTrue( grid.getVisibleHeaders().contains( headerA ) );
+        assertTrue( grid.getVisibleHeaders().contains( headerB ) );
+    }
+
     @Test
     public void testGetRows()
     {
-        assertEquals( 3, grid.getRows().size() );
+        assertEquals( 4, grid.getRows().size() );
+        assertEquals( 3, grid.getWidth() );
+    }
+
+    @Test
+    public void testGetGetVisibleRows()
+    {
+        assertEquals( 4, grid.getVisibleRows().size() );
+        assertEquals( 2, grid.getVisibleRows().get( 0 ).size() );
+        assertEquals( 2, grid.getVisibleRows().get( 1 ).size() );
+        assertEquals( 2, grid.getVisibleRows().get( 2 ).size() );
+        assertEquals( 2, grid.getVisibleRows().get( 3 ).size() );
     }
     
     @Test
     public void testGetColumn()
     {        
-        List<String> columnB = grid.getColumn( 1 );
+        List<String> column1 = grid.getColumn( 1 );
         
-        assertTrue( columnB.size() == 3 );
-        assertTrue( columnB.contains( "12" ) );
-        assertTrue( columnB.contains( "22" ) );
-        assertTrue( columnB.contains( "32" ) );
+        assertEquals( 4, column1.size() );
+        assertTrue( column1.contains( "12" ) );
+        assertTrue( column1.contains( "22" ) );
+        assertTrue( column1.contains( "32" ) );
+        assertTrue( column1.contains( "42" ) );
 
-        List<String> columnC = grid.getColumn( 2 );
+        List<String> column2 = grid.getColumn( 2 );
         
-        assertTrue( columnC.size() == 3 );
-        assertTrue( columnC.contains( "13" ) );
-        assertTrue( columnC.contains( "23" ) );
-        assertTrue( columnC.contains( "33" ) ); 
+        assertEquals( 4, column2.size() );
+        assertTrue( column2.contains( "13" ) );
+        assertTrue( column2.contains( "23" ) );
+        assertTrue( column2.contains( "33" ) );
+        assertTrue( column2.contains( "43" ) );
     }
     
     @Test
     public void testAddColumn()
     {
-        List<String> columnValues = new ArrayList<String>( 3 );
+        List<String> columnValues = new ArrayList<String>();
         columnValues.add( "14" );
         columnValues.add( "24" );
-        columnValues.add( "34" );        
+        columnValues.add( "34" );
+        columnValues.add( "44" );
         
         grid.addColumn( columnValues );
         
-        List<String> columnD = grid.getColumn( 3 );
+        List<String> column3 = grid.getColumn( 3 );
         
-        assertTrue( columnD.size() == 3 );
-        assertTrue( columnD.contains( "14" ) );
-        assertTrue( columnD.contains( "24" ) );
-        assertTrue( columnD.contains( "34" ) );
+        assertEquals( 4, column3.size() );
+        assertTrue( column3.contains( "14" ) );
+        assertTrue( column3.contains( "24" ) );
+        assertTrue( column3.contains( "34" ) );
+        assertTrue( column3.contains( "44" ) );
         
-        List<String> rowB = grid.getRow( 1 );
+        List<String> row2 = grid.getRow( 1 );
         
-        assertTrue( rowB.size() == 4 );
-        assertTrue( rowB.contains( "21" ) );
-        assertTrue( rowB.contains( "22" ) );
-        assertTrue( rowB.contains( "23" ) );
-        assertTrue( rowB.contains( "24" ) );
+        assertEquals( 4, row2.size() );
+        assertTrue( row2.contains( "21" ) );
+        assertTrue( row2.contains( "22" ) );
+        assertTrue( row2.contains( "23" ) );
+        assertTrue( row2.contains( "24" ) );
     }
     
     @Test
@@ -174,7 +208,7 @@ public class GridTest
     {
         assertEquals( 3, grid.getWidth() );
         
-        grid.removeColumn( "col2" );
+        grid.removeColumn( headerB );
         
         assertEquals( 2, grid.getWidth() );
     }

@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
@@ -199,12 +200,12 @@ public class GetDataCompletenessAction
         
         Grid grid = new ListGrid().setTitle( title ).setSubtitle( subtitle );
         
-        grid.addHeader( i18n.getString( "name" ) );
-        grid.addHeader( i18n.getString( "actual" ) );
-        grid.addHeader( i18n.getString( "target" ) );
-        grid.addHeader( i18n.getString( "percent" ) );
-        grid.addHeader( i18n.getString( "on_time" ) );
-        grid.addHeader( i18n.getString( "percent" ) );
+        grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "actual" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "target" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "on_time" ), false, false ) );
+        grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
         
         for ( DataSetCompletenessResult result : results )
         {

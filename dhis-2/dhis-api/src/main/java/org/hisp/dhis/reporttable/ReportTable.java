@@ -28,7 +28,6 @@ package org.hisp.dhis.reporttable;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -92,16 +91,22 @@ public class ReportTable
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
     
-    public static final List<String> DB_COLUMNS = Arrays.asList( DATAELEMENT_ID, CATEGORYCOMBO_ID, INDICATOR_ID, DATASET_ID, 
-        PERIOD_ID, ORGANISATIONUNIT_ID, REPORTING_MONTH_COLUMN_NAME, PARAM_ORGANISATIONUNIT_COLUMN_NAME, ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME );
-    
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() { {
+        put( DATAELEMENT_ID, "Data element ID" );
         put( DATAELEMENT_NAME, "Data element" );
+        put( CATEGORYCOMBO_ID, "Category combination ID" );
         put( CATEGORYCOMBO_NAME, "Category combination" );
+        put( INDICATOR_ID, "Indicator ID" );
         put( INDICATOR_NAME, "Indicator" );
+        put( DATASET_ID, "Data set ID" );
         put( DATASET_NAME, "Data set" );
-        put( PERIOD_NAME, "Period" );
-        put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+        put( PERIOD_ID, "Period ID" );
+        put( PERIOD_NAME, "Period" );        
+        put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
+        put( ORGANISATIONUNIT_NAME, "Organisation unit" );        
+        put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
+        put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );        
+        put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
     } };
     
     private static final String EMPTY_REPLACEMENT = "_";

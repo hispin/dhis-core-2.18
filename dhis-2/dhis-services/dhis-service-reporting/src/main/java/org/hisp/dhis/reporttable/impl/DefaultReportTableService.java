@@ -366,33 +366,14 @@ public class DefaultReportTableService
     }
 
     @Transactional
-    public Grid getPrettyReportTableGrid( int id, I18nFormat format )
+    public Grid getReportTableGrid( int id, I18nFormat format )
     {
         ReportTable reportTable = getReportTable( id );
         
         reportTable.setI18nFormat( format );
         reportTable.init();
         
-        Grid grid = reportTableManager.getReportTableGrid( reportTable );
-        
-        grid.setTitle( reportTable.getName() );        
-                
-        for ( String col : ReportTable.DB_COLUMNS )
-        {
-            grid.removeColumn( col );
-        }
-        
-        for ( String col : ReportTable.PRETTY_COLUMNS.keySet() )
-        {
-            grid.replaceHeader( col, ReportTable.PRETTY_COLUMNS.get( col ) );
-        }
-        
-        for ( String col : reportTable.getPrettyCrossTabColumns().keySet() )
-        {
-            grid.replaceHeader( col, reportTable.getPrettyCrossTabColumns().get( col ) );
-        }
-        
-        return grid;
+        return reportTableManager.getReportTableGrid( reportTable );
     }
     
     public boolean reportTableIsGenerated( int id )
