@@ -264,6 +264,61 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         ref="org.hisp.dhis.target.DeTargetMappingService"/>  
       <property name="dataElementCategoryService"
       	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
-  </bean> 
+  </bean>
+	
+	<!-- DataElement Targets -->
+   <bean id="org.hisp.dhis.detarget.action.DeTargetListAction"
+      class="org.hisp.dhis.detarget.action.DeTargetListAction" 
+      scope="prototype">
+      <property name="deTargetService"
+        ref="org.hisp.dhis.detarget.DeTargetService"/>  
+   </bean>
+	
+	<!-- Add DataElement Target form -->	
+   <bean id="org.hisp.dhis.detarget.action.DeTargetAddFormAction"
+    class="org.hisp.dhis.detarget.action.DeTargetAddFormAction"
+    scope="prototype">
+    <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+   </bean>
+	
+	<!-- Add DataElement Target Result -->    
+   <bean id="org.hisp.dhis.detarget.action.AddDeTargetAction"
+    class="org.hisp.dhis.detarget.action.AddDeTargetAction"
+    scope="prototype">
+	<property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
+	</property>
+    <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+	 <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+	 </property>
+   </bean>
+	
+	
+   <!-- Show Details DataElement Target  -->  
+   <bean id="org.hisp.dhis.detarget.action.GetDeTargetDetailsAction"
+    class="org.hisp.dhis.detarget.action.GetDeTargetDetailsAction"
+    scope="prototype">
+    <property name="deTargetService">
+      <ref bean="org.hisp.dhis.detarget.DeTargetService"/>
+    </property>
+   </bean>
+	
+   <!-- DataElement Group Member in  DataElement Target  -->  
+   <bean id="org.hisp.dhis.detarget.action.DataElementListFilterByGroupAction"
+    class="org.hisp.dhis.detarget.action.DataElementListFilterByGroupAction"
+    scope="prototype">
+    <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+	<property name="dataElementCategoryService">
+		<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	</property>
+   </bean>  
+
+	
+	
   
 </beans>

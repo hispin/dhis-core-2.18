@@ -249,5 +249,51 @@
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<!-- DataElement Targets -->
+		<action name="deTargetManagement" class="org.hisp.dhis.detarget.action.DeTargetListAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-survey/deTargetList.vm</param>
+            <param name="menu">/dhis-web-survey/menu.vm</param>
+            <param name="javascripts">javascript/deTarget.js,javascript/filterTable.js</param>
+        </action>
+		
+		<!-- Add DataElement Target form -->
+        
+        <action name="addDeTargetForm"
+            class="org.hisp.dhis.detarget.action.DeTargetAddFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-survey/addDeTarget.vm</param>
+            <param name="menu">/dhis-web-survey/menu.vm</param>
+            <param name="javascripts">javascript/deTarget.js,javascript/filterTable.js</param>
+        </action>
+        
+        <action name="addDeTarget"
+            class="org.hisp.dhis.detarget.action.AddDeTargetAction">
+            <result name="success" type="redirect">deTargetManagement.action</result>
+            <param name="javascripts">javascript/deTarget.js</param>
+        </action>
+		<!-- Show Details DataElement Target  -->
+	    <action name="getDeTargetDetails"
+            class="org.hisp.dhis.detarget.action.GetDeTargetDetailsAction">
+            <result name="success" type="velocity-xml">/dhis-web-survey/responseDeTargetObject.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+		<!-- Filter By DataElement Group DataElement Target  -->
+	    <action name="filterAvailableDataElementsByDataElementGroup"
+            class="org.hisp.dhis.detarget.action.DataElementListFilterByGroupAction">
+            <result name="success" type="velocity-xml">/dhis-web-survey/responseDataElementGroupMember.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+            <param name="javascripts">javascript/deTarget.js</param>
+        </action>
+		<!-- Validation for Adding DataElement Target  -->
+	    <action name="validateDeTarget"
+            class="org.hisp.dhis.detarget.action.ValidateDeTargetAction">
+            <result name="success" type="velocity-xml">/dhis-web-survey/responseSuccess.vm</result>
+            <result name="input" type="velocity-xml">/dhis-web-survey/responseInput.vm</result>
+            <param name="onExceptionReturn">plainTextError</param>
+        </action>
+		
+		
 	</package>
 </struts>
