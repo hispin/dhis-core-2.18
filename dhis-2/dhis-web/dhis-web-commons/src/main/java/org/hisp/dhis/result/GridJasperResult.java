@@ -42,6 +42,8 @@ import org.amplecode.quick.StatementManager;
 import org.apache.struts2.ServletActionContext;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
@@ -56,8 +58,8 @@ public class GridJasperResult
     implements Result
 {
     private static final String KEY_GRID = "grid";
-    private static final String TEMPLATE = "jrxmlGrid.vm";
-    private static final String ENCODING = "UTF-8";
+    private static final String TEMPLATE = "grid.vm";
+    private static final String RESOURCE_LOADER_NAME = "class";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -111,11 +113,17 @@ public class GridJasperResult
 
         StringWriter writer = new StringWriter();
         
+        VelocityEngine velocity = new VelocityEngine();
+        
+        velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
+        velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
+        velocity.init();
+        
         VelocityContext context = new VelocityContext();
         
         context.put( KEY_GRID, grid );
         
-        Velocity.mergeTemplate( TEMPLATE, ENCODING, context, writer );
+        velocity.getTemplate( TEMPLATE ).merge( context, writer );
         
         String report = writer.toString();
 

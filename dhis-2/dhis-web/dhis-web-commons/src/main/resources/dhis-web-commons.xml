@@ -37,6 +37,8 @@
 				class="org.hisp.dhis.result.GridXlsResult" />
 			<result-type name="gridPdfResult"
 				class="org.hisp.dhis.result.GridPdfResult" />
+			<result-type name="gridJasperResult"
+				class="org.hisp.dhis.result.GridJasperResult" />
 		</result-types>
 
 		<interceptors>
