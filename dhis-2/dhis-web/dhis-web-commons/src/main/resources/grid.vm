@@ -27,6 +27,27 @@
 				</textElement>
 				<text><![CDATA[${grid.title}]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="12" y="67" width="253" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{reporting_month_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="67" width="255" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{organisationunitname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="265" y="67" width="24" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
 			<bar3DChart>
 				<chart evaluationTime="Report">
 					<reportElement x="12" y="114" width="532" height="210"/>
@@ -48,9 +69,11 @@
 					#end
 					#end
 				</categoryDataset>
-				<bar3DPlot>
+				<bar3DPlot isShowLabels="true">
 					<plot/>
-					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF">
+						<font isBold="true"/>
+					</itemLabel>
 					<categoryAxisFormat>
 						<axisFormat>
 							<labelFont/>
@@ -86,6 +109,9 @@
 			</staticText>
 			#set( $x = ( $x + $offset ) )
 			#end
+			<line>
+				<reportElement x="10" y="44" width="${x}" height="1"/>
+			</line>
 		</band>
 	</columnHeader>
 	<detail>
