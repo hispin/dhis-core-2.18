@@ -57,6 +57,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     class="org.hisp.dhis.detargetdatavalue.DefaultDeTargetDataValueService">
     <property name="deTargetDataValueStore"
       ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueStore"/>
+	  <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+	  </property>
   </bean>   
 
 <!-- DeTarget Store definitions -->
