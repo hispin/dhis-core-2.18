@@ -29,7 +29,9 @@ package org.hisp.dhis.survey.state;
 
 import java.util.List;
 
+import org.hisp.dhis.detarget.DeTarget;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.survey.Survey;
 
 /**
@@ -54,6 +56,39 @@ public interface SelectedStateManager
 
     void clearSelectedSurvey();
     
-    List<Survey> loadSurveysForSelectedOrgUnit( OrganisationUnit organisationUnit );    
+    List<Survey> loadSurveysForSelectedOrgUnit( OrganisationUnit organisationUnit ); 
+    
+    //--------------------------------------------------------------------------
+    //DeTarget
+    //--------------------------------------------------------------------------
+    
+    void setSelectedDeTarget( DeTarget deTarget );
+    
+    DeTarget getSelectedDeTarget();
+    
+    void clearSelectedDeTarget();
+    
+    List<DeTarget> loadDeTargetsForSelectedOrgUnit( OrganisationUnit organisationUnit );
+    
+    //--------------------------------------------------------------------------
+    //Period
+    //--------------------------------------------------------------------------
+    
+    void setSelectedPeriodIndex( Integer index );
+
+    Integer getSelectedPeriodIndex();
+
+    Period getSelectedPeriod();
+
+    void clearSelectedPeriod();
+
+    List<Period> getPeriodList();
+
+    void nextPeriodSpan();
+
+    void previousPeriodSpan();
+    
+    Period reloadPeriod();
+    
    
 }

@@ -212,7 +212,7 @@
 		<!--Target Mapping-->
 		
 		<action name="generateTarget"
-			class="org.hisp.dhis.target.action.GenerateTargetAction">
+			class="org.hisp.dhis.detarget.action.GenerateTargetAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/targetFront.vm</param>
 			<param name="menu">/dhis-web-survey/menu.vm</param>
@@ -221,30 +221,78 @@
 		</action>
 		
 		<action name="saveMapping"
-			class="org.hisp.dhis.target.action.SaveMappingAction">
+			class="org.hisp.dhis.detarget.action.SaveMappingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="delMapping"
-			class="org.hisp.dhis.target.action.DelMappingAction">
+			class="org.hisp.dhis.detarget.action.DelMappingAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<!-- Target DataEntry -->
+		
+		<action name="targetDataEntry"
+			class="org.hisp.dhis.survey.action.EmptyAction">
+			<result name="success" type="redirect">selectTarget.action</result>
+		</action>
+		
+		<action name="selectTarget" class="org.hisp.dhis.detarget.action.SelectAction">
+			<interceptor-ref name="organisationUnitTreeStack"/>
+			<result name="defaulttargetform" type="chain">defaulttargetform</result>
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/selectTarget.vm</param>
+			<param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>
+			<param name="menuTreeHeight">350</param>
+			<param name="javascripts">
+				../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
+			<param name="stylesheets">
+				style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
+		</action>	
+		
+		<action name="defaulttargetform" class="org.hisp.dhis.detarget.action.FormAction">
+			<interceptor-ref name="organisationUnitTreeStack"/>
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/targetForm.vm</param>
+			<param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>
+			<param name="menuTreeHeight">350</param>
+			<param name="javascripts"> ../dhis-web-commons/ouwt/ouwt.js,
+				javascript/general.js,javascript/form.js,
+				javascript/form.js,../dhis-web-commons/calendar/calendar.js,
+				../dhis-web-commons/calendar/calendar-lang.js,
+				../dhis-web-commons/calendar/calendar-setup.js </param>
+			<param name="stylesheets">
+				style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
+		</action>
+		
+		<action name="saveTargetValue"
+			class="org.hisp.dhis.detarget.action.SavetargetValueAction">
+			<result name="success" type="velocity-xml">status.vm</result>
+			<param name="onExceptionReturn">plainTextError</param>
+			<!--<param name="requiredAuthorities">
+			F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>-->
+		</action>
+		
+		<action name="loadNextPreviousPeriods" class="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction">
+			<result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonPeriods.vm</result>
+		</action>
+		
+		
 		<!-- Ajax requests -->
 		
 		<action name="getDataElements"
-			class="org.hisp.dhis.target.action.GetDataElementsAction">
+			class="org.hisp.dhis.detarget.action.GetDataElementsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDataElement.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<action name="getmessage"
-			class="org.hisp.dhis.target.action.GetMesageAction">
+			class="org.hisp.dhis.detarget.action.GetMesageAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-survey/responseDe.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>

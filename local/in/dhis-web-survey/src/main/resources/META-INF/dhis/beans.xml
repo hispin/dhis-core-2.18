@@ -12,7 +12,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectionManager"
       ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
     <property name="surveyService"
-      ref="org.hisp.dhis.survey.SurveyService"/>   
+      ref="org.hisp.dhis.survey.SurveyService"/>
+	<property name="deTargetService"
+      ref="org.hisp.dhis.detarget.DeTargetService"/> 
+	<property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/>   
+	  
   </bean>
  
   <!-- Actions -->
@@ -215,7 +220,53 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
   <!-- Target -->
   
-  <bean id="org.hisp.dhis.target.action.GenerateTargetAction"
+  <bean id="org.hisp.dhis.detarget.action.SelectAction"
+    class="org.hisp.dhis.detarget.action.SelectAction" 
+    scope="prototype">
+    <property name="selectedStateManager"
+      ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
+    <property name="deTargetService"
+      ref="org.hisp.dhis.detarget.DeTargetService"/>       
+  </bean> 
+	
+  <bean id="org.hisp.dhis.detarget.action.FormAction"
+    class="org.hisp.dhis.detarget.action.FormAction" 
+    scope="prototype">
+    <property name="selectedStateManager"
+      ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
+    <property name="deTargetDataValueService"
+      ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/>  
+	<property name="deTargetService"
+      ref="org.hisp.dhis.detarget.DeTargetService"/> 
+	 <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/> 
+  </bean> 
+	
+  <bean id="org.hisp.dhis.detarget.action.SavetargetValueAction"
+	  class="org.hisp.dhis.detarget.action.SavetargetValueAction"
+	  scope="prototype">
+	  <property name="selectedStateManager"
+        ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
+	  <property name="currentUserService"
+        ref="org.hisp.dhis.user.CurrentUserService"/>
+	  <property name="dataElementService"
+        ref="org.hisp.dhis.dataelement.DataElementService"/>
+	  <property name="categoryService"
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+	  <property name="deTargetdataValueService"
+        ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/>
+	  <property name="periodService"
+      ref="org.hisp.dhis.period.PeriodService"/> 
+  </bean>
+	
+  <bean id="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction"
+	  class="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction"
+	  scope="prototype">
+	  <property name="selectedStateManager"
+        ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
+  </bean>
+	
+	<bean id="org.hisp.dhis.detarget.action.GenerateTargetAction"
     class="org.hisp.dhis.target.action.GenerateTargetAction" 
     scope="prototype">
     <property name="dataElementService"
@@ -224,8 +275,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  	 
   </bean>
 	  
-   <bean id="org.hisp.dhis.target.action.SaveMappingAction"
-      class="org.hisp.dhis.target.action.SaveMappingAction" 
+   <bean id="org.hisp.dhis.detarget.action.SaveMappingAction"
+      class="org.hisp.dhis.detarget.action.SaveMappingAction" 
       scope="prototype">
       <property name="dataElementService"
         ref="org.hisp.dhis.dataelement.DataElementService"/>  
@@ -235,8 +286,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>         
   </bean> 
 	
-    <bean id="org.hisp.dhis.target.action.GetDataElementsAction"
-    class="org.hisp.dhis.target.action.GetDataElementsAction" 
+    <bean id="org.hisp.dhis.detarget.action.GetDataElementsAction"
+    class="org.hisp.dhis.detarget.action.GetDataElementsAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
@@ -244,8 +295,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>       
   </bean>
 		
-	<bean id="org.hisp.dhis.target.action.GetMesageAction"
-    class="org.hisp.dhis.target.action.GetMesageAction" 
+	<bean id="org.hisp.dhis.detarget.action.GetMesageAction"
+    class="org.hisp.dhis.target.deaction.GetMesageAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
@@ -255,8 +306,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.target.DeTargetMappingService"/>          
   </bean> 
 	
-   <bean id="org.hisp.dhis.target.action.DelMappingAction"
-      class="org.hisp.dhis.target.action.DelMappingAction" 
+   <bean id="org.hisp.dhis.detarget.action.DelMappingAction"
+      class="org.hisp.dhis.detarget.action.DelMappingAction" 
       scope="prototype">
       <property name="dataElementService"
         ref="org.hisp.dhis.dataelement.DataElementService"/>  
