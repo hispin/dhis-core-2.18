@@ -235,7 +235,7 @@ public interface DeTargetDataValueService
      * * @param deoptioncombo
      * @return
      */
-    DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     
     Double getAggregatedDeTargetDataValue( Source source, DeTarget deTarget,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
     

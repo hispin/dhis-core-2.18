@@ -231,6 +231,6 @@ public interface DeTargetDataValueStore
      * * @param deoptioncombo
      * @return
      */
-    DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
+    Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo );
 
 }
