@@ -342,3 +342,45 @@ function undoReceived( messageElement )
     document.getElementById( "dateField" ).disabled = false;
     document.getElementById( "dateDiv" ).style.display = "inline";
 }
+
+function periodSelected()
+{
+	var periodName = $( '#selectedPeriodIndex :selected' ).text();
+	
+	$( '#currentPeriod' ).html( periodName );
+		
+	var periodIndex = $( '#selectedPeriodIndex' ).val();
+	
+	if ( periodIndex && periodIndex != -1 )	{
+		showLoader();
+		var url = 'selectTarget.action?selectedPeriodIndex=' + periodIndex;
+		$( '#contentDiv' ).load( url, setDisplayModes );
+	}
+}
+
+function nextPeriodsSelected()
+{
+	displayPeriodsInternal( true, false );
+}
+
+function previousPeriodsSelected()
+{
+	displayPeriodsInternal( false, true );
+}
+
+function displayPeriodsInternal( next, previous ) 
+{
+	var url = 'loadNextPreviousPeriods.action?next=' + next + '&previous=' + previous;
+	
+	var list = document.getElementById( 'selectedPeriodIndex' );
+		
+	clearList( list );
+	    
+	addOptionToList( list, '-1', '[ Select ]' );
+	
+    $.getJSON( url, function( json ) {
+    	for ( i in json.periods ) {
+    		addOptionToList( list, i, json.periods[i].name );
+    	}
+    } );
+}

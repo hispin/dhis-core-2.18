@@ -124,27 +124,6 @@ function editSurveyValidationCompleted( messageElement )
 // ----------------------------------------------------------------------
 // List
 // ----------------------------------------------------------------------
-/*
-function initLists()
-{
-    var id;
-	
-	var list = document.getElementById( 'selectedList' );
-	
-    for ( id in deTargetMembers )
-    {
-        list.add( new Option( deTargetMembers[id], id ), null );
-    }	
-	
-    list = document.getElementById( 'availableList' );
-    
-    for ( id in availableDataElements )
-    {
-        list.add( new Option( availableDataElements[id], id ), null );
-    }
-}
-*/
-// complette
 function filterDeTargetMembers()
 {
 	var filter = document.getElementById( 'deTargetMembersFilter' ).value;
@@ -224,61 +203,31 @@ function filterByDataElementGroup( selectedDataElementGroup )
 {
   var selectedList = document.getElementById( 'selectedList' );
 
- // var list = new Array();
   
   var params = 'dataElementGroupId=' + selectedDataElementGroup;
   
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
-  	//params += '&selectedIndicators=' + selectedList.options[i].value;
   	params += '&selectedDataElements=' + selectedList.options[i].value;
-	//list[i] = selectedList.options[i].value;
   }
   // Clear the list
   var availableList = document.getElementById( 'availableList' );
 
   availableList.options.length = 0;
   
- // alert(list);
-  //alert(list.length);
   
   var request = new Request();
   request.setResponseTypeXML( 'indicatorgroup' );
   request.setCallbackSuccess( filterByDataElementGroupCompleted );
-  //request.send( url );
 
   var requestString = "filterAvailableDataElementsByDataElementGroup.action";
- // var params = "indicatorGroupId=" + selectedIndicatorGroup + "&selectedIndicators=" + list;
   request.sendAsPost( params );
   request.send( requestString ); 
   
- /* 
-  
-   $.post("filterAvailableIndicatorsByIndicatorGroup.action",
-		{
-			indicatorGroupId : selectedIndicatorGroup,
-			selectedIndicators : list
-		},
-		function (data)
-		{
-			filterByIndicatorGroupCompleted(data);
-		},'xml');
-		*/
 }
 
 function filterByDataElementGroupCompleted( xmlObject )
 {
- //var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
- // var indicatorList = indicators.getElementsByTagName( 'indicator' );
-
-  var availableList = document.getElementById( 'availableList' );
-  
-  
- // var availableDataElements = document.getElementById("availableDataElements");
-  //var selectedDataElements = document.getElementById("selectedServices");
-
-  //clearList(availableList);
-
   var dataElements = xmlObject.getElementsByTagName("dataElement");
   alert( "DataElement Group Received lent of Group member " + dataElements.length );
   for ( var i = 0; i < dataElements.length; i++ )
