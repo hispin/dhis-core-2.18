@@ -37,12 +37,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Mithilesh Kumar Thakur
  *
  * @version DefaultDeTargetDataValueService.java Jan 13, 2011 10:36:40 AM
  */
+@Transactional
 public class DefaultDeTargetDataValueService implements DeTargetDataValueService
 {
     
@@ -151,9 +153,9 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
        return deTargetDataValueStore.getDeTargetDataValues( deTarget );
    }
    
-   public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+   public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
    {
-       return deTargetDataValueStore.getDeTargetDataValue( source, deTarget, dataelement, deoptioncombo );
+       return deTargetDataValueStore.getDeTargetDataValues( source, deTarget, dataelement, deoptioncombo );
    }
 
    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
@@ -188,7 +190,7 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
        
        for( OrganisationUnit orgChild : childOrgUnitList )
        {
-           DeTargetDataValue tempAggDataValue = getDeTargetDataValue(  orgChild,  deTarget,  dataelement , deoptioncombo );
+           DeTargetDataValue tempAggDataValue = getDeTargetDataValue(  orgChild,  deTarget,  period, dataelement , deoptioncombo );
            
            if( tempAggDataValue != null && tempAggDataValue.getValue() != null ) 
            {
@@ -204,8 +206,6 @@ public class DefaultDeTargetDataValueService implements DeTargetDataValueService
                
        }
        
-       
        return aggDataValue;
-       
    }
 }
