@@ -278,7 +278,8 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         return criteria.list();
     }
    
-    public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
+    @SuppressWarnings( "unchecked" )
+    public Collection<DeTargetDataValue> getDeTargetDataValues( Source source, DeTarget deTarget, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
     {
         Session session = sessionFactory.getCurrentSession();
 
@@ -286,9 +287,9 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         criteria.add( Restrictions.eq( "source", source ) );
         criteria.add( Restrictions.eq( "deTarget", deTarget ) );
         criteria.add( Restrictions.eq( "dataelement", dataelement ) );
-        criteria.add( Restrictions.eq( "deoptioncombo", deoptioncombo ) );
+        criteria.add( Restrictions.eq( "decategoryOptionCombo", deoptioncombo ) );
 
-        return (DeTargetDataValue) criteria.uniqueResult();
+        return  criteria.list();
     }
     
     public DeTargetDataValue getDeTargetDataValue( Source source, DeTarget deTarget ,Period period, DataElement dataelement ,DataElementCategoryOptionCombo deoptioncombo )
@@ -300,7 +301,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
         criteria.add( Restrictions.eq( "deTarget", deTarget ) );
         criteria.add( Restrictions.eq( "period", period ) );
         criteria.add( Restrictions.eq( "dataelement", dataelement ) );
-        criteria.add( Restrictions.eq( "deoptioncombo", deoptioncombo ) );
+        criteria.add( Restrictions.eq( "decategoryOptionCombo", deoptioncombo ) );
 
         return (DeTargetDataValue) criteria.uniqueResult();
     }
