@@ -77,7 +77,7 @@ public class HibernateDeTargetDataValueStore implements DeTargetDataValueStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        session.delete( deTargetDataValue );
+        session.update( deTargetDataValue );
     }
     
     public void deleteDeTargetDataValue( DeTargetDataValue deTargetDataValue )
