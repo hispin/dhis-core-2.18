@@ -90,7 +90,7 @@ public class GridCsvResult
 
         String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".csv";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, true );
 
         // ---------------------------------------------------------------------
         // Write CSV to output stream

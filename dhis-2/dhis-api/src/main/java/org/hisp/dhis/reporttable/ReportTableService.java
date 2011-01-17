@@ -132,9 +132,11 @@ public interface ReportTableService
      * 
      * @param id the ReportTable identifier.
      * @param format the I18nFormat.
+     * @param reportingPeriod the reporting period number.
+     * @param organisationUnitId the organisation unit number. 
      * @return a Grid.
      */
-    Grid getReportTableGrid( int id, I18nFormat format );
+    Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId );
     
     /**
      * Tests whether the report table has been generated in the database.

@@ -875,7 +875,7 @@ public class ReportTable
         }
         if ( period != null )
         {
-            String periodName = period.getName() != null ? period.getName() : i18nFormat.formatPeriod( period );
+            String periodName = i18nFormat == null ? period.getName() : i18nFormat.formatPeriod( period );
             
             buffer.append( periodName + SPACE );
         }
