@@ -152,7 +152,7 @@ function filterDeTargetMembers()
 {
 	var filter = document.getElementById( 'deTargetMembersFilter' ).value;
     var list = document.getElementById( 'selectedList' );
-    
+    var deTargetMembers = document.getElementById( 'selectedList' ).value;
     list.options.length = 0;
     
     for ( var id in deTargetMembers )
@@ -172,6 +172,7 @@ function filterAvailableDataElements()
 {
 	var filter = document.getElementById( 'availableDataElementFilter' ).value;
     var list = document.getElementById( 'availableList' );
+    var availableDataElements = document.getElementById( 'availableList' ).value;
     
     list.options.length = 0;
     
@@ -185,7 +186,7 @@ function filterAvailableDataElements()
         }
     }
 }
-*/
+*//*
 function addDeTargetMembers()
 {
 	var list = document.getElementById( 'availableList' );
@@ -203,7 +204,7 @@ function addDeTargetMembers()
     
     filterDeTargetMembers();
     filterAvailableDataElements();
-}
+}*/
 /*
 function removeDeTargetMembers()
 {
@@ -227,11 +228,23 @@ function removeDeTargetMembers()
 function filterByDataElementGroup( selectedDataElementGroup )
 {
   var selectedList = document.getElementById( 'selectedList' );
+  
+  var availableList = document.getElementById( 'availableList' );
 
  // var list = new Array();
   
   var params = 'dataElementGroupId=' + selectedDataElementGroup;
   
+  
+  if ( selectedDataElementGroup == "" || selectedDataElementGroup == "ALL" )
+  {
+	  alert( "Please Select DataElement Group" );
+	  clearList(availableList);
+	  return false;
+  }
+  
+  else
+  {
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
   	//params += '&selectedIndicators=' + selectedList.options[i].value;
@@ -255,7 +268,7 @@ function filterByDataElementGroup( selectedDataElementGroup )
  // var params = "indicatorGroupId=" + selectedIndicatorGroup + "&selectedIndicators=" + list;
   request.sendAsPost( params );
   request.send( requestString ); 
-  
+  } 
  /* 
   
    $.post("filterAvailableIndicatorsByIndicatorGroup.action",
@@ -272,7 +285,7 @@ function filterByDataElementGroup( selectedDataElementGroup )
 
 function filterByDataElementGroupCompleted( xmlObject )
 {
- //var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
+  //var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
  // var indicatorList = indicators.getElementsByTagName( 'indicator' );
 
   var availableList = document.getElementById( 'availableList' );

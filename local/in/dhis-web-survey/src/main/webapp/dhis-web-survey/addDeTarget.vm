@@ -63,7 +63,7 @@
         <td><!--<input type="text" id="availableDataElementFilter" onkeyup="filterValues( this.value )" style="min-width:25em">--></td>
         <td><!--<input type="text" id="availableDataElementFilter" onkeyup="filterAvailableDataElements()" style="min-width:25em">--></td>
         <td>##$i18n.getString( "name" )</td>
-        <td><!--<input type="text" id="deTargetMembersFilter" onkeyup="filterValues( this.value )" style="min-width:25em">--></td> 
+        
         <td><!--<input type="text" id="deTargetMembersFilter" onkeyup="filterDeTargetMembers()" style="min-width:25em">--></td>
       </tr>
       
