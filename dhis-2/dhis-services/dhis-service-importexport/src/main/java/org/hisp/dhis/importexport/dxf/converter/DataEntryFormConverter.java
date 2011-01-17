@@ -153,8 +153,6 @@ public class DataEntryFormConverter
         StringBuffer buffer = new StringBuffer();
 
         Matcher matcher = ID_PATTERN.matcher( htmlCode );
-        log.warn( "DE map"  + dataElementMapping );
-        log.warn( "COC map " + categoryOptionComboMapping );
         
         while ( matcher.find() )
         {
