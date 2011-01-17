@@ -18,13 +18,12 @@
 				<a href="#" onclick="insertOperation( 'formula','-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a>
 			</td>
 			<td valign="bottom">
-				<input type="button" value="<" onclick="insertDataElementId()"/>
+				<input type="button" id="insertExpression" value="<" onclick="insertDataElementId()" disabled />
 			</td>
 			<td>	
-				<select id="dataElementGroup" style="width:280px" onchange="getDataElements(this.value, '#divExpression select[id=elementSelect]')"></select>				
-                <select name="select" size="11" id="availableDataElements" style="width:280px">
-                </select>				
-              <select id="optionCombos" size=4 style="width:280px"></select>	
+				<select id="dataElementGroup" style="width:280px" onchange="getDataElements(this.value, '#divExpression select[id=availableDataElements]')"></select>				
+                <select id="availableDataElements" size="11" style="width:280px" onchange="getOptionCombos(this.value, '#divExpression select[id=optionCombos]', 'divExpression input[id=insertExpression]')"></select>
+              <select id="optionCombos" size="4" style="width:280px" onchange="enable( 'divExpression input[id=insertExpression]' );" ondblclick="insertDataElementId()"></select>
 			</td>
 		</tr>	
 	</table>	
@@ -53,12 +52,12 @@
 				<a href="#" onclick="insertOperation( '+' )"><img src="images/plus.png" alt="$i18n.getString( 'plus' )"></a>
 				<a href="#" onclick="insertOperation( '-' )"><img src="images/minus.png" alt="$i18n.getString( 'minus' )"></a></td>
 			<td rowspan="3" valign="bottom">
-				<input type="button" value="<" onclick="insertExpression()"/>
+				<input type="button" id="insertExpression" value="<" onclick="insertExpression()" disabled />
 			</td>
 			<td rowspan="3">	
 				<select id="dataElementGroup" style="width:280px" onchange="getDataElements(this.value, '#divCategory select[id=availableDataElements]')"></select>												
-				<select id="availableDataElements" size="10" style="width:280px;" onchange="getOptionCombos( this.value, '#divCategory select[id=optionCombos]')"></select>
-				<select id="optionCombos" size=4 style="width:280px"></select>					
+				<select id="availableDataElements" size="10" style="width:280px;" onchange="getOptionCombos(this.value, '#divCategory select[id=optionCombos]', 'divCategory input[id=insertExpression]')"></select>
+				<select id="optionCombos" size=4 style="width:280px" onchange="enable( 'divCategory input[id=insertExpression]' );" ondblclick="insertExpression()"></select>
 			</td>			
 		</tr>	
 	</table>

@@ -50,7 +50,7 @@ function DataDictionary()
 	
 	this.loadAllDataElements = function( jQuerySelectionString )
 	{
-		this.loadDataElementsByGroup( ALL_KEY, jQuerySelectionString);
+		this.loadDataElementsByGroup( '0', jQuerySelectionString);
 	}
 	
 	this.loadDataElementsByGroup = function( id, jQuerySelectionString )

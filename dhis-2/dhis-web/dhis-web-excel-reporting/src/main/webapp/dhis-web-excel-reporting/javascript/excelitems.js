@@ -9,7 +9,7 @@ function changeItemType()
 	if( type == 'NORMAL' ){
 		byId('expression-button' ).onclick = openExpressionBuild;
 	}else {
-		byId('expression-button' ).onclick =  caExpressionBuilderForm;
+		byId('expression-button' ).onclick = caExpressionBuilderForm;
 	}	
 }
 
@@ -23,14 +23,8 @@ function openExpressionBuild() {
 	byId("formula").value = byId("expression").value;
 	dataDictionary.loadDataElementGroups( "#divExpression select[id=dataElementGroup]" );
 	dataDictionary.loadAllDataElements( "#divExpression select[id=availableDataElements]" );
-	$( "#availableDataElements" ).change(getOptionCombos);		
 	
 	showPopupWindowById( 'divExpression', 600, 300 );
-}
-
-// Get option combos for selected dataelement
-function getOptionCombos() {
-	dataDictionary.loadCategoryOptionComboByDE( byId("availableDataElements").value, "#divExpression select[id=optionCombos]" );
 }
 
 // Insert operand into the Formular textbox
@@ -73,7 +67,7 @@ function caExpressionBuilderForm()
 function insertExpression() 
 {
 	var expression = "[*." + getFieldValue("divCategory select[id=optionCombos]") + "]";
-	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue( 'divCategory textarea[id=formula]') + expression );	
+	setFieldValue( 'divCategory textarea[id=formula]', getFieldValue( 'divCategory textarea[id=formula]') + expression );
 }
 
 // Update expression for item
@@ -86,8 +80,10 @@ function updateCaExpression()
 }
 
 // Get option combos for selected dataelement
-function getOptionCombos(id, target) {
+function getOptionCombos(id, target, button)
+{
 	dataDictionary.loadCategoryOptionComboByDE( id, target);
+	disable( button );
 }
 
 // -----------------------------------------------------------------------
