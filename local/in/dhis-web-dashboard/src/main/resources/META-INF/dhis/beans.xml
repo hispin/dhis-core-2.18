@@ -510,28 +510,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisFormAction"
         class="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisFormAction"
         scope="prototype">
-		
-		<property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-		<property name="dataElementService">
-            <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-        </property>
-		<property name="orgUnitGroupService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-        </property>
-		
+		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="orgUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataanalyser.action.GetOrgUnitNameAction"
 		class="org.hisp.dhis.dataanalyser.action.GetOrgUnitNameAction"
 		scope="prototype">
-		
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-			
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+
+    <bean id="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisDataAction"
+        class="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisDataAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService" />
+        <property name="deTargetDataValueService" ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.dataanalyser.action.ExportTargetDataToExcelAction"
+        class="org.hisp.dhis.dataanalyser.action.ExportTargetDataToExcelAction"
+        scope="prototype">
+        <property name="configurationService" ref="org.hisp.dhis.config.ConfigurationService" />
+    </bean> 
 		
 	
 	<!-- DataStatus -->

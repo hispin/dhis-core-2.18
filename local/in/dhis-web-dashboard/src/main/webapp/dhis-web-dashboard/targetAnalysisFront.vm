@@ -1,25 +1,5 @@
-<style>
-#overlay {
-z-index:9998;
-position:absolute;
-top:0;
-bottom:0;
-left:0;
-width:100%;
-background:#000;
-opacity:0.45;
--moz-opacity:0.45;
-filter:alpha(opacity=45);
-visibility:hidden;
-}
-#overlayImg{ width: 50px; height: 50px; z-index: 9999; position: absolute; left:50%}
-</style>
-<div id="overlay">
-<div id="overlayImg"><img  width="50" height="50" src="images/ajax-loader.gif" /></div>
-</div>
 
 <script>
-	
 	var orgUnitGroupIds = new Array();
 	var orgUnitGroupNames = new Array();
 
@@ -29,110 +9,105 @@ visibility:hidden;
 	   orgUnitGroupNames[$count1] = '$orgUnitGroup.name';
 	   #set( $count1 = $count1 + 1 );
 	#end
-	
 </script>
 
 <h1>Target Analysis Form</h1>
-<hr />
+<hr /><br/>
 
-<form id="targetAnalysisForm" name="targetAnalysisForm" action="targetAnalysisResult.action" method="post" onsubmit="return formValidations()" target="_blank">	
+<form id="targetAnalysisForm" name="targetAnalysisForm" action="generateChartDeTarget.action" method="post" onsubmit="return formValidations()" target="chartWindow1">
 	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="100%" border=0>
-		<colgroup>
-        	<col width="40%">
-  		    <col width="20%">
- 		    <col width="40%">
-  	    </colgroup>
-  	    
   	    <tr>
-			<td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
+			<td class="NormalB">
+				$i18n.getString( "ga_filter_by_degroup" )<br />
 		   		<select id="dataElementGroupId" name="dataElementGroupId" style="width:350px" onchange="getDataElements()">
-                	<option value="0">[ Select DataElementGroup / All ]</option>				                    
-            			#foreach ( $degroup in $dataElementGroups )
-            			<option value="$degroup.id" title="$degroup.name">$degroup.name</option>        			
+                	<option value="0">[ Select DataElementGroup ]</option>
+            		#foreach ( $degroup in $dataElementGroups )
+						<option value="$degroup.id" title="$degroup.name">$degroup.name</option>
      		        #end
      		    </select>
-            </td>  
+			</td>
         </tr>
         <tr>
-			<td class="NormalB">&nbsp;</td>   
+			<td class="NormalB">&nbsp;</td>
 		</tr>
-		
 		<tr>
-			<td class="NormalB">&nbsp;</td>   
+			<td class="NormalB">&nbsp;</td>
 		</tr>
         <tr>
-           
-            <td class="NormalB" style="display:none" >$i18n.getString( "compare_view" )<br>
+            <td class="NormalB" style="display:none" >
+				$i18n.getString( "compare_view" )<br>
             	<select id="deSelection" name="deSelection" style="width:350px" onchange="deSelectionChangeFuntion( 'availableDataElements', 'selectedServices' )">
                 	<option value="dataelement">DataElements</option>
                     <option value="optioncombo" selected>Options in DataElements</option>
                 </select>
             </td>
-            
-            <td class="NormalB">$i18n.getString( "ga_available_delist" )<br>
-				<select id="availableDataElements" name="availableDataElements" style="width:350px" >					
-					#foreach ( $element in $dataElements )
-						<option value="D:$element.id" title="$element.name">$element.name</option>					
-				    #end
-				</select>
+		</tr>
+		<tr>
+            <td class="NormalB" >
+				$i18n.getString( "ga_available_delist" )<br />
+				<select id="availableDataElements" name="availableDataElements" style="width:350px" ></select>
 			</td>
-			
         </tr>
-        
         <tr>
-			<td class="NormalB">&nbsp;</td>   
-		</tr>
-		
+			<td class="NormalB">&nbsp;</td>
+		</tr>		
 		<tr>
-			<td class="NormalB">&nbsp;</td>   
-		</tr>
-		
-		<tr>
-			<td class="NormalB">	
-				$i18n.getString( "ga_from" )<br>
-				<select id="sDateLB" name="sDateLB">												
-					#foreach($period in $monthlyPeriods)
-						<option value="$period.id">$simpleDateFormat.format($period.startDate)</option>
-					#end
-				</select>
-			</td>
-			      
-			<td class="NormalB">    
-				$i18n.getString( "ga_to" )<br>
-				<select id="eDateLB" name="eDateLB">
-					#foreach($period in $monthlyPeriods)
-						<option value="$period.id">$simpleDateFormat.format($period.endDate)</option>
-					#end			  							
-				</select>
-			</td>    
-		</tr>
-		
-		<tr>
-	        <td class="NormalB">$i18n.getString( "nr_orgunit" )<br>
-	            <input type="text" name="ouNameTB" id="ouNameTB" style="width:150px" disabled>
-	            </select>                       
-	        </td>
-	        <td class="NormalB"><input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
-	            <select name="orgUnitGroupList" id="orgUnitGroupList" multiple size="7"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 150px;" disabled="true">
-	            </select>
-	        </td>
-		
-      	</tr>
-      	
-      	<tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>                    			                   			        
+			<td class="NormalB">&nbsp;</td>
+		</tr>		
 		<tr>
 			<td>
-				<input type="submit" id="ViewChart" name="ViewChart" value="$i18n.getString( 'viewchart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000">
-			</td>
-			
-			<td>
-				<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000">
+				<table>
+					<tr>
+						<td class="NormalB">
+							<input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
+							<select name="orgUnitGroupList" id="orgUnitGroupList" size="8"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 170px;" disabled="true">
+							</select>
+						</td>
+						<td style="width:30px">&nbsp;</td>
+						<td class="NormalB">
+							$i18n.getString( "ga_from" )<br>
+							<select id="sDateLB" name="sDateLB" style="width:150px">
+							#foreach($period in $monthlyPeriods)
+								<option value="$period.id">$simpleDateFormat.format($period.startDate)</option>
+							#end
+							</select>
+							<br/><br/>
+							$i18n.getString( "ga_to" )<br>
+							<select id="eDateLB" name="eDateLB" style="width:150px">
+								#foreach($period in $monthlyPeriods)
+									<option value="$period.id">$simpleDateFormat.format($period.endDate)</option>
+								#end
+							</select>
+							<br/><br/>
+							$i18n.getString( "nr_orgunit" )<br>
+							<input type="text" name="ouNameTB" id="ouNameTB" style="width:150px" disabled>
+							<input type="hidden" name="ouIDTB" id="ouIDTB" />	
+						</td>
+					</tr>
+					<tr>
+						<td class="NormalB">&nbsp;</td>
+						<td class="NormalB">&nbsp;</td>
+						<td class="NormalB">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="hidden" name="selButton" id="selButton" />
+							<input type="submit" id="ViewChart" name="ViewChart" value="$i18n.getString( 'viewchart' )" style="width:170px;height:25px;font-family:Arial;font-weight:bold;color:#000000" onclick="setButtonName('VIEWCHART')">
+						</td>
+						<td class="NormalB">&nbsp;</td>
+						<td>
+							<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
-      </table>
+	</table>
 </form>
-            
+
+<script>
+	function setButtonName( selButton )
+	{
+		document.getElementById("selButton").value = selButton;
+	}
+</script>
