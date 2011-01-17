@@ -734,7 +734,7 @@ public class DXFConverter
                 BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler(
                     DataEntryFormBatchHandler.class ).init();
 
-                XMLConverter converter = new DataEntryFormConverter( importObjectService, dataEntryFormService, 
+                XMLConverter converter = new DataEntryFormConverter( batchHandler, importObjectService, dataEntryFormService, 
                     objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );

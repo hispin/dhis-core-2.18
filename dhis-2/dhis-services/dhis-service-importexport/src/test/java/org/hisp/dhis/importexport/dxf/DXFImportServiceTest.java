@@ -281,7 +281,6 @@ public class DXFImportServiceTest
         importService.importData( importParams, inputStreamExcelx );
 
         assertEquals( organisationUnitService.getAllOrganisationUnits().size(), 49 );
-
     }
 
     @Ignore

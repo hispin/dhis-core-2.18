@@ -30,8 +30,8 @@ package org.hisp.dhis.importexport.dxf.converter;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.apache.commons.logging.Log;
@@ -54,8 +54,6 @@ public class DataEntryFormConverter
     implements XMLConverter
 {
     private static final Log log = LogFactory.getLog( DataEntryFormConverter.class );
-    
-    private static final Pattern ID_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
     
     public static final String COLLECTION_NAME = "dataEntryForms";
     public static final String ELEMENT_NAME = "dataEntryForm";
@@ -81,11 +79,13 @@ public class DataEntryFormConverter
     /**
      * Constructor for read operations.
      */
-    public DataEntryFormConverter( ImportObjectService importObjectService,
+    public DataEntryFormConverter( BatchHandler<DataEntryForm> batchHandler,
+        ImportObjectService importObjectService,
         DataEntryFormService dataEntryFormService,
         Map<Object, Integer> dataElementMapping, 
         Map<Object, Integer> categoryOptionComboMapping )
     {
+        this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.dataEntryFormService = dataEntryFormService;
         this.dataElementMapping = dataElementMapping;
@@ -127,14 +127,14 @@ public class DataEntryFormConverter
         {
             final DataEntryForm dataEntryForm = new DataEntryForm();
 
-            reader.moveToStartElement( FIELD_ID );
-            dataEntryForm.setId( Integer.parseInt( reader.getElementValue() ) );
-
-            reader.moveToStartElement( FIELD_NAME );
-            dataEntryForm.setName( reader.getElementValue() );
-            reader.moveToStartElement( FIELD_HTMLCODE );
-            dataEntryForm.setHtmlCode( proccessHtmlCode( reader.getElementValue(), dataEntryForm.getName() ) );
-
+            final Map<String, String> values = reader.readElements( ELEMENT_NAME );
+            
+            String htmlCode = values.get( FIELD_HTMLCODE );
+            
+            dataEntryForm.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            dataEntryForm.setName( values.get( FIELD_NAME ) );            
+            dataEntryForm.setHtmlCode( processHtmlCode( htmlCode, dataEntryForm.getName() ) );
+            
             importObject( dataEntryForm, params );
         }
     }
@@ -143,7 +143,7 @@ public class DataEntryFormConverter
     // Support method
     // -------------------------------------------------------------------------
 
-    private String proccessHtmlCode( String htmlCode, String name )
+    private String processHtmlCode( String htmlCode, String name )
     {
         if ( htmlCode == null )
         {
@@ -152,7 +152,7 @@ public class DataEntryFormConverter
 
         StringBuffer buffer = new StringBuffer();
 
-        Matcher matcher = ID_PATTERN.matcher( htmlCode );
+        Matcher matcher = DataEntryForm.INPUT_PATTERN.matcher( htmlCode );
         
         while ( matcher.find() )
         {
