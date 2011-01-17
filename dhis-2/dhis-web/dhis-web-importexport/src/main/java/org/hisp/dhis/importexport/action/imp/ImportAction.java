@@ -49,7 +49,6 @@ import org.hisp.dhis.importexport.ImportInternalProcess;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.ImportType;
-import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
@@ -102,13 +101,6 @@ public class ImportAction
     // -------------------------------------------------------------------------
     // Input & output report params
     // -------------------------------------------------------------------------
-
-    private String dataDictionaryMode;
-
-    public void setDataDictionaryMode( String dataDictionaryMode )
-    {
-        this.dataDictionaryMode = dataDictionaryMode;
-    }
     
     private String type;
 
@@ -235,8 +227,7 @@ public class ImportAction
         
         ImportStrategy strategy = ImportStrategy.valueOf( incomingRecords );
 
-        params.setType( ImportType.valueOf( type ) );
-        params.setExtendedMode( dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );        
+        params.setType( ImportType.valueOf( type ) );   
         params.setImportStrategy( strategy );
         params.setDataValues( dataValues );
         params.setSkipCheckMatching( skipCheckMatching );

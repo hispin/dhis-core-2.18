@@ -464,22 +464,6 @@ public class DXFConverter
 
                 log.info( "Imported DataElements" );
             }
-            else if ( reader.isStartElement( ExtendedDataElementConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_data_elements" );
-
-                BatchHandler<DataElement> batchHandler = batchHandlerFactory.createBatchHandler(
-                    DataElementBatchHandler.class ).init();
-
-                XMLConverter converter = new ExtendedDataElementConverter( batchHandler, importObjectService,
-                    objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), dataElementService );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ExtendedDataElements" );
-            }
             else if ( reader.isStartElement( CalculatedDataElementConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_calculated_data_elements" );
@@ -592,24 +576,6 @@ public class DXFConverter
                 batchHandler.flush();
 
                 log.info( "Imported Indicators" );
-            }
-            else if ( reader.isStartElement( ExtendedIndicatorConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_indicators" );
-
-                BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler(
-                    IndicatorBatchHandler.class ).init();
-
-                XMLConverter converter = new ExtendedIndicatorConverter( batchHandler, importObjectService,
-                    indicatorService, expressionService, objectMappingGenerator.getIndicatorTypeMapping( params
-                        .skipMapping() ), objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getCategoryOptionComboMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported ExtendedIndicators" );
             }
             else if ( reader.isStartElement( IndicatorGroupConverter.COLLECTION_NAME ) )
             {

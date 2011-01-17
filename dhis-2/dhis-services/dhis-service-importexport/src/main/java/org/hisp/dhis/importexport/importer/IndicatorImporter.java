@@ -28,7 +28,6 @@ package org.hisp.dhis.importexport.importer;
  */
 
 import org.amplecode.quick.BatchHandler;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.importexport.GroupMemberType;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.Importer;
@@ -66,14 +65,7 @@ public class IndicatorImporter
     @Override
     protected void importUnique( Indicator object )
     {
-        if ( object.getExtended() != null )
-        {
-            indicatorService.addIndicator( object ); // Use API if extended element exists
-        }
-        else
-        {
-            batchHandler.addObject( object );
-        }
+        batchHandler.addObject( object );
     }
 
     @Override
@@ -93,52 +85,6 @@ public class IndicatorImporter
         match.setDenominatorDescription( object.getDenominatorDescription() );
         match.setDenominatorAggregationOperator( object.getDenominatorAggregationOperator() );
         match.setLastUpdated( object.getLastUpdated() );
-
-        // ---------------------------------------------------------------------
-        // Extended data element
-        // ---------------------------------------------------------------------
-        
-        if ( object.getExtended() != null )
-        {
-            ExtendedDataElement extended = new ExtendedDataElement();
-
-            extended.setMnemonic( object.getExtended().getMnemonic() );
-            extended.setVersion( object.getExtended().getVersion() );
-            extended.setContext( object.getExtended().getContext() );
-            extended.setSynonyms( object.getExtended().getSynonyms() );
-            extended.setHononyms( object.getExtended().getHononyms() );
-            extended.setKeywords( object.getExtended().getKeywords() );
-            extended.setStatus( object.getExtended().getStatus() );
-            extended.setStatusDate( object.getExtended().getStatusDate() );
-            extended.setDataElementType( object.getExtended().getDataElementType() );
-            
-            extended.setDataType( object.getExtended().getDataType() );
-            extended.setRepresentationalForm( object.getExtended().getRepresentationalForm() );
-            extended.setRepresentationalLayout( object.getExtended().getRepresentationalLayout() );
-            extended.setMinimumSize( object.getExtended().getMinimumSize() );
-            extended.setMaximumSize( object.getExtended().getMaximumSize() );
-            extended.setDataDomain( object.getExtended().getDataDomain() );
-            extended.setValidationRules( object.getExtended().getValidationRules() );
-            extended.setRelatedDataReferences( object.getExtended().getRelatedDataReferences() );
-            extended.setGuideForUse( object.getExtended().getGuideForUse() );
-            extended.setCollectionMethods( object.getExtended().getCollectionMethods() );
-            
-            extended.setResponsibleAuthority( object.getExtended().getResponsibleAuthority() );
-            extended.setUpdateRules( object.getExtended().getUpdateRules() );
-            extended.setAccessAuthority( object.getExtended().getAccessAuthority() );
-            extended.setUpdateFrequency( object.getExtended().getUpdateFrequency() );
-            extended.setLocation( object.getExtended().getLocation() );
-            extended.setReportingMethods( object.getExtended().getReportingMethods() );
-            extended.setVersionStatus( object.getExtended().getVersionStatus() );
-            extended.setPreviousVersionReferences( object.getExtended().getPreviousVersionReferences() );
-            extended.setSourceDocument( object.getExtended().getSourceOrganisation() );
-            extended.setSourceOrganisation( object.getExtended().getSourceOrganisation() );
-            extended.setComment( object.getExtended().getComment() );
-            extended.setSaved( object.getExtended().getSaved() );
-            extended.setLastUpdated( object.getExtended().getLastUpdated() );
-            
-            match.setExtended( extended );
-        }
         
         indicatorService.updateIndicator( match );                
     }
@@ -155,11 +101,6 @@ public class IndicatorImporter
         if ( match == null )
         {
             match = indicatorService.getIndicatorByShortName( object.getShortName() );
-        }
-
-        if ( match != null && match.getExtended() != null )
-        {
-            match.getExtended().getMnemonic(); // Dirty loading of extended data element
         }
         
         return match;
@@ -205,130 +146,6 @@ public class IndicatorImporter
             return false;
         }
 
-        // ---------------------------------------------------------------------
-        // Extended data element
-        // ---------------------------------------------------------------------
-
-        if ( object.getExtended() != null && existing.getExtended() != null )
-        {
-            if ( !isSimiliar( object.getExtended().getMnemonic(), existing.getExtended().getMnemonic() ) || ( isNotNull( object.getExtended().getMnemonic(), existing.getExtended().getMnemonic() ) && !object.getExtended().getMnemonic().equals( existing.getExtended().getMnemonic() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getVersion(), existing.getExtended().getVersion() ) || ( isNotNull( object.getExtended().getVersion(), existing.getExtended().getVersion() ) && !object.getExtended().getVersion().equals( existing.getExtended().getVersion() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getContext(), existing.getExtended().getContext() ) || ( isNotNull( object.getExtended().getContext(), existing.getExtended().getContext() ) && !object.getExtended().getContext().equals( existing.getExtended().getContext() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getSynonyms(), existing.getExtended().getSynonyms() ) || ( isNotNull( object.getExtended().getSynonyms(), existing.getExtended().getSynonyms() ) && !object.getExtended().getSynonyms().equals( existing.getExtended().getSynonyms() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getHononyms(), existing.getExtended().getHononyms() ) || ( isNotNull( object.getExtended().getHononyms(), existing.getExtended().getHononyms() ) && !object.getExtended().getHononyms().equals( existing.getExtended().getHononyms() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getKeywords(), existing.getExtended().getKeywords() ) || ( isNotNull( object.getExtended().getKeywords(), existing.getExtended().getKeywords() ) && !object.getExtended().getKeywords().equals( existing.getExtended().getKeywords() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getStatus(), existing.getExtended().getStatus() ) || ( isNotNull( object.getExtended().getStatus(), existing.getExtended().getStatus() ) && !object.getExtended().getStatus().equals( existing.getExtended().getStatus() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getDataElementType(), existing.getExtended().getDataElementType() ) || ( isNotNull( object.getExtended().getDataElementType(), existing.getExtended().getDataElementType() ) && !object.getExtended().getDataElementType().equals( existing.getExtended().getDataElementType() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getDataType(), existing.getExtended().getDataType() ) || ( isNotNull( object.getExtended().getDataType(), existing.getExtended().getDataType() ) && !object.getExtended().getDataType().equals( existing.getExtended().getDataType() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getRepresentationalForm(), existing.getExtended().getRepresentationalForm() ) || ( isNotNull( object.getExtended().getRepresentationalForm(), existing.getExtended().getRepresentationalForm() ) && !object.getExtended().getRepresentationalForm().equals( existing.getExtended().getRepresentationalForm() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getRepresentationalLayout(), existing.getExtended().getRepresentationalLayout() ) || ( isNotNull( object.getExtended().getRepresentationalLayout(), existing.getExtended().getRepresentationalLayout() ) && !object.getExtended().getRepresentationalLayout().equals( existing.getExtended().getRepresentationalLayout() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getMinimumSize(), existing.getExtended().getMinimumSize() ) || ( isNotNull( object.getExtended().getMinimumSize(), existing.getExtended().getMinimumSize() ) && !object.getExtended().getMinimumSize().equals( existing.getExtended().getMinimumSize() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getMaximumSize(), existing.getExtended().getMaximumSize() ) || ( isNotNull( object.getExtended().getMaximumSize(), existing.getExtended().getMaximumSize() ) && !object.getExtended().getMaximumSize().equals( existing.getExtended().getMaximumSize() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getDataDomain(), existing.getExtended().getDataDomain() ) || ( isNotNull( object.getExtended().getDataDomain(), existing.getExtended().getDataDomain() ) && !object.getExtended().getDataDomain().equals( existing.getExtended().getDataDomain() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getValidationRules(), existing.getExtended().getValidationRules() ) || ( isNotNull( object.getExtended().getValidationRules(), existing.getExtended().getValidationRules() ) && !object.getExtended().getValidationRules().equals( existing.getExtended().getValidationRules() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getRelatedDataReferences(), existing.getExtended().getRelatedDataReferences() ) || ( isNotNull( object.getExtended().getRelatedDataReferences(), existing.getExtended().getRelatedDataReferences() ) && !object.getExtended().getRelatedDataReferences().equals( existing.getExtended().getRelatedDataReferences() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getGuideForUse(), existing.getExtended().getGuideForUse() ) || ( isNotNull( object.getExtended().getGuideForUse(), existing.getExtended().getGuideForUse() ) && !object.getExtended().getGuideForUse().equals( existing.getExtended().getGuideForUse() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getCollectionMethods(), existing.getExtended().getCollectionMethods() ) || ( isNotNull( object.getExtended().getCollectionMethods(), existing.getExtended().getCollectionMethods() ) && !object.getExtended().getCollectionMethods().equals( existing.getExtended().getCollectionMethods() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getResponsibleAuthority(), existing.getExtended().getResponsibleAuthority() ) || ( isNotNull( object.getExtended().getResponsibleAuthority(), existing.getExtended().getResponsibleAuthority() ) && !object.getExtended().getResponsibleAuthority().equals( existing.getExtended().getResponsibleAuthority() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getUpdateRules(), existing.getExtended().getUpdateRules() ) || ( isNotNull( object.getExtended().getUpdateRules(), existing.getExtended().getUpdateRules() ) && !object.getExtended().getUpdateRules().equals( existing.getExtended().getUpdateRules() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getAccessAuthority(), existing.getExtended().getAccessAuthority() ) || ( isNotNull( object.getExtended().getAccessAuthority(), existing.getExtended().getAccessAuthority() ) && !object.getExtended().getAccessAuthority().equals( existing.getExtended().getAccessAuthority() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getUpdateFrequency(), existing.getExtended().getUpdateFrequency() ) || ( isNotNull( object.getExtended().getUpdateFrequency(), existing.getExtended().getUpdateFrequency() ) && !object.getExtended().getUpdateFrequency().equals( existing.getExtended().getUpdateFrequency() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getLocation(), existing.getExtended().getLocation() ) || ( isNotNull( object.getExtended().getLocation(), existing.getExtended().getLocation() ) && !object.getExtended().getLocation().equals( existing.getExtended().getLocation() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getReportingMethods(), existing.getExtended().getReportingMethods() ) || ( isNotNull( object.getExtended().getReportingMethods(), existing.getExtended().getReportingMethods() ) && !object.getExtended().getReportingMethods().equals( existing.getExtended().getReportingMethods() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getVersionStatus(), existing.getExtended().getVersionStatus() ) || ( isNotNull( object.getExtended().getVersionStatus(), existing.getExtended().getVersionStatus() ) && !object.getExtended().getVersionStatus().equals( existing.getExtended().getVersionStatus() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getPreviousVersionReferences(), existing.getExtended().getPreviousVersionReferences() ) || ( isNotNull( object.getExtended().getPreviousVersionReferences(), existing.getExtended().getPreviousVersionReferences() ) && !object.getExtended().getPreviousVersionReferences().equals( existing.getExtended().getPreviousVersionReferences() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getSourceDocument(), existing.getExtended().getSourceDocument() ) || ( isNotNull( object.getExtended().getSourceDocument(), existing.getExtended().getSourceDocument() ) && !object.getExtended().getSourceDocument().equals( existing.getExtended().getSourceDocument() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getSourceOrganisation(), existing.getExtended().getSourceOrganisation() ) || ( isNotNull( object.getExtended().getSourceOrganisation(), existing.getExtended().getSourceOrganisation() ) && !object.getExtended().getSourceOrganisation().equals( existing.getExtended().getSourceOrganisation() ) ) )
-            {
-                return false;
-            }
-            if ( !isSimiliar( object.getExtended().getComment(), existing.getExtended().getComment() ) || ( isNotNull( object.getExtended().getComment(), existing.getExtended().getComment() ) && !object.getExtended().getComment().equals( existing.getExtended().getComment() ) ) )
-            {
-                return false;
-            }
-        }
-        
         return true;
     }
 }

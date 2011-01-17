@@ -27,12 +27,31 @@ package org.hisp.dhis.importexport.action.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.common.Objects.CALCULATEDDATAELEMENT;
+import static org.hisp.dhis.common.Objects.DATADICTIONARY;
+import static org.hisp.dhis.common.Objects.DATAELEMENT;
+import static org.hisp.dhis.common.Objects.DATAELEMENTGROUP;
+import static org.hisp.dhis.common.Objects.DATAELEMENTGROUPSET;
+import static org.hisp.dhis.common.Objects.DATASET;
+import static org.hisp.dhis.common.Objects.DATAVALUE;
+import static org.hisp.dhis.common.Objects.INDICATOR;
+import static org.hisp.dhis.common.Objects.INDICATORGROUP;
+import static org.hisp.dhis.common.Objects.INDICATORGROUPSET;
+import static org.hisp.dhis.common.Objects.INDICATORTYPE;
+import static org.hisp.dhis.common.Objects.OLAPURL;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNIT;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUP;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITGROUPSET;
+import static org.hisp.dhis.common.Objects.ORGANISATIONUNITLEVEL;
+import static org.hisp.dhis.common.Objects.REPORTTABLE;
+import static org.hisp.dhis.common.Objects.VALIDATIONRULE;
+import static org.hisp.dhis.common.Objects.valueOf;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.common.Objects;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -51,8 +70,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.validation.ValidationRule;
 
-import static org.hisp.dhis.common.Objects.*;
-
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -67,7 +84,6 @@ public class ClassMapUtil
         
         classMap.put( DATAELEMENT, DataElement.class );
         classMap.put( CALCULATEDDATAELEMENT, CalculatedDataElement.class );
-        classMap.put( EXTENDEDDATAELEMENT, ExtendedDataElement.class );
         classMap.put( DATAELEMENTGROUP, DataElementGroup.class );
         classMap.put( DATAELEMENTGROUPSET, DataElementGroupSet.class );
         classMap.put( INDICATORTYPE, IndicatorType.class );

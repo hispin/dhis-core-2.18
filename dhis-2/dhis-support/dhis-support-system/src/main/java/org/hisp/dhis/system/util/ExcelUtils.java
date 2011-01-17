@@ -220,58 +220,6 @@ public class ExcelUtils
     {
         // row = 3 & column = 1->8
         addDataElementCellToSheet( sheet, format, element, i18n, row, column );
-
-        if ( element.getExtended() != null )
-        {
-            // row = 3 & column = 9->16
-            column = 9;
-            sheet.addCell( new Label( column++, row, element.getExtended().getMnemonic(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getVersion(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getContext(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getSynonyms(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getHononyms(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getKeywords(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getStatus(), format ) );
-            sheet.addCell( new Label( column++, row, DateUtils.getMediumDateString( element.getExtended()
-                .getStatusDate() ) ) );
-
-            // -------------------------------------------------------------------------
-            // Relational and representational attributes
-            // -------------------------------------------------------------------------
-
-            // row = 3 & column = 17->26
-            sheet.addCell( new Label( column++, row, element.getExtended().getDataType(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getRepresentationalForm(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getRepresentationalLayout(), format ) );
-            sheet.addCell( new Label( column++, row, String.valueOf( element.getExtended().getMinimumSize() ) ) );
-            sheet.addCell( new Label( column++, row, String.valueOf( element.getExtended().getMaximumSize() ) ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getDataDomain(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getValidationRules(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getRelatedDataReferences(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getGuideForUse(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getCollectionMethods(), format ) );
-
-            // -------------------------------------------------------------------------
-            // Administrative attributes
-            // -------------------------------------------------------------------------
-
-            // row = 3 & column = 27->36
-            sheet.addCell( new Label( column++, row, element.getExtended().getResponsibleAuthority(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getUpdateRules(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getAccessAuthority(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getUpdateFrequency(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getLocation(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getReportingMethods(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getVersionStatus(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getPreviousVersionReferences(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getSourceDocument(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getSourceOrganisation(), format ) );
-            sheet.addCell( new Label( column++, row, element.getExtended().getComment(), format ) );
-            sheet
-                .addCell( new Label( column++, row, DateUtils.getMediumDateString( element.getExtended().getSaved() ) ) );
-            sheet.addCell( new Label( column++, row, DateUtils.getMediumDateString( element.getExtended()
-                .getLastUpdated() ) ) );
-        }
     }
 
     public static void printOrganisationUnitHeaders( WritableSheet sheet, WritableCellFormat format, I18n i18n,

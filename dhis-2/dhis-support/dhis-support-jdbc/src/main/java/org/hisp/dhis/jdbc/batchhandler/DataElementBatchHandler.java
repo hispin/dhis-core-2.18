@@ -102,7 +102,6 @@ public class DataElementBatchHandler
         statementBuilder.setColumn( "valuetype" );
         statementBuilder.setColumn( "domaintype" );
         statementBuilder.setColumn( "aggregationtype" );
-        statementBuilder.setColumn( "extendeddataelementid" );
         statementBuilder.setColumn( "categorycomboid" );
         statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "lastupdated" );
@@ -120,7 +119,6 @@ public class DataElementBatchHandler
         statementBuilder.setValue( dataElement.getType() );
         statementBuilder.setValue( dataElement.getDomainType() );
         statementBuilder.setValue( dataElement.getAggregationOperator() );
-        statementBuilder.setValue( dataElement.getExtended() != null ? dataElement.getExtended().getId() : null );
         statementBuilder.setValue( dataElement.getCategoryCombo().getId() );
         statementBuilder.setValue( dataElement.getSortOrder() );
         statementBuilder.setValue( dataElement.getLastUpdated() );

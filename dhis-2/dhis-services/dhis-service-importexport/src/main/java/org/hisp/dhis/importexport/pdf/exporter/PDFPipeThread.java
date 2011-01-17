@@ -73,13 +73,6 @@ public class PDFPipeThread
         this.indicatorConverter = indicatorConverter;
     }
 
-    private PDFConverter extendedDataElementConverter;
-
-    public void setExtendedDataElementConverter( PDFConverter extendedDataElementConverter )
-    {
-        this.extendedDataElementConverter = extendedDataElementConverter;
-    }
-
     private PDFConverter organisationUnitHierarchyConverter;
 
     public void setOrganisationUnitHierarchyConverter( PDFConverter organisationUnitHierarchyConverter )
@@ -123,16 +116,9 @@ public class PDFPipeThread
             document = PDFUtils.openDocument( outputStream );
 
             PDFUtils.printDocumentFrontPage( document, exportParams.getI18n(), exportParams.getFormat() );
-
-            if ( exportParams.isExtendedMode() )
-            {
-                extendedDataElementConverter.write( document, exportParams );
-            }
-            else
-            {
-                dataElementConverter.write( document, exportParams );
-            }
-
+            
+            dataElementConverter.write( document, exportParams );
+            
             indicatorConverter.write( document, exportParams );
 
             organisationUnitHierarchyConverter.write( document, exportParams );

@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.dimension.DimensionOptionElement;
 
@@ -64,8 +63,6 @@ public class Indicator
     private String denominatorAggregationOperator;
     
     private String explodedDenominator;
-    
-    private ExtendedDataElement extended;
     
     private Integer sortOrder;
 
@@ -264,17 +261,7 @@ public class Indicator
     {
         this.explodedDenominator = explodedDenominator;
     }
-
-    public ExtendedDataElement getExtended()
-    {
-        return extended;
-    }
-
-    public void setExtended( ExtendedDataElement extended )
-    {
-        this.extended = extended;
-    }
-
+    
     public Integer getSortOrder()
     {
         return sortOrder;

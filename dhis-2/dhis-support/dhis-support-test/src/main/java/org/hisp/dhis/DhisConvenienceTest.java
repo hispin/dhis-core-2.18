@@ -41,7 +41,6 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -780,35 +779,6 @@ public abstract class DhisConvenienceTest
     }
 
     /**
-     * @param uniqueCharacter A unique character to identify the object.
-     */
-    public static DataElement createExtendedDataElement( char uniqueCharacter )
-    {
-        DataElement dataElement = createDataElement( uniqueCharacter );
-
-        ExtendedDataElement extended = createExtendedElement( uniqueCharacter );
-
-        dataElement.setExtended( extended );
-
-        return dataElement;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param type The type.
-     */
-    public static Indicator createExtendedIndicator( char uniqueCharacter, IndicatorType type )
-    {
-        Indicator indicator = createIndicator( uniqueCharacter, type );
-
-        ExtendedDataElement extended = createExtendedElement( uniqueCharacter );
-
-        indicator.setExtended( extended );
-
-        return indicator;
-    }
-
-    /**
      * @param dataElementId The data element identifier.
      * @param categoryOptionComboId The data element category option combo
      *        identifier.
@@ -1025,48 +995,6 @@ public abstract class DhisConvenienceTest
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    private static ExtendedDataElement createExtendedElement( char uniqueCharacter )
-    {
-        ExtendedDataElement extended = new ExtendedDataElement();
-
-        extended.setMnemonic( "Mnemonic" + uniqueCharacter );
-        extended.setVersion( "Version" + uniqueCharacter );
-        extended.setContext( "Context" + uniqueCharacter );
-        extended.setSynonyms( "Synonyms" + uniqueCharacter );
-        extended.setHononyms( "Hononyms" + uniqueCharacter );
-        extended.setKeywords( "Keywords" + uniqueCharacter );
-        extended.setStatus( ExtendedDataElement.STATUS_CURRENT );
-        extended.setStatusDate( date );
-        extended.setDataElementType( ExtendedDataElement.TYPE_DATAELEMENT );
-
-        extended.setDataType( ExtendedDataElement.DATATYPE_ALPHABETIC );
-        extended.setRepresentationalForm( ExtendedDataElement.REPRESENTATIONAL_FORM_CODE );
-        extended.setRepresentationalLayout( "RepresentationalLayout" + uniqueCharacter );
-        extended.setMinimumSize( 0 );
-        extended.setMaximumSize( 10 );
-        extended.setDataDomain( "DataDomain" + uniqueCharacter );
-        extended.setValidationRules( "ValidationRules" + uniqueCharacter );
-        extended.setRelatedDataReferences( "RelatedDataReferences" + uniqueCharacter );
-        extended.setGuideForUse( "GuideForUse" + uniqueCharacter );
-        extended.setCollectionMethods( "CollectionMethods" + uniqueCharacter );
-
-        extended.setResponsibleAuthority( "ResponsibleAuthority" + uniqueCharacter );
-        extended.setUpdateRules( "UpdateRules" + uniqueCharacter );
-        extended.setAccessAuthority( "AccessAuthority" + uniqueCharacter );
-        extended.setUpdateFrequency( "UpdateFrequency" + uniqueCharacter );
-        extended.setLocation( "Location" + uniqueCharacter );
-        extended.setReportingMethods( "ReportingMethods" + uniqueCharacter );
-        extended.setVersionStatus( "VersionStatus" + uniqueCharacter );
-        extended.setPreviousVersionReferences( "PreviousVersionReferences" + uniqueCharacter );
-        extended.setSourceDocument( "SourceDocument" + uniqueCharacter );
-        extended.setSourceOrganisation( "SourceOrganisation" + uniqueCharacter );
-        extended.setComment( "Comment" + uniqueCharacter );
-        extended.setSaved( date );
-        extended.setLastUpdated( date );
-
-        return extended;
-    }
 
     /**
      * Injects the externalDir property of LocationManager to

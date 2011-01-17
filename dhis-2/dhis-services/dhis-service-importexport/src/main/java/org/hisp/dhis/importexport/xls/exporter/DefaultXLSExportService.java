@@ -41,7 +41,6 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.xls.converter.DataElementConverter;
-import org.hisp.dhis.importexport.xls.converter.ExtendedDataElementConverter;
 import org.hisp.dhis.importexport.xls.converter.IndicatorConverter;
 import org.hisp.dhis.importexport.xls.converter.OrganisationUnitConverter;
 import org.hisp.dhis.importexport.xls.converter.OrganisationUnitHierarchyConverter;
@@ -129,9 +128,7 @@ public class DefaultXLSExportService
 
             thread.setDataElementConverter( new DataElementConverter( dataElementService ) );
             thread.setIndicatorConverter( new IndicatorConverter( indicatorService, expressionService ) );
-            thread.setExtendedDataElementConverter( new ExtendedDataElementConverter( dataElementService ) );
-            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter(
-                organisationUnitService ) );
+            thread.setOrganisationUnitHierarchyConverter( new OrganisationUnitHierarchyConverter( organisationUnitService ) );
             thread.setOrganisationUnitConverter( new OrganisationUnitConverter( organisationUnitService ) );
 
             thread.start();

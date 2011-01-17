@@ -81,15 +81,15 @@ public class DataDictionaryStoreTest
         dataDictionaryA = createDataDictionary( 'A' );
         dataDictionaryB = createDataDictionary( 'B' );
         
-        dataElementA = createExtendedDataElement( 'A' );
-        dataElementB = createExtendedDataElement( 'B' );
+        dataElementA = createDataElement( 'A' );
+        dataElementB = createDataElement( 'B' );
         
         indicatorType = createIndicatorType( 'A' );
         
         indicatorService.addIndicatorType( indicatorType );
         
-        indicatorA = createExtendedIndicator( 'A', indicatorType );
-        indicatorB = createExtendedIndicator( 'B', indicatorType );
+        indicatorA = createIndicator( 'A', indicatorType );
+        indicatorB = createIndicator( 'B', indicatorType );
     }
 
     // -------------------------------------------------------------------------
@@ -183,139 +183,5 @@ public class DataDictionaryStoreTest
         assertTrue( dictionaries.size() == 2 );
         assertTrue( dictionaries.contains( dataDictionaryA ) );
         assertTrue( dictionaries.contains( dataDictionaryB ) );        
-    }
-
-    // -------------------------------------------------------------------------
-    // ExtendedDataElement tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddGetExtendedDataElement()
-    {
-        int id = dataElementService.addDataElement( dataElementA );
-        
-        dataElementA = dataElementService.getDataElement( id );
-        
-        assertEquals( dataElementA.getName(), "DataElementA" );
-        assertNotNull( dataElementA.getExtended() );
-        assertEquals( dataElementA.getExtended().getMnemonic(), "MnemonicA" );
-        assertEquals( dataElementA.getExtended().getDataDomain(), "DataDomainA" );
-        assertEquals( dataElementA.getExtended().getLocation(), "LocationA" );
-    }
-
-    @Test
-    public void testUpdateExtendedDataElement()
-    {
-        int id = dataElementService.addDataElement( dataElementA );
-        
-        dataElementA = dataElementService.getDataElement( id );
-        
-        assertEquals( dataElementA.getName(), "DataElementA" );
-        assertNotNull( dataElementA.getExtended() );
-        assertEquals( dataElementA.getExtended().getMnemonic(), "MnemonicA" );
-        assertEquals( dataElementA.getExtended().getDataDomain(), "DataDomainA" );
-        assertEquals( dataElementA.getExtended().getLocation(), "LocationA" );
-        
-        dataElementA.getExtended().setMnemonic( "MnemonicB" );
-        dataElementA.getExtended().setDataDomain( "DataDomainB" );
-        dataElementA.getExtended().setLocation( "LocationB" );
-        
-        dataElementService.updateDataElement( dataElementA );
-        
-        dataElementA = dataElementService.getDataElement( id );
-
-        assertEquals( dataElementA.getName(), "DataElementA" );
-        assertNotNull( dataElementA.getExtended() );
-        assertEquals( dataElementA.getExtended().getMnemonic(), "MnemonicB" );
-        assertEquals( dataElementA.getExtended().getDataDomain(), "DataDomainB" );
-        assertEquals( dataElementA.getExtended().getLocation(), "LocationB" );
-    }
-
-    @Test
-    public void testDeleteExtendedDataElement()
-        throws Exception
-    {
-        int idA = dataElementService.addDataElement( dataElementA );
-        int idB = dataElementService.addDataElement( dataElementB );
-        
-        assertNotNull( dataElementService.getDataElement( idA ) );
-        assertNotNull( dataElementService.getDataElement( idB ) );
-        
-        dataElementService.deleteDataElement( dataElementA );
-
-        assertNull( dataElementService.getDataElement( idA ) );
-        assertNotNull( dataElementService.getDataElement( idB ) );
-
-        dataElementService.deleteDataElement( dataElementB );
-
-        assertNull( dataElementService.getDataElement( idA ) );
-        assertNull( dataElementService.getDataElement( idB ) );
-    }
-
-    // -------------------------------------------------------------------------
-    // ExtendedIndicator tests
-    // -------------------------------------------------------------------------
-
-    @Test
-    public void testAddGetExtendedIndicator()
-    {
-        int id = indicatorService.addIndicator( indicatorA );
-        
-        indicatorA = indicatorService.getIndicator( id );
-        
-        assertEquals( indicatorA.getName(), "IndicatorA" );
-        assertNotNull( indicatorA.getExtended() );
-        assertEquals( indicatorA.getExtended().getMnemonic(), "MnemonicA" );
-        assertEquals( indicatorA.getExtended().getDataDomain(), "DataDomainA" );
-        assertEquals( indicatorA.getExtended().getLocation(), "LocationA" );
-    }
-
-    @Test
-    public void testUpdateExtendedIndicator()
-    {
-        int id = indicatorService.addIndicator( indicatorA );
-        
-        indicatorA = indicatorService.getIndicator( id );
-        
-        assertEquals( indicatorA.getName(), "IndicatorA" );
-        assertNotNull( indicatorA.getExtended() );
-        assertEquals( indicatorA.getExtended().getMnemonic(), "MnemonicA" );
-        assertEquals( indicatorA.getExtended().getDataDomain(), "DataDomainA" );
-        assertEquals( indicatorA.getExtended().getLocation(), "LocationA" );
-        
-        indicatorA.getExtended().setMnemonic( "MnemonicB" );
-        indicatorA.getExtended().setDataDomain( "DataDomainB" );
-        indicatorA.getExtended().setLocation( "LocationB" );
-        
-        indicatorService.updateIndicator( indicatorA );
-        
-        indicatorA = indicatorService.getIndicator( id );
-
-        assertEquals( indicatorA.getName(), "IndicatorA" );
-        assertNotNull( indicatorA.getExtended() );
-        assertEquals( indicatorA.getExtended().getMnemonic(), "MnemonicB" );
-        assertEquals( indicatorA.getExtended().getDataDomain(), "DataDomainB" );
-        assertEquals( indicatorA.getExtended().getLocation(), "LocationB" );
-    }
-
-    @Test
-    public void testDeleteExtendedIndicator()
-        throws Exception
-    {
-        int idA = indicatorService.addIndicator( indicatorA );
-        int idB = indicatorService.addIndicator( indicatorB );
-        
-        assertNotNull( indicatorService.getIndicator( idA ) );
-        assertNotNull( indicatorService.getIndicator( idB ) );
-        
-        indicatorService.deleteIndicator( indicatorA );
-        
-        assertNull( indicatorService.getIndicator( idA ) );
-        assertNotNull( indicatorService.getIndicator( idB ) );
-        
-        indicatorService.deleteIndicator( indicatorB );
-
-        assertNull( indicatorService.getIndicator( idA ) );
-        assertNull( indicatorService.getIndicator( idB ) );
     }
 }

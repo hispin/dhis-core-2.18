@@ -51,9 +51,6 @@
 		
     <property name="denominatorAggregationOperator" column="denominatoraggregationtype" length="16"/>
 
-    <many-to-one name="extended" class="org.hisp.dhis.datadictionary.ExtendedDataElement" 
-      column="extendeddataelementid" unique="true" cascade="all" foreign-key="fk_indicator_extendeddataelementid"/>
-      
     <property name="sortOrder"/>
 
     <property name="url"/>

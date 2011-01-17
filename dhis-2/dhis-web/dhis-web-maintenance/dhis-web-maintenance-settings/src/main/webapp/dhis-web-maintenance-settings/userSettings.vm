@@ -31,13 +31,6 @@ function displayPropertyChanged( list )
 	window.location.href = "setCurrentDisplayProperty.action?currentDisplayProperty=" + property;
 }
 
-function dataDictionaryModeChanged( list )
-{
-	var mode = list.options[list.selectedIndex].value;
-	
-	window.location.href = "setCurrentDataDictionaryMode.action?currentDataDictionaryMode=" + mode;
-}
-
 function autoSaveDataEntryForm( value )
 {
 	window.location.href = "setAutoSaveDataEntryForm.action?autoSave=" + value;
@@ -83,14 +76,6 @@ function styleChanged( list )
 <select onchange="displayPropertyChanged( this );" style="min-width:250px">
 #foreach( $property in $displayProperties )
 	<option value="$property" #if( $property == $currentDisplayProperty )selected="selected"#end>$i18n.getString( $property )</option>
-#end
-</select>
-
-<h4>$i18n.getString( "data_dictionary_mode" )</h4>
-
-<select onchange="dataDictionaryModeChanged( this );" style="min-width:250px">
-#foreach( $mode in $dataDictionaryModes )
-	<option value="$mode" #if( $mode == $currentDataDictionaryMode )selected="selected"#end>$i18n.getString( $mode )</option>
 #end
 </select>
 

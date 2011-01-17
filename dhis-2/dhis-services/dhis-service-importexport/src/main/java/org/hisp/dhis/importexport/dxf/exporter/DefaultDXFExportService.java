@@ -82,8 +82,6 @@ import org.hisp.dhis.importexport.dxf.converter.DataSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetSourceAssociationConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataValueConverter;
-import org.hisp.dhis.importexport.dxf.converter.ExtendedDataElementConverter;
-import org.hisp.dhis.importexport.dxf.converter.ExtendedIndicatorConverter;
 import org.hisp.dhis.importexport.dxf.converter.GroupSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.GroupSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.IndicatorConverter;
@@ -307,9 +305,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new CategoryCategoryOptionAssociationConverter( categoryService ) );
             thread.registerXMLConverter( new CategoryComboCategoryAssociationConverter( categoryService ) );
 
-            thread
-                .registerXMLConverter( params.isExtendedMode() ? new ExtendedDataElementConverter( dataElementService )
-                    : new DataElementConverter( dataElementService ) );
+            thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new CalculatedDataElementConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupConverter( dataElementService ) );
             thread.registerXMLConverter( new DataElementGroupMemberConverter( dataElementService ) );
@@ -317,8 +313,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataElementGroupSetMemberConverter( dataElementService ) );
 
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
-            thread.registerXMLConverter( params.isExtendedMode() ? new ExtendedIndicatorConverter( indicatorService )
-                : new IndicatorConverter( indicatorService ) );
+            thread.registerXMLConverter( new IndicatorConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupMemberConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorGroupSetConverter( indicatorService ) );

@@ -27,23 +27,13 @@ package org.hisp.dhis.options.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public interface DataDictionaryModeManager
-{
-    final String DATADICTIONARY_MODE_REGULAR = "regular";    
-    final String DATADICTIONARY_MODE_EXTENDED = "extended";
-
-    void setCurrentDataDictionaryMode( String dataDictionaryMode );
-    
-    String getCurrentDataDictionaryMode();
-    
-    List<String> getDataDictionaryModes();
-    
+{    
     void setCurrentDataDictionary( Integer id );
     
     Integer getCurrentDataDictionary();
