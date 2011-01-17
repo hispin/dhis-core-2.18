@@ -726,27 +726,6 @@ public class DefaultImportObjectManager
     }
 
     @Transactional
-    public void importDataSets()
-    {
-        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
-
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
-
-        Importer<DataSet> importer = new DataSetImporter( batchHandler, dataSetService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            importer.importObject( (DataSet) importObject.getObject(), params );
-        }
-
-        batchHandler.flush();
-
-        importObjectStore.deleteImportObjects( DataSet.class );
-
-        log.info( "Imported DataSets" );
-    }
-
-    @Transactional
     public void importDataDictionaryDataElements()
     {
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
@@ -782,9 +761,30 @@ public class DefaultImportObjectManager
             importer.importObject( (DataEntryForm) importObject.getObject(), params );
         }
 
-        importObjectStore.deleteImportObjects( Report.class );
+        importObjectStore.deleteImportObjects( DataEntryForm.class );
 
-        log.info( "Imported Reports" );
+        log.info( "Imported DataEntryForms" );
+    }
+
+    @Transactional
+    public void importDataSets()
+    {
+        BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
+
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
+
+        Importer<DataSet> importer = new DataSetImporter( batchHandler, dataSetService );
+
+        for ( ImportObject importObject : importObjects )
+        {
+            importer.importObject( (DataSet) importObject.getObject(), params );
+        }
+
+        batchHandler.flush();
+
+        importObjectStore.deleteImportObjects( DataSet.class );
+
+        log.info( "Imported DataSets" );
     }
 
     @Transactional
