@@ -39,7 +39,7 @@
 			<td><label>$i18n.getString('expression')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<input type="text" id="expression" name="expression" style="width:20em" class="{validate:{required:true,minlength:5,maxlength:160}}"/>
-				<input type="button" id="expression-button" value=".."/>											
+				<input type="button" id="expression-button" value="..."/>											
 			</td>
 		</tr>	
 		<tr>
