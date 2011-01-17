@@ -155,71 +155,12 @@ public class DefaultReportTableService
     {
         for ( ReportTable reportTable : getReportTables( id, mode ) )
         {
-            // -----------------------------------------------------------------
-            // Reporting period report parameter / current reporting period
-            // -----------------------------------------------------------------
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-            {             
-                reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( reportingPeriod, format, !reportTable.isDoPeriods() ) ) );                                
-                reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod, format ) );
-                
-                log.info( "Reporting period date from report param: " + reportTable.getReportingMonthName() );
-            }
-            else
-            {
-                reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( 1, format, !reportTable.isDoPeriods() ) ) );                
-                reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
-                
-                log.info( "Reporting period date default: " + reportTable.getReportingMonthName() );
-            }
-
-            // -----------------------------------------------------------------
-            // Parent organisation unit report parameter
-            // -----------------------------------------------------------------
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
-            {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-                organisationUnit.setCurrentParent( true );
-                reportTable.getRelativeUnits().add( organisationUnit );
-                reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
-                reportTable.setOrganisationUnitName( organisationUnit.getName() );
-                
-                log.info( "Parent organisation unit: " + organisationUnit.getName() );
-            }
-
-            // -----------------------------------------------------------------
-            // Organisation unit report parameter
-            // -----------------------------------------------------------------
-
-            if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
-            {
-                OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-                
-                List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-                organisationUnits.add( organisationUnit );
-                reportTable.getRelativeUnits().addAll( organisationUnits );
-                reportTable.setOrganisationUnitName( organisationUnit.getName() );
-                
-                log.info( "Organisation unit: " + organisationUnit.getName() );
-            }
-
-            // -----------------------------------------------------------------
-            // Set properties and initalize
-            // -----------------------------------------------------------------
-
-            reportTable.setI18nFormat( format );
-            reportTable.init();
-
-            // -----------------------------------------------------------------
-            // Create report table
-            // -----------------------------------------------------------------
+            reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
             createReportTable( reportTable, doDataMart );
         }
     }
-
+    
     @Transactional
     public void createReportTable( ReportTable reportTable, boolean doDataMart )
     {
@@ -366,25 +307,129 @@ public class DefaultReportTableService
     }
 
     @Transactional
-    public Grid getReportTableGrid( int id, I18nFormat format )
+    public Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId )
     {
         ReportTable reportTable = getReportTable( id );
         
-        reportTable.setI18nFormat( format );
-        reportTable.init();
+        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
         
         return reportTableManager.getReportTableGrid( reportTable );
     }
     
-    public boolean reportTableIsGenerated( int id )
+    public boolean reportTableIsGenerated( int id ) //TODO remove
     {
         return reportTableManager.reportTableIsGenerated( getReportTable( id ) );
+    }
+
+    @Transactional
+    public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
+    {
+        return reportTableStore.getBetweenByName( name, first, max );
+    }
+
+    @Transactional
+    public int getReportTableCount()
+    {
+        return reportTableStore.getCount();
+    }
+
+    @Transactional
+    public int getReportTableCountByName( String name )
+    {
+        return reportTableStore.getCountByName( name );
+    }
+
+    @Transactional
+    public Collection<ReportTable> getReportTablesBetween( int first, int max )
+    {
+        return reportTableStore.getBetween( first, max );
     }
     
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
+    /**
+     * Populates the report table with dynamic meta objects originating from report
+     * table parameters.
+     * 
+     * @param reportTable the report table.
+     * @param reportingPeriod the reporting period number.
+     * @param organisationUnitId the organisation unit identifier.
+     * @param format the I18n format.
+     * @return a report table.
+     */
+    private ReportTable initDynamicMetaObjects( ReportTable reportTable, Integer reportingPeriod, 
+        Integer organisationUnitId, I18nFormat format )
+    {
+        // -----------------------------------------------------------------
+        // Reporting period report parameter / current reporting period
+        // -----------------------------------------------------------------
+
+        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
+        {             
+            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( reportingPeriod, format, !reportTable.isDoPeriods() ) ) );                                
+            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod, format ) );
+            
+            log.info( "Reporting period date from report param: " + reportTable.getReportingMonthName() );
+        }
+        else
+        {
+            reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods( 1, format, !reportTable.isDoPeriods() ) ) );                
+            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
+            
+            log.info( "Reporting period date default: " + reportTable.getReportingMonthName() );
+        }
+
+        // -----------------------------------------------------------------
+        // Parent organisation unit report parameter
+        // -----------------------------------------------------------------
+
+        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            organisationUnit.setCurrentParent( true );
+            reportTable.getRelativeUnits().add( organisationUnit );
+            reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
+            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            
+            log.info( "Parent organisation unit: " + organisationUnit.getName() );
+        }
+
+        // -----------------------------------------------------------------
+        // Organisation unit report parameter
+        // -----------------------------------------------------------------
+
+        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+            organisationUnits.add( organisationUnit );
+            reportTable.getRelativeUnits().addAll( organisationUnits );
+            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            
+            log.info( "Organisation unit: " + organisationUnit.getName() );
+        }
+
+        // -----------------------------------------------------------------
+        // Set properties and initalize
+        // -----------------------------------------------------------------
+
+        reportTable.setI18nFormat( format );
+        reportTable.init();
+        
+        return reportTable;
+    }
+
+    /**
+     * Adds columns with regression values to the given grid.
+     * 
+     * @param grid the grid.
+     * @param startColumnIndex the start column index.
+     * @param numberOfColumns the number of columns.
+     * @return a grid.
+     */
     private Grid addRegressionToGrid( Grid grid, int startColumnIndex, int numberOfColumns )
     {
         for ( int i = 0; i < numberOfColumns; i++ )
@@ -397,6 +442,12 @@ public class DefaultReportTableService
         return grid;
     }
     
+    /**
+     * Creates a grid representing the data in the report table.
+     * 
+     * @param reportTable the report table.
+     * @return a grid.
+     */
     private Grid getGrid( ReportTable reportTable )
     {
         final Grid grid = new ListGrid();
@@ -564,25 +615,5 @@ public class DefaultReportTableService
         }
 
         return reportTables;
-    }
-
-    public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
-    {
-        return reportTableStore.getBetweenByName( name, first, max );
-    }
-
-    public int getReportTableCount()
-    {
-        return reportTableStore.getCount();
-    }
-
-    public int getReportTableCountByName( String name )
-    {
-        return reportTableStore.getCountByName( name );
-    }
-
-    public Collection<ReportTable> getReportTablesBetween( int first, int max )
-    {
-        return reportTableStore.getBetween( first, max );
     }
 }

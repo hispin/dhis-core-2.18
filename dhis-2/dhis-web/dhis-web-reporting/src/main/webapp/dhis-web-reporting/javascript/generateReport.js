@@ -89,7 +89,19 @@ function reportStatusReceived( xmlObject )
         }
         else if ( $( "#mode" ).val() == MODE_TABLE )
         {
-        	window.location.href = "exportTable.action?id=" + $( "#id" ).val() + "&type=html";
+        	var url = "exportTable.action?id=" + $( "#id" ).val() + "&type=html";
+		    
+		    if ( $( "#reportingPeriod" ).length )
+		    {
+		        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
+		    }
+		        
+		    if ( paramOrganisationUnit != null )
+		    {
+		        url += "&organisationUnitId=" + paramOrganisationUnit;
+		    }
+    
+        	window.location.href = url;
         }
     }
     else if ( statusMessage == null )

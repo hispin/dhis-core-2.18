@@ -59,7 +59,21 @@ public class ExportTableAction
     {
         this.format = format;
     }
+    
+    private Integer reportingPeriod;
 
+    public void setReportingPeriod( Integer reportingPeriod )
+    {
+        this.reportingPeriod = reportingPeriod;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -110,11 +124,11 @@ public class ExportTableAction
         }
         else
         {
-            grid = reportTableService.getReportTableGrid( id, format );            
+            grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );            
         }
         
         SessionUtils.setSessionVar( SessionUtils.KEY_REPORT_TABLE_GRID, grid );
         
         return type != null ? type : DEFAULT_TYPE;
-    }    
+    }
 }
