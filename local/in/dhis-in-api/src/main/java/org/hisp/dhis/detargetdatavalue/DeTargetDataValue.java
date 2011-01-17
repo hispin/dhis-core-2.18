@@ -34,7 +34,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.detarget.DeTarget;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
-import org.hisp.dhis.surveydatavalue.SurveyDataValue;
 
 /**
  * @author Mithilesh Kumar Thakur
@@ -130,7 +129,7 @@ public class DeTargetDataValue implements Serializable
             return false;
         }
 
-        if ( !(o instanceof SurveyDataValue) )
+        if ( !(o instanceof DeTargetDataValue) )
         {
             return false;
         }
