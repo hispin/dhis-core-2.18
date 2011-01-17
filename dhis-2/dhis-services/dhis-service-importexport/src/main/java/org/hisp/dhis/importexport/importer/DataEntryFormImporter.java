@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.importexport.importer;
 
+import org.amplecode.quick.BatchHandler;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.importexport.GroupMemberType;
@@ -53,8 +54,9 @@ public class DataEntryFormImporter
     {
     }
 
-    public DataEntryFormImporter( DataEntryFormService dataEntryFormService )
+    public DataEntryFormImporter( BatchHandler<DataEntryForm> batchHandler, DataEntryFormService dataEntryFormService )
     {
+        this.batchHandler = batchHandler;
         this.dataEntryFormService = dataEntryFormService;
     }
 
@@ -73,7 +75,7 @@ public class DataEntryFormImporter
     @Override
     protected void importUnique( DataEntryForm object )
     {
-        dataEntryFormService.addDataEntryForm( object );
+        batchHandler.addObject( object );
     }
 
     @Override
@@ -101,5 +103,4 @@ public class DataEntryFormImporter
 
         return false;
     }
-
 }

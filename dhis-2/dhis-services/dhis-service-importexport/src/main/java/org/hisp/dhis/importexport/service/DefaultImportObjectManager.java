@@ -118,6 +118,7 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataEntryFormBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
@@ -606,8 +607,7 @@ public class DefaultImportObjectManager
     @Transactional
     public void importIndicators()
     {
-        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class )
-            .init();
+        BatchHandler<Indicator> batchHandler = batchHandlerFactory.createBatchHandler( IndicatorBatchHandler.class ).init();
 
         Map<Object, Integer> indicatorTypeMapping = objectMappingGenerator.getIndicatorTypeMapping( false );
         Map<Object, Integer> dataElementMapping = objectMappingGenerator.getDataElementMapping( false );
@@ -752,15 +752,19 @@ public class DefaultImportObjectManager
     @Transactional
     public void importDataEntryForms()
     {
+        BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler( DataEntryFormBatchHandler.class ).init();
+        
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataEntryForm.class );
 
-        Importer<DataEntryForm> importer = new DataEntryFormImporter( dataEntryFormService );
+        Importer<DataEntryForm> importer = new DataEntryFormImporter( batchHandler, dataEntryFormService );
 
         for ( ImportObject importObject : importObjects )
         {
             importer.importObject( (DataEntryForm) importObject.getObject(), params );
         }
 
+        batchHandler.flush();
+        
         importObjectStore.deleteImportObjects( DataEntryForm.class );
 
         log.info( "Imported DataEntryForms" );
@@ -771,13 +775,22 @@ public class DefaultImportObjectManager
     {
         BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
 
+        Map<Object, Integer> dataEntryFormMapping = objectMappingGenerator.getDataEntryFormMapping( false );
+        
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
 
         Importer<DataSet> importer = new DataSetImporter( batchHandler, dataSetService );
 
         for ( ImportObject importObject : importObjects )
         {
-            importer.importObject( (DataSet) importObject.getObject(), params );
+            DataSet object = (DataSet) importObject.getObject();
+            
+            if ( object.getDataEntryForm() != null )
+            {
+                object.getDataEntryForm().setId( dataEntryFormMapping.get( object.getDataEntryForm().getId() ) );
+            }
+            
+            importer.importObject( object, params );
         }
 
         batchHandler.flush();
