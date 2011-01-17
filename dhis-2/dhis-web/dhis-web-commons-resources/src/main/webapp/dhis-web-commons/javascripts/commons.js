@@ -914,7 +914,7 @@ function tableSorter( tableId, sortList )
 {
 	if(sortList==undefined) sortList = [[0,0]];
 	
-	jQuery("#" + tableId ).tablesorter({dateFormat:dateFormat}); 
+	jQuery("#" + tableId ).tablesorter(); 
 	
 	if($("#" + tableId ).find("tbody").children().size() > 0 )
 	{
