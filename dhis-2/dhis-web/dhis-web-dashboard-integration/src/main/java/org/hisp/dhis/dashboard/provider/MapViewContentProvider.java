@@ -31,6 +31,7 @@ import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_BA
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class MapViewContentProvider
         {
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
 
-            List<MapView> mapViews = dashboardContent.getMapViews();
+            List<MapView> mapViews = new ArrayList<MapView>( dashboardContent.getMapViews() );
 
             String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
                 DEFAULT_AGGREGATION_STRATEGY );
