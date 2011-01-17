@@ -771,6 +771,23 @@ public class DefaultImportObjectManager
     }
 
     @Transactional
+    public void importDataEntryForms()
+    {
+        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataEntryForm.class );
+
+        Importer<DataEntryForm> importer = new DataEntryFormImporter( dataEntryFormService );
+
+        for ( ImportObject importObject : importObjects )
+        {
+            importer.importObject( (DataEntryForm) importObject.getObject(), params );
+        }
+
+        importObjectStore.deleteImportObjects( Report.class );
+
+        log.info( "Imported Reports" );
+    }
+
+    @Transactional
     public void importDataSetMembers()
     {
         BatchHandler<GroupMemberAssociation> batchHandler = batchHandlerFactory
@@ -1145,21 +1162,5 @@ public class DefaultImportObjectManager
         batchHandler.flush();
 
         importObjectStore.deleteImportObjects( type );
-    }
-
-    public void importDataEntryForms()
-    {
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataEntryForm.class );
-
-        Importer<DataEntryForm> importer = new DataEntryFormImporter( dataEntryFormService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            importer.importObject( (DataEntryForm) importObject.getObject(), params );
-        }
-
-        importObjectStore.deleteImportObjects( Report.class );
-
-        log.info( "Imported Reports" );
     }
 }
