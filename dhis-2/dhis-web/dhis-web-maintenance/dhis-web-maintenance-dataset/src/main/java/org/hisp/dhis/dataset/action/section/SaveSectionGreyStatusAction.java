@@ -158,8 +158,7 @@ public class SaveSectionGreyStatusAction
         if ( dataElementOperandService.getDataElementOperand( operand ) == null )
         {            
             dataElementOperandService.addDataElementOperand( operand );
-        }
-        
+        }        
         else
         {
             operand = dataElementOperandService.getDataElementOperand( operand );
