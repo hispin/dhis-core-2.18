@@ -27,6 +27,10 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +40,9 @@ import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
+import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.system.filter.MapViewFixedDateTypeFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -63,9 +70,16 @@ public class MapViewContentProvider
     {
         this.dashboardService = dashboardService;
     }
-    
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
     private String key;
-    
+
     public void setKey( String key )
     {
         this.key = key;
@@ -80,18 +94,26 @@ public class MapViewContentProvider
         Map<String, Object> content = new HashMap<String, Object>();
 
         User user = currentUserService.getCurrentUser();
-        
+
         if ( user != null )
         {
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
-            
+
             List<MapView> mapViews = dashboardContent.getMapViews();
-            
+
+            String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+                DEFAULT_AGGREGATION_STRATEGY );
+
+            if ( aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) )
+            {
+                FilterUtils.filter( mapViews, new MapViewFixedDateTypeFilter() );
+            }
+
             Collections.sort( mapViews, new MapViewNameComparator() );
-            
+
             content.put( key, mapViews );
         }
-        
+
         return content;
     }
 }
