@@ -351,9 +351,6 @@ public class ReportTableConverter
             {
                 reader.moveToStartElement( FIELD_REPORTING_MONTH );          
                 reportTable.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
-    
-                reader.moveToStartElement( FIELD_REPORTING_MONTH );          
-                reportTable.getRelatives().setReportingMonth( Boolean.parseBoolean( reader.getElementValue() ) );
                 
                 reader.moveToStartElement( FIELD_MONTHS_THIS_YEAR );
                 reportTable.getRelatives().setMonthsThisYear( Boolean.parseBoolean( reader.getElementValue() ) );
