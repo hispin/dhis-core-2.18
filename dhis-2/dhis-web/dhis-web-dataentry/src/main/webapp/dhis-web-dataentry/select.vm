@@ -9,7 +9,6 @@
 </div>
 
 <div id="actions" style="">	
-    <input type="button" value="$i18n.getString( 'generate_min_max' )" onclick="javascript:generateMinMaxValues()" style="width:150px" #if( !$auth.hasAccess( "dhis-web-dataentry", "minMaxGeneration" ) ) disabled="disabled" #end/><br/>
     <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/>
     <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs()" style="width:150px"/><br/><br/>
 

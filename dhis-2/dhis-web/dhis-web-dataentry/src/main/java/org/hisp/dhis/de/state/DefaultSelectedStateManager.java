@@ -152,7 +152,7 @@ public class DefaultSelectedStateManager
         // Retain only DataSets from current user's authority groups
         // ---------------------------------------------------------------------
 
-        if ( !currentUserService.currentUserIsSuper() )
+        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
         {
             UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
 

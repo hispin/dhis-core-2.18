@@ -367,69 +367,6 @@ function getNextEntryField( field )
 }
 
 // -----------------------------------------------------------------------------
-// Min max
-// -----------------------------------------------------------------------------
-
-/**
- * Set min/max limits for dataelements that has one or more values, and no 
- * manually entred min/max limits.
- */
-function SetGeneratedMinMaxValues()
-{
-    this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'minmax' );
-        request.send( 'minMaxGeneration.action' );
-    };
-    
-    function handleResponse( rootElement )
-    {
-        var dataElements = rootElement.getElementsByTagName( 'dataelement' );
-        
-        for( i = 0; i < dataElements.length; i++ )
-        {
-            var deId = getElementValue( dataElements[i], 'dataelementId' );
-            var ocId = getElementValue( dataElements[i], 'optionComboId' );
-            
-            setInnerHTML('value[' + deId + ':' + ocId + '].min', getElementValue( dataElements[i], 'minLimit'));
-            setInnerHTML('value[' + deId + ':' + ocId + '].max', getElementValue( dataElements[i], 'maxLimit'));
-        }        
-    }
-    
-    function handleHttpError( errorCode )
-    {
-        window.alert( i18n_saving_minmax_failed_error_code + '\n\n' + errorCode );
-    }
-    
-    function getElementValue( parentElement, childElementName )
-    {
-        var textNode = parentElement.getElementsByTagName( childElementName )[0].firstChild;
-        
-        if ( textNode )
-        {
-            return textNode.nodeValue;
-        }
-        else
-        {
-            return null;
-        }
-    }    
-}
-
-function generateMinMaxValues()
-{    
-	lockScreen();
-	var setGeneratedMinMaxValues = new SetGeneratedMinMaxValues();
-    setGeneratedMinMaxValues.save();
-	
-	unLockScreen();
-	setHeaderDelayMessage(i18n_generate_min_max_success);
-}
-
-// -----------------------------------------------------------------------------
 // Data completeness
 // -----------------------------------------------------------------------------
 

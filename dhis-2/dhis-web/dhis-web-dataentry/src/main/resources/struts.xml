@@ -103,12 +103,6 @@
 			<param name="javascripts">javascript/history.js</param>
 		</action>
 
-		<action name="minMaxGeneration" class="org.hisp.dhis.de.action.MinMaxGeneratingAction">
-			<result name="success" type="velocity-xml">responseMinMaxGeneration.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_DATAELEMENT_MINMAX_ADD,F_DATAELEMENT_MINMAX_UPDATE</param>
-		</action>
-
 		<action name="registerCompleteDataSet" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction">
 			<result name="success" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
 			<result name="input" type="velocity-xml">/dhis-web-dataentry/responseInput.vm</result>
