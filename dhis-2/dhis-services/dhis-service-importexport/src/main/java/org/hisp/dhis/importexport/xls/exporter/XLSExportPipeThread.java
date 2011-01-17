@@ -73,13 +73,6 @@ public class XLSExportPipeThread
         this.indicatorConverter = indicatorConverter;
     }
 
-    private XLSConverter extendedDataElementConverter;
-
-    public void setExtendedDataElementConverter( XLSConverter extendedDataElementConverter )
-    {
-        this.extendedDataElementConverter = extendedDataElementConverter;
-    }
-
     private XLSConverter organisationUnitHierarchyConverter;
 
     public void setOrganisationUnitHierarchyConverter( XLSConverter organisationUnitHierarchyConverter )
@@ -117,15 +110,8 @@ public class XLSExportPipeThread
         try
         {
             workbook = ExcelUtils.openWorkbook( outputStream );
-
-            if ( exportParams.isExtendedMode() )
-            {
-                extendedDataElementConverter.write( workbook, exportParams, sheetIndex++ );
-            }
-            else
-            {
-                dataElementConverter.write( workbook, exportParams, sheetIndex++ );
-            }
+            
+            dataElementConverter.write( workbook, exportParams, sheetIndex++ );
 
             indicatorConverter.write( workbook, exportParams, sheetIndex++ );
 

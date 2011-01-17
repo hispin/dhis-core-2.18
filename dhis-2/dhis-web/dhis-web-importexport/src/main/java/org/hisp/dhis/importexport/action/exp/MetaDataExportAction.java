@@ -36,7 +36,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.importexport.ImportDataValueService;
 import org.hisp.dhis.importexport.ImportObjectService;
-import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -120,13 +119,6 @@ public class MetaDataExportAction
     public void setExportFormat( String exportFormat )
     {
         this.exportFormat = exportFormat;
-    }
-
-    private String dataDictionaryMode;
-
-    public void setDataDictionaryMode( String dataDictionaryMode )
-    {
-        this.dataDictionaryMode = dataDictionaryMode;
     }
 
     private boolean dataElements;
@@ -259,9 +251,6 @@ public class MetaDataExportAction
         importObjectService.deleteImportObjects();
 
         ExportParams params = new ExportParams();
-
-        params.setExtendedMode( dataDictionaryMode != null
-            && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
 
         if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables || charts )
         {

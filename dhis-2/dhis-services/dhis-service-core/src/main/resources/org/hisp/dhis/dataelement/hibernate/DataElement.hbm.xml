@@ -44,9 +44,6 @@
 		
     <property name="aggregationOperator" not-null="true" column="aggregationtype" length="16"/>
 
-    <many-to-one name="extended" class="org.hisp.dhis.datadictionary.ExtendedDataElement"
-      column="extendeddataelementid" unique="true" cascade="all" foreign-key="fk_dataelement_extendeddataelementid"/>	  
-	  	  
     <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo" 
       column="categorycomboid" foreign-key="fk_dataelement_categorycomboid"/>
     

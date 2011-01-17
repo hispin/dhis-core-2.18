@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -434,7 +433,6 @@ public class GetPreviewOptionsAction
     {
         newDataElements = importObjectService.getImportObjects( NEW, DataElement.class ).size();
         newCalculatedDataElements = importObjectService.getImportObjects( NEW, CalculatedDataElement.class ).size();
-        newExtendedDataElements = importObjectService.getImportObjects( NEW, ExtendedDataElement.class  ).size();
         newDataElementGroups = importObjectService.getImportObjects( NEW, DataElementGroup.class ).size();
         newDataElementGroupSets = importObjectService.getImportObjects( NEW, DataElementGroupSet.class ).size();
         newIndicatorTypes = importObjectService.getImportObjects( NEW, IndicatorType.class ).size();
@@ -456,7 +454,6 @@ public class GetPreviewOptionsAction
         
         updateDataElements = importObjectService.getImportObjects( UPDATE, DataElement.class ).size();
         updateCalculatedDataElements = importObjectService.getImportObjects( UPDATE, CalculatedDataElement.class ).size();
-        updateExtendedDataElements = importObjectService.getImportObjects( UPDATE, ExtendedDataElement.class ).size();
         updateDataElementGroups = importObjectService.getImportObjects( UPDATE, DataElementGroup.class ).size();
         updateDataElementGroupSets = importObjectService.getImportObjects( UPDATE, DataElementGroupSet.class ).size();
         updateIndicatorTypes = importObjectService.getImportObjects( UPDATE, IndicatorType.class ).size();

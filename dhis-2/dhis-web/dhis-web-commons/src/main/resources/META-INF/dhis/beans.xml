@@ -745,12 +745,6 @@
 
 	<!-- Interceptor -->
 
-	<bean id="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor"
-		class="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor">
-		<property name="dataDictionaryModeManager"
-			ref="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager" />
-	</bean>
-
 	<bean id="org.hisp.dhis.interceptor.DisplayPropertyInterceptor"
 		class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor">
 		<property name="displayPropertyManager"

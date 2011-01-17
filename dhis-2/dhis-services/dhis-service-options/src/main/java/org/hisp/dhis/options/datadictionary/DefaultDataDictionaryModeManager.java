@@ -27,9 +27,6 @@ package org.hisp.dhis.options.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -40,7 +37,6 @@ import org.hisp.dhis.user.UserSettingService;
 public class DefaultDataDictionaryModeManager
     implements DataDictionaryModeManager
 {
-    private static final String SETTING_NAME_DATADICTIONARY_MODE = "currentDataDictionaryMode";    
     private static final String SETTING_NAME_DATADICTIONARY = "currentDataDictionary";
     
     // -------------------------------------------------------------------------
@@ -58,32 +54,6 @@ public class DefaultDataDictionaryModeManager
     // DataDictionaryModeManager implementation
     // -------------------------------------------------------------------------
 
-    public void setCurrentDataDictionaryMode( String dataDictionaryMode )
-    {
-        try
-        {
-            userSettingService.saveUserSetting( SETTING_NAME_DATADICTIONARY_MODE, dataDictionaryMode );
-        }
-        catch ( NoCurrentUserException e )
-        {   
-        }
-    }
-    
-    public String getCurrentDataDictionaryMode()
-    {
-        return (String) userSettingService.getUserSetting( SETTING_NAME_DATADICTIONARY_MODE, DATADICTIONARY_MODE_REGULAR );
-    }
-    
-    public List<String> getDataDictionaryModes()
-    {
-        List<String> settings = new ArrayList<String>();
-        
-        settings.add( DATADICTIONARY_MODE_REGULAR );
-        settings.add( DATADICTIONARY_MODE_EXTENDED );
-        
-        return settings;
-    }
-    
     public void setCurrentDataDictionary( Integer id )
     {
         try

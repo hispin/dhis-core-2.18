@@ -36,7 +36,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.datadictionary.ExtendedDataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dimension.Dimension;
 import org.hisp.dhis.dimension.DimensionOption;
@@ -128,11 +127,6 @@ public class DataElement
      * The parent DataElement for this DataElement.
      */
     private DataElement parent;
-
-    /**
-     * Extended information about the DataElement.
-     */
-    private ExtendedDataElement extended;
 
     /**
      * A combination of categories to capture data.
@@ -503,16 +497,6 @@ public class DataElement
     public void setParent( DataElement parent )
     {
         this.parent = parent;
-    }
-
-    public ExtendedDataElement getExtended()
-    {
-        return extended;
-    }
-
-    public void setExtended( ExtendedDataElement extended )
-    {
-        this.extended = extended;
     }
 
     public DataElementCategoryCombo getCategoryCombo()

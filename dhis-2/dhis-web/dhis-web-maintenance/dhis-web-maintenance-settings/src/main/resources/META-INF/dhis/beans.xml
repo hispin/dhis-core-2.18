@@ -70,15 +70,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager"/>
     </property>
   </bean>
-  
-  <bean id="org.hisp.dhis.settings.action.user.GetAvailableDataDictionaryModesAction"
-    class="org.hisp.dhis.settings.action.user.GetAvailableDataDictionaryModesAction"
-    scope="prototype">
-    <property name="dataDictionaryModeManager">
-      <ref bean="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager"/>
-    </property>
-  </bean>
-  
+    
    <bean id="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction"
     class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction"
     scope="prototype">
@@ -129,15 +121,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.options.displayproperty.DisplayPropertyManager"/>
     </property>
   </bean>
-  
-  <bean id="org.hisp.dhis.settings.action.user.SetCurrentDataDictionaryModeAction"
-    class="org.hisp.dhis.settings.action.user.SetCurrentDataDictionaryModeAction"
-    scope="prototype">
-    <property name="dataDictionaryModeManager">
-      <ref bean="org.hisp.dhis.options.datadictionary.DataDictionaryModeManager"/>
-    </property>
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction"
     class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction"
     scope="prototype">

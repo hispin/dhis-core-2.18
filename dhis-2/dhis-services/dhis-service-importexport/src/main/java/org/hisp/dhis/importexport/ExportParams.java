@@ -45,8 +45,6 @@ public class ExportParams
     
     private boolean includeCompleteDataSetRegistrations;
     
-    private boolean extendedMode;
-    
     private boolean aggregatedData;
     
     private Date startDate;
@@ -168,16 +166,6 @@ public class ExportParams
         this.includeCompleteDataSetRegistrations = includeCompleteDataSetRegistrations;
     }
     
-    public boolean isExtendedMode()
-    {
-        return extendedMode;
-    }
-
-    public void setExtendedMode( boolean extendedMode )
-    {
-        this.extendedMode = extendedMode;
-    }
-
     public boolean isAggregatedData()
     {
         return aggregatedData;

@@ -52,8 +52,6 @@
 				class="org.hisp.dhis.interceptor.SortOrderInterceptor" />
 			<interceptor name="displayPropertyInterceptor"
 				class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor" />
-			<interceptor name="dataDictionaryModeInterceptor"
-				class="org.hisp.dhis.interceptor.DataDictionaryModeInterceptor" />
 			<interceptor name="systemSettingInterceptor"
 				class="org.hisp.dhis.interceptor.SystemSettingInterceptor" />
 			<interceptor name="styleInterceptor"
@@ -88,7 +86,6 @@
 				<interceptor-ref name="securityInterceptor" />
 				<interceptor-ref name="sortOrderInterceptor" />
 				<interceptor-ref name="displayPropertyInterceptor" />
-				<interceptor-ref name="dataDictionaryModeInterceptor" />
 				<interceptor-ref name="systemSettingInterceptor" />
 				<interceptor-ref name="styleInterceptor" />
 				<interceptor-ref name="contextInterceptor"/>

@@ -38,7 +38,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.options.datadictionary.DataDictionaryModeManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -106,13 +105,6 @@ public class ExportToPdfAction
     // Input
     // -------------------------------------------------------------------------
 
-    private String dataDictionaryMode;
-
-    public void setDataDictionaryMode( String dataDictionaryMode )
-    {
-        this.dataDictionaryMode = dataDictionaryMode;
-    }
-
     private String type;
 
     public void setType( String type )
@@ -169,8 +161,6 @@ public class ExportToPdfAction
                 log.info( "Exporting to PDF for object type: " + TYPE_INDICATOR );
             }
 
-            params.setExtendedMode( dataDictionaryMode != null
-                && dataDictionaryMode.equals( DataDictionaryModeManager.DATADICTIONARY_MODE_EXTENDED ) );
             params.setIncludeDataValues( false );
             params.setI18n( i18n );
             params.setFormat( format );
