@@ -38,7 +38,7 @@
     <thead>
       <tr>
         <th>$i18n.getString( "available_dataElements" )</th>
-        <th>$i18n.getString( "filter" )</th>
+        <th>##$i18n.getString( "filter" )</th>
         <th>$i18n.getString( "selected_dataElements" )</th>
       </tr>
     </thead>
@@ -55,14 +55,16 @@
                 #end
           </select>
             </td>       
-        <td>$i18n.getString( "group" )</td>
+        <td>##$i18n.getString( "group" )</td>
         <td></td>
       </tr>
       
       <tr>
-        <td><input type="text" id="availableDataElementFilter" onkeyup="filterValues( this.value )" style="min-width:25em"></td>
-        <td>$i18n.getString( "name" )</td>
-        <td><input type="text" id="deTargetMembersFilter" onkeyup="filterValues( this.value )" style="min-width:25em"></td>
+        <td><!--<input type="text" id="availableDataElementFilter" onkeyup="filterValues( this.value )" style="min-width:25em">--></td>
+        <td><!--<input type="text" id="availableDataElementFilter" onkeyup="filterAvailableDataElements()" style="min-width:25em">--></td>
+        <td>##$i18n.getString( "name" )</td>
+        <td><!--<input type="text" id="deTargetMembersFilter" onkeyup="filterValues( this.value )" style="min-width:25em">--></td> 
+        <td><!--<input type="text" id="deTargetMembersFilter" onkeyup="filterDeTargetMembers()" style="min-width:25em">--></td>
       </tr>
       
       <tr>

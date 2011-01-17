@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "de_target_mamagement" )t</h3>
+<h3>$i18n.getString( "de_target_mamagement" )</h3>
 
 <table class="mainPageTable">
   <tr>
@@ -29,13 +29,13 @@
               <tr>
                 <td#alternate( $mark )>$encoder.htmlEncode( $deTarget.name )</td>
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="defineSurveyAssociationsForm.action?deTargetId=$deTarget.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
+                  <a href="defineDeTargetAssociationsForm.action?deTargetId=$deTarget.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
                 </td>
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="editSurveyForm.action?deTargetId=$deTarget.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+                  <a href="editDeTargetForm.action?deTargetId=$deTarget.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
                 </td>
                 <td style="text-align:center"#alternate( $mark )>
-                  <a href="javascript:removeSurvey( '$deTarget.id', '$encoder.jsEncode( $deTarget.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+                  <a href="javascript:removeDeTarget( '$deTarget.id', '$encoder.jsEncode( $deTarget.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
                 </td>            
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="javascript:showDeTargetDetails( $deTarget.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>

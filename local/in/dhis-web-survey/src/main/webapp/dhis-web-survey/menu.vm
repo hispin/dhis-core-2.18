@@ -9,7 +9,7 @@
     <ul>               
      <!--   <li><a href="generateTarget.action">$i18n.getString( "detarget_mamagement" )</a></li> -->
             <li><a href="deTargetManagement.action">$i18n.getString( "detarget_mamagement" )</a></li>
-			<li><a href="targetDataEntry.action">DeTarget Data Entry</a></li>
+			<li><a href="targetDataEntry.action">$i18n.getString( "detarget_dataentry" )</a></li>
         
     </ul>
         
