@@ -316,11 +316,6 @@ public class DefaultReportTableService
         return reportTableManager.getReportTableGrid( reportTable );
     }
     
-    public boolean reportTableIsGenerated( int id ) //TODO remove
-    {
-        return reportTableManager.reportTableIsGenerated( getReportTable( id ) );
-    }
-
     @Transactional
     public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {

@@ -59,14 +59,6 @@ public interface ReportTableManager
     void removeReportTable( ReportTable reportTable );
     
     /**
-     * Tests whether the report table has been generated in the database.
-     * 
-     * @param reportTable the ReportTable.
-     * @return true if the report table has been generated, false it not.
-     */
-    boolean reportTableIsGenerated( ReportTable reportTable );
-    
-    /**
      * Returns an AggregatedValueMap.
      * 
      * @param reportTable the ReportTable.
