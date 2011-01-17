@@ -141,13 +141,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataValueAuditService" ref="org.hisp.dhis.datavalue.DataValueAuditService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.de.action.MinMaxGeneratingAction" class="org.hisp.dhis.de.action.MinMaxGeneratingAction" scope="prototype">
-		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="minMaxValuesGenerationService" ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" />
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-	</bean>
-
 	<bean id="org.hisp.dhis.de.action.RegisterCompleteDataSetAction" class="org.hisp.dhis.de.action.RegisterCompleteDataSetAction" scope="prototype">
 		<property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
