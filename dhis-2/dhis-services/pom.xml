@@ -22,11 +22,9 @@
     <module>dhis-service-datamart-default</module>
     <module>dhis-service-importexport</module>
     <module>dhis-service-reporting</module>
-    <module>dhis-service-excel-reporting</module>
     <module>dhis-service-mapping</module>
     <module>dhis-service-aggregationengine-default</module>
     <module>dhis-service-patient</module>
-    <!--<module>dhis-service-mobile-model</module>-->
   </modules>
   
   <dependencies>
