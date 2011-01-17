@@ -138,14 +138,6 @@ public interface ReportTableService
      */
     Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId );
     
-    /**
-     * Tests whether the report table has been generated in the database.
-     * 
-     * @param id the ReportTable id.
-     * @return true if the report table has been generated, false it not.
-     */
-    boolean reportTableIsGenerated( int id );
-    
     Collection<ReportTable> getReportTablesBetween( int first, int max );
     
     Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max );
