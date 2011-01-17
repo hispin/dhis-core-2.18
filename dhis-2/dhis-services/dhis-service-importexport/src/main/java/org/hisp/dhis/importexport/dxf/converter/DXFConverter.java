@@ -351,7 +351,7 @@ public class DXFConverter
 
                 batchHandler.flush();
 
-                log.info( "Imported Conceptss" );
+                log.info( "Imported Concepts" );
             }
             else if ( reader.isStartElement( DataElementCategoryOptionConverter.COLLECTION_NAME ) )
             {
@@ -734,8 +734,8 @@ public class DXFConverter
                 BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler(
                     DataEntryFormBatchHandler.class ).init();
 
-                XMLConverter converter = new DataEntryFormConverter( batchHandler, importObjectService,
-                    dataEntryFormService, dataElementService, categoryService );
+                XMLConverter converter = new DataEntryFormConverter( importObjectService, dataEntryFormService, 
+                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
 
