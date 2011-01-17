@@ -92,7 +92,7 @@ public class GridJrxmlResult
 
         String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".jrxml";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, true, filename, true );
         
         // ---------------------------------------------------------------------
         // Write jrxml based on Velocity template

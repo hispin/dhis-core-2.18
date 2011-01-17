@@ -328,7 +328,7 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryIndicatorConverter( dataDictionaryService ) );
             
-            thread.registerXMLConverter( new DataEntryFormConverter( dataEntryFormService, dataElementService, categoryService ) );
+            thread.registerXMLConverter( new DataEntryFormConverter( dataEntryFormService ) );
             thread.registerXMLConverter( new DataSetConverter( dataSetService ) );
             thread.registerXMLConverter( new DataSetMemberConverter( dataSetService, dataElementService ) );
 

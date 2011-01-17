@@ -43,13 +43,7 @@ public class DataEntryFormImporter
     extends AbstractImporter<DataEntryForm>
     implements Importer<DataEntryForm>
 {
-
     protected DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
-    }
 
     // -------------------------------------------------------------------------
     // Constructor

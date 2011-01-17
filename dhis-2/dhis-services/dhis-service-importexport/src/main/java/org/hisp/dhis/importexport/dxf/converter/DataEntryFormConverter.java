@@ -32,13 +32,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -46,7 +43,6 @@ import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.DataEntryFormImporter;
-import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 
 /**
  * @author Chau Thu Tran
@@ -57,41 +53,43 @@ public class DataEntryFormConverter
     extends DataEntryFormImporter
     implements XMLConverter
 {
+    private static final Log log = LogFactory.getLog( DataEntryFormConverter.class );
+    
+    private static final Pattern ID_PATTERN = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
+    
     public static final String COLLECTION_NAME = "dataEntryForms";
-
     public static final String ELEMENT_NAME = "dataEntryForm";
-
     private static final String FIELD_ID = "id";
-
     private static final String FIELD_NAME = "name";
-
     private static final String FIELD_HTMLCODE = "htmlCode";
 
-    private DataElementService dataElementService;
-
-    private DataElementCategoryService categoryService;
+    private Map<Object, Integer> dataElementMapping;
+    private Map<Object, Integer> categoryOptionComboMapping;
 
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
-    public DataEntryFormConverter( DataEntryFormService dataEntryFormService, DataElementService dataElementService,
-        DataElementCategoryService categoryService )
+    /**
+     * Constructor for write operations.
+     */
+    public DataEntryFormConverter( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-        this.dataElementService = dataElementService;
-        this.categoryService = categoryService;
     }
 
-    public DataEntryFormConverter( BatchHandler<DataEntryForm> batchHandler, ImportObjectService importObjectService,
-        DataEntryFormService dataEntryFormService, DataElementService dataElementService,
-        DataElementCategoryService categoryService )
+    /**
+     * Constructor for read operations.
+     */
+    public DataEntryFormConverter( ImportObjectService importObjectService,
+        DataEntryFormService dataEntryFormService,
+        Map<Object, Integer> dataElementMapping, 
+        Map<Object, Integer> categoryOptionComboMapping )
     {
-        this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.dataEntryFormService = dataEntryFormService;
-        this.dataElementService = dataElementService;
-        this.categoryService = categoryService;
+        this.dataElementMapping = dataElementMapping;
+        this.categoryOptionComboMapping = categoryOptionComboMapping;
     }
 
     // -------------------------------------------------------------------------
@@ -135,7 +133,7 @@ public class DataEntryFormConverter
             reader.moveToStartElement( FIELD_NAME );
             dataEntryForm.setName( reader.getElementValue() );
             reader.moveToStartElement( FIELD_HTMLCODE );
-            dataEntryForm.setHtmlCode( proccessHtmlCode( reader.getElementValue() ) );
+            dataEntryForm.setHtmlCode( proccessHtmlCode( reader.getElementValue(), dataEntryForm.getName() ) );
 
             importObject( dataEntryForm, params );
         }
@@ -145,7 +143,7 @@ public class DataEntryFormConverter
     // Support method
     // -------------------------------------------------------------------------
 
-    private String proccessHtmlCode( String htmlCode )
+    private String proccessHtmlCode( String htmlCode, String name )
     {
         if ( htmlCode == null )
         {
@@ -154,80 +152,39 @@ public class DataEntryFormConverter
 
         StringBuffer buffer = new StringBuffer();
 
-        Map<Object, String> dataElementMap = NameMappingUtil.getDataElementMap();
-        Map<Object, DataElementCategoryOptionCombo> categoryOptionMap = NameMappingUtil.getCategoryOptionComboMap();
-
-        // ---------------------------------------------------------------------
-        // Pattern to match data elements in the HTML code
-        // ---------------------------------------------------------------------
-
-        Pattern dataElementPattern = Pattern.compile( "(<input.*?)[/]?>", Pattern.DOTALL );
-        Matcher dataElementMatcher = dataElementPattern.matcher( htmlCode );
-
-        // ---------------------------------------------------------------------
-        // Pattern to extract data element ID from data element field
-        // ---------------------------------------------------------------------
-
-        Pattern identifierPattern = Pattern.compile( "value\\[(.*)\\].value:value\\[(.*)\\].value" );
-
-        // ---------------------------------------------------------------------
-        // Iterate through all matching data element fields
-        // ---------------------------------------------------------------------
-
-        while ( dataElementMatcher.find() )
+        Matcher matcher = ID_PATTERN.matcher( htmlCode );
+        log.warn( "DE map"  + dataElementMapping );
+        log.warn( "COC map " + categoryOptionComboMapping );
+        
+        while ( matcher.find() )
         {
-            // -----------------------------------------------------------------
-            // Get HTML input field code
-            // -----------------------------------------------------------------
-
-            String dataElementCode = dataElementMatcher.group( 1 );
-
-            Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
-
-            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            if ( matcher.groupCount() > 0 )
             {
-                // -------------------------------------------------------------
-                // Get ids of old data element and category into HtmlCode
-                // -------------------------------------------------------------
+                String dataElement = matcher.group( 1 );
+                String categoryOptionCombo = matcher.group( 2 );
 
-                String oldDataElementId = identifierMatcher.group( 1 );
-                String oldCategoryId = identifierMatcher.group( 2 );
-
-                // -------------------------------------------------------------
-                // Get new data element and new category
-                // -------------------------------------------------------------
-
-                String dataElementName = dataElementMap.get( Integer.parseInt( oldDataElementId ) );
-                DataElement dataElement = dataElementService.getDataElementByName( dataElementName );
-
-                DataElementCategoryOptionCombo _categoryOption = categoryOptionMap.get( Integer
-                    .parseInt( oldCategoryId ) );
-                DataElementCategoryOptionCombo categoryOption = categoryService
-                    .getDataElementCategoryOptionCombo( _categoryOption );
+                Integer dataElementId = dataElementMapping.get( Integer.valueOf( dataElement ) );
+                Integer categoryOptionComboId = categoryOptionComboMapping.get( Integer.valueOf( categoryOptionCombo ) );
                 
-                //TODO can we avoid getting the dataelement and categoryoptioncombo
-                //TODO from database since we only want to get the new identifier
-                //TODO through the ObjectMappingGenerator?
+                if ( dataElement == null )
+                {
+                    log.warn( "Data element or category option combo does not exist for data entry form: " + name );
+                    continue;
+                }
                 
-                //TODO we can also use DataElementOperand.getOperand to centralize
-
-                // -------------------------------------------------------------
-                // update the new ids for htmlCode
-                // -------------------------------------------------------------
-
-                dataElementCode = dataElementCode.replace( oldDataElementId, dataElement.getId() + "" );
-                dataElementCode = dataElementCode.replace( oldCategoryId, categoryOption.getId() + "" );
-
-                // -------------------------------------------------------------
-                // update htmlCode
-                // -------------------------------------------------------------
-
-                dataElementMatcher.appendReplacement( buffer, dataElementCode.toString() );
+                if ( categoryOptionComboId == null )
+                {
+                    log.warn( "Category option combo does not exist for data entry form: " + name );
+                    continue;
+                }
+                
+                matcher.appendReplacement( buffer, String.valueOf( dataElementId ) );
+                matcher.appendReplacement( buffer, String.valueOf( categoryOptionComboId ) );
             }
-
         }
+        
+        matcher.appendTail( buffer );
         
         return buffer.toString();
     }
-
 }
