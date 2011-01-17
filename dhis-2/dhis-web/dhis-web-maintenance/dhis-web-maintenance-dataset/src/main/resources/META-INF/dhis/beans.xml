@@ -131,9 +131,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
 		</property>
+		<property name="dataElementOperandService">
+			<ref bean="org.hisp.dhis.dataelement.DataElementOperandService"/>
+		</property>
 		<property name="categoryService">
 			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>		
+		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.section.SaveSectionSortOrderAction"
