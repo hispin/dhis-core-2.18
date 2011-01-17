@@ -1,44 +1,29 @@
+
 function formValidations()
 {
-    var orgUnitListCB = document.getElementById("orgUnitListCB");
-    var selOUListLength = document.tabularAnalysisForm.orgUnitListCB.options.length;
+    var orgUnitGroupListCB = document.getElementById("orgUnitGroupList");
     
-    sDateIndex    = document.targetAnalysisForm.sDateLB.selectedIndex;
-    eDateIndex    = document.targetAnalysisForm.eDateLB.selectedIndex;
-    sDateTxt = document.targetAnalysisForm.sDateLB.options[sDateIndex].text;
+    sDateIndex    = document.getElementById("sDateLB").selectedIndex;
+    eDateIndex    = document.getElementById("eDateLB").selectedIndex;
+    sDateTxt = document.getElementById("sDateLB").options[sDateIndex].text;
     sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
-    eDateTxt = document.targetAnalysisForm.eDateLB.options[eDateIndex].text;
+    eDateTxt = document.getElementById("eDateLB").options[eDateIndex].text;
     eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
 
     if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
     else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
     else if(sDate > eDate) {alert("Starting Date is Greater");return false;}
-    orgUnitListCB.disabled = false;
     
+    var sWidth = 850;
+	var sHeight = 650;
+    var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
+    var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
+
+    window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
+
     return true;
 } // formValidations Function End
 
-function deSelectionChangeFuntion( listId1, listId2 )
-{
-    var list1 = document.getElementById( listId1 );
-    var list2 = document.getElementById( listId2 );
-
-    clearList( list1 );
-	
-    for(var i=list2.options.length-1; i >= 0; i--)
-    {
-        option = list2.options[ i ];
-        var optValue = option.value;
-        var partsOfOptVal = new Array();
-        partsOfOptVal = optValue.split(":");
-        if(partsOfOptVal[0] == "D")
-        {
-            list2.remove( i );
-        }
-    }
-	
-    getDataElements();
-}
 
 function getDataElements()
 {
@@ -72,7 +57,7 @@ function getDataElementsReceived( xmlObject )
 
     for ( var i = 0; i < dataElements.length; i++ )
     {
-        var id = "D:"+dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
+        var id = dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
         var dataElementName = dataElements[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
         
             var option = document.createElement("option");

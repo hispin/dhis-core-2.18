@@ -18,8 +18,10 @@ selection.setListenerFunction( orgUnitHasBeenSelected );
 
 function orgUnitHasBeenSelected( orgUnitIds )
 {
+	document.getElementById("ouIDTB"). value = orgUnitIds;
     if(orgUnitIds == null || orgUnitIds == "" )
     {
+		document.getElementById("ouNameTB"). value = "";
         return;
     }
     if( orgUnitIds != null )

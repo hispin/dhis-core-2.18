@@ -7,11 +7,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -53,13 +51,6 @@ implements Action
     //Input/Output
     //--------------------------------------------------------------------------
     
-    private List<DataElement> dataElements;
-    
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
    private List<DataElementGroup> dataElementGroups;
 
    public List<DataElementGroup> getDataElementGroups()
@@ -94,21 +85,7 @@ implements Action
 
     public String execute()
     {
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        
-        // take only those dataElement which are VALUE_TYPE_INT and DOMAIN_TYPE_AGGREGATE
-        Iterator<DataElement> alldeIterator = dataElements.iterator();
-        while ( alldeIterator.hasNext() )
-        {
-            DataElement dataElement = alldeIterator.next();
-            if ( !dataElement.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_AGGREGATE ) )
-            {
-                alldeIterator.remove();
-            }
-        }
-        
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        Collections.sort( dataElements, new DataElementNameComparator() );
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
         
         orgUnitGroups = new ArrayList<OrganisationUnitGroup> ( orgUnitGroupService.getAllOrganisationUnitGroups() );
@@ -130,5 +107,4 @@ implements Action
         
         return SUCCESS;
     }
-
 }

@@ -4,7 +4,6 @@
     var selectedOrgUnitId = $selectedOrgId;
     var selctedIndicatorId = $selectedIndicatorId;
     
-    //alert( selectedOrgUnitId );
     
     //alert( selctedIndicatorId );
     

@@ -64,6 +64,8 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.WeeklyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserCredentials;
@@ -210,24 +212,30 @@ public class DefaultMobileImportService
 
         SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
 
-        List<Period> monthlyPeriods = null;
+        List<Period> periods = null;
         PeriodType pt = null;
         if ( periodType.equals( "3" ) )
         {
             pt = new MonthlyPeriodType();
-            monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
-
+            periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
         }
-        else
+        else if ( periodType.equals( "1" ) )
         {
-            if ( periodType.equals( "1" ) )
-            {
-                pt = new DailyPeriodType();
-                monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
-            }
+            pt = new DailyPeriodType();
+            periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
         }
-
-        for ( Period period : monthlyPeriods )
+        else if( periodType.equals( "6" ) )
+        {
+            pt = new YearlyPeriodType();
+            periods =  new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
+        }
+        else if( periodType.equals( "2" ) )
+        {
+            pt = new WeeklyPeriodType();
+            periods =  new ArrayList<Period>( periodService.getPeriodsByPeriodType( pt ) );
+        }
+        
+        for ( Period period : periods )
         {
             String tempDate = dateFormat.format( period.getStartDate() );
             if ( tempDate.equalsIgnoreCase( startDate ) )

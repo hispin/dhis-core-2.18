@@ -332,6 +332,22 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<action name="generateChartDeTarget"
+            class="org.hisp.dhis.dataanalyser.tr.action.GenerateTargetAnalysisDataAction">
+            <result name="success" type="velocity">/popup.vm</result>
+            <param name="page">/dhis-web-dashboard/deTargetAnalysisResult.vm</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+        </action>
+
+        <action name="exportTargetDataToExcel"
+            class="org.hisp.dhis.dataanalyser.action.ExportTargetDataToExcelAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>       
 		
 		
 		<!-- DataStatus Module Stuff -->
