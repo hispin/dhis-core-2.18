@@ -3,29 +3,29 @@
 // Delete Survey
 // -----------------------------------------------------------------------------
 
-var tmpSurveyId;
+//var tmpSurveyId;
 
-var tmpSource;
+//var tmpSource;
 
-function removeSurvey( surveyId, surveyName )
+function removeDeTarget( deTargetId, deTargetName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + " Survey Id =" + surveyId + '\n\n' + " Survey Name ="  + surveyName );
+  var result = window.confirm( i18n_confirm_delete + '\n\n' + " DeTarget Id =" + deTargetId + '\n\n' + " DeTarget Name ="  + deTargetName );
 
   if ( result )
   {
-	$.post("delSurvey.action",
+	$.post("delDeTarget.action",
 		{
-			surveyId : surveyId
+		deTargetId : deTargetId
 		},
 		function (data)
 		{
-			removeSurveyCompleted(data);
+			removeDeTargetCompleted(data);
 		},'xml');
 		
   }
 }
 
-function removeSurveyCompleted( messageElement )
+function removeDeTargetCompleted( messageElement )
 {
 	messageElement = messageElement.getElementsByTagName( "message" )[0];
 	var type = messageElement.getAttribute( "type" );
@@ -40,7 +40,7 @@ function removeSurveyCompleted( messageElement )
    }
    else
    {
-		window.location.href = 'index.action';
+		window.location.href = 'deTargetManagement.action';
    }
 }
 
@@ -54,13 +54,13 @@ function validateAddDeTarget()
 		},
 		function (data)
 		{
-			addSurveyValidationCompleted(data);
+			addDeTargetValidationCompleted(data);
 		},'xml');
 		
   return false;
 }
 
-function addSurveyValidationCompleted( messageElement )
+function addDeTargetValidationCompleted( messageElement )
 {
   	messageElement = messageElement.getElementsByTagName( "message" )[0];
 	var type = messageElement.getAttribute( "type" );
@@ -82,38 +82,39 @@ function addSurveyValidationCompleted( messageElement )
 }
 
 
-function validateEditSurvey()
+function validateEditDeTarget()
 {
-  $.post("validateSurvey.action",
+	//alert("inside update");
+	$.post("validateDeTarget.action",
 		{
 			name :  byId( 'name' ).value,
 			shortName : byId( 'shortName' ).value,
 			url : byId( 'url' ).value,
-			surveyId : byId( 'surveyId' ).value
+			deTargetId : byId( 'deTargetId' ).value
 		},
 		function (data)
 		{
-			editSurveyValidationCompleted(data);
+			editDeTargetValidationCompleted(data);
 		},'xml');
 
   return false;
 }
-function editSurveyValidationCompleted( messageElement )
+function editDeTargetValidationCompleted( messageElement )
 {
+	//alert("inside update result");
   	messageElement = messageElement.getElementsByTagName( "message" )[0];
 	var type = messageElement.getAttribute( "type" );
 	var message = messageElement.firstChild.nodeValue;
 
 	if ( type == 'success' )
 	{
-		// Both edit and add form has id='dataSetForm'
 		var selectedList = document.getElementById( 'selectedList' );
 		for(var k=0;k<selectedList.length;k++)
 		{
 			selectedList.options[k].selected = "true";
 		} 
 		  
-		document.forms['editSurveyForm'].submit();
+		document.forms['editDeTargetForm'].submit();
 	}
 	else if ( type == 'input' )
 	{
@@ -124,6 +125,29 @@ function editSurveyValidationCompleted( messageElement )
 // ----------------------------------------------------------------------
 // List
 // ----------------------------------------------------------------------
+/*
+function initLists()
+{
+    var id;
+	
+	var list = document.getElementById( 'selectedList' );
+	
+    for ( id in deTargetMembers )
+    {
+        list.add( new Option( deTargetMembers[id], id ), null );
+    }	
+	
+    list = document.getElementById( 'availableList' );
+    
+    for ( id in availableDataElements )
+    {
+        list.add( new Option( availableDataElements[id], id ), null );
+    }
+}
+*/
+// complette
+
+/*
 function filterDeTargetMembers()
 {
 	var filter = document.getElementById( 'deTargetMembersFilter' ).value;
@@ -141,8 +165,9 @@ function filterDeTargetMembers()
         }
     }
 }
-
+*/
 //complette
+/*
 function filterAvailableDataElements()
 {
 	var filter = document.getElementById( 'availableDataElementFilter' ).value;
@@ -160,7 +185,7 @@ function filterAvailableDataElements()
         }
     }
 }
-
+*/
 function addDeTargetMembers()
 {
 	var list = document.getElementById( 'availableList' );
@@ -179,7 +204,7 @@ function addDeTargetMembers()
     filterDeTargetMembers();
     filterAvailableDataElements();
 }
-
+/*
 function removeDeTargetMembers()
 {
 	var list = document.getElementById( 'selectedList' );
@@ -198,38 +223,68 @@ function removeDeTargetMembers()
     filterSurveyMembers();
     filterAvailableIndicators();
 }
-
+*/
 function filterByDataElementGroup( selectedDataElementGroup )
 {
   var selectedList = document.getElementById( 'selectedList' );
 
+ // var list = new Array();
   
   var params = 'dataElementGroupId=' + selectedDataElementGroup;
   
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
+  	//params += '&selectedIndicators=' + selectedList.options[i].value;
   	params += '&selectedDataElements=' + selectedList.options[i].value;
+	//list[i] = selectedList.options[i].value;
   }
   // Clear the list
   var availableList = document.getElementById( 'availableList' );
 
   availableList.options.length = 0;
   
+ // alert(list);
+  //alert(list.length);
   
   var request = new Request();
   request.setResponseTypeXML( 'indicatorgroup' );
   request.setCallbackSuccess( filterByDataElementGroupCompleted );
+  //request.send( url );
 
   var requestString = "filterAvailableDataElementsByDataElementGroup.action";
+ // var params = "indicatorGroupId=" + selectedIndicatorGroup + "&selectedIndicators=" + list;
   request.sendAsPost( params );
   request.send( requestString ); 
   
+ /* 
+  
+   $.post("filterAvailableIndicatorsByIndicatorGroup.action",
+		{
+			indicatorGroupId : selectedIndicatorGroup,
+			selectedIndicators : list
+		},
+		function (data)
+		{
+			filterByIndicatorGroupCompleted(data);
+		},'xml');
+		*/
 }
 
 function filterByDataElementGroupCompleted( xmlObject )
 {
+ //var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
+ // var indicatorList = indicators.getElementsByTagName( 'indicator' );
+
+  var availableList = document.getElementById( 'availableList' );
+  
+  
+ // var availableDataElements = document.getElementById("availableDataElements");
+  //var selectedDataElements = document.getElementById("selectedServices");
+
+  //clearList(availableList);
+
   var dataElements = xmlObject.getElementsByTagName("dataElement");
-  alert( "DataElement Group Received lent of Group member " + dataElements.length );
+  //alert( "DataElement Group Received lent of Group member " + dataElements.length );
   for ( var i = 0; i < dataElements.length; i++ )
   {
       var id = dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;

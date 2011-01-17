@@ -228,7 +228,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="deTargetService"
       ref="org.hisp.dhis.detarget.DeTargetService"/>       
   </bean> 
-	
+    
   <bean id="org.hisp.dhis.detarget.action.FormAction"
     class="org.hisp.dhis.detarget.action.FormAction" 
     scope="prototype">
@@ -236,45 +236,45 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
     <property name="deTargetDataValueService"
       ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/>  
-	<property name="deTargetService"
+    <property name="deTargetService"
       ref="org.hisp.dhis.detarget.DeTargetService"/> 
-	 <property name="periodService"
+     <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/> 
   </bean> 
-	
+    
   <bean id="org.hisp.dhis.detarget.action.SavetargetValueAction"
-	  class="org.hisp.dhis.detarget.action.SavetargetValueAction"
-	  scope="prototype">
-	  <property name="selectedStateManager"
+      class="org.hisp.dhis.detarget.action.SavetargetValueAction"
+      scope="prototype">
+      <property name="selectedStateManager"
         ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
-	  <property name="currentUserService"
+      <property name="currentUserService"
         ref="org.hisp.dhis.user.CurrentUserService"/>
-	  <property name="dataElementService"
+      <property name="dataElementService"
         ref="org.hisp.dhis.dataelement.DataElementService"/>
-	  <property name="categoryService"
+      <property name="categoryService"
         ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-	  <property name="deTargetdataValueService"
+      <property name="deTargetdataValueService"
         ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/>
-	  <property name="periodService"
+      <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/> 
   </bean>
-	
+    
   <bean id="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction"
-	  class="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction"
-	  scope="prototype">
-	  <property name="selectedStateManager"
+      class="org.hisp.dhis.detarget.action.LoadNextPreviousPeriodsAction"
+      scope="prototype">
+      <property name="selectedStateManager"
         ref="org.hisp.dhis.survey.state.SelectedStateManager"/>
   </bean>
-	
-	<bean id="org.hisp.dhis.detarget.action.GenerateTargetAction"
+    
+    <bean id="org.hisp.dhis.detarget.action.GenerateTargetAction"
     class="org.hisp.dhis.target.action.GenerateTargetAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/> 
      <property name="dataElementCategoryService"
-      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  	 
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
   </bean>
-	  
+      
    <bean id="org.hisp.dhis.detarget.action.SaveMappingAction"
       class="org.hisp.dhis.detarget.action.SaveMappingAction" 
       scope="prototype">
@@ -282,10 +282,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         ref="org.hisp.dhis.dataelement.DataElementService"/>  
       <property name="deTargetMappingService"
         ref="org.hisp.dhis.target.DeTargetMappingService"/>  
-	  <property name="dataElementCategoryService"
-      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>         
+      <property name="dataElementCategoryService"
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>         
   </bean> 
-	
+    
     <bean id="org.hisp.dhis.detarget.action.GetDataElementsAction"
     class="org.hisp.dhis.detarget.action.GetDataElementsAction" 
     scope="prototype">
@@ -294,18 +294,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementCategoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>       
   </bean>
-		
-	<bean id="org.hisp.dhis.detarget.action.GetMesageAction"
+        
+    <bean id="org.hisp.dhis.detarget.action.GetMesageAction"
     class="org.hisp.dhis.target.deaction.GetMesageAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
-	<property name="dataElementCategoryService"
-      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
+    <property name="dataElementCategoryService"
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>  
     <property name="deTargetMappingService"
       ref="org.hisp.dhis.target.DeTargetMappingService"/>          
   </bean> 
-	
+    
    <bean id="org.hisp.dhis.detarget.action.DelMappingAction"
       class="org.hisp.dhis.detarget.action.DelMappingAction" 
       scope="prototype">
@@ -314,10 +314,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <property name="deTargetMappingService"
         ref="org.hisp.dhis.target.DeTargetMappingService"/>  
       <property name="dataElementCategoryService"
-      	ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
+        ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>     
   </bean>
 	
-	<!-- DataElement Targets -->
+	
+	
+   <!-- DataElement Targets -->
    <bean id="org.hisp.dhis.detarget.action.DeTargetListAction"
       class="org.hisp.dhis.detarget.action.DeTargetListAction" 
       scope="prototype">
@@ -347,6 +349,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	 </property>
    </bean>
 	
+<!-- Validation for Adding DataElement Target  -->
+	<bean id="org.hisp.dhis.detarget.action.ValidateDeTargetAction"
+    class="org.hisp.dhis.detarget.action.ValidateDeTargetAction"
+    scope="prototype">
+    <property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
+    </property>
+   </bean>
 	
    <!-- Show Details DataElement Target  -->  
    <bean id="org.hisp.dhis.detarget.action.GetDeTargetDetailsAction"
@@ -367,9 +376,73 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataElementCategoryService">
 		<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</property>
-   </bean>  
+	<property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService"></property>
+   </bean>
 
+	<!-- DeTarget Association -->
 	
+	<bean id="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction"
+    class="org.hisp.dhis.detarget.action.GetNumberOfLevelsAction" scope="prototype">
+      <property name="organisationUnitService">
+      <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+    </property>     
+    </bean>	
 	
+	<bean id="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction"
+    class="org.hisp.dhis.detarget.action.SetupAssociationsTreeAction"
+    scope="prototype">
+      <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+    <property name="deTargetService">
+      <ref bean="org.hisp.dhis.detarget.DeTargetService"/>
+    </property> 
+    </bean>
+			
+	
+	<bean id="org.hisp.dhis.detarget.action.DefineDeTargetAssociationsAction"
+    class="org.hisp.dhis.detarget.action.DefineDeTargetAssociationsAction"
+    scope="prototype">
+      <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+    <property name="deTargetService">
+      <ref bean="org.hisp.dhis.detarget.DeTargetService"/>
+    </property>
+	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+	</property>
+    </bean>
+	
+	<!-- Edit DeTarget Form  -->
+	<bean id="org.hisp.dhis.detarget.action.GetDeTargetAction"
+    class="org.hisp.dhis.detarget.action.GetDeTargetAction"
+    scope="prototype">
+      <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+	<property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
+	</property>
+    </bean>
+	
+	<bean id="org.hisp.dhis.detarget.action.UpdateDeTargetAction"
+    class="org.hisp.dhis.detarget.action.UpdateDeTargetAction"
+    scope="prototype">
+      <property name="dataElementService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementService"/>
+    </property>
+	<property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService">
+	</property>	
+    <property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
+    </property>
+    </bean>
+	
+	<!-- Delete DeTarget Form  -->
+    <bean id="org.hisp.dhis.detarget.action.DelDeTargetAction"
+    class="org.hisp.dhis.detarget.action.DelDeTargetAction"
+    scope="prototype">
+ 
+    <property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
+    </property>
+    </bean>
   
 </beans>
