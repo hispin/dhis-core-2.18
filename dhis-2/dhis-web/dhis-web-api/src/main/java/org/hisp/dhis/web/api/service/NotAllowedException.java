@@ -31,14 +31,25 @@ public class NotAllowedException
     extends Exception
 {
 
+    public static final NotAllowedException INVALID_PROGRAM_STAGE = new NotAllowedException( "INVALID_PROGRAM_STAGE" );
+
+    public static final NotAllowedException INVALID_DATASET_ASSOCIATION = new NotAllowedException( "INVALID_DATASET_ASSOCIATION" );
+
+    public static final NotAllowedException INVALID_PERIOD = new NotAllowedException( "INVALID_PERIOD" );
+
+    public static final NotAllowedException DATASET_LOCKED = new NotAllowedException( "DATASET_LOCKED" );
+
+    public static final NotAllowedException NO_USER = new NotAllowedException( "NO_USER", "No user is logged in." );
+    
+    
     private String reason;
 
-    public NotAllowedException( String reason )
+    private NotAllowedException( String reason )
     {
         this.reason = reason;
     }
 
-    public NotAllowedException( String reason, String message )
+    private NotAllowedException( String reason, String message )
     {
         super( message );
         this.reason = reason;

@@ -81,7 +81,7 @@ public class MobileResource
 
         if ( user == null )
         {
-            throw new NotAllowedException( "NO_USER", "No user is logged in." );
+            throw NotAllowedException.NO_USER;
         }
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
