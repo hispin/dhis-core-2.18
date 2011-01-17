@@ -204,63 +204,61 @@ public class FacilityReportingServiceImpl
 
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( dataSetValue.getId() );
 
-        if ( !dataSetService.getDataSetsBySource( unit ).contains( dataSet ) )
+        if ( !dataSetAssociatedWithOrgUnit( unit, dataSet ) )
         {
-            throw new NotAllowedException( "INVALID_DATASET_ASSOCIATION" );
+            throw NotAllowedException.INVALID_DATASET_ASSOCIATION;
         }
 
-        Period selectedPeriod = getPeriod( dataSetValue.getPeriodName(), dataSet.getPeriodType() );
+        Period period = getPeriod( dataSetValue.getPeriodName(), dataSet.getPeriodType() );
 
-        if ( selectedPeriod == null )
+        if ( period == null )
         {
-            throw new NotAllowedException( "INVALID_PERIOD" );
+            throw NotAllowedException.INVALID_PERIOD;
         }
 
-        if ( isDataSetLocked( unit, dataSet, selectedPeriod ) )
+        if ( dataSetLocked( unit, dataSet, period ) )
         {
-            throw new NotAllowedException( "DATASET_LOCKED" );
+            throw NotAllowedException.DATASET_LOCKED;
         }
 
+        Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = getDataElementIdMapping( dataSet );
+
+        for ( DataValue dataValue : dataSetValue.getDataValues() )
+        {
+            org.hisp.dhis.dataelement.DataElement dataElement = dataElementMap.get( dataValue.getId() );
+
+            if ( dataElement == null )
+            {
+                log.info( "Data value submitted for data element " + dataValue.getId() + ", that is not in data set '"
+                    + dataSet.getName() + "'" );
+                continue;
+            }
+
+            if ( emptyString( dataValue.getValue() ) )
+            {
+                log.info( "Empty data value for data element " + dataValue.getId() + " not saved" );
+                continue;
+            }
+
+            saveValue(unit, period, dataElement, dataValue);
+
+        }
+    }
+
+    private Map<Integer, org.hisp.dhis.dataelement.DataElement> getDataElementIdMapping(
+        org.hisp.dhis.dataset.DataSet dataSet )
+    {
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
         for ( org.hisp.dhis.dataelement.DataElement dataElement : dataSet.getDataElements() )
         {
             dataElementMap.put( dataElement.getId(), dataElement );
         }
+        return dataElementMap;
+    }
 
-        Set<Integer> handled = new HashSet<Integer>();
-
-        for ( DataValue dv : dataSetValue.getDataValues() )
-        {
-            int elementId = dv.getId();
-
-            if ( handled.contains( elementId ) )
-            {
-                log.info( "Multiple values for element " + elementId + " submitted. Not handling this value." );
-                continue;
-            }
-
-            org.hisp.dhis.dataelement.DataElement dataElement = dataElementMap.get( elementId );
-
-            if ( dataElement == null )
-            {
-                log.info( "Data element value submitted for data element " + elementId + ", that is not in data set '"
-                    + dataSet.getName() + "'" );
-                handled.add( elementId );
-                continue;
-            }
-
-            if ( emptyString( dv.getValue() ) )
-            {
-                log.info( "Empty data value for data element " + elementId + " not saved" );
-                handled.add( elementId );
-                continue;
-            }
-
-            saveValue(unit, selectedPeriod, dataElement, dv);
-
-            handled.add( elementId );
-        }
-        reportMissingValues( dataSet, handled );
+    private boolean dataSetAssociatedWithOrgUnit( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet )
+    {
+        return dataSetService.getDataSetsBySource( unit ).contains( dataSet );
     }
 
     private void saveValue(OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement, DataValue dv) {
@@ -288,24 +286,11 @@ public class FacilityReportingServiceImpl
 
     }
     
-    private void reportMissingValues( org.hisp.dhis.dataset.DataSet dataSet, Set<Integer> handled )
-    {
-        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = dataSet.getDataElements();
-        for ( org.hisp.dhis.dataelement.DataElement element : dataElements )
-        {
-            if ( !handled.contains( element.getId() ) )
-            {
-                log.info( "Submitted values for dataset '" + dataSet.getName() + "' missing data element '" + element.getName() + "'" );
-
-            }
-        }
-    }
-
     // -------------------------------------------------------------------------
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private boolean isDataSetLocked( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet, Period selectedPeriod )
+    private boolean dataSetLocked( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet, Period selectedPeriod )
     {
         if ( dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, unit ) != null )
             return true;

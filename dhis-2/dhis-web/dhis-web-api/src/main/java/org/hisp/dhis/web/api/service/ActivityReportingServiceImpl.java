@@ -300,7 +300,7 @@ public class ActivityReportingServiceImpl
 
         if ( programStageInstance == null )
         {
-            throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
+            throw NotAllowedException.INVALID_PROGRAM_STAGE;
         }
 
         programStageInstance.getProgramStage();
@@ -321,7 +321,7 @@ public class ActivityReportingServiceImpl
 
         if ( dataElements.size() != dataElementIds.size() )
         {
-            throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
+            throw NotAllowedException.INVALID_PROGRAM_STAGE;
         }
 
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
@@ -329,7 +329,7 @@ public class ActivityReportingServiceImpl
         {
             if ( !dataElementIds.contains( dataElement.getId() ) )
             {
-                throw new NotAllowedException( "INVALID_PROGRAM_STAGE" );
+                throw NotAllowedException.INVALID_PROGRAM_STAGE;
             }
             dataElementMap.put( dataElement.getId(), dataElement );
         }

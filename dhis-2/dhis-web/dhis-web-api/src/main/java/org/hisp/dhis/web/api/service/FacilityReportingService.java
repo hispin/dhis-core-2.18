@@ -41,6 +41,11 @@ public interface FacilityReportingService
 
     public DataSet getDataSetForLocale( int dataSetId, Locale locale );
 
+    /** Save {@link DataSetValue} to given {@link OrganisationUnit}
+     * @param unit - the Organisation unit to save to
+     * @param dataSetValue - the data set value to save
+     * @throws NotAllowedException if saving is not allowed
+     */
     public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
         throws NotAllowedException;
 
