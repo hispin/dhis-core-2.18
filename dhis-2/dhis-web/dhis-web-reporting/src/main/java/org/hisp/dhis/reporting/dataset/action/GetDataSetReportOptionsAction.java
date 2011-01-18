@@ -35,6 +35,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +70,14 @@ public class GetDataSetReportOptionsAction
     public String execute()
     {
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        FilterUtils.filter( dataSets, new Filter<DataSet>() // Temporary hack until dataset report supports section and default forms
+        {
+            public boolean retain( DataSet dataSet )
+            {
+                return dataSet != null && dataSet.getDataEntryForm() != null;
+            }            
+        });
         
         Collections.sort( dataSets, new DataSetNameComparator() );
         
