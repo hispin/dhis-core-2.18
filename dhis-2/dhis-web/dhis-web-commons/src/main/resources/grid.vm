@@ -23,28 +23,28 @@
 			<staticText>
 				<reportElement x="12" y="15" width="532" height="41" forecolor="#184F73"/>
 				<textElement textAlignment="Center">
-					<font fontName="Ubuntu" size="24"/>
+					<font size="24"/>
 				</textElement>
 				<text><![CDATA[${grid.title}]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="12" y="67" width="253" height="20"/>
 				<textElement textAlignment="Right">
-					<font fontName="Ubuntu" size="12"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{reporting_month_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="289" y="67" width="255" height="20"/>
 				<textElement>
-					<font fontName="Ubuntu" size="12"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{param_organisationunit_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="265" y="67" width="24" height="20"/>
 				<textElement textAlignment="Center">
-					<font fontName="Ubuntu" size="12"/>
+					<font size="12"/>
 				</textElement>
 				<text><![CDATA[-]]></text>
 			</staticText>
@@ -53,9 +53,7 @@
 					<reportElement x="12" y="114" width="532" height="210"/>
 					<chartTitle/>
 					<chartSubtitle/>
-					<chartLegend>
-						<font fontName="Ubuntu"/>
-					</chartLegend>
+					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<dataset>
@@ -74,7 +72,7 @@
 				<bar3DPlot isShowLabels="true">
 					<plot/>
 					<itemLabel color="#000000" backgroundColor="#FFFFFF">
-						<font fontName="Ubuntu" isBold="true"/>
+						<font isBold="true"/>
 					</itemLabel>
 					<categoryAxisFormat>
 						<axisFormat>
@@ -103,7 +101,7 @@
 			<staticText>
 				<reportElement x="${x}" y="26" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
-					<font fontName="Ubuntu" size="10" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[${header.name}]]></text>
 			</staticText>
@@ -122,7 +120,7 @@
 			<textField>
 				<reportElement x="${x}" y="0" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
-					<font fontName="Ubuntu" size="9"/>
+					<font size="9"/>
 				</textElement>
 				<textFieldExpression class="${header.type}"><![CDATA[${dollar}F{${header.column}}]]></textFieldExpression>
 			</textField>			
