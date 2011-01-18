@@ -67,41 +67,34 @@ public class TableAlteror
     public void execute()
         throws Exception
     {
-        try
-        {
-            updatePatientOrgunitAssociation( );
+        updatePatientOrgunitAssociation();
 
-            updateDOBType( );
+        updateDOBType();
 
-            executeSql( "UPDATE program SET version = 1 WHERE version is NULL" );
+        executeSql( "UPDATE program SET version = 1 WHERE version is NULL" );
 
-            updateDataSetMobileAttribute();
+        updateDataSetMobileAttribute();
 
-            updateDataSetVersionAttribute();
+        updateDataSetVersionAttribute();
 
-            executeSql( "UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT
-                + "' WHERE type IS NULL" );
+        executeSql( "UPDATE patientidentifiertype SET type='" + PatientIdentifierType.VALUE_TYPE_TEXT
+            + "' WHERE type IS NULL" );
 
-            executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
+        executeSql( "UPDATE program SET minDaysAllowedInputData=0 WHERE minDaysAllowedInputData IS NULL" );
 
-            executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
-
-            executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
-
-        }
-        catch ( Exception ex )
-        {
-            log.error( ex );
-        }
+        executeSql( "UPDATE program SET maxDaysAllowedInputData=0 WHERE maxDaysAllowedInputData IS NULL" );
+        
+        executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
 
     }
 
     private void updatePatientOrgunitAssociation()
     {
+
+        StatementHolder holder = statementManager.getHolder();
+
         try
         {
-            StatementHolder holder = statementManager.getHolder();
-
             Statement statement = holder.getStatement();
 
             ResultSet isUpdated = statement
@@ -123,49 +116,70 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
-            log.debug( ex );
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
         }
     }
 
-    private void updateDOBType( )
-        throws Exception
+    private void updateDOBType()
     {
+        StatementHolder holder = statementManager.getHolder();
+
         try
         {
-            StatementHolder holder = statementManager.getHolder();
-            Statement statement = holder.getStatement();
+            executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true" );
 
-            ResultSet isUpdated = statement
-                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'patient' AND COLUMN_NAME = 'birthdateestimated'" );
+            executeSql( "ALTER TABLE patient drop column birthdateestimated" );
 
-            if ( isUpdated.next() )
-            {
-                executeSql( "UPDATE patient SET dobType='A' WHERE birthdateestimated=true" );
-
-                executeSql( "ALTER TABLE patient drop column birthdateestimated" );
-
-                executeSql( "DELETE FROM validationcriteria where property='birthdateestimated'" );
-            }
-
-            executeSql( "UPDATE patient SET dobType='D' dobType is null" );
+            executeSql( "DELETE FROM validationcriteria where property='birthdateestimated'" );
         }
         catch ( Exception ex )
         {
-            log.debug( ex );
-
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
         }
     }
 
     private void updateDataSetMobileAttribute()
     {
-        executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
+        StatementHolder holder = statementManager.getHolder();
 
+        try
+        {
+            executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
     }
 
     private void updateDataSetVersionAttribute()
     {
-        executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
+        StatementHolder holder = statementManager.getHolder();
 
+        try
+        {
+            executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
+        }
+        catch ( Exception ex )
+        {
+            log.error( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
     }
 
     private int executeSql( String sql )
