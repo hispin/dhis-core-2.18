@@ -50,7 +50,7 @@
   
 <table>	
   <tr>	
-    <td>$i18n.getString( "reporting_organisation_unit" )</td>	
+    <td>$i18n.getString( "report_organisation_unit" )</td>	
   </tr>  
   <tr>	
 	<td>
