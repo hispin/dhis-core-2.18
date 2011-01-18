@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.hisp.dhis.excelimport.util.ReportService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class ExcelImportFormAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -39,14 +38,14 @@ public class ExcelImportFormAction
     {
         return organisationUnitService;
     }
-
+/*
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
     {
         this.reportService = reportService;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -58,7 +57,7 @@ public class ExcelImportFormAction
         return ALL;
     }
 
-    private String raFolderName;
+   // private String raFolderName;
 
     // -------------------------------------------------------------------------
     // Properties
@@ -99,7 +98,7 @@ public class ExcelImportFormAction
     public String execute()
         throws Exception
     {
-        raFolderName = reportService.getRAFolderName();
+        //raFolderName = reportService.getRAFolderName();
 
         /* Period Info */
         periodTypes = periodService.getAllPeriodTypes();
