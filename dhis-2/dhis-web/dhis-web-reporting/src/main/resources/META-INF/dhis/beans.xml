@@ -27,8 +27,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction"
     class="org.hisp.dhis.reporting.document.action.LoadDocumentFromFileSystemAction"
     scope="prototype">
+    <property name="locationManager" ref="locationManager"/>
     <property name="documentService"
-      ref="org.hisp.dhis.document.DocumentService"/>      
+      ref="org.hisp.dhis.document.DocumentService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.document.action.RemoveDocumentAction"
