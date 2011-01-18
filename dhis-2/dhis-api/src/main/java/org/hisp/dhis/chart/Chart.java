@@ -116,7 +116,11 @@ public class Chart
         allPeriods.addAll( periods );
         allPeriods.addAll( relativePeriods );
         allOrganisationUnits.addAll( organisationUnits );
-        allOrganisationUnits.add( organisationUnit );
+        
+        if ( organisationUnit != null )
+        {
+            allOrganisationUnits.add( organisationUnit );
+        }
     }
     
     // -------------------------------------------------------------------------
