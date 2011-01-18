@@ -122,6 +122,11 @@ public class DefaultOrgUnitDistributionService
         Collections.sort( units, ORGUNIT_COMPARATOR );
         Collections.sort( groups, ORGUNIT_GROUP_COMPARATOR );
         
+        if ( !organisationUnitOnly )
+        {
+            units.add( organisationUnit ); // Add parent itself to the end to get the total
+        }
+        
         grid.addHeader( new GridHeader( FIRST_COLUMN_TEXT, FIRST_COLUMN_TEXT, null, false, true ) );
         
         for ( OrganisationUnitGroup group : groups )
