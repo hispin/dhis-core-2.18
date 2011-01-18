@@ -1,7 +1,6 @@
 
 <h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
-<p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/>
-	<input type="button" value="$i18n.getString( 'print' )" style="width:100px"	onclick="printDateSetReportPreview();"/></p>
+<p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/></p>
 
 <div id="printDateSetPreviewDiv">
 	$customDataEntryFormCode
