@@ -6,12 +6,14 @@
 			
 			validation( 'addPatientAttributeForm', function(form){
 				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit();
+					form.submit(i18n_field_is_required);
 				}
 			}, function(){
 				isSubmit = true;
-				jQuery.each($('#addPatientAttributeForm').serializeArray(), function(i, field) {
-					if( field.value == ""){
+				
+				var fields = $("#addPatientAttributeForm").serializeArray();
+				jQuery.each(fields, function(i, field) {
+					if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
 						setInnerHTML("attrMessage", i18n_field_is_required);
 						isSubmit = false;
 					}
@@ -90,19 +92,19 @@
         </td>
         <td></td>
     </tr>  
-    <tr>
+	<tr id="attributeComboRow"> 
+		<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td ><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
+		</td>
+		<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
+	</tr>
+	<tr>
     	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
     	<td><input type="checkbox" name="groupBy" value="true"></td>
     </tr>
-    <tr id="attributeComboRow"> 
-    	<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-    	<td ><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
-		</td>
-    	<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
-    </tr>
      </tbody>
 </table>
-
+<span id='message'></span>
 <p>
     <input type="submit" value="$i18n.getString( "add" )" style="width:10em">
     <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patientAttribute.action'" style="width:10em">

@@ -11,15 +11,15 @@
 				}
 			}, function(){
 				isSubmit = true;
-				jQuery.each($('#updatePatientAttributeForm').serializeArray(), function(i, field) {
-					if( field.value == ""){
+				
+				var fields = $("#addPatientAttributeForm").serializeArray();
+				jQuery.each(fields, function(i, field) {
+					if(  field.name.match("^attrOption")=='attrOption' && field.value == ""){
 						setInnerHTML("attrMessage", i18n_field_is_required);
 						isSubmit = false;
 					}
 				});
 			}); 
-			
-			jQuery("#attributeComboRow").hide();
 			
 			checkValueIsExist( "name", "validatePatientAttribute.action", {id:getFieldValue('id')});
 
@@ -91,11 +91,8 @@
             </select>
         </td>
     </tr>
-      <tr>
-    	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
-    	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
-      </tr>
-      <tr id="attributeComboRow"> 
+      
+	  <tr id="attributeComboRow"> 
     	<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
     	<td >
     		<table id="attrOptionContainer">
@@ -111,6 +108,10 @@
       <tr>
         <td colspan="3" style="height:15px"></td>
       </tr>
+	  <tr>
+    	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
+    	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
+      </tr>
     </tbody>
   </table>  
 
@@ -121,3 +122,12 @@
 
 </form>     
 <span id="message"></span>
+<script>
+	if( jQuery('#valueType').val() == "COMBO")
+	{
+		jQuery("#attributeComboRow").show();
+	}else
+	{
+		jQuery("#attributeComboRow").hide();
+	}
+</script>
