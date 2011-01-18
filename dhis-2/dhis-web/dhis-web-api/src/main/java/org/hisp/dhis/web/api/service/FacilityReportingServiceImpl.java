@@ -40,8 +40,11 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.completeness.impl.RegistrationDataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -86,6 +89,8 @@ public class FacilityReportingServiceImpl
     private org.hisp.dhis.datalock.DataSetLockService dataSetLockService;
 
     private org.hisp.dhis.web.api.service.ModelMapping modelMapping;
+
+    private CompleteDataSetRegistrationService registrationService;
 
     // -------------------------------------------------------------------------
     // Service methods
@@ -241,12 +246,30 @@ public class FacilityReportingServiceImpl
             saveValue(unit, period, dataElement, dataValue);
 
         }
+        
+        CompleteDataSetRegistration registration = 
+            registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
+
+        if (registration != null) {
+            registrationService.deleteCompleteDataSetRegistration( registration );
+        }
+        
+        registration = new CompleteDataSetRegistration();
+        
+        registration.setDataSet( dataSet );
+        registration.setPeriod( period );
+        registration.setSource( unit );
+        registration.setDate( new Date() );
+
+        registrationService.saveCompleteDataSetRegistration( registration );
+
     }
 
     private Map<Integer, org.hisp.dhis.dataelement.DataElement> getDataElementIdMapping(
         org.hisp.dhis.dataset.DataSet dataSet )
     {
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
+
         for ( org.hisp.dhis.dataelement.DataElement dataElement : dataSet.getDataElements() )
         {
             dataElementMap.put( dataElement.getId(), dataElement );
@@ -365,5 +388,12 @@ public class FacilityReportingServiceImpl
     {
         this.modelMapping = modelMapping;
     }
+
+    @Required
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
+    }
+
 
 }
