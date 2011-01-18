@@ -296,13 +296,34 @@ public class SaveTableAction
 
     private ReportTable getReportTable()
         throws Exception
-    {
-        List<DataElement> dataElements = getList( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) );        
-        List<Indicator> indicators = getList( indicatorService.getIndicators( getIntegerCollection( selectedIndicators ) ) );        
-        List<DataSet> dataSets = getList( dataSetService.getDataSets( getIntegerCollection( selectedDataSets ) ) );        
-        List<Period> periods = getList( periodService.getPeriodsByExternalIds( selectedPeriods ) );        
-        List<OrganisationUnit> units = getList( organisationUnitService.getOrganisationUnits( getIntegerCollection( selectedOrganisationUnits ) ) );
+    {    
+        List<Period> periods = getList( periodService.getPeriodsByExternalIds( selectedPeriods ) );
+        
+        List<DataElement> dataElements = new ArrayList<DataElement>();        
+        List<Indicator> indicators = new ArrayList<Indicator>();
+        List<DataSet> dataSets = new ArrayList<DataSet>();
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
 
+        for ( Integer id : getIntegerCollection( selectedDataElements ) )
+        {
+            dataElements.add( dataElementService.getDataElement( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedIndicators ) )
+        {
+            indicators.add( indicatorService.getIndicator( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedDataSets ) )
+        {
+            dataSets.add( dataSetService.getDataSet( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
+        {
+            units.add( organisationUnitService.getOrganisationUnit( id ) );
+        }
+        
         DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
         
         RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
