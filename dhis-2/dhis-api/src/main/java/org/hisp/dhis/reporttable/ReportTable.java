@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -293,7 +295,7 @@ public class ReportTable
      * Generated pretty-print names for crosstabulated columns in the report table,
      * where key is column name and value is pretty column name.
      */
-    private Map<String, String> prettyCrossTabColumns = new HashMap<String, String>();
+    private SortedMap<String, String> prettyCrossTabColumns = new TreeMap<String, String>();
     
     /**
      * Generated unique identifiers used to retrieve the corresponding value from the datavalue table. 
@@ -1338,7 +1340,7 @@ public class ReportTable
         return crossTabColumns;
     }
 
-    public Map<String, String> getPrettyCrossTabColumns()
+    public SortedMap<String, String> getPrettyCrossTabColumns()
     {
         return prettyCrossTabColumns;
     }
