@@ -267,7 +267,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
     
     <bean id="org.hisp.dhis.detarget.action.GenerateTargetAction"
-    class="org.hisp.dhis.target.action.GenerateTargetAction" 
+    class="org.hisp.dhis.detarget.action.GenerateTargetAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/> 
@@ -295,8 +295,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>       
   </bean>
         
-    <bean id="org.hisp.dhis.detarget.action.GetMesageAction"
-    class="org.hisp.dhis.target.deaction.GetMesageAction" 
+    <bean id="org.hisp.dhis.detarget.action.GetMessageAction"
+    class="org.hisp.dhis.detarget.action.GetMessageAction" 
     scope="prototype">
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>   
