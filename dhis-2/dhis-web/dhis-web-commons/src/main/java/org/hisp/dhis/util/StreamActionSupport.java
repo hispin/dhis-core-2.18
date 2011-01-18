@@ -54,7 +54,7 @@ public abstract class StreamActionSupport
         
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename(), true );
+        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename(), attachment() );
         
         try
         {
@@ -82,5 +82,10 @@ public abstract class StreamActionSupport
     protected boolean disallowCache()
     {
         return false;
+    }
+    
+    protected boolean attachment()
+    {
+        return true;
     }
 }

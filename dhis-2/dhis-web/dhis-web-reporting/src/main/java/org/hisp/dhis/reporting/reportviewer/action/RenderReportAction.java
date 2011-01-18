@@ -131,4 +131,10 @@ public class RenderReportAction
     {
         return true;
     }
+    
+    @Override
+    protected boolean attachment()
+    {
+        return false;
+    }
 }
