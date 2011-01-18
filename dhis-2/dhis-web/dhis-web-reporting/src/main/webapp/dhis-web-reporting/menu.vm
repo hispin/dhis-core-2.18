@@ -5,7 +5,7 @@
 	<li><a href="showDataSetReportForm.action">$i18n.getString( "dataset_report" )&nbsp;</a></li>
 	<li><a href="displayViewDataCompletenessForm.action">$i18n.getString( "data_completeness_report" )&nbsp;</a></li>
     <li><a href="displayViewDocumentForm.action">$i18n.getString( "static_report" )&nbsp;</a></li>
-    <li><a href="displayOrgUnitDistribution.action">$i18n.getString( "distribution_report" )&nbsp;</a></li>
+    <li><a href="displayOrgUnitDistribution.action">$i18n.getString( "organisation_unit_report" )&nbsp;</a></li>
 	<li><a href="tallySheetGenerator.action">$i18n.getString( "tally_sheet_generator" )&nbsp;</a></li>
 	<li><a href="displayManageTableForm.action">$i18n.getString( "report_table" )&nbsp;</a></li>
 	#if( $reportFramework == "birt" )
