@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.action;
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 import static org.hisp.dhis.system.util.ConversionUtils.getSet;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElementService;
@@ -106,28 +107,28 @@ public class SaveDataMartExportAction
         this.name = name;
     }
     
-    private Collection<String> selectedDataElements;
+    private Collection<String> selectedDataElements = new ArrayList<String>();
     
     public void setSelectedDataElements( Collection<String> selectedDataElements )
     {
         this.selectedDataElements = selectedDataElements;
     }
 
-    private Collection<String> selectedIndicators;
+    private Collection<String> selectedIndicators = new ArrayList<String>();
 
     public void setSelectedIndicators( Collection<String> selectedIndicators )
     {
         this.selectedIndicators = selectedIndicators;
     }
 
-    private Collection<String> selectedPeriods; 
+    private Collection<String> selectedPeriods = new ArrayList<String>(); 
     
     public void setSelectedPeriods( Collection<String> selectedPeriods )
     {
         this.selectedPeriods = selectedPeriods;
     }
 
-    private Collection<String> selectedOrganisationUnits;
+    private Collection<String> selectedOrganisationUnits = new ArrayList<String>();
     
     public void setSelectedOrganisationUnits( Collection<String> selectedOrganisationUnits )
     {
