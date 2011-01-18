@@ -274,12 +274,11 @@ div#selectionTree a.locked
 
 span#message 
 {
-  display: block;
-  padding: 1em; 
+  display: none;
+  padding: 0.5em; 
   background-color: #ffffbf;
   border: 1px solid #cccc00;
-  width: 500px;
-  margin: 1em;
+  position:absolute;	
 }
 
 span#info
