@@ -4,7 +4,7 @@ function getOUDetails(orgUnitIds)
 {
 	$.post("getOrgUnitDetails.action",
 		{
-			orgUnitId : orgUnitIds
+			orgUnitId : orgUnitIds[0]
 		},
 		function (data)
 		{
@@ -121,7 +121,7 @@ function getReports( ouId, reportListFileName )
 	  $.post("getReports.action",
 		{
 			periodType : periodType,
-			ouId : ouId,
+			ouId : ouId[0],
 			reportListFileName : reportListFileName,
 			autogenrep : autogenvalue
 		},

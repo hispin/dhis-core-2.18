@@ -20,10 +20,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class GetReportsAction
-    extends ActionSupport
+    implements Action
 {
 
     // -------------------------------------------------------------------------
@@ -97,7 +97,7 @@ public class GetReportsAction
         this.autogenrep = autogenrep;
     }
 
-    private String orgUnitLevel;
+   // private String orgUnitLevel;
 
     private String raFolderName;
     
@@ -123,7 +123,7 @@ public class GetReportsAction
                 if ( autogenrep.equalsIgnoreCase( "1" ) )
                     ouLevel++;
 
-                orgUnitLevel = "" + ouLevel;
+                //orgUnitLevel = "" + ouLevel;
                 ouName = orgUnit.getShortName();
                 System.out.println( ouName );
                 getSelectedReportList( reportListFileName );
