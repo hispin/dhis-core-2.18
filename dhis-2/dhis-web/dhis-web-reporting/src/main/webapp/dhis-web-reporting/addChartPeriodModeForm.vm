@@ -58,20 +58,20 @@
 <tr>
 	<td>
 	    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
-		<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $reportTable.relatives.isReportingMonth() ) checked#end>&nbsp;
+		<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $chart.relatives.isReportingMonth() ) checked#end>&nbsp;
 		<label for="monthsThisYear">$i18n.getString( "months_this_year" )</label>
-		<input type="checkbox" id="monthsThisYear" name="monthsThisYear" value="true""#if( $reportTable.relatives.isMonthsThisYear() ) checked#end>&nbsp;
+		<input type="checkbox" id="monthsThisYear" name="monthsThisYear" value="true""#if( $chart.relatives.isMonthsThisYear() ) checked#end>&nbsp;
 		<label for="quartersThisYear">$i18n.getString( "quarters_this_year" )</label>
-		<input type="checkbox" id="quartersThisYear" name="quartersThisYear" value="true"#if( $reportTable.relatives.isQuartersThisYear() ) checked#end>&nbsp;
+		<input type="checkbox" id="quartersThisYear" name="quartersThisYear" value="true"#if( $chart.relatives.isQuartersThisYear() ) checked#end>&nbsp;
 		<label for="thisYear">$i18n.getString( "this_year" )</label>
-		<input type="checkbox" id="thisYear" name="thisYear" value="true"#if( $reportTable.relatives.isThisYear() ) checked#end><br>
+		<input type="checkbox" id="thisYear" name="thisYear" value="true"#if( $chart.relatives.isThisYear() ) checked#end><br>
 		
 		<label for="monthsLastYear">$i18n.getString( "months_last_year" )</label>
-		<input type="checkbox" id="monthsLastYear" name="monthsLastYear" value="true""#if( $reportTable.relatives.isMonthsLastYear() ) checked#end>&nbsp;
+		<input type="checkbox" id="monthsLastYear" name="monthsLastYear" value="true""#if( $chart.relatives.isMonthsLastYear() ) checked#end>&nbsp;
 		<label for="quartersLastYear">$i18n.getString( "quarters_last_year" )</label>
-		<input type="checkbox" id="quartersLastYear" name="quartersLastYear" value="true"#if( $reportTable.relatives.isQuartersLastYear() ) checked#end>&nbsp;
+		<input type="checkbox" id="quartersLastYear" name="quartersLastYear" value="true"#if( $chart.relatives.isQuartersLastYear() ) checked#end>&nbsp;
 		<label for="lastYear">$i18n.getString( "last_year" )</label>
-		<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $reportTable.relatives.isLastYear() ) checked#end>         
+		<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $chart.relatives.isLastYear() ) checked#end>         
     </td>
 </tr>
 <tr>
