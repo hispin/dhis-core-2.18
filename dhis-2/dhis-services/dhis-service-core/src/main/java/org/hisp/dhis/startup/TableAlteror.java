@@ -68,186 +68,194 @@ public class TableAlteror
     @Transactional
     public void execute()
     {
-        // ---------------------------------------------------------------------
-        // Drop outdated tables
-        // ---------------------------------------------------------------------
-
-        executeSql( "DROP TABLE categoryoptioncomboname" );
-        executeSql( "DROP TABLE orgunitgroupsetstructure" );
-        executeSql( "DROP TABLE orgunitstructure" );
-        executeSql( "DROP TABLE orgunithierarchystructure" );
-        executeSql( "DROP TABLE orgunithierarchy" );
-        executeSql( "DROP TABLE datavalueaudit" );
-        executeSql( "DROP TABLE columnorder" );
-        executeSql( "DROP TABLE roworder" );
-        executeSql( "DROP TABLE sectionmembers" );
-        executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
-        executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
-        executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
-        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
-        executeSql( "ALTER TABLE section DROP COLUMN label" );
-        executeSql( "ALTER TABLE section DROP COLUMN title" );
-        executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
-        executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptName" );
-
-        // remove relative period type
-        executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
-        executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
-
-        // mapping
-        executeSql( "DROP TABLE mapOrganisationUnitRelation" );
-        executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
-        executeSql( "DROP TABLE map" );
-        
-        executeSql( "ALTER TABLE map DROP CONSTRAINT fk_map_organisationunitid" );
-        executeSql( "ALTER TABLE map DROP COLUMN organisationunitid" );
-        executeSql( "ALTER TABLE map DROP COLUMN longitude" );
-        executeSql( "ALTER TABLE map DROP COLUMN latitude" );
-        executeSql( "ALTER TABLE map DROP COLUMN zoom" );
-
-        // ---------------------------------------------------------------------
-        // Update tables for dimensional model
-        // ---------------------------------------------------------------------
-
-        // categories_categoryoptions
-        // set to 0 temporarily
-        int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" );
-        if ( c1 > 0 )
+        try
         {
-            updateSortOrder( "categories_categoryoptions", "categoryid", "categoryoptionid" );
-        }
-        executeSql( "ALTER TABLE categories_categoryoptions DROP CONSTRAINT categories_categoryoptions_pkey" );
-        executeSql( "ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)" );
+            // ---------------------------------------------------------------------
+            // Drop outdated tables
+            // ---------------------------------------------------------------------
 
-        // categorycombos_categories
-        // set to 0 temporarily
-        int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" );
-        if ( c2 > 0 )
+            executeSql( "DROP TABLE categoryoptioncomboname" );
+            executeSql( "DROP TABLE orgunitgroupsetstructure" );
+            executeSql( "DROP TABLE orgunitstructure" );
+            executeSql( "DROP TABLE orgunithierarchystructure" );
+            executeSql( "DROP TABLE orgunithierarchy" );
+            executeSql( "DROP TABLE datavalueaudit" );
+            executeSql( "DROP TABLE columnorder" );
+            executeSql( "DROP TABLE roworder" );
+            executeSql( "DROP TABLE sectionmembers" );
+            executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
+            executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
+            executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
+            executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
+            executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
+            executeSql( "ALTER TABLE section DROP COLUMN label" );
+            executeSql( "ALTER TABLE section DROP COLUMN title" );
+            executeSql( "ALTER TABLE organisationunit DROP COLUMN polygoncoordinates" );
+            executeSql( "ALTER TABLE dataelementcategory DROP COLUMN conceptName" );
+
+            // remove relative period type
+            executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name='Relative')" );
+            executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
+
+            // mapping
+            executeSql( "DROP TABLE mapOrganisationUnitRelation" );
+            executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
+            executeSql( "DROP TABLE map" );
+
+            executeSql( "ALTER TABLE map DROP CONSTRAINT fk_map_organisationunitid" );
+            executeSql( "ALTER TABLE map DROP COLUMN organisationunitid" );
+            executeSql( "ALTER TABLE map DROP COLUMN longitude" );
+            executeSql( "ALTER TABLE map DROP COLUMN latitude" );
+            executeSql( "ALTER TABLE map DROP COLUMN zoom" );
+
+            // ---------------------------------------------------------------------
+            // Update tables for dimensional model
+            // ---------------------------------------------------------------------
+
+            // categories_categoryoptions
+            // set to 0 temporarily
+            int c1 = executeSql( "UPDATE categories_categoryoptions SET sort_order=0 WHERE sort_order is NULL OR sort_order=0" );
+            if ( c1 > 0 )
+            {
+                updateSortOrder( "categories_categoryoptions", "categoryid", "categoryoptionid" );
+            }
+            executeSql( "ALTER TABLE categories_categoryoptions DROP CONSTRAINT categories_categoryoptions_pkey" );
+            executeSql( "ALTER TABLE categories_categoryoptions ADD CONSTRAINT categories_categoryoptions_pkey PRIMARY KEY (categoryid, sort_order)" );
+
+            // categorycombos_categories
+            // set to 0 temporarily
+            int c2 = executeSql( "update categorycombos_categories SET sort_order=0 where sort_order is NULL OR sort_order=0" );
+            if ( c2 > 0 )
+            {
+                updateSortOrder( "categorycombos_categories", "categorycomboid", "categoryid" );
+            }
+            executeSql( "ALTER TABLE categorycombos_categories DROP CONSTRAINT categorycombos_categories_pkey" );
+            executeSql( "ALTER TABLE categorycombos_categories ADD CONSTRAINT categorycombos_categories_pkey PRIMARY KEY (categorycomboid, sort_order)" );
+
+            // categorycombos_optioncombos
+            executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT categorycombos_optioncombos_pkey" );
+            executeSql( "ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)" );
+            executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675" );
+
+            // categoryoptioncombos_categoryoptions
+            // set to 0 temporarily
+            int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" );
+            if ( c3 > 0 )
+            {
+                updateSortOrder( "categoryoptioncombos_categoryoptions", "categoryoptioncomboid", "categoryoptionid" );
+            }
+            executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions DROP CONSTRAINT categoryoptioncombos_categoryoptions_pkey" );
+            executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
+
+            // dataelementcategoryoption
+            executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
+            // executeSql(
+            // "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT
+            // dataelementcategoryoption_name_key"
+            // ); will be maintained in transition period
+            executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
+
+            // minmaxdataelement query index
+            executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
+
+            // drop code unique constraints
+            executeSql( "ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key" );
+            executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_code_key" );
+            executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
+
+            // add mandatory boolean field to patientattribute
+            if ( executeSql( "ALTER TABLE patientattribute ADD mandatory bool" ) >= 0 )
+            {
+                executeSql( "UPDATE patientattribute SET mandatory=false" );
+            }
+
+            if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0 )
+            {
+                executeSql( "UPDATE patientattribute SET groupby=false" );
+            }
+
+            // update periodType field to ValidationRule
+            executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
+
+            // update dataelement.domainTypes of which values is null
+            executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
+
+            // set varchar to text
+            executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
+            executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
+            executeSql( "ALTER TABLE datadictionary ALTER description TYPE text" );
+            executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
+            executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
+            executeSql( "ALTER TABLE translation ALTER value TYPE text" );
+
+            // orgunit shortname uniqueness
+            executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );
+
+            // update dataset-dataentryform association and programstage -
+            // dataentryform association
+            if ( updateDataSetAssociation() && updateProgramStageAssociation() )
+            {
+                // delete table dataentryformassociation
+                executeSql( "DROP TABLE dataentryformassociation" );
+            }
+
+            executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
+            executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
+            executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
+
+            // revert prepare aggregateXXXValue tables for offline diffs
+
+            executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified" );
+            executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified " );
+            executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
+
+            // remove outdated relative periods
+
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last6months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last9months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last12months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisyear" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisfinancialyear" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last3to6months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last6to9months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last9to12months" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN last12individualmonths" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN individualmonthsthisyear" );
+            executeSql( "ALTER TABLE reporttable DROP COLUMN individualquartersthisyear" );
+
+            executeSql( "ALTER TABLE chart DROP COLUMN last3months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last6months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last9months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last12months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN sofarthisyear" );
+            executeSql( "ALTER TABLE chart DROP COLUMN sofarthisfinancialyear" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last3to6months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last6to9months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last9to12months" );
+            executeSql( "ALTER TABLE chart DROP COLUMN last12individualmonths" );
+            executeSql( "ALTER TABLE chart DROP COLUMN individualmonthsthisyear" );
+            executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
+
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last9months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last12months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisyear" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisfinancialyear" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last3to6months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last6to9months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last9to12months" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN last12individualmonths" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN individualmonthsthisyear" );
+            executeSql( "ALTER TABLE datamartexport DROP COLUMN individualquartersthisyear" );
+
+            log.info( "Tables updated" );
+        }
+        catch ( Exception ex )
         {
-            updateSortOrder( "categorycombos_categories", "categorycomboid", "categoryid" );
+            log.error( ex );
         }
-        executeSql( "ALTER TABLE categorycombos_categories DROP CONSTRAINT categorycombos_categories_pkey" );
-        executeSql( "ALTER TABLE categorycombos_categories ADD CONSTRAINT categorycombos_categories_pkey PRIMARY KEY (categorycomboid, sort_order)" );
-
-        // categorycombos_optioncombos
-        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT categorycombos_optioncombos_pkey" );
-        executeSql( "ALTER TABLE categorycombos_optioncombos ADD CONSTRAINT categorycombos_optioncombos_pkey PRIMARY KEY (categoryoptioncomboid)" );
-        executeSql( "ALTER TABLE categorycombos_optioncombos DROP CONSTRAINT fk4bae70f697e49675" );
-
-        // categoryoptioncombos_categoryoptions
-        // set to 0 temporarily
-        int c3 = executeSql( "update categoryoptioncombos_categoryoptions SET sort_order=0 where sort_order is NULL OR sort_order=0" );
-        if ( c3 > 0 )
-        {
-            updateSortOrder( "categoryoptioncombos_categoryoptions", "categoryoptioncomboid", "categoryoptionid" );
-        }
-        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions DROP CONSTRAINT categoryoptioncombos_categoryoptions_pkey" );
-        executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
-
-        // dataelementcategoryoption
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
-        // executeSql(
-        // "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT
-        // dataelementcategoryoption_name_key"
-        // ); will be maintained in transition period
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
-
-        // minmaxdataelement query index
-        executeSql( "CREATE INDEX index_minmaxdataelement ON minmaxdataelement( sourceid, dataelementid, categoryoptioncomboid )" );
-
-        // drop code unique constraints
-        executeSql( "ALTER TABLE dataelement DROP CONSTRAINT dataelement_code_key" );
-        executeSql( "ALTER TABLE indicator DROP CONSTRAINT indicator_code_key" );
-        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_code_key" );
-
-        // add mandatory boolean field to patientattribute
-        if ( executeSql( "ALTER TABLE patientattribute ADD mandatory bool" ) >= 0 )
-        {
-            executeSql( "UPDATE patientattribute SET mandatory=false" );
-        }
-        
-        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0){
-            executeSql( "UPDATE patientattribute SET groupby=false" );
-        }
-        
-        // update periodType field to ValidationRule
-        executeSql( "UPDATE validationrule SET periodtypeid = (SELECT periodtypeid FROM periodtype WHERE name='Monthly')" );
-
-        // update dataelement.domainTypes of which values is null
-        executeSql( "UPDATE dataelement SET domaintype='aggregate' WHERE domaintype is null" );
-        
-        // set varchar to text
-        executeSql( "ALTER TABLE dataelement ALTER description TYPE text" );
-        executeSql( "ALTER TABLE indicator ALTER description TYPE text" );
-        executeSql( "ALTER TABLE datadictionary ALTER description TYPE text" );
-        executeSql( "ALTER TABLE validationrule ALTER description TYPE text" );
-        executeSql( "ALTER TABLE expression ALTER expression TYPE text" );
-        executeSql( "ALTER TABLE translation ALTER value TYPE text" );
-
-        // orgunit shortname uniqueness
-        executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );
-
-        // update dataset-dataentryform association and programstage -
-        // dataentryform association
-        if ( updateDataSetAssociation() && updateProgramStageAssociation() )
-        {
-            // delete table dataentryformassociation
-            executeSql( "DROP TABLE dataentryformassociation" );
-        }
-
-        executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
-        executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
-        executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
-
-       // revert prepare aggregateXXXValue tables for offline diffs
-
-        executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified");
-        executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified ");
-        executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
-        
-        // remove outdated relative periods
-        
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last6months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last12months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisyear" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisfinancialyear" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last3to6months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last6to9months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last9to12months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last12individualmonths" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN individualmonthsthisyear" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN individualquartersthisyear" );
-
-        executeSql( "ALTER TABLE chart DROP COLUMN last3months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last6months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last12months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN sofarthisyear" );
-        executeSql( "ALTER TABLE chart DROP COLUMN sofarthisfinancialyear" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last3to6months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last6to9months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last9to12months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last12individualmonths" );
-        executeSql( "ALTER TABLE chart DROP COLUMN individualmonthsthisyear" );
-        executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
-
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last12months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisfinancialyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last3to6months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last6to9months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last9to12months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last12individualmonths" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN individualmonthsthisyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN individualquartersthisyear" );
-
-        log.info( "Tables updated" );
     }
 
     private List<Integer> getDistinctIdList( String table, String col1 )
@@ -270,10 +278,6 @@ public class TableAlteror
         catch ( Exception ex )
         {
             log.error( ex );
-        }
-        finally
-        {
-            holder.close();
         }
 
         return distinctIds;
@@ -307,10 +311,6 @@ public class TableAlteror
         catch ( Exception ex )
         {
             log.error( ex );
-        }
-        finally
-        {
-            holder.close();
         }
 
         return idMap;
@@ -389,10 +389,6 @@ public class TableAlteror
             log.debug( ex );
             return false;
         }
-        finally
-        {
-            holder.close();
-        }
 
     }
 
@@ -425,10 +421,6 @@ public class TableAlteror
         {
             log.debug( ex );
             return false;
-        }
-        finally
-        {
-            holder.close();
         }
 
     }
