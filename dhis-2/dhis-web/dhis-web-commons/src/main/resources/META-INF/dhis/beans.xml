@@ -753,6 +753,11 @@
 
 	<bean id="org.hisp.dhis.interceptor.ExceptionInterceptor" class="org.hisp.dhis.interceptor.ExceptionInterceptor">
 		<property name="showStackTrace" value="true" />
+		<property name="ignoredExceptions">
+			<list>
+				<value>org.apache.catalina.connector.ClientAbortException</value>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="org.hisp.dhis.interceptor.I18nInterceptor" class="org.hisp.dhis.interceptor.I18nInterceptor">
