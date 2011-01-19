@@ -27,19 +27,16 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.*;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_MAX_NUMBER_OF_ATTEMPTS;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_TIMEFRAME_MINUTES;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_FACTOR_OF_DEVIATION;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,12 +83,9 @@ public class SystemSettingInterceptor
         Map<String, Object> map = new HashMap<String, Object>();
         
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
-        map.put( KEY_MAX_NUMBER_OF_ATTEMPTS, systemSettingManager.getSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, DEFAULT_MAX_NUMBER_OF_ATTEMPTS ) );
-        map.put( KEY_TIMEFRAME_MINUTES, systemSettingManager.getSystemSetting( KEY_TIMEFRAME_MINUTES, DEFAULT_TIMEFRAME_MINUTES ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_START_MODULE, systemSettingManager.getSystemSetting( KEY_START_MODULE ) );
         map.put( KEY_REPORT_FRAMEWORK, systemSettingManager.getSystemSetting( KEY_REPORT_FRAMEWORK, Report.TYPE_DEFAULT ) );
-        map.put( KEY_FORUM_INTEGRATION, systemSettingManager.getSystemSetting( KEY_FORUM_INTEGRATION, false ) );
         map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );
         map.put( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, systemSettingManager.getSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, false ) );
         map.put( KEY_FACTOR_OF_DEVIATION, systemSettingManager.getSystemSetting( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION ) );
