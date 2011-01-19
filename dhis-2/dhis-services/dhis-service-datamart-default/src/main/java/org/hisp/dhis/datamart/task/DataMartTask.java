@@ -30,8 +30,17 @@ package org.hisp.dhis.datamart.task;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
  * @author Lars Helge Overland
@@ -39,26 +48,36 @@ import org.hisp.dhis.period.RelativePeriods;
 public class DataMartTask
     implements Runnable
 {
+    private static final Log log = LogFactory.getLog( DataMartTask.class );
+    
     private DataMartService dataMartService;
  
-    private Collection<Integer> dataElementIds;
-    private Collection<Integer> indicatorIds;
-    private Collection<Integer> organisationUnitIds;
-    private RelativePeriods relatives;
+    private DataElementService dataElementService;
     
-    public DataMartTask( DataMartService dataMartService, Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> organisationUnitIds, RelativePeriods relatives )
+    private IndicatorService indicatorService;
+    
+    private OrganisationUnitService organisationUnitService;
+        
+    public DataMartTask( DataMartService dataMartService, DataElementService dataElementService, IndicatorService indicatorService,
+        OrganisationUnitService organisationUnitService )
     {
         this.dataMartService = dataMartService;
-        this.dataElementIds = dataElementIds;
-        this.indicatorIds = indicatorIds;
-        this.organisationUnitIds = organisationUnitIds;
-        this.relatives = relatives;
+        this.dataElementService = dataElementService;
+        this.indicatorService = indicatorService;
+        this.organisationUnitService = organisationUnitService;
     }
     
     @Override
     public void run()
     {
+        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
+        Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
+        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
+        
+        RelativePeriods relatives = new RelativePeriods( false, true, true, true, false, false, false );
+        
+        log.info( "Starting scheduled data mart task" );
+        
         dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives );
     }
 }

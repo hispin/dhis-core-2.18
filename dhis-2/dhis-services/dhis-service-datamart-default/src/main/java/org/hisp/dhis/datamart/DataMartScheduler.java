@@ -33,6 +33,7 @@ package org.hisp.dhis.datamart;
 public interface DataMartScheduler
 {
     final String CRON_NIGHTLY = "0 0 2 * * ?";
+    final String CRON_TEST = "0 * * * * ?";
     
     final String STATUS_RUNNING = "running";
     final String STATUS_DONE = "done";

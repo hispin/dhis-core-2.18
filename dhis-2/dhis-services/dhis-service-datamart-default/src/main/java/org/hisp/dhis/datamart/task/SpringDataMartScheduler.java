@@ -27,19 +27,13 @@ package org.hisp.dhis.datamart.task;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.concurrent.ScheduledFuture;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartScheduler;
 import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
@@ -96,13 +90,7 @@ public class SpringDataMartScheduler
 
     public void scheduleDataMartExport()
     {
-        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
-        Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
-        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
-        
-        RelativePeriods relatives = new RelativePeriods( false, true, true, true, false, false, false );
-        
-        DataMartTask task = new DataMartTask( dataMartService, dataElementIds, indicatorIds, organisationUnitIds, relatives );
+        DataMartTask task = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
         
         scheduledFuture = taskScheduler.schedule( task, new CronTrigger( CRON_NIGHTLY ) );        
     }
