@@ -801,7 +801,6 @@
 		layout: 'accordion',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: Ext.isChrome ? 348:346,
         items: [
             {
                 id: 'newpredefinedmaplegend_p',
@@ -891,7 +890,7 @@
                                                 return;
                                             }
                                             
-                                            if (!mln || !mlsv || !mlev || !mlc) {
+                                            if (!mln || !mlc) {
                                                 Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
@@ -2321,6 +2320,11 @@
 		iconCls: 'icon-image',
 		tooltip: G.i18n.export_map_as_image,
 		handler: function() {
+			if (Ext.isIE) {
+				Ext.message.msg(false, 'SVG not supported by browser');
+				return;
+			}
+			
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
 			
@@ -2357,7 +2361,7 @@
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: G.i18n.create_predefined_legend_sets,
 		disabled: !G.user.isAdmin,
-		handler: function() {
+		handler: function() {			
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
 			predefinedMapLegendSetWindow.setPosition(x,y);
