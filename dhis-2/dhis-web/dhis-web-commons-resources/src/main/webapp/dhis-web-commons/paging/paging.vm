@@ -14,7 +14,7 @@
 					<span>$i18n.getString("no_of_pages"):</span> $numberOfPages
 				</td>
 				<td>
-					<span>$i18n.getString("size_of_page"):</span>
+					<span>$i18n.getString("rows_in_page"):</span>
 					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onchange="changePageSize('$baseLink');">
 				</td>
 				<td>
