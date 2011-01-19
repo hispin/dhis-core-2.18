@@ -47,6 +47,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
@@ -56,12 +58,24 @@ import org.hisp.dhis.system.util.MathUtils;
  *
  * @author bobj
  */
-public class ExportPivotViewService {
+public class ExportPivotViewService
+{
 
     private static final Log log = LogFactory.getLog( ExportPivotViewService.class );
 
     // service can export either aggregated datavalues or aggregated indicator values
-    public enum RequestType { DATAVALUE, INDICATORVALUE };
+    public enum RequestType
+    {
+
+        DATAVALUE, INDICATORVALUE
+    };
+
+    // service can export either monthly or yearly periods
+    public enum RequestPeriodType
+    {
+
+        MONTHLY, YEARLY
+    };
 
     // precision to use when formatting double values
     public static int PRECISION = 5;
@@ -69,7 +83,6 @@ public class ExportPivotViewService {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     private AggregatedDataValueService aggregatedDataValueService;
 
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
@@ -77,7 +90,7 @@ public class ExportPivotViewService {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
-    private  OrganisationUnitService organisationUnitService;
+    private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
@@ -91,109 +104,167 @@ public class ExportPivotViewService {
         this.periodService = periodService;
     }
 
-    public void execute (OutputStream out, RequestType requestType, Date startDate, Date endDate, int level, int root)
+    public void execute( OutputStream out, RequestType requestType, RequestPeriodType requestPeriodType,
+        Date startDate, Date endDate, int level, int root )
         throws IOException
     {
-        Writer writer = new BufferedWriter(new OutputStreamWriter(out));
+        Writer writer = new BufferedWriter( new OutputStreamWriter( out ) );
 
-        Collection<Period> periods 
-            = periodService.getIntersectingPeriodsByPeriodType( new MonthlyPeriodType(), startDate, endDate );
+        Collection<Period> periods = getPeriods( requestPeriodType, startDate, endDate );
 
-        if (periods.isEmpty())
+        if ( periods.isEmpty() )
         {
-            log.info( "no periods to export");
+            log.info( "no periods to export" );
             return;
         }
 
         OrganisationUnit rootOrgUnit = organisationUnitService.getOrganisationUnit( root );
 
-        if (rootOrgUnit == null)
+        if ( rootOrgUnit == null )
         {
-            log.info( "no orgunit root to export with id = " + rootOrgUnit);
+            log.info( "no orgunit root to export with id = " + rootOrgUnit );
             return;
         }
 
-        rootOrgUnit.setLevel(organisationUnitService.getLevelOfOrganisationUnit( rootOrgUnit ));
-        
-        log.info("Orgunit: " + rootOrgUnit.getName());
-        log.info("Orgunit level: " + rootOrgUnit.getLevel());
-        
+        rootOrgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( rootOrgUnit ) );
+
         OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level );
 
-        if (orgUnitLevel == null)
+        if ( orgUnitLevel == null )
         {
-            log.info( "no level with level id = " + orgUnitLevel);
+            log.info( "no level with level id = " + orgUnitLevel );
             return;
         }
 
-        log.info( "Exporting for " + rootOrgUnit.getName() + " at level: " + orgUnitLevel.getName());
+        log.info( "Exporting for " + rootOrgUnit.getName() + " at level: " + orgUnitLevel.getName() );
 
-        if (requestType == RequestType.DATAVALUE)
+        if ( requestType == RequestType.DATAVALUE )
         {
-            processDataValues(writer, rootOrgUnit , orgUnitLevel, periods );
-        }
-       else
+            processDataValues( writer, rootOrgUnit, orgUnitLevel, periods );
+        } else
         {
-            processIndicatorValues(writer, rootOrgUnit , orgUnitLevel, periods );
+            processIndicatorValues( writer, rootOrgUnit, orgUnitLevel, periods );
         }
 
     }
 
-     void processDataValues(Writer writer, OrganisationUnit rootOrgUnit , OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
-         throws IOException
-     {
-        StoreIterator<AggregatedDataValue> Iterator
-            = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
+    public int count( RequestType requestType, RequestPeriodType requestPeriodType,
+        Date startDate, Date endDate, int level, int root )
+    {
+        Collection<Period> periods = getPeriods( requestPeriodType, startDate, endDate );
+
+        if ( periods.isEmpty() )
+        {
+            return 0;
+        }
+
+        OrganisationUnit rootOrgUnit = organisationUnitService.getOrganisationUnit( root );
+
+        if ( rootOrgUnit == null )
+        {
+            return 0;
+        }
+
+        rootOrgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( rootOrgUnit ) );
+
+        OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level );
+
+        if ( orgUnitLevel == null )
+        {
+            return 0;
+        }
+
+        log.debug( "Counting for " + rootOrgUnit.getName() + " at level: " + orgUnitLevel.getName() );
+
+        if ( requestType == RequestType.DATAVALUE )
+        {
+            return aggregatedDataValueService.countDataValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
+        } 
+        else
+        {
+            return aggregatedDataValueService.countIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
+        }
+
+
+    }
+
+    private void processDataValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
+        throws IOException
+    {
+        StoreIterator<AggregatedDataValue> Iterator = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
         AggregatedDataValue adv = Iterator.next();
 
-        writer.write("# period, orgunit, dataelement, catoptcombo, value\n");
-        while (adv != null)
+        writer.write( "# period, orgunit, dataelement, catoptcombo, value\n" );
+        while ( adv != null )
         {
             // process adv ..
             int periodId = adv.getPeriodId();
-            String period = periodService.getPeriod( periodId).getIsoDate();
+            String period = periodService.getPeriod( periodId ).getIsoDate();
 
-            writer.write( "'" + period + "',");
-            writer.write( adv.getOrganisationUnitId() + ",");
-            writer.write( adv.getDataElementId() + ",");
-            writer.write( adv.getCategoryOptionComboId() + ",");
-            writer.write( adv.getValue() + "\n");
+            writer.write( "'" + period + "'," );
+            writer.write( adv.getOrganisationUnitId() + "," );
+            writer.write( adv.getDataElementId() + "," );
+            writer.write( adv.getCategoryOptionComboId() + "," );
+            writer.write( adv.getValue() + "\n" );
 
             adv = Iterator.next();
         }
 
         writer.flush();
 
-     }
+    }
 
-
-     void processIndicatorValues(Writer writer, OrganisationUnit rootOrgUnit , OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
-         throws IOException
-     {
-        StoreIterator<AggregatedIndicatorValue> Iterator
-            = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit , orgUnitLevel, periods );
+    void processIndicatorValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
+        throws IOException
+    {
+        StoreIterator<AggregatedIndicatorValue> Iterator = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
         AggregatedIndicatorValue aiv = Iterator.next();
 
-        writer.write("# period, orgunit, indicator, factor, numerator, denominator\n");
-        while (aiv != null)
+        writer.write( "# period, orgunit, indicator, factor, numerator, denominator\n" );
+        while ( aiv != null )
         {
             // process adv ..
             int periodId = aiv.getPeriodId();
-            String period = periodService.getPeriod( periodId).getIsoDate();
+            String period = periodService.getPeriod( periodId ).getIsoDate();
 
-            writer.write( "'" + period + "',");
-            writer.write( aiv.getOrganisationUnitId() + ",");
-            writer.write( aiv.getIndicatorId() + ",");
-            writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION) + ",");
-            writer.write( MathUtils.roundToString(aiv.getNumeratorValue(), PRECISION) + ",");
-            writer.write( MathUtils.roundToString(aiv.getDenominatorValue(), PRECISION) + "\n");
+            writer.write( "'" + period + "'," );
+            writer.write( aiv.getOrganisationUnitId() + "," );
+            writer.write( aiv.getIndicatorId() + "," );
+            writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION ) + "," );
+            writer.write( MathUtils.roundToString( aiv.getNumeratorValue(), PRECISION ) + "," );
+            writer.write( MathUtils.roundToString( aiv.getDenominatorValue(), PRECISION ) + "\n" );
 
             aiv = Iterator.next();
         }
 
         writer.flush();
 
-     }
+    }
+
+    private Collection<Period> getPeriods( RequestPeriodType requestPeriodType, Date startDate, Date endDate )
+    {
+        Collection<Period> periods;
+        PeriodType periodType;
+
+        switch ( requestPeriodType )
+        {
+            case MONTHLY:
+                periodType = new MonthlyPeriodType();
+                break;
+            case YEARLY:
+                periodType = new YearlyPeriodType();
+                break;
+            default:
+                // shouldn't happen - log and quietly default to monthly
+                log.warn( "Unsupported period type: " + requestPeriodType );
+                periodType = new MonthlyPeriodType();
+        }
+
+        periods = periodService.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
+
+        return periods;
+    }
+
 }

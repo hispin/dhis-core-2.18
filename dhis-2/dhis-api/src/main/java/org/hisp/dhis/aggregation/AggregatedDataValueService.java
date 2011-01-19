@@ -126,6 +126,16 @@ public interface AggregatedDataValueService
      */
     public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
 
+    /**
+     * Returns count of agg data values for children of an orgunit at a particular level
+     * @param orgunit the root organisationunit
+     * @param level the level to retrieve values at
+     * @param periods the periods to retrieve values for
+     * @return an iterator type object for retrieving the values
+     */
+    public int countDataValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods );
+
+
     // ----------------------------------------------------------------------
     // AggregatedDataMapValue
     // ----------------------------------------------------------------------
@@ -200,6 +210,15 @@ public interface AggregatedDataValueService
      * @return an iterator type object for retrieving the values
      */
     public StoreIterator<AggregatedIndicatorValue> getAggregateIndicatorValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods);
+
+    /**
+     * Returns count of agg indicator values for children of an orgunit at a particular level
+     * @param orgunit the root organisationunit
+     * @param level the level to retrieve values at
+     * @param periods the periods to retrieve values for
+     * @return an iterator type object for retrieving the values
+     */
+    public int countIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods );
 
     // ----------------------------------------------------------------------
     // AggregatedIndicatorMapValue

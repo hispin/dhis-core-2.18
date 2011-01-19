@@ -190,7 +190,47 @@ public class JdbcAggregatedDataValueStore
         }
         finally
         {
+            // don't close holder or we lose resultset - iterator must close
             // holder.close();
+        }
+    }
+
+
+    @Override
+    public int countDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            int rootlevel = rootOrgunit.getLevel();
+
+            String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
+
+            final String sql =
+                "SELECT count(*) as rowcount " +
+                "FROM aggregateddatavalue AS adv " +
+                "INNER JOIN _orgunitstructure AS ous on adv.organisationunitid=ous.organisationunitid " +
+                "WHERE adv.level = " + level.getLevel() +
+                " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
+                " AND adv.periodid IN (" + periodids + ") ";
+
+            Statement statement = holder.getStatement();
+
+            final ResultSet resultSet = statement.executeQuery( sql );
+
+            resultSet.next();
+
+            return resultSet.getInt("rowcount");
+
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated data values", ex );
+        }
+        finally
+        {
+            holder.close();
         }
     }
 
@@ -371,10 +411,47 @@ public class JdbcAggregatedDataValueStore
         }
         finally
         {
+            // don't close holder or we lose resultset - iterator must close
             // holder.close();
         }
     }
 
+    @Override
+    public int countIndicatorValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            int rootlevel = rootOrgunit.getLevel();
+
+            String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
+
+            final String sql =
+                "SELECT count(*) as rowcount " +
+                "FROM aggregatedindicatorvalue AS aiv " +
+                "INNER JOIN _orgunitstructure AS ous on aiv.organisationunitid=ous.organisationunitid " +
+                "WHERE aiv.level = " + level.getLevel() +
+                " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
+                " AND aiv.periodid IN (" + periodids + ") ";
+
+            Statement statement = holder.getStatement();
+
+            final ResultSet resultSet = statement.executeQuery( sql );
+
+            resultSet.next();
+
+            return resultSet.getInt( "rowcount");
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated indicator values", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
 
     // -------------------------------------------------------------------------
     // AggregatedIndicatorMapValue
