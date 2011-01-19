@@ -9,7 +9,8 @@ var tmpSource;
 
 function removeSurvey( surveyId, surveyName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + " Survey Id =" + surveyId + '\n\n' + " Survey Name ="  + surveyName );
+  //var result = window.confirm( i18n_confirm_delete + '\n\n' + " Survey Id =" + surveyId + '\n\n' + " Survey Name ="  + surveyName );
+  var result = window.confirm( i18n_confirm_delete + '\n\n' + " Survey Name ="  + surveyName );
 
   if ( result )
   {

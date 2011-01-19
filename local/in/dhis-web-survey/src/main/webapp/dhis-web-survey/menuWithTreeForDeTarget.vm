@@ -1,8 +1,8 @@
 
-<h2>DeTarget</h2>
+<h2>$i18n.getString( "de_target" )</h2>
 
 <ul>
-    <li>DeTarget Data Entry</a></li>
+    <li>$i18n.getString( "detarget_dataentry" )</a></li>
 </ul>
 <div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-20px; ">
     <a href="deTargetManagement.action"><img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>

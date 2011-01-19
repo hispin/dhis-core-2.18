@@ -217,7 +217,8 @@ function targetValueSaver( dataElementId_, optionComboid_, value_, resultColor_,
     
     function markValue( color )
     {        
-        var element = document.getElementById( 'value[' + deOptionComboId + '].value' );
+        //var element = document.getElementById( 'value[' + deOptionComboId + '].value' );
+        var element = document.getElementById( 'value[' + optionComboId + '].value' );
         element.style.backgroundColor = color;
     }
 }

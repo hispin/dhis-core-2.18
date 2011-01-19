@@ -9,7 +9,8 @@
 
 function removeDeTarget( deTargetId, deTargetName )
 {
-  var result = window.confirm( i18n_confirm_delete + '\n\n' + " DeTarget Id =" + deTargetId + '\n\n' + " DeTarget Name ="  + deTargetName );
+  //var result = window.confirm( i18n_confirm_delete + '\n\n' + " DeTarget Id =" + deTargetId + '\n\n' + " DeTarget Name ="  + deTargetName );
+  var result = window.confirm( i18n_confirm_delete + '\n\n' + " DeTarget Name ="  + deTargetName );
 
   if ( result )
   {
@@ -289,7 +290,7 @@ function filterByDataElementGroupCompleted( xmlObject )
  // var indicatorList = indicators.getElementsByTagName( 'indicator' );
 
   var availableList = document.getElementById( 'availableList' );
-  
+  var selectedList = document.getElementById( 'selectedList' );
   
  // var availableDataElements = document.getElementById("availableDataElements");
   //var selectedDataElements = document.getElementById("selectedServices");
@@ -302,12 +303,14 @@ function filterByDataElementGroupCompleted( xmlObject )
   {
       var id = dataElements[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
       var dataElementName = dataElements[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
-     
+      if ( listContains(selectedList, id) == false )
+      {
       var option = document.createElement("option");
       option.value = id;
       option.text = dataElementName;
       option.title = dataElementName;
       availableList.add( option, null );
+      }
  
   }
 }
