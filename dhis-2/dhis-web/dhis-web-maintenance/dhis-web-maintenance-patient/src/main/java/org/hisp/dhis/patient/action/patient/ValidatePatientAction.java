@@ -155,13 +155,14 @@ public class ValidatePatientAction
         }
 
         fullName = fullName.trim();
-        
+        /*
         if( fullName.indexOf( ' ' )== -1 )
         {
             message = i18n.getString( "please_enter_a_valid_full_name" );
 
             return INPUT;
         }
+        */
         // ---------------------------------------------------------------------
         // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
         // ---------------------------------------------------------------------
@@ -169,19 +170,23 @@ public class ValidatePatientAction
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
         
-        String firstName = fullName.substring( 0, startIndex );        
+        String firstName = fullName.toString();        
         String middleName = "";
         String lastName = "";
         
-        if ( startIndex == endIndex )
+        if( fullName.indexOf( ' ' ) != -1 )
         {
-            middleName = "";
-            lastName = fullName.substring( startIndex, fullName.length() );
-        }
-        else
-        {
-            middleName = fullName.substring( startIndex + 1, endIndex );
-            lastName = fullName.substring( endIndex, fullName.length() );
+            firstName = fullName.substring( 0, startIndex );
+            if ( startIndex == endIndex )
+            {
+                middleName = "";
+                lastName = fullName.substring( startIndex, fullName.length() );
+            }
+            else
+            {
+                middleName = fullName.substring( startIndex + 1, endIndex );
+                lastName = fullName.substring( endIndex, fullName.length() );
+            }
         }
         
         if ( !checkedDuplicate )
