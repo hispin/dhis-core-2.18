@@ -20,15 +20,15 @@
 	</tr>
 	<tr>
 		<td><label for="username">$i18n.getString( "username" )</label></td>
-		<td colspan="3"><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled"/></td>				
+		<td colspan="3"><input type="text" id="username" name="username" value="$encoder.htmlEncode( $userCredentials.username )" style="width:20em" disabled="disabled" autocomplete="off"/></td>				
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" )</label></td>
-		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" class="{validate:{rangelength:[8,35],password:true,notequalto:'#username'}}"/></td>			
+		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" autocomplete="off" class="{validate:{rangelength:[8,35],password:true,notequalto:'#username'}}"/></td>			
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) </label></td>
-		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" class="{validate:{rangelength:[8,35],equalTo:'#rawPassword'}}"/></td>	
+		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" autocomplete="off" class="{validate:{rangelength:[8,35],equalTo:'#rawPassword'}}"/></td>	
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
