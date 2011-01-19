@@ -1,5 +1,5 @@
 <h3>$i18n.getString( "user_management" ) #openHelp( "users" )</h3>
-<form id="userForm" method="POST">
+
 <table style="width:100%">
 	<tr>
 		<td style="vertical-align:top">
@@ -79,7 +79,6 @@
 		tableSorter( 'userList' );
 	});
 </script>
-</form>
 
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_user" ) , "'")';
