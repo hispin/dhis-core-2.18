@@ -8,7 +8,7 @@
     <col id="entryCol" width="75">
 		
 	<tr>
-		<th>$i18n.getString( "nr" )</th>
+		<th>$i18n.getString( "sl_no" )</th>
 		<th>$i18n.getString( "indicator" )</th>		
 		<th>$i18n.getString( "entry" )</th>		
 	</tr>

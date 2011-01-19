@@ -32,40 +32,11 @@ visibility:hidden;
 </div>
 
 <form id="selectForm" name="selectForm" method="post" action="select.action">
-<!--
-<div id="actions" style="width:200px text-align:right">
-	<input type="button" value="$i18n.getString( "generate_min_max" )" onclick="javascript:generateMinMaxValues();" style="width:100% text-align:right" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry-national", "minMaxGeneration" )) disabled="disabled" #end >
-	<input type="button" value="$i18n.getString( "run_validation" )" onclick="javascript:validate();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>
-	<input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>
-	<br><label for="useShortName">$i18n.getString( "use_short_names" )</label>&nbsp;
-	<input type="checkbox" id="useShortName" name="useShortName" #if( $useShortName ) checked="checked" #end onchange="document.getElementById( 'selectForm' ).submit();">	
-			
-</div>	
--->	
 
 
 <div id="actions" style="width:200px text-align:right; display : none;">
-<!--
-<input type="button" value="$i18n.getString( "change_order" )" onclick="changeOrder()" style="width:100% text-align:right" #if( !$selectedDataSetId || !$auth.hasAccess( "dhis-web-dataentry-national", "getDataElementOrder" ) || ($customDataEntryFormExists && !$useDefaultForm)) disabled="disabled" #end>
-
-<input type="button" value="$i18n.getString( "generate_min_max" )" onclick="javascript:generateMinMaxValues();" style="width:100% text-align:right" #if( !$selectedPeriodIndex || !$auth.hasAccess( "dhis-web-dataentry-national", "minMaxGeneration" )) disabled="disabled" #end >
-
-<input type="button" value="$i18n.getString( "run_validation" )" onclick="javascript:validate();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>
-
-<input type="button" id="calculateCDEs" value="$i18n.getString( "save_calculated" )" name="calculateCDEs" onclick="calculateAndSaveCDEs();" style="width:100% text-align:right" #if( !$selectedPeriodIndex ) disabled="disabled" #end>
 
 <br>
-
-<label>$i18n.getString( "use_default_form" )</label>
-	<input type="checkbox" id="useDefaultForm" name="useDefaultForm" #if( $useDefaultForm || !$customDataEntryFormExists ) checked="checked" #end #if( !$customDataEntryFormExists ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
-<br>
-<label>$i18n.getString( "use_secction_form" )</label>
-	<input type="checkbox" id="useSectionForm" name="useSectionForm" #if($useSectionForm) checked="checked" #end  #if(!$haveSection) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
-<br>
-<label for="useShortName">$i18n.getString( "use_short_names" )</label>
-	##<input type="checkbox" id="useShortName" name="useShortName" #if( $useShortName ) checked="checked" #end #if( !$selectedDataSetId || !$selectedPeriodIndex || !$useDefaultForm ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">
-	<input type="checkbox" id="useShortName" name="useShortName" #if( $useShortName ) checked="checked" #end  #if( $customDataEntryFormExists && !$useDefaultForm ) disabled="disabled" #end onchange="document.getElementById( 'selectForm' ).submit();">			
--->
 
 <br><br><br><br><br>
 <input type="button" value="SAVE" onclick="saveLineListingAggData()" #if( $isLineListing.equals("no") ) disabled="disabled" #end>
