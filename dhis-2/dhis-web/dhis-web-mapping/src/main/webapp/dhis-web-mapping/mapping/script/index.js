@@ -545,7 +545,7 @@
                 id: 'deleteview_b',
                 iconCls: 'icon-remove',
 				hideLabel: true,
-				text: G.i18n.delete,
+				text: G.i18n.delete_,
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rw = Ext.getCmp('favorite_cb').getRawValue();
@@ -702,7 +702,7 @@
                 id: 'exportimage_b',
 				labelSeparator: G.conf.labelseparator,
                 iconCls: 'icon-export',
-				text: G.i18n.export,
+				text: G.i18n.export_,
 				handler: function() {
                     var values, svgElement, svg;
                     if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
@@ -924,7 +924,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegend_b',
-                                        text: G.i18n.delete,
+                                        text: G.i18n.delete_,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
@@ -1085,7 +1085,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegendset_b',
-                                        text: G.i18n.delete,
+                                        text: G.i18n.delete_,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
@@ -1655,7 +1655,7 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayer_b',
-                text: G.i18n.delete,
+                text: G.i18n.delete_,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayer_cb').getValue();
@@ -1785,7 +1785,7 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayerbaselayers_b',
-                text: G.i18n.delete,
+                text: G.i18n.delete_,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
