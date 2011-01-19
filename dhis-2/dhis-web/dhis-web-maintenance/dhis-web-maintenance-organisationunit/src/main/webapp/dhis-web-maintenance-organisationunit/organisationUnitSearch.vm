@@ -29,7 +29,7 @@
 <td>$encoder.htmlEncode( $groupSet.name )</td>
 <td>
   <select name="groupId" style="width:325px">
-  <option value="0">[ $i18n.getString( "any" ) ]</option>
+  <option value="0">[ $i18n.getString( "all" ) $encoder.htmlEncode( $groupSet.name ) ]</option>
     #foreach( $group in $groupSet.organisationUnitGroups )
     <option value="$group.id"
     #if( $groupId && $groupId.contains( $group.id ) )selected="selected"#end
