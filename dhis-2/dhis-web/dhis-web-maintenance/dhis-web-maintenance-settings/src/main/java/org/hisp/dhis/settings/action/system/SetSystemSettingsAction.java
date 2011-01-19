@@ -32,7 +32,6 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
@@ -100,13 +99,6 @@ public class SetSystemSettingsAction
         this.reportFramework = reportFramework;
     }
 
-    private Boolean forumIntegration;
-
-    public void setForumIntegration( Boolean forumIntegration )
-    {
-        this.forumIntegration = forumIntegration;
-    }
-
     private Boolean omitIndicatorsZeroNumeratorDataMart;
 
     public void setOmitIndicatorsZeroNumeratorDataMart( Boolean omitIndicatorsZeroNumeratorDataMart )
@@ -164,7 +156,6 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_REPORT_FRAMEWORK, reportFramework );
-        systemSettingManager.saveSystemSetting( KEY_FORUM_INTEGRATION, forumIntegration );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
