@@ -202,18 +202,6 @@ public class DefaultDataMartEngine
 
         TimeUtils.start();
 
-        state.setMessage( "deleting_existing_aggregated_data" );
-
-        // ---------------------------------------------------------------------
-        // Delete existing aggregated data
-        // ---------------------------------------------------------------------
-
-        aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-
-        aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
-
-        log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
-        
         // ---------------------------------------------------------------------
         // Get objects
         // ---------------------------------------------------------------------
@@ -275,6 +263,18 @@ public class DefaultDataMartEngine
         nonCalculatedOperands.retainAll( allOperands );
         indicatorOperands.retainAll( allOperands );
         calculatedOperands.retainAll( allOperands );
+
+        // ---------------------------------------------------------------------
+        // Delete existing aggregated data
+        // ---------------------------------------------------------------------
+
+        state.setMessage( "deleting_existing_aggregated_data" );
+
+        aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+
+        aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+
+        log.info( "Deleted existing aggregated data: " + TimeUtils.getHMS() );
         
         // ---------------------------------------------------------------------
         // Data element export
