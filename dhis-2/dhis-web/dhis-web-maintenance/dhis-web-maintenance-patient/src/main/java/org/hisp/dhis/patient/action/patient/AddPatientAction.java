@@ -166,25 +166,46 @@ public class AddPatientAction
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
-        String name = fullName.substring( 0, startIndex );
-        patient.setFirstName( name );
+        String firstName = fullName.toString();
+        String middleName = "";
+        String lastName = "";
 
+        if( fullName.indexOf( ' ' ) != -1 )
+        {
+            firstName = fullName.substring( 0, startIndex );
+            if ( startIndex == endIndex )
+            {
+                middleName = "";
+                lastName = fullName.substring( startIndex, fullName.length() );
+            }
+            else
+            {
+                middleName = fullName.substring( startIndex + 1, endIndex );
+                lastName = fullName.substring( endIndex, fullName.length() );
+            }
+        }
+
+        patient.setFirstName( firstName );
+        patient.setMiddleName( middleName );
+        patient.setLastName( lastName );
+
+        /*
         if ( startIndex == endIndex )
         {
             patient.setMiddleName( "" );
             
-            name = fullName.substring( startIndex, fullName.length() );
-            patient.setLastName( name );
+            lastName = fullName.substring( startIndex, fullName.length() );
+            patient.setLastName( lastName );
         }
         else
         {
-            name = fullName.substring( startIndex + 1, endIndex );
-            patient.setMiddleName( name );
+            middleName = fullName.substring( startIndex + 1, endIndex );
+            patient.setMiddleName( middleName );
             
-            name = fullName.substring( endIndex, fullName.length() );
-            patient.setLastName( name );
+            lastName = fullName.substring( endIndex, fullName.length() );
+            patient.setLastName( lastName );
         }
-        
+        */
        
         // ---------------------------------------------------------------------
         // Set Other information for patient
