@@ -41,19 +41,18 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 public class RemoveMinMaxValueAction
-implements Action
+    implements Action
 {
     // -------------------------------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------------------------------
-
-    private OrganisationUnitSelectionManager organisationUnitSelectionManager;
-
+    
     private DataSetService dataSetService;
 
     private MinMaxValuesGenerationService minMaxValuesGenerationService;
@@ -62,11 +61,13 @@ implements Action
 
     private SystemSettingManager systemSettingManager;
 
+    private SelectionTreeManager selectionTreeManager;
+
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
 
-    private Integer[] dataSetIds;
+    private Integer[] dataSets;
 
     private String message;
 
@@ -75,10 +76,10 @@ implements Action
     // -------------------------------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------------------------------
-
-    public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
+    
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitSelectionManager = organisationUnitSelectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -116,9 +117,9 @@ implements Action
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    public void setDataSetIds( Integer[] dataSetIds )
+    public void setDataSets( Integer[] dataSets )
     {
-        this.dataSetIds = dataSetIds;
+        this.dataSets = dataSets;
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -128,9 +129,10 @@ implements Action
     @Override
     public String execute()
         throws Exception
-    {  
-        Collection<OrganisationUnit> orgUnits = organisationUnitSelectionManager.getSelectedOrganisationUnits();
-        if ( orgUnits == null || orgUnits.size() ==0 )
+    {
+        Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+        if ( orgUnits == null || orgUnits.size() == 0 )
         {
             message = i18n.getString( "not_choose_organisation" );
             return INPUT;
@@ -140,7 +142,7 @@ implements Action
         Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
             2.0 );
 
-        for ( Integer dataSetId : dataSetIds )
+        for ( Integer dataSetId : dataSets )
         {
             // Get dataset
             DataSet dataSet = dataSetService.getDataSet( dataSetId );

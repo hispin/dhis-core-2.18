@@ -2,8 +2,20 @@ function generateMinMaxValue(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( minMaxValueCompleted );	
-	request.sendAsPost(getParamString('dataSetIds', 'datatSetIds'));
+
+	var datasetIds = "";
+	var datasetField = byId( 'dataSetIds' ); 
+	for (var i = 0; i < datasetField.options.length; i++)
+	{
+		if (datasetField.options[ i ].selected)
+		{
+		  datasetIds+= "dataSets=" + datasetField.options[ i ].value + "&";
+		}
+	}
+	
+	request.sendAsPost( datasetIds );
 	request.send( 'generateMinMaxValue.action' );
+	
 }
 
 function minMaxValueCompleted( xmlObject ) {
@@ -51,7 +63,18 @@ function removeMinMaxValue(){
 	var request = new Request();
 	request.setResponseTypeXML( 'xmlObject' );
 	request.setCallbackSuccess( minMaxValueCompleted );	
-	request.sendAsPost(getParamString('dataSetIds', 'dataSetIds'));
+	
+	var datasetIds = "";
+	var datasetField = byId( 'dataSetIds' ); 
+	for (var i = 0; i < datasetField.options.length; i++)
+	{
+		if (datasetField.options[ i ].selected)
+		{
+		  datasetIds+= "dataSets=" + datasetField.options[ i ].value + "&";
+		}
+	}
+	
+	request.sendAsPost( datasetIds );
 	request.send( 'removeMinMaxValue.action' );
 	
 }

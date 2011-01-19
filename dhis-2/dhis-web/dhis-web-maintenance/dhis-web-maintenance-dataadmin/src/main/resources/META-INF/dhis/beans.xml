@@ -256,8 +256,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean
 		id="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction"
 		class="org.hisp.dhis.dataadmin.action.minmaxvalidation.RemoveMinMaxValueAction">
-		<property name="organisationUnitSelectionManager">
-			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 		</property>
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService" />

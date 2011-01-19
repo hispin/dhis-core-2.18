@@ -67,12 +67,12 @@ public class GenerateMinMaxValuesAction
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+
     // -------------------------------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------------------------------
 
-    private Integer[] dataSetIds;
+    private Integer[] dataSets;
 
     private String message;
 
@@ -117,9 +117,9 @@ public class GenerateMinMaxValuesAction
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    public void setDataSetIds( Integer[] dataSetIds )
+    public void setDataSets( Integer[] dataSets )
     {
-        this.dataSetIds = dataSetIds;
+        this.dataSets = dataSets;
     }
 
     // -------------------------------------------------------------------------------------------------
@@ -130,15 +130,15 @@ public class GenerateMinMaxValuesAction
     public String execute()
         throws Exception
     {
-//        if ( dataSetIds == null )
-//        {
-//            selectionTreeManager.clearSelectedOrganisationUnits();
-//            return INPUT;
-//        }
-        
+        // if ( dataSetIds == null )
+        // {
+        // selectionTreeManager.clearSelectedOrganisationUnits();
+        // return INPUT;
+        // }
+
         Collection<OrganisationUnit> orgUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        if ( orgUnits == null || orgUnits.size() ==0 )
+        if ( orgUnits == null || orgUnits.size() == 0 )
         {
             message = i18n.getString( "not_choose_organisation" );
             return INPUT;
@@ -148,7 +148,7 @@ public class GenerateMinMaxValuesAction
         Double factor = (Double) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_FACTOR_OF_DEVIATION,
             2.0 );
 
-        for ( Integer dataSetId : dataSetIds )
+        for ( Integer dataSetId : dataSets )
         {
             // Get dataset
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
