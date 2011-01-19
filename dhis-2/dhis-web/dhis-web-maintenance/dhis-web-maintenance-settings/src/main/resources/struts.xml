@@ -43,7 +43,7 @@
     </action>
 
     <action name="getAvailableDisplayProperties" class="org.hisp.dhis.settings.action.user.GetAvailableDisplayPropertiesAction">
-      <result name="success" type="chain">getAvailableDataDictionaryModes</result>
+      <result name="success" type="chain">getAvailableAutoSaveDataEntryForm</result>
     </action>
         
     <action name="getAvailableAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.GetAvailableAutoSaveDataEntryFormAction">
