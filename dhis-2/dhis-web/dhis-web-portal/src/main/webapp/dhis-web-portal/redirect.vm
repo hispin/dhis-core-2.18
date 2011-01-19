@@ -1,19 +1,24 @@
 
 <script type="text/javascript">
-function redirect()
-{
-#if ( $startModule && $auth.hasAccess( $startModule, "index" ) )
-	window.location.href = "../${startModule}/index.action";
-#else
-    window.location.href = "intro.action";
-#end
-}
+var redirectUrl;
 
-#if ( !$inMemoryDatabase )
-redirect();
+#if ( $startModule && $auth.hasAccess( $startModule, "index" ) )
+	redirectUrl = "../${startModule}/index.action";
+#else
+	redirectUrl = "intro.action";
 #end
 </script>
+
+#if ( !$inMemoryDatabase )
+
+<script type="text/javascript">
+redirect();
+</script>
+
+#else
 
 <span id="info">$i18n.getString( "in_memory_notification" )</span>
 
 <p><input type="button" value="$i18n.getString( 'proceed' )" onclick="redirect()"></p>
+
+#end
