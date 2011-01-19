@@ -49,6 +49,7 @@ import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestPeriodType;
 
 /**
  * @author Bob Jolliffe
@@ -144,6 +145,13 @@ public class ExportDataMartAction
         this.requestType = requestType;
     }
 
+    private RequestPeriodType periodType;
+
+    public void setPeriodType( RequestPeriodType requestType )
+    {
+        this.periodType = requestType;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -223,15 +231,22 @@ public class ExportDataMartAction
         // prepare to write output
         OutputStream out = null;
 
+        // how many rows do we expect
+        int count = exportPivotViewService.count( requestType, periodType, start, end,
+                dataSourceLevel, dataSourceRoot);
+
         response.setContentType( "application/gzip");
         response.addHeader( "Content-Disposition", "attachment; filename=\""+fileName+"\"" );
         response.addHeader( "Cache-Control", "no-cache" );
         response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+        // write number of rows to custom header
+        response.addHeader( "X-Number-Of-Rows", String.valueOf( count ) );
 
         try
         {
             out = new GZIPOutputStream(response.getOutputStream(), GZIPBUFFER);
-            exportPivotViewService.execute(out, requestType, start, end, dataSourceLevel, dataSourceRoot);
+            exportPivotViewService.execute(out, requestType, periodType, start, end,
+                dataSourceLevel, dataSourceRoot);
         }
         finally
         {

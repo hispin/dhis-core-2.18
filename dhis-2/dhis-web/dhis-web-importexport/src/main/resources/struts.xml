@@ -212,7 +212,6 @@
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-importexport/responseInput.vm</result>
     </action>
-    
   </package>
 
   <!-- Create a new namespace to map actions for exporting datamart -->
@@ -220,16 +219,32 @@
 
       <!-- route all export value requests through same action -->
 
-      <action name="dataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+      <action name="monthlyDataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
         <result name="success" type="outputStreamResult" />
         <result name="client-error" type="httpheader" />
         <param name="requestType">DATAVALUE</param>
+        <param name="periodType">MONTHLY</param>
       </action>
 
-      <action name="indicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+      <action name="yearlyDataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+        <result name="success" type="outputStreamResult" />
+        <result name="client-error" type="httpheader" />
+        <param name="requestType">DATAVALUE</param>
+        <param name="periodType">YEARLY</param>
+      </action>
+
+      <action name="monthlyIndicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
         <result name="success" type="outputStreamResult" />
         <result name="client-error" type="httpheader" />
         <param name="requestType">INDICATORVALUE</param>
+        <param name="periodType">MONTHLY</param>
+      </action>
+
+      <action name="yearlyIndicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
+        <result name="success" type="outputStreamResult" />
+        <result name="client-error" type="httpheader" />
+        <param name="requestType">INDICATORVALUE</param>
+        <param name="periodType">YEARLY</param>
       </action>
 
   </package>

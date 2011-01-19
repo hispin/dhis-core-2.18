@@ -83,6 +83,12 @@ public class DefaultAggregatedDataValueService
        return aggregatedDataValueStore.getAggregatedDataValuesAtLevel(orgunit, level, periods);
     }
 
+    @Override
+    public int countDataValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
+    {
+        return aggregatedDataValueStore.countDataValuesAtLevel( orgunit, level, periods );
+    }
+
     // -------------------------------------------------------------------------
     // AggregatedDataMapValue
     // -------------------------------------------------------------------------
@@ -131,7 +137,13 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValuesAtLevel( orgunit, level, periods );
     }
-    // -------------------------------------------------------------------------
+
+    @Override
+    public int countIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
+    {
+        return aggregatedDataValueStore.countIndicatorValuesAtLevel( orgunit, level, periods );
+    }
+// -------------------------------------------------------------------------
     // AggregatedIndicatorMapValue
     // -------------------------------------------------------------------------
     
