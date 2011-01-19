@@ -142,21 +142,23 @@ public class SearchOrganisationUnitsAction
         // Assemble groups and get search result
         // ---------------------------------------------------------------------
 
+        name = StringUtils.trimToNull( name );
+        
         selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
         
-        if ( StringUtils.isNotBlank( name ) || !CollectionUtils.isEmpty( groupId ) )
+        Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+        
+        for ( Integer id : groupId )
         {
-            Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
-            
-            for ( Integer id : groupId )
+            if ( id != ANY )
             {
-                if ( id != ANY )
-                {
-                    OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
-                    groups.add( group );
-                }
+                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
+                groups.add( group );
             }
-    
+        }
+                
+        if ( !( name == null && CollectionUtils.isEmpty( groups ) ) )
+        {
             organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit );
         }
         
