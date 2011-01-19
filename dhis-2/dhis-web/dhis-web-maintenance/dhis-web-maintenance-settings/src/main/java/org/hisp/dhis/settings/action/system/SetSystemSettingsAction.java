@@ -33,11 +33,9 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFO
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FORUM_INTEGRATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_REPORT_FRAMEWORK;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.options.SystemSettingManager;
@@ -79,20 +77,6 @@ public class SetSystemSettingsAction
     public void setApplicationTitle( String applicationTitle )
     {
         this.applicationTitle = applicationTitle;
-    }
-
-    private int maxAttempts;
-
-    public void setMaxAttempts( int maxAttempts )
-    {
-        this.maxAttempts = maxAttempts;
-    }
-
-    private int lockoutTimeframe;
-
-    public void setLockoutTimeframe( int lockoutTimeframe )
-    {
-        this.lockoutTimeframe = lockoutTimeframe;
     }
 
     private String flag;
@@ -177,8 +161,6 @@ public class SetSystemSettingsAction
         }
 
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
-        systemSettingManager.saveSystemSetting( KEY_MAX_NUMBER_OF_ATTEMPTS, maxAttempts );
-        systemSettingManager.saveSystemSetting( KEY_TIMEFRAME_MINUTES, lockoutTimeframe );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
         systemSettingManager.saveSystemSetting( KEY_REPORT_FRAMEWORK, reportFramework );
