@@ -25,14 +25,6 @@
 	#end
 </select>
 
-<h4>$i18n.getString( "max_attempts" )</h4>
-
-<p><input type="text" name="maxAttempts" style="width:30em" value="$!maxAttempts"/></p>
-
-<h4>$i18n.getString( "lockout_timeframe" )</h4>
-
-<p><input type="text" name="lockoutTimeframe" style="width:30em" value="$!lockoutTimeframe"/></p>
-
 <h4>$i18n.getString( "flag" )</h4>
 
 <p>
