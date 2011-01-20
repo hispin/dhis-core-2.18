@@ -112,8 +112,6 @@
 </table>       
 </form>
 
-<span id="message"></span>   
-
 <script type="text/javascript">
     var i18n_please_select_relationship_type = '$encoder.jsEscape( $i18n.getString( "please_select_relationship_type" ) , "'" )';
     var i18n_please_select_partner = '$encoder.jsEscape( $i18n.getString( "please_select_partner" ) , "'" )';    

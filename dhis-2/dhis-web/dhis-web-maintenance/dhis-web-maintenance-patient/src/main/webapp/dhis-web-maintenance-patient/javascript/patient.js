@@ -4,7 +4,6 @@ function organisationUnitSelected( orgUnits )
     window.location.href = 'patient.action';    
 }
 
-
 selection.setListenerFunction( organisationUnitSelected );
 
 //------------------------------------------------------------------------------
@@ -59,8 +58,7 @@ function programEnrollmentValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setHeaderMessage( message );
     }
 }
 
@@ -269,8 +267,7 @@ function searchValidationCompleted( messageElement )
 	}
 	else if ( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setHeaderMessage( message );
 	}
 }
 
@@ -340,8 +337,7 @@ function addValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setHeaderMessage( message );
     }
     else if( type == 'duplicate' )
     {
@@ -389,8 +385,7 @@ function updateValidationCompleted( messageElement )
     }
     else if ( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setHeaderMessage( message );
     }
     else if( type == 'duplicate' )
     {

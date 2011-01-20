@@ -85,6 +85,4 @@
 	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patientIdentifierType.action'" style="width:10em">
 </p>
 
-</form> 	
-
-<span id="message"></span>
+</form>

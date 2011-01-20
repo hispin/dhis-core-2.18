@@ -50,8 +50,7 @@ function addValidationRepresentativeCompleted( messageElement )
 	 }
 	 else if ( type == 'input' )
 	 {
-	     document.getElementById( 'message' ).innerHTML = message;
-	     document.getElementById( 'message' ).style.display = 'block';
+	     setHeaderMessage( message );
 	 }
 	 else if( type == 'duplicate' )
 	 {

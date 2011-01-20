@@ -259,9 +259,6 @@
 </form>
 #end
 
-<span id="message"></span>
-
-
 <div id="hiddenModalContent" style="display:none">
 <style> 
 div#hiddenModalContent label { font-weight: bold;}  

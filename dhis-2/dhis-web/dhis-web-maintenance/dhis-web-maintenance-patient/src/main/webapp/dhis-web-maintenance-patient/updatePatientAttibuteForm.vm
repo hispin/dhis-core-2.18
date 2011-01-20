@@ -120,8 +120,8 @@
     <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patientAttribute.action'" style="width:10em">
 </p>
 
-</form>     
-<span id="message"></span>
+</form>
+
 <script>
 	if( jQuery('#valueType').val() == "COMBO")
 	{

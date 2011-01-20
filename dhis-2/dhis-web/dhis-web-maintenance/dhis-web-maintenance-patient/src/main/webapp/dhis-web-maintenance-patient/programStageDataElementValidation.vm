@@ -36,9 +36,7 @@
     </tr>
 	#end
 	</tbody>
-  </table>
-  
-<span id="message"></span>
+</table>
 
 <script>
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_validation_criteria" ) , "'" )';

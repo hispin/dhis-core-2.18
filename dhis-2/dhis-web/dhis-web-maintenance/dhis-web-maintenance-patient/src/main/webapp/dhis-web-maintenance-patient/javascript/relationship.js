@@ -40,11 +40,11 @@ function validateAddRelationshipType()
 					form.submit();
     	    	}else if ( json.response == "input" )
     	    	{
-    	    		setMessage( json.message );
+    	    		setHeaderMessage( json.message );
     	    	}
     	    	else if ( json.response == "error" )
     	    	{
-    	    		setMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
     	    	}
     	    }
     	);
@@ -71,11 +71,11 @@ function validateUpdateRelationshipType()
 					form.submit();
     	    	}else if ( json.response == "input" )
     	    	{
-    	    		setMessage( json.message );
+    	    		setHeaderMessage( json.message );
     	    	}
     	    	else if ( json.response == "error" )
     	    	{
-    	    		setMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
+    	    		setHeaderMessage( "i18n_adding_patient_atttibute_failed + ':' + '\n'" +json.message );
     	    	}
     	    }
     	);
@@ -97,8 +97,7 @@ function updateValidationCompleted( messageElement )
     }
     else if( type == 'input' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
+        setHeaderMessage( message );
     }
 }
 
@@ -154,8 +153,7 @@ function searchValidationCompleted( messageElement )
 	}
 	else if( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setHeaderMessage( message );
 	}
 }
 
@@ -218,8 +216,7 @@ function addRelationshipCompleted( messageElement )
 	}
 	else if( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setHeaderMessage( message );
 	}
 }
 
@@ -373,8 +370,7 @@ function saveRepresentativeCompleted( messageElement )
 	}
 	else if( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setHeaderMessage( message );
 	}
 }
 
@@ -408,8 +404,7 @@ function removeRepresentativeCompleted( messageElement )
 	}
 	else if( type == 'input' )
 	{
-		document.getElementById( 'message' ).innerHTML = message;
-		document.getElementById( 'message' ).style.display = 'block';
+		setHeaderMessage( message );
 	}
 }
 
