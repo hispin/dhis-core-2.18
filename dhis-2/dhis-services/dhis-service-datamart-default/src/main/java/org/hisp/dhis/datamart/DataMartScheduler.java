@@ -40,6 +40,8 @@ public interface DataMartScheduler
     final String STATUS_STOPPED  = "stopped";
     final String STATUS_NOT_STARTED = "not_started";
 
+    void executeDataMartExport();
+    
     public void scheduleDataMartExport();
     
     boolean stopDataMartExport();
