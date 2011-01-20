@@ -88,4 +88,16 @@ public class PaginatedListTest
         
         assertEquals( 3, list.pageSize() );
     }
+    
+    @Test
+    public void testReset()
+    {
+        PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
+        
+        assertTrue( list.nextPage().contains( "A" ) );
+        
+        list.reset();
+
+        assertTrue( list.nextPage().contains( "A" ) );        
+    }
 }
