@@ -433,10 +433,10 @@ function setRadioValue( radioName, value )
  */
 function setMessage( message )
 {
-	if ( (message != "") && (message != null) )
+	if ( message && message != '' )
 	{
-		$( '#message' ).html( message );
-		$( '#message' ).slideDown( 'fast' );
+		byId( 'message' ).innerHTML = message;
+		byId( 'message' ).style.display = 'block';
 	}
 }
 
@@ -455,7 +455,7 @@ function setWaitMessage( message )
  */
 function hideMessage()
 {
-	$( '#message' ).slideUp( 'fast' );
+	byId( 'message' ).style.display = 'none';
 }
 
 /**
