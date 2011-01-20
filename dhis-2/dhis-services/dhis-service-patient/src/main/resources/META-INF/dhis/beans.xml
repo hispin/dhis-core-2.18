@@ -313,6 +313,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler" 
 		class="org.hisp.dhis.patientattributevalue.PatientAttributeValueDeletionHandler">
 		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService"/>
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService"/>
 	</bean>
 	
 	<bean id="org.hisp.dhis.program.ProgramDeletionHandler" 
