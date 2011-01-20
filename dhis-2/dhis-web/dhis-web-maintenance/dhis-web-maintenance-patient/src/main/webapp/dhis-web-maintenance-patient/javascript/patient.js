@@ -74,9 +74,16 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 	
 	var dateOfIncident = new Date(byId('dateOfIncident').value);
 	var dueDate = new Date(field.value);
-	if(dueDate < dateOfIncident){
+	
+	if( !isDate(dueDate,dateFormat) ){
 		field.style.backgroundColor = '#FFCC00';
 		alert(i18n_date_invalid);
+		return;
+	}
+	
+	if(dueDate < dateOfIncident){
+		field.style.backgroundColor = '#FFCC00';
+		alert( i18n_date_less_incident );
 		return;
 	}
 	
