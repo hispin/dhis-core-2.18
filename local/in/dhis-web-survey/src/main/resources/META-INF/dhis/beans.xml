@@ -434,6 +434,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</property>	
     <property name="deTargetService" ref="org.hisp.dhis.detarget.DeTargetService">
     </property>
+	<property name="deTargetdataValueService" ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService">
+	</property>	
     </bean>
 	
 	<!-- Delete DeTarget Form  -->

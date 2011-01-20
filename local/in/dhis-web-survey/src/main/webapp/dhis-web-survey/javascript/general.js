@@ -169,7 +169,7 @@ function ValueSaver( indicatorId_, value_, resultColor_, selectedOption_ )
 
 function targetValueSaver( dataElementId_, optionComboid_, value_, resultColor_, selectedOption_ )
 {
-    var SUCCESS = '#ccffcc';
+	var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 
     var dataElementId = dataElementId_;
@@ -200,25 +200,26 @@ function targetValueSaver( dataElementId_, optionComboid_, value_, resultColor_,
         var code = parseInt( codeElement.firstChild.nodeValue );
         if ( code == 0 )
         {
-            markValue( resultColor );
+            markTargetValue( resultColor );
         }
         else
         {
-        	markValue( ERROR );
+        	markTargetValue( ERROR );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
         }
     }
     
     function handleHttpError( errorCode )
     {
-        markValue( ERROR );
+    	markTargetValue( ERROR );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
     }   
     
-    function markValue( color )
+    function markTargetValue( color )
     {        
-        //var element = document.getElementById( 'value[' + deOptionComboId + '].value' );
-        var element = document.getElementById( 'value[' + optionComboId + '].value' );
+       //var element = document.getElementById( 'value[' + deOptionComboId + '].value' );
+       // var element = document.getElementById( 'value[' + optionComboId + '].value' );
+        var element = document.getElementById( 'value[' + dataElementId + '].value' );
         element.style.backgroundColor = color;
     }
 }
