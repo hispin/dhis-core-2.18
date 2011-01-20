@@ -1,4 +1,3 @@
-<span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
 <h3>$i18n.getString( "user_role_management" ) #openHelp( "user_roles" )</h3>
 

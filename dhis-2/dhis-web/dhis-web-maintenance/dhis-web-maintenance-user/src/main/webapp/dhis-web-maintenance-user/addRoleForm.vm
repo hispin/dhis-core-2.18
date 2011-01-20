@@ -83,8 +83,6 @@
   </table>
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
 	var i18n_adding_role_failed = '$encoder.jsEscape( $i18n.getString( "adding_role_failed" ) , "'")';
 	sortList('availableListAuthority','ASC');

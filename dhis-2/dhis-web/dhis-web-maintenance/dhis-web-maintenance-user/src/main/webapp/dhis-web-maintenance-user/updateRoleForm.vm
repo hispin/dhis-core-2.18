@@ -97,4 +97,3 @@
 	sortList('availableListAuthority','ASC');
 	sortList('selectedListAuthority','ASC');
 </script>
-<span id="message"></span>
