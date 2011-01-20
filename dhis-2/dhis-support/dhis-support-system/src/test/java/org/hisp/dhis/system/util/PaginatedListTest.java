@@ -74,19 +74,19 @@ public class PaginatedListTest
     }
     
     @Test
-    public void testPageSize()
+    public void testPageCount()
     {
         PaginatedList<String> list = new PaginatedList<String>( Arrays.asList( "A", "B", "C" ), 2 );
         
-        assertEquals( 2, list.pageSize() );
+        assertEquals( 2, list.pageCount() );
         
         list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D" ), 2 );
         
-        assertEquals( 2, list.pageSize() );
+        assertEquals( 2, list.pageCount() );
 
         list = new PaginatedList<String>( Arrays.asList( "A", "B", "C", "D", "E" ), 2 );
         
-        assertEquals( 3, list.pageSize() );
+        assertEquals( 3, list.pageCount() );
     }
     
     @Test

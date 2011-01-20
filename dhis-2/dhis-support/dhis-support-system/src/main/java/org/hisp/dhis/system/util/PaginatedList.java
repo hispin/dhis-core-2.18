@@ -81,7 +81,7 @@ public class PaginatedList<T>
     /**
      * Returns the number of pages in the list.
      */
-    public int pageSize()
+    public int pageCount()
     {
         int c = size();        
         int r = c / pageSize;
