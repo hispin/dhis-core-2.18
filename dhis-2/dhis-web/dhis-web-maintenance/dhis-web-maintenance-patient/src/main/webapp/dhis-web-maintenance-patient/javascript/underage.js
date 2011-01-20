@@ -6,7 +6,7 @@ function validateAddRepresentative()
 {	
 	$.post("validatePatient.action?" + getIdParams(),
 		{
-			fullName: getFieldValue( 'fullName' )
+			fullName: getFieldValue( 'fullName' ),
 			gender: getFieldValue( 'gender' ) ,
 			birthDate: getFieldValue( 'birthDate' ), 	        
 			age: getFieldValue( 'age' ) ,
