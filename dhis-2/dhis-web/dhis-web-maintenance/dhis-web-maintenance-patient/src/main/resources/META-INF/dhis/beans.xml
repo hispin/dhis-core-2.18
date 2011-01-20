@@ -563,6 +563,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programAttributeService"
 			ref="org.hisp.dhis.program.ProgramAttributeService" />
+		<property name="programInstanceService" 
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="patientService" 
+			ref="org.hisp.dhis.patient.PatientService" />
+		<property name="programService" 
+			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.action.patient.RemoveEnrollmentAction"
@@ -571,8 +577,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.patient.state.SelectedStateManager" />
 		<property name="programAttributeService"
 			ref="org.hisp.dhis.program.ProgramAttributeService" />
 		<property name="programAttributeOptionService"
