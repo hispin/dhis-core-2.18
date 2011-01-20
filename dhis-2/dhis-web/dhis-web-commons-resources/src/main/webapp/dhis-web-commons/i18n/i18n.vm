@@ -105,6 +105,7 @@ var validationMessage	= {
 		,dateISO: '$encoder.jsEscape($i18n.getString( 'please_enter_a_valid_date_iso' ) , "'")'
 		,number: '$encoder.jsEscape($i18n.getString( 'please_enter_a_valid_number' ) , "'")'
 		,digits: '$encoder.jsEscape($i18n.getString( 'please_enter_a_valid_digits' ) , "'")'
+		,lettersdigitsonly: '$encoder.jsEscape($i18n.getString( 'please_enter_a_letters_or_digits' ) , "'")'
 		,equalTo: '$encoder.jsEscape($i18n.getString( 'please_enter_the_equal_values_again' ) , "'")'
 		,accept: '$encoder.jsEscape($i18n.getString( 'please_enter_a_value_with_a_valid_expression' ) , "'")'
 		,firstletteralphabet: '$encoder.jsEscape($i18n.getString( 'first_character_must_be_alphabetical' ) , "'")'

@@ -170,6 +170,10 @@ jQuery.validator.addMethod("alphanumeric", function(value, element) {
     return this.optional(element) || /^[\w\s]+$/i.test(value);
 }, "Letters, numbers, spaces or underscores only please");
 
+jQuery.validator.addMethod("lettersdigitsonly", function(value, element) {
+    return this.optional(element) || /^[a-z\d]+$/i.test(value);
+}, "Letters and digits only please");
+
 jQuery.validator.addMethod("lettersonly", function(value, element) {
     return this.optional(element) || /^[a-z]+$/i.test(value);
 }, "Letters only please");
