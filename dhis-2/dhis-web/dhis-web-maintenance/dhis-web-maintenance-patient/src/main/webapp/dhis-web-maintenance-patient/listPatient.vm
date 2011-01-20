@@ -1,11 +1,5 @@
 #parse( "/dhis-web-maintenance-patient/patient.vm" )
 
-#if($searchText) 
-	#set ($sText = $searchText )
-#else 
-	#set ($sText = "" )
-#end
-
 <style>
 tr.relationship-row{background-color: #BFFFC2; display : none}
 </style>
@@ -15,7 +9,13 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 		<td>$i18n.getString( "search_result_matching_the_search_criteria" )</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td>$i18n.getString( $sText )</td>
+		<td>
+			#if($!searchText) 
+				$searchText
+			#else 
+				$i18n.getString( "list_all_patients" )
+			#end
+		</td>
 	</tr>	
 	<tr>
 		<td>$i18n.getString( "total_result" )</td>

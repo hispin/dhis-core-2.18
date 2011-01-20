@@ -232,8 +232,6 @@ public class SearchPatientAction
             selectedStateManager.clearSearchText();
             selectedStateManager.setListAll( listAll );
 
-            searchText = "list_all_patients";
-
             listAllPatient( organisationUnit, sortingPatientAttribute );
 
             return SUCCESS;
@@ -295,8 +293,6 @@ public class SearchPatientAction
         if ( listAll )
         {
         	listAllPatient( organisationUnit, sortingPatientAttribute );
-
-            searchText = "list_all_patients";
 
             return SUCCESS;
 
