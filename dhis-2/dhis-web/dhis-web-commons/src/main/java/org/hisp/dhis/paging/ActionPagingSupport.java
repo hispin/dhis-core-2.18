@@ -114,15 +114,10 @@ public abstract class ActionPagingSupport<T>
     protected List<T> getBlockElement( List<T> elementList, int startPos, int pageSize )
     {
         List<T> returnList;
-
-        try
-        {
-            returnList = elementList.subList( startPos, startPos + pageSize );
-        }
-        catch ( IndexOutOfBoundsException ex )
-        {
-            returnList = elementList.subList( startPos, elementList.size() );
-        }
+        
+        int endPos = paging.getEndPos();
+        	
+        returnList = elementList.subList( startPos, endPos );
 
         return returnList;
     }

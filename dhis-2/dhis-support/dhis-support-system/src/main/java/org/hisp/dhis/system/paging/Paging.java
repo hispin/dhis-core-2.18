@@ -87,21 +87,23 @@ public class Paging
 
     public int getStartPos()
     {
-        return currentPage <= 0 ? 0 : (currentPage - 1) * pageSize;
+        int startPos = currentPage <= 0 ? 0 : (currentPage - 1) * pageSize;
+        startPos = ( startPos >  total ) ? total : startPos;
+        return startPos;
     }
 
     public int getEndPos()
     {
-        int endPos = (getStartPos() + getPageSize()) - 1;
-        endPos = endPos >= getTotal() ? getTotal() - 1 : endPos;
+    	int endPos = getStartPos() + pageSize;
+        endPos = ( endPos > total ) ? total : endPos; 
         return endPos;
     }
 
     public int getCurrentPage()
     {
-        if ( currentPage > total )
+        if ( currentPage > getNumberOfPages() )
         {
-            currentPage = total;
+            currentPage = getNumberOfPages();
         }
         
         return currentPage;
