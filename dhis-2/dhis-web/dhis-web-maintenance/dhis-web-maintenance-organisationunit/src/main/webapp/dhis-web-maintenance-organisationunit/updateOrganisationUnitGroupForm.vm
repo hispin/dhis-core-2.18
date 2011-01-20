@@ -12,7 +12,6 @@
 <form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
 	<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
 	
-	<span id="message" style="position:absolute;top:80px;right:5px"></span>
 	<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em><input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name" maxlength="160" class="{validate:{required:true,minlength:2}}"/></p>
 	<table>
 		<tr>

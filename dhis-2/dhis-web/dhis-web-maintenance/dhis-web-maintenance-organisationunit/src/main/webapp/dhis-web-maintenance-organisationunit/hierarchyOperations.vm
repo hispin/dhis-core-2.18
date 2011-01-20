@@ -44,8 +44,6 @@
 	</tr>
 </table>
 
-<p><span id="message"></span></p>
-
 </form>
 
 #if( $selectedOrganisationUnit )

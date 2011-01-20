@@ -44,8 +44,6 @@
 
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
 
 	var nameField = document.getElementById( 'name' );
