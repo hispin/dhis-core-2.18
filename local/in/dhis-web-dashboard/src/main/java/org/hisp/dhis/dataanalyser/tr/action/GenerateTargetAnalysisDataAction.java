@@ -208,9 +208,21 @@ public class GenerateTargetAnalysisDataAction implements Action
         String[] partsOfDEandOptionCombo = availableDataElements.split(":");
         selectedDataElement = dataElementService.getDataElement( Integer.parseInt( partsOfDEandOptionCombo[0] ) );
         selDECOptCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( partsOfDEandOptionCombo[1] ) );
-
-        chartTitle = "Facility : " + selectedOrgUnit.getShortName();
-        chartTitle += "\nDataElement : " + selectedDataElement.getName() + " " + selDECOptCombo.getName();
+        
+        if( ougGroupSetCB != null )
+        {
+            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroupList );
+            chartTitle = "Facility : " + selectedOrgUnit.getShortName() + " ( " + orgUnitGroup.getName() + " ) " ;
+            chartTitle += "\nDataElement : " + selectedDataElement.getName() + " " + selDECOptCombo.getName();
+        }
+        else
+        {
+            chartTitle = "Facility : " + selectedOrgUnit.getShortName();
+            chartTitle += "\nDataElement : " + selectedDataElement.getName() + " " + selDECOptCombo.getName();
+        }
+        
+       // chartTitle = "Facility : " + selectedOrgUnit.getShortName();
+       // chartTitle += "\nDataElement : " + selectedDataElement.getName() + " " + selDECOptCombo.getName();
 
         deTargetMemberList = new ArrayList<DeTargetMember>( deTargetService.getDeTargetsByDataElementAndCategoryOptionCombo( selectedDataElement, selDECOptCombo ) );
 
@@ -261,6 +273,7 @@ public class GenerateTargetAnalysisDataAction implements Action
                 }
                 
                 deTargetAggVal = deTargetAggVal/ (12 * yearlyPeriods.size());
+                deTargetAggVal = Math.round( deTargetAggVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                 
                 series2[i] = deTarget.getName();
                 
@@ -268,7 +281,8 @@ public class GenerateTargetAnalysisDataAction implements Action
                 {
                     if( selButton.equalsIgnoreCase( "VIEWCCHART" ) )
                     {
-                        deTargetAggVal = deTargetAggVal * (j+1); 
+                        deTargetAggVal = deTargetAggVal * (j+1);
+                        deTargetAggVal = Math.round( deTargetAggVal * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                     }
                     
                     data2[i][j] = deTargetAggVal;
@@ -357,7 +371,7 @@ public class GenerateTargetAnalysisDataAction implements Action
             
             serviceValues[countForServiceList][countForPeriodList] = aggDataValue;
             
-            serviceValues[countForServiceList][countForPeriodList] = Math.round( serviceValues[countForServiceList][countForPeriodList] * Math.pow( 10, 2 ) ) / Math.pow( 10, 2 );
+            serviceValues[countForServiceList][countForPeriodList] = Math.round( serviceValues[countForServiceList][countForPeriodList] * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
             
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
             categories1[countForPeriodList] = simpleDateFormat.format( p.getStartDate() );
