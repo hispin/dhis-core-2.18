@@ -113,7 +113,6 @@
   </table>
 </form>
 
-<span id="message"></span>
 <script language="javascript">
 	
 	var name = '$validationCriteria.property';

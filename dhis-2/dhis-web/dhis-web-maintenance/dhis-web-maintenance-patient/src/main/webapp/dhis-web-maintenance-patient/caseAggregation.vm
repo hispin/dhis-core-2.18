@@ -60,7 +60,7 @@
 		</td>
   </tr>
 </table>
-<p><span id="message"></span></p>
+
 <script type="text/javascript">
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_patient_attribute" ) , "'" )';
 	var i18n_adding_patient_atttibute_failed = '$encoder.jsEscape( $i18n.getString( "adding_patient_attribute_failed" ), "'")';

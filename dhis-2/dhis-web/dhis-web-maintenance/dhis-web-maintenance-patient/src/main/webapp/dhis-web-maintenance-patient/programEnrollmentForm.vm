@@ -101,8 +101,6 @@
  
 #end
 
-<span id="message"></span>
-
 <script type="text/javascript">    
     var i18n_program_enrollment_failed = '$encoder.jsEscape( $i18n.getString( "program_enrollment_failed" ) , "'")';
     var i18n_saving_value_failed_status_code = '$encoder.jsEscape( $i18n.getString( "saving_value_failed_status_code" ) , "'")';

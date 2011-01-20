@@ -23,8 +23,6 @@
 
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
 
   var levelMustBeInt = '$encoder.jsEncode( $i18n.getString( "level_must_be_int" ) )';

@@ -108,13 +108,9 @@ jQuery( function(){
 
 </form> 	
 
-<span id="message"></span>
-
 <script type="text/javascript">    
     var i18n_invalid_min_max_days = '$encoder.jsEscape( $i18n.getString( "invalid_min_max_days" ) , "'")';
     var i18n_value_must_positive = '$encoder.jsEscape( $i18n.getString( "value_must_positive" ) , "'")';
     var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
     var i18n_compulsory_checkbox_title = '$encoder.jsEscape( $i18n.getString( "compulsory_checkbox_title" ) , "'")';   
-	
-
 </script>
