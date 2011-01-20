@@ -17,6 +17,8 @@
 
 function orgUnitHasBeenSelected( orgUnitIds )
 {    
+	//document.getElementById("ouIDTB"). value = orgUnitIds;
+	//alert( document.getElementById("ouIDTB"). value );
 	if(orgUnitIds == null || orgUnitIds == "" )
 	{
 		return;
