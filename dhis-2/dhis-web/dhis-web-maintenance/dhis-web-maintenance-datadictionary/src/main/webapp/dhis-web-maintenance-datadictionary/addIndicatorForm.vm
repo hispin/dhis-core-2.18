@@ -4,10 +4,6 @@
 			function( form )
 			{ 
 				form.submit()
-			}, function(){
-				setFieldValue( 'denominator', "1" );
-				setFieldValue( 'denominatorDescription', "" );
-				setRadioValue( 'denominatorAggregationOperator', "sum" );
 			}
 		);	
 		checkValueIsExist( "name", "validateIndicator.action" );
@@ -27,8 +23,8 @@
 	<input type="hidden" id="numeratorDescription" name="numeratorDescription"/>
 	<input type="hidden" id="numeratorAggregationOperator" name="numeratorAggregationOperator"/>
 	
-	<input type="hidden" id="denominatorDescription" name="denominatorDescription"/>
-	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator"/>
+	<input type="hidden" id="denominatorDescription" name="denominatorDescription" value=""/>
+	<input type="hidden" id="denominatorAggregationOperator" name="denominatorAggregationOperator" value="sum"/>
 </div>
 
 <table>
@@ -90,7 +86,7 @@
 		<td></td>
 		<td>
 			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"/>
-			<input type="hidden" id="denominator" name="denominator" class="{validate:{required:true}}"/>
+			<input type="hidden" id="denominator" name="denominator" class="{validate:{required:true}}" value="1"/>
 		</td>
 	</tr>
 	<tr>
