@@ -198,7 +198,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.dataset.action.DataSetListAction" scope="prototype">
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
+		</property>	
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.PeriodTypeListAction"

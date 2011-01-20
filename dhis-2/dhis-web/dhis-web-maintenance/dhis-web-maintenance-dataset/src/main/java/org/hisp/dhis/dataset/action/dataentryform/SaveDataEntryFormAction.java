@@ -31,6 +31,8 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.webportal.menu.MenuState;
+import org.hisp.dhis.webportal.menu.MenuStateManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,13 +46,13 @@ public class SaveDataEntryFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataEntryFormService dataEntryFormService;
 
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }
+    }   
 
     private DataSetService dataSetService;
 
@@ -62,7 +64,7 @@ public class SaveDataEntryFormAction
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
-    
+
     private int dataSetIdField;
 
     public void setDataSetIdField( int dataSetIdField )
@@ -87,20 +89,21 @@ public class SaveDataEntryFormAction
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-    	DataSet dataset = dataSetService.getDataSet( dataSetIdField );
+        DataSet dataset = dataSetService.getDataSet( dataSetIdField );
 
         DataEntryForm dataEntryForm = dataset.getDataEntryForm();
 
         if ( dataEntryForm == null )
         {
-            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
+            dataEntryForm = new DataEntryForm( nameField, dataEntryFormService
+                .prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.addDataEntryForm( dataEntryForm );
-            
-            dataset.setDataEntryForm(dataEntryForm);
+
+            dataset.setDataEntryForm( dataEntryForm );
             dataSetService.updateDataSet( dataset );
         }
         else
@@ -108,9 +111,10 @@ public class SaveDataEntryFormAction
             dataEntryForm.setName( nameField );
             dataEntryForm.setHtmlCode( dataEntryFormService.prepareDataEntryFormCode( designTextarea ) );
             dataEntryFormService.updateDataEntryForm( dataEntryForm );
-        }
+        }        
+       
 
         return SUCCESS;
     }
-   
+
 }
