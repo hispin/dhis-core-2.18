@@ -54,6 +54,7 @@ public class GetAllReportsAction
 {
     private static final String SEPARATOR = "/";
     private static final String BASE_QUERY = "frameset?__report=";
+    private static final String JASPER_BASE_URL = "renderReport.action?id=";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -110,13 +111,13 @@ public class GetAllReportsAction
     public String execute() 
         throws Exception
     {
-        String reportFramework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK );
+        String reportFramework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK, Report.TYPE_DEFAULT );
         
-        if ( reportFramework != null && reportFramework.equals( Report.TYPE_JASPER ) )
+        if ( reportFramework.equals( Report.TYPE_JASPER ) )
         {
             for ( Report report : reportService.getAllReports() )
             {
-                report.setUrl( "renderReport.action?id=" + report.getId() );
+                report.setUrl( JASPER_BASE_URL + report.getId() );
                 
                 reports.add( report );
             }
@@ -125,24 +126,15 @@ public class GetAllReportsAction
         {
             ReportConfiguration config = reportManager.getConfiguration();
             
-            String birtHome = config.getHome();
-            
-            String birtDirectory = config.getDirectory();
-    
             HttpServletRequest request = ServletActionContext.getRequest();
             
-            String birtURL = getBaseUrl( request ) + birtDirectory + SEPARATOR + BASE_QUERY;
+            String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
             
-            if ( birtHome != null && birtDirectory != null )
+            for ( Report report : reportService.getAllReports() )
             {
-                for ( Report report : reportService.getAllReports() )
-                {
-                    String url = birtURL + report.getDesign();
-                    
-                    report.setUrl( url );
-                    
-                    reports.add( report );
-                }
+                report.setUrl( birtURL + report.getDesign() );
+                
+                reports.add( report );
             }
         }
         
@@ -154,10 +146,10 @@ public class GetAllReportsAction
             
             this.paging = createPaging( reports.size() );
             
-            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );
-           
+            reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );           
         }
-        else {
+        else 
+        {
             this.paging = createPaging( reports.size() );
                 
             reports = getBlockElement( reports, paging.getStartPos(), paging.getPageSize() );
@@ -177,6 +169,7 @@ public class GetAllReportsAction
                 result.add( each );
             }
         }
+        
         return result;
     }
 }

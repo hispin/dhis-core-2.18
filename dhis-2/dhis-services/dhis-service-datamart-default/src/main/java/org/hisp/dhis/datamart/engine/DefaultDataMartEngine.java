@@ -315,7 +315,7 @@ public class DefaultDataMartEngine
         {
             count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, keys );
 
-            log.info( "Exported values for indicators: " + TimeUtils.getHMS() );
+            log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
         }
 
         state.setMessage( "exporting_data_for_calculated_data_elements" );
@@ -328,8 +328,12 @@ public class DefaultDataMartEngine
         {
             count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods, organisationUnits, calculatedOperands, keys );
 
-            log.info( "Exported values for calculated data elements: " + TimeUtils.getHMS() );
+            log.info( "Exported values for calculated data elements (" + calculatedDataElements.size() + "): " + TimeUtils.getHMS() );
         }
+
+        // ---------------------------------------------------------------------
+        // Drop crosstab tables
+        // ---------------------------------------------------------------------
 
         for ( String key : keys )
         {
