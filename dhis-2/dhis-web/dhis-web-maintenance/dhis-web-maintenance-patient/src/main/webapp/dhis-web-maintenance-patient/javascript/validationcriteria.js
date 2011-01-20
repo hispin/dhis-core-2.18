@@ -67,7 +67,7 @@ function hideDiv(){
 	hideById('genderDiv');
 	hideById('integerValueOfAgeDiv');
 	hideById('birthDateDiv');
-	hideById('dobType');
+	hideById('dobTypeDiv');
 	hideById('bloodGroupDiv');		
 }
 
