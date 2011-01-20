@@ -38,7 +38,7 @@
             <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
             <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
                 <script type="text/javascript">
-                   datePicker( 'executionDate' );
+                   datePickerValid( 'executionDate' );
                 </script>                
         #end
     </tr>   
