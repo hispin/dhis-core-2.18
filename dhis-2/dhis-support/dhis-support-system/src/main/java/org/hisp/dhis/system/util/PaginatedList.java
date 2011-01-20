@@ -69,4 +69,16 @@ public class PaginatedList<T>
         
         return page;
     }
+    
+    /**
+     * Returns the number of pages in the list.
+     */
+    public int pageSize()
+    {
+        int c = size();        
+        int r = c / pageSize;
+        int m = c % pageSize;
+        
+        return m == 0 ? r : ( r + 1 );
+    }
 }
