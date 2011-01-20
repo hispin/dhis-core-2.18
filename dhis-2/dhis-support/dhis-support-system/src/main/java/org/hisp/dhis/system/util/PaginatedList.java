@@ -71,6 +71,14 @@ public class PaginatedList<T>
     }
     
     /**
+     * Sets the current page position to the first page.
+     */
+    public void reset()
+    {
+        fromIndex = 0;
+    }
+    
+    /**
      * Returns the number of pages in the list.
      */
     public int pageSize()
