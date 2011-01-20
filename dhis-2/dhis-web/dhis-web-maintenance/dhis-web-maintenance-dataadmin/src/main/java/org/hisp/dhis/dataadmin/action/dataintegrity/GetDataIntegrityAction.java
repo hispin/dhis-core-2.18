@@ -33,6 +33,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
@@ -58,6 +60,8 @@ import com.opensymphony.xwork2.Action;
 public class GetDataIntegrityAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( GetDataIntegrityAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -235,28 +239,26 @@ public class GetDataIntegrityAction
     {
         dataElementsWithoutDataSet = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutDataSet() );
         dataElementsWithoutGroups = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutGroups() );
-        dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService
-            .getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
-        dataElementsViolatingCompulsoryGroupSets = new ArrayList<DataElement>( dataIntegrityService
-            .getDataElementsViolatingCompulsoryGroupSets() );
-        dataElementsViolatingExclusiveGroupSets = new ArrayList<DataElement>( dataIntegrityService
-            .getDataElementsViolatingExclusiveGroupSets() );
+        dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
+        dataElementsViolatingCompulsoryGroupSets = new ArrayList<DataElement>( dataIntegrityService.getDataElementsViolatingCompulsoryGroupSets() );
+        dataElementsViolatingExclusiveGroupSets = new ArrayList<DataElement>( dataIntegrityService.getDataElementsViolatingExclusiveGroupSets() );
 
-        dataSetsNotAssignedToOrganisationUnits = new ArrayList<DataSet>( dataIntegrityService
-            .getDataSetsNotAssignedToOrganisationUnits() );
-
-        sectionsWithInvalidCategoryCombinations = new ArrayList<Section>( dataIntegrityService.
-            getSectionsWithInvalidCategoryCombinations() );
+        log.info( "Checked data elements" );
+        
+        dataSetsNotAssignedToOrganisationUnits = new ArrayList<DataSet>( dataIntegrityService.getDataSetsNotAssignedToOrganisationUnits() );
+        sectionsWithInvalidCategoryCombinations = new ArrayList<Section>( dataIntegrityService.getSectionsWithInvalidCategoryCombinations() );
+        
+        log.info( "Checked data sets" );
         
         indicatorsWithIdenticalFormulas = dataIntegrityService.getIndicatorsWithIdenticalFormulas();
         indicatorsWithoutGroups = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsWithoutGroups() );
         invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
         invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();
-        indicatorsViolatingCompulsoryGroupSets = new ArrayList<Indicator>( dataIntegrityService
-            .getIndicatorsViolatingCompulsoryGroupSets() );
-        indicatorsViolatingExclusiveGroupSets = new ArrayList<Indicator>( dataIntegrityService
-            .getIndicatorsViolatingExclusiveGroupSets() );
+        indicatorsViolatingCompulsoryGroupSets = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsViolatingCompulsoryGroupSets() );
+        indicatorsViolatingExclusiveGroupSets = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsViolatingExclusiveGroupSets() );
 
+        log.info( "Checked indicators" );
+        
         organisationUnitsWithCyclicReferences = new ArrayList<OrganisationUnit>( dataIntegrityService
             .getOrganisationUnitsWithCyclicReferences() );
         orphanedOrganisationUnits = new ArrayList<OrganisationUnit>( dataIntegrityService
@@ -271,9 +273,14 @@ public class GetDataIntegrityAction
             .getOrganisationUnitGroupsWithoutGroupSets() );
         validationRulesWithoutGroups = new ArrayList<ValidationRule>( dataIntegrityService
             .getValidationRulesWithoutGroups() );
+        
+        log.info( "Checked organisation units" );
+        
         invalidValidationRuleLeftSideExpressions = dataIntegrityService.getInvalidValidationRuleLeftSideExpressions();
         invalidValidationRuleRightSideExpressions = dataIntegrityService.getInvalidValidationRuleRightSideExpressions();
 
+        log.info( "Checked validation rules" );
+        
         Collections.sort( dataElementsWithoutDataSet, new DataElementNameComparator() );
         Collections.sort( dataElementsWithoutGroups, new DataElementNameComparator() );
         Collections.sort( dataElementsViolatingCompulsoryGroupSets, new DataElementNameComparator() );

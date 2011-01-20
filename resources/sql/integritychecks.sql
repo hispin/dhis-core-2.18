@@ -21,9 +21,10 @@ join datasetmembers dm on(de.dataelementid=dm.dataelementid)
 join dataset ds on(dm.datasetid=ds.datasetid)
 where de.dataelementid in (
   select de.dataelementid from dataelement de
-  full join datasetmembers ds on (de.dataelementid=ds.dataelementid)
+  join datasetmembers ds on (de.dataelementid=ds.dataelementid)
   group by de.dataelementid
-  having(count(de.dataelementid) > 1) );
+  having(count(de.dataelementid) > 1) )
+order by de.name;
 
 -- Get dataelements which are members of a section but not the section's dataset
 
@@ -35,7 +36,7 @@ where sd.dataelementid not in (
   join dataset ds on(dm.datasetid=ds.datasetid)
   where sc.datasetid=ds.datasetid);
 
--- Get orgunit groups which an orgunit member of
+-- Get orgunit groups which an orgunit is member of
 
 select * from orgunitgroup g
 join orgunitgroupmembers m using(orgunitgroupid)
