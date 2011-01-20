@@ -111,12 +111,6 @@
 
       <tr>
         <td colspan="3">
-          <p><span id="message"></span></p>
-        </td>
-      </tr>
-
-      <tr>
-        <td colspan="3">
           <input type="submit" name="save" value="$i18n.getString( 'save' )"/><input type="button"
             onclick="window.location.href='section.action'" value="$i18n.getString( 'cancel' )"/>
         </td>

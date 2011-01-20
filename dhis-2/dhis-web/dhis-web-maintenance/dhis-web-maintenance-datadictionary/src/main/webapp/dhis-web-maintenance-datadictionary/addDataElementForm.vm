@@ -269,8 +269,6 @@
 
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
 
 	var previousName = '';

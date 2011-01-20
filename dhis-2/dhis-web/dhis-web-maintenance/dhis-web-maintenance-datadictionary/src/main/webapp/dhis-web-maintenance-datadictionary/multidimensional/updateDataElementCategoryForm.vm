@@ -110,8 +110,6 @@
   </table>
 </form>
 
-<span id="message"></span>
-
 <script type="text/javascript">
     var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
     var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
