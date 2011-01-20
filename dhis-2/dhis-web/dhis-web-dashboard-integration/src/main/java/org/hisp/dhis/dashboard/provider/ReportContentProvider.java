@@ -64,7 +64,8 @@ public class ReportContentProvider
     
     private static final String SEPARATOR = "/";
     private static final String BASE_QUERY = "frameset?__report=";
-    private static final String JASPER_BASE_URL = "../dhis-web-reporting/renderReport.action?id=";
+    private static final String JASPER_BASE_URL = "../dhis-web-reporting/getReportParams.action?id=";
+    private static final String JASPER_RENDER_URL = "&mode=report&url=renderReport.action?id=";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -127,7 +128,7 @@ public class ReportContentProvider
             {
                 for ( Report report : reports )
                 {
-                    report.setUrl( JASPER_BASE_URL + report.getId() );
+                    report.setUrl( JASPER_BASE_URL + report.getId() + JASPER_RENDER_URL + report.getId() );
                 }
             }
             else if ( framework.equals( TYPE_BIRT ) )

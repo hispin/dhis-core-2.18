@@ -42,7 +42,7 @@ public class Report
 {
     public static final String TYPE_BIRT = "birt";
     public static final String TYPE_JASPER = "jasper";
-    public static final String TYPE_DEFAULT = TYPE_BIRT;
+    public static final String TYPE_DEFAULT = TYPE_JASPER;
     public static final String TEMPLATE_DIR = "templates";
     
     private String design;
