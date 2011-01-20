@@ -34,6 +34,10 @@
 	#foreach( $stylesheet in $stylesheets )
       <link rel="stylesheet" type="text/css" href="$stylesheet">
 	#end
+	
+	<script type="text/javascript">
+		var dateFormat = '$encoder.jsEscape($i18n.getString( 'format.date.label.jquery' ) , "'")';
+	</script>  
   </head>
   
   <body>

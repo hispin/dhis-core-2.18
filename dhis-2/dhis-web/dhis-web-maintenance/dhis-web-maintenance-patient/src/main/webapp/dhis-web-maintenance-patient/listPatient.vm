@@ -113,7 +113,7 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 				
 				<td style="text-align:center">
 				  <a href="showProgramEnrollmentForm.action?id=$patient.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'></a>                  
-				  <a href="showProgramUnEnrollmentForm.action?id=$patient.id" title='$i18n.getString( "manage_program_unenrollment" )'><img src="../images/unenroll.png" alt='$i18n.getString( "show_details" )'></a>
+				  <a href="showProgramUnEnrollmentForm.action?patientId=$patient.id" title='$i18n.getString( "manage_program_unenrollment" )'><img src="../images/unenroll.png" alt='$i18n.getString( "manage_program_unenrollment" )'></a>
 				  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
 				  <a href="showRelationshipList.action?id=$patient.id" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
 				  <a href="showAddRelationshipPatient.action?id=$patient.id" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'></a>
@@ -164,6 +164,10 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 	                  <a href="showProgramEnrollmentForm.action?id=$partner.id" title='$i18n.getString( "manage_program_enrollment" )'><img src="../images/enroll.png" alt='$i18n.getString( "manage_program_enrollment" )'></a>                  
 	                </td>                
 	                
+					<td style="text-align:center">                  
+	                  <a href="showProgramUnEnrollmentForm.action?patientId=$patient.id" title='$i18n.getString( "manage_program_unenrollment" )'><img src="../images/unenroll.png" alt='$i18n.getString( "manage_program_unenrollment" )'></a>
+	                </td>
+					
 	                <td style="text-align:center">                  
 	                  <a href="showUpdatePatientForm.action?id=$patient.id" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
 	                </td>
