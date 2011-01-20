@@ -107,7 +107,7 @@ function patientReceived( patientElement )
 					+ '<strong>' + i18n_dob_type + ':</strong> ' + dobType+ "<br>" 
 					+ '<strong>' + i18n_date_of_birth + ':</strong> ' + birthDate+ "<br>" 
 					+ '<strong>' + i18n_blood_group  + ':</strong> ' + bloodGroup;
-	
+
 	setInnerHTML( 'commonInfoField', commonInfo );
 	
 	// ----------------------------------------------------------------------------
@@ -139,9 +139,13 @@ function patientReceived( patientElement )
 	{	
 		attributeValues = attributeValues + '<strong>' + attributes[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue  + ':  </strong>' + attributes[ i ].getElementsByTagName( "value" )[0].firstChild.nodeValue + '<br>';		
 	}
-	
+	attributeValues = ( attributeValues.length == 0 ) ? i18n_none : attributeValues;
 	setInnerHTML( 'attributeField', attributeValues );
     
+	// ----------------------------------------------------------------------------
+	// Get programs
+    // ----------------------------------------------------------------------------
+	
     var programs = patientElement.getElementsByTagName( "program" );   
     
     var programName = '';
@@ -151,8 +155,13 @@ function patientReceived( patientElement )
 		programName = programName + programs[ i ].getElementsByTagName( "name" )[0].firstChild.nodeValue + '<br>';		
 	}
 	
+	programName = ( programName.length == 0 ) ? i18n_none : programName;
 	setInnerHTML( 'programField', programName );
    
+	// ----------------------------------------------------------------------------
+	// Show details
+    // ----------------------------------------------------------------------------
+	
     showDetails();
 }
 
