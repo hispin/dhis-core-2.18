@@ -53,7 +53,7 @@
 								#end
 							</select>
 						</td>
-						<td class="NormalB">&nbsp;</td>             
+						<td class="NormalB">&nbsp;</td>         
 						<td class="NormalB">    
 							$i18n.getString( "ga_to" )<br>
 							<select id="eDateLB" name="eDateLB">
@@ -79,7 +79,7 @@
 					<tr>
 						<td class="NormalB">	
 							$i18n.getString( "aa_orgunit" ) : <br />
-                        	<input type="text" name="ouNameTB" id="ouNameTB" size="20">  
+                        	<input type="text" name="ouNameTB" id="ouNameTB" size="20" disabled>
 	                   	</td>
 	                   	<td class="NormalB">&nbsp;</td>
 	                    <td class="NormalB">   

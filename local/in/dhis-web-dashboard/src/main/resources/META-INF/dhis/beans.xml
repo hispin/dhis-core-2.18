@@ -834,7 +834,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.user.UserStore"/>
 		</property>
 	    <property name="jdbcTemplate" ref="jdbcTemplate"/>
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
+		<!--<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>-->
 	</bean>
 	
 	<!-- DataStatus Orgnisationunit GroupSet Wise-->
