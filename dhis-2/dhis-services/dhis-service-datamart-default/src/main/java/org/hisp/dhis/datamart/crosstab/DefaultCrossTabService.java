@@ -107,8 +107,7 @@ public class DefaultCrossTabService
                 
                 final Set<DataElementOperand> operandsWithDataInPage = new HashSet<DataElementOperand>();
                 
-                crossTabStore.dropCrossTabTable( key );
-    
+                crossTabStore.dropCrossTabTable( key );    
                 crossTabStore.createCrossTabTable( operandPage, key );
     
                 log.debug( "Created crosstab table for key: " + key );
@@ -136,8 +135,7 @@ public class DefaultCrossTabService
     
                             if ( value != null && value.length() > MAX_LENGTH )
                             {
-                                log.warn( "Value ignored, too long: '" + value + "'" );
-                                
+                                log.warn( "Value ignored, too long: '" + value + "'" );                                
                                 value = null;
                             }
     
