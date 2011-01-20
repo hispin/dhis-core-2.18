@@ -91,6 +91,7 @@ mapfish.GeoStat = OpenLayers.Class({
         var format = this.format || new OpenLayers.Format.GeoJSON();
         this.layer.removeFeatures(this.layer.features);
         this.layer.addFeatures(format.read(doc));
+        this.layer.features = G.util.getTransformedFeatureArray(this.layer.features);
         this.requestSuccess(request);
 
         if (G.vars.activePanel.isPolygon()) {

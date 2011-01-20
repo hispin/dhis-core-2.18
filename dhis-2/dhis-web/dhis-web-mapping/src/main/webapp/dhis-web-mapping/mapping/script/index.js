@@ -2,9 +2,9 @@
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
 	Ext.QuickTips.init();
-	document.body.oncontextmenu = function(){return false;};
+	document.body.oncontextmenu = function(){return false;};    
 	
-	G.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	G.vars.map = new OpenLayers.Map({controls: [new OpenLayers.Control.MouseToolbar()]});    
 	G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
     G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
 
@@ -338,8 +338,14 @@
 	
 	/* Add base layers */	
 	function addBaseLayersToMap(init) {
-		G.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
-		G.vars.map.layers[0].setVisibility(false);
+    
+    G.vars.map.addLayer(new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender"));
+    G.vars.map.addLayer(new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik"));
+    G.vars.map.addLayer(new OpenLayers.Layer.OSM.CycleMap("OSM CycleMap"));
+    
+    
+
+
         
         if (init) {
             var layers = G.vars.parameter.baseLayers || [];
@@ -395,6 +401,8 @@
                             'format': new OpenLayers.Format.GeoJSON()
                         })
                     });
+                    
+                    overlay.features = G.util.getTransformedFeatureArray(overlay.features);
                     
                     overlay.events.register('loadstart', null, loadStart);
                     overlay.events.register('loadend', null, loadEnd);
@@ -545,7 +553,7 @@
                 id: 'deleteview_b',
                 iconCls: 'icon-remove',
 				hideLabel: true,
-				text: G.i18n.delete_,
+				text: G.i18n.delete,
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rw = Ext.getCmp('favorite_cb').getRawValue();
@@ -702,7 +710,7 @@
                 id: 'exportimage_b',
 				labelSeparator: G.conf.labelseparator,
                 iconCls: 'icon-export',
-				text: G.i18n.export_,
+				text: G.i18n.export,
 				handler: function() {
                     var values, svgElement, svg;
                     if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
@@ -801,6 +809,7 @@
 		layout: 'accordion',
         closeAction: 'hide',
 		width: G.conf.window_width,
+        height: Ext.isChrome ? 348:346,
         items: [
             {
                 id: 'newpredefinedmaplegend_p',
@@ -890,7 +899,7 @@
                                                 return;
                                             }
                                             
-                                            if (!mln || !mlc) {
+                                            if (!mln || !mlsv || !mlev || !mlc) {
                                                 Ext.message.msg(false, G.i18n.form_is_not_complete);
                                                 return;
                                             }
@@ -923,7 +932,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegend_b',
-                                        text: G.i18n.delete_,
+                                        text: G.i18n.delete,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlv = Ext.getCmp('predefinedmaplegend_cb').getValue();
@@ -1084,7 +1093,7 @@
                                     {
                                         xtype: 'button',
                                         id: 'deletepredefinedmaplegendset_b',
-                                        text: G.i18n.delete_,
+                                        text: G.i18n.delete,
                                         iconCls: 'icon-remove',
                                         handler: function() {
                                             var mlsv = Ext.getCmp('predefinedmaplegendsetindicator_cb').getValue();
@@ -1654,7 +1663,7 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayer_b',
-                text: G.i18n.delete_,
+                text: G.i18n.delete,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayer_cb').getValue();
@@ -1784,7 +1793,7 @@
             {
                 xtype: 'button',
                 id: 'deletemaplayerbaselayers_b',
-                text: G.i18n.delete_,
+                text: G.i18n.delete,
                 iconCls: 'icon-remove',
                 handler: function() {
                     var ml = Ext.getCmp('maplayerbaselayers_cb').getValue();
@@ -1880,6 +1889,22 @@
     });
 	
 	/* Section: layers */
+    var choroplethLayer = new OpenLayers.Layer.Vector('Polygon layer', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
+    });
+    
     var choroplethLayer = new OpenLayers.Layer.Vector('Polygon layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
@@ -2320,11 +2345,6 @@
 		iconCls: 'icon-image',
 		tooltip: G.i18n.export_map_as_image,
 		handler: function() {
-			if (Ext.isIE) {
-				Ext.message.msg(false, 'SVG not supported by browser');
-				return;
-			}
-			
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;   
 			
@@ -2361,7 +2381,7 @@
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: G.i18n.create_predefined_legend_sets,
 		disabled: !G.user.isAdmin,
-		handler: function() {			
+		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
 			predefinedMapLegendSetWindow.setPosition(x,y);
@@ -2382,7 +2402,7 @@
 		iconCls: 'icon-admin',
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
-		handler: function() {
+		handler: function() {            
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
 			adminWindow.setPosition(x,y);
