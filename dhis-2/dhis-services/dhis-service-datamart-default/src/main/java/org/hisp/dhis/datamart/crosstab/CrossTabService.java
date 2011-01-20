@@ -41,6 +41,15 @@ public interface CrossTabService
     String ID = CrossTabService.class.getName();
 
     /**
+     * Filters and returns the DataElementOperands with data from the given
+     * collection of DataElementOperands.
+     * 
+     * @param operands the DataElementOperands.
+     * @return the DataElementOperands with data.
+     */
+    Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands );
+    
+    /**
      * Creates and populates the crosstab table. Operands without data will be
      * removed from the operands argument collection.
      * 
@@ -57,13 +66,6 @@ public interface CrossTabService
      */
     void dropCrossTabTable( String key );
     
-    /**
-     * Trims the crosstab table.
-     * 
-     * @param operands the DataElementOperands with data.
-     */
-    void trimCrossTabTable( Collection<DataElementOperand> operands, String key );
-
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
      * 
