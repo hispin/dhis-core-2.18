@@ -1405,7 +1405,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
-                    G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+                    var point = G.util.getTransformedPointByXY(this.mapView.longitude, this.mapView.latitude);
+                    G.vars.map.setCenter(new OpenLayers.LonLat(point.x, point.y), this.mapView.zoom);
                 }
                 else {
                     G.vars.map.zoomToExtent(this.layer.getDataExtent());
