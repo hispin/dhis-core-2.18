@@ -294,7 +294,7 @@ public class SearchPatientAction
 
         if ( listAll )
         {
-            patients = patientService.getPatients( organisationUnit );
+        	listAllPatient( organisationUnit, sortingPatientAttribute );
 
             searchText = "list_all_patients";
 
