@@ -147,7 +147,7 @@ public class JdbcDataAnalysisStore
             "FROM period AS pe " +
             "JOIN periodtype AS pt ON (pe.periodtypeid = pt.periodtypeid) " +
             "WHERE periodid IN (" + periodIds + ") " +
-            "AND periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
+            "AND pt.periodtypeid='" + dataElement.getPeriodType().getId() + "' " +
             "AND periodid NOT IN ( " +
                 "SELECT periodid FROM datavalue " +
                 "WHERE dataelementid='" + dataElement.getId() + "' " +
