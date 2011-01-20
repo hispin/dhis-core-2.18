@@ -26,11 +26,17 @@
  */
 package org.hisp.dhis.patient.action.patient;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramAttribute;
 import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -38,83 +44,122 @@ import com.opensymphony.xwork2.Action;
  * @author Chau Thu Tran
  * @version $ID : RemoveEnrollmentSelectAction.java Jan 11, 2011 10:00:55 AM $
  */
-public class RemoveEnrollmentSelectAction
-    implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependency
-    // -------------------------------------------------------------------------
+public class RemoveEnrollmentSelectAction implements Action {
+	// -------------------------------------------------------------------------
+	// Dependency
+	// -------------------------------------------------------------------------
 
-    private ProgramAttributeService programAttributeService;
+	private ProgramAttributeService programAttributeService;
 
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
+	private ProgramInstanceService programInstanceService;
 
-    private Integer id;
+	private ProgramService programService;
+	
+	private PatientService patientService;
 
-    private Integer programId;
+	// -------------------------------------------------------------------------
+	// Input/Output
+	// -------------------------------------------------------------------------
 
-    private ProgramInstance programInstance;
+	private Integer patientId;
 
-    private Collection<ProgramAttribute> programAttributes;
-    
+	private Integer programInstanceId;
+	
+	private Collection<ProgramInstance> programInstances;
 
-    // -------------------------------------------------------------------------
-    // Getter
-    // -------------------------------------------------------------------------
+	private Collection<ProgramAttribute> programAttributes;
 
-    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
-    {
-        this.programAttributeService = programAttributeService;
-    }
+	private ProgramInstance programInstance;
+	
+	private Patient patient;
+	
+	// -------------------------------------------------------------------------
+	// Getter
+	// -------------------------------------------------------------------------
 
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
+	public void setProgramAttributeService(
+			ProgramAttributeService programAttributeService) {
+		this.programAttributeService = programAttributeService;
+	}
 
-    public Integer getId()
-    {
-        return id;
-    }
+	public ProgramInstance getProgramInstance() {
+		return programInstance;
+	}
 
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
-    }
+	public void setPatientService(PatientService patientService) {
+		this.patientService = patientService;
+	}
 
-    public ProgramInstance getProgramInstance()
-    {
-        return programInstance;
-    }
+	public void setProgramService(ProgramService programService) {
+		this.programService = programService;
+	}
 
-    public void setProgramInstance( ProgramInstance programInstance )
-    {
-        this.programInstance = programInstance;
-    }
+	public Patient getPatient() {
+		return patient;
+	}
 
-    public Integer getProgramId()
-    {
-        return programId;
-    }
+	public void setPatientId(Integer patientId) {
+		this.patientId = patientId;
+	}
 
-    public Collection<ProgramAttribute> getProgramAttributes()
-    {
-        return programAttributes;
-    }
+	public void setProgramInstanceId(Integer programInstanceId) {
+		this.programInstanceId = programInstanceId;
+	}
 
-    // -------------------------------------------------------------------------
-    // Implementation Action
-    // -------------------------------------------------------------------------
+	public Collection<ProgramInstance> getProgramInstances() {
+		return programInstances;
+	}
 
-    @Override
-    public String execute()
-        throws Exception
-    {
-        programAttributes = programAttributeService.getAllProgramAttributes();
-        
-        return SUCCESS;
-    }
+	public Collection<ProgramAttribute> getProgramAttributes() {
+		return programAttributes;
+	}
+
+	public void setProgramInstanceService(
+			ProgramInstanceService programInstanceService) {
+		this.programInstanceService = programInstanceService;
+	}
+
+	// -------------------------------------------------------------------------
+	// Implementation Action
+	// -------------------------------------------------------------------------
+
+	@Override
+	public String execute() throws Exception {
+
+		programAttributes = programAttributeService.getAllProgramAttributes();
+
+		// ---------------------------------------------------------------------
+		// Get programInstance
+		// ---------------------------------------------------------------------
+
+		programInstances = new ArrayList<ProgramInstance>();
+
+		// Get selected patient
+		patient = patientService.getPatient( patientId );
+		// Get all of programs
+		Collection<Program> programs = programService.getAllPrograms();
+		
+		for( Program program : programs )
+		{
+			Collection<ProgramInstance> instances = programInstanceService
+					.getProgramInstances(patient, program, false);
+			
+			if (instances.iterator().hasNext()) {
+				programInstances.add( instances.iterator().next() );
+			}
+			
+		}
+		
+		// ---------------------------------------------------------------------
+		// Get selected programInstance
+		// ---------------------------------------------------------------------
+		
+		if( programInstanceId != null )
+		{
+			programInstance = programInstanceService.getProgramInstance( programInstanceId );
+		}
+
+		return SUCCESS;
+	}
 
 }
