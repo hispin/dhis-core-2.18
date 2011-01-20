@@ -65,7 +65,7 @@
 	</tr>
 	<tr>
 		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
-		<td class="input-column" ><input type="text" id="fullName" name="fullName" value="$encoder.htmlEncode( $patient.getFullName() )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[2,30]}}"></td>
+		<td class="input-column" ><input type="text" id="fullName" name="fullName" value="$encoder.htmlEncode( $patient.getFullName() )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[7,50]}}"></td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>

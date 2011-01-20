@@ -28,7 +28,7 @@ jQuery(document).ready(function()
 						}
 		,rules : {
 			relationshipTypeId  : { required: true },
-			fullName : {required:true,rangelength:[3,30], unicodechars:true},
+			fullName : {required:true,rangelength:[7,50], unicodechars:true},
 			gender : { required: true },
 			birthDate :{required:false,dateISO:true,datelessthanequaltoday:true}
 		},beforeValidateHandler: function(form)
@@ -166,7 +166,7 @@ jQuery(document).ready(function()
 	<tr>
 		<td><label for="required">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column" >
-			<input type="text" id="fullName" name="fullName" style="width:15em" class="{validate:{required:true, unicodechars:true, rangelength:[3,30]}}">
+			<input type="text" id="fullName" name="fullName" style="width:15em">
 			<img src='../images/magnifier.png' onclick='startSearch();' style="cursor: pointer;">
 		</td>
 	</tr>

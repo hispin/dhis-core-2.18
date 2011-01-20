@@ -57,7 +57,7 @@
 	<tr>
 		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column" >
-			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[3,30]}}">
+			<input type="text" id="fullName" name="fullName" style="width:28em" class="{validate:{required:true, unicodechars:true, rangelength:[7,50]}}">
 			<img src='../images/magnifier.png' onclick='startSearch();' style="cursor: pointer;">
 		</td>
 	</tr>
