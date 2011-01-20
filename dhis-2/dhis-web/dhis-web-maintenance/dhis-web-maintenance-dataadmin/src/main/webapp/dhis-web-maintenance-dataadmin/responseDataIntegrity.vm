@@ -2,17 +2,17 @@
 #set( $size = $list.size() )
 "$!encoder.jsEncode( ${name} )": [
 #foreach( $o in $list )
-"$!encoder.jsEncode( ${o.name} )"#if( $velocityCount < $size ),#end
+"$!encoder.jsonEncode( ${o.name} )"#if( $velocityCount < $size ),#end
 #end
 ]
 #end
 
 #macro( violationWithCollection $name $list )
 #set( $listSize = $list.size() )
-"$!encoder.jsEncode( ${name} )": [
+"$!encoder.jsonEncode( ${name} )": [
 #foreach( $o in $list )
 #set( $oSize = $o.size() )
-"#foreach( $p in $o ) $!encoder.jsEncode( ${p.name} ) #if( $velocityCount < $oSize ), #end
+"#foreach( $p in $o ) $!encoder.jsonEncode( ${p.name} ) #if( $velocityCount < $oSize ), #end
 #end "#if( $velocityCount < $listSize ),#end
 #end
 ]
@@ -20,19 +20,19 @@
 
 #macro( violationWithMap $name $map )
 #set( $size = $map.keySet().size() )
-"$!encoder.jsEncode( ${name} )": [
+"$!encoder.jsonEncode( ${name} )": [
 #foreach( $o in $map.keySet() )
-"$!encoder.jsEncode( ${o.name} ): $map.get( $o )"#if( $velocityCount < $size ),#end
+"$!encoder.jsonEncode( ${o.name} ): $map.get( $o )"#if( $velocityCount < $size ),#end
 #end
 ]
 #end
 
 #macro( violationWithMapList $name $map )
 #set( $mapSize = $map.keySet().size() )
-"$!encoder.jsEncode( ${name} )": [
+"$!encoder.jsonEncode( ${name} )": [
 #foreach( $o in $map.keySet() )
 #set( $listSize = $map.get( $o ).size() )
-"$!encoder.jsEncode( ${o.name} ):#foreach( $p in $map.get( $o ) ) $!encoder.jsEncode( ${p.name} )#if( $velocityCount < $listSize ), #end
+"$!encoder.jsonEncode( ${o.name} ):#foreach( $p in $map.get( $o ) ) $!encoder.jsonEncode( ${p.name} )#if( $velocityCount < $listSize ), #end
 #end "#if( $velocityCount < $mapSize ),#end
 #end
 ]
