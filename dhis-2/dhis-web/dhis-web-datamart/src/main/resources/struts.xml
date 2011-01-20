@@ -87,5 +87,9 @@
       <result name="success" type="redirect">getScheduledExportStatus.action</result>
     </action>
     
+    <action name="executeExport" class="org.hisp.dhis.datamart.action.ExecuteExportAction">
+      <result name="success" type="redirect">getScheduledExportStatus.action</result>
+    </action>
+    
 	</package>
 </struts>

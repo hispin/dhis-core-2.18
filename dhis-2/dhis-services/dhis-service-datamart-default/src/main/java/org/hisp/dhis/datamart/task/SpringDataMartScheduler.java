@@ -34,6 +34,7 @@ import org.hisp.dhis.datamart.DataMartScheduler;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
@@ -62,6 +63,13 @@ public class SpringDataMartScheduler
     {
         this.taskScheduler = taskScheduler;
     }
+    
+    private TaskExecutor taskExecutor;
+
+    public void setTaskExecutor( TaskExecutor taskExecutor )
+    {
+        this.taskExecutor = taskExecutor;
+    }
 
     private DataElementService dataElementService;
 
@@ -88,6 +96,13 @@ public class SpringDataMartScheduler
     // DataMartSceduler implementation
     // -------------------------------------------------------------------------
 
+    public void executeDataMartExport()
+    {
+        DataMartTask task = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
+        
+        taskExecutor.execute( task );
+    }
+    
     public void scheduleDataMartExport()
     {
         DataMartTask task = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
