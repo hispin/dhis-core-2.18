@@ -64,6 +64,30 @@ public class JDBCCrossTabStore
     // CrossTabStore implementation
     // -------------------------------------------------------------------------
 
+    public Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands )
+    {
+        final Collection<DataElementOperand> operandsWithData = new ArrayList<DataElementOperand>();
+        
+        final StatementHolder holder = statementManager.getHolder();
+        
+        for ( DataElementOperand operand : operands )
+        {
+            final String sql = 
+                "SELECT COUNT(*) FROM datavalue " + 
+                "WHERE dataelementid=" + operand.getDataElementId() + " " +
+                "AND categoryoptioncomboid=" + operand.getOptionComboId();
+            
+            Integer count = holder.queryForInteger( sql );
+            
+            if ( count != null && count > 0 )
+            {
+                operandsWithData.add( operand );
+            }
+        }
+        
+        return operandsWithData;
+    }
+    
     public void createCrossTabTable( final List<DataElementOperand> operands, String key )
     {
         final StatementHolder holder = statementManager.getHolder();
@@ -107,59 +131,6 @@ public class JDBCCrossTabStore
         catch ( SQLException ex )
         {
             throw new RuntimeException( "Failed to drop datavalue crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    public void renameTrimmedCrossTabTable( String key )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {
-            final String sql = "ALTER TABLE " + TABLE_NAME_TRIMMED + key + " RENAME TO " + TABLE_NAME + key;
-            
-            holder.getStatement().executeUpdate( sql );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to rename trimmed crosstab table", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-    
-    public void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key )
-    {
-        final StatementHolder holder = statementManager.getHolder();
-        
-        try
-        {            
-            final StringBuffer buffer = new StringBuffer( "CREATE TABLE " + TABLE_NAME_TRIMMED + key + " AS SELECT periodid, sourceid, " );
-            
-            for ( final DataElementOperand operand : operands )
-            {
-                buffer.append( operand.getColumnName() ).append( ", " );
-            }
-            
-            if ( buffer.length() > 1 )
-            {
-                buffer.deleteCharAt( buffer.length() - 1 );
-                buffer.deleteCharAt( buffer.length() - 1 );
-            }
-            
-            buffer.append( " FROM " + TABLE_NAME + key );
-            
-            holder.getStatement().executeUpdate( buffer.toString() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get crosstab table columns", ex );
         }
         finally
         {

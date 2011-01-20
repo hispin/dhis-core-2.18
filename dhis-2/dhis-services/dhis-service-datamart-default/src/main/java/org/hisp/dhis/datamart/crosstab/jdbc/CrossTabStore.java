@@ -44,6 +44,15 @@ public interface CrossTabStore
     final String TABLE_NAME_TRIMMED = "datavaluecrosstabtrimmed_";
     
     /**
+     * Filters and returns the DataElementOperands with data from the given
+     * collection of DataElementOperands.
+     * 
+     * @param operands the DataElementOperands.
+     * @return the DataElementOperands with data.
+     */
+    Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands );
+    
+    /**
      * Creates a crosstab table where the first column is the period identifier,
      * the second column is the source identifer, and each subsequent column
      * corresponds to an operand.
@@ -56,19 +65,6 @@ public interface CrossTabStore
      * Drops the crosstab table.
      */
     void dropCrossTabTable( String key );
-    
-    /**
-     * Renames the trimmed crosstab table to the regular crosstab table.
-     */
-    void renameTrimmedCrossTabTable( String key );
-    
-    /**
-     * Creates a trimmed crosstab table based on the regular crosstab table.
-     * Trimming implies removing columns without data.
-     * 
-     * @param operands the DataElementOperands with data.
-     */
-    void createTrimmedCrossTabTable( Collection<DataElementOperand> operands, String key );
     
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.

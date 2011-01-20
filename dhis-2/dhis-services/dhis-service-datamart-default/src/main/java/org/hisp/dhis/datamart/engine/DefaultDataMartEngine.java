@@ -239,6 +239,18 @@ public class DefaultDataMartEngine
         log.info( "Filtered data elements, number of operands: " + allOperands.size() + ", " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
+        // Remove operands without data
+        // ---------------------------------------------------------------------
+
+        allOperands = new HashSet<DataElementOperand>( crossTabService.getOperandsWithData( allOperands ) );
+
+        nonCalculatedOperands.retainAll( allOperands );
+        indicatorOperands.retainAll( allOperands );
+        calculatedOperands.retainAll( allOperands );
+        
+        log.info( "Number of operands with data: " + allOperands.size() + ", "+ TimeUtils.getHMS() );
+
+        // ---------------------------------------------------------------------
         // Create and trim crosstabtable
         // ---------------------------------------------------------------------
 
@@ -254,15 +266,7 @@ public class DefaultDataMartEngine
             return 0;
         }
 
-        log.info( "Number of crosstab tables: " + keys.size() + ", number of operands with data: " + allOperands.size() + ", " + TimeUtils.getHMS() );
-
-        // ---------------------------------------------------------------------
-        // Remove operands without data
-        // ---------------------------------------------------------------------
-
-        nonCalculatedOperands.retainAll( allOperands );
-        indicatorOperands.retainAll( allOperands );
-        calculatedOperands.retainAll( allOperands );
+        log.info( "Number of crosstab tables: " + keys.size() + ", " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
         // Delete existing aggregated data

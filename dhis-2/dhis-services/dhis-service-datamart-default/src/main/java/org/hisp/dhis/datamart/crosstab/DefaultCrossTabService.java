@@ -29,10 +29,8 @@ package org.hisp.dhis.datamart.crosstab;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -86,13 +84,16 @@ public class DefaultCrossTabService
     // CrossTabService implementation
     // -------------------------------------------------------------------------
 
+    public Collection<DataElementOperand> getOperandsWithData( Collection<DataElementOperand> operands )
+    {
+        return crossTabStore.getOperandsWithData( operands );
+    }
+    
     public List<String> populateCrossTabTable( final Collection<DataElementOperand> operands,
         final Collection<Integer> periodIds, final Collection<Integer> organisationUnitIds )
     {
         if ( validate( operands, periodIds, organisationUnitIds ) )
         {
-            final Set<DataElementOperand> operandsWithData = new HashSet<DataElementOperand>();
-
             final PaginatedList<DataElementOperand> operandList = new PaginatedList<DataElementOperand>( operands, MAX_COLUMNS );
 
             final List<String> crossTabTableKeys = new ArrayList<String>();
@@ -105,17 +106,13 @@ public class DefaultCrossTabService
                 
                 crossTabTableKeys.add( key );
                 
-                final Set<DataElementOperand> operandsWithDataInPage = new HashSet<DataElementOperand>();
-                
                 crossTabStore.dropCrossTabTable( key );    
                 crossTabStore.createCrossTabTable( operandPage, key );
-    
-                log.debug( "Created crosstab table for key: " + key );
-    
+
                 final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
                 batchHandler.setTableName( CrossTabStore.TABLE_NAME + key );
                 batchHandler.init();
-    
+
                 for ( final Integer periodId : periodIds )
                 {
                     for ( final Integer sourceId : organisationUnitIds )
@@ -142,8 +139,6 @@ public class DefaultCrossTabService
                             if ( value != null )
                             {
                                 hasValues = true;
-                                operandsWithData.add( operand );
-                                operandsWithDataInPage.add( operand );
                             }
     
                             valueList.add( value );
@@ -158,13 +153,8 @@ public class DefaultCrossTabService
     
                 batchHandler.flush();
                 
-                trimCrossTabTable( operandsWithDataInPage, key );                
-
-                log.info( "Populated crosstab table for key: " + key );
-    
+                log.info( "Populated crosstab table for key: " + key );    
             }
-            
-            operands.retainAll( operandsWithData ); // Remove operands without data
             
             return crossTabTableKeys;
         }
@@ -175,21 +165,6 @@ public class DefaultCrossTabService
     public void dropCrossTabTable( String key )
     {
         crossTabStore.dropCrossTabTable( key );
-    }
-
-    public void trimCrossTabTable( Collection<DataElementOperand> operands, String key )
-    {
-        // TODO use H2 in-memory table for datavaluecrosstab table ?
-        // TODO optimize retrieval by dividing up based on agg operator / type?
-        
-        if ( operands != null && key != null )
-        {
-            crossTabStore.createTrimmedCrossTabTable( operands, key );
-    
-            crossTabStore.dropCrossTabTable( key );
-    
-            crossTabStore.renameTrimmedCrossTabTable( key );
-        }
     }
 
     public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
