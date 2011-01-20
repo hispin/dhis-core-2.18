@@ -46,6 +46,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
@@ -265,8 +266,18 @@ public class ActivityReportingServiceImpl
 
             for ( PatientIdentifier id : patientIdentifiers )
             {
-                identifiers.add( new org.hisp.dhis.web.api.model.PatientIdentifier( id.getIdentifierType().getName(),
-                    id.getIdentifier() ) );
+
+                String idTypeName = "DHIS2 ID";
+
+                // MIGHT BE NULL because of strange design..
+                PatientIdentifierType identifierType = id.getIdentifierType();
+
+                if ( identifierType != null )
+                {
+                    idTypeName = identifierType.getName();
+                }
+
+                identifiers.add( new org.hisp.dhis.web.api.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
             }
 
             beneficiary.setIdentifiers( identifiers );
