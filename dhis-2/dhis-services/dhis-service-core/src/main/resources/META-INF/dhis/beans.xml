@@ -523,7 +523,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="/^[\w]?[\w\d]*$/" />
+						<!--entry key="regex" value="/^[\w]?[\w\d]*$/" /-->
+						<entry key="regex" value="''" />
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -619,7 +620,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="/^[\w]?[\w\d]*$/" />
+						<!--entry key="regex" value="/^[\w]?[\w\d]*$/" /-->
+						<entry key="regex" value="''" />
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -803,7 +805,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="/^[\w]?[\w\d]*$/" />
+						<!--entry key="regex" value="/^[\w]?[\w\d]*$/" /-->
+						<entry key="regex" value="''" />
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -907,7 +910,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 						<entry key="required" value="false" />
 						<entry key="minlength" value="0" />
 						<entry key="maxlength" value="25" />
-						<entry key="regex" value="/^[\w]?[\w\d]*$/" />
+						<!--entry key="regex" value="/^[\w]?[\w\d]*$/" /-->
+						<entry key="regex" value="''" />
 						<entry key="message" value="translation_shortname_wellformed" />
 					</map>
 				</entry>
@@ -1379,6 +1383,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler">
 		<property name="categoryService" 
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<!--property name="conceptService"
+			ref="org.hisp.dhis.concept.ConceptService" /-->
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler"
