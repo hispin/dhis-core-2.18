@@ -18,34 +18,17 @@ function dobTypeOnChange(){
 // Search patients by name
 // ----------------------------------------------------------------------------
 
-var prename = "";
-function startSearch( e )
+function startSearch( )
 {	
-	var fullName = getFieldValue('fullName');
-	
-	if ( prename == fullName){
-		return;
+	var fullName = getFieldValue('fullName').replace(/^\s+|\s+$/g,"");
+	if( fullName.length > 0) 
+	{
+		tb_show( i18n_search_result,"getPatientsByName.action?fullName=" + fullName + "&TB_iframe=true&height=400&width=500",null );
 	}
-	prename = fullName;
-	
-	if ( fullName.length < 3){
-		$("#similarPatients").hide();
-		return;
+	else
+	{
+		alert( i18n_no_patients_found );
 	}
-	
-	byId('searchIcon').style.display = 'block';
-	$.post("getPatientsByName.action",
-		{
-			fullName: fullName
-		},
-		function (html)
-		{
-			jQuery("#similarPatients").show();
-			var patientCount = $('<div/>').html(html).find('#matchCount');
-			jQuery('#patientCount').html( patientCount );
-			jQuery('#searchResults').html( html );
-			byId('searchIcon').style.display = 'none';
-		},'html');
 }
 
 // ----------------------------------------------------------------------------

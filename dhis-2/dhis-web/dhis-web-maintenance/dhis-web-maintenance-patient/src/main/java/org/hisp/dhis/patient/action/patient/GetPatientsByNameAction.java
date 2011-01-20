@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 
