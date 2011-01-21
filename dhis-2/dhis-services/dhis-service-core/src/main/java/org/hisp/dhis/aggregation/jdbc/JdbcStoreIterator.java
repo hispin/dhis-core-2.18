@@ -26,6 +26,7 @@ package org.hisp.dhis.aggregation.jdbc;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.amplecode.quick.StatementHolder;
@@ -35,8 +36,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.StoreIterator;
 
 /**
- *
- * @param <T>
  * @author bobj
  */
 public class JdbcStoreIterator<T> implements StoreIterator<T> {
