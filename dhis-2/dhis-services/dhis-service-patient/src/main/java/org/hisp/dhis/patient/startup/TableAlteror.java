@@ -90,19 +90,17 @@ public class TableAlteror
 
     private void updatePatientOrgunitAssociation()
     {
-
-        StatementHolder holder = statementManager.getHolder();
+    	StatementHolder holder = statementManager.getHolder();
 
         try
         {
             Statement statement = holder.getStatement();
 
             ResultSet isUpdated = statement
-                .executeQuery( "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'patientidentifier' AND COLUMN_NAME = 'organisationunitid'" );
+                .executeQuery( "SELECT organisationunitid FROM patient where organisationunitid is null " );
 
             if ( isUpdated.next() )
             {
-
                 ResultSet resultSet = statement
                     .executeQuery( "SELECT patientid, organisationunitid FROM patientidentifier" );
                 while ( resultSet.next() )
@@ -116,6 +114,7 @@ public class TableAlteror
         }
         catch ( Exception ex )
         {
+        	ex.printStackTrace();
             log.error( ex );
         }
         finally
