@@ -50,3 +50,10 @@ join reportreporttables rr using(reportid)
 join reporttable t using(reporttableid)
 where t.name='Indicators';
 
+-- Recreate indexes on aggregated tables
+
+DROP INDEX aggregateddatavalue_index;
+DROP INDEX aggregatedindicatorvalue_index;
+CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid);
+CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid);
+

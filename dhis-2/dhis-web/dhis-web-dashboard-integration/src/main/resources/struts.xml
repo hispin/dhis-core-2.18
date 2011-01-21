@@ -37,10 +37,6 @@
       <result name="success" type="redirect">index.action</result>
     </action>
     
-    <action name="removeDataMartExport" class="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction">
-      <result name="success" type="redirect">index.action</result>
-    </action>
-    
     <action name="removeOlapUrl" class="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction">
       <result name="success" type="redirect">index.action</result>
     </action>

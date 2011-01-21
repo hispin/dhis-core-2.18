@@ -21,14 +21,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="key" value="documents"/>
   </bean>
-  
-  <bean id="dataMartExportContentProvider"
-    class="org.hisp.dhis.dashboard.provider.DataMartExportContentProvider">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="key" value="dataMartExports"/>
-  </bean>
-  
+    
   <bean id="reportTableContentProvider"
     class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
@@ -71,10 +64,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <entry>
           <key><value>document</value></key>
           <ref local="documentContentProvider"/>
-        </entry>
-        <entry>
-          <key><value>data_mart_export</value></key>
-          <ref local="dataMartExportContentProvider"/>
         </entry>
         <entry>
           <key><value>report_table</value></key>
@@ -125,14 +114,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
     <property name="reportService" ref="org.hisp.dhis.report.ReportService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction"
-    class="org.hisp.dhis.dashboard.action.RemoveDataMartExportAction"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
   
   <bean id="org.hisp.dhis.dashboard.action.RemoveOlapUrlAction"

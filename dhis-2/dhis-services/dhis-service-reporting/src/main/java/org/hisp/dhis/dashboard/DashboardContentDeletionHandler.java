@@ -27,7 +27,6 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.olap.OlapURL;
@@ -81,19 +80,7 @@ public class DashboardContentDeletionHandler
             }
         }
     }
-    
-    @Override
-    public void deleteDataMartExport( DataMartExport dataMartExport )
-    {
-        for ( DashboardContent content : dashboardService.getAllDashboardContent() )
-        {
-            if ( content.getDataMartExports().remove( dataMartExport ) )
-            {
-                dashboardService.saveDashboardContent( content );
-            }
-        }
-    }
-    
+        
     @Override
     public void deleteDocument( Document document )
     {
