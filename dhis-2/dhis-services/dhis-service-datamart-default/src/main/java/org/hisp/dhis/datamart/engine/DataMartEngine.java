@@ -36,6 +36,18 @@ import org.hisp.dhis.common.ProcessState;
  */
 public interface DataMartEngine
 {
+    /**
+     * Exports aggregated values to the data mart tables.
+     * 
+     * @param dataElementIds the data element identifiers.
+     * @param indicatorIds the indicator identifiers.
+     * @param periodIds the period identifiers.
+     * @param organisationUnitIds the organisation unit identifiers.
+     * @param useIndexes indicates whether to create indexes on the data mart tables
+     *        after the export process.
+     * @param processState the state object.
+     * @return the number of values exported to the data mart tables.
+     */
     int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, ProcessState processState );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState processState );
 }

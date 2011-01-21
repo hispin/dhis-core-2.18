@@ -78,6 +78,6 @@ public class DataMartTask
         
         log.info( "Starting scheduled data mart task" );
         
-        dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives );
+        dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives, true );
     }
 }
