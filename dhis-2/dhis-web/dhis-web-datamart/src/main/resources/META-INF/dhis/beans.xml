@@ -88,18 +88,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction"
-    class="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction"
-    scope="prototype">
-    <property name="currentUserService" 
-      ref="org.hisp.dhis.user.CurrentUserService"/>
-    <property name="dashboardService"
-      ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="dataMartService"
-      ref="org.hisp.dhis.datamart.DataMartService"/>
-  </bean>
-  
+    
   <!-- Schedule -->
   
   <bean id="org.hisp.dhis.datamart.action.GetScheduledExportStatusAction"

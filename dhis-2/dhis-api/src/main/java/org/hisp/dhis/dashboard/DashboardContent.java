@@ -30,7 +30,6 @@ package org.hisp.dhis.dashboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.olap.OlapURL;
@@ -51,8 +50,6 @@ public class DashboardContent
     private User user;
 
     private List<Report> reports = new ArrayList<Report>();
-    
-    private List<DataMartExport> dataMartExports = new ArrayList<DataMartExport>();
     
     private List<OlapURL> olapUrls = new ArrayList<OlapURL>();
     
@@ -114,20 +111,7 @@ public class DashboardContent
             }
         }
     }
-    
-    public void addDataMartExport( DataMartExport export )
-    {
-        if ( !dataMartExports.contains( export ) )
-        {
-            dataMartExports.add( 0, export );
-            
-            while ( dataMartExports.size() > MAX_DASHBOARD_ELEMENTS )
-            {
-                dataMartExports.remove( MAX_DASHBOARD_ELEMENTS );
-            }
-        }
-    }
-    
+        
     public void addOlapUrl( OlapURL url )
     {
         if ( !olapUrls.contains( url ) )
@@ -212,16 +196,6 @@ public class DashboardContent
     public void setReports( List<Report> reports )
     {
         this.reports = reports;
-    }
-
-    public List<DataMartExport> getDataMartExports()
-    {
-        return dataMartExports;
-    }
-
-    public void setDataMartExports( List<DataMartExport> dataMartExports )
-    {
-        this.dataMartExports = dataMartExports;
     }
 
     public List<OlapURL> getOlapUrls()

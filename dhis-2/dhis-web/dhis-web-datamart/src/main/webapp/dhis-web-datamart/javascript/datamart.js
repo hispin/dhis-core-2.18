@@ -318,18 +318,3 @@ function validateCollections()
     
     return true;
 }
-
-// -----------------------------------------------------------------------------
-// Dashboard
-// -----------------------------------------------------------------------------
-
-function addToDashboard( id )
-{
-    var dialog = window.confirm( i18n_confirm_add_to_dashboard );
-    
-    if ( dialog )
-    {
-        var request = new Request(); 
-        request.send( "addDataMartExportToDashboard.action?id=" + id );
-    }
-}

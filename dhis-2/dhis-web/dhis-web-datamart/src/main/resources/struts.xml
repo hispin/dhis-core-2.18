@@ -54,12 +54,7 @@
       <param name="javascripts">javascript/datamart.js</param>
 	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-    
-    <action name="addDataMartExportToDashboard" class="org.hisp.dhis.datamart.action.AddDataMartExportToDashboardAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
+        
     <action name="saveDataMartExport" class="org.hisp.dhis.datamart.action.SaveDataMartExportAction">
       <result name="success" type="redirect">getDataMartExports.action</result>
     </action>

@@ -202,7 +202,6 @@
     <action name="createTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
     
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
