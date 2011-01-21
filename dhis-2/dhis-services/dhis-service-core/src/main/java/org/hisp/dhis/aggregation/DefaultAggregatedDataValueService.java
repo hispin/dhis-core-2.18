@@ -118,7 +118,17 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.countDataValuesAtLevel( orgunit, level, periods );
     }
+    
+    public void createIndex( boolean dataElement, boolean indicator )
+    {
+        aggregatedDataValueStore.createIndex( dataElement, indicator );
+    }
 
+    public void dropIndex( boolean dataElement, boolean indicator )
+    {
+        aggregatedDataValueStore.dropIndex( dataElement, indicator );
+    }
+    
     // -------------------------------------------------------------------------
     // AggregatedDataMapValue
     // -------------------------------------------------------------------------

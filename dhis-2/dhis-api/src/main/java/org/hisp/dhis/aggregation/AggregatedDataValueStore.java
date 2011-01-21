@@ -110,6 +110,24 @@ public interface AggregatedDataValueStore
      */
     public int countDataValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods );
 
+    /**
+     * Creates indexes on the aggregateddatavalue and aggregatedindicatorvalue
+     * tables.
+     * 
+     * @param dataElement indicates whether to create an index on aggregateddatavalue.
+     * @param indicator indicates whether to create an index on aggregatedindicatorvalue.
+     */
+    void createIndex( boolean dataElement, boolean indicator );
+    
+    /**
+     * Drops the indexes on the aggregateddatavalue and aggregatedindicatorvalue
+     * tables.
+     * 
+     * @param dataElement indicates whether to drop the index on aggregateddatavalue.
+     * @param indicator indicates whether to drop the index on aggregatedindicatorvalue.
+     */
+    void dropIndex( boolean dataElement, boolean indicator );
+    
     // ----------------------------------------------------------------------
     // AggregatedDataMapValue
     // ----------------------------------------------------------------------
