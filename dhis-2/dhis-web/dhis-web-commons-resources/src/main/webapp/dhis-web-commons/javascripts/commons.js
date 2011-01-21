@@ -738,6 +738,8 @@ function removeItem( itemId, itemName, confirmation, action )
     
     if ( result )
     {
+
+		setHeaderWaitMessage( i18n_process );
     	$.postJSON(
     	    action,
     	    {
@@ -760,6 +762,7 @@ function removeItem( itemId, itemName, confirmation, action )
     	    	{ 
 					showWarningMessage( json.message );
     	    	}
+				hideHeaderMessage();
     	    }
     	);
     }
