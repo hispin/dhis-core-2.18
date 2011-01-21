@@ -1,6 +1,8 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addOrganisationUnitGroupSetForm', function( form ){ validateAddOrganisationGroupSet( form ) } );	
+		validation( 'addOrganisationUnitGroupSetForm', function( form ){ validateAddOrganisationGroupSet( form ) }, function(){
+			selectAllById( 'selectedGroups' );
+		} );	
 		
 		checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action");	
 
