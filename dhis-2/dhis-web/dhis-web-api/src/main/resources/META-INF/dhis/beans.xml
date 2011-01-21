@@ -32,7 +32,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <bean id="org.hisp.dhis.web.api.service.ActivityReportingService" class="org.hisp.dhis.web.api.service.ActivityReportingServiceImpl">
-    <property name="activityPlanService" ref="org.hisp.dhis.activityplan.ActivityPlanService" />
     <property name="patientAttValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
     <property name="patientAttService" ref="org.hisp.dhis.patient.PatientAttributeService" />
     <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />

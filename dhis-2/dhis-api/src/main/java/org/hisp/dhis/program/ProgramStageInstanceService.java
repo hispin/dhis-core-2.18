@@ -28,7 +28,10 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Abyot Asalefew
@@ -63,4 +66,14 @@ public interface ProgramStageInstanceService
     Collection<ProgramStageInstance> getAllProgramStageInstances();     
     
     Map<Integer, String> colorProgramStageInstances( Collection<ProgramStageInstance> programStageInstances );
+
+    /** Get all {@link ProgramStageInstance program stage instances} for unit, optionally filtering by date or completed.
+     * @param unit - the unit to get instances for.
+     * @param after - optional date the instance should be on or after.
+     * @param before - optional date the instance should be on or before.
+     * @param completed - optional flag to only get completed (<code>true</code>) or uncompleted (<code>false</code>) instances. 
+     * @return
+     */
+    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed);
+
 }

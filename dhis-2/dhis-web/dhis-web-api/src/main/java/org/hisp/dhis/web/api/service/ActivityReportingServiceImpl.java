@@ -38,8 +38,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.activityplan.Activity;
-import org.hisp.dhis.activityplan.ActivityPlanService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,6 +52,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.web.api.model.Activity;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.Beneficiary;
@@ -80,8 +79,6 @@ public class ActivityReportingServiceImpl
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ActivityPlanService activityPlanService;
-
     private org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService;
 
     private PatientAttributeValueService patientAttValueService;
@@ -100,49 +97,27 @@ public class ActivityReportingServiceImpl
 
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString )
     {
+        long time = System.currentTimeMillis();
+
+        List<Activity> items = new ArrayList<Activity>();
+
         DateTime dt = new DateTime();
         DateMidnight from = dt.withDayOfMonth( 1 ).toDateMidnight();
         DateMidnight to = from.plusMonths( 1 );
 
-        Collection<Activity> allActivities = activityPlanService.getActivitiesByProvider( unit );
+        List<ProgramStageInstance> instances = programStageInstanceService.get( unit, from.toDate(), to.toDate(), null );
 
-        ActivityPlan plan = new ActivityPlan();
-
-        List<org.hisp.dhis.web.api.model.Activity> items = new ArrayList<org.hisp.dhis.web.api.model.Activity>();
-
-        if ( DEBUG )
-            log.debug( "Filtering through " + allActivities.size() + " activities" );
-
-        for ( Activity activity : allActivities )
+        for ( ProgramStageInstance instance : instances )
         {
-            long dueTime = activity.getDueDate().getTime();
-
-            if ( to.isBefore( dueTime ) )
-            {
-                continue;
-            }
-
-            if ( DEBUG )
-                log.debug( "Activity " + activity.getBeneficiary().getFirstName() + ", "
-                    + activity.getTask().getProgramStage().getName() );
-
-            if ( from.isBefore( dueTime ) )
-            {
-                items.add( getActivityModel( activity ) );
-            }
-            else if ( !activity.getTask().isCompleted() )
-            {
-                org.hisp.dhis.web.api.model.Activity a = getActivityModel( activity );
-                a.setLate( true );
-                items.add( a );
-            }
-
-            if ( items.size() > 10 )
-                break;
+            items.add( getActivity( instance, false ) );
         }
 
-        if ( DEBUG )
-            log.debug( "Found " + items.size() + " current activities" );
+        instances = programStageInstanceService.get( unit, null, from.minusDays( 1 ).toDate(), false );
+
+        for ( ProgramStageInstance instance : instances )
+        {
+            items.add( getActivity( instance, true ) );
+        }
 
         if ( items.isEmpty() )
         {
@@ -150,27 +125,96 @@ public class ActivityReportingServiceImpl
         }
 
         Collections.sort( items, activityComparator );
+
+        ActivityPlan plan = new ActivityPlan();
+
         plan.setActivitiesList( items );
+
+        if ( DEBUG )
+            log.debug( "Found " + items.size() + " current activities in " + (System.currentTimeMillis() - time)
+                + " ms." );
 
         return plan;
     }
 
-    private org.hisp.dhis.web.api.model.Activity getActivityModel( org.hisp.dhis.activityplan.Activity activity )
+    // -------------------------------------------------------------------------
+    // DataValueService
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
+        throws NotAllowedException
     {
-        if ( activity == null )
+
+        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( activityValue
+            .getProgramInstanceId() );
+
+        if ( programStageInstance == null )
+        {
+            throw NotAllowedException.INVALID_PROGRAM_STAGE;
+        }
+
+        programStageInstance.getProgramStage();
+        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
+
+        for ( ProgramStageDataElement de : programStageInstance.getProgramStage().getProgramStageDataElements() )
+        {
+            dataElements.add( de.getDataElement() );
+        }
+
+        programStageInstance.getProgramStage().getProgramStageDataElements();
+        Collection<Integer> dataElementIds = new ArrayList<Integer>( activityValue.getDataValues().size() );
+
+        for ( DataValue dv : activityValue.getDataValues() )
+        {
+            dataElementIds.add( dv.getId() );
+        }
+
+        if ( dataElements.size() != dataElementIds.size() )
+        {
+            throw NotAllowedException.INVALID_PROGRAM_STAGE;
+        }
+
+        Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
+        for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
+        {
+            if ( !dataElementIds.contains( dataElement.getId() ) )
+            {
+                throw NotAllowedException.INVALID_PROGRAM_STAGE;
+            }
+            dataElementMap.put( dataElement.getId(), dataElement );
+        }
+
+        // Set ProgramStageInstance to completed
+        programStageInstance.setCompleted( true );
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
+        // Everything is fine, hence save
+        saveDataValues( activityValue, programStageInstance, dataElementMap, unit,
+            categoryService.getDefaultDataElementCategoryOptionCombo() );
+
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
+
+    private Activity getActivity( ProgramStageInstance instance, boolean late )
+    {
+        if ( instance == null )
         {
             return null;
         }
-        org.hisp.dhis.web.api.model.Activity item = new org.hisp.dhis.web.api.model.Activity();
-        Patient patient = activity.getBeneficiary();
+        Activity activity = new Activity();
+        Patient patient = instance.getProgramInstance().getPatient();
 
-        item.setBeneficiary( getBeneficiaryModel( patient ) );
-        item.setDueDate( activity.getDueDate() );
-        item.setTask( getTask( activity.getTask() ) );
-        return item;
+        activity.setBeneficiary( getBeneficiaryModel( patient ) );
+        activity.setDueDate( instance.getDueDate() );
+        activity.setTask( getTask( instance ) );
+        activity.setLate( late );
+        return activity;
     }
 
-    public Task getTask( ProgramStageInstance stageInstance )
+    private Task getTask( ProgramStageInstance stageInstance )
     {
         if ( stageInstance == null )
         {
@@ -297,67 +341,6 @@ public class ActivityReportingServiceImpl
         return setting;
     }
 
-    // -------------------------------------------------------------------------
-    // DataValueService
-    // -------------------------------------------------------------------------
-
-    @Override
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
-        throws NotAllowedException
-    {
-
-        ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( activityValue
-            .getProgramInstanceId() );
-
-        if ( programStageInstance == null )
-        {
-            throw NotAllowedException.INVALID_PROGRAM_STAGE;
-        }
-
-        programStageInstance.getProgramStage();
-        Collection<org.hisp.dhis.dataelement.DataElement> dataElements = new ArrayList<org.hisp.dhis.dataelement.DataElement>();
-
-        for ( ProgramStageDataElement de : programStageInstance.getProgramStage().getProgramStageDataElements() )
-        {
-            dataElements.add( de.getDataElement() );
-        }
-
-        programStageInstance.getProgramStage().getProgramStageDataElements();
-        Collection<Integer> dataElementIds = new ArrayList<Integer>( activityValue.getDataValues().size() );
-
-        for ( DataValue dv : activityValue.getDataValues() )
-        {
-            dataElementIds.add( dv.getId() );
-        }
-
-        if ( dataElements.size() != dataElementIds.size() )
-        {
-            throw NotAllowedException.INVALID_PROGRAM_STAGE;
-        }
-
-        Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = new HashMap<Integer, org.hisp.dhis.dataelement.DataElement>();
-        for ( org.hisp.dhis.dataelement.DataElement dataElement : dataElements )
-        {
-            if ( !dataElementIds.contains( dataElement.getId() ) )
-            {
-                throw NotAllowedException.INVALID_PROGRAM_STAGE;
-            }
-            dataElementMap.put( dataElement.getId(), dataElement );
-        }
-
-        // Set ProgramStageInstance to completed
-        programStageInstance.setCompleted( true );
-        programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        // Everything is fine, hence save
-        saveDataValues( activityValue, programStageInstance, dataElementMap, unit,
-            categoryService.getDefaultDataElementCategoryOptionCombo() );
-
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive method
-    // -------------------------------------------------------------------------
-
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,
         Map<Integer, DataElement> dataElementMap, OrganisationUnit orgUnit, DataElementCategoryOptionCombo optionCombo )
     {
@@ -425,12 +408,6 @@ public class ActivityReportingServiceImpl
         org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService )
     {
         this.programStageInstanceService = programStageInstanceService;
-    }
-
-    @Required
-    public void setActivityPlanService( ActivityPlanService activityPlanService )
-    {
-        this.activityPlanService = activityPlanService;
     }
 
     @Required

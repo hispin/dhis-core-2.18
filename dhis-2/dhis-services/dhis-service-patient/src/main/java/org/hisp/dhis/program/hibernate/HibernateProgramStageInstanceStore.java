@@ -28,14 +28,16 @@ package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceStore;
-
-import org.hisp.dhis.program.ProgramStage;
 
 /**
  * @author Abyot Asalefew
@@ -93,4 +95,29 @@ public class HibernateProgramStageInstanceStore
             Restrictions.eq( "completed", completed ) )).list();
     }
 
+    
+    @SuppressWarnings( "unchecked" )
+    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed) {
+
+        String hql = "from ProgramStageInstance where programInstance.patient.organisationUnit = :unit";
+        
+        if (after != null)
+            hql += " and dueDate >= :after";
+        if (before != null) 
+            hql += " and dueDate <= :before";
+        if (completed != null)
+            hql += " and completed = :completed";
+        
+        Query q = getQuery( hql ).setEntity( "unit", unit );
+
+        if (after != null)
+            q.setDate( "after", after );
+        if (before != null)
+            q.setDate( "before", before );
+        if (completed != null)
+            q.setBoolean( "completed", completed );
+
+        return q.list();
+    }
+    
 }

@@ -30,8 +30,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -158,5 +160,9 @@ public class DefaultProgramStageInstanceService
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
     {
         return programStageInstanceStore.getProgramStageInstances( startDate, endDate, completed );
+    }
+
+    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed) {
+        return programStageInstanceStore.get( unit, after, before, completed );
     }
 }
