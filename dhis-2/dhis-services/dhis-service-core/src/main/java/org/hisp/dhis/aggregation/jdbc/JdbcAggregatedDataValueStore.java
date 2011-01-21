@@ -217,11 +217,9 @@ public class JdbcAggregatedDataValueStore
         }
         finally
         {
-            // don't close holder or we lose resultset - iterator must close
-            // holder.close();
+            // Don't close holder or we lose resultset - iterator must close
         }
     }
-
 
     @Override
     public int countDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
@@ -275,6 +273,36 @@ public class JdbcAggregatedDataValueStore
     public int deleteAggregatedDataValues()
     {
         return statementManager.getHolder().executeUpdate( "DELETE FROM aggregateddatavalue" ); 
+    }
+    
+    public void createIndex( boolean dataElement, boolean indicator )
+    {
+        if ( dataElement )
+        {
+            final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
+            statementManager.getHolder().executeUpdate( sql );
+        }
+        
+        if ( indicator )
+        {
+            final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
+            statementManager.getHolder().executeUpdate( sql );
+        }
+    }
+    
+    public void dropIndex( boolean dataElement, boolean indicator )
+    {
+        if ( dataElement )
+        {
+            final String sql = "DROP INDEX aggregateddatavalue_index";
+            statementManager.getHolder().executeUpdate( sql );
+        }
+        
+        if ( indicator )
+        {
+            final String sql = "DROP INDEX aggregatedindicatorvalue_index";
+            statementManager.getHolder().executeUpdate( sql );
+        }
     }
 
     // -------------------------------------------------------------------------

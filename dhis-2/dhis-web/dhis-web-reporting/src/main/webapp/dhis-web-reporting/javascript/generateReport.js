@@ -108,13 +108,13 @@ function reportStatusReceived( xmlObject )
     {
         setWaitMessage( i18n_please_wait );
         
-        waitAndGetReportStatus( 1500 );
+        waitAndGetReportStatus( 1000 );
     }
     else
     {
         setWaitMessage( i18n_please_wait + " - " + statusMessage );
         
-        waitAndGetReportStatus( 1500 );
+        waitAndGetReportStatus( 1000 );
     }
 }
 
