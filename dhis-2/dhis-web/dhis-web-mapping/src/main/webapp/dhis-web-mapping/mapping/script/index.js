@@ -25,7 +25,7 @@
             G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
             G.vars.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
 				G.conf.map_date_type_fixed : init.userSettings.mapDateType;
-                        
+
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapViews' + G.conf.type,
@@ -717,9 +717,8 @@
                         method: 'POST',
                         params: {type: 'overlay'},
                         success: function(r) {
-							var count = Ext.util.JSON.decode(r.responseText).mapLayers.length;
 							var values, svgElement, svg;
-							
+
 							if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
 								if (choropleth.formValidation.validateForm()) {
 									values = choropleth.formValues.getImageExportValues.call(choropleth);
@@ -727,7 +726,7 @@
 									document.getElementById('periodField').value = values.dateValue;
 									document.getElementById('indicatorField').value = values.mapValueTypeValue;
 									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-									svgElement = document.getElementsByTagName('svg')[count];
+									svgElement = document.getElementById(G.vars.svgIdPolygon);
 									svg = svgElement.parentNode.innerHTML;
 								}
 								else {
@@ -742,7 +741,7 @@
 									document.getElementById('periodField').value = values.dateValue;  
 									document.getElementById('indicatorField').value = values.mapValueTypeValue;
 									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
-									svgElement = document.getElementsByTagName('svg')[count+1];
+									svgElement = document.getElementById(G.vars.svgIdPoint);
 									svg = svgElement.parentNode.innerHTML;
 								}
 								else {
@@ -766,10 +765,10 @@
 										document.getElementById('indicatorField2').value = values.mapValueTypeValue;
 										document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
 										
-										svgElement = document.getElementsByTagName('svg')[count];
+										svgElement = document.getElementById(G.vars.svgIdPolygon);
 										var str1 = svgElement.parentNode.innerHTML;
 										str1 = svgElement.parentNode.innerHTML.replace('</svg>');
-										var str2 = document.getElementsByTagName('svg')[count+1].parentNode.innerHTML;
+										var str2 = document.getElementById(G.vars.svgIdPoint).parentNode.innerHTML;
 										str2 = str2.substring(str2.indexOf('>')+1);
 										svg = str1 + str2;
 									}
@@ -970,7 +969,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(Ext.isChrome ? 348:346);
+                        predefinedMapLegendSetWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 348 : 346);
                     },
                     collapse: function() {
                         predefinedMapLegendSetWindow.setHeight(123);
@@ -1137,7 +1136,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + (Ext.isChrome ? 299:295));
+                        predefinedMapLegendSetWindow.setHeight((G.util.getMultiSelectHeight() / 2) + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 298:295));
                     },
                     collapse: function() {
                         predefinedMapLegendSetWindow.setHeight(123);
@@ -1258,7 +1257,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome ? 243:240));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 242 : 240));
                         
                         if (!G.stores.indicator.isLoaded) {
                             G.stores.indicator.load();
@@ -1383,7 +1382,7 @@
                 ],
                 listeners: {
                     expand: function() {
-                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome ? 241:238));
+                        predefinedMapLegendSetWindow.setHeight(G.util.getMultiSelectHeight() + (Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 240 : 238));
                         
                         if (!G.stores.dataElement.isLoaded) {
                             G.stores.dataElement.load();
@@ -1397,7 +1396,7 @@
         ],
         listeners: {
             afterrender: function() {
-                predefinedMapLegendSetWindow.setHeight(Ext.isChrome ? 348:346);
+                predefinedMapLegendSetWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 348 : 346);
             }
         }
     });
@@ -2403,6 +2402,7 @@
 		tooltip: 'Administrator settings',
 		disabled: !G.user.isAdmin,
 		handler: function() {
+console.log(document.getElementsByTagName('svg'));			
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
 			adminWindow.setPosition(x,y);
@@ -2579,6 +2579,12 @@
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
+	
+	G.vars.svgIdPolygon = G.vars.parameter.overlays.length ?
+		document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
+	
+	G.vars.svgIdPoint = G.vars.parameter.overlays.length ?
+		document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
             
     Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
     
