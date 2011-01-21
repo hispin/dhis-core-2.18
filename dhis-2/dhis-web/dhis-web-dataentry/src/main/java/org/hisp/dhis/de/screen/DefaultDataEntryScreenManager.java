@@ -221,8 +221,8 @@ public class DefaultDataEntryScreenManager
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" ";
-        final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\">";
+        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" onkeypress=\"return keyPress(event, this)\" ";
+        final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeypress=\"return keyPress(event, this)\" >";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
@@ -496,8 +496,8 @@ public class DefaultDataEntryScreenManager
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" ";
-        final String jsCodeForCombos = " $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\">";
+        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" onkeypress=\"return keyPress(event, this)\" ";
+        final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeypress=\"return keyPress(event, this)\" >";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
