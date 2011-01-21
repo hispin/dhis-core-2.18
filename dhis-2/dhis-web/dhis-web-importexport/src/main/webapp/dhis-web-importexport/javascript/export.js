@@ -142,30 +142,11 @@ function submitMetaDataExportForm()
 
 function toggle( knob )
 {
-    var toggle = false;
+    var toggle = (knob == "all" ? true : false);
 	
-    if ( knob == "all" )
-    {
-        toggle = true;
-    }
-	
-    document.getElementById( "dataElements" ).checked = toggle;
-    document.getElementById( "dataElementGroups" ).checked = toggle;
-    document.getElementById( "dataElementGroupSets" ).checked = toggle;
-    document.getElementById( "dataSets" ).checked = toggle;
-    document.getElementById( "indicators" ).checked = toggle;
-    document.getElementById( "indicatorGroups" ).checked = toggle;
-    document.getElementById( "indicatorGroupSets" ).checked = toggle;
-    document.getElementById( "dataDictionaries" ).checked = toggle;
-    document.getElementById( "organisationUnits" ).checked = toggle;
-    document.getElementById( "organisationUnitGroups" ).checked = toggle;
-    document.getElementById( "organisationUnitGroupSets" ).checked = toggle;
-    document.getElementById( "organisationUnitLevels" ).checked = toggle;
-    document.getElementById( "validationRules" ).checked = toggle;	
-    document.getElementById( "reports" ).checked = toggle;	
-    document.getElementById( "reportTables" ).checked = toggle;
-    document.getElementById( "charts" ).checked = toggle;	
-    document.getElementById( "olapUrls" ).checked = toggle;      
+	jQuery.each( jQuery("input[type=checkbox]"), function(i, item){
+		item.checked = toggle;
+	});
 }
 
 // -----------------------------------------------------------------------------
@@ -174,30 +155,14 @@ function toggle( knob )
 
 function validateMetaDataExportForm()
 {
-    if ( !isChecked( "dataElements" ) &&
-         !isChecked( "dataElementGroups" ) &&
-         !isChecked( "dataElementGroupSets" ) &&
-         !isChecked( "dataSets" ) &&
-         !isChecked( "indicators" ) &&
-         !isChecked( "indicatorGroups" ) &&
-         !isChecked( "indicatorGroupSets" ) &&
-         !isChecked( "dataDictionaries" ) &&
-         !isChecked( "organisationUnits" ) &&
-         !isChecked( "organisationUnitGroups" ) &&
-         !isChecked( "organisationUnitGroupSets" ) &&
-         !isChecked( "organisationUnitLevels" ) &&
-         !isChecked( "validationRules" ) &&
-         !isChecked( "reports" ) &&
-         !isChecked( "reportTables" ) &&
-         !isChecked( "charts" ) &&
-         !isChecked( "olapUrls" ) )
-     {
-         setMessage( i18n_select_one_or_more_object_types );
-         return false;
-     }
-     
-     hideMessage();
-     return true;
+	if ( jQuery("input:checked").length == 0 )
+	{
+		setMessage( i18n_select_one_or_more_object_types );
+		return false;
+	}
+	
+	hideMessage();
+	return true;
 }
 
 function validateDataValueExportForm()
