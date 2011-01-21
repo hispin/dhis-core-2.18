@@ -129,3 +129,52 @@ function hideOverlay()
     var o = document.getElementById('overlay');
     o.style.visibility = 'hidden';
 }
+
+//formValidationsForDeTarget Function Start
+function formValidationsForDeTarget()
+{
+	
+	var avlDEListSize  = document.targetAnalysisForm.availableDataElements.options.length;//alert(selDEListSize);
+	
+	//var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
+	var orgUnitGroupListCB = document.getElementById("orgUnitGroupList");
+    
+    sDateIndex    = document.getElementById("sDateLB").selectedIndex;
+    eDateIndex    = document.getElementById("eDateLB").selectedIndex;
+    sDateTxt = document.getElementById("sDateLB").options[sDateIndex].text;
+    sDate = formatDate(new Date(getDateFromFormat(sDateTxt,"MMM-y")),"yyyy-MM-dd");
+    eDateTxt = document.getElementById("eDateLB").options[eDateIndex].text;
+    eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
+
+   
+    
+    if(avlDEListSize <= 0 ){alert( "Please Select DataElement" );return false;}
+    else if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
+    else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
+    else if(sDate > eDate) {alert("Starting Date is Greater");return false;}
+    else if(document.targetAnalysisForm.ouNameTB.value == "" || document.getElementById("ouNameTB") == null ){alert( "Please Select OrganisationUnit" );return false;}
+    
+    else if(document.getElementById( 'ougGroupSetCB' ).checked && orgUnitGroupListCB.selectedIndex < 0 ) 
+	{
+		alert( "Please select OrgUnitGroup" );
+		return false;
+    
+	}
+    
+    var sWidth = 850;
+	var sHeight = 650;
+    var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
+    var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
+
+    window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
+
+    return true;
+	
+}    
+// formValidationsForDeTarget Function End
+
+
+
+
+
+
