@@ -353,6 +353,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- PivotTable -->
   
+  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
+    class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction"
+    scope="prototype">
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+  </bean>
+  
   <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
     class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
     scope="prototype">

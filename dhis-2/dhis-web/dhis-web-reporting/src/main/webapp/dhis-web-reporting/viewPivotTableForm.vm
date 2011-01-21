@@ -76,6 +76,9 @@ div#pivotMenu
 <label>$i18n.getString( "indicator_group" )</label>
 <select id="indicatorGroup" style="width:250px">
   <option value="-1">[ All ]</option>
+  #foreach( $group in $indicatorGroups )
+  <option value="${group.id}">$encoder.htmlEncode( $group.name )</option>
+  #end
 </select>
 </p>
 
@@ -91,7 +94,11 @@ div#pivotMenu
 
 <p>
 <label>$i18n.getString( "period_type" )</label>
-<select id="periodType" style="width:250px"></select>
+<select id="periodType" style="width:250px">
+  #foreach( $type in $periodTypes )
+  <option value="${type.name}" #if( $type.name == "Monthly" )selected="selected"#end>$encoder.htmlEncode( $type.name )</option>
+  #end
+</select>
 </p>
 
 <p>
@@ -167,8 +174,6 @@ div#pivotMenu
 <!-- Init page -->
 
 <script type="text/javascript">
-  loadIndicatorGroups();
-  loadPeriodTypes();
   loadListeners();
   
   selectionTreeSelection.setMultipleSelectionAllowed( false );

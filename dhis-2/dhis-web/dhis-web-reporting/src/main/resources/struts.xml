@@ -260,7 +260,7 @@
     
     <!-- PivotTable -->
     
-    <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.action.NoAction">
+    <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewPivotTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
