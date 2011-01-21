@@ -1345,7 +1345,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
     
     formValues: {
-		getAllFormValues: function() {
+		getAllValues: function() {
 			return {
 				featureType: G.conf.map_feature_type_point,
 				mapValueType: this.form.findField('mapvaluetype').getValue(),
@@ -1405,7 +1405,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
-                    G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
+                    var p = G.util.getTransformedPointByXY(this.mapView.longitude, this.mapView.latitude);
+                    G.vars.map.setCenter(new OpenLayers.LonLat(p.x, p.y), this.mapView.zoom);
                 }
                 else {
                     G.vars.map.zoomToExtent(this.layer.getDataExtent());
