@@ -2579,11 +2579,13 @@
     
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
 	
-	G.vars.svgIdPolygon = G.vars.parameter.overlays.length ?
-		document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
-	
-	G.vars.svgIdPoint = G.vars.parameter.overlays.length ?
-		document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
+	if (!Ext.isIE) {
+		G.vars.svgIdPolygon = G.vars.parameter.overlays.length ?
+			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
+		
+		G.vars.svgIdPoint = G.vars.parameter.overlays.length ?
+			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
+	}
             
     Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
     
