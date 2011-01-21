@@ -196,7 +196,7 @@ public class DefaultDataMartEngine
 
     @Transactional
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, ProcessState state )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, boolean useIndexes, ProcessState state )
     {
         int count = 0;
 
@@ -269,6 +269,17 @@ public class DefaultDataMartEngine
         log.info( "Number of crosstab tables: " + keys.size() + ", " + TimeUtils.getHMS() );
 
         // ---------------------------------------------------------------------
+        // Drop potential indexes
+        // ---------------------------------------------------------------------
+
+        boolean isIndicators = indicators != null && indicators.size() > 0;
+        boolean isCalculatedDataElements = calculatedDataElements != null && calculatedDataElements.size() > 0;
+        
+        aggregatedDataValueService.dropIndex( true, isIndicators );
+        
+        log.info( "Dropped potential indexes: " + TimeUtils.getHMS() );
+        
+        // ---------------------------------------------------------------------
         // Delete existing aggregated data
         // ---------------------------------------------------------------------
 
@@ -309,26 +320,26 @@ public class DefaultDataMartEngine
             log.info( "Exported values for data element operands with average aggregation operator of type yes/no: " + TimeUtils.getHMS() );
         }
 
-        state.setMessage( "exporting_data_for_indicators" );
-
         // ---------------------------------------------------------------------
         // Indicator export
         // ---------------------------------------------------------------------
 
-        if ( indicators != null && indicators.size() > 0 )
+        state.setMessage( "exporting_data_for_indicators" );
+
+        if ( isIndicators )
         {
             count += indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnits, indicatorOperands, keys );
 
             log.info( "Exported values for indicators (" + indicators.size() + "): " + TimeUtils.getHMS() );
         }
 
-        state.setMessage( "exporting_data_for_calculated_data_elements" );
-
         // ---------------------------------------------------------------------
         // Calculated data element export
         // ---------------------------------------------------------------------
 
-        if ( calculatedDataElements != null && calculatedDataElements.size() > 0 )
+        state.setMessage( "exporting_data_for_calculated_data_elements" );
+
+        if ( isCalculatedDataElements )
         {
             count += calculatedDataElementDataMart.exportCalculatedDataElements( calculatedDataElements, periods, organisationUnits, calculatedOperands, keys );
 
@@ -343,7 +354,20 @@ public class DefaultDataMartEngine
         {
             crossTabService.dropCrossTabTable( key );
         }
+        
+        log.info( "Dropped crosstab tables: " + TimeUtils.getHMS() );
 
+        // ---------------------------------------------------------------------
+        // Create potential indexes
+        // ---------------------------------------------------------------------
+
+        if ( useIndexes )
+        {
+            aggregatedDataValueService.createIndex( true, isIndicators );
+            
+            log.info( "Created indexes: " + TimeUtils.getHMS() );
+        }
+        
         log.info( "Export process completed: " + TimeUtils.getHMS() );
 
         TimeUtils.stop();

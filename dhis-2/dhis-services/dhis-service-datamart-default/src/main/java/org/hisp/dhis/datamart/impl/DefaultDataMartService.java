@@ -96,15 +96,15 @@ public class DefaultDataMartService
             getIdentifiers( DataElement.class, dataMartExport.getDataElements() ), 
             getIdentifiers( Indicator.class, dataMartExport.getIndicators() ), 
             getIdentifiers( Period.class, allPeriods ),
-            getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ), 
-            new OutputHolderState() );
+            getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ),
+            false, new OutputHolderState() );
     }
 
     @Transactional
     public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        return export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
+        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, false, new OutputHolderState() );
     }
     
     @Transactional
@@ -116,7 +116,19 @@ public class DefaultDataMartService
             periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
         }
         
-        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, new OutputHolderState() );
+        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, false, new OutputHolderState() );
+    }
+
+    @Transactional
+    public int export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean useIndexes )
+    {
+        if ( relatives != null )
+        {
+            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
+        }
+        
+        return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, useIndexes, new OutputHolderState() );
     }
     
     // -------------------------------------------------------------------------

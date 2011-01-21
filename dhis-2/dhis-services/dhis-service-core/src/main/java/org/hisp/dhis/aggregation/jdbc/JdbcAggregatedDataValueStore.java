@@ -279,14 +279,28 @@ public class JdbcAggregatedDataValueStore
     {
         if ( dataElement )
         {
-            final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
-            statementManager.getHolder().executeUpdate( sql );
+            try
+            {
+                final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
+                statementManager.getHolder().executeUpdate( sql );
+            }
+            catch ( Exception ex )
+            {
+                log.debug( "Index already exists" );
+            }
         }
         
         if ( indicator )
         {
-            final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
-            statementManager.getHolder().executeUpdate( sql );
+            try
+            {
+                final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
+                statementManager.getHolder().executeUpdate( sql );
+            }
+            catch ( Exception ex )
+            {
+                log.debug( "Index already exists" );
+            }
         }
     }
     
@@ -294,14 +308,28 @@ public class JdbcAggregatedDataValueStore
     {
         if ( dataElement )
         {
-            final String sql = "DROP INDEX aggregateddatavalue_index";
-            statementManager.getHolder().executeUpdate( sql );
+            try
+            {
+                final String sql = "DROP INDEX aggregateddatavalue_index";
+                statementManager.getHolder().executeUpdate( sql );
+            }
+            catch ( Exception ex )
+            {
+                log.debug( "Index does not exist" );
+            }
         }
         
         if ( indicator )
         {
-            final String sql = "DROP INDEX aggregatedindicatorvalue_index";
-            statementManager.getHolder().executeUpdate( sql );
+            try
+            {
+                final String sql = "DROP INDEX aggregatedindicatorvalue_index";
+                statementManager.getHolder().executeUpdate( sql );
+            }
+            catch ( Exception ex )
+            {
+                log.debug( "Index already exists" );
+            }
         }
     }
 
