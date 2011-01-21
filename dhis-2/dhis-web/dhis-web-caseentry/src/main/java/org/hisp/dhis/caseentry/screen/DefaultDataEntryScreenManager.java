@@ -1081,9 +1081,9 @@ public class DefaultDataEntryScreenManager
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------    
         
-        final String jQueryCalendar = "<script> jQuery(function(){" +
-                                            "setupDataEntryCalendar(\"value\\\\\\\\[$PROGRAMSTAGEID\\\\\\\\]\\\\\\\\.date\\\\\\\\:value\\\\\\\\[$DATAELEMENTID\\\\\\\\]\\\\\\\\.date\")" + 
-                                            "});</script>";
+        final String jQueryCalendar = "<script> " +
+                                            "datePicker(\"value\\\\\\\\[$PROGRAMSTAGEID\\\\\\\\]\\\\\\\\.date\\\\\\\\:value\\\\\\\\[$DATAELEMENTID\\\\\\\\]\\\\\\\\.date\", false)" + 
+                                      ";</script>";
 
         final String metaDataCode = "<span id=\"value[$DATAELEMENTID].name\" style=\"display:none\">$DATAELEMENTNAME</span>"
             + "<span id=\"value[$DATAELEMENTID].type\" style=\"display:none\">$DATAELEMENTTYPE</span>";

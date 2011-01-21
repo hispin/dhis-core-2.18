@@ -380,14 +380,7 @@ function insertDataElement( source )
 		id = boolPSDataEntryId;
 	}else if (dataElementType == "date")
 	{
-		clazz = "date_" + associationId + "_" + dataElementId;
-		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\" class=\"" + clazz + "\">";	
-		selectString += "<script type=\"text/javascript\">";
-		selectString += "jQuery(function(){";
-		selectString += "datePickerjQuery('." + clazz + "');";	
-		selectString += "});";	
-		selectString += "<\/script>";
-		
+		selectString = "<input type=\"text\" id=\"" + datePSDataEntryId + "\" name=\"entryfield\" value=\"\">";	
 		id = datePSDataEntryId;
 	} else if ( dataElementType == "int" )
 	{

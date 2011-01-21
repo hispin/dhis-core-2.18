@@ -827,8 +827,7 @@ function datePickerjQuery( jQueryString )
 		buttonImageOnly: true,
 		constrainInput: true		
 	});
-	s = jQuery( jQueryString );		
-	if( s.val()=='' ) s.val( getCurrentDate() );		
+		
 }
 
 /**
