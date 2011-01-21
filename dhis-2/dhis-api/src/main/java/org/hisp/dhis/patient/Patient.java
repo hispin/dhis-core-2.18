@@ -452,7 +452,28 @@ public class Patient
 
     public String getFullName()
     {
-        return firstName + " " + middleName + " " + lastName;
+        boolean space = false;
+        String name = "";
+
+        if ( firstName != null && firstName.length() != 0 )
+        {
+            name = firstName;
+            space = true;
+        }
+        if ( middleName != null && middleName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += middleName;
+            space = true;
+        }
+        if ( lastName != null && lastName.length() != 0 )
+        {
+            if ( space )
+                name += " ";
+            name += lastName;
+        }
+        return name;
     }
 
     public String getBloodGroup()
