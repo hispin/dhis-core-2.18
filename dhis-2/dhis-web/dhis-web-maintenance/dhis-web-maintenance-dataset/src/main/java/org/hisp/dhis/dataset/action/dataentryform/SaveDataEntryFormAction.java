@@ -31,8 +31,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.webportal.menu.MenuState;
-import org.hisp.dhis.webportal.menu.MenuStateManager;
 
 import com.opensymphony.xwork2.Action;
 

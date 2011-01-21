@@ -44,8 +44,6 @@ function loadPeriodTypes()
         
         addOption( list, name, name );
       }
-      
-      $( "#periodType option[value=Monthly]" ).attr( "selected", "selected" );
     }
   );
 }
