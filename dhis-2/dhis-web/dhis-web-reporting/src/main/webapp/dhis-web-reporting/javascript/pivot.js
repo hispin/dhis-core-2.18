@@ -41,16 +41,12 @@ function getData()
   clearGlobalVariables();
   
   var indicatorGroupId = $( "#indicatorGroup" ).val();
-  var indicatorGroupName = $( "#indicatorGroup" ).text();
   var startDate = $( "#startDate" ).val();
   var endDate = $( "#endDate" ).val();
   var periodTypeName = $( "#periodType" ).val();
   
-  document.getElementById( "dataLabel" ).innerHTML = 
-    i18n_indicator_group + ": " + indicatorGroupName +
-    ", " + i18n_start_date + ": " + startDate + 
-    ", " + i18n_end_date + ": " + endDate + 
-    ", " + i18n_period_type + ": " + periodTypeName;
+  document.getElementById( "dataLabel" ).innerHTML = i18n_start_date + ": " + startDate + 
+    ", " + i18n_end_date + ": " + endDate + ", " + i18n_period_type + ": " + periodTypeName;
   
   var url = "getPivotTable.action";
   

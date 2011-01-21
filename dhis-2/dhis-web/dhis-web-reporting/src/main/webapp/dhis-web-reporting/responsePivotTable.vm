@@ -6,27 +6,31 @@
     "sizeOrganisationUnits": "$pivotTable.organisationUnits.size()",
     "indicators": 
     [
+    #set( $size = $pivotTable.indicators.size() )
     #foreach( $indicator in $pivotTable.indicators )
-      { "id": "${indicator.id}", "name": "${indicator.shortName}" },
+      { "id": "${indicator.id}", "name": "$!encoder.jsonEncode( ${indicator.shortName} )" }#if( $velocityCount < $size ),#end
     #end 
     ],
     "periods": 
     [
+    #set( $size = $pivotTable.periods.size() )
     #foreach( $period in $pivotTable.periods )
-      { "id": "${period.id}", "name": "${period.name}" },
+      { "id": "${period.id}", "name": "$!encoder.jsonEncode( ${period.name} )" }#if( $velocityCount < $size ),#end
     #end
     ],
     "organisationUnits":
     [
+    #set( $size = $pivotTable.organisationUnits.size() )
     #foreach( $organisationUnit in $pivotTable.organisationUnits )
-      { "id": "${organisationUnit.id}", "name": "${organisationUnit.shortName}" },
+      { "id": "${organisationUnit.id}", "name": "$!encoder.jsonEncode( ${organisationUnit.shortName} )" }#if( $velocityCount < $size ),#end
     #end
     ],
     "indicatorValues":
     [
       {
+      #set( $size = $pivotTable.indicatorValues.size() )
       #foreach( $value in $pivotTable.indicatorValues )
-        "${value.indicatorId}-${value.periodId}-${value.organisationUnitId}": "${value.value}",
+        "${value.indicatorId}-${value.periodId}-${value.organisationUnitId}": "${value.value}"#if( $velocityCount < $size ),#end
       #end
       }
     ]
