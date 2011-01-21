@@ -1,7 +1,12 @@
 ﻿<script>
 	jQuery(document).ready(	function()
 	{		
-		validation( 'editDataSetForm', function( form ){ form.submit() }, function(){ selectAllById('selectedList') });
+		validation( 'editDataSetForm', function( form ){ form.submit() }
+			, function()
+			{ 
+				filterList( '', 'selectedList' ); 
+				selectAllById('selectedList') 
+			});
 		
 		checkValueIsExist( "name", "validateDataSet.action", {dataSetId: function(){return jQuery("#dataSetId").val()}});
 		
