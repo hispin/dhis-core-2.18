@@ -284,7 +284,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     
 		if (mlt == G.conf.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
-				var str = G.vars.activePanel.isPolygon() ? Ext.getCmp('bounds_tf').getValue() : Ext.getCmp('bounds_tf2').getValue();
+				var str = G.vars.activePanel.isPolygon() ? choropleth.form.findField('bounds').getValue() : symbol.form.findField('bounds').getValue();
 				
 				for (var i = 0; i < str.length; i++) {
 					str = str.replace(' ','');
@@ -307,10 +307,10 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				var newInput = bounds.join(',');
                 
                 if (G.vars.activePanel.isPolygon()) {
-                    Ext.getCmp('bounds_tf').setValue(newInput);
+                    choropleth.form.findField('bounds').setValue(newInput);
                 }
                 else {
-                    Ext.getCmp('bounds_tf2').setValue(newInput);
+                    symbol.form.findField('bounds').setValue(newInput);
                 }
 				
 				for (var k = 0; k < bounds.length; k++) {
