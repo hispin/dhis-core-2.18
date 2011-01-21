@@ -38,8 +38,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.webportal.menu.MenuState;
-import org.hisp.dhis.webportal.menu.MenuStateManager;
 
 /**
  * @author Kristian
