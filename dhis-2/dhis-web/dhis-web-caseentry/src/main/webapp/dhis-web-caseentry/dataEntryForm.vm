@@ -19,7 +19,7 @@
 	       $customDataEntryFormCode
 	    #else <span style="font-style:italic; color:blue"> $i18n.getString( "no_custom_data_entry_exist" )
 	    #end
-</span>
+</span> 
 </div>
 <script>
 	initCustomCheckboxes();
@@ -83,7 +83,7 @@
             #elseif( $programStageDataElement.dataElement.type == "date" ) 
                 <input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].date" name="entryfield" value="$!encoder.htmlEncode($patientDataValue.value)" onchange="saveDateValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" tabindex="$tabIndex" >
                     <script type="text/javascript">
-						setupDataEntryCalendar('value\\[$programStageDataElement.dataElement.id\\]\\.date');
+						datePicker('value\\[$programStageDataElement.dataElement.id\\]\\.date', false);
                     </script>  					
             #else
                 <input name="entryfield" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="value[$programStageDataElement.dataElement.id].value" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveValue( $programStageDataElement.dataElement.id, '$encoder.jsEncode( $programStageDataElement.dataElement.name )' )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" >
@@ -135,5 +135,6 @@
     var i18n_complete_confirm_message = '$encoder.jsEscape( $i18n.getString( "complete_confirm_message" ) , "'")';
     var i18n_error_required_field = '$encoder.jsEscape( $i18n.getString( "error_required_field" ) , "'")';
 	var i18n_violate_validation = '$encoder.jsEscape( $i18n.getString( "violate_validation" ) , "'")';
+	
 </script>
 

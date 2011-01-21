@@ -1,19 +1,3 @@
-function setupDataEntryCalendar( id )
-{	
-	jQuery("#" + id).datepicker(
-	{
-		dateFormat:dateFormat,
-		changeMonth: true,
-		changeYear: true,			
-		monthNamesShort: monthNames,
-		dayNamesMin: dayNamesMin,
-		showOn: 'button',
-		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true
-	});	
-	
-}
-
 function viewPrgramStageRecords( programStageInstanceId ) 
 {
 	var url = 'viewProgramStageRecords.action?programStageInstanceId=' + programStageInstanceId;
@@ -1080,13 +1064,16 @@ jQuery(document).ready(function(){
             function(){
                 //				jQuery(this).siblings("td").removeClass("focusCell");
                 var childrens = jQuery(this).children("input[name='entryfield'],select[name='entryselect']");
-                if( jQuery(childrens[0]).is(":disabled")) {
+                
+				if( jQuery(childrens[0]).is(":disabled")) {
                     //					jQuery(this).addClass("focusCell");
                     DRAG_DIV.showData(jQuery(childrens[0]).metadata({
                         "type":"attr",
                         "name":"data"
                     }));
                 }
+				
+				
             },
             function(){
             //				if( currentFocus )
