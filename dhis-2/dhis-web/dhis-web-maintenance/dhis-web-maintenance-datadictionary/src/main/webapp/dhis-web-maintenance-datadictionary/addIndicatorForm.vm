@@ -63,7 +63,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();'>				
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();' class="{validate:{required:true}}">				
 				<option value="">[ $i18n.getString('select') ]</option>
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id" number="$indicatorType.number">$encoder.htmlEncode( $indicatorType.name )</option>
