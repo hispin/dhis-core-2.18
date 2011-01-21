@@ -286,6 +286,18 @@ G.util = {
         if (!cb.keepPosition) {
             cb.keepPosition = true;
         }
+    },
+ 
+    getTransformedPointByXY: function(x, y) {
+		var p = new OpenLayers.Geometry.Point(parseFloat(x), parseFloat(y));
+        return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+     },
+
+    getTransformedFeatureArray: function(features) {
+        for (var i = 0; i < features.length; i++) {
+            features[i].geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        }
+        return features;
     }
 };
 

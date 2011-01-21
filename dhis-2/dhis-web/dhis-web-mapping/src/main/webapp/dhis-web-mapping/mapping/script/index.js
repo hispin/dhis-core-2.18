@@ -4,10 +4,14 @@
 	Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
 	
-	G.vars.map = new OpenLayers.Map({controls:[new OpenLayers.Control.Navigation(),new OpenLayers.Control.ArgParser(),new OpenLayers.Control.Attribution()]});
+	G.vars.map = new OpenLayers.Map({
+        controls: [new OpenLayers.Control.MouseToolbar()],
+        displayProjection: new OpenLayers.Projection("EPSG:4326")
+    });
+	G.vars.map.overlays = [];
 	G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
     G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
-
+	
     Ext.Ajax.request({
         url: G.conf.path_mapping + 'initialize' + G.conf.type,
         method: 'POST',
@@ -338,8 +342,9 @@
 	
 	/* Add base layers */	
 	function addBaseLayersToMap(init) {
-		G.vars.map.addLayers([new OpenLayers.Layer.WMS('World', 'http://labs.metacarta.com/wms/vmap0', {layers: 'basic'})]);
-		G.vars.map.layers[0].setVisibility(false);
+		G.vars.map.addLayer(new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender"));
+		G.vars.map.addLayer(new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik"));
+		G.vars.map.addLayer(new OpenLayers.Layer.OSM.CycleMap("OSM CycleMap"));
         
         if (init) {
             var layers = G.vars.parameter.baseLayers || [];
@@ -395,11 +400,13 @@
                             'format': new OpenLayers.Format.GeoJSON()
                         })
                     });
-                    
+					
                     overlay.events.register('loadstart', null, loadStart);
                     overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
                     G.vars.map.addLayer(overlay);
+					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(10000);
+					G.vars.map.overlays.push(r[i].data.name);
                 }
             }
         }
@@ -488,10 +495,10 @@
                         if (!symbol.formValidation.validateForm(true)) {
                             return;
                         }
-                        formValues = symbol.getFormValues();
+                        formValues = symbol.formValues.getAllValues.call(symbol);
                     }
                     
-                    if (G.stores.mapView.find('name', vn) !== -1) {
+                    if (G.stores.mapView.findExact('name', vn) !== -1) {
                         Ext.message.msg(false, G.i18n.there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
                         return;
                     }
@@ -561,7 +568,8 @@
 						params: {id: v},
 						success: function(r) {
 							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
-                            G.stores.mapView.load();
+                            G.stores.polygonMapView.load();
+							G.stores.pointMapView.load();
                             Ext.getCmp('favorite_cb').clearValue();
                             if (v == choropleth.form.findField('mapview').getValue()) {
                                 choropleth.form.findField('mapview').clearValue();
@@ -704,91 +712,100 @@
                 iconCls: 'icon-export',
 				text: G.i18n.export_,
 				handler: function() {
-                    var values, svgElement, svg;
-                    if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
-						if (choropleth.formValidation.validateForm()) {
-							values = choropleth.formValues.getImageExportValues.call(choropleth);
-							document.getElementById('layerField').value = 1;
-							document.getElementById('periodField').value = values.dateValue;
-							document.getElementById('indicatorField').value = values.mapValueTypeValue;
-							document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-							svgElement = document.getElementsByTagName('svg')[0];
-							svg = svgElement.parentNode.innerHTML;
-						}
-						else {
-							Ext.message.msg(false, 'Polygon layer not rendered');
-							return;
-						}
-					}
-					else if (Ext.getCmp('exportimagelayers_cb').getValue() == 2) {
-						if (symbol.formValidation.validateForm()) {
-							values = symbol.formValues.getImageExportValues.call(symbol);
-							document.getElementById('layerField').value = 2;
-							document.getElementById('periodField').value = values.dateValue;  
-							document.getElementById('indicatorField').value = values.mapValueTypeValue;
-							document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
-							svgElement = document.getElementsByTagName('svg')[1];
-							svg = svgElement.parentNode.innerHTML;
-						}
-						else {
-							Ext.message.msg(false, 'Point layer not rendered');
-							return;
-						}
-					}
-					else if (Ext.getCmp('exportimagelayers_cb').getValue() == 3) {
-						if (choropleth.formValidation.validateForm()) {
-							if (symbol.formValidation.validateForm()) {
-								document.getElementById('layerField').value = 3;
-								document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
-								
-								values = choropleth.formValues.getImageExportValues.call(choropleth);
-								document.getElementById('periodField').value = values.dateValue;
-								document.getElementById('indicatorField').value = values.mapValueTypeValue;
-								document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-								
-								values = symbol.formValues.getImageExportValues.call(symbol);
-								document.getElementById('periodField2').value = values.dateValue;
-								document.getElementById('indicatorField2').value = values.mapValueTypeValue;
-								document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
-								
-								svgElement = document.getElementsByTagName('svg')[0];
-								var str1 = svgElement.parentNode.innerHTML;
-								str1 = svgElement.parentNode.innerHTML.replace('</svg>');
-								var str2 = document.getElementsByTagName('svg')[1].parentNode.innerHTML;
-								str2 = str2.substring(str2.indexOf('>')+1);
-								svg = str1 + str2;
+					Ext.Ajax.request({
+						url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
+                        method: 'POST',
+                        params: {type: 'overlay'},
+                        success: function(r) {
+							var count = Ext.util.JSON.decode(r.responseText).mapLayers.length;
+							var values, svgElement, svg;
+							
+							if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
+								if (choropleth.formValidation.validateForm()) {
+									values = choropleth.formValues.getImageExportValues.call(choropleth);
+									document.getElementById('layerField').value = 1;
+									document.getElementById('periodField').value = values.dateValue;
+									document.getElementById('indicatorField').value = values.mapValueTypeValue;
+									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
+									svgElement = document.getElementsByTagName('svg')[count];
+									svg = svgElement.parentNode.innerHTML;
+								}
+								else {
+									Ext.message.msg(false, 'Polygon layer not rendered');
+									return;
+								}
+							}
+							else if (Ext.getCmp('exportimagelayers_cb').getValue() == 2) {
+								if (symbol.formValidation.validateForm()) {
+									values = symbol.formValues.getImageExportValues.call(symbol);
+									document.getElementById('layerField').value = 2;
+									document.getElementById('periodField').value = values.dateValue;  
+									document.getElementById('indicatorField').value = values.mapValueTypeValue;
+									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
+									svgElement = document.getElementsByTagName('svg')[count+1];
+									svg = svgElement.parentNode.innerHTML;
+								}
+								else {
+									Ext.message.msg(false, 'Point layer not rendered');
+									return;
+								}
+							}
+							else if (Ext.getCmp('exportimagelayers_cb').getValue() == 3) {
+								if (choropleth.formValidation.validateForm()) {
+									if (symbol.formValidation.validateForm()) {
+										document.getElementById('layerField').value = 3;
+										document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
+										
+										values = choropleth.formValues.getImageExportValues.call(choropleth);
+										document.getElementById('periodField').value = values.dateValue;
+										document.getElementById('indicatorField').value = values.mapValueTypeValue;
+										document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
+										
+										values = symbol.formValues.getImageExportValues.call(symbol);
+										document.getElementById('periodField2').value = values.dateValue;
+										document.getElementById('indicatorField2').value = values.mapValueTypeValue;
+										document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
+										
+										svgElement = document.getElementsByTagName('svg')[count];
+										var str1 = svgElement.parentNode.innerHTML;
+										str1 = svgElement.parentNode.innerHTML.replace('</svg>');
+										var str2 = document.getElementsByTagName('svg')[count+1].parentNode.innerHTML;
+										str2 = str2.substring(str2.indexOf('>')+1);
+										svg = str1 + str2;
+									}
+									else {
+										Ext.message.msg(false, 'Point layer not rendered');
+										return;
+									}
+								}
+								else {
+									Ext.message.msg(false, 'Polygon layer not rendered');
+									return;
+								}
+							}
+
+							var title = Ext.getCmp('exportimagetitle_tf').getValue();
+							
+							if (!title) {
+								Ext.message.msg(false, G.i18n.form_is_not_complete);
 							}
 							else {
-								Ext.message.msg(false, 'Point layer not rendered');
-								return;
+								var exportForm = document.getElementById('exportForm');
+								exportForm.action = '../exportImage.action';
+								exportForm.target = '_blank';
+								
+								document.getElementById('titleField').value = title;
+								document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
+								document.getElementById('svgField').value = svg;  
+								document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
+								document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
+								document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
+
+								exportForm.submit();
+								Ext.getCmp('exportimagetitle_tf').reset();
 							}
 						}
-						else {
-							Ext.message.msg(false, 'Polygon layer not rendered');
-							return;
-						}
-					}
-
-					var title = Ext.getCmp('exportimagetitle_tf').getValue();
-					
-					if (!title) {
-						Ext.message.msg(false, G.i18n.form_is_not_complete);
-					}
-					else {
-						var exportForm = document.getElementById('exportForm');
-						exportForm.action = '../exportImage.action';
-						exportForm.target = '_blank';
-						
-						document.getElementById('titleField').value = title;
-						document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
-						document.getElementById('svgField').value = svg;  
-						document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
-						document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
-						document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
-
-						exportForm.submit();
-						Ext.getCmp('exportimagetitle_tf').reset();
-					}
+					});
 				}
             }
         ]    
@@ -900,8 +917,8 @@
                                                 return;
                                             }
                                             
-                                            if (G.stores.predefinedMapLegend.find('name', mln) !== -1) {
-                                                Ext.message.msg(false, G.i18n.legend + '<span class="x-msg-hl">' + mln + '</span> ' + G.i18n.already_exists);
+                                            if (G.stores.predefinedMapLegend.findExact('name', mln) !== -1) {
+                                                Ext.message.msg(false, G.i18n.legend + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.already_exists);
                                                 return;
                                             }
                                             
@@ -1402,8 +1419,8 @@
         title: '<span id="window-help-title">'+G.i18n.help+'</span>',
 		layout: 'fit',
         closeAction: 'hide',
-		width: 556,
-		height: 236, 
+		width: 579,
+		height: 290,
         items: [
             {
                 xtype: 'tabpanel',
@@ -1416,31 +1433,31 @@
                     tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
 							setHelpText(G.conf.thematicMap, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 242:223);
+                            helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help1') {
 							setHelpText(G.conf.favorites, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 146:135);
+                            helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help2') {
                             setHelpText(G.conf.legendSets, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 161:150);
+                            helpWindow.setHeight(290);
                         }
 						if (tab.id == 'help3') { 
                             setHelpText(G.conf.imageExport, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 235:215);
+                            helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help4') {
                             setHelpText(G.conf.administration, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 161:149);
+                            helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help5') {
                             setHelpText(G.conf.overlayRegistration, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 398:367);
+                            helpWindow.setHeight(530);
                         }
                         else if (tab.id == 'help6') {
                             setHelpText(G.conf.setup, tab);
-                            helpWindow.setHeight(Ext.isChrome ? 537:485);
+                            helpWindow.setHeight(530);
                         }
                     }
                 },
@@ -1612,43 +1629,60 @@
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                         return;
                     }
-                    
-                    if (G.stores.overlay.find('name', mln) !== -1) {
-                        Ext.message.msg(false, G.i18n.name + ' <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.is_already_in_use);
-                        return;
-                    }
-                        
-                    Ext.Ajax.request({
-                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
+					
+					Ext.Ajax.request({
+						url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
                         method: 'POST',
-                        params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
+                        params: {type: 'overlay'},
                         success: function(r) {
-                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
-                            G.stores.overlay.load();
-                    
-                            G.vars.map.addLayer(
-                                new OpenLayers.Layer.Vector(mln, {
-                                    'visibility': false,
-                                    'styleMap': new OpenLayers.StyleMap({
-                                        'default': new OpenLayers.Style(
-                                            OpenLayers.Util.applyDefaults(
-                                                {'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
-                                                OpenLayers.Feature.Vector.style['default']
-                                            )
-                                        )
-                                    }),
-                                    'strategies': [new OpenLayers.Strategy.Fixed()],
-                                    'protocol': new OpenLayers.Protocol.HTTP({
-                                        'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
-                                        'format': new OpenLayers.Format.GeoJSON()
-                                    })
-                                })
-                            );
-                            
-                            Ext.getCmp('maplayername_tf').reset();
-                            Ext.getCmp('maplayermapsourcefile_cb').clearValue();
-                        }
-                    });
+							var overlays = Ext.util.JSON.decode(r.responseText).mapLayers;
+							
+							for (var i = 0; i < overlays.length; i++) {
+								if (overlays[i].mapSource == mlmsf) {
+									Ext.message.msg(false, 'Map source <span class="x-msg-hl">' + mlmsf + '</span> ' + G.i18n.is_already_in_use);
+									return;
+								}
+							}
+							
+							Ext.Ajax.request({
+								url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
+								method: 'POST',
+								params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
+								success: function(r) {
+									Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
+									G.stores.overlay.load();
+									
+									var overlay = new OpenLayers.Layer.Vector(mln, {
+										'visibility': false,
+										'styleMap': new OpenLayers.StyleMap({
+											'default': new OpenLayers.Style(
+												OpenLayers.Util.applyDefaults(
+													{'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
+													OpenLayers.Feature.Vector.style['default']
+												)
+											)
+										}),
+										'strategies': [new OpenLayers.Strategy.Fixed()],
+										'protocol': new OpenLayers.Protocol.HTTP({
+											'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
+											'format': new OpenLayers.Format.GeoJSON()
+										})
+									});
+									
+									if (G.vars.map.getLayersByName(mln).length) {
+										G.vars.map.getLayersByName(mln)[0].destroy();
+									}
+									
+									G.vars.map.addLayer(overlay);
+									G.vars.map.getLayersByName(mln)[0].setZIndex(10000);
+									G.vars.map.overlays.push(mln);
+									
+									Ext.getCmp('maplayername_tf').reset();
+									Ext.getCmp('maplayermapsourcefile_cb').clearValue();
+								}
+							});
+						}
+					});
                 }
             },
             {
@@ -1668,7 +1702,7 @@
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'deleteMapLayer' + G.conf.type,
                         method: 'POST',
-                        params: {id:ml},
+                        params: {id: ml},
                         success: function(r) {
                             Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> '+ G.i18n.deleted);
                             G.stores.overlay.load();
@@ -1677,6 +1711,12 @@
                     });
                     
                     G.vars.map.getLayersByName(mln)[0].destroy();
+					
+					for (var i = 0; i < G.vars.map.overlays.length; i++) {
+						if (G.vars.map.getLayersByName(G.vars.map.overlays[i]).length) {
+							G.vars.map.getLayersByName(G.vars.map.overlays[i])[0].setZIndex(10000);
+						}
+					}
                 }
             }
         ]
@@ -1916,7 +1956,7 @@
         
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
-        enableDD: true,
+        enableDD: false,
         bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
         root: {
@@ -1945,7 +1985,7 @@
         },
         contextMenuBaselayer: new Ext.menu.Menu({
             items: [
-                {
+                /*{
                     text: 'Show WMS legend',
                     iconCls: 'menu-layeroptions-wmslegend',
                     handler: function(item, e) {
@@ -1974,7 +2014,7 @@
                         wmsLayerLegendWindow.setPagePosition(Ext.getCmp('east').x - 500, Ext.getCmp('center').y + 50);
                         wmsLayerLegendWindow.show();
                     }
-                },
+                },*/
                 {
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
@@ -2197,7 +2237,7 @@
             }
 		},
         bbar: [
-            {
+/*            {
                 xtype: 'button',
                 id: 'baselayers_b',
                 text: 'Base layers',
@@ -2206,7 +2246,7 @@
                     Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
                     Ext.getCmp('baselayers_w').show();
                 }
-            },
+            },*/
             {
                 xtype: 'button',
                 id: 'overlays_b',
@@ -2257,8 +2297,6 @@
         }
     });
     
-    //mapping = new mapfish.widgets.geostat.Mapping({});    
-	
 	/* Section: map toolbar */
 	var mapLabel = new Ext.form.Label({
 		text: G.i18n.map,
@@ -2339,29 +2377,11 @@
 		}
 	});
 	
-	var exportExcelButton = new Ext.Button({
-		iconCls: 'icon-excel',
-		tooltip: G.i18n.export_map_as_excel,
-		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;   
-			
-			exportExcelWindow.setPosition(x,y);
-
-			if (exportExcelWindow.visible) {
-				exportExcelWindow.hide();
-			}
-			else {
-				exportExcelWindow.show();
-			}
-		}
-	});
-	
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
 		tooltip: G.i18n.create_predefined_legend_sets,
 		disabled: !G.user.isAdmin,
-		handler: function() {			
+		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;
 			predefinedMapLegendSetWindow.setPosition(x,y);
@@ -2559,45 +2579,6 @@
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
-    
-    function toggleSelectFeatures(e) {
-        if (G.stores.overlay.find('name', e.layer.name) !== -1) {
-            var names = G.stores.overlay.collect('name');
-            var visibleOverlays = false;
-            
-            for (var i = 0; i < names.length; i++) {
-                if (G.vars.map.getLayersByName(names[i])[0].visibility) {
-                    visibleOverlays = true;
-                }
-            }
-            
-            var widget = G.vars.activePanel.isPolygon() ? choropleth : symbol;
-            
-            if (visibleOverlays) {
-                widget.selectFeatures.deactivate();
-            }
-            else {
-                widget.selectFeatures.activate();
-            }
-        }
-    }
-	
-	G.vars.map.events.on({
-        changelayer: function(e) {
-            if (e.layer.name != 'Polygon layer' && e.layer.name != 'Point layer') {
-                if (e.property == 'visibility') {
-                    if (!G.stores.overlay.isLoaded) {
-                        G.stores.overlay.load({callback: function() {
-                            toggleSelectFeatures(e);
-                        }});
-                    }
-                    else {
-                        toggleSelectFeatures(e);
-                    }
-                }
-            }
-        }
-    });
             
     Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
     
