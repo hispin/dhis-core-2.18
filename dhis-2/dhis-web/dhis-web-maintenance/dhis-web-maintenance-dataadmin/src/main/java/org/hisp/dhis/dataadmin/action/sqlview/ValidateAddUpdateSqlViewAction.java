@@ -48,10 +48,12 @@ public class ValidateAddUpdateSqlViewAction
     private static final String SEMICOLON = ";";
     
     private static final String SEPERATE = "|";
+    
+    private static final String SPACE = " ";
 
+    private static final String INTO = " into ";
+    
     private static final String REGEX_SELECT_QUERY = "^(?i)\\s*select\\s{1,}.+$";
-
-    private static final String REGEX_SELECT_INTO_QUERY = " into ";
 
     private static final String PREFIX_REGEX_IGNORE_TABLES_QUERY = "^(?i).+((?<=[^\\d\\w])(";
 
@@ -152,14 +154,14 @@ public class ValidateAddUpdateSqlViewAction
         {
             String tmp = new String( s.toLowerCase() );
 
-            if ( !s.matches( REGEX_SELECT_QUERY ) || tmp.contains( REGEX_SELECT_INTO_QUERY ) )
+            if ( !s.matches( REGEX_SELECT_QUERY ) || tmp.contains( INTO ) )
             {
                 message = i18n.getString( "sqlquery_is_invalid" ) + "<br/>" + i18n.getString( "sqlquery_is_welformed" );
 
                 return INPUT;
             }
 
-            if ( tmp.matches( ignoredRegex ) )
+            if ( tmp.concat( SPACE ).matches( ignoredRegex ) )
             {
                 message = i18n.getString( "sqlquery_is_not_allowed" );
 
