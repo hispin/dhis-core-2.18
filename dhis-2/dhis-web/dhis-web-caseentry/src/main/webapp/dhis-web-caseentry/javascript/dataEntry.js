@@ -998,6 +998,20 @@ function saveDateCustom(  this_ )
         }
     }
 	
+	var incidentDate = new Date( jQuery('#dueDate').val() );
+	var inputtedDate = new Date(jQuery(this_).val());
+	if( inputtedDate < incidentDate )
+	{
+		jQuery(this_).css({
+                "background-color":"#ffcc00"
+            });
+            window.alert( i18n_date_less_incident_date );
+		  
+            jQuery(this_).focus();
+
+            return;
+	}
+	
     var valueSaver = new CustomValueSaver( data.dataElementId, jQuery(this_).val(), providedByAnotherFacility, '#ccffcc', '' );
     valueSaver.setProgramStageId( data.programStageId );
     valueSaver.setType(data.dataElementType);
