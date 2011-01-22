@@ -133,7 +133,7 @@
 
 		var key = getFieldValue( "indicator-expression-container input[id=filter]");
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator, usepaging: true, key: key } );	
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator, usePaging: true, key: key } );	
 
 		checkAggregationOperator();
 	}	

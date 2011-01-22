@@ -77,7 +77,7 @@ public class GetOperandsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output & Input
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -114,6 +114,22 @@ public class GetOperandsAction
     {
         this.includeTotals = includeTotals;
     }
+
+    private boolean usePaging = false;
+
+    public boolean isUsePaging()
+    {
+        return usePaging;
+    }
+
+    public void setUsePaging( boolean usePaging )
+    {
+        this.usePaging = usePaging;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
     public List<DataElementOperand> operands;
 
@@ -156,7 +172,7 @@ public class GetOperandsAction
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
-        if ( this.usepaging )
+        if ( usePaging )
         {
             this.paging = createPaging( operands.size() );
 
