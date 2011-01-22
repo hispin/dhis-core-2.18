@@ -66,6 +66,18 @@ public abstract class ActionPagingSupport<T>
         return paging;
     }
 
+    protected boolean usePaging = false;
+
+    public boolean isUsePaging()
+    {
+        return usePaging;
+    }
+
+    public void setUsePaging( boolean usePaging )
+    {
+        this.usePaging = usePaging;
+    }
+
     @SuppressWarnings( "unchecked" )
     private String getCurrentLink()
     {

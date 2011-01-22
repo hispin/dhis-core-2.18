@@ -38,7 +38,7 @@
 		<td>
 			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" >
 				#foreach ( $periodType in $periodTypes )
-				 <option value="$periodType.name" #if( $periodType.name.equals($monthlyPeriodTypeName ) ) selected #end>$i18n.getString($periodType.name)</option>
+				 <option value="$periodType.name" #if( $periodType.name.equals( ${monthlyPeriodTypeName} ) ) selected #end>$i18n.getString($periodType.name)</option>
 				#end						
 			</select>
 			<img title="$i18n.getString('clear_expression')" onclick='setNullExpression();' src='images/edit-clear.png' style='width: 20px;cursor:pointer' />
