@@ -76,11 +76,11 @@
 	jQuery(function(){
 		dialog = jQuery("#indicator-expression-container").dialog({
 			modal: true,
-			autoOpen:false,
+			autoOpen: false,
 			minWidth: 820,
 			minHeight: 500,
-			width:820,
-			height:500
+			width: 820,
+			height: 500
 		});
 		
 		getOperandsPage();
@@ -101,6 +101,7 @@
 		
 		checkAggregationOperator();
 		getExpressionText();
+		
 		dialog.dialog("option", "title", "$i18n.getString( 'edit_numerator' )");
 		dialog.dialog("open");		
 	}
@@ -129,11 +130,9 @@
 	{
 		var aggregationOperator = getRadioValue( 'aggregationOperator' );
 		
-		var id = getFieldValue( "indicator-expression-container select[id=dataElementGroupId]");	
-
 		var key = getFieldValue( "indicator-expression-container input[id=filter]");
 
-		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {id: id, aggregationOperator: aggregationOperator, usePaging: true, key: key } );	
+		dataDictionary.loadOperands( "#indicator-expression-container select[id=dataElementId]", {aggregationOperator: aggregationOperator, usePaging: true, key: key} );	
 
 		checkAggregationOperator();
 	}	
@@ -217,5 +216,3 @@
 		validator = validation( 'indicator-expression-form', insertExpression );
 	});	
 </script>
-
-
