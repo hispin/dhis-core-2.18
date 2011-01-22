@@ -25,7 +25,7 @@
   <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id"/>
   <input type="hidden" id="sectionId" name="sectionId" value="$section.id"/>
-  <input type="hidden" id="categoryComboId" name="categoryComboId" value="$categoryCombo.id"/>
+  <input type="hidden" id="categoryComboId" name="categoryComboId" value="$!categoryCombo.id"/>
   </div>
   
   <table id="detailsList">
@@ -47,7 +47,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"/></td>
+        <td><input type="text" style="width:20em" value="$!categoryCombo.name" disabled="disabled"/></td>
       </tr>
     </tbody>
   </table>

@@ -37,7 +37,7 @@
       </tr>
       <tr>
         <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" style="width:20em" value="$categoryCombo.name" disabled="disabled"/><input type="hidden" id="categoryComboId" name="categoryComboId" value="$categoryCombo.id"/></td>
+        <td><input type="text" style="width:20em" value="$!categoryCombo.name" disabled="disabled"/><input type="hidden" id="categoryComboId" name="categoryComboId" value="$!categoryCombo.id"/></td>
       </tr>
      
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
