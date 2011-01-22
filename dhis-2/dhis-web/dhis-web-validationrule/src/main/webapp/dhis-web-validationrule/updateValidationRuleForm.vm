@@ -50,7 +50,7 @@
              		 <option value="$periodType.name" #if( $validationRule.periodType.name.equals($periodType.name ) ) selected #end>$i18n.getString($periodType.name)</option>
             		#end						
 			</select>
-			<img title="$i18n.getString('clear_expression')" onclick='setNullExpression();' src='images/edit-clear.png' style='width: 20px;cursor:pointer' />
+			<img title="$i18n.getString('clear_expression')" onclick='setNullExpression();' src='../images/edit-clear.png' style='width: 20px;cursor:pointer' />
 		</td>
 	</tr>
 	<tr>
