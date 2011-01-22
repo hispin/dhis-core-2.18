@@ -80,7 +80,7 @@
 </table>
 
 <script type="text/javascript">
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_dataection" ) , "'" )';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_section" ) , "'" )';
 	var i18n_please_select_dataset = '$encoder.jsEscape( $i18n.getString( "please_select_dataset" ) , "'" )';
 	var i18n_please_select_dataset_categorycombo = '$encoder.jsEscape( $i18n.getString( "please_select_dataset_or_categorycombo" ) , "'" )';
 	
