@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.comparator.DataElementOperandNameComparator;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
+import org.hisp.dhis.system.filter.DataElementPeriodTypeFilter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 
@@ -77,7 +78,7 @@ public class GetOperandsAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Exclusive filters
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -101,11 +102,22 @@ public class GetOperandsAction
         this.dataSetId = dataSetId;
     }
 
+    // -------------------------------------------------------------------------
+    // Inclusive filters
+    // -------------------------------------------------------------------------
+
     private String aggregationOperator;
 
     public void setAggregationOperator( String aggregationOperator )
     {
         this.aggregationOperator = aggregationOperator;
+    }
+    
+    private String periodType;
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
     }
 
     private boolean includeTotals = false;
@@ -113,18 +125,6 @@ public class GetOperandsAction
     public void setIncludeTotals( boolean includeTotals )
     {
         this.includeTotals = includeTotals;
-    }
-
-    private boolean usePaging = false;
-
-    public boolean isUsePaging()
-    {
-        return usePaging;
-    }
-
-    public void setUsePaging( boolean usePaging )
-    {
-        this.usePaging = usePaging;
     }
 
     // -------------------------------------------------------------------------
@@ -166,6 +166,11 @@ public class GetOperandsAction
         if ( aggregationOperator != null )
         {
             FilterUtils.filter( dataElements, AGGREGATABLE_FILTER );
+        }
+        
+        if ( periodType != null )
+        {
+            FilterUtils.filter( dataElements, new DataElementPeriodTypeFilter( periodType ) );
         }
 
         operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements, includeTotals ) );

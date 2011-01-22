@@ -75,12 +75,12 @@
 			height:500,
 			title: "$i18n.getString( 'expression' )"
 		});
-		
-		getOperandsPage();
 	});
 	
 	function editLeftExpression()
-	{
+	{		
+		getOperandsPage();
+		
 		left = true;
 		
 		var leftSideDescription = getFieldValue( 'leftSideDescription' );
@@ -96,6 +96,8 @@
 	
 	function editRightExpression()
 	{
+		getOperandsPage();
+		
 		left = false;
 		
 		var rightSideDescription = getFieldValue( 'rightSideDescription' );
@@ -111,9 +113,11 @@
 	
 	function getOperandsPage()
 	{
-		var key = getFieldValue( "expression-container input[id=filter]");
+		var key = getFieldValue( "expression-container input[id=filter]" );
+		
+		var periodType = getFieldValue( "periodTypeName" );
 	
-		dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", {usePaging: true, key: key} );	
+		dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", {usePaging: true, key: key, periodType: periodType} );	
 	}
 	
 	function getExpressionText()
