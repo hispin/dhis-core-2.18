@@ -194,14 +194,14 @@ function DataDictionary()
 				jQuery.each( json.operands, function(i, item){					
 					target.append('<option value="[' + item.operandId + ']">' + item.operandName + '</option>');
 				});
-			if( params.usepaging ){
+			if( params.usePaging ){
 				var numberOfPages = json.paging.numberOfPages;
 				var currentPage = json.paging.currentPage;
 				var baseLink = json.paging.baseLink;
 				var pageSize = json.paging.pageSize;
-				var startPage = json.paging.startPage;			
+				var startPage = json.paging.startPage;
 				
-				var html = '<div id="abcd1234">';
+				var html = '<div id="operandPaging_div">';
 				if( numberOfPages > 1 ){
 					html += 'Page: <select onchange="dataDictionary.reloadOperands( this.value )">';
 					for(var i=1;i<=numberOfPages;i++){
@@ -209,14 +209,12 @@ function DataDictionary()
 					}
 					html += '</select>';
 				}
-				html += 'Size: <input type="text" style="width:50px" onchange="dataDictionary.changeOperandsPageSize( this.value )" value="' + pageSize + '"/></div>';					
-				jQuery( '#abcd1234' ).remove();;
-				jQuery( html ).insertAfter( target );				
+				html += 'Size: <input type="text" style="width:50px" onchange="dataDictionary.changeOperandsPageSize( this.value )" value="' + pageSize + '"/></div>';
+				jQuery( '#operandPaging_div' ).remove();
+				jQuery( html ).insertAfter( target );
 			}
-		});	
-		
-	}
-	
+		});		
+	}	
 }
 
 var dataDictionary = new DataDictionary();
@@ -250,5 +248,3 @@ function Indicator( id_, name_ )
 	this.id = id_;
 	this.name = name_;	
 }
-
-

@@ -23,7 +23,7 @@
 	</tr>
 	<tr>
 		<td valign="top">
-		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="cleanExpression()" class="{validate:{required:true}}"></textarea><br/>
+		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
 		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
 		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
 		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
@@ -34,12 +34,11 @@
 		<td></td>
 		<td valign="top">
 			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
-			<input type="text" id="filter" name="filter" style="width:450px" onkeyup="filterList( this.value, 'dataElementId' )"/><br/>
+			<input type="text" id="filter" name="filter" style="width:380px">
+			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px"><br/>
 
-			<select id="dataSetId" name="dataSetId" style="width:450px" onchange="loadDataElements(this.value)"/><br/>
-
-			<select id="dataElementId" name="dataElementId" size="7" style="min-width:450px" ondblclick="insertText( 'expression', this.value, 'aggregationOperator' )"/>
-			
+			<select id="dataElementId" name="dataElementId" size="7" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
+			</select>
 		</td>
 	</tr>
 	<tr>
@@ -62,142 +61,117 @@
 </div>
 
 <script>
-
-var left = true;
-
-function loadDataElements( dataSetId )
-{
-	var dataElements = jQuery("#dataElementId");
-	dataDictionary.loadOperands( dataElements, {dataSetId: dataSetId});
-}
-
-function loadDataSets()
-{	
-	var dataSets = jQuery("#dataSetId");
-	dataSets.empty();
-	jQuery.postJSON("../dhis-web-commons-ajax-json/getDataSets.action",{
-		name: getFieldValue( "periodTypeName" )
-	}, function( json ){
-		dataSets.append( '<option value="">[ $i18n.getString( "view_all" ) ]</option>' );		
-		jQuery.each( json.dataSets, function(i, item){
-			dataSets.append( '<option value="' + item.id + '">' + item.name + '</option>' );
+	var left = true;
+	var dialog = null;
+	
+	jQuery(function(){
+		
+		dialog = jQuery( "#expression-container" ).dialog({
+			modal: true,
+			autoOpen:false,
+			minWidth: 820,
+			minHeight: 500,
+			width:820,
+			height:500,
+			title: "$i18n.getString( 'expression' )"
 		});
 		
-		loadDataElements( dataSets.val() );
+		getOperandsPage();
 	});
-}
-
-function getExpressionText()
-{
-	if( hasText('expression') ){
-		jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
-			expression: getFieldValue('expression')
-		}, function( json ){
-			if( json.response == 'success')
-			{
-				jQuery( "#formulaText").html( json.message );
-			}else{
-				jQuery( "#formulaText").html( '' );
-			}
-		});
-	}else{
-		jQuery( "#formulaText").html( '' );
+	
+	function editLeftExpression()
+	{
+		left = true;
+		
+		var leftSideDescription = getFieldValue( 'leftSideDescription' );
+		var leftSideExpression = getFieldValue( 'leftSideExpression' );
+		var leftSideTextualExpression = getFieldValue( 'leftSideTextualExpression' );
+		
+		setFieldValue( 'expression', leftSideExpression );
+		setFieldValue( 'description', leftSideDescription );
+		setInnerHTML( 'formulaText', leftSideTextualExpression );
+		
+		dialog.dialog("open");
 	}
-}
-
-function insertText( inputAreaName, inputText, radioGroupName )
-{
-	insertTextCommon( inputAreaName, inputText );
 	
-	getExpressionText();
-}
-
-function cleanExpression()
-{
-	checAggregationOperator();
+	function editRightExpression()
+	{
+		left = false;
+		
+		var rightSideDescription = getFieldValue( 'rightSideDescription' );
+		var rightSideExpression = getFieldValue( 'rightSideExpression' );
+		var rightSideTextualExpression = getFieldValue( 'rightSideTextualExpression' );
+		
+		setFieldValue( 'expression', rightSideExpression );
+		setFieldValue( 'description', rightSideDescription );
+		setInnerHTML( 'formulaText', rightSideTextualExpression );
+		
+		dialog.dialog("open");
+	}
 	
-	getExpressionText();
-}
-
-function insertExpression()
-{
-	var expression = getFieldValue( 'expression-container textarea[id=expression]' );
-	var description = getFieldValue( 'expression-container input[id=description]' );
+	function getOperandsPage()
+	{
+		var key = getFieldValue( "expression-container input[id=filter]");
 	
-	jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
-		{expression: expression},
-		function( json ){
-			if( json.response == 'error') markInvalid( 'expression-container textarea[id=expression]' , json.message );
-			else {								
-				if( left ){								
-					setFieldValue( 'leftSideExpression', expression );
-					setFieldValue( 'leftSideDescription', description );
-					setFieldValue( 'leftSideTextualExpression', getInnerHTML('formulaText') );			
+		dataDictionary.loadOperands( "#expression-container select[id=dataElementId]", {usePaging: true, key: key} );	
+	}
+	
+	function getExpressionText()
+	{
+		if( hasText('expression') ){
+			jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', {
+				expression: getFieldValue('expression')
+			}, function( json ){
+				if( json.response == 'success')
+				{
+					jQuery( "#formulaText").html( json.message );
 				}else{
-					setFieldValue( 'rightSideExpression', expression );
-					setFieldValue( 'rightSideDescription', description );
-					setFieldValue( 'rightSideTextualExpression', getInnerHTML('formulaText') );									
+					jQuery( "#formulaText").html( '' );
 				}
-				
-				dialog.dialog( "close" );
-			}
-		});
-}
+			});
+		}else{
+			jQuery( "#formulaText").html( '' );
+		}
+	}
 	
-jQuery( function(){
-	validation( 'expression-form', insertExpression );
-});
+	function insertText( inputAreaName, inputText )
+	{
+		insertTextCommon( inputAreaName, inputText );
+		
+		getExpressionText();
+	}
 	
-</script>
-
-<script>
-var dialog = null; 
-jQuery(function(){
-	
-	dialog = jQuery( "#expression-container" ).dialog({
-		modal: true,
-		autoOpen:false,
-		width:800,
-		title:'$encoder.jsEscape( $i18n.getString( "expression" ) , "'")'
+	function insertExpression()
+	{
+		var expression = getFieldValue( 'expression-container textarea[id=expression]' );
+		var description = getFieldValue( 'expression-container input[id=description]' );
+		
+		jQuery.postJSON( '../dhis-web-commons-ajax-json/getExpressionText.action', 
+			{expression: expression},
+			function( json ){
+				if( json.response == 'error') markInvalid( 'expression-container textarea[id=expression]' , json.message );
+				else {								
+					if( left ){								
+						setFieldValue( 'leftSideExpression', expression );
+						setFieldValue( 'leftSideDescription', description );
+						setFieldValue( 'leftSideTextualExpression', getInnerHTML('formulaText') );			
+					}else{
+						setFieldValue( 'rightSideExpression', expression );
+						setFieldValue( 'rightSideDescription', description );
+						setFieldValue( 'rightSideTextualExpression', getInnerHTML('formulaText') );									
+					}
+					
+					dialog.dialog( "close" );
+				}
+			});
+	}
+		
+	jQuery( function()
+	{
+		validation( 'expression-form', insertExpression );
 	});
 	
-});
-
-var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
-var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
-
-function editLeftExpression()
-{
-	left = true;
+	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
+	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
 	
-	loadDataSets();
-	
-	var leftSideDescription = getFieldValue( 'leftSideDescription' );
-	var leftSideExpression = getFieldValue( 'leftSideExpression' );
-	var leftSideTextualExpression = getFieldValue( 'leftSideTextualExpression' );
-	
-	setFieldValue( 'expression', leftSideExpression );
-	setFieldValue( 'description', leftSideDescription );
-	setInnerHTML( 'formulaText', leftSideTextualExpression );
-	
-	dialog.dialog("open");
-}
-
-function editRightExpression()
-{
-	left = false;
-	
-	loadDataSets();
-	
-	var rightSideDescription = getFieldValue( 'rightSideDescription' );
-	var rightSideExpression = getFieldValue( 'rightSideExpression' );
-	var rightSideTextualExpression = getFieldValue( 'rightSideTextualExpression' );
-	
-	setFieldValue( 'expression', rightSideExpression );
-	setFieldValue( 'description', rightSideDescription );
-	setInnerHTML( 'formulaText', rightSideTextualExpression );
-	
-	dialog.dialog("open");
-}
-
 </script>
