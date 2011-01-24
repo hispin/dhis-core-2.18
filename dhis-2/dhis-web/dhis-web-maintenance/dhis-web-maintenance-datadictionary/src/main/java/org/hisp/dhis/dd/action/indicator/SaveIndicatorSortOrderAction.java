@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.indicator.Indicator;
@@ -71,8 +70,6 @@ public class SaveIndicatorSortOrderAction
     public String execute()
     {
         int sortOrder = 1;
-        
-        Collections.reverse( indicators );
         
         for ( String id : indicators )
         {

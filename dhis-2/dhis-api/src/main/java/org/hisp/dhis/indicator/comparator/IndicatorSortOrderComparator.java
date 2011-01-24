@@ -50,6 +50,6 @@ public class IndicatorSortOrderComparator
             return indicator0.getName().compareTo( indicator1.getName() );
         }
         
-        return indicator1.getSortOrder() - indicator0.getSortOrder();
+        return indicator0.getSortOrder() - indicator1.getSortOrder();
     }
 }
