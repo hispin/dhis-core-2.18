@@ -27,7 +27,6 @@ package org.hisp.dhis.dd.action.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -71,8 +70,6 @@ public class SaveDataElementSortOrderAction
     public String execute()
     {
         int sortOrder = 1;
-        
-        Collections.reverse( dataElements );
         
         for ( String id : dataElements )
         {

@@ -49,6 +49,6 @@ public class DataElementSortOrderComparator
             return dataElement0.getName().compareTo( dataElement1.getName() );
         }
         
-        return dataElement1.getSortOrder() - dataElement0.getSortOrder();
+        return dataElement0.getSortOrder() - dataElement1.getSortOrder();
     }
 }
