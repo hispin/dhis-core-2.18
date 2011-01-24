@@ -364,11 +364,7 @@ G.vars = {
     
     exportValues: null,
     
-    topLevelUnit: null,
-	
-	svgIdPolygon: null,
-	
-	svgIdPoint: null
+    topLevelUnit: null
 };
 
 G.user = {

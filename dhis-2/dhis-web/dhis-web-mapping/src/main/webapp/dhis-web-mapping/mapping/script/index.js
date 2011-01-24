@@ -726,7 +726,7 @@
 									document.getElementById('periodField').value = values.dateValue;
 									document.getElementById('indicatorField').value = values.mapValueTypeValue;
 									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-									svgElement = document.getElementById(G.vars.svgIdPolygon);
+									svgElement = document.getElementById(polygonLayer.svgId);
 									svg = svgElement.parentNode.innerHTML;
 								}
 								else {
@@ -741,7 +741,7 @@
 									document.getElementById('periodField').value = values.dateValue;  
 									document.getElementById('indicatorField').value = values.mapValueTypeValue;
 									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
-									svgElement = document.getElementById(G.vars.svgIdPoint);
+									svgElement = document.getElementById(pointLayer.svgId);
 									svg = svgElement.parentNode.innerHTML;
 								}
 								else {
@@ -765,10 +765,10 @@
 										document.getElementById('indicatorField2').value = values.mapValueTypeValue;
 										document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
 										
-										svgElement = document.getElementById(G.vars.svgIdPolygon);
+										svgElement = document.getElementById(polygonLayer.svgId);
 										var str1 = svgElement.parentNode.innerHTML;
 										str1 = svgElement.parentNode.innerHTML.replace('</svg>');
-										var str2 = document.getElementById(G.vars.svgIdPoint).parentNode.innerHTML;
+										var str2 = document.getElementById(pointLayer.svgId).parentNode.innerHTML;
 										str2 = str2.substring(str2.indexOf('>')+1);
 										svg = str1 + str2;
 									}
@@ -1919,7 +1919,7 @@
     });
 	
 	/* Section: layers */
-    var choroplethLayer = new OpenLayers.Layer.Vector('Polygon layer', {
+    polygonLayer = new OpenLayers.Layer.Vector('Polygon layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -1935,7 +1935,7 @@
         })
     });
     
-    var symbolLayer = new OpenLayers.Layer.Vector('Point layer', {
+    pointLayer = new OpenLayers.Layer.Vector('Point layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
         'styleMap': new OpenLayers.StyleMap({
@@ -1951,7 +1951,7 @@
         })
     });
     
-    G.vars.map.addLayers([choroplethLayer, symbolLayer]);
+    G.vars.map.addLayers([polygonLayer, pointLayer]);
         
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
@@ -2263,7 +2263,7 @@
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
         map: G.vars.map,
-        layer: choroplethLayer,
+        layer: polygonLayer,
 		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         featureSelection: false,
         legendDiv: 'polygonlegend',
@@ -2278,7 +2278,7 @@
     symbol = new mapfish.widgets.geostat.Symbol({
         id: 'symbol',
         map: G.vars.map,
-        layer: symbolLayer,
+        layer: pointLayer,
 		title: '<span class="panel-title">' + G.i18n.point_layer + '</span>',
         featureSelection: false,
         legendDiv: 'pointlegend',
@@ -2580,10 +2580,10 @@
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
 	
 	if (!Ext.isIE) {
-		G.vars.svgIdPolygon = G.vars.parameter.overlays.length ?
+        polygonLayer.svgId = G.vars.parameter.overlays.length ?
 			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
 		
-		G.vars.svgIdPoint = G.vars.parameter.overlays.length ?
+		pointLayer.svgId = G.vars.parameter.overlays.length ?
 			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
 	}
             
