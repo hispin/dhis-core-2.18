@@ -156,15 +156,11 @@ public class OrgUnitResource
                 updatedDataSetList.getModifiedDataSets().add( dataSets.get( i ) );
             }
         }
-        return getUpdatedDataSet( updatedDataSetList );
-    }
-
-    @GET
-    public DataSetList getUpdatedDataSet( DataSetList dataSetList )
-    {
+        
         if ( DEBUG )
             log.debug( "Returning updated datasets for org unit " + unit.getName() );
-        return dataSetList;
+
+        return updatedDataSetList;
     }
 
     /**
