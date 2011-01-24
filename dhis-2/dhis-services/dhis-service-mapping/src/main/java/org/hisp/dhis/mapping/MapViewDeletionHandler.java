@@ -79,7 +79,7 @@ public class MapViewDeletionHandler
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getIndicatorGroup().equals( indicatorGroup ) )
+            if ( mapView.getIndicatorGroup() != null && mapView.getIndicatorGroup().equals( indicatorGroup ) )
             {
                 mappingService.deleteMapView( mapView );
             }
@@ -91,7 +91,7 @@ public class MapViewDeletionHandler
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getIndicator().equals( indicator ) )
+            if ( mapView.getIndicator() != null && mapView.getIndicator().equals( indicator ) )
             {
                 mappingService.deleteMapView( mapView );
             }
@@ -103,7 +103,7 @@ public class MapViewDeletionHandler
     {
         for ( MapView mapView : mappingService.getAllMapViews() )
         {
-            if ( mapView.getMapLegendSet() != null && mapView.getMapLegendSet().equals( mapLegendSet ) ) // MapLegendSet is optional
+            if ( mapView.getMapLegendSet() != null && mapView.getMapLegendSet().equals( mapLegendSet ) )
             {
                 mappingService.deleteMapView( mapView );
             }
