@@ -380,30 +380,19 @@
                 };
                 
                 for (var i = 0; i < r.length; i++) {
-                    var overlay = new OpenLayers.Layer.Vector(r[i].data.name, {
-                        'visibility': false,
-                        'styleMap': new OpenLayers.StyleMap({
-                            'default': new OpenLayers.Style(
-                                OpenLayers.Util.applyDefaults({
-                                        'fillColor': r[i].data.fillColor,
-                                        'fillOpacity': parseFloat(r[i].data.fillOpacity),
-                                        'strokeColor': r[i].data.strokeColor,
-                                        'strokeWidth': parseFloat(r[i].data.strokeWidth)
-                                    },
-                                    OpenLayers.Feature.Vector.style['default']
-                                )
-                            )
-                        }),
-                        'strategies': [new OpenLayers.Strategy.Fixed()],
-                        'protocol': new OpenLayers.Protocol.HTTP({
-                            'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource,
-                            'format': new OpenLayers.Format.GeoJSON()
-                        })
-                    });
-					
+                    var overlay = G.util.createOverlay(
+                        r[i].data.name,
+                        r[i].data.fillColor,
+                        parseFloat(r[i].data.fillOpacity),
+                        r[i].data.strokeColor,
+                        parseFloat(r[i].data.strokeWidth),
+                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
+                    );
+                    
                     overlay.events.register('loadstart', null, loadStart);
                     overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
+                    
                     G.vars.map.addLayer(overlay);
 					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(10000);
 					G.vars.map.overlays.push(r[i].data.name);
@@ -1651,22 +1640,8 @@
 									Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
 									G.stores.overlay.load();
 									
-									var overlay = new OpenLayers.Layer.Vector(mln, {
-										'visibility': false,
-										'styleMap': new OpenLayers.StyleMap({
-											'default': new OpenLayers.Style(
-												OpenLayers.Util.applyDefaults(
-													{'fillColor': mlfc, 'fillOpacity': mlfo, 'strokeColor': mlsc, 'strokeWidth': mlsw},
-													OpenLayers.Feature.Vector.style['default']
-												)
-											)
-										}),
-										'strategies': [new OpenLayers.Strategy.Fixed()],
-										'protocol': new OpenLayers.Protocol.HTTP({
-											'url': G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf,
-											'format': new OpenLayers.Format.GeoJSON()
-										})
-									});
+									var overlay = G.util.createOverlay(mln, mlfc, mlfo, mlsc, mlsw,
+                                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
 									
 									if (G.vars.map.getLayersByName(mln).length) {
 										G.vars.map.getLayersByName(mln)[0].destroy();
