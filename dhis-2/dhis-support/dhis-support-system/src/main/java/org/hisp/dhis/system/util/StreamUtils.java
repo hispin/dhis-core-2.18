@@ -61,8 +61,8 @@ import org.hisp.dhis.system.comparator.FileLastModifiedComparator;
  */
 public class StreamUtils
 {
-    private static final String LINE_BREAK = "\n";
-    private static final String ENCODING_UTF = "UTF8";
+    public static final String LINE_BREAK = "\n";
+    public static final String ENCODING_UTF = "UTF8";
     
     /**
      * Loads a resorce from the classpath defined by the name parameter.

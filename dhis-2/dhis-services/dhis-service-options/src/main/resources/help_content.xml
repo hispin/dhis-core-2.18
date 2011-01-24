@@ -8,7 +8,7 @@
       <para>This section will describe how to add new users to the DHIS 2 application.</para>
       <section>
         <title>Open User Menu</title>
-        <para>To create or find a user begin with clicking on the �user� module displayed in the drop down menu of the Maintenance module located on the main tool bar on the top part of the displayed screen. User names already registered will appear as a list as seen in the screen shot below.</para>
+        <para>To create or find a user begin with clicking on the user module displayed in the drop down menu of the Maintenance module located on the main tool bar on the top part of the displayed screen. User names already registered will appear as a list as seen in the screen shot below.</para>
         <screenshot>
           <screeninfo>Select Users menu item</screeninfo>
           <mediaobject>
@@ -25,11 +25,11 @@
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>You can search for specific user names in the user list by entering the name in the �filter by user name� field as shown above.</para>
+        <para>You can search for specific user names in the user list by entering the name in the filter by user name field as shown above.</para>
       </section>
       <section id="user_roles">
         <title>Define a new role</title>
-        <para>As part of creating a user name you are required to define the user role. Do so by clicking on the �user role� appearing on the left side of the displayed screen.</para>
+        <para>As part of creating a user name you are required to define the user role. Do so by clicking on the user role appearing on the left side of the displayed screen.</para>
         <screenshot>
           <screeninfo>Create new user role</screeninfo>
           <mediaobject>
@@ -47,7 +47,7 @@
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>The following screen will open and here in the first text box you need to give Name of the Role such as Super User, Admin User, etc. The second text box called �Description� gives more information about the type of User Role that is being created for e.g. State Admin User, District Data Entry.</para>
+        <para>The following screen will open and here in the first text box you need to give Name of the Role such as Super User, Admin User, etc. The second text box called Description gives more information about the type of User Role that is being created for e.g. State Admin User, District Data Entry.</para>
         <screenshot>
           <screeninfo>Role maintenance page</screeninfo>
           <mediaobject>
@@ -56,7 +56,7 @@
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>Next you will specify the particular data set(s) that are to be made available to the particular role. You will also need to specify the type of �authority� to be given to the particular user. For each of the three options namely Datasets, Reports and Authorities user can select multiple options from the scroll down menu provided against each field. A user can choose multiple options either by moving them one-by-one.</para>
+        <para>Next you will specify the particular data set(s) that are to be made available to the particular role. You will also need to specify the type of authority to be given to the particular user. For each of the three options namely Datasets, Reports and Authorities user can select multiple options from the scroll down menu provided against each field. A user can choose multiple options either by moving them one-by-one.</para>
         <screenshot>
           <screeninfo>Adding a dataset to a user role</screeninfo>
           <mediaobject>
@@ -93,16 +93,16 @@
             <para>Click on the <guibutton>Add New</guibutton> button.</para>
           </listitem>
           <listitem>
-            <para>Enter New User details like <guilabel>User name</guilabel>, <guilabel>Password</guilabel>, <guilabel>Confirm password</guilabel>, <guilabel>Surname</guilabel>, <guilabel>First name</guilabel> and <guilabel>Email</guilabel> in new user�s option tabs.</para>
+            <para>Enter New User details like <guilabel>User name</guilabel>, <guilabel>Password</guilabel>, <guilabel>Confirm password</guilabel>, <guilabel>Surname</guilabel>, <guilabel>First name</guilabel> and <guilabel>Email</guilabel> in new users option tabs.</para>
           </listitem>
           <listitem>
             <para>Click on <guibutton>Add</guibutton> button for confirmation of new user details and follow the user error while creation of new user.</para>
           </listitem>
           <listitem>
-            <para>The recently created new user can be seen in main� User management Screen</para>
+            <para>The recently created new user can be seen in main User management Screen</para>
           </listitem>
           <listitem>
-            <para>You can edit (like password, surname�.etc) and delete the details of new/old users by selecting corresponding User�s <guibutton>Edit</guibutton> and <guibutton>Delete</guibutton> Buttons.</para>
+            <para>You can edit (like password, surname.etc) and delete the details of new/old users by selecting corresponding Users <guibutton>Edit</guibutton> and <guibutton>Delete</guibutton> Buttons.</para>
           </listitem>
           <listitem>
             <para>Click on <guibutton>Save</guibutton> tab after editing all details of a particular selected user.</para>
@@ -692,7 +692,7 @@
       <title>Data entry</title>
       <para>The data entry module is where data is manually registered in the DHIS 2 database.</para>
       <section>
-        <title>Opening the �Data Entry� screen</title>
+        <title>Opening the Data Entry screen</title>
         <para>Entering data in DHIS 2 is a very simple task, and involves the following steps. Click on the services tab displayed on the main menu. A drop down menu will appear listing the services provided by DHIS2. Click on the <guibutton>Data Entry</guibutton> option.</para>
         <screenshot>
           <screeninfo>Open DHIS2 data entry screen</screeninfo>
@@ -804,11 +804,11 @@
       <para>Data quality can be checked at the point of data entry through setting the minimum and maximum value range for each element manually or generating the min-max values using the DHIS 2 if there is historical data available for that data element. </para>
       <section>
         <title>Setting the minimum and maximum value range manually </title>
-        <para>If you are using the default entry screen click on the element for which you want to set the min-max value. A pop-up window will appear in which you can enter the vaules. On subsequent data entry if the value entered does not fall within the set min-max range the text box will change colour to red. The user will also get a pop-up as shown below. This change in colour is a prompt to check the data entered and make necessary correction. On the data entry screen the users also have the option to add a comment on how the discrepant figure might be explained (if required). This you can do by using the drop down menu of the �comment� box. In case you are using the custom data entry screen which is displayed when you deselect the �default data entry form� option on the top right corner of the screen. In this case the minimum and maximum values can be added by double-clicking on the data entry box instead of the data element.</para>
+        <para>If you are using the default entry screen click on the element for which you want to set the min-max value. A pop-up window will appear in which you can enter the vaules. On subsequent data entry if the value entered does not fall within the set min-max range the text box will change colour to red. The user will also get a pop-up as shown below. This change in colour is a prompt to check the data entered and make necessary correction. On the data entry screen the users also have the option to add a comment on how the discrepant figure might be explained (if required). This you can do by using the drop down menu of the comment box. In case you are using the custom data entry screen which is displayed when you deselect the default data entry form option on the top right corner of the screen. In this case the minimum and maximum values can be added by double-clicking on the data entry box instead of the data element.</para>
       </section>
       <section>
         <title>Generated min-max values </title>
-        <para>It is possible to generate the min-max value, element-wise, using the DHIS2. In such case you merely need to click on the �Generate min-max� button near the upper right corner. In case of default data entry screen the min and max values, when generated, will appear on the left and right side of the data entry box. In case you deselect the default data entry form the generated values will appear on the top right end of the screen.</para>
+        <para>It is possible to generate the min-max value, element-wise, using the DHIS2. In such case you merely need to click on the Generate min-max button near the upper right corner. In case of default data entry screen the min and max values, when generated, will appear on the left and right side of the data entry box. In case you deselect the default data entry form the generated values will appear on the top right end of the screen.</para>
       </section>
     </section>
     <section id="validationRule">
@@ -1183,7 +1183,7 @@
   <chapter>
     <title>DHIS 2 Excel Reporting</title>
     <para>A key requirement of a health information system is that the information contained in the system is available in many different formats that are familiar to the end-users. Many health information personnel are familiar with standard office productivity packages such as <productname>Microsoft Office</productname> or OpenOffice. Production of reports in Excel format allows health workers to submit reports to managers and other persons that may not have access to the HMIS, or lack training in its use. Excel offers the capability to deliver powerful, user-friendly reports to many different clients of the information system.</para>
-    <para>Users, especially health workers, can use DHIS 2 easily with the new Excel reporting tool developed by HISP Vietnam team. This module has been based on HISP India team�s ideas and technologies. The module has subsequently been merged into the main DHIS2 application. This reporting tool with Excel output files uses less memory and is comparatively faster when compared to other reporting modules</para>
+    <para>Users, especially health workers, can use DHIS 2 easily with the new Excel reporting tool developed by HISP Vietnam team. This module has been based on HISP India teams ideas and technologies. The module has subsequently been merged into the main DHIS2 application. This reporting tool with Excel output files uses less memory and is comparatively faster when compared to other reporting modules</para>
     <screenshot>
       <graphic fileref="resources/images/ExcelReportModule/administration_page.jpg" width="80%" align="center"/>
     </screenshot>
@@ -1254,7 +1254,7 @@
               <para>
                 <emphasis role="bold">Row-based reports with multiple organisational</emphasis>
               </para>
-              <para>This type of report displays data elements� name in the fixed columns, and organisation units are be displayed automatically according to the selected parents organisation unit in a period of time. These organisation units are also grouped together following the administrative level, such as: province, district, commune, etc.</para>
+              <para>This type of report displays data elements name in the fixed columns, and organisation units are be displayed automatically according to the selected parents organisation unit in a period of time. These organisation units are also grouped together following the administrative level, such as: province, district, commune, etc.</para>
               <screenshot>
                 <graphic fileref="resources/images/ExcelReportModule/list_org_unit_group_report_template.jpg" width="80%" align="center"/>
               </screenshot>
@@ -1271,7 +1271,7 @@
               <para>
                 <emphasis role="bold">Reports with data elements and categories</emphasis>
               </para>
-              <para>This type of report displays data values which are combined of data elements and category combination. Data element names display as rows and category options are displayed as columns. Data elements� names, codes may be displayed automatically as well as the sequence numbers of the rows</para>
+              <para>This type of report displays data values which are combined of data elements and category combination. Data element names display as rows and category options are displayed as columns. Data elements names, codes may be displayed automatically as well as the sequence numbers of the rows</para>
               <screenshot>
                 <graphic fileref="resources/images/ExcelReportModule/dataelement_category_report_template.jpg" width="80%" align="center"/>
               </screenshot>
@@ -1355,7 +1355,7 @@
                 <para>Remove <inlinegraphic fileref="resources/images/ExcelReportModule/remove_report.jpg"/>for removing report</para>
               </listitem>
               <listitem>
-                <para>Edit <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing report�s information.</para>
+                <para>Edit <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing reports information.</para>
               </listitem>
               <listitem>
                 <para>Organisation unit Group <inlinegraphic fileref="resources/images/ExcelReportModule/assign_org_unit_group.jpg"/>: For choose which organisation group would be list in the report. This button only appear when the Report Type is Organisation Unit Listing</para>
@@ -1375,7 +1375,7 @@
             <screenshot>
               <graphic fileref="resources/images/ExcelReportModule/report_item_function.jpg" width="80%" align="center"/>
             </screenshot>
-            <para>Fill the report item�s information</para>
+            <para>Fill the report items information</para>
             <screenshot>
               <graphic fileref="resources/images/ExcelReportModule/enter_report_item_infor.jpg" width="80%" align="center"/>
             </screenshot>
@@ -1396,10 +1396,10 @@
                     <para>Excel formula: if this item describes the excel formula</para>
                   </listitem>
                   <listitem>
-                    <para>Data element Name: if report item is list of data element�s names</para>
+                    <para>Data element Name: if report item is list of data elements names</para>
                   </listitem>
                   <listitem>
-                    <para>Data element Code: If report item is list of data element�s codes</para>
+                    <para>Data element Code: If report item is list of data elements codes</para>
                   </listitem>
                   <listitem>
                     <para>Serial : If report item is list of auto generating sequence no</para>
@@ -1420,7 +1420,7 @@
                 <screenshot>
                   <graphic fileref="resources/images/ExcelReportModule/create_expression1.jpg" width="80%" align="center"/>
                 </screenshot>
-                <para>The category option would be <emphasis role="italic">default</emphasis> if data element hasn�t been combined with any category combo. Other options are described below:</para>
+                <para>The category option would be <emphasis role="italic">default</emphasis> if data element hasnt been combined with any category combo. Other options are described below:</para>
               </listitem>
               <listitem>
                 <para>Sheet No*: type sheet no where this report item would be display in excel template file</para>
@@ -1533,7 +1533,7 @@
                 </screenshot>
               </listitem>
               <listitem>
-                <para>Click <emphasis role="bold">Edit</emphasis> button to edit User role�s information</para>
+                <para>Click <emphasis role="bold">Edit</emphasis> button to edit User roles information</para>
                 <screenshot>
                   <graphic fileref="resources/images/ExcelReportModule/edit_user_role.jpg" width="80%" align="center"/>
                 </screenshot>
@@ -1648,7 +1648,7 @@
                 <screenshot>
                   <graphic fileref="resources/images/ExcelReportModule/create_expression1.jpg" width="80%" align="center"/>
                 </screenshot>
-                <para>The category option would be <emphasis role="italic">default</emphasis> if data element hasn�t been combined with any category combo. Other options are described below:</para>
+                <para>The category option would be <emphasis role="italic">default</emphasis> if data element hasnt been combined with any category combo. Other options are described below:</para>
               </listitem>
               <listitem>
                 <para>Sheet No*: type sheet no where this item would be display in excel template file</para>
@@ -1710,7 +1710,7 @@
             <para>Remove <inlinegraphic fileref="resources/images/ExcelReportModule/remove_report.jpg"/>For removing report</para>
           </listitem>
           <listitem>
-            <para>Edit <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing report�s information.</para>
+            <para>Edit <inlinegraphic fileref="resources/images/ExcelReportModule/edit_report.jpg"/>for editing reports information.</para>
           </listitem>
           <listitem>
             <para>Download <inlinegraphic fileref="resources/images/ExcelReportModule/download_template_excel_file.png" align="center"/> for dowloading template file. </para>
@@ -2042,7 +2042,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>The exported data values are stored in an �xml file�. The file name is defined by the name of the source organisation unit and the period to allow the receiving organisation unit to identify the source and the period of the export file. The XML is placed in your home directory (On Windows this is normally <filename>C:\Documents and Settings\</filename> under the sub-directories <filename>/dhis / import-export</filename>. </para>
+        <para>The exported data values are stored in an xml file. The file name is defined by the name of the source organisation unit and the period to allow the receiving organisation unit to identify the source and the period of the export file. The XML is placed in your home directory (On Windows this is normally <filename>C:\Documents and Settings\</filename> under the sub-directories <filename>/dhis / import-export</filename>. </para>
       </section>
       <section>
         <title>Exporting data to other DHIS2 systems</title>
@@ -2054,7 +2054,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
             </imageobject>
           </mediaobject>
         </screenshot>
-        <para>A pop-up save option will appear on the displayed screen (see picture below) prompting the saving of the exported data. You may save the export folder on your desktop or any other folder by selecting the �Save to Disk� option from the pop-up prompt. </para>
+        <para>A pop-up save option will appear on the displayed screen (see picture below) prompting the saving of the exported data. You may save the export folder on your desktop or any other folder by selecting the Save to Disk option from the pop-up prompt. </para>
         <screenshot>
           <mediaobject>
             <imageobject>
@@ -2156,7 +2156,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
             <para>
               <emphasis role="bold">If new:</emphasis>
             </para>
-            <para>If there are new data elements, indicators, or orgunits, first make sure whether they really are new or not. Data elements are rarely new, most of the time they are the old name of something that has been changed in the destination database (e.g. a master db at the national level). If you have changed some data elements names at the national level and these have not yet been updated in the district database, the old names that are in the district export files will appear as new data elements in your import preview. It is very important that you tell the DHIS that these are only just old names of a data element that already exists in your database, if not you will have two data elements meaning the same thing and both with an incomplete set of data. Use the �match new to existing� button to link the new data elements (that really are old) to the updated names in your national database, and make sure that the source database updates its metdata before the next data export. </para>
+            <para>If there are new data elements, indicators, or orgunits, first make sure whether they really are new or not. Data elements are rarely new, most of the time they are the old name of something that has been changed in the destination database (e.g. a master db at the national level). If you have changed some data elements names at the national level and these have not yet been updated in the district database, the old names that are in the district export files will appear as new data elements in your import preview. It is very important that you tell the DHIS that these are only just old names of a data element that already exists in your database, if not you will have two data elements meaning the same thing and both with an incomplete set of data. Use the match new to existing button to link the new data elements (that really are old) to the updated names in your national database, and make sure that the source database updates its metdata before the next data export. </para>
             <para>
               <emphasis role="bold">If updates: </emphasis>
             </para>
@@ -2409,7 +2409,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
     </section>
     <section id="dataLocking">
       <title>Data locking</title>
-      <para>This module gives users the privilege of locking certain datasets for chosen organisation units. This encourages timely data entry and prevents unwanted to changes to the data once it has been entered. When the �Data Administration� option is chosen the data locking interface is displayed. The user has to select the periodicity of the report e.g. monthly, quarterly or yearly for which the data is to be locked. The month, quarter or year for which the reports are to be locked is then specified. </para>
+      <para>This module gives users the privilege of locking certain datasets for chosen organisation units. This encourages timely data entry and prevents unwanted to changes to the data once it has been entered. When the Data Administration option is chosen the data locking interface is displayed. The user has to select the periodicity of the report e.g. monthly, quarterly or yearly for which the data is to be locked. The month, quarter or year for which the reports are to be locked is then specified. </para>
       <screenshot>
         <mediaobject>
           <imageobject>
@@ -2433,7 +2433,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
           </imageobject>
         </mediaobject>
       </screenshot>
-      <para>The <guibutton>Apply Locks on All</guibutton> button locks the dataset for all the organisation units to which that dataset has been assigned. <guibutton>�Remove locks on All�</guibutton> removes all locks put on the organisation units corresponding to the selected dataset. After the operations are completed the user must click <guibutton>�Save�</guibutton> to apply the settings. The <guibutton>�Lock at level�</guibutton> button locks datasets at a particular level that the user chooses. . <guibutton>�Unlock at Level�</guibutton> removes locks that have been put on the organisation units corresponding to the selected dataset at the selected level. After the operations are completed, the user must click <guibutton>�Save�</guibutton> to apply the settings. The <guibutton>�Save�</guibutton> button will also lock those organisation unit datasets that have been specified by the user. </para>
+      <para>The <guibutton>Apply Locks on All</guibutton> button locks the dataset for all the organisation units to which that dataset has been assigned. <guibutton>Remove locks on All</guibutton> removes all locks put on the organisation units corresponding to the selected dataset. After the operations are completed the user must click <guibutton>Save</guibutton> to apply the settings. The <guibutton>Lock at level</guibutton> button locks datasets at a particular level that the user chooses. . <guibutton>Unlock at Level</guibutton> removes locks that have been put on the organisation units corresponding to the selected dataset at the selected level. After the operations are completed, the user must click <guibutton>Save</guibutton> to apply the settings. The <guibutton>Save</guibutton> button will also lock those organisation unit datasets that have been specified by the user. </para>
     </section>
     <section id="zeroValueStorage">
       <title>Zero value storage</title>
