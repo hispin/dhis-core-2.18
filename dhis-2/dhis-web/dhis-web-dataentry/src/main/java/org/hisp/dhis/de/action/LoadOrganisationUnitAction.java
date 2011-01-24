@@ -1,7 +1,6 @@
 package org.hisp.dhis.de.action;
 
 import org.hisp.dhis.de.state.SelectedStateManager;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import com.opensymphony.xwork2.Action;
 
@@ -20,24 +19,12 @@ public class LoadOrganisationUnitAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-    
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
+        selectedStateManager.clearSelectedOrganisationUnits();
         selectedStateManager.clearSelectedDataSet();
         selectedStateManager.clearSelectedPeriod();
 

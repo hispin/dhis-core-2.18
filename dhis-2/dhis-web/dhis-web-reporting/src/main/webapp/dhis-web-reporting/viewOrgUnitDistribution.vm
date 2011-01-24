@@ -37,8 +37,9 @@
 </table>
 
 <script type="text/javascript">
-selectionTreeSelection.setListenerFunction( organisationUnitSelected );
 selectionTreeSelection.setMultipleSelectionAllowed( false );
+selectionTreeSelection.setListenerFunction( organisationUnitSelected );
+selectionTree.clearSelectedOrganisationUnits();
 selectionTree.buildSelectionTree();
 
 var i18n_select_group_set = '$encoder.jsEscape( $i18n.getString( "please_select_group_set" ) , "'")';

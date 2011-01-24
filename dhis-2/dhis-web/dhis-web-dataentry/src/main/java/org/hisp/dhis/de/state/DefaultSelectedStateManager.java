@@ -123,6 +123,11 @@ public class DefaultSelectedStateManager
         return selectionManager.getSelectedOrganisationUnit();
     }
     
+    public void clearSelectedOrganisationUnits()
+    {
+        selectionManager.clearSelectedOrganisationUnits();
+    }
+    
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
