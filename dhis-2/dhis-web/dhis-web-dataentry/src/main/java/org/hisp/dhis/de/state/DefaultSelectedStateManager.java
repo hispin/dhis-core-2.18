@@ -230,6 +230,11 @@ public class DefaultSelectedStateManager
 
     public List<Period> getPeriodList()
     {
+        if ( getSelectedDataSet() == null )
+        {
+            return new ArrayList<Period>();
+        }
+        
         Period basePeriod = getBasePeriod();
         
         CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
@@ -253,27 +258,33 @@ public class DefaultSelectedStateManager
     
     public void nextPeriodSpan()
     {
-        List<Period> periods = getPeriodList();
-        CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
-
-        Period basePeriod = periods.get( periods.size() - 1 );
-        Period newBasePeriod = periodType.getNextPeriod( basePeriod );
-
-        if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future periods not allowed
+        if ( getSelectedDataSet() != null )
         {
-            getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+            List<Period> periods = getPeriodList();
+            CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+    
+            Period basePeriod = periods.get( periods.size() - 1 );
+            Period newBasePeriod = periodType.getNextPeriod( basePeriod );
+    
+            if ( newBasePeriod.getStartDate().before( new Date() ) ) // Future periods not allowed
+            {
+                getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+            }
         }
     }
 
     public void previousPeriodSpan()
     {
-        List<Period> periods = getPeriodList();
-        CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
-
-        Period basePeriod = periods.get( 0 );
-        Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
-
-        getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+        if ( getSelectedDataSet() != null )
+        {
+            List<Period> periods = getPeriodList();
+            CalendarPeriodType periodType = (CalendarPeriodType) getPeriodType();
+    
+            Period basePeriod = periods.get( 0 );
+            Period newBasePeriod = periodType.getPreviousPeriod( basePeriod );
+    
+            getSession().put( SESSION_KEY_BASE_PERIOD, newBasePeriod );
+        }
     }
 
     public Period reloadPeriod(){
@@ -338,12 +349,7 @@ public class DefaultSelectedStateManager
     {
         DataSet dataSet = getSelectedDataSet();
 
-        if ( dataSet == null )
-        {
-            throw new IllegalStateException( "Cannot ask for PeriodType when no DataSet is selected" );
-        }
-
-        return dataSet.getPeriodType();
+        return dataSet != null ? dataSet.getPeriodType() : null;
     }
 
     private Period getBasePeriod()
