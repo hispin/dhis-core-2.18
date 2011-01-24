@@ -298,6 +298,25 @@ G.util = {
             features[i].geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
         }
         return features;
+    },
+    
+    createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {
+        return new OpenLayers.Layer.Vector(name, {
+            'visibility': false,
+            'styleMap': new OpenLayers.StyleMap({
+                'default': new OpenLayers.Style(
+                    OpenLayers.Util.applyDefaults(
+                        {'fillColor': fillColor, 'fillOpacity': fillOpacity, 'strokeColor': strokeColor, 'strokeWidth': strokeWidth},
+                        OpenLayers.Feature.Vector.style['default']
+                    )
+                )
+            }),
+            'strategies': [new OpenLayers.Strategy.Fixed()],
+            'protocol': new OpenLayers.Protocol.HTTP({
+                'url': url,
+                'format': new OpenLayers.Format.GeoJSON()
+            })
+        });
     }
 };
 
