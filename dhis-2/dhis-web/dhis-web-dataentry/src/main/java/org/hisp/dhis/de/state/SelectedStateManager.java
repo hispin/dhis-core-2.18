@@ -52,6 +52,8 @@ public interface SelectedStateManager
     
     OrganisationUnit getSelectedOrganisationUnit();  
 
+    void clearSelectedOrganisationUnits();
+    
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
