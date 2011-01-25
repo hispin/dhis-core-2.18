@@ -30,10 +30,9 @@ package org.hisp.dhis.reporttable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -295,7 +294,7 @@ public class ReportTable
      * Generated pretty-print names for crosstabulated columns in the report table,
      * where key is column name and value is pretty column name.
      */
-    private SortedMap<String, String> prettyCrossTabColumns = new TreeMap<String, String>();
+    private Map<String, String> prettyCrossTabColumns = new LinkedHashMap<String, String>();
     
     /**
      * Generated unique identifiers used to retrieve the corresponding value from the datavalue table. 
@@ -1340,7 +1339,7 @@ public class ReportTable
         return crossTabColumns;
     }
 
-    public SortedMap<String, String> getPrettyCrossTabColumns()
+    public Map<String, String> getPrettyCrossTabColumns()
     {
         return prettyCrossTabColumns;
     }
