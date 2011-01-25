@@ -20,8 +20,9 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-national/select.vm</param>
       <param name="menu">/dhis-web-dataentry-national/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
-      <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/calendar.js,javascript/calendar-lang.js,javascript/calendar-setup.js,javascript/general.js,javascript/form.js</param>
+      <!--<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>-->
+	  <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
     </action>
     
     <action name="nextPeriods" class="org.hisp.dhis.den.action.NextPeriodsAction">
@@ -37,8 +38,9 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-national/form.vm</param>
       <param name="menu">/dhis-web-dataentry-national/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
-      <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
+      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/calendar.js,javascript/calendar-lang.js,javascript/calendar-setup.js,javascript/general.js,javascript/form.js</param>
+ <!-- <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>-->
+	  <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
     </action>
     
     <action name="sectionform" class="org.hisp.dhis.den.action.SectionFormAction">
