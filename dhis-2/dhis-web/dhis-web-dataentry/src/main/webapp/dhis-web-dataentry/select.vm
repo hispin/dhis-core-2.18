@@ -9,8 +9,7 @@
 </div>
 
 <div id="actions" style="">	
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/>
-    <input type="button" id="calculateCDEs" value="$i18n.getString( 'save_calculated' )" name="calculateCDEs" onclick="calculateAndSaveCDEs()" style="width:150px"/><br/><br/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/><br/>
 
 	<input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayModeSelected()">
     <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label><br/>
@@ -47,7 +46,6 @@
 <div id="contentDiv"></div>
 
 <script type="text/javascript">
-	var i18n_save_calculated_data_element_success = '$encoder.jsEscape( $i18n.getString( "save_calculated_data_element_success" ) , "'")';
 	var i18n_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_success" ) , "'")';
 	var i18n_register_complete_dataset_failed = '$encoder.jsEscape( $i18n.getString( "register_complete_dataset_failed" ) , "'")';
 	var i18n_undo_register_complete_dataset_success = '$encoder.jsEscape( $i18n.getString( "undo_register_complete_dataset_success" ) , "'")';

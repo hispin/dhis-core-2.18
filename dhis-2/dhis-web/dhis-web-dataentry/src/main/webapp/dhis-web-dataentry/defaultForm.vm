@@ -38,10 +38,6 @@
   #end
 
   #set( $count = $count + 1 )
-  #set( $calculatedValue = false )
-  #set( $calculatedValue = $calculatedValueMap.get( $dataElement ) )                        
-  #set( $calculated = false )
-  #set( $calculated = ($calculatedDataElementIds.contains($dataElement.id) ) )
   <tr>
     <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
       <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">$encoder.htmlEncode( $dataElement.name )</span><span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span>

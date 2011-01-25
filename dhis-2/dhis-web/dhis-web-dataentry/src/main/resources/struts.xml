@@ -90,13 +90,6 @@
 			<param name="requiredAuthorities">F_DATAELEMENT_MINMAX_DELETE</param>
 		</action>
 
-		<action name="calculateCDEs" class="org.hisp.dhis.de.action.CalculateCDEsAction">
-			<result name="success" type="velocity-xml">responseCalculateCDEs.vm
-			</result>
-			<param name="onExceptionReturn">plainTextError</param>
-			<param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
-		</action>
-
 		<action name="viewHistory" class="org.hisp.dhis.de.action.HistoryAction">
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-dataentry/history.vm</param>

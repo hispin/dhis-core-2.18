@@ -37,7 +37,6 @@ import java.util.Map;
 
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -195,13 +194,6 @@ public class FormAction
     public Map<String, DataValue> getDataValueMap()
     {
         return dataValueMap;
-    }
-
-    private Map<CalculatedDataElement, Integer> calculatedValueMap;
-
-    public Map<CalculatedDataElement, Integer> getCalculatedValueMap()
-    {
-        return calculatedValueMap;
     }
 
     private List<String> standardComments;
@@ -478,13 +470,6 @@ public class FormAction
         }
 
         // ---------------------------------------------------------------------
-        // Prepare values for unsaved CalculatedDataElements
-        // ---------------------------------------------------------------------
-
-        calculatedValueMap = dataEntryScreenManager.populateValuesForCalculatedDataElements( organisationUnit, dataSet,
-            period );
-
-        // ---------------------------------------------------------------------
         // Make the standard comments available
         // ---------------------------------------------------------------------
 
@@ -511,7 +496,7 @@ public class FormAction
         if ( cdeFormExists )
         {
             customDataEntryFormCode = dataEntryScreenManager.populateCustomDataEntryScreenForMultiDimensional(
-                dataEntryForm.getHtmlCode(), dataValues, calculatedValueMap, minMaxMap, disabled, i18n, dataSet );
+                dataEntryForm.getHtmlCode(), dataValues, minMaxMap, disabled, i18n, dataSet );
         }
 
         // ---------------------------------------------------------------------

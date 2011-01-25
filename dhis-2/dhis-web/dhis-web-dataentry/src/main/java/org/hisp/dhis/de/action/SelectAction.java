@@ -27,20 +27,15 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.de.screen.DataEntryScreenManager;
 import org.hisp.dhis.de.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -60,6 +55,13 @@ public class SelectAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private DataSetLockService dataSetLockService;
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
+    }
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -67,25 +69,11 @@ public class SelectAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private DataEntryScreenManager dataEntryScreenManager;
-
-    public void setDataEntryScreenManager( DataEntryScreenManager dataEntryScreenManager )
-    {
-        this.dataEntryScreenManager = dataEntryScreenManager;
-    }
-
     private CompleteDataSetRegistrationService registrationService;
 
     public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
         this.registrationService = registrationService;
-    }
-
-    private DataSetLockService dataSetLockService;
-
-    public void setDataSetLockService( DataSetLockService dataSetLockService )
-    {
-        this.dataSetLockService = dataSetLockService;
     }
 
     // -------------------------------------------------------------------------
@@ -129,20 +117,6 @@ public class SelectAction
     public boolean isLocked()
     {
         return locked;
-    }
-
-    private Collection<Integer> calculatedDataElementIds;
-
-    public Collection<Integer> getCalculatedDataElementIds()
-    {
-        return calculatedDataElementIds;
-    }
-
-    private Map<CalculatedDataElement, Map<DataElement, Integer>> calculatedDataElementMap;
-
-    public Map<CalculatedDataElement, Map<DataElement, Integer>> getCalculatedDataElementMap()
-    {
-        return calculatedDataElementMap;
     }
 
     private CompleteDataSetRegistration registration;
@@ -210,13 +184,6 @@ public class SelectAction
             }
         }
         
-        // ---------------------------------------------------------------------
-        // Get calculated data element info
-        // ---------------------------------------------------------------------
-
-        calculatedDataElementIds = dataEntryScreenManager.getAllCalculatedDataElements( selectedDataSet );
-        calculatedDataElementMap = dataEntryScreenManager.getNonSavedCalculatedDataElements( selectedDataSet );
-
         // ---------------------------------------------------------------------
         // Get data set completeness info
         // ---------------------------------------------------------------------

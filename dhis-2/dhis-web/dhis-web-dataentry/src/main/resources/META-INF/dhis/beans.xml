@@ -25,18 +25,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.de.screen.DataEntryScreenManager" class="org.hisp.dhis.de.screen.DefaultDataEntryScreenManager">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />		
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.de.state.StatefulDataValueSaver" class="org.hisp.dhis.de.state.DefaultStatefulDataValueSaver">
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
 	<!-- Actions -->
@@ -66,7 +55,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-		<property name="dataEntryScreenManager"	ref="org.hisp.dhis.de.screen.DataEntryScreenManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.FormAction" class="org.hisp.dhis.de.action.FormAction" scope="prototype">
@@ -83,7 +71,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.de.action.SectionFormAction" class="org.hisp.dhis.de.action.SectionFormAction" scope="prototype">
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/>
-		<property name="dataElementService"	ref="org.hisp.dhis.dataelement.DataElementService"/>
 		<property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager"/>
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager"/>
@@ -120,14 +107,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.de.action.CalculateCDEsAction" class="org.hisp.dhis.de.action.CalculateCDEsAction" scope="prototype">
-		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
-		<property name="statefulDataValueSaver"	ref="org.hisp.dhis.de.state.StatefulDataValueSaver" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 	</bean>
 
