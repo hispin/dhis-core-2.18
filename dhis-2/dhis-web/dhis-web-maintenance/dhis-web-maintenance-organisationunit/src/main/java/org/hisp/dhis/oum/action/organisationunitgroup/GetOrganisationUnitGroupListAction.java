@@ -28,6 +28,7 @@ package org.hisp.dhis.oum.action.organisationunitgroup;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +77,7 @@ public class GetOrganisationUnitGroupListAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
 
     // -------------------------------------------------------------------------

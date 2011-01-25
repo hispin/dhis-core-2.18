@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.dataelement;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,7 +142,7 @@ public class GetDataElementListAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
 
     // -------------------------------------------------------------------------
@@ -149,7 +150,7 @@ public class GetDataElementListAction
     // -------------------------------------------------------------------------
 
     public String execute()
-    {
+    {        
         if ( dataDictionaryId == null ) // None, get current data dictionary
         {
             dataDictionaryId = dataDictionaryModeManager.getCurrentDataDictionary();

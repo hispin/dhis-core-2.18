@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.category;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,9 +74,9 @@ public class GetDataElementCategoryListAction
     {
         return defaultCategory;
     }
-    
+
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -83,7 +84,7 @@ public class GetDataElementCategoryListAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
 
     // -------------------------------------------------------------------------
@@ -97,16 +98,18 @@ public class GetDataElementCategoryListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCountByName( key ) );
-            
-            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
+                .getDataElementCategorysBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryCount() );
-            
-            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService.getDataElementCategorysBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+            dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
+                .getDataElementCategorysBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-        
+
         Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
 
         return SUCCESS;

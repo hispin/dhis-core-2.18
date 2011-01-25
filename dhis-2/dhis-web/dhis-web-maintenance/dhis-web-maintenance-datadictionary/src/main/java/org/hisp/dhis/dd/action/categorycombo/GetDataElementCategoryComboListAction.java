@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.categorycombo;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,8 +74,9 @@ public class GetDataElementCategoryComboListAction
     {
         return defaultCombo;
     }
+
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -82,9 +84,8 @@ public class GetDataElementCategoryComboListAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
-
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -98,18 +99,20 @@ public class GetDataElementCategoryComboListAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryComboCountByName( key ) );
-            
-            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+
+            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
+                .getDataElementCategoryCombosBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( dataElementCategoryService.getDataElementCategoryComboCount() );
-            
-            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+            dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
+                .getDataElementCategoryCombosBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-        
+
         Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
-        
+
         return SUCCESS;
     }
 }
