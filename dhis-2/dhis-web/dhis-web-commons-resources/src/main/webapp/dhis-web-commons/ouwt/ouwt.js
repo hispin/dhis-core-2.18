@@ -29,6 +29,7 @@ function Selection()
 {
     var listenerFunction;
     var multipleSelectionAllowed = false;
+    var unselectAllowed = false;
 
     this.setListenerFunction = function( listenerFunction_ )
     {
@@ -39,6 +40,11 @@ function Selection()
     {
         multipleSelectionAllowed = allowed;
     };
+    
+    this.setUnselectAllowed = function( allowed )
+    {
+    	unselectAllowed = allowed;
+    }
 
     this.select = function( unitId )
     {
@@ -46,7 +52,7 @@ function Selection()
 		
 		var linkTags = unitTag.getElementsByTagName( 'a' );
 
-        if ( linkTags[0].className == 'selected' )
+        if ( linkTags[0].className == 'selected' && unselectAllowed )
         {
 			$.post(organisationUnitTreePath + "removeorgunit.action",{
 				id:unitId
