@@ -27,13 +27,11 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -53,7 +51,7 @@ public class GetOperandsAction
     extends ActionPagingSupport<DataElementOperand>
 {
     private static Filter<DataElement> AGGREGATABLE_FILTER = new AggregatableDataElementFilter();
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -89,12 +87,12 @@ public class GetOperandsAction
     {
         this.id = id;
     }
-
+    
     private String key;
 
     public void setKey( String key )
     {
-        this.key = getTrimmedValue( key );
+        this.key = key;
     }
 
     private Integer dataSetId;
@@ -152,7 +150,7 @@ public class GetOperandsAction
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementGroup( id ).getMembers() );
         }
-        else if ( isNotBlank( key ) )
+        else if ( !StringUtils.isEmpty( key ) )
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getDataElementsLikeName( key ) );
         }
@@ -175,8 +173,7 @@ public class GetOperandsAction
             FilterUtils.filter( dataElements, new DataElementPeriodTypeFilter( periodType ) );
         }
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements,
-            includeTotals ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements, includeTotals ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 
