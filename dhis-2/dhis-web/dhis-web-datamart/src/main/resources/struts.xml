@@ -21,10 +21,11 @@
       <param name="page">/dhis-web-datamart/exportForm.vm</param>
       <param name="menu">/dhis-web-datamart/menu.vm</param>
       <param name="javascripts">javascript/datamart.js</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
-		
+	
 	<!-- Ajax requests -->
-		
+	
     <action name="exportDataMartExport" class="org.hisp.dhis.datamart.action.ExportDataMartExportAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-datamart/exportStatus.vm</param>
@@ -45,6 +46,7 @@
     
     <action name="removeDataMartExport" class="org.hisp.dhis.datamart.action.RemoveDataMartExportAction">
       <result name="success" type="redirect">getDataMartExports.action</result>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
     
     <action name="getDataMartExports" class="org.hisp.dhis.datamart.action.GetAllDataMartExportsAction">
@@ -57,6 +59,7 @@
         
     <action name="saveDataMartExport" class="org.hisp.dhis.datamart.action.SaveDataMartExportAction">
       <result name="success" type="redirect">getDataMartExports.action</result>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
     
     <!-- Ajax requests -->
@@ -80,10 +83,12 @@
     
     <action name="scheduleExport" class="org.hisp.dhis.datamart.action.ScheduleExportAction">
       <result name="success" type="redirect">getScheduledExportStatus.action</result>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
     
     <action name="executeExport" class="org.hisp.dhis.datamart.action.ExecuteExportAction">
       <result name="success" type="redirect">getScheduledExportStatus.action</result>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
     
 	</package>

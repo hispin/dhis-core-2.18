@@ -41,11 +41,11 @@
       <param name="page">/dhis-web-reporting/addDocumentForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/document.js</param>
+      <param name="requiredAuthorities">F_DOCUMENT_ADD</param>
     </action>
     
     <action name="validateDocument" class="org.hisp.dhis.reporting.document.action.ValidateDocumentAction">
-      <result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
