@@ -80,8 +80,6 @@ public class GridPdfResult
         Grid _grid = (Grid) invocation.getStack().findValue( "grid" );
         
         grid = _grid != null ? _grid : grid; 
-        
-        int width = grid.getVisibleWidth() == 0 ? 1 : grid.getVisibleWidth();
 
         // ---------------------------------------------------------------------
         // Configure response
@@ -101,21 +99,21 @@ public class GridPdfResult
         
         Document document = openDocument( out );
         
-        PdfPTable table = new PdfPTable( width );
+        PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
         
         table.setHeaderRows( 1 );
 
-        table.addCell( getTitleCell( grid.getTitle(), width ) );
-        table.addCell( getEmptyCell( width, 30 ) );
-        table.addCell( getSubtitleCell( grid.getSubtitle(), width ) );
-        table.addCell( getEmptyCell( width, 30 ) );
+        table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
+        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
         
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
             table.addCell( getItalicCell( header.getName() ) );
         }
 
-        table.addCell( getEmptyCell( width, 10 ) );
+        table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
         
         for ( List<String> row : grid.getVisibleRows() )
         {
