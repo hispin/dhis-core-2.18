@@ -3,6 +3,10 @@
 // Save
 // -----------------------------------------------------------------------------
 
+var COLOR_GREEN = '#b9ffb9';
+var COLOR_YELLOW = '#fffe8c';
+var COLOR_RED = '#ff8a8a';
+
 function saveVal( dataElementId, optionComboId )
 {
 	var dataElementName = document.getElementById( 'value[' + dataElementId + '].name' ).innerHTML;
@@ -16,7 +20,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
     var type = document.getElementById( 'value[' + dataElementId + '].type' ).innerHTML;   
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
-    field.style.backgroundColor = '#ffffcc';
+    field.style.backgroundColor = COLOR_YELLOW;
     
     if ( field.value && field.value != '' )
     {
@@ -46,7 +50,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
             {
                 // If value is 0 and zero is not significant for data element, then skip value
                 
-                field.style.backgroundColor = '#ccffcc';
+                field.style.backgroundColor = COLOR_GREEN;
                 return;
             }
             else
@@ -62,7 +66,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 
                     if ( value < min )
                     {
-                        var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, '#ffcccc' );
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_RED );
                         valueSaver.save();
                         
                         window.alert( i18n_value_of_data_element_less + '\n\n' + dataElementName );
@@ -72,7 +76,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 
                     if ( value > max )
                     {
-                        var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, '#ffcccc' );
+                        var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_RED );
                         valueSaver.save();
                         
                         window.alert( i18n_value_of_data_element_greater + '\n\n' + dataElementName);
@@ -84,7 +88,7 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
         }
     }
 
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, '#ccffcc', '' );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_GREEN, '' );
     valueSaver.save();
 
     if ( type == 'int')
@@ -98,9 +102,9 @@ function saveBoolean( dataElementId, optionComboId, selectedOption  )
 	var select = selectedOption.options[selectedOption.selectedIndex].value 
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
 	
-   	selectedOption.style.backgroundColor = '#ffffcc';     
+   	selectedOption.style.backgroundColor = COLOR_YELLOW;
     
-    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, select, '#ccffcc', selectedOption );
+    var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, select, COLOR_GREEN, selectedOption );
     valueSaver.save();
 }
 
@@ -110,9 +114,9 @@ function saveDate( dataElementId, dataElementName )
     var type = document.getElementById( 'value[' + dataElementId + '].valueType' ).innerHTML;
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
-    field.style.backgroundColor = '#ffffcc';
+    field.style.backgroundColor = COLOR_YELLOW;
     
-    var valueSaver = new ValueSaver( dataElementId, '', organisationUnitId, field.value, '#ccffcc', '' );
+    var valueSaver = new ValueSaver( dataElementId, '', organisationUnitId, field.value, COLOR_GREEN, '' );
     valueSaver.save();
 }
 
@@ -122,8 +126,8 @@ function saveComment( dataElementId, optionComboId, commentValue )
     var select = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].comments' );
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
-    field.style.backgroundColor = '#ffffcc';
-    select.style.backgroundColor = '#ffffcc';
+    field.style.backgroundColor = COLOR_YELLOW;
+    select.style.backgroundColor = COLOR_YELLOW;
     
     var commentSaver = new CommentSaver( dataElementId, optionComboId, organisationUnitId, commentValue );
     commentSaver.save();
@@ -134,7 +138,7 @@ function saveComment( dataElementId, optionComboId, commentValue )
  */
 function alertField( field )
 {
-	field.style.backgroundColor = '#ffcc00';
+	field.style.backgroundColor = COLOR_YELLOW;
     field.select();
     field.focus();
     return false;
@@ -146,9 +150,6 @@ function alertField( field )
 
 function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_, resultColor_, selectedOption_ )
 {
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ccccff';
-
     var dataElementId = dataElementId_;
     var optionComboId = optionComboId_;
     var value = value_;
@@ -177,14 +178,14 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         }
         else
         {
-            markValue( ERROR );
+            markValue( COLOR_RED );
             window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
         }
     }
     
     function handleHttpError( errorCode )
     {
-        markValue( ERROR );
+        markValue( COLOR_RED );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
     }   
     
