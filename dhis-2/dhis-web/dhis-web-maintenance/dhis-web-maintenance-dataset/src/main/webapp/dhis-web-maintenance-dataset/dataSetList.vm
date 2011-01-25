@@ -14,7 +14,7 @@
 		</table>
       <table class="listTable" id="listTable">
           <col/>          
-          <col width="240"/>     
+          <col width="190"/>     
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
@@ -29,9 +29,7 @@
                   <a href="defineDataSetAssociationsForm.action?dataSetId=$dataSet.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"/></a>
               
                   <a href="editDataSetForm.action?dataSetId=$dataSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-               
-                  <a href="editDataSetFormCustomValues.action?dataSetId=$dataSet.id&typeTextOnly=true" title="$i18n.getString( 'edit_custom_values' )"><img src="../images/custom_value.png" alt="$i18n.getString( 'edit_custom_values' )"/></a>
-               
+
                    <a href="javascript:translate( 'DataSet', '$dataSet.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
                
                   <a href="javascript:viewDataEntryForm( '$dataSet.id' )" title="$i18n.getString( 'design_data_entry_form' )"><img src="../images/edit_layout.png" alt="$i18n.getString( 'design_data_entry_form' )"/></a>

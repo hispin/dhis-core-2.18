@@ -63,24 +63,6 @@
       <option value="true" #if( $dataValue.value == "true" ) selected="selected" #end>$i18n.getString( "yes" )</option>
       <option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
     </select>
-    #elseif( $dataElement.type == "string" )
-    #set( $coun = 0 )
-      #foreach($customValue in $customValues)
-      #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)                                    
-      #set( $coun = $coun +1 )
-      #end
-      #end
-      #if( $coun > 0 )
-      <select name="entryselect" id="$dataEntryId" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue" ) ) onchange="saveBoolean($dataElement.id,$optionCombo.id, this )"  #else disabled="disabled" #end style="width:100%" tabindex="$tabIndex" #if( $locked ) disabled="disabled"#end>
-      #foreach($customValue in $customValues)
-        #if($dataElement.id == $customValue.dataElement.id && $optionCombo.id == $customValue.optionCombo.id)
-        <option value="$customValue.customValue" #if( $dataValue.value == $customValue.customValue ) selected="selected" #end>$customValue.customValue</option>
-        #end
-      #end
-      </select>
-      #else
-      <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeypress="return keyPress(event,this)" class="entryField #if( $minMaxError ) minmax#end" tabindex="$tabIndex" #if( $locked )disabled="disabled"#end>                                
-      #end
     #else
     <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeypress="return keyPress(event,this)" class="entryField #if( $minMaxError ) minmax#end" tabindex="$tabIndex" #if( $locked )disabled="disabled"#end>
     #end

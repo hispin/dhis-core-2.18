@@ -83,6 +83,7 @@ public class TableAlteror
         executeSql( "DROP TABLE sectionmembers" );
         executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
         executeSql( "DROP TABLE dashboardcontent_datamartexports" );
+        executeSql( "DROP TABLE customvalue" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );

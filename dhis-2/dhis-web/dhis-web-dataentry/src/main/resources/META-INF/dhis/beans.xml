@@ -24,9 +24,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 
-	<bean id="org.hisp.dhis.de.screen.DataEntryScreenManager" class="org.hisp.dhis.de.screen.DefaultDataEntryScreenManager">
-		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService" />
-	</bean>
+	<bean id="org.hisp.dhis.de.screen.DataEntryScreenManager" class="org.hisp.dhis.de.screen.DefaultDataEntryScreenManager"/>
 
 	<!-- Actions -->
 
@@ -66,7 +64,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.SectionFormAction" class="org.hisp.dhis.de.action.SectionFormAction" scope="prototype">
@@ -74,7 +71,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="standardCommentsManager" ref="org.hisp.dhis.de.comments.StandardCommentsManager"/>
 		<property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService"/>
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager"/>
-		<property name="customValueService" ref="org.hisp.dhis.customvalue.CustomValueService"/>
 		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	</bean>
 
