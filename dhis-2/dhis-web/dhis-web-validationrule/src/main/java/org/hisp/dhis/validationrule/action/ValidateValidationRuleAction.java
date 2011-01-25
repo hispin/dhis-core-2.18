@@ -27,18 +27,15 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-/**
+/** 
  * @author Margrethe Store
- * @version $Id: ValidateValidationRuleAction.java 3868 2007-11-08 15:11:12Z
- *          larshelg $
+ * @version $Id: ValidateValidationRuleAction.java 3868 2007-11-08 15:11:12Z larshelg $
  */
 public class ValidateValidationRuleAction
     extends ActionSupport
@@ -53,21 +50,7 @@ public class ValidateValidationRuleAction
     {
         this.validationRuleService = validationRuleService;
     }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
+    
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -78,7 +61,7 @@ public class ValidateValidationRuleAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
+    
     private Integer id;
 
     public void setId( Integer id )
@@ -92,14 +75,7 @@ public class ValidateValidationRuleAction
     {
         this.name = validationName;
     }
-
-    private String periodTypeName;
-
-    public void setPeriodTypeName( String periodTypeName )
-    {
-        this.periodTypeName = periodTypeName;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -117,46 +93,33 @@ public class ValidateValidationRuleAction
 
     public String execute()
     {
-        if ( name != null )
+        if ( name == null )
+        {
+            message = i18n.getString( "specify_name" );
+            
+            return INPUT;
+        }
+        else
         {
             name = name.trim();
 
             if ( name.length() == 0 )
             {
                 message = i18n.getString( "specify_name" );
-
+                
                 return INPUT;
             }
 
             ValidationRule match = validationRuleService.getValidationRuleByName( name );
 
-            if ( match != null && (id == null || match.getId() != id) )
+            if ( match != null && ( id == null || match.getId() != id ) )
             {
                 message = i18n.getString( "name_in_use" );
 
                 return INPUT;
             }
         }
-
-        if ( periodTypeName != null )
-        {
-            periodTypeName = periodTypeName.trim();
-
-            if ( periodTypeName.length() == 0 )
-            {
-                message = i18n.getString( "specify_period_type" );
-
-                return INPUT;
-            }
-
-            if ( !dataSetService.dataSetHasMembers( periodService.getPeriodTypeByName( periodTypeName ) ) )
-            {
-                message = i18n.getString( "specify_period_type_used_in_dataset_has_member" );
-
-                return INPUT;
-            }
-        }
-
+                
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;

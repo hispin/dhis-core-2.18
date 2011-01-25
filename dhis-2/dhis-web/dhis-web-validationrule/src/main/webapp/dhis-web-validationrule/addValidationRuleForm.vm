@@ -14,7 +14,6 @@
 				});
 				
 				checkValueIsExist( "name", "validateValidationRule.action");
-				changePeriodType();
 			}
 	);
 
@@ -35,9 +34,9 @@
 		<td><textarea name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}"></textarea></td>
 	</tr>
 	<tr>
-		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" onchange="changePeriodType()">
+			<select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" >
 				#foreach ( $periodType in $periodTypes )
 				 <option value="$periodType.name" #if( $periodType.name.equals( ${monthlyPeriodTypeName} ) ) selected #end>$i18n.getString($periodType.name)</option>
 				#end						
@@ -46,7 +45,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="operator" name="operator" style="width:20em" class="{validate:{required:true}}">
 				<option value="">[ $i18n.getString( "select_operator" ) ]</option>
