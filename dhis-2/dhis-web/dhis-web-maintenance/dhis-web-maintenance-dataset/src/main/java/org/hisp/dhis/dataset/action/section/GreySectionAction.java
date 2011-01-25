@@ -127,14 +127,14 @@ public class GreySectionAction
         return orderedCategories;
     }
 
-    Map<Integer, Collection<Integer>> colRepeat = new HashMap<Integer, Collection<Integer>>();
+    private Map<Integer, Collection<Integer>> colRepeat = new HashMap<Integer, Collection<Integer>>();
 
     public Map<Integer, Collection<Integer>> getColRepeat()
     {
         return colRepeat;
     }
 
-    Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
+    private Collection<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>();
 
     public Collection<DataElementCategoryOptionCombo> getOptionCombos()
     {
@@ -154,19 +154,19 @@ public class GreySectionAction
     {
         return greyedFields;
     }
-    
+
     private Integer defaultOptionComboId;
-    
-    public Integer getDefaultOptionComboId() 
+
+    public Integer getDefaultOptionComboId()
     {
-		return defaultOptionComboId;
-	}	
+        return defaultOptionComboId;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------    
 
-	public String execute()
+    public String execute()
         throws Exception
     {
         section = sectionService.getSection( sectionId.intValue() );
@@ -230,5 +230,4 @@ public class GreySectionAction
 
         return SUCCESS;
     }
-
 }

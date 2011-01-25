@@ -43,16 +43,6 @@ public class AddSectionAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Variables
-    // -------------------------------------------------------------------------
-
-    private Integer dataSetId;
-
-    private String sectionName;
-
-    private List<String> selectedList = new ArrayList<String>();
-
-    // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
@@ -81,15 +71,21 @@ public class AddSectionAction
     // Input
     // -------------------------------------------------------------------------
 
+    private Integer dataSetId;
+
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
     }
 
+    private String sectionName;
+
     public void setSectionName( String sectionName )
     {
         this.sectionName = sectionName;
     }
+
+    private List<String> selectedList = new ArrayList<String>();
 
     public void setSelectedList( List<String> selectedList )
     {
