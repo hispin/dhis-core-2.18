@@ -162,8 +162,8 @@ public class AddDataSetAction
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
         dataSet.setMobile( mobile );
-
         dataSet.setVersion( 1 );
+        
         for ( String id : selectedList )
         {
             DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );

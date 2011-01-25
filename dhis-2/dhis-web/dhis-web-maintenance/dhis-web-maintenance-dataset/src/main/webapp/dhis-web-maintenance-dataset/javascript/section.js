@@ -30,22 +30,27 @@ function sortOrderSubmit() {
 	}
 }
 
-function getSectionByDataSet(dataSetId) {
+function getSectionByDataSet(dataSetId) 
+{
 	window.location = "section.action?dataSetId=" + dataSetId;
 }
-function removeSection(sectionId, sectionName) {
-	removeItem(sectionId, sectionName, i18n_confirm_delete,
-			"removeSection.action");
+
+function removeSection(sectionId, sectionName) 
+{
+	removeItem(sectionId, sectionName, i18n_confirm_delete,	"removeSection.action");
 }
 
-function addSectionSubmit() {
+function addSectionSubmit() 
+{
 	var dataSetId = document.getElementById('dataSetId').value;
 	var categoryComboId = document.getElementById('categoryComboId').value;
 
-	if (dataSetId == "null" || dataSetId == "" || categoryComboId == "null"	|| categoryComboId == "") {
+	if ( dataSetId == "null" || dataSetId == "" || categoryComboId == "null" || categoryComboId == "" ) 
+	{
 		showWarningMessage( i18n_please_select_dataset_categorycombo );
 	} 
-	else {
+	else 
+	{
 		window.location.href = "getSectionOptions.action?dataSetId=" + dataSetId + "&categoryComboId=" + categoryComboId;
 	}
 }
