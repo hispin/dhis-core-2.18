@@ -90,70 +90,54 @@ public class EditSectionAction
     }
 
     // -------------------------------------------------------------------------
-    // Input & output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer sectionId;
-
-    private Section section;
-
-    private DataSet dataSet;
-
-    private DataElementCategoryCombo categoryCombo;
-
-    private List<DataElement> dataElementOfDataSet = new ArrayList<DataElement>();
-
-    private List<DataElementGroup> dataElementGroups;
 
     public Integer getSectionId()
     {
         return sectionId;
     }
-
+    
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
     }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private Section section;
 
     public Section getSection()
     {
         return section;
     }
 
-    public void setSection( Section section )
-    {
-        this.section = section;
-    }
-
-    public List<DataElement> getDataElementOfDataSet()
-    {
-        return dataElementOfDataSet;
-    }
-
-    public void setDataElementOfDataSet( List<DataElement> dataElementOfDataSet )
-    {
-        this.dataElementOfDataSet = dataElementOfDataSet;
-    }
+    private DataSet dataSet;
 
     public DataSet getDataSet()
     {
         return dataSet;
     }
 
-    public void setDataSet( DataSet dataSet )
-    {
-        this.dataSet = dataSet;
-    }
-
-    public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
-    {
-        this.categoryCombo = categoryCombo;
-    }
+    private DataElementCategoryCombo categoryCombo;
 
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
     }
+
+    private List<DataElement> dataElementOfDataSet;
+
+    public List<DataElement> getDataElementOfDataSet()
+    {
+        return dataElementOfDataSet;
+    }
+
+    private List<DataElementGroup> dataElementGroups;
 
     public List<DataElementGroup> getDataElementGroups()
     {
