@@ -38,10 +38,9 @@ import org.apache.poi.ss.usermodel.Font;
  */
 public interface InitializePOIStylesManager
 {
-
-    /** ************************************************** */
-    /** Methods */
-    /** ************************************************** */
+    // -------------------------------------------------------------------------
+    // Default methods
+    // -------------------------------------------------------------------------
 
     // Header initDefaultHeader();
     void initDefaultHeader( HSSFHeader header );
@@ -52,21 +51,21 @@ public interface InitializePOIStylesManager
     // CellStyle initDefaultCellStyle();
     void initDefaultCellStyle( CellStyle cs, Font font );
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // -------------------------------------------------------------------------
     // Use for XLS and XLSX Extension
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // -------------------------------------------------------------------------
 
     void initHeader( HSSFHeader header, String sCenter, String sLeft, String sRight );
 
     void initFont( Font test_font, String sFontName, short fontHeightInPoints, short boldWeight, short fontColor );
 
-    void initCellStyle( CellStyle test_cs, Font font, short borderBottom, short bottomBorderColor,
-        short borderTop, short topBorderColor, short borderLeft, short leftBorderColor, short borderRight,
-        short rightBorderColor, short alignment, boolean bAutoWrap );
-
-    void initCellStyle( CellStyle test_cs, Font font, short fillBgColor, short fillFgColor,
-        short fillPattern, short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor,
-        short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat,
+    void initCellStyle( CellStyle test_cs, Font font, short borderBottom, short bottomBorderColor, short borderTop,
+        short topBorderColor, short borderLeft, short leftBorderColor, short borderRight, short rightBorderColor,
         short alignment, boolean bAutoWrap );
+
+    void initCellStyle( CellStyle test_cs, Font font, short fillBgColor, short fillFgColor, short fillPattern,
+        short borderBottom, short bottomBorderColor, short borderTop, short topBorderColor, short borderLeft,
+        short leftBorderColor, short borderRight, short rightBorderColor, short dataFormat, short alignment,
+        boolean bAutoWrap );
 
 }

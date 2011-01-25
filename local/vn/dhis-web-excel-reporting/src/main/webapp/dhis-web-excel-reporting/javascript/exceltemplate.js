@@ -197,6 +197,26 @@ function updateReportExcelByTemplateCompleted( xmlObject ) {
 // Validate Upload Excel Template
 //----------------------------------------------------------
 
+function validateUploadExcelManagement( fileName, columnIndex )
+{
+    var rows = byId( 'list' ).getElementsByTagName( 'tr' );
+    
+    for ( var i = 0; i < rows.length; i++ )
+    {
+        var cell = rows[i].getElementsByTagName( 'td' )[columnIndex-1];
+        var value = cell.firstChild.nodeValue;
+		
+        if ( value.toLowerCase().indexOf( fileName.toLowerCase() ) != -1 )
+        {
+            // file is existsing
+			return window.confirm( i18n_confirm_override );
+        }
+    }
+	
+	// normally upload
+	return true;
+}
+
 function validateUploadExcelTemplate()
 {
 	$.ajaxFileUpload
@@ -213,7 +233,7 @@ function validateUploadExcelTemplate()
 				
 				if ( type == 'error' )
 				{                    
-					setMessage(data.firstChild.nodeValue);
+					setMessage( data.firstChild.nodeValue );
 				}
 				else if ( type == 'input' )
 				{

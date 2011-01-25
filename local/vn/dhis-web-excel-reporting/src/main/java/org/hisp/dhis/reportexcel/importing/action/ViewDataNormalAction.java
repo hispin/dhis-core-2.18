@@ -32,8 +32,10 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
 import org.hisp.dhis.reportexcel.importing.ExcelItemValue;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
@@ -42,13 +44,13 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id
  */
 
 public class ViewDataNormalAction
     implements Action
 {
-
     // --------------------------------------------------------------------
     // Inputs && Outputs
     // --------------------------------------------------------------------
@@ -58,6 +60,10 @@ public class ViewDataNormalAction
     private List<ExcelItemValue> excelItemValues;
 
     private ArrayList<ExcelItem> excelItems;
+    
+    private String message;
+    
+    private I18n i18n;
 
     // --------------------------------------------------------------------
     // Getters and Setters
@@ -78,6 +84,16 @@ public class ViewDataNormalAction
         return excelItemValues;
     }
 
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // --------------------------------------------------------------------
     // Action implementation
     // --------------------------------------------------------------------
@@ -88,22 +104,24 @@ public class ViewDataNormalAction
         {
             FileInputStream inputStream = new FileInputStream( upload );
 
-            HSSFWorkbook wb = new HSSFWorkbook( inputStream );
+            Workbook wb = new HSSFWorkbook( inputStream );
 
             excelItemValues = new ArrayList<ExcelItemValue>();
 
+            if ( excelItems == null || !excelItems.isEmpty() )
+            {
+                message = i18n.getString( "import_excel_items_cannot_be_empty" );
+                
+                return ERROR;
+            }
+            
             for ( ExcelItem excelItem : excelItems )
             {
-                HSSFSheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
+                Sheet sheet = wb.getSheetAt( excelItem.getSheetNo() - 1 );
 
                 String value = ExcelUtils.readValueImportingByPOI( excelItem.getRow(), excelItem.getColumn(), sheet );
 
-                ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value );
-
-                if ( value.length() == 0 )
-                {
-                    excelItemvalue.setValue( 0 + "" );
-                }
+                ExcelItemValue excelItemvalue = new ExcelItemValue( excelItem, value.trim() );
 
                 excelItemValues.add( excelItemvalue );
             }
@@ -113,10 +131,7 @@ public class ViewDataNormalAction
         }
         catch ( Exception ex )
         {
-            ex.printStackTrace();
+            throw new RuntimeException("Error while previewing the imported value", ex);
         }
-
-        return ERROR;
     }
-
 }

@@ -116,6 +116,5 @@ public class ViewDataFlowAction
         Collections.sort( excelItems, new ExcelItemComparator() );
 
         return excelItemGroup.getType();
-
     }
 }

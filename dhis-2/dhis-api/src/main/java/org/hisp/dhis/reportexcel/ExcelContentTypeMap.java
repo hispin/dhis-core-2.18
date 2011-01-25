@@ -1,3 +1,4 @@
+package org.hisp.dhis.reportexcel;
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -24,32 +25,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportexcel;
 
-import java.io.File;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public interface ReportLocationManager
-{
-    public static final String REPORT_DIR = "excelreporting";
 
-    public static final String REPORT_TEMP_DIR = "temp";
+public class ExcelContentTypeMap
+{
+    private static final String APPLICATION = "application/";
     
-    public File getReportExcelTempDirectory();
+    private static Map<String, String> contentTypes;
     
-    public File getOrganisationDirectory( OrganisationUnit organisationUnit );
+    static
+    {
+        contentTypes = new HashMap<String, String>();
+        
+        contentTypes.put( "xls", APPLICATION + "xls" );
+        
+        //contentTypes.put( "default", APPLICATION + "vnd.ms-excel" );
+        //contentTypes.put( "ods", APPLICATION + "octet-stream" );
+        //contentTypes.put( "xlsx", APPLICATION + "vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
+    }
+
+    public static String getContentTypeByKey( String key )
+    {
+        return contentTypes.get( key );
+    }
     
-    public List<File> getListFileInOrganisationDirectory( OrganisationUnit organisationUnit ); 
-    
-    public File getReportExcelDirectory();
-    
-    public File getReportExcelTemplateDirectory();
-    
-    public boolean isFileTypeSupported( String extension, String contentType );
+    public static Map<String, String> getContentTypes()
+    {
+        return contentTypes;
+    }
 }

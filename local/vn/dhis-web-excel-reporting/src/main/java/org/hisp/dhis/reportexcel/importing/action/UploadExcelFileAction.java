@@ -42,9 +42,9 @@ import org.hisp.dhis.system.util.StreamUtils;
 public class UploadExcelFileAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportLocationManager reportLocationManager;
 
@@ -60,9 +60,9 @@ public class UploadExcelFileAction
         this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String fileName;
 

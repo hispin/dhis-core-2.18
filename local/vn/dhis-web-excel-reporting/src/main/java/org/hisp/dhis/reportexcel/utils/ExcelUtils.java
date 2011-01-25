@@ -49,18 +49,9 @@ import jxl.write.biff.RowsExceededException;
  */
 public class ExcelUtils
 {
-
     private static Pattern pattern = null;
 
     private static Matcher matcher = null;
-
-    public static final String ZERO = "0.0";
-    
-    public static final String TEXT = "TEXT";
-
-    public static final String NUMBER = "NUMBER";
-
-    public static final String EXTENSION_XLS = ".xls";
 
     private static final String PATTERN_FOR_ROW = "(\\d{1,})";
 
@@ -76,6 +67,14 @@ public class ExcelUtils
 
     private static final Byte POI_CELLERROR_INFINITE = (byte) org.apache.poi.ss.usermodel.ErrorConstants.ERROR_NUM;
 
+    public static final String ZERO = "0.0";
+
+    public static final String TEXT = "TEXT";
+
+    public static final String NUMBER = "NUMBER";
+
+    public static final String EXTENSION_XLS = ".xls";
+    
     // -------------------------------------------------------------------------
     //
     // -------------------------------------------------------------------------
@@ -132,7 +131,14 @@ public class ExcelUtils
     public static org.apache.poi.ss.usermodel.Cell getCellByPOI( int row, int column,
         org.apache.poi.ss.usermodel.Sheet sheetPOI )
     {
-        return sheetPOI.getRow( row - 1 ).getCell( column - 1 );
+        org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
+
+        if ( rowPOI == null )
+        {
+            return null;
+        }
+
+        return rowPOI.getCell( column - 1 );
     }
 
     /* POI - Read the value of specified cell */
@@ -190,11 +196,15 @@ public class ExcelUtils
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK:
                 value = cellPOI.getRichStringCellValue().toString();
                 break;
-                
+
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:
                 value = String.valueOf( cellPOI.getNumericCellValue() );
                 break;
             }
+        }
+        else
+        {
+            System.out.println( "Cell at [" + row + "][" + column + "] is null" );
         }
 
         return value;
@@ -211,7 +221,6 @@ public class ExcelUtils
     {
         if ( row > 0 && column > 0 )
         {
-
             org.apache.poi.ss.usermodel.Row rowPOI = sheetPOI.getRow( row - 1 );
             org.apache.poi.ss.usermodel.CellStyle cellStylePOI = sheetPOI.getColumnStyle( column - 1 );
 
@@ -282,7 +291,7 @@ public class ExcelUtils
             }
             else if ( type.equalsIgnoreCase( ExcelUtils.NUMBER ) )
             {
-                if ( value == null  )
+                if ( value == null )
                 {
                     cellPOI.setCellType( POI_CELLSTYLE_BLANK );
                 }
@@ -353,7 +362,6 @@ public class ExcelUtils
 
     public static String convertColNumberToColName( int column )
     {
-
         String ConvertToLetter = "";
 
         int iAlpha = column / 27;
@@ -445,6 +453,10 @@ public class ExcelUtils
 
         return string_formula;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private static void applyingPatternForColumn( String sCell, StringBuffer buffer, int iCol )
     {
