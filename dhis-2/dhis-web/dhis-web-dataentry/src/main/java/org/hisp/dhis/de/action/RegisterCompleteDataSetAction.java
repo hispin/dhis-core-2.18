@@ -34,8 +34,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.de.state.SelectedStateManager;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,70 +64,18 @@ public class RegisterCompleteDataSetAction
         this.selectedStateManager = selectedStateManager;
     }
 
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private String date;
-
-    public void setDate( String date )
-    {
-        this.date = date;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        Date oDate;
-
-        if ( date == null || date.trim().length() == 0 )
-        {
-            message = i18n.getString( "specify_input_date" );
-
-            return INPUT;
-        }
-        else
-        {
-            oDate = format.parseDate( date.trim() );
-
-            if ( oDate == null )
-            {
-                message = i18n.getString( "specify_valid_input_date" );
-
-                return INPUT;
-            }
-        }
-
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
         registration.setDataSet( selectedStateManager.getSelectedDataSet() );
         registration.setPeriod( selectedStateManager.getSelectedPeriod() );
         registration.setSource( selectedStateManager.getSelectedOrganisationUnit() );
-        registration.setDate( oDate );
+        registration.setDate( new Date() );
 
         registrationService.saveCompleteDataSetRegistration( registration );
 
