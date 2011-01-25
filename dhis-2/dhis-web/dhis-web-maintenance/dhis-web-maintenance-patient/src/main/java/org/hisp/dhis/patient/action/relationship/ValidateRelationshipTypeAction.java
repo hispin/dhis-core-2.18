@@ -28,7 +28,6 @@
 package org.hisp.dhis.patient.action.relationship;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.relationship.RelationshipTypeService;
 

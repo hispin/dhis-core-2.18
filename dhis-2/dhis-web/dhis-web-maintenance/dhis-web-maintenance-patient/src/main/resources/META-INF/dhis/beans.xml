@@ -891,24 +891,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
-	<bean
-		id="org.hisp.dhis.patient.action.dataentryform.GetCustomValuesAction"
-		class="org.hisp.dhis.patient.action.dataentryform.GetCustomValuesAction"
-		scope="prototype">
-		<property name="dataEntryFormService">
-			<ref bean="org.hisp.dhis.dataentryform.DataEntryFormService" />
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-		<property name="dataElementCategoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		</property>
-		<property name="customValueService">
-			<ref bean="org.hisp.dhis.customvalue.CustomValueService" />
-		</property>
-	</bean>
-
 	<!-- Patient Attribute Group -->
 
 	<bean

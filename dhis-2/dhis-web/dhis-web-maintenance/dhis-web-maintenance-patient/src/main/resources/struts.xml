@@ -865,13 +865,6 @@
 			<result name="success" type="velocity-xml">/dhis-web-maintenance-patient/responseSelDataElementList.vm</result>
 		</action>		
 
-		<action name="getCustomValues"
-			class="org.hisp.dhis.patient.action.dataentryform.GetCustomValuesAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseCustomValue.vm
-			</result>
-		</action>
-
 		<action name="showDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.ShowDataEntryFormAction">
 			<result name="success" type="velocity">
