@@ -144,20 +144,6 @@ public class SaveCommentAction
         return statusCode;
     }
 
-    private Date timestamp;
-
-    public Date getTimestamp()
-    {
-        return timestamp;
-    }
-
-    private String storedBy;
-
-    public String getStoredBy()
-    {
-        return storedBy;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -172,7 +158,7 @@ public class SaveCommentAction
 
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
-        storedBy = currentUserService.getCurrentUsername();
+        String storedBy = currentUserService.getCurrentUsername();
 
         if ( storedBy == null )
         {
@@ -211,12 +197,6 @@ public class SaveCommentAction
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );
-        }
-
-        if ( dataValue != null )
-        {
-            this.timestamp = dataValue.getTimestamp();
-            this.storedBy = dataValue.getStoredBy();
         }
 
         return SUCCESS;

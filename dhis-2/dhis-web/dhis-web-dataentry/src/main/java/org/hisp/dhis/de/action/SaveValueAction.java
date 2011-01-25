@@ -142,25 +142,11 @@ public class SaveValueAction
         return optionComboId;
     }
 
-    private int statusCode;
+    private int statusCode = 0;
 
     public int getStatusCode()
     {
         return statusCode;
-    }
-
-    private Date timestamp;
-
-    public Date getTimestamp()
-    {
-        return timestamp;
-    }
-
-    private String storedBy;
-
-    public String getStoredBy()
-    {
-        return storedBy;
     }
 
     private String inputId;
@@ -187,7 +173,7 @@ public class SaveValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        storedBy = currentUserService.getCurrentUsername();
+        String storedBy = currentUserService.getCurrentUsername();
 
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
@@ -232,12 +218,6 @@ public class SaveValueAction
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );
-        }
-
-        if ( dataValue != null )
-        {
-            this.timestamp = dataValue.getTimestamp();
-            this.storedBy = dataValue.getStoredBy();
         }
 
         return SUCCESS;
