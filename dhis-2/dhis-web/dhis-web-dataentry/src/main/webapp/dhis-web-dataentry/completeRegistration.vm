@@ -1,17 +1,13 @@
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 <hr style="clear:both">
-<table>
-  <tr>
-    <td><input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()"#if( $registration ) disabled="disabled"#end></td>
-    <td><input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration ) disabled="disabled"#end></td>
-    <td><input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}"></td>
-    <td><div id="dateDiv" name="dateDiv" #if( $registration ) style="display:none"#else style="display:inline"#end>
-  </tr>
-</table>
+<input type="button" id="completeButton" name="completeButton" value="$i18n.getString( 'complete' )" onclick="validateCompleteDataSet()" style="width:100px"#if( $registration ) disabled="disabled"#end>
+<input type="button" id="undoButton" name="undoButton" value="$i18n.getString( 'undo' )" onclick="undoCompleteDataSet()"#if( !$registration ) disabled="disabled"#end>
+<input type="text" id="dateField" name="dateField" value="$!format.formatDate( $registrationDate )" style="width:160px"#if( $registration ) disabled="disabled"#end class="{validate:{required:true,dateISO:true}}">
+<span id="dateDiv" name="dateDiv" #if( $registration ) style="display:none"#else style="display:inline"#end>
+<input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:100px"><br>
 <span id="message"></span>
 <script type="text/javascript">
    jQuery(document).ready(function(){
 		datePicker( 'dateField' );
    });
 </script>
-
