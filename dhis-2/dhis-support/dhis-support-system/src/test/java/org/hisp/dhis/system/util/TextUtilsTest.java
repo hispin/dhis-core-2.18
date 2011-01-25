@@ -30,6 +30,7 @@ package org.hisp.dhis.system.util;
 import junit.framework.TestCase;
 
 import static org.hisp.dhis.system.util.TextUtils.subString;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 /**
  * @author Lars Helge Overland
@@ -55,5 +56,10 @@ public class TextUtilsTest
         assertEquals( "j", subString( STRING, 9, 1 ) );
         
         assertEquals( "", subString( STRING, 4, 0 ) );
+    }
+    
+    public void testGetTrimmedValue()
+    {
+        assertEquals( "abc def 123", getTrimmedValue( " abc     def   123   " ) );
     }
 }

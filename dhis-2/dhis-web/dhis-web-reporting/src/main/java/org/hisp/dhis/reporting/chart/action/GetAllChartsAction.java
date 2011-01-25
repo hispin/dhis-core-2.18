@@ -28,6 +28,7 @@ package org.hisp.dhis.reporting.chart.action;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class GetAllChartsAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
 
     private List<Chart> charts;

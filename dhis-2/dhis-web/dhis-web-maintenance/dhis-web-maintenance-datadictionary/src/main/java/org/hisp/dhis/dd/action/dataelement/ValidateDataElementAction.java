@@ -115,7 +115,6 @@ public class ValidateDataElementAction
 
         if ( name != null )
         {
-
             DataElement match = dataElementService.getDataElementByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
@@ -149,7 +148,7 @@ public class ValidateDataElementAction
 
                 return ERROR;
             }
-        }      
+        }
    
 
         // ---------------------------------------------------------------------

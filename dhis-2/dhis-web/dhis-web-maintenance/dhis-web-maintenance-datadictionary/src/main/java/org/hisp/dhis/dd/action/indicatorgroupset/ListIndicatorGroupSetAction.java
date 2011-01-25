@@ -28,6 +28,7 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,7 +78,7 @@ public class ListIndicatorGroupSetAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
 
     // -------------------------------------------------------------------------

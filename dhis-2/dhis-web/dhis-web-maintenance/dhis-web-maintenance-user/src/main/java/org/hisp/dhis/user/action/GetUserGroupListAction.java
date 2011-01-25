@@ -28,6 +28,7 @@ package org.hisp.dhis.user.action;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class GetUserGroupListAction
 
     public void setKey( String key )
     {
-        this.key = key;
+        this.key = getTrimmedValue( key );
     }
     // -------------------------------------------------------------------------
     // Action Implementation

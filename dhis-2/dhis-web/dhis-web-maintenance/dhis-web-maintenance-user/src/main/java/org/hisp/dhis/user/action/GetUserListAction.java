@@ -28,6 +28,7 @@ package org.hisp.dhis.user.action;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,14 +86,14 @@ public class GetUserListAction
 
     private String key;
 
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
-
     public String getKey()
     {
         return key;
+    }
+
+    public void setKey( String key )
+    {
+        this.key = getTrimmedValue( key );
     }
 
     // -------------------------------------------------------------------------
@@ -101,18 +102,20 @@ public class GetUserListAction
 
     public String execute()
         throws Exception
-    {        
+    {
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( userService.getUserCountByName( key ) );
-            
-            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+
+            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetweenByName( key, paging
+                .getStartPos(), paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( userService.getUserCount() );
-            
-            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+            userCredentialsList = new ArrayList<UserCredentials>( userService.getUsersBetween( paging.getStartPos(),
+                paging.getPageSize() ) );
         }
 
         Collections.sort( userCredentialsList, new UsernameComparator() );
@@ -120,7 +123,7 @@ public class GetUserListAction
         UserCredentials userCredentials = userService.getUserCredentials( currentUser );
 
         currentUserName = userCredentials.getUsername();
-        
+
         return SUCCESS;
     }
 }

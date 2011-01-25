@@ -660,7 +660,7 @@ $.extend($.validator, {
 			// select by name and filter by form for performance over form.find("[name=...]")
 			var form = this.currentForm;
 			return $(document.getElementsByName(name)).map(function(index, element) {
-				return element.form == form && element.name == name && element  || null;
+				return element.form == form && element.name == name && element || null;
 			});
 		},
 		
