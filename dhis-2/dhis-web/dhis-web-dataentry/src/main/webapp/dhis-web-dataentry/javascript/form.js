@@ -390,10 +390,8 @@ function registerCompleteDataSet( messageElement )
     var type = messageElement.getAttribute( 'type' );
     
     if ( type == "none" )
-    {
-        var date = document.getElementById( "dateField" ).value;
-    
-        var url = "registerCompleteDataSet.action?date=" + date;
+    {    
+        var url = "registerCompleteDataSet.action";
     
         var request = new Request();
 		request.setResponseTypeXML( 'message' );
@@ -418,8 +416,6 @@ function registerReceived( messageElement )
 	
 	document.getElementById( "completeButton" ).disabled = true;
 	document.getElementById( "undoButton" ).disabled = false;
-    document.getElementById( "dateField" ).disabled = true;
-    document.getElementById( "dateDiv" ).style.display = "none";
 }
 
 function undoCompleteDataSet()
@@ -440,8 +436,6 @@ function undoReceived( messageElement )
 {
     document.getElementById( "completeButton" ).disabled = false;
     document.getElementById( "undoButton" ).disabled = true;
-    document.getElementById( "dateField" ).disabled = false;
-    document.getElementById( "dateDiv" ).style.display = "inline";
 }
 
 // -----------------------------------------------------------------------------
