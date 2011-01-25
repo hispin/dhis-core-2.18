@@ -31,7 +31,9 @@
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'create' )"></a>                   
 						<a href="displayAddReportForm.action?id=$report.id" title="$i18n.getString( 'edit_report' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit_report' )"></a>
 						<a href="javascript:addToDashboard( '$report.id' )" title="$i18n.getString( 'add_to_dashboard' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'add_to_dashboard' )"></a>
+						#if( $auth.hasAccess( "dhis-web-reporting", "removeReport" ) )
 						<a href="javascript:removeReport( $report.id )" title="$i18n.getString( 'remove_report' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove_report' )"></a>
+						#else <img src="../images/delete-denied.png"> #end
 					</td>
                 </tr>
                 #end
