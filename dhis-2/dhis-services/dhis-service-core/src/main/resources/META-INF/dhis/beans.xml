@@ -18,12 +18,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 
-	<bean id="org.hisp.dhis.customvalue.CustomValueStore"
-		class="org.hisp.dhis.customvalue.hibernate.HibernateCustomValueStore">
-		<property name="clazz" value="org.hisp.dhis.customvalue.CustomValue" />
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
 	<bean id="org.hisp.dhis.dataelement.DataElementStore"
 		class="org.hisp.dhis.dataelement.hibernate.HibernateDataElementStore">
 		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement"/>
@@ -216,17 +210,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-
 	<!-- Service definitions -->
 
 	<bean id="org.hisp.dhis.dataelement.DataElementOperandService"
 		class="org.hisp.dhis.dataelement.DefaultDataElementOperandService">
 		<property name="dataElementOperandStore"
 			ref="org.hisp.dhis.dataelement.DataElementOperandStore" />
-	</bean>
-
-	<bean id="org.hisp.dhis.customvalue.CustomValueService" class="org.hisp.dhis.customvalue.DefaultCustomValueService">
-		<property name="customValueStore" ref="org.hisp.dhis.customvalue.CustomValueStore" />
 	</bean>
 
 	<bean id="org.hisp.dhis.datavalue.DataValueService" class="org.hisp.dhis.datavalue.DefaultDataValueService">

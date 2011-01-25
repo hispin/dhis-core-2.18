@@ -3,26 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	
-	<!-- Custom Value -->
-	
-	<bean id="org.hisp.dhis.dataset.action.dataentryform.GetCustomValuesAction"
-		class="org.hisp.dhis.dataset.action.dataentryform.GetCustomValuesAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService"/>
-		</property>
-		<property name="dataElementCategoryService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-		</property>
-		<property name="customValueService">
-			<ref bean="org.hisp.dhis.customvalue.CustomValueService"/>
-		</property>
-	</bean>
-	
+		
 	<!-- Section -->
 	
 	<bean id="org.hisp.dhis.dataset.action.section.GetSectionAction"

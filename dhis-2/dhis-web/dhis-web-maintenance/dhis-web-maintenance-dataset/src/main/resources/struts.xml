@@ -13,17 +13,7 @@
       <param name="page">/dhis-web-maintenance-dataset/index.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
 	</action>
-	
-    <!-- Custom Value -->
-
-    <action name="editDataSetFormCustomValues"
-      class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataset/editCustomValues.vm</param>
-      <param name="javascripts">javascript/dataSet.js</param>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-        
+	        
     <!-- Dataset -->
     
     <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
@@ -288,12 +278,6 @@
     <action name="getOptionCombos"
       class="org.hisp.dhis.dataset.action.dataentryform.GetOptionCombosAction">
       <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseOptionCombo.vm</result>
-      <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
-    </action>
-
-    <action name="getCustomValues"
-      class="org.hisp.dhis.dataset.action.dataentryform.GetCustomValuesAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseCustomValue.vm</result>
       <param name="javascripts">javascript/dataEntryForm.js,javascript/FCK/fckeditor.js</param>
     </action>
     

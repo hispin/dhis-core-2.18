@@ -29,19 +29,15 @@ package org.hisp.dhis.de.screen;
 
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_INT;
-import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_STRING;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.customvalue.CustomValue;
-import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
@@ -60,29 +56,12 @@ public class DefaultDataEntryScreenManager
     private static final String EMPTY = "";
 
     // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private CustomValueService customValueService;
-
-    public void setCustomValueService( CustomValueService customValueService )
-    {
-        this.customValueService = customValueService;
-    }
-
-    // -------------------------------------------------------------------------
     // DataEntryScreenManager implementation
     // -------------------------------------------------------------------------
     
     public String populateCustomDataEntryScreenForMultiDimensional( String dataEntryFormCode,
         Collection<DataValue> dataValues, Map<String, MinMaxDataElement> minMaxMap, String disabled, I18n i18n, DataSet dataSet )
     {
-        // ---------------------------------------------------------------------
-        // Populating Custom Value data
-        // ---------------------------------------------------------------------
-
-        List<CustomValue> customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
-
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -167,10 +146,7 @@ public class DefaultDataEntryScreenManager
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
 
-                boolean customValueExists = customValuesExists( customValues, dataElementId, optionComboId );
-
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL )
-                    || (dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists) )
+                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
                 {
                     dataElementCode = dataElementCode.replace( "input", "select" );
                     dataElementCode = dataElementCode.replaceAll( "value=\".*?\"", "" );
@@ -259,32 +235,6 @@ public class DefaultDataEntryScreenManager
 
                     appendCode += "</select>";
                 }
-                else if ( dataElement.getType().equals( VALUE_TYPE_STRING ) && customValueExists )
-                {
-                    appendCode += jsCodeForCombos;
-
-                    appendCode += "<option value=\"\"></option>";
-
-                    for ( CustomValue customValue : customValues )
-                    {
-                        if ( dataElementId == customValue.getDataElement().getId()
-                            && optionComboId == customValue.getOptionCombo().getId() )
-                        {
-                            if ( dataElementValue.equalsIgnoreCase( customValue.getCustomValue() ) )
-                            {
-                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\" selected >"
-                                    + customValue.getCustomValue() + "</option>";
-                            }
-                            else
-                            {
-                                appendCode += "<option value=\"" + customValue.getCustomValue() + "\">"
-                                    + customValue.getCustomValue() + "</option>";
-                            }
-                        }
-                    }
-
-                    appendCode += "</select>";
-                }
                 else
                 {
                     appendCode += jsCodeForInputs;
@@ -328,25 +278,6 @@ public class DefaultDataEntryScreenManager
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Tests whether the given Collection of CustomValues contains a CustomValue
-     * with the given data element identifier and category option combo id.
-     */
-    private boolean customValuesExists( Collection<CustomValue> customValues, int dataElementId,
-        int categoryOptionComboId )
-    {
-        for ( CustomValue customValue : customValues )
-        {
-            if ( dataElementId == customValue.getDataElement().getId()
-                && categoryOptionComboId == customValue.getOptionCombo().getId() )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Returns the value of the DataValue in the Collection of DataValues with

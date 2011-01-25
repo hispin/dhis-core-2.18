@@ -9,26 +9,19 @@
 			});
 		
 		checkValueIsExist( "name", "validateDataSet.action", {dataSetId: function(){return jQuery("#dataSetId").val()}});
-		
 		checkValueIsExist( "shortName", "validateDataSet.action", {dataSetId: function(){return jQuery("#dataSetId").val()}} );
-		
 		checkValueIsExist( "code", "validateDataSet.action", {dataSetId: function(){return jQuery("#dataSetId").val()}});		
 	});	
 	
 	var previousName = '';
-	
 </script>
 
 <h3>$i18n.getString( "edit_dataset" )</h3>
 
 <form id="editDataSetForm" name="editDataSetForm" action="updateDataSet.action" method="post" >
-  <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id"/>
-  </div>
   
   <table id="detailsList">
-    <col/> ## Labels
-    <col/> ## Input
     <thead>
       <tr>
         <th colspan="2">$i18n.getString( "dataset_details" )</th>
@@ -50,9 +43,6 @@
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-          <!--
-            Combobox with all available period types (registration frequencies.
-          -->
           <select id="frequencySelect" name="frequencySelect" style="min-width:20em">
             #foreach ( $periodType in $periodTypes )
               <option value="$periodType.name" #if( $dataSet.periodType.name.equals( $periodType.name ) ) selected="selected" #end>$i18n.getString( $periodType.name )</option>

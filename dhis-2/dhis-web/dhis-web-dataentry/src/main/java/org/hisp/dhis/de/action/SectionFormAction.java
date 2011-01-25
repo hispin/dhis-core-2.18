@@ -34,8 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hisp.dhis.customvalue.CustomValue;
-import org.hisp.dhis.customvalue.CustomValueService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -68,18 +66,6 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private CustomValueService customValueService;
-
-    public CustomValueService getCustomValueService()
-    {
-        return customValueService;
-    }
-
-    public void setCustomValueService( CustomValueService customValueService )
-    {
-        this.customValueService = customValueService;
-    }
 
     private DataValueService dataValueService;
 
@@ -126,13 +112,6 @@ public class SectionFormAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
-    private List<CustomValue> customValues = new ArrayList<CustomValue>();
-
-    public List<CustomValue> getCustomValues()
-    {
-        return customValues;
-    }
 
     private List<Section> sections;
 
@@ -299,8 +278,6 @@ public class SectionFormAction
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         DataSet dataSet = selectedStateManager.getSelectedDataSet();
-
-        customValues = (List<CustomValue>) customValueService.getCustomValuesByDataSet( dataSet );
 
         Period period = selectedStateManager.getSelectedPeriod();
 
