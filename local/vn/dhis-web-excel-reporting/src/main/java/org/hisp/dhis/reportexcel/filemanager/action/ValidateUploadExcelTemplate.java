@@ -27,6 +27,8 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.io.FilenameUtils.getExtension;
+
 import java.io.File;
 
 import org.hisp.dhis.i18n.I18n;
@@ -36,15 +38,14 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id
  */
 public class ValidateUploadExcelTemplate
     implements Action
 {
-    private static final String TEMPLATE_TYPE = "application/vnd.ms-excel";
-
     // -------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------
 
     private ReportLocationManager reportLocationManager;
@@ -63,8 +64,10 @@ public class ValidateUploadExcelTemplate
     private String uploadContentType; // The content type of the file
 
     private String uploadFileName; // The uploaded file name
-  
+
     private String message;
+
+    private boolean isDraft;
 
     private I18n i18n;
 
@@ -87,6 +90,11 @@ public class ValidateUploadExcelTemplate
         return message;
     }
 
+    public void setDraft( boolean isDraft )
+    {
+        this.isDraft = isDraft;
+    }
+
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
@@ -104,8 +112,7 @@ public class ValidateUploadExcelTemplate
     @Override
     public String execute()
         throws Exception
-    {       
-        
+    {
         if ( upload == null || !upload.exists() )
         {
             message = i18n.getString( "upload_file_null" );
@@ -113,24 +120,53 @@ public class ValidateUploadExcelTemplate
             return ERROR;
         }
 
-        if ( !TEMPLATE_TYPE.contains( uploadContentType )  )
+        if ( !reportLocationManager.isFileTypeSupported( getExtension( upload.getName() ), uploadContentType ) )
         {
             message = i18n.getString( "file_type_not_supported" );
 
             return ERROR;
         }
-        
+
+        if ( isDraft )
+        {
+            File tempImportDirectory = reportLocationManager.getReportExcelTempDirectory();
+
+            if ( !tempImportDirectory.canRead() || !tempImportDirectory.canWrite() )
+            {
+                message = i18n.getString( "access_denied_to_folder" );
+
+                return ERROR;
+            }
+
+            return SUCCESS;
+        }
+
         File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
 
-        File output = new File( templateDirectoryConfig, uploadFileName );     
+        if ( !templateDirectoryConfig.canRead() || !templateDirectoryConfig.canWrite() )
+        {
+            message = i18n.getString( "access_denied_to_folder" );
+
+            return ERROR;
+        }
+
+        File output = new File( templateDirectoryConfig, uploadFileName );
+
+        if ( !output.canWrite() )
+        {
+            message = i18n.getString( "access_denied_to_file" );
+
+            return ERROR;
+        }
 
         if ( output.exists() )
         {
-            message = i18n.getString("override_confirm");
-            
+            message = i18n.getString( "override_confirm" );
+
             return INPUT;
         }
 
         return SUCCESS;
     }
+
 }

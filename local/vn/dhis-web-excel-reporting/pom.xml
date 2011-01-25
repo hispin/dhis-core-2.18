@@ -45,7 +45,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-aggregationengine-default</artifactId>
-    </dependency>    
+    </dependency>
       
     <!-- Other -->
    
@@ -83,7 +83,6 @@
 		<version>3.5-FINAL</version>
 	</dependency>
 	-->
-	
 	
   </dependencies>
   

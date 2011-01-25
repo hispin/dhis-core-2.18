@@ -1043,12 +1043,12 @@
 		<action name="validateUploadExcelImport"
 			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate">
 			<interceptor-ref name="fileUploadStack" />
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+			<result name="success" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="error" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseError.vm</result>
+			<result name="input" type="velocity-xml">
+				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 		</action>
 
 		<action name="uploadExcelImport"

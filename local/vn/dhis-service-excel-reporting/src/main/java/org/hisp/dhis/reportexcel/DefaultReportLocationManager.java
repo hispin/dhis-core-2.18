@@ -45,9 +45,9 @@ public class DefaultReportLocationManager
 
     private File REPORT_TEMP;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private LocationManager locationManager;
 
@@ -63,13 +63,9 @@ public class DefaultReportLocationManager
         this.systemSettingManager = systemSettingManager;
     }
 
-    // -------------------------------------------
-    // Setter
-    // -------------------------------------------
-
-    // -------------------------------------------
-    // Init
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Initialize
+    // -------------------------------------------------------------------------
 
     void init()
     {
@@ -85,12 +81,11 @@ public class DefaultReportLocationManager
         {
             e.printStackTrace();
         }
-
     }
 
-    // -------------------------------------------
-    // Impletemented
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    // Implemented
+    // -------------------------------------------------------------------------
 
     public List<File> getListFileInOrganisationDirectory( OrganisationUnit arg0 )
     {
@@ -100,12 +95,13 @@ public class DefaultReportLocationManager
     public File getOrganisationDirectory( OrganisationUnit organisationUnit )
     {
         File dir = new File( REPORT, String.valueOf( organisationUnit.getId() ) );
+
         if ( !dir.exists() )
         {
             dir.mkdir();
         }
+
         return dir;
-        
     }
 
     public File getReportExcelDirectory()
@@ -120,13 +116,21 @@ public class DefaultReportLocationManager
 
     public File getReportExcelTemplateDirectory()
     {
-        String path = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-        
+        String path = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+
         if ( path != null )
         {
             return new File( path );
         }
-        
+
         return null;
+    }
+
+    public boolean isFileTypeSupported( String extension, String contentType )
+    {
+        String value = ExcelContentTypeMap.getContentTypeByKey( extension );
+
+        return (value == null ? false : value.contains( contentType ));
     }
 }
