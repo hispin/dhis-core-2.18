@@ -90,8 +90,30 @@ function updateValidationCompleted( messageElement )
 }
 
 // ---------------------------------------------------------------------
-// disabled PeriodType field
+// PeriodType field
 // ---------------------------------------------------------------------
+
+function changePeriodType()
+{
+	$.getJSON(
+		"validateValidationRule.action",
+		{
+			"periodTypeName": getFieldValue("periodTypeName")   
+		},
+		function( json )
+		{
+			if ( json.response == "input" )
+			{ 
+				showWarningMessage( json.message );
+			}
+		}
+	);
+}
+
+/**
+ * Disabled PeriodType field
+ */
+
 function disabledPeriodTypeField(){
 	if(getFieldValue( 'leftSideExpression' ) == '' &&
 	   getFieldValue( 'rightSideExpression' ) == '') {

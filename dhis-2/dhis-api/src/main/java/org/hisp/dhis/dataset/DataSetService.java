@@ -278,4 +278,11 @@ public interface DataSetService
     
     Collection<DataSet> getDataSetsBetween(int first, int max );
 
+    /**
+     * Retrieves true/false with data set has members for a given PeriodType.
+     * 
+     * @param periodType the PeriodType.
+     * @return true or false.
+     */
+    boolean dataSetHasMembers( PeriodType periodType );
 }
