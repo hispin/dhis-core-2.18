@@ -12,9 +12,12 @@
 				validation( 'updateValidationRuleForm', function( form ){
 					form.submit();			
 				});
-			
-				checkValueIsExist( "name", "validateValidationRule.action", {id:getFieldValue('id')});
-				changePeriodType();				
+				/* validation( 'updateValidationRuleForm', function( form ){			
+							form.submit();
+						},function(){
+							validateExpression();
+						});	 */				
+				checkValueIsExist( "name", "validateValidationRule.action", {id:getFieldValue('id')});				
 			}
 	);
 
@@ -41,8 +44,8 @@
 		<td><textarea name="description" style="width:20em; height:6em" class="{validate:{maxlength:255}}">$!encoder.htmlEncode( $validationRule.description )</textarea></td>
 	</tr>
 	<tr>
-		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" onchange="changePeriodType()" disabled>
+		<td><label for="periodType">$encoder.htmlEncode( $i18n.getString( "period_type" ) )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><select type="text" id="periodTypeName" name="periodTypeName" style="min-width:20em" disabled>
 					#foreach ( $periodType in $periodTypes )
              		 <option value="$periodType.name" #if( $validationRule.periodType.name.equals($periodType.name ) ) selected #end>$i18n.getString($periodType.name)</option>
             		#end						
@@ -51,7 +54,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="operatorId">$encoder.htmlEncode( $i18n.getString( "operator" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="operator" name="operator" style="width:20em">
 				<option value="equal_to" #if ( $validationRule.operator == 'equal_to' )selected="selected"#end>$encoder.htmlEncode( $i18n.getString( "equal_to" ) )</option>

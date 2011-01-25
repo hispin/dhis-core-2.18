@@ -32,13 +32,10 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodType;
@@ -62,10 +59,8 @@ public class DataSetServiceTest
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
 
-        dataElementService = (DataElementService) getBean( DataElementService.ID );
-
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
-
+        
         periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
     }
 
@@ -79,7 +74,7 @@ public class DataSetServiceTest
         assertEquals( "ShortName" + uniqueCharacter, dataSet.getShortName() );
         assertEquals( periodType, dataSet.getPeriodType() );
     }
-
+    
     // -------------------------------------------------------------------------
     // DataSet
     // -------------------------------------------------------------------------
@@ -89,16 +84,16 @@ public class DataSetServiceTest
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
-
+        
         int idA = dataSetService.addDataSet( dataSetA );
-        int idB = dataSetService.addDataSet( dataSetB );
-
+        int idB = dataSetService.addDataSet( dataSetB );       
+        
         dataSetA = dataSetService.getDataSet( idA );
         dataSetB = dataSetService.getDataSet( idB );
-
+        
         assertEquals( idA, dataSetA.getId() );
         assertEq( 'A', dataSetA );
-
+        
         assertEquals( idB, dataSetB.getId() );
         assertEq( 'B', dataSetB );
     }
@@ -107,19 +102,19 @@ public class DataSetServiceTest
     public void testUpdateDataSet()
     {
         DataSet dataSet = createDataSet( 'A', periodType );
-
+        
         int id = dataSetService.addDataSet( dataSet );
-
+        
         dataSet = dataSetService.getDataSet( id );
-
+        
         assertEq( 'A', dataSet );
-
+        
         dataSet.setName( "DataSetB" );
-
+        
         dataSetService.updateDataSet( dataSet );
-
+        
         dataSet = dataSetService.getDataSet( id );
-
+        
         assertEquals( dataSet.getName(), "DataSetB" );
     }
 
@@ -128,22 +123,22 @@ public class DataSetServiceTest
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
-
+        
         int idA = dataSetService.addDataSet( dataSetA );
         int idB = dataSetService.addDataSet( dataSetB );
-
+        
         assertNotNull( dataSetService.getDataSet( idA ) );
         assertNotNull( dataSetService.getDataSet( idB ) );
-
+        
         dataSetService.deleteDataSet( dataSetService.getDataSet( idA ) );
-
+        
         assertNull( dataSetService.getDataSet( idA ) );
         assertNotNull( dataSetService.getDataSet( idB ) );
 
         dataSetService.deleteDataSet( dataSetService.getDataSet( idB ) );
-
+        
         assertNull( dataSetService.getDataSet( idA ) );
-        assertNull( dataSetService.getDataSet( idB ) );
+        assertNull( dataSetService.getDataSet( idB ) );        
     }
 
     @Test
@@ -152,10 +147,10 @@ public class DataSetServiceTest
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
-
+    
         int idA = dataSetService.addDataSet( dataSetA );
         int idB = dataSetService.addDataSet( dataSetB );
-
+    
         assertEquals( dataSetService.getDataSetByName( "DataSetA" ).getId(), idA );
         assertEquals( dataSetService.getDataSetByName( "DataSetB" ).getId(), idB );
         assertNull( dataSetService.getDataSetByName( "DataSetC" ) );
@@ -181,15 +176,15 @@ public class DataSetServiceTest
     {
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
-
+    
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
-
+        
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
-
+        
         assertEquals( dataSets.size(), 2 );
         assertTrue( dataSets.contains( dataSetA ) );
-        assertTrue( dataSets.contains( dataSetB ) );
+        assertTrue( dataSets.contains( dataSetB ) );            
     }
 
     @Test
@@ -198,53 +193,53 @@ public class DataSetServiceTest
         OrganisationUnit sourceA = createOrganisationUnit( 'A' );
         OrganisationUnit sourceB = createOrganisationUnit( 'B' );
         OrganisationUnit sourceC = createOrganisationUnit( 'C' );
-
+        
         organisationUnitService.addOrganisationUnit( sourceA );
         organisationUnitService.addOrganisationUnit( sourceB );
         organisationUnitService.addOrganisationUnit( sourceC );
-
+        
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
         DataSet dataSetC = createDataSet( 'C', periodType );
-
+        
         dataSetA.getSources().add( sourceA );
         dataSetA.getSources().add( sourceB );
-
+        
         dataSetB.getSources().add( sourceB );
-        dataSetB.getSources().add( sourceC );
+        dataSetB.getSources().add( sourceC );        
 
         dataSetC.getSources().add( sourceA );
         dataSetC.getSources().add( sourceC );
-
+        
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
-
+        
         Collection<DataSet> dataSets = dataSetService.getDataSetsBySource( sourceA );
-
+        
         assertEquals( 2, dataSets.size() );
         assertTrue( dataSets.contains( dataSetA ) );
         assertTrue( dataSets.contains( dataSetC ) );
-
-        dataSets = dataSetService.getDataSetsBySource( sourceB );
+        
+        dataSets = dataSetService.getDataSetsBySource( sourceB );        
 
         assertEquals( 2, dataSets.size() );
         assertTrue( dataSets.contains( dataSetA ) );
         assertTrue( dataSets.contains( dataSetB ) );
 
         dataSets = dataSetService.getDataSetsBySource( sourceC );
-
+        
         assertEquals( 2, dataSets.size() );
         assertTrue( dataSets.contains( dataSetB ) );
-        assertTrue( dataSets.contains( dataSetC ) );
+        assertTrue( dataSets.contains( dataSetC ) );        
     }
 
     @Test
     public void testGetDataSetsBySources()
     {
         OrganisationUnit unitA = createOrganisationUnit( 'A' );
-        OrganisationUnit unitB = createOrganisationUnit( 'B' );
-        OrganisationUnit unitC = createOrganisationUnit( 'C' );
+        OrganisationUnit unitB = createOrganisationUnit( 'B' );  
+        OrganisationUnit unitC = createOrganisationUnit( 'C' );  
         organisationUnitService.addOrganisationUnit( unitA );
         organisationUnitService.addOrganisationUnit( unitB );
         organisationUnitService.addOrganisationUnit( unitC );
@@ -257,16 +252,16 @@ public class DataSetServiceTest
         dataSetA.getSources().add( unitB );
         dataSetB.getSources().add( unitA );
         dataSetC.getSources().add( unitB );
-
+        
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
         dataSetService.addDataSet( dataSetD );
-
+        
         Collection<Source> sources = new HashSet<Source>();
         sources.add( unitA );
         sources.add( unitB );
-
+        
         Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( sources );
 
         assertEquals( 3, dataSets.size() );
@@ -276,14 +271,14 @@ public class DataSetServiceTest
 
         sources = new HashSet<Source>();
         sources.add( unitA );
-
+        
         dataSets = dataSetService.getDataSetsBySources( sources );
-
+        
         assertEquals( 2, dataSets.size() );
         assertTrue( dataSets.contains( dataSetA ) );
         assertTrue( dataSets.contains( dataSetB ) );
     }
-
+    
     @Test
     public void testGetSourcesAssociatedWithDataSet()
     {
@@ -293,68 +288,36 @@ public class DataSetServiceTest
         OrganisationUnit sourceD = createOrganisationUnit( 'D' );
         OrganisationUnit sourceE = createOrganisationUnit( 'E' );
         OrganisationUnit sourceF = createOrganisationUnit( 'F' );
-
+        
         organisationUnitService.addOrganisationUnit( sourceA );
         organisationUnitService.addOrganisationUnit( sourceB );
         organisationUnitService.addOrganisationUnit( sourceC );
         organisationUnitService.addOrganisationUnit( sourceD );
         organisationUnitService.addOrganisationUnit( sourceE );
         organisationUnitService.addOrganisationUnit( sourceF );
-
+        
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
-
+        
         dataSetA.getSources().add( sourceA );
         dataSetA.getSources().add( sourceB );
         dataSetA.getSources().add( sourceC );
 
         dataSetB.getSources().add( sourceC );
         dataSetB.getSources().add( sourceD );
-        dataSetB.getSources().add( sourceE );
-
+        dataSetB.getSources().add( sourceE );       
+        
         dataSetService.addDataSet( dataSetA );
         dataSetService.addDataSet( dataSetB );
 
         Collection<Source> sources = new HashSet<Source>();
-
+        
         sources.add( sourceA );
         sources.add( sourceB );
         sources.add( sourceD );
         sources.add( sourceE );
-
+        
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetA, sources ) );
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetB, sources ) );
-    }
-
-    @Test
-    public void testDataSetHasMembers()
-    {
-        DataElement elementA = createDataElement( 'A' );
-        DataElement elementB = createDataElement( 'B' );
-        DataElement elementC = createDataElement( 'C' );
-        
-        dataElementService.addDataElement( elementA );
-        dataElementService.addDataElement( elementB );
-        dataElementService.addDataElement( elementC );
-
-        Collection<DataElement> dataElements = new ArrayList<DataElement>();
-        
-        dataElements.add( elementA );
-        dataElements.add( elementB );
-        dataElements.add( elementC );
-
-        DataSet dataSetA = createDataSet( 'A', periodType );
-
-        dataSetA.getDataElements().add( elementA );
-        dataSetA.getDataElements().add( elementB );
-        dataSetA.getDataElements().add( elementC );
-
-        int idA = dataSetService.addDataSet( dataSetA );
-
-        assertTrue( dataSetService.dataSetHasMembers( periodType ) );
-
-        dataSetService.getDataSet( idA ).getDataElements().removeAll( dataElements );
-
-        assertTrue( !dataSetService.dataSetHasMembers( periodType ) );
     }
 }

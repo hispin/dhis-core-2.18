@@ -189,7 +189,5 @@ public interface DataSetStore
     int getDataSetCount();
     
     Collection<DataSet> getDataSetsBetween(int first, int max );
-    
-    boolean dataSetHasMembers( PeriodType periodType );
 
 }
