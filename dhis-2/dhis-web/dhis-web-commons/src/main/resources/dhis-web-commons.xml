@@ -606,6 +606,11 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
+		<action name="ping"	class="org.hisp.dhis.commons.action.NoAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
+		
 	</package>
 
 	<!-- About -->
@@ -657,14 +662,13 @@
 			<param name="javascripts">/dhis-web-commons/useraccount/userAccount.js</param>
 		</action>
 
-		<action name="updateUserAccount"
-			class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
+		<action name="updateUserAccount" class="org.hisp.dhis.useraccount.action.UpdateUserAccountAction">
 			<result name="success" type="velocity">
 				/dhis-web-commons/useraccount/updateUserSuccess.vm</result>
 			<result name="input" type="velocity">
 				/dhis-web-commons/useraccount/updateUserInput.vm</result>
 		</action>
-
+		
 	</package>
 
 </struts>
