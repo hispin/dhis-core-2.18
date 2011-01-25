@@ -833,7 +833,7 @@ function datePickerjQuery( jQueryString )
  * @param id the id of input field which you want enter date *
  */
 function datePickerValid( id, today )
-{
+{	
 	jQuery("#" + id).datepicker(
 	{
 		dateFormat:dateFormat,
