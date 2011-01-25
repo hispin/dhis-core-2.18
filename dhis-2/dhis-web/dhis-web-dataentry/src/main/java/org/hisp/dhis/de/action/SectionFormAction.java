@@ -36,7 +36,6 @@ import java.util.Map;
 
 import org.hisp.dhis.customvalue.CustomValue;
 import org.hisp.dhis.customvalue.CustomValueService;
-import org.hisp.dhis.dataelement.CalculatedDataElement;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -44,7 +43,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
@@ -88,13 +86,6 @@ public class SectionFormAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private DataElementService dataElementService;
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
     }
 
     private StandardCommentsManager standardCommentsManager;
@@ -155,13 +146,6 @@ public class SectionFormAction
     public Map<String, DataValue> getDataValueMap()
     {
         return dataValueMap;
-    }
-
-    private Map<CalculatedDataElement, Integer> calculatedValueMap;
-
-    public Map<CalculatedDataElement, Integer> getCalculatedValueMap()
-    {
-        return calculatedValueMap;
     }
 
     private List<String> standardComments;
@@ -462,53 +446,6 @@ public class SectionFormAction
             Integer ocId = dataValue.getOptionCombo().getId();
 
             dataValueMap.put( deId.toString() + ':' + ocId.toString(), dataValue );
-        }
-
-        // ---------------------------------------------------------------------
-        // Prepare values for unsaved CalculatedDataElements
-        // ---------------------------------------------------------------------
-
-        CalculatedDataElement cde;
-
-        calculatedValueMap = new HashMap<CalculatedDataElement, Integer>();
-
-        Map<DataElement, Integer> factorMap;
-
-        DataValue dataValue;
-        int factor;
-        int value = 0;
-
-        for ( DataElement dataElement : dataElements )
-        {
-            if ( !(dataElement instanceof CalculatedDataElement) )
-            {
-                continue;
-            }
-
-            cde = (CalculatedDataElement) dataElement;
-
-            if ( cde.isSaved() )
-            {
-                continue;
-            }
-
-            factorMap = dataElementService.getDataElementFactors( cde );
-
-            for ( DataElement cdeElement : cde.getExpression().getDataElementsInExpression() )
-            {
-                factor = factorMap.get( cdeElement );
-                dataValue = dataValueMap.get( cdeElement.getId() );
-
-                if ( dataValue != null )
-                {
-                    value += Integer.parseInt( dataValue.getValue() ) * factor;
-                }
-
-            }
-
-            calculatedValueMap.put( cde, value );
-
-            value = 0;
         }
 
         // ---------------------------------------------------------------------

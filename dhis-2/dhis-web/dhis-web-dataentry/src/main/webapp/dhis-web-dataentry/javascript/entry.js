@@ -90,11 +90,6 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 
     var valueSaver = new ValueSaver( dataElementId, optionComboId, organisationUnitId, field.value, COLOR_GREEN, '' );
     valueSaver.save();
-
-    if ( type == 'int')
-    {
-    	calculateCDE(dataElementId);
-    }
 }
 
 function saveBoolean( dataElementId, optionComboId, selectedOption  )
@@ -234,83 +229,4 @@ function openCloseSection( sectionId )
 		divSection.style.display = ('none');
 		sectionLabel.style.textAlign = 'left';
 	}
-}
-
-// -----------------------------------------------------------------------------
-// CalculatedDataElements
-// -----------------------------------------------------------------------------
-
-/**
- * Calculate and display the value of any CDE the given data element is a part of.
- * @param dataElementId  id of the data element to calculate a CDE for
- */
-function calculateCDE( dataElementId )
-{
-    var cdeId = getCalculatedDataElement(dataElementId);
-  
-    if ( ! cdeId )
-    {
-  	    return;
-    }
-    
-    var factorMap = calculatedDataElementMap[cdeId];
-    var value = 0;
-    var dataElementValue;
-    
-    for ( dataElementId in factorMap )
-    {
-    	dataElementValue = document.getElementById( 'value[' + dataElementId + '].value' ).value;
-    	value += ( dataElementValue * factorMap[dataElementId] );
-    }
-    
-    document.getElementById( 'value[' + cdeId + '].value' ).value = value;
-}
-
-/**
- * Returns the id of the CalculatedDataElement this DataElement id is a part of.
- * @param dataElementId id of the DataElement
- * @return id of the CalculatedDataElement this DataElement id is a part of,
- *     or null if the DataElement id is not part of any CalculatedDataElement
- */
-function getCalculatedDataElement( dataElementId )
-{
-    for ( cdeId in calculatedDataElementMap )
-    {
-  	    var factorMap = calculatedDataElementMap[cdeId];
-
-  	    if ( deId in factorMap )
-  	    {
-  	    	return cdeId;
-  	    }
-    }
-
-    return null;
-}
-
-function calculateAndSaveCDEs()
-{
-	lockScreen();
-
-    var request = new Request();
-    request.setCallbackSuccess( dataValuesReceived );
-    request.setResponseTypeXML( 'dataValues' );
-    request.send( 'calculateCDEs.action' );
-}
-
-function dataValuesReceived( node )
-{
-	var values = node.getElementsByTagName('dataValue');
-    var dataElementId;
-    var value;
-
-	for ( var i = 0, value; value = values[i]; i++ )
-	{
-		dataElementId = value.getAttribute('dataElementId');
-		value = value.firstChild.nodeValue;		
-		document.getElementById( 'value[' + dataElementId + '].value' ).value = value;
-	}
-	
-	unLockScreen();
-	
-	setHeaderDelayMessage(i18n_save_calculated_data_element_success);
 }
