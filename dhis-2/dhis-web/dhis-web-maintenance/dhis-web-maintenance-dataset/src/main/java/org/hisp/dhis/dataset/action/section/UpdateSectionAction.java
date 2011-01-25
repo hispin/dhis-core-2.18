@@ -119,7 +119,9 @@ public class UpdateSectionAction
         sectionService.updateSection( section );
 
         DataSet dataSet = section.getDataSet();
-        if(dataSet.getMobile() != null && dataSet.getMobile()){
+
+        if ( dataSet.getMobile() != null && dataSet.getMobile() ) // TODO Hack
+        {
             dataSet.setVersion( dataSet.getVersion() + 1 );
             dataSetService.updateDataSet( dataSet );
         }

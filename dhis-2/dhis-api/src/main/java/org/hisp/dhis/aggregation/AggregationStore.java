@@ -33,7 +33,6 @@ import org.hisp.dhis.datavalue.DataValue;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface AggregationStore
 {

@@ -29,7 +29,6 @@ package org.hisp.dhis.aggregation;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class AggregatedMapValue
 {

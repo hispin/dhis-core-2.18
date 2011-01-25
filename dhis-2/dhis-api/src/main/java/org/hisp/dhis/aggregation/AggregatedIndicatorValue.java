@@ -32,7 +32,6 @@ import java.util.Date;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AggregatedIndicatorValue.java 2694 2007-01-12 19:19:46Z torgeilo $
  */
 public class AggregatedIndicatorValue
     implements Serializable

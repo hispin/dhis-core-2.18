@@ -36,7 +36,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: AggregationService.java 4712 2008-03-12 10:32:45Z larshelg $
  */
 public interface AggregationService
 {

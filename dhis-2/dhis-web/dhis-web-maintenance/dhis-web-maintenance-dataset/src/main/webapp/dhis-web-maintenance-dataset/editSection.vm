@@ -12,8 +12,7 @@
 			dataSetId:function(){return jQuery("#dataSetId").val()}
 			,name: function(){return jQuery("#sectionName").val()}
 			,sectionId: function(){return jQuery("#sectionId").val()}
-		});	
-		
+		});		
 	});
 	
 </script>
@@ -89,7 +88,6 @@
         <td>
           <!-- List of all available DataElements -->
           <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelected( this, byId( 'selectedList' ) )">
-            <!-- Show all available DataElements -->
             #foreach ( $availableDataElement in $dataElementOfDataSet )
               <option value="$availableDataElement.id"> $availableDataElement.name</option>
             #end

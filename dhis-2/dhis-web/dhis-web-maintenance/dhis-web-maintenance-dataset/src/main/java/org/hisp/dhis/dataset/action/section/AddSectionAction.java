@@ -122,11 +122,12 @@ public class AddSectionAction
         section.setDataElements( selectedDataElements );
         sectionService.addSection( section );
 
-        if ( dataSet.getMobile() != null && dataSet.getMobile() )
+        if ( dataSet.getMobile() != null && dataSet.getMobile() ) // TODO Hack
         {
             dataSet.setVersion( dataSet.getVersion() + 1 );
             dataSetService.updateDataSet( dataSet );
         }
+        
         return SUCCESS;
     }
 }
