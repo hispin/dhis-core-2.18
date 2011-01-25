@@ -28,7 +28,6 @@ package org.hisp.dhis.dd.action.concept;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,7 +83,7 @@ public class GetConceptListAction
 
     public void setKey( String key )
     {
-        this.key = getTrimmedValue( key );
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------

@@ -98,12 +98,4 @@ public class TextUtils
     {
         return string != null && string.trim().length() == 0 ? null : string;
     }
-    
-    /**
-     * Returns a trimmed/reduced at the redundant spaces string for a given input
-     */
-    public static String getTrimmedValue( String value )
-    {
-        return value.trim().replaceAll( "\\s+", " " );
-    }
 }

@@ -34,8 +34,7 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.system.util.TextUtils.getTrimmedValue;
+import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -68,7 +67,7 @@ public class GetDataElementGroupListAction
 
     public void setKey( String key )
     {
-        this.key = getTrimmedValue( key );
+        this.key = key;
     }
 
     // -------------------------------------------------------------------------
