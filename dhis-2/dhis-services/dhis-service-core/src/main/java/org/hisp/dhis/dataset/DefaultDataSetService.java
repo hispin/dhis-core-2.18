@@ -344,4 +344,10 @@ public class DefaultDataSetService
     {
         return dataSetStore.getDataSetsBetweenByName( name, first, max );
     }
+
+    @Override
+    public boolean dataSetHasMembers( PeriodType periodType )
+    {
+        return dataSetStore.dataSetHasMembers( periodType );
+    }
 }

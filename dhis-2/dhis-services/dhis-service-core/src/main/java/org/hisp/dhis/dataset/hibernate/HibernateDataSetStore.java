@@ -358,4 +358,15 @@ public class HibernateDataSetStore
     {
         return getBetweenByName( name, first, max );
     }
+    
+    public boolean dataSetHasMembers( PeriodType periodType )
+    {
+        periodType = periodStore.getPeriodType( periodType.getClass() );
+        
+        String hql = "select count(*) from DataSet d where d.dataElements.size > 0 and d.periodType = :periodType";
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+        Number rs = (Number)query.setEntity( "periodType", periodType ).uniqueResult();
+
+        return rs == null ? false : rs.intValue() > 0;
+    }
 }
