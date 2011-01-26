@@ -32,6 +32,9 @@ import static org.hisp.dhis.system.util.MathUtils.getRounded;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRField;
+
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -70,9 +73,14 @@ public class ListGrid
     private List<List<String>> grid;
     
     /**
-     * Indicating the current row in the grid.
+     * Indicating the current row in the grid for writing data.
      */
-    private int currentRowIndex = -1;
+    private int currentRowWriteIndex = -1;
+    
+    /**
+     * Indicating the current row in the grid for reading data.
+     */
+    private int currentRowReadIndex = -1;
     
     /**
      * Default constructor.
@@ -173,14 +181,14 @@ public class ListGrid
     {
         grid.add( new ArrayList<String>() );
         
-        currentRowIndex++;
+        currentRowWriteIndex++;
         
         return this;
     }
     
     public Grid addValue( String value )
     {
-        grid.get( currentRowIndex ).add( value );
+        grid.get( currentRowWriteIndex ).add( value );
         
         return this;
     }
@@ -335,7 +343,36 @@ public class ListGrid
         
         return this;
     }
+
+    // ---------------------------------------------------------------------
+    // JRDataSource implementation
+    // ---------------------------------------------------------------------
+
+    public boolean next()
+        throws JRException
+    {
+        int height = getHeight();
+        
+        return ++currentRowReadIndex < height; 
+    }
     
+    public Object getFieldValue( JRField field )
+        throws JRException
+    {
+        int headerIndex = -1;
+        
+        for ( int i = 0; i < headers.size(); i++ )
+        {
+            if ( headers.get( i ).getColumn() != null && headers.get( i ).getColumn().equals( field.getName() ) )
+            {
+                headerIndex = i;
+                break;
+            }
+        }
+        
+        return headerIndex != -1 ? getRow( currentRowReadIndex ).get( headerIndex ) : null;
+    }
+
     // ---------------------------------------------------------------------
     // Supportive methods
     // ---------------------------------------------------------------------

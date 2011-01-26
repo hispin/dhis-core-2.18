@@ -30,6 +30,10 @@
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
     </dependency>
+    <dependency>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+    </dependency>
   </dependencies>
   
   <properties>
