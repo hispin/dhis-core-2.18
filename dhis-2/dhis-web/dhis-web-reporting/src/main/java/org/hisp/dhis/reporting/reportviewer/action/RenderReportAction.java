@@ -135,6 +135,6 @@ public class RenderReportAction
     @Override
     protected boolean attachment()
     {
-        return false;
+        return true;
     }
 }
