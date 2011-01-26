@@ -63,22 +63,22 @@ public class GridTest
         grid.addHeader( headerB );
         grid.addHeader( headerC );
         
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "11" );
         grid.addValue( "12" );
         grid.addValue( "13" );
 
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "21" );
         grid.addValue( "22" );
         grid.addValue( "23" );
 
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "31" );
         grid.addValue( "32" );
         grid.addValue( "33" );
 
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "41" );
         grid.addValue( "42" );
         grid.addValue( "43" );
@@ -218,13 +218,13 @@ public class GridTest
     {
         grid = new ListGrid();        
 
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "10.0" );
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "50.0" );
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "20.0" );
-        grid.nextRow();        
+        grid.addRow();        
         grid.addValue( "60.0" );
         
         grid.addRegressionColumn( 0 );

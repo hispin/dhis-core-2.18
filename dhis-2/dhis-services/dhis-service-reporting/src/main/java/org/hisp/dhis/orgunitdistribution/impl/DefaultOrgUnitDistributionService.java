@@ -136,7 +136,7 @@ public class DefaultOrgUnitDistributionService
         
         for ( OrganisationUnit unit : units )
         {            
-            grid.nextRow();
+            grid.addRow();
             grid.addValue( unit.getName() );
             
             Collection<OrganisationUnit> subTree = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ); 

@@ -227,7 +227,7 @@ public class JDBCReportTableManager
 
             while ( resultSet.next() )
             {
-                grid.nextRow();
+                grid.addRow();
                 
                 for ( String column : reportTable.getIndexColumns() )
                 {

@@ -209,7 +209,7 @@ public class GetDataCompletenessAction
         
         for ( DataSetCompletenessResult result : results )
         {
-            grid.nextRow();
+            grid.addRow();
             grid.addValue( result.getName() );
             grid.addValue( String.valueOf( result.getRegistrations() ) );
             grid.addValue( String.valueOf( result.getSources() ) );

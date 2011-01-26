@@ -455,7 +455,7 @@ public class DefaultReportTableService
                 {
                     for ( final OrganisationUnit unit : reportTable.getReportUnits() )
                     {
-                        grid.nextRow();
+                        grid.addRow();
                         
                         // -----------------------------------------------------
                         // Identifier
