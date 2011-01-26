@@ -4,6 +4,7 @@
   {
     "id": "$!{mapView.id}",
     "name": "$!encoder.jsonEncode( ${mapView.name} )",
+    "userId": "$!{mapView.user.id}",
     "featureType": "$!encoder.jsonEncode( ${mapView.featureType} )",
     "mapValueType": "$!encoder.jsonEncode( ${mapView.mapValueType} )",
     "indicatorGroupId": "$!{mapView.indicatorGroup.id}",

@@ -178,13 +178,11 @@
 			class="org.hisp.dhis.mapping.action.AddOrUpdateMapViewAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
-            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="deleteMapView" class="org.hisp.dhis.mapping.action.DeleteMapViewAction">
 			<result name="success" type="velocity-json">/dhis-web-mapping/void.vm
 			</result>
-            <param name="requiredAuthorities">F_GIS_ADMIN</param>
 		</action>
 
 		<action name="getMapView" class="org.hisp.dhis.mapping.action.GetMapViewAction">

@@ -35,6 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Jan Henrik Overland
@@ -45,6 +46,8 @@ public class MapView
     private int id;
 
     private String name;
+    
+    private User user;
 
     private String featureType;
 
@@ -100,7 +103,7 @@ public class MapView
     {
     }
 
-    public MapView( String name, String featureType, String mapValueType, IndicatorGroup indicatorGroup,
+    public MapView( String name, User user, String featureType, String mapValueType, IndicatorGroup indicatorGroup,
         Indicator indicator, DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType,
         PeriodType periodType, Period period, String startDate, String endDate,
         OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel, String mapLegendType,
@@ -108,6 +111,7 @@ public class MapView
         Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
+        this.user = user;
         this.featureType = featureType;
         this.mapValueType = mapValueType;
         this.indicatorGroup = indicatorGroup;
@@ -199,6 +203,16 @@ public class MapView
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
     }
 
     public String getFeatureType()

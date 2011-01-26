@@ -96,7 +96,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 					classes: this.mapView.classes || this.legend.classes
 				};
 				
-				G.vars.parameter = false;
+				G.vars.parameter.id = false;
 				G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
 				
 				function mapViewStoreCallback() {
