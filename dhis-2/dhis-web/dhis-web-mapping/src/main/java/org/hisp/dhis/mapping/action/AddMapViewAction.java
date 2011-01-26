@@ -35,7 +35,7 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class AddOrUpdateMapViewAction
+public class AddMapViewAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -242,7 +242,7 @@ public class AddOrUpdateMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMapView( name, system, featureType, mapValueType, indicatorGroupId, indicatorId,
+        mappingService.addMapView( name, system, featureType, mapValueType, indicatorGroupId, indicatorId,
             dataElementGroupId, dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId,
             organisationUnitLevel, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId,
             radiusLow, radiusHigh, longitude, latitude, zoom );
