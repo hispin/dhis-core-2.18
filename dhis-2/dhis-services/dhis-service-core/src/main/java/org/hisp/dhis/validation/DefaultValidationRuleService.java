@@ -126,7 +126,7 @@ public class DefaultValidationRuleService
             counter.count( result.getPeriod(), result.getSource() );
         }
 
-        grid.nextRow();
+        grid.addRow();
         grid.addValue( "" );
         
         for ( Period period : periods )
@@ -136,7 +136,7 @@ public class DefaultValidationRuleService
         
         for ( Source source : sources )
         {
-            grid.nextRow();
+            grid.addRow();
             grid.addValue( source.getName() );
             
             for ( Period period : periods )

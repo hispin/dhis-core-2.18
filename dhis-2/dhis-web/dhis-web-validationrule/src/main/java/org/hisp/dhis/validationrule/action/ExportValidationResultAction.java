@@ -129,7 +129,7 @@ public class ExportValidationResultAction
             OrganisationUnit unit = (OrganisationUnit) validationResult.getSource();
             Period period = validationResult.getPeriod();
             
-            grid.nextRow();
+            grid.addRow();
             grid.addValue( unit.getName() );
             grid.addValue( format.formatPeriod( period ) );
             grid.addValue( validationResult.getValidationRule().getLeftSide().getDescription() ); //TODO lazy prone

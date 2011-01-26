@@ -169,7 +169,7 @@ public class ListGrid
         return ( grid != null && grid.size() > 0 )  ? getVisibleRows().get( 0 ).size() : 0;
     }
     
-    public Grid nextRow()
+    public Grid addRow()
     {
         grid.add( new ArrayList<String>() );
         
