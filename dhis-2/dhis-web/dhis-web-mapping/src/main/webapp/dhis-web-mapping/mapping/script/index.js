@@ -496,16 +496,11 @@
                         params = symbol.formValues.getAllValues.call(symbol);
                     }
                     
-                    if (G.stores.mapView.findExact('name', vn) !== -1) {
-                        Ext.message.msg(false, G.i18n.there_is_already_a_map_view_called + ' <span class="x-msg-hl">' + vn + '</span>');
-                        return;
-                    }
-                    
                     params.name = vn;
                     params.system = Ext.getCmp('favoritesystem_chb').getValue();
                     
                     Ext.Ajax.request({
-                        url: G.conf.path_mapping + 'addOrUpdateMapView' + G.conf.type,
+                        url: G.conf.path_mapping + 'addMapView' + G.conf.type,
                         method: 'POST',
                         params: params,
                         success: function(r) {

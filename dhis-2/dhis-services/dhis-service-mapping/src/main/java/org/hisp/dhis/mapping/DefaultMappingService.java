@@ -467,13 +467,8 @@ public class DefaultMappingService
     {
         return mappingStore.addMapView( mapView );
     }
-
-    public void updateMapView( MapView mapView )
-    {
-        mappingStore.updateMapView( mapView );
-    }
-
-    public void addOrUpdateMapView( String name, boolean system, String featureType, String mapValueType, Integer indicatorGroupId,
+    
+    public void addMapView( String name, boolean system, String featureType, String mapValueType, Integer indicatorGroupId,
         Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
         Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
         Integer organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
@@ -513,49 +508,15 @@ public class DefaultMappingService
         OrganisationUnitLevel level = organisationUnitService.getOrganisationUnitLevelByLevel( organisationUnitLevel );
 
         MapLegendSet mapLegendSet = mapLegendSetId != null ? getMapLegendSet( mapLegendSetId ) : null;
+        
+        addMapView( new MapView( name, user, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
+            dataElement, mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method,
+            classes, bounds, colorLow, colorHigh, mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom ) );
+    }
 
-        MapView mapView = mappingStore.getMapViewByName( name );
-
-        if ( mapView != null )
-        {
-            mapView.setName( name );
-            mapView.setUser( user );
-            mapView.setFeatureType( featureType );
-            mapView.setMapValueType( mapValueType );
-            mapView.setIndicatorGroup( indicatorGroup );
-            mapView.setIndicator( indicator );
-            mapView.setDataElementGroup( dataElementGroup );
-            mapView.setDataElement( dataElement );
-            mapView.setMapDateType( mapDateType );
-            mapView.setPeriodType( periodType );
-            mapView.setPeriod( period );
-            mapView.setStartDate( startDate );
-            mapView.setEndDate( endDate );
-            mapView.setParentOrganisationUnit( parent );
-            mapView.setOrganisationUnitLevel( level );
-            mapView.setMapLegendType( mapLegendType );
-            mapView.setMethod( method );
-            mapView.setClasses( classes );
-            mapView.setBounds( bounds );
-            mapView.setColorLow( colorLow );
-            mapView.setColorHigh( colorHigh );
-            mapView.setMapLegendSet( mapLegendSet );
-            mapView.setRadiusLow( radiusLow );
-            mapView.setRadiusHigh( radiusHigh );
-            mapView.setLongitude( longitude );
-            mapView.setLatitude( latitude );
-            mapView.setZoom( zoom );
-
-            updateMapView( mapView );
-        }
-        else
-        {
-            mapView = new MapView( name, user, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
-                dataElement, mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method,
-                classes, bounds, colorLow, colorHigh, mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom );
-
-            addMapView( mapView );
-        }
+    public void updateMapView( MapView mapView )
+    {
+        mappingStore.updateMapView( mapView );
     }
 
     public void deleteMapView( MapView view )
