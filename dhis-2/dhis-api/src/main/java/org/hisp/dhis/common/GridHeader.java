@@ -154,6 +154,6 @@ public class GridHeader
         
         final GridHeader other = (GridHeader) object;
         
-        return column.equals( other.name );
+        return name.equals( other.name );
     }
 }
