@@ -29,6 +29,8 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
+import org.hisp.dhis.user.User;
+
 /**
  * @author Jan Henrik Overland
  * @version $Id$
@@ -85,9 +87,9 @@ public interface MappingStore
 
     MapView getMapViewByName( String name );
 
-    Collection<MapView> getAllMapViews();
+    Collection<MapView> getAllMapViews( User user );
 
-    Collection<MapView> getMapViewsByFeatureType( String featureType );
+    Collection<MapView> getMapViewsByFeatureType( String featureType, User user );
 
     // -------------------------------------------------------------------------
     // MapLayer

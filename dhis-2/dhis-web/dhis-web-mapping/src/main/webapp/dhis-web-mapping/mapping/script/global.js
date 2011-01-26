@@ -55,6 +55,8 @@ G.conf = {
     map_feature_type_multipolygon: 'MultiPolygon',
     map_feature_type_polygon: 'Polygon',
     map_feature_type_point: 'Point',
+    map_view_access_level_user: 'user',
+    map_view_access_level_system: 'system',
     aggregation_strategy_real_time: 'real_time',
     aggregation_strategy_batch: 'batch',
     

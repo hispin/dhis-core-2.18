@@ -2,6 +2,7 @@
   [{
     "id": "$!{object.id}",
     "name": "$!encoder.jsonEncode( ${object.name} )",
+    "userId": "$!{object.user.id}",
     "featureType": "$!encoder.jsonEncode( ${object.featureType} )",
     "mapValueType": "$!encoder.jsonEncode( ${object.mapValueType} )",
     "indicatorGroupId": "$!{object.indicatorGroup.id}",

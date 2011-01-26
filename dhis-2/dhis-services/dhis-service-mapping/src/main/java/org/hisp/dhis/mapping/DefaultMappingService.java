@@ -49,6 +49,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.MathUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -129,6 +131,13 @@ public class DefaultMappingService
     {
         this.systemSettingManager = systemSettingManager;
     }
+    
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     // -------------------------------------------------------------------------
     // MappingService implementation
@@ -137,7 +146,7 @@ public class DefaultMappingService
     // -------------------------------------------------------------------------
     // OrganisationUnits
     // -------------------------------------------------------------------------
-    
+
     /**
      * Returns the relevant OrganisationUnits for the given parent identifier
      * and / or level.
@@ -464,13 +473,15 @@ public class DefaultMappingService
         mappingStore.updateMapView( mapView );
     }
 
-    public void addOrUpdateMapView( String name, String featureType, String mapValueType, Integer indicatorGroupId,
+    public void addOrUpdateMapView( String name, boolean system, String featureType, String mapValueType, Integer indicatorGroupId,
         Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
         Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
         Integer organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
         String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow, Integer radiusHigh,
         String longitude, String latitude, int zoom )
     {
+        User user = system ? null : currentUserService.getCurrentUser();
+        
         IndicatorGroup indicatorGroup = null;
 
         Indicator indicator = null;
@@ -508,6 +519,7 @@ public class DefaultMappingService
         if ( mapView != null )
         {
             mapView.setName( name );
+            mapView.setUser( user );
             mapView.setFeatureType( featureType );
             mapView.setMapValueType( mapValueType );
             mapView.setIndicatorGroup( indicatorGroup );
@@ -538,7 +550,7 @@ public class DefaultMappingService
         }
         else
         {
-            mapView = new MapView( name, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
+            mapView = new MapView( name, user, featureType, mapValueType, indicatorGroup, indicator, dataElementGroup,
                 dataElement, mapDateType, periodType, period, startDate, endDate, parent, level, mapLegendType, method,
                 classes, bounds, colorLow, colorHigh, mapLegendSet, radiusLow, radiusHigh, longitude, latitude, zoom );
 
@@ -571,7 +583,9 @@ public class DefaultMappingService
 
     public Collection<MapView> getAllMapViews()
     {
-        Collection<MapView> mapViews = mappingStore.getAllMapViews();
+        User user = currentUserService.getCurrentUser();
+        
+        Collection<MapView> mapViews = mappingStore.getAllMapViews( user );
 
         if ( mapViews.size() > 0 )
         {
@@ -587,7 +601,9 @@ public class DefaultMappingService
 
     public Collection<MapView> getMapViewsByFeatureType( String featureType )
     {
-        Collection<MapView> mapViews = mappingStore.getMapViewsByFeatureType( featureType );
+        User user = currentUserService.getCurrentUser();
+        
+        Collection<MapView> mapViews = mappingStore.getMapViewsByFeatureType( featureType, user );
 
         for ( MapView mapView : mapViews )
         {

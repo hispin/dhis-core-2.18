@@ -11,7 +11,10 @@
 			<generator class="native"/>
 		</id>
 	
-		<property name="name" unique="true"/>
+		<property name="name"/>
+        
+        <many-to-one name="user" class="org.hisp.dhis.user.User" 
+            column="userid" foreign-key="fk_mapview_userid"/>
 		
 		<property name="featureType"/>
 		

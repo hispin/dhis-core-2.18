@@ -43,6 +43,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.User;
 import org.junit.Test;
 
 /**
@@ -115,7 +116,7 @@ public class MappingStoreTest
     @Test
     public void testAddGetMapView()
     {
-        MapView mapView = new MapView( "MapViewA", OrganisationUnit.FEATURETYPE_MULTIPOLYGON, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
+        MapView mapView = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator,
             new DataElementGroup(), new DataElement(), MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );

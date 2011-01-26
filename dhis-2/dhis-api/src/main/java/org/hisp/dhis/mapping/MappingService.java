@@ -129,7 +129,7 @@ public interface MappingService
 
     void updateMapView( MapView mapView );
 
-    void addOrUpdateMapView( String name, String featureType, String mapValueType, Integer indicatorGroupId,
+    void addOrUpdateMapView( String name, boolean system, String featureType, String mapValueType, Integer indicatorGroupId,
         Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
         Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
         Integer organisationUnitLevelId, String mapLegendType, Integer method, Integer classes, String bounds,

@@ -52,6 +52,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.User;
 import org.junit.Test;
 
 /**
@@ -334,7 +335,7 @@ public class MappingServiceTest
     @Test
     public void testAddGetMapView()
     {
-        MapView mapView = new MapView( "MapViewA", OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
+        MapView mapView = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
             MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "", organisationUnit, organisationUnitLevel,
             MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20, "1", "1", 1 );
@@ -351,7 +352,7 @@ public class MappingServiceTest
     @Test
     public void testGetDeleteMapViewByName()
     {
-        MapView mapView = new MapView( "MapViewA", OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
+        MapView mapView = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
             MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "", organisationUnit, organisationUnitLevel,
             MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20, "1", "1", 1 );
@@ -368,12 +369,12 @@ public class MappingServiceTest
     @Test
     public void testGetAllMapViews()
     {
-        MapView mapView1 = new MapView( "MapViewA", OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
+        MapView mapView1 = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
             MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "", organisationUnit, organisationUnitLevel,
             MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20, "1", "1", 1 );
 
-        MapView mapView2 = new MapView( "MapViewB", OrganisationUnit.FEATURETYPE_POLYGON,
+        MapView mapView2 = new MapView( "MapViewB", new User(), OrganisationUnit.FEATURETYPE_POLYGON,
             MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_START_END, periodType, period, "", "", organisationUnit,
             organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20,
@@ -388,18 +389,18 @@ public class MappingServiceTest
     @Test
     public void testGetMapViewsByFeatureType()
     {
-        MapView mapView1 = new MapView( "MapViewA", OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
+        MapView mapView1 = new MapView( "MapViewA", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
             MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "", organisationUnit, organisationUnitLevel,
             MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20, "1", "1", 1 );
 
-        MapView mapView2 = new MapView( "MapViewB", OrganisationUnit.FEATURETYPE_POLYGON,
+        MapView mapView2 = new MapView( "MapViewB", new User(), OrganisationUnit.FEATURETYPE_POLYGON,
             MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_START_END, periodType, period, "", "", organisationUnit,
             organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20,
             "2", "2", 1 );
 
-        MapView mapView3 = new MapView( "MapViewC", OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
+        MapView mapView3 = new MapView( "MapViewC", new User(), OrganisationUnit.FEATURETYPE_MULTIPOLYGON,
             MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup, indicator, dataElementGroup, dataElement,
             MappingService.MAP_DATE_TYPE_START_END, periodType, period, "", "", organisationUnit,
             organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B", mapLegendSet, 5, 20,

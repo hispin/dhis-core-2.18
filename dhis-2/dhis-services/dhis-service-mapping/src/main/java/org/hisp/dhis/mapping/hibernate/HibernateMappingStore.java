@@ -38,6 +38,7 @@ import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingStore;
+import org.hisp.dhis.user.User;
 
 /**
  * @author Jan Henrik Overland
@@ -231,23 +232,27 @@ public class HibernateMappingStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MapView> getAllMapViews()
+    public Collection<MapView> getAllMapViews( User user )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapView.class );
+        
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
 
         return criteria.list();
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<MapView> getMapViewsByFeatureType( String featureType )
+    public Collection<MapView> getMapViewsByFeatureType( String featureType, User user )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( MapView.class );
 
         criteria.add( Restrictions.eq( "featureType", featureType ) );
+        
+        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
 
         return criteria.list();
     }

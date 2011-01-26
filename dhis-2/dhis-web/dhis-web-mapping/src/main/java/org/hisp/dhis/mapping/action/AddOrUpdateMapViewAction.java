@@ -59,6 +59,13 @@ public class AddOrUpdateMapViewAction
     {
         this.name = name;
     }
+    
+    private boolean system;
+
+    public void setSystem( boolean system )
+    {
+        this.system = system;
+    }
 
     private String featureType;
 
@@ -235,7 +242,7 @@ public class AddOrUpdateMapViewAction
     public String execute()
         throws Exception
     {
-        mappingService.addOrUpdateMapView( name, featureType, mapValueType, indicatorGroupId, indicatorId,
+        mappingService.addOrUpdateMapView( name, system, featureType, mapValueType, indicatorGroupId, indicatorId,
             dataElementGroupId, dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId,
             organisationUnitLevel, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId,
             radiusLow, radiusHigh, longitude, latitude, zoom );

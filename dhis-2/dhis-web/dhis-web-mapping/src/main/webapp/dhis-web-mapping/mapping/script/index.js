@@ -30,13 +30,14 @@
     var mapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapViews' + G.conf.type,
         root: 'mapViews',
-        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
         ],
         autoLoad: false,
         isLoaded: false,
+        sortInfo: {field: 'userId', direction: 'ASC'},
         listeners: {
             'load': G.func.storeLoadListener
         }
@@ -46,12 +47,12 @@
         url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
         baseParams: {featureType: G.conf.map_feature_type_multipolygon},
         root: 'mapViews',
-        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'longitude', 'latitude', 'zoom'
         ],
-        sortInfo: {field: 'name', direction: 'ASC'},
+        sortInfo: {field: 'userId', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -63,12 +64,12 @@
         url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
         baseParams: {featureType: G.conf.map_feature_type_point},
         root: 'mapViews',
-        fields: [ 'id', 'name', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+        fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
             'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
             'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
         ],
-        sortInfo: {field: 'name', direction: 'ASC'},
+        sortInfo: {field: 'userId', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -418,7 +419,7 @@
 		layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: 180,
+        height: 207,
         items: [
             {
                 xtype: 'form',
@@ -434,6 +435,15 @@
                         width: G.conf.combo_width_fieldset,
                         autoCreate: {tag: 'input', type: 'text', size: '20', autocomplete: 'off', maxlength: '35'}
                     },
+                    {
+                        xtype: 'checkbox',
+                        id: 'favoritesystem_chb',
+                        disabled: !G.user.isAdmin,
+                        fieldLabel: 'System',
+                        labelSeparator: G.conf.labelseparator,
+                        editable: false
+                    },
+                        
                     {html: '<div class="window-p"></div>'},
                     {html: '<div class="window-info">Delete / Add favorite to dashboard</div>'},
                     {
@@ -466,25 +476,24 @@
 				text: G.i18n.register,
 				handler: function() {
 					var vn = Ext.getCmp('favoritename_tf').getValue();
+                    var params;
                     
                     if (!vn) {
 						Ext.message.msg(false, G.i18n.form_is_not_complete);
 						return;
 					}
                     
-                    var formValues;
-                    
                     if (G.vars.activePanel.isPolygon()) {
                         if (!choropleth.formValidation.validateForm(true)) {
                             return;
                         }
-                        formValues = choropleth.formValues.getAllValues.call(choropleth);
+                        params = choropleth.formValues.getAllValues.call(choropleth);
                     }
                     else if (G.vars.activePanel.isPoint()) {
                         if (!symbol.formValidation.validateForm(true)) {
                             return;
                         }
-                        formValues = symbol.formValues.getAllValues.call(symbol);
+                        params = symbol.formValues.getAllValues.call(symbol);
                     }
                     
                     if (G.stores.mapView.findExact('name', vn) !== -1) {
@@ -492,46 +501,24 @@
                         return;
                     }
                     
+                    params.name = vn;
+                    params.system = Ext.getCmp('favoritesystem_chb').getValue();
+                    
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'addOrUpdateMapView' + G.conf.type,
                         method: 'POST',
-                        params: {
-                            name: vn,
-							featureType: formValues.featureType,
-                            mapValueType: formValues.mapValueType,
-                            indicatorGroupId: formValues.indicatorGroupId,
-                            indicatorId: formValues.indicatorId,
-                            dataElementGroupId: formValues.dataElementGroupId,
-                            dataElementId: formValues.dataElementId,
-                            periodTypeId: formValues.periodTypeId,
-                            periodId: formValues.periodId,
-                            startDate: formValues.startDate,
-                            endDate: formValues.endDate,
-                            parentOrganisationUnitId: formValues.parentOrganisationUnitId,
-                            organisationUnitLevel: formValues.organisationUnitLevel,
-                            mapLegendType: formValues.mapLegendType,
-                            method: formValues.method,
-                            classes: formValues.classes,
-                            bounds: formValues.bounds,
-                            colorLow: formValues.colorLow,
-                            colorHigh: formValues.colorHigh,
-                            mapLegendSetId: formValues.mapLegendSetId,
-                            radiusLow: formValues.radiusLow,
-                            radiusHigh: formValues.radiusHigh,
-                            longitude: formValues.longitude,
-                            latitude: formValues.latitude,
-                            zoom: formValues.zoom
-                        },
+                        params: params,
                         success: function(r) {
                             Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + G.i18n.registered);
                             G.stores.mapView.load();
-                            if (formValues.featureType == G.conf.map_feature_type_multipolygon) {
+                            if (params.featureType == G.conf.map_feature_type_multipolygon) {
 								G.stores.polygonMapView.load();
 							}
-							else if (formValues.featureType == G.conf.map_feature_type_multipolygon) {
+							else if (params.featureType == G.conf.map_feature_type_multipolygon) {
 								G.stores.pointMapView.load();
 							}
                             Ext.getCmp('favoritename_tf').reset();
+                            Ext.getCmp('favoritesystem_chb').reset();
                         }
                     });
 				}
@@ -545,29 +532,44 @@
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rw = Ext.getCmp('favorite_cb').getRawValue();
-					
-                    if (!v) {
-						Ext.message.msg(false, G.i18n.please_select_a_map_view);
-						return;
-					}
-					
-					Ext.Ajax.request({
-						url: G.conf.path_mapping + 'deleteMapView' + G.conf.type,
-						method: 'POST',
-						params: {id: v},
-						success: function(r) {
-							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
-                            G.stores.polygonMapView.load();
-							G.stores.pointMapView.load();
-                            Ext.getCmp('favorite_cb').clearValue();
-                            if (v == choropleth.form.findField('mapview').getValue()) {
-                                choropleth.form.findField('mapview').clearValue();
+                    var userId = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.userId;
+                    
+                    if (userId || G.user.isAdmin) {
+                        if (!v) {
+                            Ext.message.msg(false, G.i18n.please_select_a_map_view);
+                            return;
+                        }
+                        
+                        Ext.Ajax.request({
+                            url: G.conf.path_mapping + 'deleteMapView' + G.conf.type,
+                            method: 'POST',
+                            params: {id: v},
+                            success: function(r) {
+                                Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
+                                Ext.getCmp('favorite_cb').clearValue();
+                                
+                                var featureType = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.featureType;
+                                if (featureType == G.conf.map_feature_type_multipolygon) {
+                                    G.stores.polygonMapView.load();
+                                }
+                                else if (featureType == G.conf.map_feature_type_point) {
+                                    G.stores.pointMapView.load();
+                                }
+                                
+                                G.stores.mapView.load();
+                                
+                                if (v == choropleth.form.findField('mapview').getValue()) {
+                                    choropleth.form.findField('mapview').clearValue();
+                                }
+                                if (v == symbol.form.findField('mapview').getValue()) {
+                                    symbol.form.findField('mapview').clearValue();
+                                }
                             }
-                            if (v == symbol.form.findField('mapview').getValue()) {
-                                symbol.form.findField('mapview').clearValue();
-                            }
-						}
-					});
+                        });
+                    }
+                    else {
+                        Ext.message.msg(false, 'Access denied');
+                    }
 				}
 			},
             {
@@ -2313,7 +2315,6 @@
 	var favoritesButton = new Ext.Button({
 		iconCls: 'icon-favorite',
 		tooltip: G.i18n.favorite_map_views,
-		disabled: !G.user.isAdmin,
 		handler: function() {
 			var x = Ext.getCmp('center').x + 15;
 			var y = Ext.getCmp('center').y + 41;    
