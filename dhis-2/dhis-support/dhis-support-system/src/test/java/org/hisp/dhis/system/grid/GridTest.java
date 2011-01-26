@@ -29,6 +29,7 @@ package org.hisp.dhis.system.grid;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -236,5 +237,31 @@ public class GridTest
         assertTrue( column.contains( "17.0" ) );
         assertTrue( column.contains( "29.0" ) );
         assertTrue( column.contains( "41.0" ) );
+    }
+
+    @Test
+    public void testJRDataSource() throws Exception
+    {
+        assertTrue( grid.next() );
+        assertEquals( "11", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( "12", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( "13", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+
+        assertTrue( grid.next() );
+        assertEquals( "21", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( "22", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( "23", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+
+        assertTrue( grid.next() );
+        assertEquals( "31", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( "32", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( "33", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+
+        assertTrue( grid.next() );
+        assertEquals( "41", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( "42", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( "43", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+        
+        assertFalse( grid.next() );
     }
 }

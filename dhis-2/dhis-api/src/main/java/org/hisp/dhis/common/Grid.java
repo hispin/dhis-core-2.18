@@ -29,10 +29,13 @@ package org.hisp.dhis.common;
 
 import java.util.List;
 
+import net.sf.jasperreports.engine.JRDataSource;
+
 /**
  * @author Lars Helge Overland
  */
 public interface Grid
+    extends JRDataSource
 {
     /**
      * Returns the grid title.
