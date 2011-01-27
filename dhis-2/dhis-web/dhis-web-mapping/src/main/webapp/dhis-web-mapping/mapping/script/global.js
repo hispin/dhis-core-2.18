@@ -19,11 +19,11 @@ G.conf = {
 //  Layout
 
     west_width: 270,
-    gridpanel_width: 270 - 15,
     multiselect_width: 219,
+    label_width: 85,
 	combo_width: 150,
-	combo_width_fieldset: 112,
-	combo_list_width_fieldset: 112 + 17,
+	combo_width_fieldset: 127,
+	combo_list_width_fieldset: 127 + 17,
 	combo_number_width: 65,
 	combo_number_width_small: 40,
     window_width: 251,
