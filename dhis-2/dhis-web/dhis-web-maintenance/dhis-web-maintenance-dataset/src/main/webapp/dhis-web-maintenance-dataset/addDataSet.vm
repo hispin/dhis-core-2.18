@@ -1,22 +1,16 @@
 <script>
 	jQuery(document).ready(	function()
 	{		
-		validation( 'addDataSetForm', function( form ){ form.submit() }
-			, function()
-			{ 
-				filterList( '', 'selectedList' ); 
-				selectAllById('selectedList')  
-			});
+		validation( 'addDataSetForm', function( form ){ form.submit() }, function()	{
+			selectAllById('selectedList')  
+		});
 		
-		checkValueIsExist( "name", "validateDataSet.action" );
-		
-		checkValueIsExist( "shortName", "validateDataSet.action" );
-		
+		checkValueIsExist( "name", "validateDataSet.action" );		
+		checkValueIsExist( "shortName", "validateDataSet.action" );		
 		checkValueIsExist( "code", "validateDataSet.action" );		
 	});
 	
 	var previousName = '';
-
 </script>
 
 <h3>$i18n.getString( "add_dataset" )</h3>
@@ -96,12 +90,11 @@
       <tr>
       	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:25em"/></td>
       	<td>[$i18n.getString( "name" )]</td>
-      	<td><input type="text" id="dataSetMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:25em"/></td>
+      	<td></td>
       </tr>
       
       <tr>
         <td>
-          <!-- List of all available DataElements -->
           <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList');">
               #foreach ( $availableDataElement in $dataElements )
                   <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
@@ -115,7 +108,6 @@
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('remove_all')" style="width:50px" onclick="moveAllById( 'selectedList', 'availableList' );"/>
 		</td>			
         <td>
-          <!-- List of all selected DataElements -->
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:25em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' ); disabledSelectedList();">
           </select>
         </td>
