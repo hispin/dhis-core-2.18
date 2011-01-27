@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.jfree.chart.JFreeChart;
 
 import com.opensymphony.xwork2.Action;
@@ -87,7 +88,14 @@ public class ViewChartAction
     {
         return height;
     }
-    
+
+    private String filename;
+
+    public String getFilename()
+    {
+        return filename;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -113,6 +121,7 @@ public class ViewChartAction
             
             width = temp.getWidth();            
             height = temp.getHeight();
+            filename = CodecUtils.filenameEncode( temp.getName() );
             
             log.info( "Viewing chart: " + temp.getTitle() + ", width: " + width + ", height: " + height );
         }

@@ -49,6 +49,7 @@ public class ContextUtils
     public static final String CONTENT_TYPE_TEXT = "text/plain";
     public static final String CONTENT_TYPE_XML = "application/xml";
     public static final String CONTENT_TYPE_CSV = "application/csv";
+    public static final String CONTENT_TYPE_PNG = "image/png";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     
     private static final String SEPARATOR = "/";
