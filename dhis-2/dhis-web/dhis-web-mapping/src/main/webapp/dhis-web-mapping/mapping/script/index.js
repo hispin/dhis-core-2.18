@@ -419,11 +419,12 @@
 		layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
-        height: 207,
+        height: 205,
         items: [
             {
                 xtype: 'form',
                 bodyStyle: 'padding:8px',
+                labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Register current map as a favorite</div>'},
                     {
@@ -596,7 +597,7 @@
         ]
     });
 	
-	/* Section: export map */	
+	/* Section: export map */
 	var exportImageWindow = new Ext.Window({
         id: 'exportimage_w',
         title: '<span id="window-image-title">Image export</span>',
@@ -608,6 +609,7 @@
             {
                 xtype: 'form',
                 bodyStyle: 'padding:8px',
+                labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Export thematic map to PNG</div>'},
                     {
@@ -681,7 +683,7 @@
                     {
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
-                        fieldLabel: G.i18n.include_legend,
+                        fieldLabel: G.i18n.legend,
                         labelSeparator: '',				
                         isFormField: true,
                         checked: true
@@ -811,6 +813,7 @@
                     {
                         xtype: 'form',
                         bodyStyle: 'padding: 8px 8px 5px 8px',
+                        labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Register new legend</div>'},
                             {
@@ -869,7 +872,7 @@
                         ]
                     },
                     {
-                        xtypes: 'form',
+                        xtype: 'form',
                         items: [
                             {
                                 xtype: 'toolbar',
@@ -969,6 +972,7 @@
                     {
                         xtype: 'form',
                         bodyStyle: 'padding: 8px 8px 5px 8px',
+                        labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Register new legend set</div>'},
                             {
@@ -1136,6 +1140,7 @@
                     {
                         xtype: 'form',
                         bodyStyle: 'padding: 8px 8px 5px 8px',
+                        labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Assign indicators to legend set</div>'},
                             {
@@ -1261,6 +1266,7 @@
                     {
                         xtype: 'form',
                         bodyStyle: 'padding: 8px 8px 5px 8px',
+                        labelWidth: G.conf.label_width,
                         items: [
                             {html: '<div class="window-info">Assign data elements to legend set</div>'},
                             {
@@ -1492,6 +1498,7 @@
             {
                 xtype: 'form',
                 bodyStyle: 'padding:8px',
+                labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Register new overlay</div>'},
                     {
@@ -1843,6 +1850,7 @@
                 xtype: 'form',
                 title: 'Date type',
                 bodyStyle: 'padding:8px',
+                labelWidth: G.conf.label_width,
                 items: [
                     {html: '<div class="window-info">Set thematic map date type</div>'},
                     {
@@ -2049,6 +2057,7 @@
                             {
                                 xtype: 'form',
                                 bodyStyle:'padding:8px',
+                                labelWidth: G.conf.label_width,
                                 items: [
                                     {html: '<div class="window-info">Locate an organisation unit in the map</div>'},
                                     {
@@ -2239,7 +2248,7 @@
 		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         featureSelection: false,
         legendDiv: 'polygonlegend',
-        defaults: {width: 130},
+        defaults: {width: 130},        
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setPolygon();
