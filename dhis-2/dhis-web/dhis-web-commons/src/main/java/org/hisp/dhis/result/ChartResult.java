@@ -14,9 +14,12 @@ package org.hisp.dhis.result;
  *
  */
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
+
+import org.hisp.dhis.util.ContextUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
@@ -35,13 +38,15 @@ import java.io.OutputStream;
 public class ChartResult
     implements Result
 {
-    private static final String CONTENT_TYPE = "image/png";
+    private static final String DEFAULT_FILENAME = "chart.png";
     
     private JFreeChart chart = null;
 
     private Integer height;
 
     private Integer width;
+    
+    private String filename;
     
     /**
      * Sets the JFreeChart to use.
@@ -74,6 +79,16 @@ public class ChartResult
     }
     
     /**
+     * Sets the filename.
+     * 
+     * @param filename the filename.
+     */
+    public void setFilename( String filename )
+    {
+        this.filename = filename;
+    }
+
+    /**
      * Executes the result. Writes the given chart as a PNG to the servlet
      * output stream.
      * 
@@ -96,6 +111,10 @@ public class ChartResult
         
         width = stackWidth != null && stackWidth > 0 ? stackWidth : width;
         
+        String stackFilename = (String) invocation.getStack().findValue( "filename" );
+        
+        filename = StringUtils.defaultIfEmpty( stackFilename, DEFAULT_FILENAME );
+        
         if ( chart == null )
         {
             throw new NullPointerException( "No chart found" );
@@ -112,7 +131,8 @@ public class ChartResult
         }
         
         HttpServletResponse response = ServletActionContext.getResponse();
-        response.setContentType( CONTENT_TYPE );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, filename, false );
+        
         OutputStream os = response.getOutputStream();
         ChartUtilities.writeChartAsPNG( os, chart, width, height );
         os.flush();
