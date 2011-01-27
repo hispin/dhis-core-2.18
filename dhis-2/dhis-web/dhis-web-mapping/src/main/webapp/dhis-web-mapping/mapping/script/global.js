@@ -165,8 +165,8 @@ G.util = {
                         'strokeWidth': 1,
                         'label': '${labelString}',
                         'fontFamily': 'arial,lucida sans unicode',
-                        'fontWeight': 'bold',
-                        'fontSize': 14
+                        'fontWeight': 'normal',
+                        'fontSize': 13
                     },
                     OpenLayers.Feature.Vector.style['default'])
                 ),
