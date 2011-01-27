@@ -207,7 +207,7 @@ public class DataElementOperand
      * @param categoryOptionCombo the category option combo.
      * @return the name.
      */
-    public String getPrettyName( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
+    public static String getPrettyName( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo )
     {
         if ( dataElement == null ) // Invalid
         {
