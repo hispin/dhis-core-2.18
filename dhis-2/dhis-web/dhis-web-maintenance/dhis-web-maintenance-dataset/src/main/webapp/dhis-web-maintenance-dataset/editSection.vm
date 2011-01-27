@@ -1,31 +1,24 @@
 <script>
 	jQuery(document).ready(	function()
 	{		
-		validation( 'editDataSetForm', function( form ){ form.submit() }
-			, function()
-			{ 
-				filterList( '', 'selectedList' ); 
-				selectAllById('selectedList') 
-			});
+		validation( 'editDataSetForm', function( form ){ form.submit() }, function() {
+			selectAllById('selectedList') 
+		});
 		
 		checkValueIsExist( "sectionName", "validateSection.action", {
-			dataSetId:function(){return jQuery("#dataSetId").val()}
-			,name: function(){return jQuery("#sectionName").val()}
-			,sectionId: function(){return jQuery("#sectionId").val()}
+			dataSetId:$("#dataSetId").val(),
+			name: $("#sectionName").val(),
+			sectionId: $("#sectionId").val()
 		});		
 	});
-	
 </script>
-
 
 <h3>$i18n.getString( "edit_section" )</h3>
 
 <form id="editDataSetForm" name="editDataSetForm" action="updateSection.action" method="post" >
-  <div style="display:inline">
   <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSet.id"/>
   <input type="hidden" id="sectionId" name="sectionId" value="$section.id"/>
   <input type="hidden" id="categoryComboId" name="categoryComboId" value="$!categoryCombo.id"/>
-  </div>
   
   <table id="detailsList">
     <col/> ## Labels
@@ -81,7 +74,7 @@
       <tr>
       	<td><input type="text" id="availableDataElementsFilter" onkeyup="filterList( this.value, 'availableList' )" style="min-width:26em"/></td>
       	<td align="center">[$i18n.getString( "name" )]</td>
-      	<td><input type="text" id="dataSetSectionMembersFilter" onkeyup="filterList( this.value, 'selectedList' )" style="min-width:26em"/></td>
+      	<td></td>
       </tr>
 	  
       <tr>
