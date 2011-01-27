@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
@@ -238,7 +239,9 @@ public class HibernateMappingStore
 
         Criteria criteria = session.createCriteria( MapView.class );
         
-        criteria.add( Restrictions.or( Restrictions.eq( "user", user ), Restrictions.isNull( "user" ) ) );
+        Criterion nullUser = Restrictions.isNull( "user" );
+        
+        criteria.add( user != null ? Restrictions.or( Restrictions.eq( "user", user ), nullUser ) : nullUser );
 
         return criteria.list();
     }
