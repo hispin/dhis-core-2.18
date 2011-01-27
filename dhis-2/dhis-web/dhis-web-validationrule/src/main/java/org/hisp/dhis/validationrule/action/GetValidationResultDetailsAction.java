@@ -182,8 +182,7 @@ public class GetValidationResultDetailsAction
             
             String value = dataValue != null ? dataValue.getValue() : NULL_REPLACEMENT;
             
-            leftSideMap.put( dataElement.getName() + " " +
-                categoryOptionCombo.getName(), value );
+            leftSideMap.put( DataElementOperand.getPrettyName( dataElement, categoryOptionCombo ), value );
         }
 
         for ( DataElementOperand operand : expressionService.getOperandsInExpression( validationRule.getRightSide().getExpression() ) )
@@ -196,8 +195,7 @@ public class GetValidationResultDetailsAction
 
             String value = dataValue != null ? dataValue.getValue() : NULL_REPLACEMENT;
             
-            rightSideMap.put( dataElement.getName() + " " +
-                categoryOptionCombo.getName(), value );
+            rightSideMap.put( DataElementOperand.getPrettyName( dataElement, categoryOptionCombo ), value );
         }
 
         return SUCCESS;

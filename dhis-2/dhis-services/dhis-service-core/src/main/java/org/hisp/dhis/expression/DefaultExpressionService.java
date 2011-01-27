@@ -322,7 +322,7 @@ public class DefaultExpressionService
                         + operand.getOptionComboId() );
                 }
 
-                match = operand.getPrettyName( dataElement, categoryOptionCombo );
+                match = DataElementOperand.getPrettyName( dataElement, categoryOptionCombo );
                 
                 matcher.appendReplacement( buffer, match );
             }
