@@ -108,7 +108,7 @@ mapfish.GeoStat.Symbol = OpenLayers.Class(mapfish.GeoStat, {
 				var value = feature.attributes[this.indicator];
                 var size = (value - this.minVal) / (this.maxVal - this.minVal) *
 					(this.maxSize - this.minSize) + this.minSize;
-                return size;
+                return size || this.minSize;
             },	this
 		);
 		this.extendStyle(null, {'pointRadius': '${calculateRadius}'}, {'calculateRadius': calculateRadius});

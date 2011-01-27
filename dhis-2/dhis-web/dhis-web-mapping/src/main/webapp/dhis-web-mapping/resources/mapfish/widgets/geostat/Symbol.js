@@ -811,6 +811,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: 'Low radius',
 			labelSeparator: G.conf.labelseparator,
             width: G.conf.combo_number_width_small,
+            allowDecimals: false,
+            allowNegative: false,
+            minValue: 1,
             value: 5,
             listeners: {
                 'change': {
@@ -828,6 +831,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             fieldLabel: 'High radius',
 			labelSeparator: G.conf.labelseparator,
             width: G.conf.combo_number_width_small,
+            allowDecimals: false,
+            allowNegative: false,
+            minValue: 1,
             value: 20,
             listeners: {
                 'change': {
