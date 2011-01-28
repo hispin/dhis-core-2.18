@@ -887,6 +887,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 								xtype: 'panel',
 								layout: 'form',
 								bodyStyle: 'padding:8px; background-color:#ffffff',
+                                labelWidth: G.conf.label_width,
 								items: [
 									{html: '<div class="window-info">Select organisation unit level</div>'},
 									{
