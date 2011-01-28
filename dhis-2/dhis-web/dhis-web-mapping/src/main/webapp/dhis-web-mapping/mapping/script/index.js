@@ -382,14 +382,11 @@
                 
                 for (var i = 0; i < r.length; i++) {
                     var overlay = G.util.createOverlay(
-                        r[i].data.name,
-                        r[i].data.fillColor,
-                        parseFloat(r[i].data.fillOpacity),
-                        r[i].data.strokeColor,
-                        parseFloat(r[i].data.strokeWidth),
+                        r[i].data.name, r[i].data.fillColor, 1, r[i].data.strokeColor, parseFloat(r[i].data.strokeWidth),
                         G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
                     );
                     
+                    overlay.setOpacity(r[i].data.fillOpacity);
                     overlay.events.register('loadstart', null, loadStart);
                     overlay.events.register('loadend', null, loadEnd);
                     overlay.isOverlay = true;
@@ -1639,13 +1636,15 @@
 							Ext.Ajax.request({
 								url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
 								method: 'POST',
-								params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: mlfo, strokeColor: mlsc, strokeWidth: mlsw},
+								params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: 1, strokeColor: mlsc, strokeWidth: mlsw},
 								success: function(r) {
 									Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
 									G.stores.overlay.load();
 									
-									var overlay = G.util.createOverlay(mln, mlfc, mlfo, mlsc, mlsw,
+									var overlay = G.util.createOverlay(mln, mlfc, 1, mlsc, mlsw,
                                         G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
+                                        
+                                    overlay.setOpacity(mlfo);
 									
 									if (G.vars.map.getLayersByName(mln).length) {
 										G.vars.map.getLayersByName(mln)[0].destroy();
@@ -1915,6 +1914,8 @@
         })
     });
     
+    polygonLayer.setOpacity(0.7);
+    
     pointLayer = new OpenLayers.Layer.Vector('Point layer', {
         'visibility': false,
         'displayInLayerSwitcher': false,
@@ -1930,6 +1931,8 @@
             )
         })
     });
+    
+    pointLayer.setOpacity(0.7);
     
     G.vars.map.addLayers([polygonLayer, pointLayer]);
         
