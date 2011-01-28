@@ -26,6 +26,11 @@
   margin-bottom:15px;
 }
 
+.linkArea div
+{
+  position:absolute;
+}
+
 .chartArea
 {
   border:1px solid #d0d0d0;
@@ -36,6 +41,11 @@
   margin-bottom:15px;
 }
 
+.chartArea div
+{
+  position:absolute;
+}
+
 .buttonArea
 {
   margin-bottom:2px;
@@ -44,7 +54,4 @@
 .labelText
 {
   color:#808080;
-}
-.chartArea div{
-	position:absolute;
 }
