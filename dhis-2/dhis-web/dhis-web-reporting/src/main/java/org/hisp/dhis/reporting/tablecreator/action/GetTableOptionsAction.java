@@ -378,7 +378,7 @@ public class GetTableOptionsAction
         
         levels = organisationUnitService.getOrganisationUnitLevels();
         
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() );
+        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
 
         displayPropertyHandler.handle( organisationUnits );
 
