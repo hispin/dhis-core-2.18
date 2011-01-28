@@ -776,7 +776,6 @@
 							else {
 								var exportForm = document.getElementById('exportForm');
 								exportForm.action = '../exportImage.action';
-								exportForm.target = '_blank';
 								
 								document.getElementById('titleField').value = title;
 								document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
