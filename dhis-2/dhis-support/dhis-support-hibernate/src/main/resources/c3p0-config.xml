@@ -1,8 +1,0 @@
-<c3p0-config>
-    <default-config>
-        <property name="initialPoolSize">1</property>
-        <property name="maxIdleTime">60</property>
-        <property name="maxPoolSize">20</property>
-        <property name="minPoolSize">1</property>
-    </default-config>
- </c3p0-config> 

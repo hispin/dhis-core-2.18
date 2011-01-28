@@ -563,8 +563,7 @@ public class DefaultChartService
                         columnIndex++;
                     }
 
-                    // Regression not relevant for organisation unit
-                    // category
+                    // Regression not relevant for organisation unit category
                 }
 
             }
