@@ -35,6 +35,7 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
@@ -195,8 +196,10 @@ public class JDBCReportTableManager
         try
         {
             ResultSet resultSet = holder.getStatement().executeQuery( "SELECT * FROM " + reportTable.getExistingTableName() );
+
+            String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE + StringUtils.trimToEmpty( reportTable.getReportingMonthName() );
             
-            Grid grid = new ListGrid().setTitle( reportTable.getName() ).setTable( reportTable.getExistingTableName() );
+            Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle ).setTable( reportTable.getExistingTableName() );
 
             // -----------------------------------------------------------------
             // Columns
