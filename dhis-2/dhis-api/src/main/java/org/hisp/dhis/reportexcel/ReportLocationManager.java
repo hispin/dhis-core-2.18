@@ -45,7 +45,7 @@ public interface ReportLocationManager
     
     public File getOrganisationDirectory( OrganisationUnit organisationUnit );
     
-    public List<File> getListFileInOrganisationDirectory( OrganisationUnit organisationUnit ); 
+    public List<File> getListFileInOrganisationDirectory( OrganisationUnit organisationUnit );
     
     public File getReportExcelDirectory();
     
