@@ -243,16 +243,20 @@ public abstract class AbstractDataSetCompletenessService
         {
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
-            result.setName( dataSet.getName() );
-            result.setRegistrations( getRegistrations( dataSet, children, period ) );
-            result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
             result.setSources( getSources( dataSet, children ) );
             
-            result.setDataSetId( dataSet.getId() );
-            result.setPeriodId( periodId );
-            result.setOrganisationUnitId( organisationUnitId );
-            
-            results.add( result );
+            if ( result.getSources() > 0 )
+            {
+                result.setName( dataSet.getName() );
+                result.setRegistrations( getRegistrations( dataSet, children, period ) );
+                result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
+                            
+                result.setDataSetId( dataSet.getId() );
+                result.setPeriodId( periodId );
+                result.setOrganisationUnitId( organisationUnitId );
+                
+                results.add( result );
+            }
         }
         
         return results;
@@ -280,16 +284,20 @@ public abstract class AbstractDataSetCompletenessService
             
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
             
-            result.setName( unit.getName() );
-            result.setRegistrations( getRegistrations( dataSet, children, period ) );
-            result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
             result.setSources( getSources( dataSet, children ) );
             
-            result.setDataSetId( dataSetId );
-            result.setPeriodId( periodId );
-            result.setOrganisationUnitId( unit.getId() );
-            
-            results.add( result );
+            if ( result.getSources() > 0 )
+            {
+                result.setName( unit.getName() );
+                result.setRegistrations( getRegistrations( dataSet, children, period ) );
+                result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
+                            
+                result.setDataSetId( dataSetId );
+                result.setPeriodId( periodId );
+                result.setOrganisationUnitId( unit.getId() );
+                
+                results.add( result );
+            }
         }
         
         return results;
