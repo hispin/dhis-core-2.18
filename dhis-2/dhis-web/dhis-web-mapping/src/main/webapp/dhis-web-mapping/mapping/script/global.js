@@ -319,7 +319,7 @@ G.util = {
                 G.vars.map.layers[i].setZIndex(index);
             }
         }
-    },
+    }
 };
 
 G.vars = {

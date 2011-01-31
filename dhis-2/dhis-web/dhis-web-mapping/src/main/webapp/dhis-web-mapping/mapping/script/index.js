@@ -1945,36 +1945,6 @@
         },
         contextMenuBaselayer: new Ext.menu.Menu({
             items: [
-                /*{
-                    text: 'Show WMS legend',
-                    iconCls: 'menu-layeroptions-wmslegend',
-                    handler: function(item, e) {
-                        var layer = item.parentMenu.contextNode.layer;
-
-                        var frs = layer.getFullRequestString({
-                            REQUEST: "GetLegendGraphic",
-                            WIDTH: null,
-                            HEIGHT: null,
-                            EXCEPTIONS: "application/vnd.ogc.se_xml",
-                            LAYERS: layer.params.LAYERS,
-                            LAYER: layer.params.LAYERS,
-                            SRS: null,
-                            FORMAT: 'image/png'
-                        });
-                        
-                        var wmsLayerLegendWindow = new Ext.Window({
-                            title: 'WMS Legend: <span style="font-weight:normal;">' + layer.name + '</span>',
-                            items: [
-                                {
-                                    xtype: 'panel',
-                                    html: '<img src="' + frs + '">'
-                                }
-                            ]
-                        });
-                        wmsLayerLegendWindow.setPagePosition(Ext.getCmp('east').x - 500, Ext.getCmp('center').y + 50);
-                        wmsLayerLegendWindow.show();
-                    }
-                },*/
                 {
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
@@ -2198,16 +2168,6 @@
             }
 		},
         bbar: [
-/*            {
-                xtype: 'button',
-                id: 'baselayers_b',
-                text: 'Base layers',
-                iconCls: 'icon-add',
-                handler: function() {
-                    Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
-                    Ext.getCmp('baselayers_w').show();
-                }
-            },*/
             {
                 xtype: 'button',
                 id: 'overlays_b',
@@ -2457,12 +2417,11 @@
 						height: 65,
 						anchor: '100%',
 						bodyStyle: 'padding-left: 4px;',
-						items:
-						[
+						items: [
 							new Ext.form.Label({
 								id: 'featureinfo_l',
 								text: G.i18n.no_feature_selected,
-								style: 'color:#666'
+								style: 'color:#666666'
 							})
 						]
 					},
@@ -2528,9 +2487,22 @@
                     pointLayer.svgId = G.vars.parameter.overlays.length ?
                         document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
                 }
+            
+                Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
+                
+                choropleth.prepareMapViewValueType();
+                symbol.prepareMapViewValueType();
+                
+                choropleth.prepareMapViewDateType();
+                symbol.prepareMapViewDateType();
+                
+                choropleth.prepareMapViewLegend();
+                symbol.prepareMapViewLegend();
             }
         }
     });
+    
+    G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
 	
 	G.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
@@ -2543,27 +2515,8 @@
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
-        layers: [
-            new OpenLayers.Layer.WMS(
-                "World",
-                "http://labs.metacarta.com/wms/vmap0", 
-                {layers: "basic"}
-            )
-        ]
+        layers: [new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender")]
     }));
-    
-    G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
-            
-    Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
-    
-    choropleth.prepareMapViewValueType();
-    symbol.prepareMapViewValueType();
-    
-    choropleth.prepareMapViewDateType();
-    symbol.prepareMapViewDateType();
-    
-    choropleth.prepareMapViewLegend();
-    symbol.prepareMapViewLegend();
     
 	}});
 });
