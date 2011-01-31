@@ -37,6 +37,11 @@
   background-color: #ffcccc;
 }
 
+.grey
+{
+  background-color: #cccccc;
+}
+
 @media print 
 {
   #mainHeader, #topMenu, #leftBar, #currentSelection, #actions, input[type=button] 
