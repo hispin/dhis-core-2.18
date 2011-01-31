@@ -37,10 +37,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.TwoYearlyPeriodType;
 
@@ -62,7 +58,6 @@ import org.hisp.dhis.period.TwoYearlyPeriodType;
  */
 public class DataElement
     extends IdentifiableObject
-    implements DimensionOption, DimensionOptionElement
 {
     public static final String VALUE_TYPE_STRING = "string";
     
@@ -185,83 +180,6 @@ public class DataElement
     public DataElement( String name )
     {
         this.name = name;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public static final Dimension DIMENSION = new DataElementDimension();
-
-    public static class DataElementDimension
-        extends Dimension
-    {
-        private static final String NAME = "DataElement";
-
-        public String getName()
-        {
-            return NAME;
-        }
-
-        public List<? extends DimensionOption> getDimensionOptions()
-        {
-            return null;
-        }
-
-        @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
-            {
-                return true;
-            }
-
-            if ( o == null )
-            {
-                return false;
-            }
-
-            if ( !(o instanceof DataElementDimension) )
-            {
-                return false;
-            }
-
-            final DataElementDimension other = (DataElementDimension) o;
-
-            return NAME.equals( other.getName() );
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return NAME.hashCode();
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + NAME + "]";
-        }
-    }
-
-    public DimensionType getDimensionType()
-    {
-        return null; // DataElement is DimensionOption for the static DataElement dimension
-    }
-
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return null; // DataElement is DimensionOption for the static DataElement dimension
-    }
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return new ArrayList<DimensionOption>( groups );
-    }
-
-    public Dimension getDimension()
-    {
-        return DIMENSION;
     }
 
     // -------------------------------------------------------------------------

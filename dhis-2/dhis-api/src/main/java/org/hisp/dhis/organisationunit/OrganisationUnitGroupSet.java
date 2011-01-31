@@ -33,15 +33,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * @author Kristian Nordal
  * @version $Id: OrganisationUnitGroupSet.java 1905 2006-09-23 14:34:55Z torgeilo $
  */
 public class OrganisationUnitGroupSet
-    extends Dimension
+    extends IdentifiableObject
 {
     private String description;
 
@@ -62,15 +61,6 @@ public class OrganisationUnitGroupSet
         this.name = name;
         this.description = description;
         this.compulsory = compulsory;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return new ArrayList<DimensionOption>( organisationUnitGroups );
     }
     
     // -------------------------------------------------------------------------
@@ -106,7 +96,20 @@ public class OrganisationUnitGroupSet
     {
         return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
     }
+
+    public OrganisationUnitGroup getGroup( OrganisationUnit unit )
+    {
+        for ( OrganisationUnitGroup group : organisationUnitGroups )
+        {
+            if ( group.getMembers().contains( unit ) )
+            {
+                return group;
+            }
+        }
         
+        return null;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

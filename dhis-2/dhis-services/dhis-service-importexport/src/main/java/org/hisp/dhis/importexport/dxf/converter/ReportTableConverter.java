@@ -27,16 +27,13 @@ package org.hisp.dhis.importexport.dxf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -78,9 +75,7 @@ public class ReportTableConverter
     private static final String FIELD_PERIODS = "periods";
     private static final String FIELD_ORGANISATION_UNITS = "organisationUnits";
     
-    private static final String FIELD_DIMENSION_TYPE = "dimensionType";
     private static final String FIELD_CATEGORY_COMBO = "categoryCombo";
-    private static final String FIELD_DATA_ELEMENT_GROUP_SETS = "dataElementGroupSets";
     
     private static final String FIELD_DO_INDICATORS = "doIndicators";
     private static final String FIELD_DO_PERIODS = "doPeriods";
@@ -99,7 +94,6 @@ public class ReportTableConverter
     private static final String FIELD_PARAM_ORG_UNIT = "paramOrganisationUnit";
         
     private Map<Object, Integer> dataElementMapping;
-    private Map<Object, Integer> dataElementGroupSetMapping;
     private Map<Object, Integer> categoryComboMapping;
     private Map<Object, Integer> indicatorMapping;
     private Map<Object, Integer> dataSetMapping;
@@ -148,7 +142,6 @@ public class ReportTableConverter
         PeriodService periodService,
         OrganisationUnitService organisationUnitService,
         Map<Object, Integer> dataElementMapping,
-        Map<Object, Integer> dataElementGroupSetMapping,
         Map<Object, Integer> categoryComboMapping,
         Map<Object, Integer> indicatorMapping,
         Map<Object, Integer> dataSetMapping,
@@ -164,7 +157,6 @@ public class ReportTableConverter
         this.periodService = periodService;
         this.organisationUnitService = organisationUnitService;
         this.dataElementMapping = dataElementMapping;
-        this.dataElementGroupSetMapping = dataElementGroupSetMapping;
         this.categoryComboMapping = categoryComboMapping;
         this.indicatorMapping = indicatorMapping;
         this.dataSetMapping = dataSetMapping;
@@ -230,15 +222,7 @@ public class ReportTableConverter
                 }
                 writer.closeElement();
                 
-                writer.writeElement( FIELD_DIMENSION_TYPE, reportTable.getDimensionType() != null ? reportTable.getDimensionType() : EMPTY );
                 writer.writeElement( FIELD_CATEGORY_COMBO, reportTable.getCategoryCombo() != null ? String.valueOf( reportTable.getCategoryCombo().getId() ) : EMPTY );
-                
-                writer.openElement( FIELD_DATA_ELEMENT_GROUP_SETS );
-                for ( DataElementGroupSet groupSet : reportTable.getDataElementGroupSets() )
-                {
-                    writer.writeElement( FIELD_ID, String.valueOf( groupSet.getId() ) );
-                }
-                writer.closeElement();
                 
                 writer.writeElement( FIELD_DO_INDICATORS, String.valueOf( reportTable.isDoIndicators() ) );
                 writer.writeElement( FIELD_DO_PERIODS, String.valueOf( reportTable.isDoPeriods() ) );
@@ -323,21 +307,10 @@ public class ReportTableConverter
                 reportTable.getUnits().add( organisationUnitService.getOrganisationUnit( organisationUnitMapping.get( id ) ) );
             }
             
-            reader.moveToStartElement( FIELD_DIMENSION_TYPE );
-            reportTable.setDimensionType( reader.getElementValue() );
-            
             reader.moveToStartElement( FIELD_CATEGORY_COMBO );
             String cc = reader.getElementValue();
             reportTable.setCategoryCombo( cc != null ? categoryService.getDataElementCategoryCombo( categoryComboMapping.get( Integer.parseInt( cc ) ) ) : null );
 
-            List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
-            while ( reader.moveToStartElement( FIELD_ID, FIELD_DATA_ELEMENT_GROUP_SETS ) )
-            {
-                int id = Integer.parseInt( reader.getElementValue() );
-                groupSets.add( dataElementService.getDataElementGroupSet( dataElementGroupSetMapping.get( id ) ) );
-            }
-            reportTable.setDataElementGroupSets( groupSets );
-            
             reader.moveToStartElement( FIELD_DO_INDICATORS );
             reportTable.setDoIndicators( Boolean.parseBoolean( reader.getElementValue() ) );
 

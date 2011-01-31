@@ -213,7 +213,7 @@ public interface DataElementCategoryService
      * @return a collection of DataElementCategoryCombos.
      */
     Collection<DataElementCategoryCombo> getAllDataElementCategoryCombos();
-
+    
     // -------------------------------------------------------------------------
     // CategoryOptionCombo
     // -------------------------------------------------------------------------

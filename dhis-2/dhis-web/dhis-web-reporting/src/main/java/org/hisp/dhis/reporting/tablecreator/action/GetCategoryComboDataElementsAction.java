@@ -28,62 +28,84 @@ package org.hisp.dhis.reporting.tablecreator.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dimension.DimensionService;
-import org.hisp.dhis.dimension.DimensionSet;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class GetDimensionSetDataElementsAction
+public class GetCategoryComboDataElementsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DimensionService dimensionService;
+    private DataElementCategoryService categoryService;
     
-    public void setDimensionService( DimensionService dimensionService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dimensionService = dimensionService;
+        this.categoryService = categoryService;
+    }
+
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private Comparator<DataElement> dataElementComparator;
+
+    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
+    {
+        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private String dimensionSetId;
-    
-    public void setDimensionSetId( String dimensionSetId )
-    {
-        this.dimensionSetId = dimensionSetId;
-    }
+    private Integer categoryComboId;
 
+    public void setCategoryComboId( Integer categoryComboId )
+    {
+        this.categoryComboId = categoryComboId;
+    }
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
     private List<DataElement> dataElements;
-    
+
     public List<DataElement> getDataElements()
     {
         return dataElements;
     }
 
     // -------------------------------------------------------------------------
-    // Fixture
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-        DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
+        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
         
-        dataElements = new ArrayList<DataElement>( dimensionService.getDataElements( dimensionSet ) );
+        if ( categoryCombo != null )
+        {
+            dataElements = new ArrayList<DataElement>( dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
+            
+            Collections.sort( dataElements, dataElementComparator );
+        }
         
         return SUCCESS;
     }

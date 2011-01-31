@@ -37,15 +37,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.dimension.DimensionService;
-import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -101,11 +102,11 @@ public class GetTableOptionsAction
         this.dataElementService = dataElementService;
     }
 
-    private DimensionService dimensionService;
+    private DataElementCategoryService categoryService;
     
-    public void setDimensionService( DimensionService dimensionService )
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dimensionService = dimensionService;
+        this.categoryService = categoryService;
     }
 
     private IndicatorService indicatorService;
@@ -203,11 +204,11 @@ public class GetTableOptionsAction
         return dataElementGroups;
     }
     
-    private List<DimensionSet> dimensionSets = new ArrayList<DimensionSet>();
-
-    public List<DimensionSet> getDimensionSets()
+    private List<DataElementCategoryCombo> categoryCombos = new ArrayList<DataElementCategoryCombo>();
+    
+    public List<DataElementCategoryCombo> getCategoryCombos()
     {
-        return dimensionSets;
+        return categoryCombos;
     }
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -348,7 +349,9 @@ public class GetTableOptionsAction
         }
         else if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && dimension )
         {
-            dimensionSets = new ArrayList<DimensionSet>( dimensionService.getDataElementDimensionSets() );
+            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
+            
+            Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
         }
         else if ( mode != null && mode.equals( ReportTable.MODE_INDICATORS ) )
         {

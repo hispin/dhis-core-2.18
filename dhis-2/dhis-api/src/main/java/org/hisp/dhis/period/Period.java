@@ -30,21 +30,15 @@ package org.hisp.dhis.period;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
  * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public class Period
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject
 {
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
@@ -98,78 +92,6 @@ public class Period
         this.endDate = getMediumDate( id[2] );
     }
     
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public static final Dimension DIMENSION = new PeriodDimension();
-    
-    public static class PeriodDimension
-        extends Dimension
-    {
-        private static final String NAME = "Period";
-        
-        public String getName()
-        {
-            return NAME;
-        }
-        
-        public List<? extends DimensionOption> getDimensionOptions()
-        {
-            return null;
-        }
-        
-        @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
-            {
-                return true;
-            }
-            
-            if ( o == null )
-            {
-                return false;
-            }
-            
-            if ( !( o instanceof PeriodDimension ) )
-            {
-                return false;
-            }
-            
-            final PeriodDimension other = (PeriodDimension) o;
-            
-            return NAME.equals( other.getName() );
-        }
-        
-        @Override
-        public int hashCode()
-        {
-            return NAME.hashCode();
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + NAME + "]";
-        }
-    }
-
-    public DimensionType getDimensionType()
-    {
-        return null;
-    }
-    
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return null;
-    }
-
-    public Dimension getDimension()
-    {
-        return DIMENSION;
-    }
-
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------

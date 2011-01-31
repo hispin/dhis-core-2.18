@@ -38,14 +38,11 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionSet;
-import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -165,19 +162,9 @@ public class ReportTable
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
     
     /**
-     * The {@link org.hisp.dhis.dimension.DimensionType} for the ReportTable.
-     */
-    private String dimensionType;
-    
-    /**
      * The DataElementCategoryCombo for the ReportTable.
      */
     private DataElementCategoryCombo categoryCombo;
-    
-    /**
-     * The DataElementGropSets for the ReportTable.
-     */
-    private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
     
     /**
      * Whether to crosstabulate on the Indicator dimension, which also represents DataElements and DataSets.
@@ -237,7 +224,7 @@ public class ReportTable
     /**
      * CategoryCombos that will be crosstabulated on the columns axis. Optional dimension.
      */
-    private List<? extends DimensionOptionElement> crossTabCategoryOptionCombos = new ArrayList<DimensionOptionElement>();
+    private List<DataElementCategoryOptionCombo> crossTabCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
     
     /**
      * Periods that will be crosstabulated on the columns axis. Mandatory dimension.
@@ -257,7 +244,7 @@ public class ReportTable
     /**
      * CategoryOptionCombos that will be present on the rows axis. Optional dimension.
      */
-    private List<? extends DimensionOptionElement> reportCategoryOptionCombos = new ArrayList<DimensionOptionElement>();
+    private List<DataElementCategoryOptionCombo> reportCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
     
     /**
      * Periods that will be present on the rows axis. Mandatory dimension.
@@ -319,22 +306,17 @@ public class ReportTable
     /**
      * The category option combos derived from the dimension set.
      */
-    private List<? extends DimensionOptionElement> categoryOptionCombos = new ArrayList<DimensionOptionElement>();
-    
-    /**
-     * The data elements derived from the dimension set.
-     */
-    private List<DataElement> dimensionalDataElements = new ArrayList<DataElement>();
+    private List<DataElementCategoryOptionCombo> categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>();
     
     /**
      * The dimension options.
      */
-    private List<DimensionOption> dimensionOptions = new ArrayList<DimensionOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
     /**
      * The dimension option column names.
      */
-    private List<String> dimensionOptionColumns = new ArrayList<String>();
+    private List<String> categoryOptionColumns = new ArrayList<String>();
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -391,7 +373,7 @@ public class ReportTable
         List<Period> relativePeriods,
         List<OrganisationUnit> units,
         List<OrganisationUnit> relativeUnits,
-        DimensionSet dimensionSet,
+        DataElementCategoryCombo categoryCombo,
         boolean doIndicators,
         boolean doPeriods,
         boolean doUnits,
@@ -412,6 +394,7 @@ public class ReportTable
         this.relativePeriods = relativePeriods;
         this.units = units;
         this.relativeUnits = relativeUnits;
+        this.categoryCombo = categoryCombo;
         this.doIndicators = doIndicators;
         this.doPeriods = doPeriods;
         this.doUnits = doUnits;
@@ -419,8 +402,6 @@ public class ReportTable
         this.reportParams = reportParams;
         this.i18nFormat = i18nFormat;
         this.reportingMonthName = reportingMonthName;
-        
-        this.setDimensionSet( dimensionSet );
     }
 
     // -------------------------------------------------------------------------
@@ -457,35 +438,14 @@ public class ReportTable
         }
         
         // ---------------------------------------------------------------------
-        // Init dimensional lists
+        // Init dimensions
         // ---------------------------------------------------------------------
 
-        if ( isDimensional( DimensionType.CATEGORY ) )
+        if ( isDimensional() )
         {
-            // -----------------------------------------------------------------
-            // CategoryCombo is set, populate CategoryOptionCombos
-            // -----------------------------------------------------------------
-
-            categoryOptionCombos = categoryCombo.getDimensionOptionElements();
+            categoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryCombo.getOptionCombos() );
             
             verify( nonEmptyLists( categoryOptionCombos ) == 1, "Category option combos size must be larger than 0" );
-        }
-        else if ( isDimensional( DimensionType.DATAELEMENTGROUPSET ) )
-        {
-            // -----------------------------------------------------------------
-            // All DataElements have GroupSets, populate DataElements
-            // -----------------------------------------------------------------
-
-            List<DataElement> elements = new ArrayList<DataElement>();
-                            
-            for ( DataElement element : dataElements )
-            {
-                elements.addAll( element.getDataElements() );
-            }
-            
-            dimensionalDataElements = elements;
-            
-            verify( nonEmptyLists( dimensionalDataElements ) == 1, "Dimensional data elements size must be larger than 0" );
         }
         
         // ---------------------------------------------------------------------
@@ -498,7 +458,6 @@ public class ReportTable
             crossTabIndicators.addAll( indicators );
             crossTabIndicators.addAll( dataElements );
             crossTabIndicators.addAll( dataSets );
-            crossTabIndicators.addAll( dimensionalDataElements );
             reportIndicators.add( null );
             selectColumns.add( getIdentifier( mode ) );
         }
@@ -509,12 +468,11 @@ public class ReportTable
             reportIndicators.addAll( indicators );
             reportIndicators.addAll( dataElements );
             reportIndicators.addAll( dataSets );
-            reportIndicators.addAll( dimensionalDataElements );
             indexColumns.add( getIdentifier( mode ) );
             indexNameColumns.add( getName( mode ) );
         }
         
-        if ( isDimensional( DimensionType.CATEGORY ) ) // Category options will be crosstab if dimensional and type category
+        if ( isDimensional() ) // Category options will be crosstab if dimensional
         {
             reportCategoryOptionCombos.add( null );
             
@@ -578,7 +536,7 @@ public class ReportTable
 
         for ( IdentifiableObject indicator : crossTabIndicators )
         {
-            for ( DimensionOptionElement categoryOptionCombo : crossTabCategoryOptionCombos )
+            for ( DataElementCategoryOptionCombo categoryOptionCombo : crossTabCategoryOptionCombos )
             {
                 for ( Period period : crossTabPeriods )
                 {
@@ -606,22 +564,22 @@ public class ReportTable
 
         if ( doTotal() )
         {
-            verify ( nonEmptyLists( categoryCombo.getDimensions() ) == 1, "Category combo dimensions size must be larger than 0" );
+            verify ( nonEmptyLists( categoryCombo.getCategories() ) == 1, "Category combo categories size must be larger than 0" );
             
-            for ( Dimension dimension : categoryCombo.getDimensions() )
+            for ( DataElementCategory category : categoryCombo.getCategories() )
             {
-                for ( DimensionOption dimensionOption : dimension.getDimensionOptions() )
+                for ( DataElementCategoryOption categoryOption : category.getCategoryOptions() )
                 {
-                    String columnName = databaseEncode( TOTAL_COLUMN_PREFIX + dimensionOption.getName() );
-                    String prettyColumnName = TOTAL_COLUMN_PRETTY_PREFIX + dimensionOption.getName();
+                    String columnName = databaseEncode( TOTAL_COLUMN_PREFIX + categoryOption.getName() );
+                    String prettyColumnName = TOTAL_COLUMN_PRETTY_PREFIX + categoryOption.getName();
                     
-                    dimensionOptions.add( dimensionOption );
-                    dimensionOptionColumns.add( columnName );
+                    categoryOptions.add( categoryOption );
+                    categoryOptionColumns.add( columnName );
                     prettyCrossTabColumns.put( columnName, prettyColumnName );
                 }
             }
             
-            verify( nonEmptyLists( dimensionOptions, dimensionOptionColumns ) == 2, "Dimension options size must be larger than 0" );
+            verify( nonEmptyLists( categoryOptions, categoryOptionColumns ) == 2, "Category options size must be larger than 0" );
         }
     }
 
@@ -649,21 +607,6 @@ public class ReportTable
     }
     
     /**
-     * Sets the appropriate dimension related properties depending on the dimension 
-     * set type.
-     */
-    @SuppressWarnings( "unchecked" )
-    public void setDimensionSet( DimensionSet dimensionSet )
-    {
-        if ( dimensionSet != null )
-        {
-            dimensionType = dimensionSet.getDimensionType().name();
-            categoryCombo = dimensionType.equals( DimensionType.CATEGORY.name() ) ? (DataElementCategoryCombo)dimensionSet : null;
-            dataElementGroupSets = dimensionType.equals( DimensionType.DATAELEMENTGROUPSET.name() ) ? (List<DataElementGroupSet>)dimensionSet.getDimensions() : null;
-        }
-    }
-    
-    /**
      * Returns a list of names of all columns for this ReportTable.
      */
     public List<String> getAllColumns()
@@ -675,7 +618,7 @@ public class ReportTable
         columns.add( ReportTable.REPORTING_MONTH_COLUMN_NAME );
         columns.add( ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME );
         columns.addAll( getCrossTabColumns() );
-        columns.addAll( getDimensionOptionColumns() );
+        columns.addAll( getCategoryOptionColumns() );
         
         if ( doTotal() )
         {
@@ -747,25 +690,16 @@ public class ReportTable
      */
     public boolean isDimensional()
     {
-        return dimensionType != null;
+        return categoryCombo != null;
     }
-    
-    /**
-     * Tests whether this ReportTable is multi-dimensional and of the argument
-     * dimension set type.
-     */
-    public boolean isDimensional( DimensionType dimensionType )
-    {
-        return isDimensional() && this.dimensionType.equals( dimensionType.name() );
-    }
-    
+        
     /**
      * Tests whether a total column should be included.
      */
     public boolean doTotal()
     {
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && 
-            isDimensional( DimensionType.CATEGORY ) && mode.equals( MODE_DATAELEMENTS );
+            isDimensional() && mode.equals( MODE_DATAELEMENTS );
     }
     
     /**
@@ -862,7 +796,7 @@ public class ReportTable
      * Generates a pretty-print column name based on short-names of the argument
      * objects. Null arguments are ignored in the name.
      */
-    private String getPrettyColumnName( IdentifiableObject metaObject, DimensionOptionElement categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getPrettyColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -892,7 +826,7 @@ public class ReportTable
      * Generates a column name based on short-names of the argument objects. Null 
      * arguments are ignored in the name.
      */
-    private String getColumnName( IdentifiableObject metaObject, DimensionOptionElement categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -924,7 +858,7 @@ public class ReportTable
      * Generates a column identifier based on the internal identifiers of the
      * argument objects. Null arguments are ignored in the identifier. 
      */
-    private String getColumnIdentifier( IdentifiableObject metaObject, DimensionOptionElement categoryOptionCombo, Period period, OrganisationUnit unit )
+    private String getColumnIdentifier( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -1125,12 +1059,12 @@ public class ReportTable
         this.dataElements = dataElements;
     }
 
-    public List<? extends DimensionOptionElement> getCategoryOptionCombos()
+    public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
     }
 
-    public void setCategoryOptionCombos( List<? extends DimensionOptionElement> categoryOptionCombos )
+    public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
     }
@@ -1175,16 +1109,6 @@ public class ReportTable
         this.units = units;
     }
 
-    public String getDimensionType()
-    {
-        return dimensionType;
-    }
-
-    public void setDimensionType( String dimensionType )
-    {
-        this.dimensionType = dimensionType;
-    }
-
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -1193,16 +1117,6 @@ public class ReportTable
     public void setCategoryCombo( DataElementCategoryCombo categoryCombo )
     {
         this.categoryCombo = categoryCombo;
-    }
-
-    public List<DataElementGroupSet> getDataElementGroupSets()
-    {
-        return dataElementGroupSets;
-    }
-
-    public void setDataElementGroupSets( List<DataElementGroupSet> dataElementGroupSets )
-    {
-        this.dataElementGroupSets = dataElementGroupSets;
     }
 
     public Boolean getDoIndicators()
@@ -1304,7 +1218,7 @@ public class ReportTable
         return reportIndicators;
     }
 
-    public List<? extends DimensionOptionElement> getReportCategoryOptionCombos()
+    public List<DataElementCategoryOptionCombo> getReportCategoryOptionCombos()
     {
         return reportCategoryOptionCombos;
     }
@@ -1369,13 +1283,13 @@ public class ReportTable
         this.organisationUnitName = organisationUnitName;
     }
 
-    public List<DimensionOption> getDimensionOptions()
+    public List<DataElementCategoryOption> getCategoryOptions()
     {
-        return dimensionOptions;
+        return categoryOptions;
     }
     
-    public List<String> getDimensionOptionColumns()
+    public List<String> getCategoryOptionColumns()
     {
-        return dimensionOptionColumns;
+        return categoryOptionColumns;
     }
 }

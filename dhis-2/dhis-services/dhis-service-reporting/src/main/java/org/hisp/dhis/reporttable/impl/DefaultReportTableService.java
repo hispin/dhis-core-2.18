@@ -44,11 +44,10 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
@@ -449,7 +448,7 @@ public class DefaultReportTableService
         
         for ( final IdentifiableObject metaObject : reportTable.getReportIndicators() )
         {
-            for ( final DimensionOptionElement categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
+            for ( final DataElementCategoryOptionCombo categoryOptionCombo : reportTable.getReportCategoryOptionCombos() )
             {
                 for ( final Period period : reportTable.getReportPeriods() )
                 {
@@ -561,10 +560,10 @@ public class DefaultReportTableService
                         
                         if ( reportTable.doTotal() )
                         {
-                            for ( DimensionOption dimensionOption : reportTable.getDimensionOptions() )
+                            for ( DataElementCategoryOption categoryOption : reportTable.getCategoryOptions() )
                             {
                                 grid.addValue( String.valueOf( aggregatedDataValueService.
-                                    getAggregatedValue( (DataElement) metaObject, dimensionOption, period, unit ) ) );
+                                    getAggregatedValue( (DataElement) metaObject, categoryOption, period, unit ) ) );
                             }
                             
                             grid.addValue( String.valueOf( aggregatedDataValueService.getAggregatedValue( (DataElement) metaObject, period, unit ) ) );

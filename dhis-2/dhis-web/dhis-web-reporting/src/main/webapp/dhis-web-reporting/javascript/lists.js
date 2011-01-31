@@ -43,22 +43,22 @@ function getDataElementsReceived( xmlObject )
     }
 }
 
-function getDimensionSetDataElements()
+function getCategoryComboDataElements()
 {
-    var dimensionSetId = getListValue( "dimensionSetId" );
+    var categoryComboId = getListValue( "categoryComboId" );
     
-    if ( dimensionSetId != null )
+    if ( categoryComboId != null )
     {
-        var url = "getDimensionSetDataElements.action?dimensionSetId=" + dimensionSetId;
+        var url = "getCategoryComboDataElements.action?categoryComboId=" + categoryComboId;
         
         var request = new Request();
         request.setResponseTypeXML( 'dataElement' );
-        request.setCallbackSuccess( getDimensionSetDataElementsReceived );
+        request.setCallbackSuccess( getCategoryComboDataElementsReceived );
         request.send( url );
     }
 }
 
-function getDimensionSetDataElementsReceived( xmlObject )
+function getCategoryComboDataElementsReceived( xmlObject )
 {   
     var availableDataElements = document.getElementById( "availableDataElements" );
     var selectedDataElements = document.getElementById( "selectedDataElements" );

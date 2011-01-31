@@ -51,12 +51,11 @@ import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.aggregation.StoreIterator;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionType;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -130,24 +129,19 @@ public class JdbcAggregatedDataValueStore
         return statementManager.getHolder().queryForDouble( sql );
     }
     
-    public Double getAggregatedDataValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit )
+    public Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOption categoryOption, Period period, OrganisationUnit organisationUnit )
     {
-        if ( dimensionOption.getDimensionType().equals( DimensionType.CATEGORY ) )
-        {
-            String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, dimensionOption.getDimensionOptionElements() ) );
-            
-            final String sql =
-                "SELECT SUM(value) " +
-                "FROM aggregateddatavalue " +
-                "WHERE dataelementid = " + dataElement.getId() + " " +
-                "AND categoryoptioncomboid IN (" + ids + ") " +
-                "AND periodid = " + period.getId() + " " +
-                "AND organisationunitid = " + organisationUnit.getId();
-
-            return statementManager.getHolder().queryForDouble( sql );
-        }
+        String ids = getCommaDelimitedString( getIdentifiers( DataElementCategoryOptionCombo.class, categoryOption.getCategoryOptionCombos() ) );
         
-        throw new IllegalArgumentException();
+        final String sql =
+            "SELECT SUM(value) " +
+            "FROM aggregateddatavalue " +
+            "WHERE dataelementid = " + dataElement.getId() + " " +
+            "AND categoryoptioncomboid IN (" + ids + ") " +
+            "AND periodid = " + period.getId() + " " +
+            "AND organisationunitid = " + organisationUnit.getId();
+
+        return statementManager.getHolder().queryForDouble( sql );
     }
     
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, 

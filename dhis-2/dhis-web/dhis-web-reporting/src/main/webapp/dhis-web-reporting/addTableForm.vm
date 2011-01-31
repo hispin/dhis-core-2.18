@@ -64,7 +64,7 @@
 	            <select id="dataElementGroupId" name="dataElementGroupId" style="min-width:640px" onchange="getDataElements()">
 	                <option value="$ALL">[ $i18n.getString( "select_dataelementgroup_all" ) ]</option>
 	                #foreach ( $group in $dataElementGroups )
-	                    <option value="$group.id">$group.name</option>
+	                    <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
 	                #end
 	            </select>
 	        </td>
@@ -76,10 +76,10 @@
 	    
         <tr>
             <td>
-                <select id="dimensionSetId" name="dimensionSetId" style="min-width:640px" onchange="getDimensionSetDataElements()">
-                    <option value="-1">[ $i18n.getString( "select_dimension" ) ]</option>
-                    #foreach ( $dimensionSet in $dimensionSets )
-                        <option value="$dimensionSet.dimensionSetId">$dimensionSet.name</option>
+                <select id="categoryComboId" name="categoryComboId" style="min-width:640px" onchange="getCategoryComboDataElements()">
+                    <option value="-1">[ $i18n.getString( "select_category_combo" ) ]</option>
+                    #foreach ( $categoryCombo in $categoryCombos )
+                        <option value="$categoryCombo.id">$encoder.htmlEncode( $categoryCombo.name )</option>
                     #end
                 </select>
             </td>
@@ -91,7 +91,7 @@
         <td>
             <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">             
                 #foreach ( $element in $dataElements )
-                    <option value="$element.id">$element.name</option>
+                    <option value="$element.id">$encoder.htmlEncode( $element.name )</option>
                 #end
             </select>
         </td>
@@ -111,7 +111,7 @@
         <td>
             <select multiple size="6" id="selectedDataElements" name="selectedDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
                 #foreach( $element in $selectedDataElements )
-                    <option value="$element.id">$element.name</option>
+                    <option value="$element.id">$encoder.htmlEncode( $element.name )</option>
                 #end
             </select>
         </td>
@@ -132,7 +132,7 @@
             <select id="indicatorGroupId" name="indicatorGroupId" style="min-width:640px" onchange="getIndicators()">
                 <option value="$ALL">[ $i18n.getString( "select_indicatorgroup_all" ) ]</option>
                 #foreach ( $group in $indicatorGroups )
-                    <option value="$group.id">$group.name</option>
+                    <option value="$group.id">$encoder.htmlEncode( $group.name )</option>
                 #end
             </select>
         </td>
@@ -141,7 +141,7 @@
         <td>
             <select multiple size="6" id="availableIndicators" name="availableIndicators" style="min-width:640px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">             
                 #foreach ( $indicator in $indicators )
-                    <option value="$indicator.id">$indicator.name</option>
+                    <option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
                 #end
             </select>
         </td>
@@ -161,7 +161,7 @@
         <td>
             <select multiple size="6" id="selectedIndicators" name="selectedIndicators" style="min-width:640px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
                 #foreach( $indicator in $selectedIndicators )
-                    <option value="$indicator.id">$indicator.name</option>
+                    <option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
                 #end
             </select>
         </td>
@@ -181,7 +181,7 @@
         <td>
             <select multiple size="6" id="availableDataSets" name="availableDataSets" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataSets', 'selectedDataSets' )">
                 #foreach ( $dataSet in $dataSets )
-                    <option value="$dataSet.id">$dataSet.name</option>
+                    <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
                 #end
             </select>
         </td>
@@ -201,7 +201,7 @@
         <td>
             <select multiple size="6" id="selectedDataSets" name="selectedDataSets" style="min-width:640px" ondblclick="moveSelectedById( 'selectedDataSets', 'availableDataSets' )">               
                 #foreach ( $dataSet in $selectedDataSets )
-                    <option value="$dataSet.id">$dataSet.name</option>
+                    <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
                 #end
             </select>
         </td>
@@ -231,7 +231,7 @@
 		<td>
 			<select multiple size="6" id="availableOrganisationUnits" name="availableOrganisationUnits" style="min-width:640px" ondblclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )">
 				#foreach ( $unit in $organisationUnits )
-					<option value="$unit.id">$unit.name</option>
+					<option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
 				#end
 			</select>
 		</td>
@@ -252,7 +252,7 @@
 		<td>
 			<select multiple size="6" id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:640px" ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">				
 				#foreach ( $unit in $selectedOrganisationUnits )
-					<option value="$unit.id">$unit.name</option>
+					<option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
 				#end
 			</select>
 		</td>

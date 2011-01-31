@@ -31,9 +31,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
@@ -41,7 +38,7 @@ import org.hisp.dhis.dimension.DimensionType;
  */
 
 public class OrganisationUnitGroup
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject
 {
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
     
@@ -58,20 +55,6 @@ public class OrganisationUnitGroup
     public OrganisationUnitGroup( String name )
     {
         this.name = name;
-    }
-
-    // -------------------------------------------------------------------------
-    // hashCode and equals
-    // -------------------------------------------------------------------------
-
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return members;
-    }
-
-    public DimensionType getDimensionType()
-    {
-        return DimensionType.ORGANISATIONUNITGROUPSET;
     }
     
     // -------------------------------------------------------------------------

@@ -150,8 +150,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-	<property name="dimensionService"
-	  ref="org.hisp.dhis.dimension.DimensionService"/>
+	<property name="categoryService"
+	  ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -169,8 +169,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
     <property name="dataElementService"
       ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="dimensionService"
-      ref="org.hisp.dhis.dimension.DimensionService"/>
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
     <property name="periodService"
@@ -246,20 +246,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction"
-    class="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction"
-    scope="prototype">
-    <property name="dimensionService"
-      ref="org.hisp.dhis.dimension.DimensionService"/>
-  </bean>
-  
+    
   <bean id="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
     class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction"
     scope="prototype">
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
-  </bean>    
+  </bean>
+  
+  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
+    class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction"
+    scope="prototype">
+    <property name="categoryService"
+      ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+  </bean>
     
   <!-- ReportViewer -->
   

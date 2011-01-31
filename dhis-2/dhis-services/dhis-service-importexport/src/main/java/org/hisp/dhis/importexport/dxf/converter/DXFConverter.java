@@ -919,7 +919,6 @@ public class DXFConverter
                 XMLConverter converter = new ReportTableConverter( reportTableService, importObjectService,
                     dataElementService, categoryService, indicatorService, dataSetService, periodService,
                     organisationUnitService, objectMappingGenerator.getDataElementMapping( params.skipMapping() ),
-                    objectMappingGenerator.getDataElementGroupSetMapping( params.skipMapping() ),
                     objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ), objectMappingGenerator
                         .getIndicatorMapping( params.skipMapping() ), objectMappingGenerator.getDataSetMapping( params
                         .skipMapping() ), objectMappingGenerator.getPeriodMapping( params.skipMapping() ),

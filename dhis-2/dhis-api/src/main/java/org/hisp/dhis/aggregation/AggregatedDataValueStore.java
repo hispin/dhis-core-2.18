@@ -31,10 +31,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
@@ -75,12 +75,12 @@ public interface AggregatedDataValueStore
      * Gets the total aggregated value from the datamart table for the given parameters.
      * 
      * @param dataElement The DataElement.
-     * @param dimensionOptionElement the DimensionOptionElement.
+     * @param categoryOption the DataElementCategoryOption.
      * @param period The Period.
      * @param organisationUnit The OrganisationUnit.
      * @return the aggregated value.
      */
-    Double getAggregatedDataValue( DataElement dataElement, DimensionOption dimensionOption, Period period, OrganisationUnit organisationUnit );
+    Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOption categoryOption, Period period, OrganisationUnit organisationUnit );
     
     /**
      * Gets the aggregated value from the datamart table for the given parameters.

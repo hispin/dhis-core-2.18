@@ -38,22 +38,24 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -243,11 +245,11 @@ public class DefaultResourceTableService
             values.add( String.valueOf( dataElement.getId() ) );
             values.add( dataElement.getName() );
             
-            for ( Dimension groupSet : groupSets )
+            for ( DataElementGroupSet groupSet : groupSets )
             {
-                DimensionOption dimensionOption = groupSet.getDimensionOption( dataElement );
+                DataElementGroup group = groupSet.getGroup( dataElement );
                 
-                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+                values.add( group != null ? group.getName() : null );    
             }
             
             batchHandler.addObject( values );
@@ -293,11 +295,11 @@ public class DefaultResourceTableService
             values.add( String.valueOf( indicator.getId() ) );
             values.add( indicator.getName() );
             
-            for ( Dimension groupSet : groupSets )
+            for ( IndicatorGroupSet groupSet : groupSets )
             {
-                DimensionOption dimensionOption = groupSet.getDimensionOption( indicator );
+                IndicatorGroup group = groupSet.getGroup( indicator );
                 
-                values.add( dimensionOption != null ? dimensionOption.getName() : null );    
+                values.add( group != null ? group.getName() : null );    
             }
             
             batchHandler.addObject( values );
@@ -345,11 +347,11 @@ public class DefaultResourceTableService
             values.add( String.valueOf( unit.getId() ) );
             values.add( unit.getName() );
 
-            for ( Dimension groupSet : groupSets )
+            for ( OrganisationUnitGroupSet groupSet : groupSets )
             {
-                DimensionOption dimensionOption = groupSet.getDimensionOption( unit );
+                OrganisationUnitGroup group = groupSet.getGroup( unit );
                 
-                values.add( dimensionOption != null ? dimensionOption.getName() : null );
+                values.add( group != null ? group.getName() : null );
             }
 
             batchHandler.addObject( values );
@@ -394,9 +396,9 @@ public class DefaultResourceTableService
             values.add( String.valueOf( categoryOptionCombo.getId() ) );
             values.add( categoryOptionCombo.getName() );
             
-            for ( Dimension category : categories )
+            for ( DataElementCategory category : categories )
             {
-                DimensionOption dimensionOption = category.getDimensionOption( categoryOptionCombo );
+                DataElementCategoryOption dimensionOption = category.getCategoryOption( categoryOptionCombo );
                 
                 values.add( dimensionOption != null ? dimensionOption.getName() : null );    
             }

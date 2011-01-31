@@ -36,8 +36,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
 import org.hisp.dhis.source.Source;
 
 /**
@@ -45,7 +43,7 @@ import org.hisp.dhis.source.Source;
  * @version $Id: OrganisationUnit.java 6251 2008-11-10 14:37:05Z larshelg $
  */
 public class OrganisationUnit
-    extends Source implements DimensionOptionElement
+    extends Source
 {
     public static final String FEATURETYPE_NONE = "None";
     public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
@@ -148,15 +146,6 @@ public class OrganisationUnit
         this.comment = comment;
     }
 
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return new ArrayList<DimensionOption>( groups );
-    }
-    
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -296,7 +285,7 @@ public class OrganisationUnit
         
         return group != null ? group.getName() : null;
     }
-        
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

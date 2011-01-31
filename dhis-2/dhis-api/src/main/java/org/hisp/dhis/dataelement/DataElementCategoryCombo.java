@@ -33,17 +33,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionSet;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Abyot Aselefew
  * @version $Id$
  */
 public class DataElementCategoryCombo
-    extends IdentifiableObject implements DimensionSet
+    extends IdentifiableObject
 {
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
 
@@ -66,30 +62,6 @@ public class DataElementCategoryCombo
      * A set of category option combos.
      */
     private Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public String getDimensionSetId()
-    {
-        return DimensionType.CATEGORY.name() + SEPARATOR_TYPE + id;
-    }
-
-    public DimensionType getDimensionType()
-    {
-        return DimensionType.CATEGORY;
-    }
-
-    public List<? extends Dimension> getDimensions()
-    {
-        return categories;
-    }
-
-    public List<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return new ArrayList<DimensionOptionElement>( optionCombos );
-    }
 
     // -------------------------------------------------------------------------
     // Constructors

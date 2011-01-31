@@ -31,16 +31,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorGroup.java 5296 2008-05-29 16:06:14Z larshelg $
  */
 public class IndicatorGroup
-    extends IdentifiableObject implements DimensionOption 
+    extends IdentifiableObject
 {
     private Set<Indicator> members = new HashSet<Indicator>();
 
@@ -57,20 +54,6 @@ public class IndicatorGroup
     public IndicatorGroup( String name )
     {
         this.name = name;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public DimensionType getDimensionType()
-    {
-        return DimensionType.INDICATORGROUPSET;
-    }
-    
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return members;
     }
     
     // -------------------------------------------------------------------------

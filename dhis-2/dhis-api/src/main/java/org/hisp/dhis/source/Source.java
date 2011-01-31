@@ -28,23 +28,18 @@ package org.hisp.dhis.source;
  */
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: Source.java 5277 2008-05-27 15:48:42Z larshelg $
  */
 public abstract class Source
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject
 {
     protected Set<DataSet> dataSets = new HashSet<DataSet>();
 
@@ -62,78 +57,6 @@ public abstract class Source
         }
         
         return dataElements;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public static final Dimension DIMENSION = new SourceDimension();
-    
-    public static class SourceDimension
-        extends Dimension
-    {
-        private static final String NAME = "Source";
-        
-        public String getName()
-        {
-            return NAME;
-        }
-        
-        public List<? extends DimensionOption> getDimensionOptions()
-        {
-            return null;
-        }
-        
-        @Override
-        public boolean equals( Object o )
-        {
-            if ( this == o )
-            {
-                return true;
-            }
-            
-            if ( o == null )
-            {
-                return false;
-            }
-            
-            if ( !( o instanceof SourceDimension ) )
-            {
-                return false;
-            }
-            
-            final SourceDimension other = (SourceDimension) o;
-            
-            return NAME.equals( other.getName() );
-        }
-        
-        @Override
-        public int hashCode()
-        {
-            return NAME.hashCode();
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[" + NAME + "]";
-        }
-    }
-
-    public DimensionType getDimensionType()
-    {
-        return null;
-    }
-    
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return null;
-    }
-
-    public Dimension getDimension()
-    {
-        return DIMENSION;
     }
     
     // -------------------------------------------------------------------------

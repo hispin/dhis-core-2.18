@@ -36,8 +36,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * @author Abyot Aselefew
@@ -45,7 +43,6 @@ import org.hisp.dhis.dimension.DimensionOptionElement;
  */
 public class DataElementCategoryOptionCombo
     extends IdentifiableObject
-    implements DimensionOptionElement
 {
     public static final String DEFAULT_NAME = "default";
 
@@ -67,15 +64,6 @@ public class DataElementCategoryOptionCombo
 
     public DataElementCategoryOptionCombo()
     {
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return categoryOptions;
     }
 
     // -------------------------------------------------------------------------

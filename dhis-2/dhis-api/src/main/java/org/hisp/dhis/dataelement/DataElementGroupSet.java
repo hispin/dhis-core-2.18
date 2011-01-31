@@ -31,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * DataElementGroupSet is a set of DataElementGroups. It is by default exclusive,
@@ -42,7 +41,7 @@ import org.hisp.dhis.dimension.DimensionOption;
  * @author Lars Helge Overland
  */
 public class DataElementGroupSet
-    extends Dimension
+    extends IdentifiableObject
 {
     private List<DataElementGroup> members = new ArrayList<DataElementGroup>();
 
@@ -60,15 +59,6 @@ public class DataElementGroupSet
     }
 
     // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return members;
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
@@ -82,6 +72,19 @@ public class DataElementGroupSet
         }
         
         return dataElements;
+    }
+    
+    public DataElementGroup getGroup( DataElement dataElement )
+    {
+        for ( DataElementGroup group : members )
+        {
+            if ( group.getMembers().contains( dataElement ) )
+            {
+                return group;
+            }
+        }
+        
+        return null;
     }
     
     // -------------------------------------------------------------------------

@@ -114,7 +114,7 @@ public class CreateReportTableStatement
 
         if ( reportTable.doTotal() )
         {
-            for ( String column : reportTable.getDimensionOptionColumns() )
+            for ( String column : reportTable.getCategoryOptionColumns() )
             {
                 buffer.append( column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
             }
