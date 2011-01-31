@@ -45,18 +45,9 @@
         class="org.hisp.dhis.dataset.DataSet"/>
     </list>
     
-	<property name="dimensionType" column="dimension_type"/>
-	
     <many-to-one name="categoryCombo" class="org.hisp.dhis.dataelement.DataElementCategoryCombo"
       column="categorycomboid" foreign-key="fk_reporttable_categorycombo"/>
 	
-    <list name="dataElementGroupSets" table="reporttable_dataelementgroupsets">
-      <key column="reporttableid"/>
-      <list-index column="sort_order" base="0"/>
-      <many-to-many column="dataelementgroupsetid"
-        class="org.hisp.dhis.dataelement.DataElementGroupSet"/>
-    </list>
-    
     <list name="periods" table="reporttable_periods">
       <key column="reporttableid"/>
       <list-index column="sort_order" base="0"/>

@@ -27,17 +27,18 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.*;
+import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
+import static org.hisp.dhis.system.util.ConversionUtils.getList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dimension.DimensionService;
-import org.hisp.dhis.dimension.DimensionSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -75,12 +76,12 @@ public class SaveTableAction
     {
         this.dataElementService = dataElementService;
     }
-
-    private DimensionService dimensionService;
     
-    public void setDimensionService( DimensionService dimensionService )
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
     {
-        this.dimensionService = dimensionService;
+        this.categoryService = categoryService;
     }
 
     private IndicatorService indicatorService;
@@ -143,11 +144,11 @@ public class SaveTableAction
         this.regression = regression;
     }    
     
-    private String dimensionSetId;
+    private Integer categoryComboId;
 
-    public void setDimensionSetId( String dimensionSetId )
+    public void setCategoryComboId( Integer categoryComboId )
     {
-        this.dimensionSetId = dimensionSetId;
+        this.categoryComboId = categoryComboId;
     }
 
     private boolean doIndicators;
@@ -324,7 +325,7 @@ public class SaveTableAction
             units.add( organisationUnitService.getOrganisationUnit( id ) );
         }
         
-        DimensionSet dimensionSet = dimensionService.getDimensionSet( dimensionSetId );
+        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
         
         RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
         
@@ -340,7 +341,7 @@ public class SaveTableAction
         {
             reportTable = new ReportTable( tableName, mode, regression,
                 dataElements, indicators, dataSets, periods, null, units, null,
-                dimensionSet, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
+                categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
         }
         else
@@ -354,12 +355,12 @@ public class SaveTableAction
             reportTable.setDataSets( dataSets );
             reportTable.setPeriods( periods );
             reportTable.setUnits( units );
+            reportTable.setCategoryCombo( categoryCombo );
             reportTable.setDoIndicators( doIndicators );
             reportTable.setDoPeriods( doPeriods );
             reportTable.setDoUnits( doOrganisationUnits );
             reportTable.setRelatives( relatives );
             reportTable.setReportParams( reportParams );
-            reportTable.setDimensionSet( dimensionSet );
         }
         
         return reportTable;

@@ -31,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.hisp.dhis.dimension.Dimension;
-import org.hisp.dhis.dimension.DimensionOption;
+import org.hisp.dhis.common.IdentifiableObject;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -42,7 +41,7 @@ import org.hisp.dhis.dimension.DimensionOption;
  * @author Lars Helge Overland
  */
 public class IndicatorGroupSet
-    extends Dimension
+    extends IdentifiableObject
 {
     private List<IndicatorGroup> members = new ArrayList<IndicatorGroup>();
 
@@ -60,15 +59,6 @@ public class IndicatorGroupSet
     }
 
     // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return members;
-    }
-
-    // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
@@ -82,6 +72,19 @@ public class IndicatorGroupSet
         }
         
         return indicators;
+    }
+    
+    public IndicatorGroup getGroup( Indicator indicator )
+    {
+        for ( IndicatorGroup group : members )
+        {
+            if ( group.getMembers().contains( indicator ) )
+            {
+                return group;
+            }
+        }
+        
+        return null;
     }
     
     // -------------------------------------------------------------------------

@@ -30,8 +30,8 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.concept.Concept;
-import org.hisp.dhis.dimension.Dimension;
 
 /**
  * A Category is a dimension of a data element. DataElements can have sets of
@@ -43,7 +43,7 @@ import org.hisp.dhis.dimension.Dimension;
  * @version $Id DataElementCategory.java Aug 25, 2010 duyhieu$
  */
 public class DataElementCategory
-    extends Dimension
+    extends IdentifiableObject
 {
     public static final String DEFAULT_NAME = "default";
 
@@ -78,14 +78,22 @@ public class DataElementCategory
     }
 
     // -------------------------------------------------------------------------
-    // Dimension
+    // Logic
     // -------------------------------------------------------------------------
 
-    public List<DataElementCategoryOption> getDimensionOptions()
+    public DataElementCategoryOption getCategoryOption( DataElementCategoryOptionCombo categoryOptionCombo )
     {
-        return categoryOptions;
+        for ( DataElementCategoryOption categoryOption : categoryOptions )
+        {
+            if ( categoryOption.getCategoryOptionCombos().contains( categoryOptionCombo ) )
+            {
+                return categoryOption;
+            }
+        }
+        
+        return null;
     }
-
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -148,5 +156,4 @@ public class DataElementCategory
     {
         this.concept = concept;
     }
-
 }

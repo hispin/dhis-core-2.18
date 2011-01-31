@@ -31,16 +31,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Kristian Nordal
  * @version $Id: DataElementGroup.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class DataElementGroup
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject
 {
     private Set<DataElement> members = new HashSet<DataElement>();
 
@@ -57,20 +54,6 @@ public class DataElementGroup
     public DataElementGroup( String name )
     {
         this.name = name;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public DimensionType getDimensionType()
-    {
-        return DimensionType.DATAELEMENTGROUPSET;
-    }
-    
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return members;
     }
     
     // -------------------------------------------------------------------------

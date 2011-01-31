@@ -31,16 +31,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
-import org.hisp.dhis.dimension.DimensionType;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
 public class DataElementCategoryOption
-    extends IdentifiableObject implements DimensionOption
+    extends IdentifiableObject
 {
     public static final String DEFAULT_NAME = "default";
     
@@ -64,24 +61,6 @@ public class DataElementCategoryOption
     	this.name = name;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public Set<? extends DimensionOptionElement> getDimensionOptionElements()
-    {
-        return categoryOptionCombos;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public DimensionType getDimensionType()
-    {
-        return DimensionType.CATEGORY;
-    }
-    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

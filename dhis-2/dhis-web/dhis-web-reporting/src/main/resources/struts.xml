@@ -240,12 +240,7 @@
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
-    <action name="getDimensionSetDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetDimensionSetDataElementsAction">
-      <result name="success" type="velocity">/dhis-web-commons/ajax/xmlDataElements.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-        
+            
     <action name="exportTable" class="org.hisp.dhis.reporting.tablecreator.action.ExportTableAction">
       <result name="csv" type="gridCsvResult"/>
       <result name="xls" type="gridXlsResult"/>
@@ -256,6 +251,11 @@
       <param name="page">/dhis-web-reporting/reportTableGrid.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>   
       <param name="javascripts">javascript/generateReport.js</param>   
+    </action>
+    
+    <action name="getCategoryComboDataElements" class="org.hisp.dhis.reporting.tablecreator.action.GetCategoryComboDataElementsAction">
+      <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlDataElements.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- PivotTable -->

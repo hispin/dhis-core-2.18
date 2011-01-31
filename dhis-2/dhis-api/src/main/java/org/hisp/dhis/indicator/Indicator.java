@@ -34,15 +34,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dimension.DimensionOption;
-import org.hisp.dhis.dimension.DimensionOptionElement;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 public class Indicator
-    extends IdentifiableObject implements DimensionOptionElement
+    extends IdentifiableObject
 {
     private Boolean annualized;
 
@@ -99,15 +97,6 @@ public class Indicator
         this.denominator = denominator;
         this.denominatorDescription = denominatorDescription;
         this.denominatorAggregationOperator = denominatorAggregationOperator;
-    }
-
-    // -------------------------------------------------------------------------
-    // Dimension
-    // -------------------------------------------------------------------------
-
-    public List<? extends DimensionOption> getDimensionOptions()
-    {
-        return new ArrayList<DimensionOption>( groups );
     }
     
     // -------------------------------------------------------------------------
