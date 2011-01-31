@@ -232,7 +232,6 @@
 						symbol.form.findField('level').setValue(data.name);
 					}
 				}
-                // Ext.getCmp('level_cb').mode = 'local';
             }
         }
     });
@@ -343,56 +342,37 @@
 	
 	/* Add base layers */	
 	function addBaseLayersToMap(init) {
-		G.vars.map.addLayer(new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender"));
-		G.vars.map.addLayer(new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik"));
-		G.vars.map.addLayer(new OpenLayers.Layer.OSM.CycleMap("OSM CycleMap"));
-        
         if (init) {
-            var layers = G.vars.parameter.baseLayers || [];
-			if (layers.length) {
-				for (var i = 0; i < layers.length; i++) {
-					G.vars.map.addLayers([new OpenLayers.Layer.WMS(layers[i].data.name, layers[i].data.mapSource, {layers: layers[i].data.layer})]);
-					G.vars.map.layers[G.vars.map.layers.length-1].setVisibility(false);
-				}
-			}
-        }
-        else {
-            G.stores.baseLayer.load({callback: function(r) {
-                if (r.length) {
-                    for (var i = 0; i < r.length; i++) {
-                        G.vars.map.addLayers([new OpenLayers.Layer.WMS(r[i].data.name, r[i].data.mapSource, {layers: r[i].data.layer})]);
-                        G.vars.map.layers[G.vars.map.layers.length-1].setVisibility(false);
-                    }
-                }
-            }});
+            var osmarender = new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender");
+            osmarender.layerType = G.conf.map_layer_type_baselayer;
+            G.vars.map.addLayer(osmarender);
+            
+            var mapnik = new OpenLayers.Layer.OSM.Osmarender("OSM Mapnik");
+            mapnik.layerType = G.conf.map_layer_type_baselayer;
+            G.vars.map.addLayer(mapnik);
+            
+            var cyclemap = new OpenLayers.Layer.OSM.Osmarender("OSM CycleMap");
+            cyclemap.layerType = G.conf.map_layer_type_baselayer;
+            G.vars.map.addLayer(cyclemap);
         }
 	}
 	addBaseLayersToMap(true);
     
 	function addOverlaysToMap(init) {
         function add(r) {
-            if (r.length) {
-                var loadStart = function() {
-                    G.vars.mask.msg = G.i18n.loading;
-                    G.vars.mask.show();
-                };
-                var loadEnd = function() {
-                    G.vars.mask.hide();
-                };
-                
+            if (r.length) {                
                 for (var i = 0; i < r.length; i++) {
                     var overlay = G.util.createOverlay(
                         r[i].data.name, r[i].data.fillColor, 1, r[i].data.strokeColor, parseFloat(r[i].data.strokeWidth),
                         G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
                     );
                     
-                    overlay.setOpacity(r[i].data.fillOpacity);
-                    overlay.events.register('loadstart', null, loadStart);
-                    overlay.events.register('loadend', null, loadEnd);
-                    overlay.isOverlay = true;
+                    overlay.events.register('loadstart', null, G.func.loadStart);
+                    overlay.events.register('loadend', null, G.func.loadEnd);
                     
                     G.vars.map.addLayer(overlay);
-					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(10000);
+					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(G.conf.defaultLayerZIndex);
+                    G.vars.map.getLayersByName(r[i].data.name)[0].layerType = G.conf.map_layer_type_overlay;
 					G.vars.map.overlays.push(r[i].data.name);
                 }
             }
@@ -1640,17 +1620,20 @@
 									Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
 									G.stores.overlay.load();
 									
-									var overlay = G.util.createOverlay(mln, mlfc, 1, mlsc, mlsw,
-                                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
-                                        
-                                    overlay.setOpacity(mlfo);
-									
 									if (G.vars.map.getLayersByName(mln).length) {
 										G.vars.map.getLayersByName(mln)[0].destroy();
 									}
+                                    
+									var overlay = G.util.createOverlay(mln, mlfc, 1, mlsc, mlsw,
+                                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
+                                        
+                                    overlay.events.register('loadstart', null, G.func.loadStart);
+                                    overlay.events.register('loadend', null, G.func.loadEnd);
+                                    overlay.setOpacity(mlfo);
+                                    overlay.layerType = G.conf.map_layer_type_overlay;
 									
 									G.vars.map.addLayer(overlay);
-									G.vars.map.getLayersByName(mln)[0].setZIndex(10000);
+									G.vars.map.getLayersByName(mln)[0].setZIndex(G.conf.defaultLayerZIndex);
 									G.vars.map.overlays.push(mln);
 									
 									Ext.getCmp('maplayername_tf').reset();
@@ -1687,12 +1670,8 @@
                     });
                     
                     G.vars.map.getLayersByName(mln)[0].destroy();
-					
-					for (var i = 0; i < G.vars.map.overlays.length; i++) {
-						if (G.vars.map.getLayersByName(G.vars.map.overlays[i]).length) {
-							G.vars.map.getLayersByName(G.vars.map.overlays[i])[0].setZIndex(10000);
-						}
-					}
+                    
+                    G.util.setZIndexByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerZIndex);
                 }
             }
         ]
@@ -1913,7 +1892,7 @@
         })
     });
     
-    polygonLayer.setOpacity(0.7);
+    polygonLayer.layerType = G.conf.map_layer_type_thematic;
     
     pointLayer = new OpenLayers.Layer.Vector('Point layer', {
         'visibility': false,
@@ -1931,7 +1910,7 @@
         })
     });
     
-    pointLayer.setOpacity(0.7);
+    pointLayer.layerType = G.conf.map_layer_type_thematic;
     
     G.vars.map.addLayers([polygonLayer, pointLayer]);
         
@@ -2536,7 +2515,21 @@
                 zoom: 3,
 				tbar: mapToolbar
             }
-        ]
+        ],
+        listeners: {
+            'afterrender': function() {
+                G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
+                G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
+                
+                if (!Ext.isIE) {
+                    polygonLayer.svgId = G.vars.parameter.overlays.length ?
+                        document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
+                    
+                    pointLayer.svgId = G.vars.parameter.overlays.length ?
+                        document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
+                }
+            }
+        }
     });
 	
 	G.vars.map.addControl(new OpenLayers.Control.MousePosition({
@@ -2560,14 +2553,6 @@
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.ZoomBox());
-	
-	if (!Ext.isIE) {
-        polygonLayer.svgId = G.vars.parameter.overlays.length ?
-			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
-		
-		pointLayer.svgId = G.vars.parameter.overlays.length ?
-			document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
-	}
             
     Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
     
