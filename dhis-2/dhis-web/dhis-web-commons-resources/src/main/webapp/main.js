@@ -86,6 +86,12 @@ function pageInit()
 			window.location.href = currentPath + 'displayChangeLog.action' + backURL;
 		});
 		
+	$( "#menuDropDownSupportiveSoftware" ).click(
+		function()
+		{
+			window.location.href= currentPath + 'displaySupportiveSoftware.action' + backURL;
+		});
+	
 	$( "#menuDropDownUserAccount" ).click(
 		function()
 		{
