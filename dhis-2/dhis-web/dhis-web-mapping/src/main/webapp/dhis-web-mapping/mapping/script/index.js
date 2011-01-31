@@ -8,7 +8,7 @@
         controls: [new OpenLayers.Control.MouseToolbar()],
         displayProjection: new OpenLayers.Projection("EPSG:4326")
     });
-	G.vars.map.overlays = [];
+
 	G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
     G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
 	
@@ -373,7 +373,6 @@
                     G.vars.map.addLayer(overlay);
 					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(G.conf.defaultLayerZIndex);
                     G.vars.map.getLayersByName(r[i].data.name)[0].layerType = G.conf.map_layer_type_overlay;
-					G.vars.map.overlays.push(r[i].data.name);
                 }
             }
         }
@@ -1634,7 +1633,6 @@
 									
 									G.vars.map.addLayer(overlay);
 									G.vars.map.getLayersByName(mln)[0].setZIndex(G.conf.defaultLayerZIndex);
-									G.vars.map.overlays.push(mln);
 									
 									Ext.getCmp('maplayername_tf').reset();
 									Ext.getCmp('maplayermapsourcefile_cb').clearValue();
@@ -2516,6 +2514,10 @@
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
         layers: [new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender")]
+    }));
+    
+    G.vars.map.addControl(new OpenLayers.Control.PanPanel({
+        slideFactor: 80
     }));
     
 	}});
