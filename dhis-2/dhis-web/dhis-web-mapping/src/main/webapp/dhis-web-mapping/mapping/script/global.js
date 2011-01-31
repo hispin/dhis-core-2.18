@@ -79,7 +79,11 @@ G.conf = {
         {text: '0.8', iconCls: 'menu-layeroptions-opacity-80'},
         {text: '0.9', iconCls: 'menu-layeroptions-opacity-90'},
         {text: '1.0', iconCls: 'menu-layeroptions-opacity-100'}
-    ]
+    ],
+    
+    defaultLayerOpacity: 0.8,
+    
+    defaultLayerZIndex: 10000
 };
 
 G.util = {
@@ -216,26 +220,6 @@ G.util = {
         widget.applyValues();
     },
 
-    toggleFeatureLabelsAssignment: function() {
-        function activateLabels(scope) {
-            mapping.layer.styleMap = scope.labels.getActivatedOpenLayersStyleMap();
-            mapping.labels = true;
-        }
-        function deactivateLabels(scope) {
-            mapping.layer.styleMap = scope.labels.getDeactivatedOpenLayersStyleMap();
-            mapping.labels = false;
-        }
-        
-        if (mapping.labels) {
-            deactivateLabels(this);
-        }
-        else {
-            activateLabels(this);
-        }
-        
-        mapping.classify(false, true);
-    },
-
     /* Sort values */
     sortByValue: function(a,b) {
         return b.value-a.value;
@@ -319,7 +303,23 @@ G.util = {
                 'format': new OpenLayers.Format.GeoJSON()
             })
         });
-    }
+    },
+    
+    setOpacityByLayerType: function(type, opacity) {
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == type) {
+                G.vars.map.layers[i].setOpacity(opacity);
+            }
+        }
+    },
+    
+    setZIndexByLayerType: function(type, index) {
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == type) {
+                G.vars.map.layers[i].setZIndex(index);
+            }
+        }
+    },
 };
 
 G.vars = {
@@ -399,5 +399,14 @@ G.system = {
 G.func = {
 	storeLoadListener: function() {
 		this.isLoaded = true;
-	}
+	},
+    
+    loadStart: function() {
+        G.vars.mask.msg = G.i18n.loading;
+        G.vars.mask.show();
+    },
+    
+    loadEnd: function() {
+        G.vars.mask.hide();
+    }
 };
