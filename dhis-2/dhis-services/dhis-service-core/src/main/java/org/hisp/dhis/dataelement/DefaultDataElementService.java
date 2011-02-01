@@ -320,22 +320,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsWithGroupSets() );
     }
 
-    public Collection<DataElement> getDataElementsByGroupSets( Set<DataElementGroupSet> groupSets )
-    {
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
-
-        for ( DataElement dataElement : getDataElementsWithGroupSets() )
-        {
-            if ( dataElement.getGroupSets() != null
-                && new HashSet<DataElementGroupSet>( dataElement.getGroupSets() ).equals( groupSets ) )
-            {
-                dataElements.add( dataElement );
-            }
-        }
-
-        return i18n( i18nService, dataElements );
-    }
-
     public Collection<DataElement> getDataElementsWithoutGroups()
     {
         return i18n( i18nService, dataElementStore.getDataElementsWithoutGroups() );

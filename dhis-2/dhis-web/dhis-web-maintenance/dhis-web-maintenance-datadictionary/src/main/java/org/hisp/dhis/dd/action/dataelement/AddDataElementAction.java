@@ -154,13 +154,6 @@ public class AddDataElementAction
         this.url = url;
     }
 
-    private Collection<String> dataElementGroupSets = new ArrayList<String>();
-
-    public void setDataElementGroupSets( Collection<String> dataElementGroupSets )
-    {
-        this.dataElementGroupSets = dataElementGroupSets;
-    }
-
     private Collection<String> aggregationLevels;
 
     public void setAggregationLevels( Collection<String> aggregationLevels )
@@ -280,11 +273,6 @@ public class AddDataElementAction
         else
         {
             dataElement = new DataElement();
-        }
-
-        for ( String id : dataElementGroupSets )
-        {
-            dataElement.getGroupSets().add( dataElementService.getDataElementGroupSet( Integer.parseInt( id ) ) );
         }
 
         dataElement.setName( name );

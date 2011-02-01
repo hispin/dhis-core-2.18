@@ -429,41 +429,6 @@ public class DataElementServiceTest
         assertEquals( 3, dataElementService.getDataElementsByType( DataElement.VALUE_TYPE_BOOL ).size() );
     }
 
-    @Test
-    public void testGetDataElementsByGroupSets()
-    {
-        DataElementGroupSet groupSetA = createDataElementGroupSet( 'A' );
-        DataElementGroupSet groupSetB = createDataElementGroupSet( 'B' );
-        
-        dataElementService.addDataElementGroupSet( groupSetA );
-        dataElementService.addDataElementGroupSet( groupSetB );
-        
-        DataElement dataElementA = createDataElement( 'A' );
-        DataElement dataElementB = createDataElement( 'B' );
-        DataElement dataElementC = createDataElement( 'C' );
-        DataElement dataElementD = createDataElement( 'D' );
-        
-        dataElementB.getGroupSets().add( groupSetA );
-        dataElementB.getGroupSets().add( groupSetB );
-        dataElementD.getGroupSets().add( groupSetA );
-        dataElementD.getGroupSets().add( groupSetB );
-        
-        dataElementService.addDataElement( dataElementA );
-        dataElementService.addDataElement( dataElementB );
-        dataElementService.addDataElement( dataElementC );
-        dataElementService.addDataElement( dataElementD );
-        
-        Set<DataElementGroupSet> groupSets = new HashSet<DataElementGroupSet>();
-        groupSets.add( groupSetA );
-        groupSets.add( groupSetB );
-        
-        Collection<DataElement> dataElements = dataElementService.getDataElementsByGroupSets( groupSets );
-        
-        assertEquals( 2, dataElements.size() );
-        assertTrue( dataElements.contains( dataElementB ) );
-        assertTrue( dataElements.contains( dataElementD ) );
-    }
-
     // -------------------------------------------------------------------------
     // CalculatedDataElements
     // -------------------------------------------------------------------------
