@@ -9,9 +9,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="reportContentProvider" 
     class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
-	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager"/>
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
-    <property name="reportManager" ref="org.hisp.dhis.report.ReportManager"/>
     <property name="key" value="reports"/>
   </bean>
   
