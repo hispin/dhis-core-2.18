@@ -330,10 +330,48 @@ G.util = {
             }
         }
         return layers;
-    }
+    },
     
-    //extendSvg: function(src, ext) {
-        
+    getLayersByType: function(type) {
+        var layers = [];
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == type) {
+                layers.push(G.vars.map.layers[i]);
+            }
+        }
+        return layers;
+    },
+    
+    getVisibleLayers: function(layers) {
+        var vLayers = [];
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].visibility) {
+                vLayers.push(layers[i]);
+            }
+        }
+        return vLayers;
+    },
+    
+    mergeSvg: function(str, ext) {
+        if (ext.length) {
+            str = str || '<svg>';
+            for (var i = 0; i < ext.length; i++) {
+                str = str.replace('</svg>');
+                ext[i] = ext[i].substring(ext[i].indexOf('>')+1);
+                str += ext[i];
+            }
+        }
+        return str;
+    },
+    
+    getOverlaysSvg: function(overlays) {
+        if (overlays.length) {
+            for (var i = 0; i < overlays.length; i++) {
+                overlays[i] = document.getElementById(overlays[i].svgId).parentNode.innerHTML;
+            }
+        }
+        return overlays;
+    }
 };
 
 G.vars = {

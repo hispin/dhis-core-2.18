@@ -82,7 +82,7 @@ public class SVGDocument
         String title_ = "<g id=\"title\" style=\"display: block; visibility: visible;\"><text id=\"title\" x=\"30\" y=\"20\" font-size=\"18\" font-weight=\"bold\"><tspan>"
             + StringEscapeUtils.escapeXml( this.title ) + "</tspan></text></g>";
 
-        if ( this.layer != 3 ) // Polygon or point layer
+        if ( this.layer == 1 || this.layer == 2 ) // Polygon or point layer
         {
             String indicator_ = "<g id=\"indicator\" style=\"display: block; visibility: visible;\"><text id=\"indicator\" x=\"30\" y=\"40\" font-size=\"12\"><tspan>"
                 + StringEscapeUtils.escapeXml( this.indicator ) + "</tspan></text></g>";
@@ -131,6 +131,11 @@ public class SVGDocument
             {
                 svg_ = svg_.replaceFirst( "</svg>", this.getLegendScript2( 30, (145 + 15 * this.imageLegendRows) ) + "</svg>" );
             }
+        }
+        
+        else
+        {
+            svg_ = svg_.replaceFirst( "</svg>", title_ + "</svg>" );
         }
 
         return new StringBuffer( svg_ );
