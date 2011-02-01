@@ -58,7 +58,7 @@ public class StatementInterceptor
         
         statementManager.initialise();
         
-        log.info( "Initialising statement manager" );
+        log.debug( "Initialising statement manager" );
         
         try
         {
@@ -68,7 +68,7 @@ public class StatementInterceptor
         {
             statementManager.destroy();
             
-            log.info( "Destroying statement manager" );
+            log.debug( "Destroying statement manager" );
         }
         
         return object;
