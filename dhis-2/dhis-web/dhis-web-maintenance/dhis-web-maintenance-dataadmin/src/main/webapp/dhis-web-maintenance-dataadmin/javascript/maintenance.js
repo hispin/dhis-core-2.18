@@ -1,18 +1,18 @@
 
 function performMaintenance()
 {
-    var aggregatedDataValues = document.getElementById( "aggregatedDataValues" ).checked;
-    var aggregatedIndicatorValues = document.getElementById( "aggregatedIndicatorValues" ).checked;
+    var clearDataMart = document.getElementById( "clearDataMart" ).checked;
+    var dataMartIndex = document.getElementById( "dataMartIndex" ).checked;
     var zeroValues = document.getElementById( "zeroValues" ).checked;
     var dataSetCompleteness = document.getElementById( "dataSetCompleteness" ).checked;
     var prunePeriods = document.getElementById( "prunePeriods" ).checked;
     
-    if ( aggregatedDataValues || aggregatedIndicatorValues || zeroValues || dataSetCompleteness || prunePeriods )
+    if ( clearDataMart || dataMartIndex || zeroValues || dataSetCompleteness || prunePeriods )
     {
         setWaitMessage( i18n_performing_maintenance );
         
-        var params = "aggregatedDataValues=" + aggregatedDataValues + 
-            "&aggregatedIndicatorValues=" + aggregatedIndicatorValues +
+        var params = "clearDataMart=" + clearDataMart + 
+            "&dataMartIndex=" + dataMartIndex +
             "&zeroValues=" + zeroValues +
             "&dataSetCompleteness=" + dataSetCompleteness +
             "&prunePeriods=" + prunePeriods;

@@ -83,18 +83,18 @@ public class PerformMaintenanceAction
     // Input
     // -------------------------------------------------------------------------
     
-    private boolean aggregatedDataValues;
+    private boolean clearDataMart;
 
-    public void setAggregatedDataValues( boolean aggregatedDataValues )
+    public void setClearDataMart( boolean clearDataMart )
     {
-        this.aggregatedDataValues = aggregatedDataValues;
+        this.clearDataMart = clearDataMart;
     }
 
-    private boolean aggregatedIndicatorValues;
-
-    public void setAggregatedIndicatorValues( boolean aggregatedIndicatorValues )
+    public boolean dataMartIndex;
+    
+    public void setDataMartIndex( boolean dataMartIndex )
     {
-        this.aggregatedIndicatorValues = aggregatedIndicatorValues;
+        this.dataMartIndex = dataMartIndex;
     }
 
     private boolean zeroValues;
@@ -125,18 +125,20 @@ public class PerformMaintenanceAction
     public String execute() 
         throws Exception
     {
-        if ( aggregatedDataValues )
+        if ( clearDataMart )
         {
             aggregatedDataValueService.deleteAggregatedDataValues();
-            
-            log.info( "Cleared aggregated data values" );
-        }
-        
-        if ( aggregatedIndicatorValues )
-        {
             aggregatedDataValueService.deleteAggregatedIndicatorValues();
             
-            log.info( "Cleared aggregated indicator values" );
+            log.info( "Cleared data mart" );
+        }
+        
+        if ( dataMartIndex )
+        {
+            aggregatedDataValueService.dropIndex( true, true );
+            aggregatedDataValueService.createIndex( true, true );
+            
+            log.info( "Rebuilt data mart indexes" );
         }
         
         if ( zeroValues )
