@@ -27,29 +27,15 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.report.Report.TYPE_BIRT;
-import static org.hisp.dhis.report.Report.TYPE_DEFAULT;
-import static org.hisp.dhis.report.Report.TYPE_JASPER;
-import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.comparator.ReportComparator;
-import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -60,10 +46,6 @@ import org.hisp.dhis.user.User;
 public class ReportContentProvider
     implements ContentProvider
 {
-    private static final Log log = LogFactory.getLog( ReportContentProvider.class );
-    
-    private static final String SEPARATOR = "/";
-    private static final String BASE_QUERY = "frameset?__report=";
     private static final String JASPER_BASE_URL = "../dhis-web-reporting/getReportParams.action?id=";
     private static final String JASPER_RENDER_URL = "&mode=report&url=renderReport.action?id=";
     
@@ -78,25 +60,11 @@ public class ReportContentProvider
         this.currentUserService = currentUserService;
     }
     
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private DashboardService dashboardService;
 
     public void setDashboardService( DashboardService dashboardService )
     {
         this.dashboardService = dashboardService;
-    }
-    
-    private ReportManager reportManager;
-
-    public void setReportManager( ReportManager reportManager )
-    {
-        this.reportManager = reportManager;
     }
     
     private String key;
@@ -120,37 +88,11 @@ public class ReportContentProvider
         {
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
             
-            String framework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK, TYPE_DEFAULT );
-            
             List<Report> reports = dashboardContent.getReports();
             
-            if ( framework.equals( TYPE_JASPER ) )
+            for ( Report report : reports )
             {
-                for ( Report report : reports )
-                {
-                    report.setUrl( JASPER_BASE_URL + report.getId() + JASPER_RENDER_URL + report.getId() );
-                }
-            }
-            else if ( framework.equals( TYPE_BIRT ) )
-            {            
-                try
-                {
-                    ReportConfiguration config = reportManager.getConfiguration();
-                    
-                    HttpServletRequest request = ServletActionContext.getRequest();
-                    
-                    String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
-                    
-                    for ( Report report : reports )
-                    {
-                        report.setUrl( birtURL + report.getDesign() );
-                    }
-                    
-                }
-                catch ( NoConfigurationFoundException ex )
-                {
-                    log.error( "Report configuration not set" );
-                }
+                report.setUrl( JASPER_BASE_URL + report.getId() + JASPER_RENDER_URL + report.getId() );
             }
 
             Collections.sort( reports, new ReportComparator() );
