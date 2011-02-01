@@ -31,8 +31,8 @@
 	<tr>
 		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
 		<td>
-			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()"><input 
-			       type="button" style="width:50px" value="$i18n.getString( 'next' )" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()"><br/>
+			<input type="button" id="nextButton" style="width:50px" value="$i18n.getString( 'prev' )" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()"><input 
+			       type="button" id="prevButton" style="width:50px" value="$i18n.getString( 'next' )" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()"><br/>
 			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="periodSelected()"></select>
 		</td>
 	</tr>	
