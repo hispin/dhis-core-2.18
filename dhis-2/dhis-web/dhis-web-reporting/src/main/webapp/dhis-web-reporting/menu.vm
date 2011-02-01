@@ -1,16 +1,13 @@
 
 <h2>$i18n.getString( "report" )&nbsp;</h2>
 <ul>
-	<li><a href="displayViewReportFormVerifyConfiguration.action">$i18n.getString( "standard_report" )&nbsp;</a></li>
+	<li><a href="displayViewReportForm.action">$i18n.getString( "standard_report" )&nbsp;</a></li>
 	<li><a href="showDataSetReportForm.action">$i18n.getString( "dataset_report" )&nbsp;</a></li>
 	<li><a href="displayViewDataCompletenessForm.action">$i18n.getString( "data_completeness_report" )&nbsp;</a></li>
     <li><a href="displayViewDocumentForm.action">$i18n.getString( "static_report" )&nbsp;</a></li>
     <li><a href="displayOrgUnitDistribution.action">$i18n.getString( "organisation_unit_report" )&nbsp;</a></li>
 	<li><a href="tallySheetGenerator.action">$i18n.getString( "tally_sheet_generator" )&nbsp;</a></li>
 	<li><a href="displayManageTableForm.action">$i18n.getString( "report_table" )&nbsp;</a></li>
-	#if( $reportFramework == "birt" )
-    <li><a href="displayConfigureReportForm.action">$i18n.getString( "report_configuration" )&nbsp;</a></li>
-    #end
 </ul>
 
 <h2>$i18n.getString( "chart" )&nbsp;</h2>

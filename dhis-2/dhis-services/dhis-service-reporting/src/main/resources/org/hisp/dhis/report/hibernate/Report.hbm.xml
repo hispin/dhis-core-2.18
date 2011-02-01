@@ -14,11 +14,7 @@
       <column name="name" not-null="true" unique="true" length="160"/>
     </property>
 
-    <property name="design"/>
-
 	<property name="designContent" type="text"/>
-
-    <property name="type"/>
         
     <set name="reportTables" table="reportreporttables">
       <key column="reportid"/>

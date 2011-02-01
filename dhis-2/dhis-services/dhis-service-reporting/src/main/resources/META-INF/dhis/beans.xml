@@ -76,18 +76,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="reportStore"
       ref="org.hisp.dhis.report.ReportStore"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.report.ReportManager"
-    class="org.hisp.dhis.report.manager.DefaultReportManager">
-    <property name="reportConfigDir" 
-      value="reports"/>
-    <property name="reportConfigFile" 
-      value="reportConfiguration.xml"/>
-	<property name="hibernateConfigurationProvider" ref="hibernateConfigurationProvider"/>
-	<property name="locationManager" ref="locationManager"/>
-	<property name="configurationManager" ref="configurationManager"/>
-  </bean>
-  
+    
   <!-- Chart -->
   
   <bean id="org.hisp.dhis.chart.ChartStore"

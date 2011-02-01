@@ -66,9 +66,7 @@ public class ReportImporter
     protected void importMatching( Report object, Report match )
     {
         match.setName( match.getName() );
-        match.setDesign( object.getDesign() );
         match.setDesignContent( object.getDesignContent() );
-        match.setType( object.getType() );
         
         reportService.saveReport( match );
     }
@@ -86,15 +84,7 @@ public class ReportImporter
         {
             return false;
         }
-        if ( !isSimiliar( object.getDesign(), existing.getDesign() ) || ( isNotNull( object.getDesign(), existing.getDesign() ) && !object.getDesign().equals( existing.getDesign() ) ) )
-        {
-            return false;
-        }
         if ( !isSimiliar( object.getDesignContent(), existing.getDesignContent() ) || ( isNotNull( object.getDesignContent(), existing.getDesignContent() ) && !object.getDesignContent().equals( existing.getDesignContent() ) ) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getType(), existing.getType() ) || ( isNotNull( object.getType(), existing.getType() ) && !object.getType().equals( existing.getType() ) ) )
         {
             return false;
         }

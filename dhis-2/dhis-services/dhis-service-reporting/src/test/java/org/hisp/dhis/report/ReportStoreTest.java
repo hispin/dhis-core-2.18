@@ -32,8 +32,6 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
-import static org.hisp.dhis.report.Report.TYPE_BIRT;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,8 +84,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGet()
     {
-        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -99,8 +97,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGetUpdate()
     {
-        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -108,8 +106,8 @@ public class ReportStoreTest
         assertEquals( reportA, reportStore.get( idA ) );
         assertEquals( reportB, reportStore.get( idB ) );
         
-        reportA.setDesign( "UpdatedDesignA" );
-        reportB.setDesign( "UpdatedDesignB" );
+        reportA.setDesignContent( "UpdatedDesignA" );
+        reportB.setDesignContent( "UpdatedDesignB" );
         
         int updatedIdA = reportStore.save( reportA );
         int updatedIdB = reportStore.save( reportB );
@@ -117,15 +115,15 @@ public class ReportStoreTest
         assertEquals( idA, updatedIdA );
         assertEquals( idB, updatedIdB );
         
-        assertEquals( "UpdatedDesignA", reportStore.get( updatedIdA ).getDesign() );
-        assertEquals( "UpdatedDesignB", reportStore.get( updatedIdB ).getDesign() );
+        assertEquals( "UpdatedDesignA", reportStore.get( updatedIdA ).getDesignContent() );
+        assertEquals( "UpdatedDesignB", reportStore.get( updatedIdB ).getDesignContent() );
     }
 
     @Test
     public void testDelete()
     {
-        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -147,8 +145,8 @@ public class ReportStoreTest
     @Test
     public void testGetAll()
     {
-        Report reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", TYPE_BIRT, reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTables );
+        Report reportB = new Report( "ReportB", "DesignB", reportTables );
         
         reportStore.save( reportA );
         reportStore.save( reportB );

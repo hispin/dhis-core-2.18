@@ -47,15 +47,6 @@
 </select>
 </p>
 
-<h4>$i18n.getString( "report_framework" )</h4>
-
-<p>
-<select name="reportFramework" style="width:30em">
-    <option value="birt" #if( "birt" == $reportFramework )selected="selected"#end>$i18n.getString( "birt" )</option>
-    <option value="jasper" #if( "jasper" == $reportFramework )selected="selected"#end>$i18n.getString( "jasper" )</option>
-</select>
-</p>
-
 <h4>$i18n.getString( "omit_indicators_zero_numerator_data_mart" )</h4>
 
 <p>

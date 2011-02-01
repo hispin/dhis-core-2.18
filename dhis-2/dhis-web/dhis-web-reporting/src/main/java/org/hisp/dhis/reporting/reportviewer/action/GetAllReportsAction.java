@@ -28,22 +28,15 @@ package org.hisp.dhis.reporting.reportviewer.action;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.util.ContextUtils.getBaseUrl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.comparator.ReportComparator;
-import org.hisp.dhis.report.manager.ReportConfiguration;
 
 /**
  * @author Lars Helge Overland
@@ -52,20 +45,11 @@ import org.hisp.dhis.report.manager.ReportConfiguration;
 public class GetAllReportsAction
     extends ActionPagingSupport<Report>
 {
-    private static final String SEPARATOR = "/";
-    private static final String BASE_QUERY = "frameset?__report=";
     private static final String JASPER_BASE_URL = "renderReport.action?id=";
     
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private ReportManager reportManager;
-
-    public void setReportManager( ReportManager reportManager )
-    {
-        this.reportManager = reportManager;
-    }
 
     private ReportService reportService;
 
@@ -74,13 +58,6 @@ public class GetAllReportsAction
         this.reportService = reportService;
     }
     
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -110,32 +87,12 @@ public class GetAllReportsAction
 
     public String execute() 
         throws Exception
-    {
-        String reportFramework = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_FRAMEWORK, Report.TYPE_DEFAULT );
-        
-        if ( reportFramework.equals( Report.TYPE_JASPER ) )
+    {        
+        for ( Report report : reportService.getAllReports() )
         {
-            for ( Report report : reportService.getAllReports() )
-            {
-                report.setUrl( JASPER_BASE_URL + report.getId() );
-                
-                reports.add( report );
-            }
-        }
-        else // BIRT
-        {
-            ReportConfiguration config = reportManager.getConfiguration();
+            report.setUrl( JASPER_BASE_URL + report.getId() );
             
-            HttpServletRequest request = ServletActionContext.getRequest();
-            
-            String birtURL = getBaseUrl( request ) + config.getDirectory() + SEPARATOR + BASE_QUERY;
-            
-            for ( Report report : reportService.getAllReports() )
-            {
-                report.setUrl( birtURL + report.getDesign() );
-                
-                reports.add( report );
-            }
+            reports.add( report );
         }
         
         Collections.sort( reports, new ReportComparator() );
