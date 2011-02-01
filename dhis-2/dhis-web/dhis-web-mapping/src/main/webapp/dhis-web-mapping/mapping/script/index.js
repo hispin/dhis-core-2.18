@@ -3,7 +3,7 @@
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
 	Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
-	
+    
 	G.vars.map = new OpenLayers.Map({
         controls: [new OpenLayers.Control.MouseToolbar()],
         displayProjection: new OpenLayers.Projection("EPSG:4326")
@@ -19,8 +19,7 @@
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
             G.vars.parameter.mapView = init.mapView;
-            G.vars.parameter.baseLayers = init.baseLayers;
-            G.vars.parameter.overlays = init.overlays;
+            G.user.initOverlays = init.overlays;
             G.user.isAdmin = init.security.isAdmin;
             G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
             G.vars.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
@@ -340,24 +339,59 @@
         overlay: overlayStore
     };
 	
-	/* Add base layers */	
-	function addBaseLayersToMap(init) {
-        if (init) {
-            var osmarender = new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender");
-            osmarender.layerType = G.conf.map_layer_type_baselayer;
-            G.vars.map.addLayer(osmarender);
-            
-            var mapnik = new OpenLayers.Layer.OSM.Osmarender("OSM Mapnik");
-            mapnik.layerType = G.conf.map_layer_type_baselayer;
-            G.vars.map.addLayer(mapnik);
-            
-            var cyclemap = new OpenLayers.Layer.OSM.Osmarender("OSM CycleMap");
-            cyclemap.layerType = G.conf.map_layer_type_baselayer;
-            G.vars.map.addLayer(cyclemap);
-        }
-	}
-	addBaseLayersToMap(true);
+	/* Thematic layers */
+    polygonLayer = new OpenLayers.Layer.Vector('Polygon layer', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
+    });
     
+    polygonLayer.layerType = G.conf.map_layer_type_thematic;
+    G.vars.map.addLayer(polygonLayer);
+    
+    pointLayer = new OpenLayers.Layer.Vector('Point layer', {
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            ),
+            'select': new OpenLayers.Style(
+                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
+            )
+        })
+    });
+    
+    pointLayer.layerType = G.conf.map_layer_type_thematic;
+    G.vars.map.addLayer(pointLayer);
+    
+    /* Init base layers */	
+    var osmarender = new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender");
+    osmarender.layerType = G.conf.map_layer_type_baselayer;
+    G.vars.map.addLayer(osmarender);
+    
+    var mapnik = new OpenLayers.Layer.OSM.Osmarender("OSM Mapnik");
+    mapnik.layerType = G.conf.map_layer_type_baselayer;
+    G.vars.map.addLayer(mapnik);
+    
+    var cyclemap = new OpenLayers.Layer.OSM.Osmarender("OSM CycleMap");
+    cyclemap.layerType = G.conf.map_layer_type_baselayer;
+    G.vars.map.addLayer(cyclemap);
+    
+    /* Init overlays */
 	function addOverlaysToMap(init) {
         function add(r) {
             if (r.length) {                
@@ -367,18 +401,19 @@
                         G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
                     );
                     
+                    overlay.layerType = G.conf.map_layer_type_overlay;
+                    
                     overlay.events.register('loadstart', null, G.func.loadStart);
                     overlay.events.register('loadend', null, G.func.loadEnd);
                     
                     G.vars.map.addLayer(overlay);
 					G.vars.map.getLayersByName(r[i].data.name)[0].setZIndex(G.conf.defaultLayerZIndex);
-                    G.vars.map.getLayersByName(r[i].data.name)[0].layerType = G.conf.map_layer_type_overlay;
                 }
             }
         }
         
         if (init) {
-            add(G.vars.parameter.overlays);
+            add(G.user.initOverlays);
         }
         else {
             G.stores.overlay.load({callback: function(r) {
@@ -602,25 +637,6 @@
                     },
                     {
                         xtype: 'combo',
-                        id: 'exportimagelayers_cb',
-                        fieldLabel: 'Layers',
-                        labelSeparator: G.conf.labelseparator,
-                        editable: false,
-                        valueField: 'id',
-                        displayField: 'layer',
-                        width: G.conf.combo_width_fieldset,
-                        minListWidth: G.conf.combo_width_fieldset,
-                        mode: 'local',
-                        triggerAction: 'all',
-                        value: 1,
-                        store: {
-                            xtype: 'arraystore',
-                            fields: ['id', 'layer'],
-                            data: [[1, 'Polygon layer'], [2, 'Point layer'], [3, 'Both']]
-                        }
-                    },
-                    {
-                        xtype: 'combo',
                         id: 'exportimagewidth_cb',
                         fieldLabel: 'Width',
                         labelSeparator: G.conf.labelseparator,
@@ -676,98 +692,91 @@
                 iconCls: 'icon-export',
 				text: G.i18n.export_,
 				handler: function() {
-					Ext.Ajax.request({
-						url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
-                        method: 'POST',
-                        params: {type: 'overlay'},
-                        success: function(r) {
-							var values, svgElement, svg;
+                    var values, svgElement, svg;
+                    
+                    if (polygonLayer.visibility && pointLayer.visibility) {
+                        if (choropleth.formValidation.validateForm()) {
+                            if (symbol.formValidation.validateForm()) {
+                                document.getElementById('layerField').value = 3;
+                                document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
+                                
+                                values = choropleth.formValues.getImageExportValues.call(choropleth);
+                                document.getElementById('periodField').value = values.dateValue;
+                                document.getElementById('indicatorField').value = values.mapValueTypeValue;
+                                document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
+                                
+                                values = symbol.formValues.getImageExportValues.call(symbol);
+                                document.getElementById('periodField2').value = values.dateValue;
+                                document.getElementById('indicatorField2').value = values.mapValueTypeValue;
+                                document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
+                                
+                                svgElement = document.getElementById(polygonLayer.svgId);
+                                var str1 = svgElement.parentNode.innerHTML;
+                                str1 = svgElement.parentNode.innerHTML.replace('</svg>');
+                                var str2 = document.getElementById(pointLayer.svgId).parentNode.innerHTML;
+                                str2 = str2.substring(str2.indexOf('>')+1);
+                                svg = str1 + str2;
+                            }
+                            else {
+                                Ext.message.msg(false, 'Point layer not rendered');
+                                return;
+                            }
+                        }
+                        else {
+                            Ext.message.msg(false, 'Polygon layer not rendered');
+                            return;
+                        }
+                    }
+                    else if (polygonLayer.visibility) {
+                        if (choropleth.formValidation.validateForm()) {
+                            values = choropleth.formValues.getImageExportValues.call(choropleth);
+                            document.getElementById('layerField').value = 1;
+                            document.getElementById('periodField').value = values.dateValue;
+                            document.getElementById('indicatorField').value = values.mapValueTypeValue;
+                            document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
+                            svgElement = document.getElementById(polygonLayer.svgId);
+                            svg = svgElement.parentNode.innerHTML;
+                        }
+                        else {
+                            Ext.message.msg(false, 'Polygon layer not rendered');
+                            return;
+                        }
+                    }
+                    else if (pointLayer.visibility) {
+                        if (symbol.formValidation.validateForm()) {
+                            values = symbol.formValues.getImageExportValues.call(symbol);
+                            document.getElementById('layerField').value = 2;
+                            document.getElementById('periodField').value = values.dateValue;  
+                            document.getElementById('indicatorField').value = values.mapValueTypeValue;
+                            document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
+                            svgElement = document.getElementById(pointLayer.svgId);
+                            svg = svgElement.parentNode.innerHTML;
+                        }
+                        else {
+                            Ext.message.msg(false, 'Point layer not rendered');
+                            return;
+                        }
+                    }
 
-							if (Ext.getCmp('exportimagelayers_cb').getValue() == 1) {
-								if (choropleth.formValidation.validateForm()) {
-									values = choropleth.formValues.getImageExportValues.call(choropleth);
-									document.getElementById('layerField').value = 1;
-									document.getElementById('periodField').value = values.dateValue;
-									document.getElementById('indicatorField').value = values.mapValueTypeValue;
-									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-									svgElement = document.getElementById(polygonLayer.svgId);
-									svg = svgElement.parentNode.innerHTML;
-								}
-								else {
-									Ext.message.msg(false, 'Polygon layer not rendered');
-									return;
-								}
-							}
-							else if (Ext.getCmp('exportimagelayers_cb').getValue() == 2) {
-								if (symbol.formValidation.validateForm()) {
-									values = symbol.formValues.getImageExportValues.call(symbol);
-									document.getElementById('layerField').value = 2;
-									document.getElementById('periodField').value = values.dateValue;  
-									document.getElementById('indicatorField').value = values.mapValueTypeValue;
-									document.getElementById('legendsField').value = G.util.getLegendsJSON.call(symbol);
-									svgElement = document.getElementById(pointLayer.svgId);
-									svg = svgElement.parentNode.innerHTML;
-								}
-								else {
-									Ext.message.msg(false, 'Point layer not rendered');
-									return;
-								}
-							}
-							else if (Ext.getCmp('exportimagelayers_cb').getValue() == 3) {
-								if (choropleth.formValidation.validateForm()) {
-									if (symbol.formValidation.validateForm()) {
-										document.getElementById('layerField').value = 3;
-										document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
-										
-										values = choropleth.formValues.getImageExportValues.call(choropleth);
-										document.getElementById('periodField').value = values.dateValue;
-										document.getElementById('indicatorField').value = values.mapValueTypeValue;
-										document.getElementById('legendsField').value = G.util.getLegendsJSON.call(choropleth);
-										
-										values = symbol.formValues.getImageExportValues.call(symbol);
-										document.getElementById('periodField2').value = values.dateValue;
-										document.getElementById('indicatorField2').value = values.mapValueTypeValue;
-										document.getElementById('legendsField2').value = G.util.getLegendsJSON.call(symbol);
-										
-										svgElement = document.getElementById(polygonLayer.svgId);
-										var str1 = svgElement.parentNode.innerHTML;
-										str1 = svgElement.parentNode.innerHTML.replace('</svg>');
-										var str2 = document.getElementById(pointLayer.svgId).parentNode.innerHTML;
-										str2 = str2.substring(str2.indexOf('>')+1);
-										svg = str1 + str2;
-									}
-									else {
-										Ext.message.msg(false, 'Point layer not rendered');
-										return;
-									}
-								}
-								else {
-									Ext.message.msg(false, 'Polygon layer not rendered');
-									return;
-								}
-							}
+                    var title = Ext.getCmp('exportimagetitle_tf').getValue();
+                    
+                    if (!title) {
+                        Ext.message.msg(false, G.i18n.form_is_not_complete);
+                    }
+                    else {
+                        var exportForm = document.getElementById('exportForm');
+                        exportForm.action = '../exportImage.action';
+                        
+                        document.getElementById('titleField').value = title;
+                        document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
+                        document.getElementById('svgField').value = svg;  
+                        document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
+                        document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
+                        document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
 
-							var title = Ext.getCmp('exportimagetitle_tf').getValue();
-							
-							if (!title) {
-								Ext.message.msg(false, G.i18n.form_is_not_complete);
-							}
-							else {
-								var exportForm = document.getElementById('exportForm');
-								exportForm.action = '../exportImage.action';
-								
-								document.getElementById('titleField').value = title;
-								document.getElementById('viewBoxField').value = svgElement.getAttribute('viewBox');  
-								document.getElementById('svgField').value = svg;  
-								document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
-								document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
-								document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
-
-								exportForm.submit();
-								Ext.getCmp('exportimagetitle_tf').reset();
-							}
-						}
-					});
+                        exportForm.submit();
+                        Ext.getCmp('exportimagetitle_tf').reset();
+                    }
 				}
             }
         ]    
@@ -1872,45 +1881,6 @@
             }			
         ]
     });
-	
-	/* Section: layers */
-    polygonLayer = new OpenLayers.Layer.Vector('Polygon layer', {
-        'visibility': false,
-        'displayInLayerSwitcher': false,
-        'styleMap': new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(
-                OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
-                    OpenLayers.Feature.Vector.style['default']
-                )
-            ),
-            'select': new OpenLayers.Style(
-                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-            )
-        })
-    });
-    
-    polygonLayer.layerType = G.conf.map_layer_type_thematic;
-    
-    pointLayer = new OpenLayers.Layer.Vector('Point layer', {
-        'visibility': false,
-        'displayInLayerSwitcher': false,
-        'styleMap': new OpenLayers.StyleMap({
-            'default': new OpenLayers.Style(
-                OpenLayers.Util.applyDefaults(
-                    {'fillOpacity': 1, 'strokeColor': '#222222', 'strokeWidth': 1, 'pointRadius': 5},
-                    OpenLayers.Feature.Vector.style['default']
-                )
-            ),
-            'select': new OpenLayers.Style(
-                {'strokeColor': '#000000', 'strokeWidth': 2, 'cursor': 'pointer'}
-            )
-        })
-    });
-    
-    pointLayer.layerType = G.conf.map_layer_type_thematic;
-    
-    G.vars.map.addLayers([polygonLayer, pointLayer]);
         
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
@@ -2478,12 +2448,17 @@
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 
+                var svg = document.getElementsByTagName('svg');
+                
                 if (!Ext.isIE) {
-                    polygonLayer.svgId = G.vars.parameter.overlays.length ?
-                        document.getElementsByTagName('svg')[G.vars.parameter.overlays.length].id : document.getElementsByTagName('svg')[0].id;
-                    
-                    pointLayer.svgId = G.vars.parameter.overlays.length ?
-                        document.getElementsByTagName('svg')[G.vars.parameter.overlays.length + 1].id : document.getElementsByTagName('svg')[1].id;
+                    polygonLayer.svgId = svg[0].id;
+                    pointLayer.svgId = svg[1].id;
+                }
+                
+                for (var i = 0, j = 2; i < G.vars.map.layers.length; i++) {
+                    if (G.vars.map.layers[i].layerType == G.conf.map_layer_type_overlay) {
+                        G.vars.map.layers[i].svgId = svg[j++];
+                    }
                 }
             
                 Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
@@ -2496,6 +2471,12 @@
                 
                 choropleth.prepareMapViewLegend();
                 symbol.prepareMapViewLegend();
+                
+                G.vars.map.events.register('addlayer', null, function(e) {
+                    var svg = document.getElementsByTagName('svg');
+                    e.layer.svgId = svg[svg.length-1].id;
+                });
+                               
             }
         }
     });
@@ -2517,7 +2498,7 @@
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.PanPanel({
-        slideFactor: 80
+        slideFactor: 100
     }));
     
 	}});

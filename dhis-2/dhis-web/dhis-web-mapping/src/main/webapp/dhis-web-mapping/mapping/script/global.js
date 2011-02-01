@@ -319,7 +319,21 @@ G.util = {
                 G.vars.map.layers[i].setZIndex(index);
             }
         }
+    },
+    
+    getVectorLayers: function() {
+        var layers = [];
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == G.conf.map_layer_type_thematic ||
+            G.vars.map.layers[i].layerType == G.conf.map_layer_type_overlay) {
+                layers.push(G.vars.map.layers[i]);
+            }
+        }
+        return layers;
     }
+    
+    //extendSvg: function(src, ext) {
+        
 };
 
 G.vars = {
