@@ -30,6 +30,7 @@ package org.hisp.dhis.de.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -158,7 +159,7 @@ public class ValidationAction
         return rightsideFormulaMap;
     }
 
-    private Collection<DeflatedDataValue> dataValues;
+    private Collection<DeflatedDataValue> dataValues = new HashSet<DeflatedDataValue>();
 
     public Collection<DeflatedDataValue> getDataValues()
     {
@@ -177,63 +178,67 @@ public class ValidationAction
 
         Period selectedPeriod = selectedStateManager.getSelectedPeriod();
 
-        Period period = periodService.getPeriod( selectedPeriod.getStartDate(), selectedPeriod.getEndDate(),
-            selectedPeriod.getPeriodType() );
-
-        DataSet dataSet = selectedStateManager.getSelectedDataSet();
-
-        // ---------------------------------------------------------------------
-        // Min-max and outlier analysis
-        // ---------------------------------------------------------------------
-        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( orgUnit, dataSet
-            .getDataElements() );
-        if ( minmaxs == null )
+        if ( orgUnit != null && selectedPeriod != null )
         {
-
-            Double factor = (Double) systemSettingManager.getSystemSetting(
-                SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
-
-            Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( orgUnit, dataSet
-                .getDataElements(), ListUtils.getCollection( period ), factor );
-
-            Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( orgUnit, dataSet
-                .getDataElements(), ListUtils.getCollection( period ), null );
-
-            dataValues = CollectionUtils.union( stdDevs, minMaxs );
-        }
-        else
-        {
-            dataValues = minMaxValuesGenerationService.findOutliers( orgUnit, ListUtils.getCollection( period ),
-                minmaxs );
-        }
-
-        log.info( "Number of outlier values: " + dataValues.size() );
-
-        // ---------------------------------------------------------------------
-        // Validation rule analysis
-        // ---------------------------------------------------------------------
-
-        results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
-
-        log.info( "Number of validation violations: " + results.size() );
-
-        if ( results.size() > 0 )
-        {
-            leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
-            rightsideFormulaMap = new HashMap<Integer, String>( results.size() );
-
-            for ( ValidationResult result : results )
+            Period period = periodService.getPeriod( selectedPeriod.getStartDate(), selectedPeriod.getEndDate(),
+                selectedPeriod.getPeriodType() );
+    
+            DataSet dataSet = selectedStateManager.getSelectedDataSet();
+    
+            // ---------------------------------------------------------------------
+            // Min-max and outlier analysis
+            // ---------------------------------------------------------------------
+            
+            Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( orgUnit, dataSet.getDataElements() );
+            
+            if ( minmaxs == null )
             {
-                ValidationRule rule = result.getValidationRule();
-
-                leftsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getLeftSide()
-                    .getExpression() ) );
-
-                rightsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getRightSide()
-                    .getExpression() ) );
+    
+                Double factor = (Double) systemSettingManager.getSystemSetting(
+                    SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
+    
+                Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( orgUnit, dataSet
+                    .getDataElements(), ListUtils.getCollection( period ), factor );
+    
+                Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( orgUnit, dataSet
+                    .getDataElements(), ListUtils.getCollection( period ), null );
+    
+                dataValues = CollectionUtils.union( stdDevs, minMaxs );
+            }
+            else
+            {
+                dataValues = minMaxValuesGenerationService.findOutliers( orgUnit, ListUtils.getCollection( period ),
+                    minmaxs );
+            }
+    
+            log.info( "Number of outlier values: " + dataValues.size() );
+    
+            // ---------------------------------------------------------------------
+            // Validation rule analysis
+            // ---------------------------------------------------------------------
+    
+            results = new ArrayList<ValidationResult>( validationRuleService.validate( dataSet, period, orgUnit ) );
+    
+            log.info( "Number of validation violations: " + results.size() );
+    
+            if ( results.size() > 0 )
+            {
+                leftsideFormulaMap = new HashMap<Integer, String>( results.size() );
+                rightsideFormulaMap = new HashMap<Integer, String>( results.size() );
+    
+                for ( ValidationResult result : results )
+                {
+                    ValidationRule rule = result.getValidationRule();
+    
+                    leftsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getLeftSide()
+                        .getExpression() ) );
+    
+                    rightsideFormulaMap.put( rule.getId(), expressionService.getExpressionDescription( rule.getRightSide()
+                        .getExpression() ) );
+                }
             }
         }
-
+        
         return dataValues.size() == 0 && results.size() == 0 ? NONE : SUCCESS;
     }
 }
