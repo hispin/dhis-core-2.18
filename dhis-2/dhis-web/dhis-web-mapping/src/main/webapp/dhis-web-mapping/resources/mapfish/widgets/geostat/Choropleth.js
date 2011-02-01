@@ -794,7 +794,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: G.conf.labelseparator,
             allowBlank: false,
             width: G.conf.combo_width,
-            value: "#FFFF00",
+            value: "#FF0000",
             listeners: {
                 'select': {
                     scope: this,
@@ -812,7 +812,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 			labelSeparator: G.conf.labelseparator,
             allowBlank: false,
             width: G.conf.combo_width,
-            value: "#FF0000",
+            value: "#FFFF00",
             listeners: {
                 'select': {
                     scope: this,
