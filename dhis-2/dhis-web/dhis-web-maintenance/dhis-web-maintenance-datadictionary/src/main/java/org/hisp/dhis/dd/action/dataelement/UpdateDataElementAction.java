@@ -167,13 +167,6 @@ public class UpdateDataElementAction
         this.url = url;
     }
 
-    private Collection<String> dataElementGroupSets = new ArrayList<String>();
-
-    public void setDataElementGroupSets( Collection<String> dataElementGroupSets )
-    {
-        this.dataElementGroupSets = dataElementGroupSets;
-    }
-
     private Collection<String> aggregationLevels;
 
     public void setAggregationLevels( Collection<String> aggregationLevels )
@@ -303,13 +296,6 @@ public class UpdateDataElementAction
             expression.setDataElementsInExpression( expressionDataElements );
 
             calculatedDataElement.setSaved( saved != null );
-        }
-
-        dataElement.getGroupSets().clear();
-
-        for ( String id : dataElementGroupSets )
-        {
-            dataElement.getGroupSets().add( dataElementService.getDataElementGroupSet( Integer.parseInt( id ) ) );
         }
 
         Set<DataSet> dataSets = dataElement.getDataSets();

@@ -1,5 +1,4 @@
 <script>
-	
 	jQuery(document).ready(	function(){
 		validation( 'addDataElementForm', function( form ){
 			form.submit();
@@ -16,8 +15,6 @@
 		toggleCDEForm();
 		}  
 	);
-	
-
 </script>
 
 <h3>$i18n.getString( "create_new_data_element" )</h3>
@@ -170,50 +167,6 @@
         	</table>
 		</td>
 	</tr>
-</table>
-
-</div>
-
-<table>
-    <tr>
-        <td style="height:10px" colspan="2"></td>
-    </tr>
-    <tr>
-        <td style="width:200px">$i18n.getString( "data_element_group_sets" )</td>
-        <td><input type="checkbox" onclick="toggleById( 'dataElementGroupSetContainer' )"/></td>
-    </tr>
-</table>
-
-<div id="dataElementGroupSetContainer" style="border:1px solid #808080; padding:10px; width:465px; display:none;">
-
-<table>
-    <tr>
-        <th style="width:450px">$i18n.getString( "available_data_element_group_sets" )</th>
-    </tr>
-    <tr>
-        <td>
-            <select multiple size="4" id="availableDataElementGroupSets" style="width:450px" ondblclick="moveSelectedById( 'availableDataElementGroupSets', 'dataElementGroupSets' )">
-            #foreach( $groupSet in $dataElementGroupSets )
-                <option value="$groupSet.id">$encoder.htmlEncode( $groupSet.name )</option>
-            #end
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementGroupSets', 'dataElementGroupSets' )"/><input 
-                   type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataElementGroupSets', 'availableDataElementGroupSets' )"/>
-        </td>
-    </tr>
-    <tr>
-        <th style="width:450px">$i18n.getString( "selected_data_element_group_sets" )</th>
-    </tr>
-    </tr>
-        <td>
-            <select multiple size="4" id="dataElementGroupSets" name="dataElementGroupSets" style="width:450px" ondblclick="moveSelectedById( 'dataElementGroupSets', 'availableDataElementGroupSets' )">
-            </select>
-        </td>
-    </tr>
 </table>
 
 </div>

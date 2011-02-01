@@ -154,11 +154,6 @@ public class DataElement
     private Set<DataSet> dataSets = new HashSet<DataSet>();
 
     /**
-     * A Set of DataElementGroupSets.
-     */
-    private List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>();
-
-    /**
      * The lower organisation unit levels for aggregation.
      */
     private List<Integer> aggregationLevels = new ArrayList<Integer>();
@@ -325,21 +320,6 @@ public class DataElement
         return domainType != null ? domainType : DOMAIN_TYPE_AGGREGATE;
     }
 
-    public Set<DataElement> getDataElements()
-    {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-
-        for ( DataElementGroupSet groupSet : groupSets )
-        {
-            for ( DataElementGroup group : groupSet.getMembers() )
-            {
-                dataElements.addAll( group.getMembers() );
-            }
-        }
-
-        return dataElements;
-    }
-    
     public String toJSON()
     {   
         StringBuffer result = new StringBuffer();        
@@ -475,16 +455,6 @@ public class DataElement
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
-    }
-
-    public List<DataElementGroupSet> getGroupSets()
-    {
-        return groupSets;
-    }
-
-    public void setGroupSets( List<DataElementGroupSet> groupSets )
-    {
-        this.groupSets = groupSets;
     }
 
     public List<Integer> getAggregationLevels()
