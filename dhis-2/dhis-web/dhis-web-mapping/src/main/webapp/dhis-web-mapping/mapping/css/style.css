@@ -91,6 +91,10 @@
 }
 */
 
+.olControlPanPanel div {
+    opacity:0.8
+}
+
 /* Ext Label */
 .x-form-item-label {
 	font:normal 11px lucida sans unicode,ubuntu,arial;
