@@ -51,9 +51,7 @@ public class ReportConverter
 
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
-    private static final String FIELD_DESIGN = "design";
     private static final String FIELD_DESIGN_CONTENT = "designContent";
-    private static final String FIELD_TYPE = "type";
     
     /**
      * Constructor for write operations.
@@ -92,9 +90,7 @@ public class ReportConverter
                 
                 writer.writeElement( FIELD_ID, String.valueOf( report.getId() ) );
                 writer.writeElement( FIELD_NAME, report.getName() );
-                writer.writeElement( FIELD_DESIGN, report.getDesign() );
                 writer.writeElement( FIELD_DESIGN_CONTENT, report.getDesignContent() );
-                writer.writeElement( FIELD_TYPE, report.getType() );
                 
                 writer.closeElement();
             }
@@ -114,9 +110,7 @@ public class ReportConverter
             
             report.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             report.setName( values.get( FIELD_NAME ) );
-            report.setDesign( values.get( FIELD_DESIGN ) );
             report.setDesignContent( values.get( FIELD_DESIGN_CONTENT ) );
-            report.setType( values.get( FIELD_TYPE ) );
             
             importObject( report, params );
         }

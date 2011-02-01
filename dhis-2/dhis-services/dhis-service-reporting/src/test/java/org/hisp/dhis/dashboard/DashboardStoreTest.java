@@ -30,7 +30,6 @@ package org.hisp.dhis.dashboard;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
-import static org.hisp.dhis.report.Report.TYPE_BIRT;
 
 import org.hibernate.NonUniqueObjectException;
 import org.hisp.dhis.DhisSpringTest;
@@ -81,7 +80,7 @@ public class DashboardStoreTest
         userA = createUser( 'A' );
         userStore.addUser( userA );
         
-        reportA = new Report( "ReportA", "DesignA", TYPE_BIRT, null );
+        reportA = new Report( "ReportA", "DesignA", null );
         reportService.saveReport( reportA );
         
         urlA = createOlapURL( 'A' );

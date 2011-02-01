@@ -268,8 +268,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
     class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
     scope="prototype">
-    <property name="reportManager"
-      ref="org.hisp.dhis.report.ReportManager"/>
     <property name="reportService"
       ref="org.hisp.dhis.report.ReportService"/>
     <property name="reportTableService"
@@ -288,12 +286,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction"
     class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction"
     scope="prototype">
-    <property name="reportManager"
-      ref="org.hisp.dhis.report.ReportManager"/>
     <property name="reportService"
       ref="org.hisp.dhis.report.ReportService"/>
-    <property name="systemSettingManager"
-      ref="org.hisp.dhis.options.SystemSettingManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportAction"
@@ -308,22 +302,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportService"
       ref="org.hisp.dhis.report.ReportService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.SetReportConfigurationAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.SetReportConfigurationAction"
-    scope="prototype">
-    <property name="reportManager"
-      ref="org.hisp.dhis.report.ReportManager"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportviewer.action.GetReportConfigurationAction"
-    class="org.hisp.dhis.reporting.reportviewer.action.GetReportConfigurationAction"
-    scope="prototype">
-    <property name="reportManager"
-      ref="org.hisp.dhis.report.ReportManager"/>
-	<property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction"

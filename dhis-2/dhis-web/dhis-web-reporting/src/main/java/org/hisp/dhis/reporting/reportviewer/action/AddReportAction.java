@@ -32,15 +32,12 @@ import static org.hisp.dhis.system.util.ConversionUtils.getSet;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportManager;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.report.manager.ReportConfiguration;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
 
@@ -59,13 +56,6 @@ public class AddReportAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportManager reportManager;
-
-    public void setReportManager( ReportManager reportManager )
-    {
-        this.reportManager = reportManager;
-    }
-    
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -130,13 +120,6 @@ public class AddReportAction
         this.fileName = fileName;
     }
     
-    private String type;
-    
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
     private String contentType;
     
     public void setUploadContentType( String contentType )
@@ -203,8 +186,6 @@ public class AddReportAction
         Report report = ( id == null ) ? new Report() : reportService.getReport( id );
         
         report.setName( name );
-        report.setDesign( fileName );
-        report.setType( type );
         report.setReportTables( selectedReportTables != null ? getSet( 
             reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
                 
@@ -216,33 +197,7 @@ public class AddReportAction
 
         if ( file != null )
         {
-            if ( type != null && type.equals( Report.TYPE_JASPER ) )
-            {
-                report.setDesignContent( StreamUtils.getContent( file ) );
-            }
-            else // BIRT
-            {
-                ReportConfiguration reportConfig = reportManager.getConfiguration();
-                
-                String birtHome = reportConfig.getHome();
-                
-                File design = new File( birtHome, fileName );
-                
-                log.info( "New file: " + design.getAbsolutePath() );
-        
-                // -----------------------------------------------------------------
-                // Updating database properties in design file
-                // -----------------------------------------------------------------
-        
-                if ( file != null )
-                {
-                    Map<String[], String> connectionMap = reportManager.getReportConnectionMap();
-                    
-                    StringBuffer in = StreamUtils.readContent( file, connectionMap );
-        
-                    StreamUtils.writeContent( design, in );
-                }
-            }
+            report.setDesignContent( StreamUtils.getContent( file ) );
         }
         
         reportService.saveReport( report );

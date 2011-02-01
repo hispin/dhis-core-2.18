@@ -134,13 +134,7 @@
       <result name="success" type="redirect">displayViewReportForm.action</result>
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
     </action>
-    
-    <action name="displayViewReportFormVerifyConfiguration" class="org.hisp.dhis.reporting.reportviewer.action.GetReportConfigurationAction">
-      <result name="success" type="redirect">displayViewReportForm.action</result>
-      <result name="none" type="redirect">displayConfigureReportForm.action</result>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
-    </action>
-    
+        
     <action name="displayViewReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
@@ -150,21 +144,7 @@
       <param name="requiredAuthorities">F_REPORT_VIEW</param>
 	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
-    
-    <action name="displayConfigureReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportConfigurationAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <result name="none" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/configureReportForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/reportConfiguration.js</param>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
-    </action>
-    
-    <action name="setReportConfiguration" class="org.hisp.dhis.reporting.reportviewer.action.SetReportConfigurationAction">
-      <result name="success" type="redirect">displayViewReportForm.action</result>
-      <param name="requiredAuthorities">F_REPORT_VIEW</param>
-    </action>
-    
+        
     <action name="addReportToDashboard" class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction">
       <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>

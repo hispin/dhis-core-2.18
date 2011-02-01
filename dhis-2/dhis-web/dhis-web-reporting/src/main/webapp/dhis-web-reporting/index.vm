@@ -2,7 +2,7 @@
 <h3>$i18n.getString( "dhis-web-reporting" )</h3>
 
 <ul id="introList">
-    #introListImgItem( "displayViewReportFormVerifyConfiguration.action" "standard_report" "standardreport" )
+    #introListImgItem( "displayViewReportForm.action" "standard_report" "standardreport" )
     #introListImgItem( "showDataSetReportForm.action" "dataset_report" "datasetreport" )
     #introListImgItem( "displayViewDataCompletenessForm.action" "data_completeness" "datacompletenessreport" )
     #introListImgItem( "displayViewDocumentForm.action" "static_report" "staticreport" )
