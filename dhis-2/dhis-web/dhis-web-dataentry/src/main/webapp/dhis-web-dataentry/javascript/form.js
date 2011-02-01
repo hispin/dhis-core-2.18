@@ -85,6 +85,8 @@ function previousPeriodsSelected()
 
 function displayPeriodsInternal( next, previous ) 
 {
+	disableNextPrevButtons();
+	
 	var url = 'loadNextPreviousPeriods.action?next=' + next + '&previous=' + previous;
 	
 	var list = document.getElementById( 'selectedPeriodIndex' );
@@ -97,7 +99,21 @@ function displayPeriodsInternal( next, previous )
     	for ( i in json.periods ) {
     		addOptionToList( list, i, json.periods[i].name );
     	}
+    	
+    	enableNextPrevButtons();
     } );
+}
+
+function disableNextPrevButtons()
+{
+	$( '#nextButton' ).attr( 'disabled', 'disabled' );
+	$( '#prevButton' ).attr( 'disabled', 'disabled' );
+}
+
+function enableNextPrevButtons()
+{
+	$( '#nextButton' ).removeAttr( 'disabled' );
+	$( '#prevButton' ).removeAttr( 'disabled' );
 }
 
 // -----------------------------------------------------------------------------
