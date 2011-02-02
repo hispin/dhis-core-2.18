@@ -89,6 +89,8 @@ public class OrganisationUnit
     
     private transient boolean currentParent;
     
+    private transient String type;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -537,5 +539,15 @@ public class OrganisationUnit
     public void setCurrentParent( boolean currentParent )
     {
         this.currentParent = currentParent;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
     }
 }

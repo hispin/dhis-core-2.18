@@ -2039,14 +2039,14 @@
                                                     var color = Ext.getCmp('highlightcolor_cf').getValue();
                                                     var symbolizer;
                                                     
-                                                    if (feature.attributes.featureType == G.conf.map_feature_type_multipolygon ||
-                                                        feature.attributes.featureType == G.conf.map_feature_type_polygon) {
+                                                    if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_multipolygon_class_name ||
+                                                        feature.geometry.CLASS_NAME == G.conf.map_feature_type_polygon_class_name) {
                                                         symbolizer = new OpenLayers.Symbolizer.Polygon({
                                                             'strokeColor': color,
                                                             'fillColor': color
                                                         });
                                                     }
-                                                    else if (feature.attributes.featureType == G.conf.map_feature_type_point) {
+                                                    else if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
                                                         symbolizer = new OpenLayers.Symbolizer.Point({
                                                             'pointRadius': 7,
                                                             'fillColor': color
@@ -2480,8 +2480,7 @@
                 G.vars.map.events.register('addlayer', null, function(e) {
                     var svg = document.getElementsByTagName('svg');
                     e.layer.svgId = svg[svg.length-1].id;
-                });
-                               
+                });               
             }
         }
     });

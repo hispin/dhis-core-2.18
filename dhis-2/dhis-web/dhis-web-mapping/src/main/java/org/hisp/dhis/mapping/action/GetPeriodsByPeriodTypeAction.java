@@ -36,6 +36,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.PeriodComparator;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -103,6 +105,8 @@ public class GetPeriodsByPeriodTypeAction
             {
                 period.setName( format.formatPeriod( period ) );
             }
+            
+            FilterUtils.filter( object, new PastAndCurrentPeriodFilter() );
             
             Collections.sort( object, new PeriodComparator() );
         }

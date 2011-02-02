@@ -30,6 +30,8 @@ package org.hisp.dhis.mapping.action;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -54,6 +56,13 @@ public class GetGeoJsonAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -64,14 +73,14 @@ public class GetGeoJsonAction
     {
         this.parentId = id;
     }
-    
+
     private Integer level;
-    
+
     public void setLevel( Integer level )
     {
         this.level = level;
     }
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -91,14 +100,25 @@ public class GetGeoJsonAction
         throws Exception
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
-        
+
         level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
-        
+
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
-        
+
+        for ( OrganisationUnit organisationUnit : object )
+        {
+            if ( organisationUnit.getFeatureType() != null )
+            {
+                if ( organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                {
+                    organisationUnit.setType( organisationUnit.getGroupNameInGroupSet( organisationUnitGroupService
+                        .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE ) ) );
+                }
+            }
+        }
+
         FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
-        
+
         return object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
     }
 }
-
