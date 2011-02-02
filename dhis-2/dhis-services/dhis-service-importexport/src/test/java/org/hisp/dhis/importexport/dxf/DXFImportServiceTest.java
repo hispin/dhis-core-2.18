@@ -262,6 +262,7 @@ public class DXFImportServiceTest
     // Tests
     // -------------------------------------------------------------------------
     // TODO Improve test on duplicate GroupMemberAssociations
+    
     @Test
     public void testSimpleImportWithTransform() throws Exception
     {
