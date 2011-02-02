@@ -296,7 +296,6 @@ public class MetaDataExportAction
 
         if ( dataSets || reportTables )
         {
-            params.setDataEntryForms( null );
             params.setDataSets( null );
         }
 

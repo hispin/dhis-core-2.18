@@ -51,8 +51,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -80,7 +78,6 @@ import org.hisp.dhis.importexport.importer.DataElementCategoryOptionImporter;
 import org.hisp.dhis.importexport.importer.DataElementGroupImporter;
 import org.hisp.dhis.importexport.importer.DataElementGroupSetImporter;
 import org.hisp.dhis.importexport.importer.DataElementImporter;
-import org.hisp.dhis.importexport.importer.DataEntryFormImporter;
 import org.hisp.dhis.importexport.importer.DataSetImporter;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.importexport.importer.GroupSetImporter;
@@ -118,7 +115,6 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataEntryFormBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
@@ -302,13 +298,6 @@ public class DefaultImportObjectManager
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     // -------------------------------------------------------------------------
@@ -750,47 +739,17 @@ public class DefaultImportObjectManager
     }
 
     @Transactional
-    public void importDataEntryForms()
-    {
-        BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler( DataEntryFormBatchHandler.class ).init();
-        
-        Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataEntryForm.class );
-
-        Importer<DataEntryForm> importer = new DataEntryFormImporter( batchHandler, dataEntryFormService );
-
-        for ( ImportObject importObject : importObjects )
-        {
-            importer.importObject( (DataEntryForm) importObject.getObject(), params );
-        }
-
-        batchHandler.flush();
-        
-        importObjectStore.deleteImportObjects( DataEntryForm.class );
-
-        log.info( "Imported DataEntryForms" );
-    }
-
-    @Transactional
     public void importDataSets()
     {
         BatchHandler<DataSet> batchHandler = batchHandlerFactory.createBatchHandler( DataSetBatchHandler.class ).init();
 
-        Map<Object, Integer> dataEntryFormMapping = objectMappingGenerator.getDataEntryFormMapping( false );
-        
         Collection<ImportObject> importObjects = importObjectStore.getImportObjects( DataSet.class );
 
         Importer<DataSet> importer = new DataSetImporter( batchHandler, dataSetService );
 
         for ( ImportObject importObject : importObjects )
         {
-            DataSet object = (DataSet) importObject.getObject();
-            
-            if ( object.getDataEntryForm() != null )
-            {
-                object.getDataEntryForm().setId( dataEntryFormMapping.get( object.getDataEntryForm().getId() ) );
-            }
-            
-            importer.importObject( object, params );
+            importer.importObject( (DataSet) importObject.getObject(), params );
         }
 
         batchHandler.flush();

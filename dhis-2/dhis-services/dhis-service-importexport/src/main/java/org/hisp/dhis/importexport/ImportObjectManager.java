@@ -110,6 +110,4 @@ public interface ImportObjectManager
     void importCompleteDataSetRegistrations();
     
     void importDataValues();
-    
-    void importDataEntryForms();
 }

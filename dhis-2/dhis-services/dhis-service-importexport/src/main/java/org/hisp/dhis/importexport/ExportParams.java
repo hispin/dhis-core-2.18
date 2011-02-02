@@ -99,8 +99,6 @@ public class ExportParams
     
     private Collection<Integer> olapUrls = new ArrayList<Integer>();
     
-    private Collection<Integer> dataEntryForms = new ArrayList<Integer>();
-    
     private I18n i18n;
     
     private I18nFormat format;
@@ -455,16 +453,4 @@ public class ExportParams
     {
         this.olapUrls = olapUrls;
     }
-    
-
-    public Collection<Integer> getDataEntryForms()
-    {
-        return dataEntryForms;
-    }
-
-    public void setDataEntryForms( Collection<Integer> dataEntryForms )
-    {
-        this.dataEntryForms = dataEntryForms;
-    }
-
 }

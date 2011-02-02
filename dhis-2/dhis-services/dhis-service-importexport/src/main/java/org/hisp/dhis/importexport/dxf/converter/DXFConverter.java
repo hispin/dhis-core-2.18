@@ -53,8 +53,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -91,7 +89,6 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataEntryFormBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
@@ -299,13 +296,6 @@ public class DXFConverter
     public void setConverterInvoker( ConverterInvoker converterInvoker )
     {
         this.converterInvoker = converterInvoker;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     public void write( XMLWriter writer, ExportParams params, ProcessState state )
@@ -693,22 +683,6 @@ public class DXFConverter
 
                 log.info( "Imported DataDictionary Indicators" );
             }
-            else if ( reader.isStartElement( DataEntryFormConverter.COLLECTION_NAME ) )
-            {
-                state.setMessage( "importing_data_entry_forms" );
-                
-                BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler(
-                    DataEntryFormBatchHandler.class ).init();
-
-                XMLConverter converter = new DataEntryFormConverter( batchHandler, importObjectService, dataEntryFormService, 
-                    objectMappingGenerator.getDataElementMapping( params.skipMapping() ), objectMappingGenerator.getCategoryComboMapping( params.skipMapping() ) );
-
-                converterInvoker.invokeRead( converter, reader, params );
-
-                batchHandler.flush();
-
-                log.info( "Imported DataEntryForms" );
-            }
             else if ( reader.isStartElement( DataSetConverter.COLLECTION_NAME ) )
             {
                 state.setMessage( "importing_data_sets" );
@@ -717,7 +691,7 @@ public class DXFConverter
                     .init();
 
                 XMLConverter converter = new DataSetConverter( batchHandler, importObjectService, dataSetService,
-                    objectMappingGenerator.getPeriodTypeMapping(), objectMappingGenerator.getDataEntryFormMapping( params.skipMapping() ) );
+                    objectMappingGenerator.getPeriodTypeMapping() );
 
                 converterInvoker.invokeRead( converter, reader, params );
 
