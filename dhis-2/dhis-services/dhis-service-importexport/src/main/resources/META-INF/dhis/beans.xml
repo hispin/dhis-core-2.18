@@ -95,7 +95,6 @@
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService"/>
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -126,7 +125,6 @@
 		<property name="olapURLService" ref="org.hisp.dhis.olap.OlapURLService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
 		<property name="cacheManager" ref="cacheManager"/>
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
 	</bean>
 
 	<bean id="internal-process-ImportPreview" class="org.hisp.dhis.importexport.ImportPreviewInternalProcess"
@@ -267,7 +265,6 @@
         <property name="converterInvoker"
                   ref="org.hisp.dhis.importexport.invoker.ConverterInvoker" />
 		<property name="cacheManager" ref="cacheManager"/>
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService"/>
     </bean>
 
     <bean id="org.hisp.dhis.importexport.ImportService"
@@ -323,7 +320,6 @@
 		<property name="completeDataSetRegistrationService"
 			ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-		<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
 	</bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

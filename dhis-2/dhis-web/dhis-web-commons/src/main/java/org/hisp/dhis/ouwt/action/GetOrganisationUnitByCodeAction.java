@@ -89,12 +89,7 @@ public class GetOrganisationUnitByCodeAction
     {
         log.debug( "Searching organisation unit for code: " + code );
         
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnitByCode( code );
-        
-        if ( unit == null )
-        {
-            unit = organisationUnitService.getOrganisationUnitByNameIgnoreCase( code );
-        }
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnitByNameIgnoreCase( code );
         
         if ( unit != null )
         {

@@ -42,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
@@ -56,7 +55,6 @@ import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataEntryFormBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
@@ -261,18 +259,6 @@ public class DefaultObjectMappingGenerator
         return getMapping( batchHandler, NameMappingUtil.getDataSetMap(), skipMapping );
     }
     
-    // -------------------------------------------------------------------------
-    // Data entry form
-    // -------------------------------------------------------------------------
-
-    public Map<Object, Integer> getDataEntryFormMapping( boolean skipMapping )
-    {
-        BatchHandler<DataEntryForm> batchHandler = batchHandlerFactory.createBatchHandler( DataEntryFormBatchHandler.class );
-        
-        return getMapping( batchHandler, NameMappingUtil.getDataEntryFormMap(), skipMapping );
-    }
-
-
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------

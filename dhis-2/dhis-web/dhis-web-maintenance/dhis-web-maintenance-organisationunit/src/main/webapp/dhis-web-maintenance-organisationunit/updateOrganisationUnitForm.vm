@@ -6,10 +6,6 @@
 			id: $organisationUnit.id			
 		});	
 		
-		checkValueIsExist( "code", "validateOrganisationUnit.action", {
-            id: $organisationUnit.id            
-        });     	
-		
 		#if ( $numberOfChildren == 0 )
 		datePickerInRange( 'openingDate', 'closedDate', false, false );
 		#else

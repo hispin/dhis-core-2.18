@@ -68,14 +68,6 @@ public interface OrganisationUnitStore
     OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name );
 
     /**
-     * Returns an OrganisationUnit with a given code.
-     * 
-     * @param code the code of the OrganisationUnit to return.
-     * @return the OrganisationUnit with the given code, or null if not match.
-     */
-    OrganisationUnit getOrganisationUnitByCode( String code );
-    
-    /**
      * Returns all root OrganisationUnits. A root OrganisationUnit is an
      * OrganisationUnit with no parent/has the parent set to null.
      * 

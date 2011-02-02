@@ -48,8 +48,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -144,13 +142,6 @@ public class DefaultImportObjectService<T>
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -367,19 +358,12 @@ public class DefaultImportObjectService<T>
                 deleteGroupAssociations( GroupMemberType.DATADICTIONARY_DATAELEMENT, dictionary.getId() );
                 deleteGroupAssociations( GroupMemberType.DATADICTIONARY_INDICATOR, dictionary.getId() );
             }
-            else if ( importObject.getClassName().equals( DataEntryForm.class.getName() ) )
-            {
-                DataEntryForm dataEntryForm = (DataEntryForm) importObject.getObject();
-                
-                deleteGroupAssociations( GroupMemberType.DATAENTRYFORM, dataEntryForm.getId() );
-            }
             else if ( importObject.getClassName().equals( DataSet.class.getName() ) )
             {
                 DataSet dataSet = (DataSet) importObject.getObject();
 
                 deleteGroupAssociations( GroupMemberType.DATASET, dataSet.getId() );
                 deleteMemberAssociations( GroupMemberType.DATASET_SOURCE, dataSet.getId() );
-                deleteMemberAssociations( GroupMemberType.DATASET_DATAENTRYFORM, dataSet.getId() );
                 
                 deleteCompleteDataSetRegistrationsByDataSet( dataSet.getId() );
             }
@@ -433,7 +417,6 @@ public class DefaultImportObjectService<T>
             importObjectStore.deleteImportObjects( DataSet.class );
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET );
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET_SOURCE );
-            importObjectStore.deleteImportObjects( GroupMemberType.DATASET_DATAENTRYFORM);
             importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class );
 
             importObjectStore.deleteImportObjects( Indicator.class );
@@ -482,7 +465,6 @@ public class DefaultImportObjectService<T>
         {
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET );
             importObjectStore.deleteImportObjects( GroupMemberType.DATASET_SOURCE );
-            importObjectStore.deleteImportObjects( GroupMemberType.DATASET_DATAENTRYFORM );
             importObjectStore.deleteImportObjects( CompleteDataSetRegistration.class );
         }
         else if ( clazz.equals( OrganisationUnit.class ) )
@@ -636,12 +618,7 @@ public class DefaultImportObjectService<T>
             dataValue = updateDataValue( dataValue, dataValueService.getDataValue( dataValue.getSource(), dataValue
                 .getDataElement(), dataValue.getPeriod(), dataValue.getOptionCombo() ) );
         }
-        else if ( object.getClass().equals( DataEntryForm.class ) )
-        {
-            DataEntryForm dataEntryForm = (DataEntryForm) object;
-
-            dataEntryForm.setName( dataEntryFormService.getDataEntryForm( existingObjectId ).getName() );
-        }
+        
         // ---------------------------------------------------------------------
         // Sets the status of the import object to match, these objects will
         // later be ignored on import all but is needed for matching of
@@ -680,7 +657,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importDataDictionaries();
         importObjectManager.importDataDictionaryDataElements();
         importObjectManager.importDataDictionaryIndicators();
-        importObjectManager.importDataEntryForms();
         importObjectManager.importDataSets();
         importObjectManager.importDataSetMembers();
         importObjectManager.importOrganisationUnits();

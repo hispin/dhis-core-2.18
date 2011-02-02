@@ -111,17 +111,6 @@ public class HibernateOrganisationUnitStore
         return (OrganisationUnit) criteria.uniqueResult();
     }
 
-    public OrganisationUnit getOrganisationUnitByCode( String code )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from OrganisationUnit o where o.code = :code" );
-
-        query.setString( "code", code );
-
-        return (OrganisationUnit) query.uniqueResult();
-    }
-
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {

@@ -33,8 +33,6 @@ import java.util.Map;
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
-import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -61,16 +59,12 @@ public class DataSetConverter
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
     private static final String FIELD_PERIOD_TYPE = "periodType";
-    private static final String FIELD_DATA_ENTRY_FORM_ID = "dataEntryForm";
-
-    private static final String BLANK = "";
-
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
 
     private Map<String, Integer> periodTypeMapping;
-    private Map<Object, Integer> dataEntryFormMapping;
 
     // -------------------------------------------------------------------------
     // Constructor
@@ -92,13 +86,12 @@ public class DataSetConverter
      * @param importObjectService the importObjectService to use.
      */
     public DataSetConverter( BatchHandler<DataSet> batchHandler, ImportObjectService importObjectService,
-        DataSetService dataSetService, Map<String, Integer> periodTypeMapping, Map<Object, Integer> dataEntryFormMapping )
+        DataSetService dataSetService, Map<String, Integer> periodTypeMapping )
     {
         this.batchHandler = batchHandler;
         this.importObjectService = importObjectService;
         this.dataSetService = dataSetService;
         this.periodTypeMapping = periodTypeMapping;
-        this.dataEntryFormMapping = dataEntryFormMapping;
     }
 
     /**
@@ -134,8 +127,6 @@ public class DataSetConverter
                 writer.writeCData( FIELD_SHORT_NAME, dataSet.getShortName() );
                 writer.writeElement( FIELD_CODE, dataSet.getCode() );
                 writer.writeElement( FIELD_PERIOD_TYPE, dataSet.getPeriodType().getName() );
-                writer.writeElement( FIELD_DATA_ENTRY_FORM_ID, String
-                    .valueOf( dataSet.getDataEntryForm() == null ? BLANK : dataSet.getDataEntryForm().getId() ) );
 
                 writer.closeElement();
             }
@@ -160,15 +151,6 @@ public class DataSetConverter
             dataSet.setShortName( values.get( FIELD_SHORT_NAME ) );
             dataSet.setCode( values.get( FIELD_CODE ) );
             dataSet.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
-            
-            String dataEntryFormId = StringUtils.trimToNull( values.get( FIELD_DATA_ENTRY_FORM_ID ) );
-            
-            if ( dataEntryFormId != null )
-            {
-                DataEntryForm form = new DataEntryForm();
-                dataSet.setDataEntryForm( form );
-                dataSet.getDataEntryForm().setId( dataEntryFormMapping.get( Integer.parseInt( dataEntryFormId ) ) );                
-            }
             
             importObject( dataSet, params );
         }

@@ -52,7 +52,6 @@ import org.hisp.dhis.concept.ConceptService;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.ExportParams;
@@ -77,7 +76,6 @@ import org.hisp.dhis.importexport.dxf.converter.DataElementGroupConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataElementGroupSetMemberConverter;
-import org.hisp.dhis.importexport.dxf.converter.DataEntryFormConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetMemberConverter;
 import org.hisp.dhis.importexport.dxf.converter.DataSetSourceAssociationConverter;
@@ -178,13 +176,6 @@ public class DefaultDXFExportService
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataEntryFormService dataEntryFormService;
-
-    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
-    {
-        this.dataEntryFormService = dataEntryFormService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -323,7 +314,6 @@ public class DefaultDXFExportService
             thread.registerXMLConverter( new DataDictionaryDataElementConverter( dataDictionaryService ) );
             thread.registerXMLConverter( new DataDictionaryIndicatorConverter( dataDictionaryService ) );
             
-            thread.registerXMLConverter( new DataEntryFormConverter( dataEntryFormService ) );
             thread.registerXMLConverter( new DataSetConverter( dataSetService ) );
             thread.registerXMLConverter( new DataSetMemberConverter( dataSetService, dataElementService ) );
 

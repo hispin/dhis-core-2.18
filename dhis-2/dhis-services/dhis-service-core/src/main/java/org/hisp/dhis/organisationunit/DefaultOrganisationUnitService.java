@@ -187,11 +187,6 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitByNameIgnoreCase( name );
     }
 
-    public OrganisationUnit getOrganisationUnitByCode( String code )
-    {
-        return organisationUnitStore.getOrganisationUnitByCode( code );
-    }
-
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
         return organisationUnitStore.getRootOrganisationUnits();
