@@ -105,19 +105,17 @@ public class GetGeoJsonAction
 
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
 
+        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
+
         for ( OrganisationUnit organisationUnit : object )
         {
-            if ( organisationUnit.getFeatureType() != null )
+            if ( organisationUnit.getFeatureType() != null
+                && organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
             {
-                if ( organisationUnit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    organisationUnit.setType( organisationUnit.getGroupNameInGroupSet( organisationUnitGroupService
-                        .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE ) ) );
-                }
+                organisationUnit.setType( organisationUnit.getGroupNameInGroupSet( organisationUnitGroupService
+                    .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE ) ) );
             }
         }
-
-        FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
 
         return object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
     }
