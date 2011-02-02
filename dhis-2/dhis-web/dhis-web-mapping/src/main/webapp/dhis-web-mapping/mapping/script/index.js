@@ -383,11 +383,11 @@
     osmarender.layerType = G.conf.map_layer_type_baselayer;
     G.vars.map.addLayer(osmarender);
     
-    var mapnik = new OpenLayers.Layer.OSM.Osmarender("OSM Mapnik");
+    var mapnik = new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik");
     mapnik.layerType = G.conf.map_layer_type_baselayer;
     G.vars.map.addLayer(mapnik);
     
-    var cyclemap = new OpenLayers.Layer.OSM.Osmarender("OSM CycleMap");
+    var cyclemap = new OpenLayers.Layer.OSM.CycleMap("OSM CycleMap");
     cyclemap.layerType = G.conf.map_layer_type_baselayer;
     G.vars.map.addLayer(cyclemap);
     
