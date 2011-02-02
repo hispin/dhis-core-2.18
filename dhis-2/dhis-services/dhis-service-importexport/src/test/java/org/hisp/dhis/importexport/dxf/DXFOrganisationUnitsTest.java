@@ -69,7 +69,13 @@ public class DXFOrganisationUnitsTest
     {
         inputStream.close();
     }
-    
+
+    @Override
+    public boolean emptyDatabaseAfterTest() // Empty before to avoid problem for subsequent tests?
+    {
+        return true;
+    }
+
     @Test
     public void testImportOrganisationUnits() throws Exception
     {
