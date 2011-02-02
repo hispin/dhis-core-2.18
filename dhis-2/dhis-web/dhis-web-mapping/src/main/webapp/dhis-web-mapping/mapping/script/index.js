@@ -1610,50 +1610,34 @@
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                         return;
                     }
-					
-					Ext.Ajax.request({
-						url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
+                    
+                    Ext.Ajax.request({
+                        url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
                         method: 'POST',
-                        params: {type: 'overlay'},
+                        params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: 1, strokeColor: mlsc, strokeWidth: mlsw},
                         success: function(r) {
-							var overlays = Ext.util.JSON.decode(r.responseText).mapLayers;
-							
-							for (var i = 0; i < overlays.length; i++) {
-								if (overlays[i].mapSource == mlmsf) {
-									Ext.message.msg(false, 'Map source <span class="x-msg-hl">' + mlmsf + '</span> ' + G.i18n.is_already_in_use);
-									return;
-								}
-							}
-							
-							Ext.Ajax.request({
-								url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
-								method: 'POST',
-								params: {name: mln, type: 'overlay', mapSource: mlmsf, fillColor: mlfc, fillOpacity: 1, strokeColor: mlsc, strokeWidth: mlsw},
-								success: function(r) {
-									Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
-									G.stores.overlay.load();
-									
-									if (G.vars.map.getLayersByName(mln).length) {
-										G.vars.map.getLayersByName(mln)[0].destroy();
-									}
-                                    
-									var overlay = G.util.createOverlay(mln, mlfc, 1, mlsc, mlsw,
-                                        G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
-                                        
-                                    overlay.events.register('loadstart', null, G.func.loadStart);
-                                    overlay.events.register('loadend', null, G.func.loadEnd);
-                                    overlay.setOpacity(mlfo);
-                                    overlay.layerType = G.conf.map_layer_type_overlay;
-									
-									G.vars.map.addLayer(overlay);
-									G.vars.map.getLayersByName(mln)[0].setZIndex(G.conf.defaultLayerZIndex);
-									
-									Ext.getCmp('maplayername_tf').reset();
-									Ext.getCmp('maplayermapsourcefile_cb').clearValue();
-								}
-							});
-						}
-					});
+                            Ext.message.msg(true, 'Overlay <span class="x-msg-hl">' + mln + '</span> ' + G.i18n.registered);
+                            G.stores.overlay.load();
+                            
+                            if (G.vars.map.getLayersByName(mln).length) {
+                                G.vars.map.getLayersByName(mln)[0].destroy();
+                            }
+                            
+                            var overlay = G.util.createOverlay(mln, mlfc, 1, mlsc, mlsw,
+                                G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + mlmsf);
+                                
+                            overlay.events.register('loadstart', null, G.func.loadStart);
+                            overlay.events.register('loadend', null, G.func.loadEnd);
+                            overlay.setOpacity(mlfo);
+                            overlay.layerType = G.conf.map_layer_type_overlay;
+                            
+                            G.vars.map.addLayer(overlay);
+                            G.vars.map.getLayersByName(mln)[0].setZIndex(G.conf.defaultLayerZIndex);
+                            
+                            Ext.getCmp('maplayername_tf').reset();
+                            Ext.getCmp('maplayermapsourcefile_cb').clearValue();
+                        }
+                    });
                 }
             },
             {

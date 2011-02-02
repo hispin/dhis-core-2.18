@@ -107,6 +107,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE map DROP COLUMN longitude" );
         executeSql( "ALTER TABLE map DROP COLUMN latitude" );
         executeSql( "ALTER TABLE map DROP COLUMN zoom" );
+        executeSql( "ALTER TABLE maplayer DROP CONSTRAINT maplayer_mapsource_key" );
 
         // ---------------------------------------------------------------------
         // Update tables for dimensional model

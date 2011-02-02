@@ -15,7 +15,7 @@
 		
 		<property name="type" column="type"/>
 	
-		<property name="mapSource" column="mapsource" unique="true"/>
+		<property name="mapSource" column="mapsource"/>
 		
 		<property name="layer" column="layer"/>
 		
