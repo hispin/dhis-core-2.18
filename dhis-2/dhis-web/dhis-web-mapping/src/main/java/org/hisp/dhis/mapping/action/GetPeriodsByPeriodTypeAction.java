@@ -101,12 +101,12 @@ public class GetPeriodsByPeriodTypeAction
         {
             object = new ArrayList<Period>( periodService.getPeriodsByPeriodType( periodType ) );
             
+            FilterUtils.filter( object, new PastAndCurrentPeriodFilter() );
+            
             for ( Period period : object )
             {
                 period.setName( format.formatPeriod( period ) );
             }
-            
-            FilterUtils.filter( object, new PastAndCurrentPeriodFilter() );
             
             Collections.sort( object, new PeriodComparator() );
         }
