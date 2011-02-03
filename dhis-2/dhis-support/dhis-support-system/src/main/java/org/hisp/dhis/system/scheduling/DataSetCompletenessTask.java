@@ -28,13 +28,10 @@ package org.hisp.dhis.system.scheduling;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
@@ -43,35 +40,31 @@ import org.hisp.dhis.system.util.ConversionUtils;
 /**
  * @author Lars Helge Overland
  */
-public class DataMartTask
+public class DataSetCompletenessTask
     implements Runnable
 {
-    private DataMartService dataMartService;
- 
-    private DataElementService dataElementService;
+    private DataSetCompletenessService completenessService;
     
-    private IndicatorService indicatorService;
+    private DataSetService dataSetService;
     
     private OrganisationUnitService organisationUnitService;
-        
-    public DataMartTask( DataMartService dataMartService, DataElementService dataElementService, IndicatorService indicatorService,
-        OrganisationUnitService organisationUnitService )
+
+    public DataSetCompletenessTask( DataSetCompletenessService completenessService, 
+        DataSetService dataSetService, OrganisationUnitService organisationUnitService )
     {
-        this.dataMartService = dataMartService;
-        this.dataElementService = dataElementService;
-        this.indicatorService = indicatorService;
+        this.completenessService = completenessService;
+        this.dataSetService = dataSetService;
         this.organisationUnitService = organisationUnitService;
     }
     
     @Override
     public void run()
     {
-        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
-        Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
+        Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
-        
+
         RelativePeriods relatives = new RelativePeriods( false, true, true, true, true, true, true );
         
-        dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives, true );
+        completenessService.exportDataSetCompleteness( dataSetIds, relatives, organisationUnitIds );        
     }
 }
