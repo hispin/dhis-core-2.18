@@ -5,7 +5,7 @@
 
 function organisationUnitToMoveSelected( orgUnitIds )
 {
-    document.getElementById( 'message' ).style.display = 'none';
+	hideHeaderMessage();
 
     if ( orgUnitIds.length == 1 )
     {
@@ -53,14 +53,9 @@ function organisationUnitToMoveFeedback( messageElement )
         
         selection.setListenerFunction( newParentSelected );
     }
-    else if ( type == 'input' )
+    else if ( type == 'input' || type == 'error' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( verication_of_the_org_unit_to_move_failed + ':\n\n' + message );
+        setHeaderMessage( message );
     }
 }
 
@@ -70,7 +65,7 @@ function organisationUnitToMoveFeedback( messageElement )
 
 function newParentSelected( orgUnitIds )
 {
-    document.getElementById( 'message' ).style.display = 'none';
+	hideHeaderMessage();
 
     if ( orgUnitIds.length == 1 )
     {
@@ -121,14 +116,9 @@ function newParentOrganisationUnitFeedback( messageElement )
         
         selection.setListenerFunction( null );
     }
-    else if ( type == 'input' )
+    else if ( type == 'input' || type == 'error' )
     {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( verification_of_the_new_parent_org_unit_failed + ':\n\n' + message );
+    	setHeaderMessage( message );
     }
 }
 
