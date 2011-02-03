@@ -218,39 +218,17 @@ public class JdbcAggregatedDataValueStore
     @Override
     public int countDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
 
-        try
-        {
-            int rootlevel = rootOrgunit.getLevel();
+        final String sql =
+            "SELECT count(*) " +
+            "FROM aggregateddatavalue AS adv " +
+            "INNER JOIN _orgunitstructure AS ous on adv.organisationunitid=ous.organisationunitid " +
+            "WHERE adv.level = " + level.getLevel() +
+            " AND ous.idlevel" + rootOrgunit.getLevel() + "=" + rootOrgunit.getId() +
+            " AND adv.periodid IN (" + periodids + ") ";
 
-            String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
-
-            final String sql =
-                "SELECT count(*) as rowcount " +
-                "FROM aggregateddatavalue AS adv " +
-                "INNER JOIN _orgunitstructure AS ous on adv.organisationunitid=ous.organisationunitid " +
-                "WHERE adv.level = " + level.getLevel() +
-                " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
-                " AND adv.periodid IN (" + periodids + ") ";
-
-            Statement statement = holder.getStatement();
-
-            final ResultSet resultSet = statement.executeQuery( sql );
-
-            resultSet.next();
-
-            return resultSet.getInt("rowcount");
-
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated data values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return statementManager.getHolder().queryForInteger( sql );
     }
 
     public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )

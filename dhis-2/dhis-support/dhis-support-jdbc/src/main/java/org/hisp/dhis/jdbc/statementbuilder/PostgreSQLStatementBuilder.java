@@ -100,7 +100,6 @@ public class PostgreSQLStatementBuilder
             "periodid INTEGER, " +
             "periodname VARCHAR( 30 ), " +
             "organisationunitid INTEGER, " +
-            "reporttableid INTEGER, " +
             "sources INTEGER, " +
             "registrations INTEGER, " +
             "registrationsOnTime INTEGER, " +
