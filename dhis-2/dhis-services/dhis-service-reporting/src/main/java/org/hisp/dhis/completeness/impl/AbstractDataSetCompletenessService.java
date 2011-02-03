@@ -366,4 +366,18 @@ public abstract class AbstractDataSetCompletenessService
             return null;
         }
     }
+    
+    // -------------------------------------------------------------------------
+    // Index
+    // -------------------------------------------------------------------------
+
+    public void createIndex()
+    {
+        completenessStore.createIndex();
+    }
+    
+    public void dropIndex()
+    {
+        completenessStore.dropIndex();
+    }
 }

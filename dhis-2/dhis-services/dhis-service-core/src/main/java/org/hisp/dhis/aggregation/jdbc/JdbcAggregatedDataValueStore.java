@@ -300,7 +300,7 @@ public class JdbcAggregatedDataValueStore
             }
             catch ( Exception ex )
             {
-                log.debug( "Index already exists" );
+                log.debug( "Index does not exist" );
             }
         }
     }
