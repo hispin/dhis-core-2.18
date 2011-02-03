@@ -102,7 +102,6 @@ public class H2StatementBuilder
             "periodid INTEGER, " +
             "periodname VARCHAR( 30 ), " +
             "organisationunitid INTEGER, " +
-            "reporttableid INTEGER, " +
             "sources INTEGER, " +
             "registrations INTEGER, " +
             "registrationsOnTime INTEGER, " +
