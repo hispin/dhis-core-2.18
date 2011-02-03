@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.task;
+package org.hisp.dhis.reporting.scheduling.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,48 +27,37 @@ package org.hisp.dhis.datamart.task;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.concurrent.ScheduledFuture;
-
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartScheduler;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.support.CronTrigger;
+import org.hisp.dhis.system.scheduling.DataMartTask;
+import org.hisp.dhis.system.scheduling.Scheduler;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  */
-public class SpringDataMartScheduler
-    implements DataMartScheduler
+public class ScheduleTasksAction
+    implements Action
 {
-    private ScheduledFuture<?> scheduledFuture = null; // Gives class state but no better way to handle this?
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DataMartService dataMartService;
+    private Scheduler scheduler;
     
+    public void setScheduler( Scheduler scheduler )
+    {
+        this.scheduler = scheduler;
+    }
+
+    private DataMartService dataMartService;
+
     public void setDataMartService( DataMartService dataMartService )
     {
         this.dataMartService = dataMartService;
-    }
-
-    private TaskScheduler taskScheduler;
-
-    public void setTaskScheduler( TaskScheduler taskScheduler )
-    {
-        this.taskScheduler = taskScheduler;
-    }
-    
-    private TaskExecutor taskExecutor;
-
-    public void setTaskExecutor( TaskExecutor taskExecutor )
-    {
-        this.taskExecutor = taskExecutor;
     }
 
     private DataElementService dataElementService;
@@ -93,45 +82,69 @@ public class SpringDataMartScheduler
     }
 
     // -------------------------------------------------------------------------
-    // DataMartSceduler implementation
+    // Input
     // -------------------------------------------------------------------------
 
-    public void executeDataMartExport()
+    private boolean execute;
+
+    public void setExecute( boolean execute )
     {
-        DataMartTask task = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
+        this.execute = execute;
+    }
+    
+    private boolean statusOnly = false;
+
+    public void setStatusOnly( boolean statusOnly )
+    {
+        this.statusOnly = statusOnly;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String status;
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    private boolean running;
+
+    public boolean isRunning()
+    {
+        return running;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        DataMartTask dataMartTask = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
+ 
+        if ( !statusOnly )
+        {
+            if ( execute )
+            {
+                scheduler.executeTask( dataMartTask );
+            }
+            else if ( scheduler.getTaskStatus( DataMartTask.class ).equals( Scheduler.STATUS_RUNNING ) )
+            {
+                scheduler.stopTask( DataMartTask.class );
+            }
+            else
+            {
+                scheduler.scheduleTask( dataMartTask, Scheduler.CRON_NIGHTLY_1AM );
+            }
+        }
         
-        taskExecutor.execute( task );
-    }
-    
-    public void scheduleDataMartExport()
-    {
-        DataMartTask task = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
+        status = scheduler.getTaskStatus( DataMartTask.class );
         
-        scheduledFuture = taskScheduler.schedule( task, new CronTrigger( CRON_NIGHTLY ) );        
-    }
-    
-    public boolean stopDataMartExport()
-    {
-        return scheduledFuture != null ? scheduledFuture.cancel( true ) : false;
-    }
-    
-    public String getDataMartExportStatus()
-    {
-        if ( scheduledFuture == null )
-        {
-            return STATUS_NOT_STARTED;
-        }
-        else if ( scheduledFuture.isCancelled() )
-        {
-            return STATUS_STOPPED;
-        }
-        else if ( scheduledFuture.isDone() )
-        {
-            return STATUS_DONE;
-        }
-        else
-        {
-            return STATUS_RUNNING;
-        }   
+        running = scheduler.getTaskStatus( DataMartTask.class ).equals( Scheduler.STATUS_RUNNING );
+        
+        return SUCCESS;
     }
 }

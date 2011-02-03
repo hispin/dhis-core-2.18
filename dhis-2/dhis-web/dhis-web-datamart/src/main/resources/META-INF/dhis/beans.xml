@@ -88,28 +88,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
   </bean>
-    
-  <!-- Schedule -->
-  
-  <bean id="org.hisp.dhis.datamart.action.GetScheduledExportStatusAction"
-    class="org.hisp.dhis.datamart.action.GetScheduledExportStatusAction"
-    scope="prototype">
-    <property name="dataMartScheduler"
-      ref="org.hisp.dhis.datamart.DataMartScheduler"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.datamart.action.ScheduleExportAction"
-    class="org.hisp.dhis.datamart.action.ScheduleExportAction"
-    scope="prototype">
-    <property name="dataMartScheduler"
-      ref="org.hisp.dhis.datamart.DataMartScheduler"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.datamart.action.ExecuteExportAction"
-    class="org.hisp.dhis.datamart.action.ExecuteExportAction"
-    scope="prototype">
-    <property name="dataMartScheduler"
-      ref="org.hisp.dhis.datamart.DataMartScheduler"/>
-  </bean>
   
 </beans>

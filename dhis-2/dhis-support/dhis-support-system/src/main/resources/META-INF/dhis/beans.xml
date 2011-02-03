@@ -22,4 +22,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="poolSize" value="10"/>
   </bean>
     
+  <bean id="scheduler" class="org.hisp.dhis.system.scheduling.SpringScheduler">
+    <property name="taskScheduler" ref="taskScheduler"/>
+    <property name="taskExecutor" ref="taskScheduler"/>
+  </bean>
+  
 </beans>
