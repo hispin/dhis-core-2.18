@@ -175,13 +175,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     class="org.hisp.dhis.completeness.jdbc.JDBCDataSetCompletenessStore">
 	<property name="statementManager" ref="statementManager"/>
   </bean>
-
-  <bean id="internal-process-DataSetCompleteness"
-    class="org.hisp.dhis.completeness.DataSetCompletenessInternalProcess"
-    scope="prototype">
-    <property name="statementManager" ref="statementManager"/>
-    <property name="completenessService" ref="subjectiveDataCompletenessService"/>
-  </bean>
   
   <!-- PivotTable -->
   
