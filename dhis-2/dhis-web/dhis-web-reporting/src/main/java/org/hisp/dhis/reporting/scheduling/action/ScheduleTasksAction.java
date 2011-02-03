@@ -27,11 +27,15 @@ package org.hisp.dhis.reporting.scheduling.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.ServiceProvider;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.scheduling.DataMartTask;
+import org.hisp.dhis.system.scheduling.DataSetCompletenessTask;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 import com.opensymphony.xwork2.Action;
@@ -59,6 +63,13 @@ public class ScheduleTasksAction
     {
         this.dataMartService = dataMartService;
     }
+    
+    private ServiceProvider<DataSetCompletenessService> serviceProvider;
+
+    public void setServiceProvider( ServiceProvider<DataSetCompletenessService> serviceProvider )
+    {
+        this.serviceProvider = serviceProvider;
+    }
 
     private DataElementService dataElementService;
 
@@ -79,6 +90,13 @@ public class ScheduleTasksAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -124,20 +142,24 @@ public class ScheduleTasksAction
     public String execute()
     {
         DataMartTask dataMartTask = new DataMartTask( dataMartService, dataElementService, indicatorService, organisationUnitService );
- 
+        DataSetCompletenessTask completenessTask = new DataSetCompletenessTask( serviceProvider.provide( "registration" ), dataSetService, organisationUnitService );
+        
         if ( !statusOnly )
         {
             if ( execute )
             {
                 scheduler.executeTask( dataMartTask );
+                scheduler.executeTask( completenessTask );
             }
             else if ( scheduler.getTaskStatus( DataMartTask.class ).equals( Scheduler.STATUS_RUNNING ) )
             {
                 scheduler.stopTask( DataMartTask.class );
+                scheduler.stopTask( DataSetCompletenessTask.class );
             }
             else
             {
-                scheduler.scheduleTask( dataMartTask, Scheduler.CRON_NIGHTLY_1AM );
+                scheduler.scheduleTask( dataMartTask, Scheduler.CRON_NIGHTLY_2AM );
+                scheduler.scheduleTask( completenessTask, Scheduler.CRON_NIGHTLY_1AM );
             }
         }
         

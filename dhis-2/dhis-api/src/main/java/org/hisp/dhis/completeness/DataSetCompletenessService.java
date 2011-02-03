@@ -34,6 +34,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.RelativePeriods;
 
 /**
  * @author Lars Helge Overland
@@ -42,6 +43,14 @@ import org.hisp.dhis.period.Period;
 public interface DataSetCompletenessService
 {
     String ID = DataSetCompletenessService.class.getName();
+    
+    /**
+     * 
+     * @param dataSetIds
+     * @param relatives
+     * @param organisationUnitIds
+     */
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives, Collection<Integer> organisationUnitIds );
     
     /**
      * 
