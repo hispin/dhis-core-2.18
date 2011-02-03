@@ -48,8 +48,6 @@ public class DataSetCompletenessResult
     
     private int organisationUnitId;
     
-    private int reportTableId;
-    
     // -------------------------------------------------------------------------
     // Properties 2
     // -------------------------------------------------------------------------
@@ -96,13 +94,12 @@ public class DataSetCompletenessResult
      * @param registrationsOnTime the number of registrations on time.
      */
     public DataSetCompletenessResult( int dataSetId, int periodId, String periodName, int organisationUnitId,
-        int reportTableId, String name, int sources, int registrations, int registrationsOnTime )
+        String name, int sources, int registrations, int registrationsOnTime )
     {
         this.dataSetId = dataSetId;
         this.periodId = periodId;
         this.periodName = periodName;
         this.organisationUnitId = organisationUnitId;
-        this.reportTableId = reportTableId;
         this.name = name;
         this.sources = sources;
         this.registrations = registrations;
@@ -247,16 +244,6 @@ public class DataSetCompletenessResult
     public void setOrganisationUnitId( int organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
-    }
-
-    public int getReportTableId()
-    {
-        return reportTableId;
-    }
-
-    public void setReportTableId( int reportTableId )
-    {
-        this.reportTableId = reportTableId;
     }
 
     // -------------------------------------------------------------------------

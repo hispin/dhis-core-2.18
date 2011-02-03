@@ -94,7 +94,6 @@ public class DataSetCompletenessResultBatchHandler
         statementBuilder.setColumn( "periodid" );
         statementBuilder.setColumn( "periodname" );
         statementBuilder.setColumn( "organisationunitid" );
-        statementBuilder.setColumn( "reporttableid" );
         statementBuilder.setColumn( "sources" );
         statementBuilder.setColumn( "registrations" );
         statementBuilder.setColumn( "registrationsOnTime" );
@@ -108,7 +107,6 @@ public class DataSetCompletenessResultBatchHandler
         statementBuilder.setValue( result.getPeriodId() );
         statementBuilder.setValue( result.getPeriodName() );
         statementBuilder.setValue( result.getOrganisationUnitId() );
-        statementBuilder.setValue( result.getReportTableId() );
         statementBuilder.setValue( result.getSources() );
         statementBuilder.setValue( result.getRegistrations() );
         statementBuilder.setValue( result.getRegistrationsOnTime() );

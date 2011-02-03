@@ -48,10 +48,9 @@ public interface DataSetCompletenessService
      * @param dataSetIds
      * @param periodIds
      * @param organisationUnitIds
-     * @param reportTableId
      */
     void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
      * Returns a Collection of DataSetCompletenessResults. The DataSetCompletenessResult

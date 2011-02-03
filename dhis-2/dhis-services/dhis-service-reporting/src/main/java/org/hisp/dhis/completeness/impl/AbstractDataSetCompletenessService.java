@@ -160,9 +160,9 @@ public abstract class AbstractDataSetCompletenessService
     // -------------------------------------------------------------------------
     // DataSetCompleteness
     // -------------------------------------------------------------------------
-
+    
     public void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Integer reportTableId )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         log.info( "Data completeness export process started" );
         
@@ -196,7 +196,6 @@ public abstract class AbstractDataSetCompletenessService
                     aggregatedResult.setPeriodId( period.getId() );
                     aggregatedResult.setPeriodName( period.getName() );
                     aggregatedResult.setOrganisationUnitId( unit.getId() );
-                    aggregatedResult.setReportTableId( reportTableId );
                     
                     for ( final Period intersectingPeriod : intersectingPeriods )
                     {
