@@ -184,8 +184,7 @@ public class DefaultReportTableService
             {
                 completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, reportTable.getDataSets() ),
                     getIdentifiers( Period.class, reportTable.getAllPeriods() ),
-                    getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ),
-                    reportTable.getId() );
+                    getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
             }
         }
         

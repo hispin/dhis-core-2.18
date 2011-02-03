@@ -401,14 +401,14 @@ public class ReportTableManagerTest
         
         batchHandler.init();
         
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'A', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'B', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'A', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'B', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'A', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'B', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'A', 1, "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'B', 1, "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
+        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
         
         batchHandler.flush();        
 

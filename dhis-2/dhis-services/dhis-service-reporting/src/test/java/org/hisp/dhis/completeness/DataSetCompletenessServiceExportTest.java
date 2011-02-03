@@ -175,7 +175,7 @@ public class DataSetCompletenessServiceExportTest
         assertEquals( new DataSetCompletenessResult( unitA.getName(), 3, 2, 0 ), resultF );
         
         completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
-            getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ),  reportTable.getId() );
+            getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ) );
         
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitB.getId() ) );
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitC.getId() ) );

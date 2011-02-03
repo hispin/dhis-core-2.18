@@ -79,13 +79,6 @@ public class DataSetCompletenessInternalProcess
         this.organisationUnitIds = organisationUnitIds;
     }
     
-    private Integer reportTableId;
-
-    public void setReportTableId( Integer reportTableId )
-    {
-        this.reportTableId = reportTableId;
-    }
-
     // -------------------------------------------------------------------------
     // SerialToGroup implementation
     // -------------------------------------------------------------------------
@@ -102,6 +95,6 @@ public class DataSetCompletenessInternalProcess
     @Override
     public void executeStatements()
     {
-        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds, reportTableId );
+        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
     }
 }
