@@ -483,4 +483,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
   </bean>
   
+  <!-- Scheduling -->
+  
+  <bean id="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction"
+    class="org.hisp.dhis.reporting.scheduling.action.ScheduleTasksAction"
+    scope="prototype">
+    <property name="scheduler" ref="scheduler"/>
+    <property name="dataMartService"
+      ref="org.hisp.dhis.datamart.DataMartService"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
+    <property name="indicatorService"
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="organisationUnitService"
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+  </bean>
+  
 </beans>

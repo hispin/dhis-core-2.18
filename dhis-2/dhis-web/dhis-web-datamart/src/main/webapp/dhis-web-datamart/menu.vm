@@ -1,6 +1,5 @@
 
 <h2>$i18n.getString( "datamart" ) </h2>
 	<ul>
-		<li><a href="getDataMartExports.action">$i18n.getString( "data_mart_export" )&nbsp;</a></li>
-		<li><a href="getScheduledExportStatus.action">$i18n.getString( "data_mart_scheduling" )&nbsp;</a></li>		
+		<li><a href="getDataMartExports.action">$i18n.getString( "data_mart_export" )&nbsp;</a></li>	
 	</ul>

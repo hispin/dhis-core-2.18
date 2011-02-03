@@ -73,23 +73,5 @@
       <result name="input" type="velocity-xml">/dhis-web-datamart/responseInput.vm</result>
     </action>
     
-    <!-- Schedule -->
-    
-    <action name="getScheduledExportStatus" class="org.hisp.dhis.datamart.action.GetScheduledExportStatusAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-datamart/viewScheduledExport.vm</param>
-      <param name="menu">/dhis-web-datamart/menu.vm</param>
-    </action>
-    
-    <action name="scheduleExport" class="org.hisp.dhis.datamart.action.ScheduleExportAction">
-      <result name="success" type="redirect">getScheduledExportStatus.action</result>
-      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
-    </action>
-    
-    <action name="executeExport" class="org.hisp.dhis.datamart.action.ExecuteExportAction">
-      <result name="success" type="redirect">getScheduledExportStatus.action</result>
-      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
-    </action>
-    
 	</package>
 </struts>

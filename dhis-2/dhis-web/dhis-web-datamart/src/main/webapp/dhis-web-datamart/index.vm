@@ -3,5 +3,4 @@
 
 <ul id="introList">
 	#introListImgItem( "getDataMartExports.action" "data_mart_export" "data_mart_export" )
-	#introListImgItem( "getScheduledExportStatus.action" "data_mart_scheduling" "scheduling" )
 </ul>

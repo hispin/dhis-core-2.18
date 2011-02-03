@@ -191,24 +191,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="batchHandlerFactory" ref="batchHandlerFactory"/>
   </bean>
   
-  <!-- Scheduler -->
-  
-  <bean id="org.hisp.dhis.datamart.DataMartScheduler"
-    class="org.hisp.dhis.datamart.task.SpringDataMartScheduler">
-    <property name="dataMartService"
-      ref="org.hisp.dhis.datamart.DataMartService"/>
-    <property name="taskScheduler" 
-      ref="taskScheduler"/>
-    <property name="taskExecutor"
-      ref="taskScheduler"/>
-    <property name="dataElementService"
-      ref="org.hisp.dhis.dataelement.DataElementService"/>
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
   <!-- DeletionHandler -->
   
   <bean id="org.hisp.dhis.datamart.DataMartExportDeletionHandler"
