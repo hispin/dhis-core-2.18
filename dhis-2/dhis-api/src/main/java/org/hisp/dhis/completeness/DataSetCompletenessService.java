@@ -114,4 +114,14 @@ public interface DataSetCompletenessService
      */
     DataSetCompletenessConfiguration getConfiguration()
         throws NoConfigurationFoundException;
+    
+    /**
+     * Creates an index on the aggregateddatasetcompleteness table.
+     */
+    void createIndex();
+
+    /**
+     * Drops the index on the aggregateddatasetcompleteness table.
+     */
+    void dropIndex();
 }

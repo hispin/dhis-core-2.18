@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
@@ -48,6 +50,8 @@ import org.hisp.dhis.system.util.TextUtils;
 public class JDBCDataSetCompletenessStore
     implements DataSetCompletenessStore
 {
+    private static final Log log = LogFactory.getLog( JDBCDataSetCompletenessStore.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -132,5 +136,31 @@ public class JDBCDataSetCompletenessStore
             "AND sourceid IN (" + childrenIds + ")";
 
         return statementManager.getHolder().queryForInteger( sql );
+    }    
+
+    public void createIndex()
+    {
+        try
+        {
+            final String sql = "CREATE INDEX aggregateddatasetcompleteness_index ON aggregateddatasetcompleteness (datasetid, periodid, organisationunitid)";        
+            statementManager.getHolder().executeUpdate( sql );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( "Index already exists" );
+        }
+    }
+    
+    public void dropIndex()
+    {
+        try
+        {
+            final String sql = "DROP INDEX aggregateddatasetcompleteness_index";        
+            statementManager.getHolder().executeUpdate( sql );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( "Index does not exist" );
+        }
     }
 }

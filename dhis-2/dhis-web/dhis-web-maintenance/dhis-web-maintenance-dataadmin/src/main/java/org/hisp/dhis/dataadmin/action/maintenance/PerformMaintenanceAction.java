@@ -138,6 +138,9 @@ public class PerformMaintenanceAction
             aggregatedDataValueService.dropIndex( true, true );
             aggregatedDataValueService.createIndex( true, true );
             
+            completenessStore.dropIndex();
+            completenessStore.createIndex(); //TODO respect layering
+            
             log.info( "Rebuilt data mart indexes" );
         }
         
