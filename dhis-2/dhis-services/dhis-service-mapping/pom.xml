@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-datamart-default</artifactId>
+      <artifactId>dhis-service-options</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
