@@ -325,7 +325,7 @@ public class SaveTableAction
             units.add( organisationUnitService.getOrganisationUnit( id ) );
         }
         
-        DataElementCategoryCombo categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboId );
+        DataElementCategoryCombo categoryCombo = categoryComboId != null ? categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
         
         RelativePeriods relatives = new RelativePeriods( reportingMonth, monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
         
