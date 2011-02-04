@@ -45,7 +45,7 @@ public class MathUtils
     
     private static final double TOLERANCE = 0.01; 
     
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^[ \t]*[0-9]*[.]?[0-9]*[ \t]*$" );
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^[ \\t]*[\\.]?[0-9]+[ \\t]*$|^[ \\t]*[0-9]+[\\.][0-9]+[ \\t]*$" );
 
     /**
      * Validates whether an expression is true or false.
@@ -187,7 +187,7 @@ public class MathUtils
      */
     public static boolean isNumeric( String value )
     {
-        return value != null && !value.trim().isEmpty() && NUMERIC_PATTERN.matcher( value ).matches();
+        return value != null && NUMERIC_PATTERN.matcher( value ).matches();
     }
     
     /**
