@@ -89,6 +89,7 @@ public class MathUtilsTest
         assertTrue( MathUtils.isNumeric( "1.2" ) );
         assertTrue( MathUtils.isNumeric( "12.34" ) );
         assertTrue( MathUtils.isNumeric( "0.0" ) );
+        assertTrue( MathUtils.isNumeric( ".1" ) );
         assertTrue( MathUtils.isNumeric( "1.234" ) );
         assertTrue( MathUtils.isNumeric( "1234  " ) );
         assertTrue( MathUtils.isNumeric( "  1234" ) );
@@ -98,6 +99,8 @@ public class MathUtilsTest
         assertFalse( MathUtils.isNumeric( "Long street 2" ) );
         assertFalse( MathUtils.isNumeric( "1.2f" ) );
         assertFalse( MathUtils.isNumeric( "1 234" ) );
+        assertFalse( MathUtils.isNumeric( "." ) );
+        assertFalse( MathUtils.isNumeric( "1." ) );
         assertFalse( MathUtils.isNumeric( "" ) );
         assertFalse( MathUtils.isNumeric( " " ) );
         assertFalse( MathUtils.isNumeric( null ) );
