@@ -41,7 +41,6 @@ import org.junit.Test;
  */
 public class MathUtilsTest
 {
-    
     @Test
     public void testExpressionIsTrue()
     {
@@ -78,7 +77,29 @@ public class MathUtilsTest
 
         for (int i=0; i < numbers.length; ++i)
         {
-            assertEquals(rounded[i], MathUtils.roundToString( numbers[i], 4));
+            assertEquals( rounded[i], MathUtils.roundToString( numbers[i], 4) );
         }
+    }
+    
+    @Test
+    public void testIsNumeric()
+    {
+        assertTrue( MathUtils.isNumeric( "123" ) );
+        assertTrue( MathUtils.isNumeric( "0" ) );
+        assertTrue( MathUtils.isNumeric( "1.2" ) );
+        assertTrue( MathUtils.isNumeric( "12.34" ) );
+        assertTrue( MathUtils.isNumeric( "0.0" ) );
+        assertTrue( MathUtils.isNumeric( "1.234" ) );
+        assertTrue( MathUtils.isNumeric( "1234  " ) );
+        assertTrue( MathUtils.isNumeric( "  1234" ) );
+
+        assertFalse( MathUtils.isNumeric( "Hey" ) );
+        assertFalse( MathUtils.isNumeric( "45 Perinatal Condition" ) );
+        assertFalse( MathUtils.isNumeric( "Long street 2" ) );
+        assertFalse( MathUtils.isNumeric( "1.2f" ) );
+        assertFalse( MathUtils.isNumeric( "1 234" ) );
+        assertFalse( MathUtils.isNumeric( "" ) );
+        assertFalse( MathUtils.isNumeric( " " ) );
+        assertFalse( MathUtils.isNumeric( null ) );
     }
 }

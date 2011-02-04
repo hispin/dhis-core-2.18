@@ -30,7 +30,7 @@ package org.hisp.dhis.system.util;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.hisp.dhis.expression.Operator;
 import org.nfunk.jep.JEP;
@@ -45,6 +45,8 @@ public class MathUtils
     
     private static final double TOLERANCE = 0.01; 
     
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile( "^[ \t]*[0-9]*[.]?[0-9]*[ \t]*$" );
+
     /**
      * Validates whether an expression is true or false.
      * 
@@ -185,7 +187,7 @@ public class MathUtils
      */
     public static boolean isNumeric( String value )
     {
-        return new Scanner( value ).hasNextDouble();
+        return value != null && !value.trim().isEmpty() && NUMERIC_PATTERN.matcher( value ).matches();
     }
     
     /**
