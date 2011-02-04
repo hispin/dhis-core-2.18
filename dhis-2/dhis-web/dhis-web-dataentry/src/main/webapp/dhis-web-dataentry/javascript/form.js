@@ -35,6 +35,8 @@ function clearEntryForm()
 
 function organisationUnitSelected( orgUnits )
 {
+    $( '#selectedDataSetId' ).removeAttr( 'disabled' );
+    
     var dataSetId = $( '#selectedDataSetId' ).val();
     
     var url = 'loadDataSets.action';
@@ -43,7 +45,7 @@ function organisationUnitSelected( orgUnits )
     
     clearList( list );
     
-    addOptionToList( list, '-1', '[ Select ]' );
+    addOptionToList( list, '-1', '[ ' + i18n_select_data_set + ' ]' );
     
     $.getJSON( url, function( json ) {
     	$( '#selectedOrganisationUnit' ).val( json.organisationUnit.name );
@@ -93,7 +95,7 @@ function displayPeriodsInternal( next, previous )
 		
 	clearList( list );
 	    
-	addOptionToList( list, '-1', '[ Select ]' );
+	addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
 	
     $.getJSON( url, function( json ) {
     	for ( i in json.periods ) {
@@ -122,6 +124,10 @@ function enableNextPrevButtons()
 
 function dataSetSelected()
 {
+    $( '#selectedPeriodIndex' ).removeAttr( 'disabled' );
+    $( '#prevButton' ).removeAttr( 'disabled' );
+    $( '#nextButton' ).removeAttr( 'disabled' );
+    
 	var dataSetId = $( '#selectedDataSetId' ).val();	
 	var periodIndex = $( '#selectedPeriodIndex' ).val();
 	
@@ -133,7 +139,7 @@ function dataSetSelected()
 		
 	    clearList( list );
 	    
-	    addOptionToList( list, '-1', '[ Select ]' );
+	    addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
 		
 	    $.getJSON( url, function( json ) {
 	    	significantZeros = json.significantZeros;
