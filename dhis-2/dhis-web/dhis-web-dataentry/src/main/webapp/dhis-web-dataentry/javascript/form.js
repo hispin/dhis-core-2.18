@@ -45,11 +45,11 @@ function organisationUnitSelected( orgUnits )
     
     clearList( list );
     
-    addOptionToList( list, '-1', '[ ' + i18n_select_data_set + ' ]' );
-    
-    $.getJSON( url, function( json ) {
+    $.getJSON( url, function( json ) {    
     	$( '#selectedOrganisationUnit' ).val( json.organisationUnit.name );
     	$( '#currentOrganisationUnit' ).html( json.organisationUnit.name );
+    	
+    	addOptionToList( list, '-1', '[ ' + i18n_select_data_set + ' ]' );
     	
     	for ( i in json.dataSets ) {
     		addOptionToList( list, json.dataSets[i].id, json.dataSets[i].name );
@@ -95,9 +95,9 @@ function displayPeriodsInternal( next, previous )
 		
 	clearList( list );
 	    
-	addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
+    $.getJSON( url, function( json ) {    	
+		addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
 	
-    $.getJSON( url, function( json ) {
     	for ( i in json.periods ) {
     		addOptionToList( list, i, json.periods[i].name );
     	}
@@ -139,11 +139,11 @@ function dataSetSelected()
 		
 	    clearList( list );
 	    
-	    addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
-		
 	    $.getJSON( url, function( json ) {
 	    	significantZeros = json.significantZeros;
 	    	
+	    	addOptionToList( list, '-1', '[ ' + i18n_select_period + ' ]' );
+		
 	    	for ( i in json.periods ) {
 	    		addOptionToList( list, i, json.periods[i].name );
 	    	}
