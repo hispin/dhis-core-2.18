@@ -424,6 +424,7 @@ public class ReportTable
     {
         verify( nonEmptyLists( dataElements, indicators, dataSets ) == 1, "One of dataelements, indicators, and datasets size must be larger than 0" );
         verify( !( doIndicators && doPeriods && doUnits ), "Cannot crosstab on all dimensions" );
+        verify( i18nFormat != null, "I18n format must be set" );
         
         // ---------------------------------------------------------------------
         // Init tableName, allPeriods and allUnits
@@ -443,9 +444,9 @@ public class ReportTable
 
         for ( Period period : allPeriods )
         {
-            if ( period.getName() == null && i18nFormat != null )
+            if ( period.getName() == null ) // Crosstabulated relative periods
             {
-                period.setName( i18nFormat.formatPeriod( period ) );
+                period.setName( i18nFormat.formatPeriod( period ) ); // Static periods + indexed relative periods
             }
         }
         
@@ -598,25 +599,6 @@ public class ReportTable
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-
-    /**
-     * Tests whether this report table has report parameters for dimensions which
-     * are on columns.
-     */
-    public boolean hasDynamicColumns()
-    {
-        if ( doUnits && reportParams != null && ( reportParams.isParamOrganisationUnit() || reportParams.isParamParentOrganisationUnit() ) )
-        {
-            return true;
-        }
-        
-        if ( doPeriods && reportParams != null && reportParams.isParamReportingMonth() )
-        {
-            return true;
-        }
-        
-        return false;
-    }
     
     /**
      * Returns a list of names of all columns for this ReportTable.
@@ -780,9 +762,7 @@ public class ReportTable
         }
         if ( period != null )
         {
-            String periodName = format == null ? period.getName() : format.formatPeriod( period );
-            
-            buffer.append( periodName + SPACE );
+            buffer.append( format.formatPeriod( period ) + SPACE );
         }
         if ( unit != null )
         {
