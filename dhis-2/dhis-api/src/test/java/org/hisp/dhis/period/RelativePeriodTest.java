@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.mock.MockI18nFormat;
 import org.junit.Test;
 
 /**
@@ -41,6 +43,8 @@ import org.junit.Test;
  */
 public class RelativePeriodTest
 {
+    private static final I18nFormat i18nFormat = new MockI18nFormat();
+    
     private static Date getDate( int year, int month, int day )
     {
         final Calendar calendar = Calendar.getInstance();
@@ -56,7 +60,7 @@ public class RelativePeriodTest
     {        
         RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true );
         
-        Collection<Period> relatives = periods.getRelativePeriods( 1, getDate( 2002, 1, 1 ), null, false );
+        Collection<Period> relatives = periods.getRelativePeriods( 1, getDate( 2002, 1, 1 ), i18nFormat, false );
         
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 1, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 2, 1 ), getDate( 2001, 2, 28 ) ) ) );
