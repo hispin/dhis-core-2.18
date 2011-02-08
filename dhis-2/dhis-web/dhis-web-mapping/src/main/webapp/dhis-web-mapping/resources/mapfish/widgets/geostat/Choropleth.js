@@ -1453,6 +1453,12 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
                         var mapvalues = Ext.util.JSON.decode(r.responseText).mapvalues;
                         G.vars.exportValues = G.util.getExportDataValueJSON(mapvalues);
                         
+                        if (!this.layer.features.length) {
+                            Ext.message.msg(false, 'No coordinates found');
+                            G.vars.mask.hide();
+                            return;
+                        }
+                        
                         if (mapvalues.length === 0) {
                             Ext.message.msg(false, G.i18n.current_selection_no_data);
                             G.vars.mask.hide();
