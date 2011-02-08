@@ -149,8 +149,6 @@ public class JDBCReportTableManager
             
             log.debug( "Get values statement: " + statement.getStatement() );
             
-            int columnCount = resultSet.getMetaData().getColumnCount(); //TODO improve performance?
-            
             Map<String, Double> map = new HashMap<String, Double>();
 
             // -----------------------------------------------------------------
@@ -163,13 +161,11 @@ public class JDBCReportTableManager
             {
                 final double value = resultSet.getDouble( 1 );
                 
-                final StringBuffer identifier = new StringBuffer();
+                final StringBuffer identifier = new StringBuffer(); // Identifies a row in the report table
                 
-                for ( int i = 0; i < columnCount - 1; i++ )
-                {
-                    int columnIndex = i + 2;
-                    
-                    identifier.append( resultSet.getInt( columnIndex ) + SEPARATOR );                    
+                for ( String col : reportTable.getSelectColumns() )
+                {                    
+                    identifier.append( resultSet.getInt( col ) + SEPARATOR );                    
                 }
                 
                 final String key = identifier.substring( 0, identifier.lastIndexOf( SEPARATOR ) );

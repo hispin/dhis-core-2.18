@@ -32,6 +32,9 @@ import java.util.Iterator;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
+ * Report table can contain data elements and indicators only when crosstabbing
+ * on indicators.
+ *
  * @author Lars Helge Overland
  * @version $Id$
  */
@@ -56,7 +59,7 @@ public class GetReportTableDataStatement
     {
         StringBuffer buffer = new StringBuffer();
         
-        buffer.append( "SELECT SUM(value), " );
+        buffer.append( "SELECT SUM(value), " ); // Sum required for getting sum of category option combos
         
         Iterator<String> selectColumns = reportTable.getSelectColumns().iterator();
         
