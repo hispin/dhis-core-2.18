@@ -184,9 +184,7 @@ public class RelativePeriods
         
         if ( isReportingMonth() )
         {
-            Period period = new MonthlyPeriodType().createPeriod( getDate( months, date ) );
-            period.setName( dynamicNames ? format.formatPeriod( period ) : REPORTING_MONTH );
-            periods.add( period );
+            periods.add( getRelativePeriod( new MonthlyPeriodType(), REPORTING_MONTH, current, dynamicNames, format ) );
         }
         
         if ( isMonthsThisYear() )
@@ -225,7 +223,8 @@ public class RelativePeriods
     }
 
     /**
-     * Returns a list of relative periods.
+     * Returns a list of relative periods. The name will be dynamic depending on
+     * the dynamicNames argument. The short name will always be dynamic.
      * 
      * @param periodType the period type.
      * @param periodNames the array of period names.
@@ -244,6 +243,7 @@ public class RelativePeriods
         for ( Period period : relatives )
         {
             period.setName( dynamicNames ? format.formatPeriod( period ) : MONTHS_THIS_YEAR[c++] );
+            period.setShortName( format.formatPeriod( period ) );
             periods.add( period );
         }
         
@@ -251,7 +251,8 @@ public class RelativePeriods
     }
 
     /**
-     * Returns relative period.
+     * Returns relative period. The name will be dynamic depending on the
+     * dynamicNames argument. The short name will always be dynamic.
      * 
      * @param periodType the period type.
      * @param periodName the period name.
@@ -264,6 +265,7 @@ public class RelativePeriods
     {
         Period period = periodType.createPeriod( current );
         period.setName( dynamicNames ? format.formatPeriod( period ) : periodName );
+        period.setShortName( format.formatPeriod( period ) );
         
         return period;
     }
