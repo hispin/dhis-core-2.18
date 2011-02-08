@@ -33,7 +33,9 @@
 	background-color:#F8F8F8;
 }
 .x-tree-node-leaf .x-tree-node-icon {
-    background-image:url("../../../images/map.png");
+    background-image:url("../../../images/wrench.png");
+    background-position:center bottom;
+    padding-right:2px;
 }
 .x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
 	background-image:url(../../resources/ext-ux/theme/gray-extend-ux/btn.gif);

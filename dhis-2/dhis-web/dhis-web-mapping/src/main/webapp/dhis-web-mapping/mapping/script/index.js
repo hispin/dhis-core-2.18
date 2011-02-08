@@ -1881,14 +1881,12 @@
             children: [
                 {
                     nodeType: 'gx_baselayercontainer',
-                    singleClickExpand: true,
                     expanded: true,
                     text: 'Base layers',
                     iconCls: 'icon-background'
                 },
                 {
-                    nodeType: 'gx_overlaylayercontainer',
-                    singleClickExpand: true
+                    nodeType: 'gx_overlaylayercontainer'
                 },
                 {
                     nodeType: 'gx_layer',
@@ -2099,29 +2097,35 @@
                 }
             ]
         }),
+        clickEventFn: function(node, e) {
+            if (node.attributes.text != 'Base layers' && node.attributes.text != 'Overlays') {
+                node.select();
+                
+                if (node.parentNode.attributes.text == 'Base layers') {
+                    var cmb = node.getOwnerTree().contextMenuBaselayer;
+                    cmb.contextNode = node;
+                    cmb.showAt(e.getXY());
+                }
+                
+                else if (node.parentNode.attributes.text == 'Overlays') {
+                    var cmo = node.getOwnerTree().contextMenuOverlay;
+                    cmo.contextNode = node;
+                    cmo.showAt(e.getXY());
+                }
+                
+                else {
+                    var cmv = node.getOwnerTree().contextMenuVector;
+                    cmv.contextNode = node;
+                    cmv.showAt(e.getXY());
+                }
+            }
+        },
 		listeners: {
             'contextmenu': function(node, e) {
-                if (node.attributes.text != 'Base layers' && node.attributes.text != 'Overlays') {
-                    node.select();
-                    
-                    if (node.parentNode.attributes.text == 'Base layers') {
-                        var cmb = node.getOwnerTree().contextMenuBaselayer;
-                        cmb.contextNode = node;
-                        cmb.showAt(e.getXY());
-                    }
-                    
-                    else if (node.parentNode.attributes.text == 'Overlays') {
-                        var cmo = node.getOwnerTree().contextMenuOverlay;
-                        cmo.contextNode = node;
-                        cmo.showAt(e.getXY());
-                    }
-                    
-                    else {
-                        var cmv = node.getOwnerTree().contextMenuVector;
-                        cmv.contextNode = node;
-                        cmv.showAt(e.getXY());
-                    }
-                }
+                node.getOwnerTree().clickEventFn(node, e);
+            },
+            'click': function(node, e) {
+                node.getOwnerTree().clickEventFn(node, e);
             }
 		},
         bbar: [
