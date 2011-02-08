@@ -775,9 +775,7 @@ public class ReportTable
         }
         if ( period != null )
         {
-            String periodName = period.getName() != null ? period.getName() : format.formatPeriod( period );
-            
-            buffer.append( periodName + SEPARATOR );
+            buffer.append( period.getName() + SEPARATOR );
         }
         if ( unit != null )
         {
