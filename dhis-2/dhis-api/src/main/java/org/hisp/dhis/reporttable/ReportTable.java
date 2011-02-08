@@ -123,7 +123,16 @@ public class ReportTable
         put( MODE_DATAELEMENTS, DATAELEMENT_NAME );
         put( MODE_DATASETS, DATASET_NAME );
     } };
-        
+
+    private static final Map<Class<?>, String> CLASS_ID_MAP = new HashMap<Class<?>, String>() { {
+        put( Indicator.class, INDICATOR_ID );
+        put( DataElement.class, DATAELEMENT_ID );
+        put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
+        put( DataSet.class, DATASET_ID );
+        put( Period.class, PERIOD_ID );
+        put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
+    } };
+    
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -706,6 +715,15 @@ public class ReportTable
         columns.addAll( selectColumns );
         return columns;
     }
+
+    /**
+     * Generates an identifier based on the IdentifiableObject class and object
+     * identifier.
+     */
+    public static String getIdentifier( IdentifiableObject object )
+    {
+        return CLASS_ID_MAP.get( object.getClass() ) + object.getId();
+    }
     
     // -------------------------------------------------------------------------
     // Supportive methods
@@ -797,7 +815,7 @@ public class ReportTable
 
         for ( IdentifiableObject object : objects )
         {
-            buffer.append( object != null ? ( object.getId() + SEPARATOR ) : EMPTY );
+            buffer.append( object != null ? ( getIdentifier( object ) + SEPARATOR ) : EMPTY );
         }
         
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SEPARATOR ) ) : buffer.toString();

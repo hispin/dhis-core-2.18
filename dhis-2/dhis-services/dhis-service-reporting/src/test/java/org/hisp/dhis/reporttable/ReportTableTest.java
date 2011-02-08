@@ -30,7 +30,7 @@ package org.hisp.dhis.reporttable;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
-import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
+import static org.hisp.dhis.reporttable.ReportTable.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -246,14 +246,14 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 8, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
         
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
@@ -305,9 +305,9 @@ public class ReportTableTest
         
         assertNotNull( crossTabIdentifiers );
         assertEquals( 2, crossTabIdentifiers.size() );
-        
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'A' ) ) ) );
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'B' ) ) ) );
+
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -361,11 +361,11 @@ public class ReportTableTest
         
         assertNotNull( crossTabIdentifiers );
         assertEquals( 4, crossTabIdentifiers.size() );
-        
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
+
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -420,14 +420,14 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 8, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
         
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
@@ -481,8 +481,8 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 2, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'A' ) ) ) );
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'B' ) ) ) );
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -537,10 +537,10 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 4, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -599,24 +599,24 @@ public class ReportTableTest
         
         assertNotNull( crossTabIdentifiers );
         assertEquals( 16, crossTabIdentifiers.size() );
-        
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
 
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
         
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
@@ -673,10 +673,10 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 4, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -736,14 +736,14 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 8, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'C' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'C' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'D' ) ) );
         
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().contains( null ) );
@@ -796,8 +796,8 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 2, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'A' ) ) ) );
-        assertTrue( crossTabIdentifiers.contains( String.valueOf( Integer.valueOf( 'B' ) ) ) );
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().size() == 2 );
         assertTrue( reportTable.getReportPeriods().size() == 4 );
@@ -852,10 +852,10 @@ public class ReportTableTest
         assertNotNull( crossTabIdentifiers );
         assertEquals( 4, crossTabIdentifiers.size() );
         
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) ) );
-        assertTrue( crossTabIdentifiers.contains( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'A' ) ) );
+        assertTrue( crossTabIdentifiers.contains( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + ORGANISATIONUNIT_ID + Integer.valueOf( 'B' ) ) );
 
         assertTrue( reportTable.getReportIndicators().contains( null ) );
         assertTrue( reportTable.getReportPeriods().size() == 4 );

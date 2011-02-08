@@ -164,8 +164,8 @@ public class JDBCReportTableManager
                 final StringBuffer identifier = new StringBuffer(); // Identifies a row in the report table
                 
                 for ( String col : reportTable.getSelectColumns() )
-                {                    
-                    identifier.append( resultSet.getInt( col ) + SEPARATOR );                    
+                {
+                    identifier.append( col + resultSet.getInt( col ) + SEPARATOR );                    
                 }
                 
                 final String key = identifier.substring( 0, identifier.lastIndexOf( SEPARATOR ) );

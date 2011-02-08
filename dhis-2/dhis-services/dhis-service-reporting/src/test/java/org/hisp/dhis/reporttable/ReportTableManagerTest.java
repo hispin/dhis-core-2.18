@@ -29,7 +29,7 @@ package org.hisp.dhis.reporttable;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.hisp.dhis.reporttable.ReportTable.SEPARATOR;
+import static org.hisp.dhis.reporttable.ReportTable.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -308,10 +308,10 @@ public class ReportTableManagerTest
         
         Map<String, Double> reference = new HashMap<String, Double>();
         
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
         
         assertEquals( reference, map );
     }
@@ -347,10 +347,10 @@ public class ReportTableManagerTest
         
         Map<String, Double> reference = new HashMap<String, Double>();
         
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
         
         assertEquals( reference, map );
     }
@@ -386,10 +386,10 @@ public class ReportTableManagerTest
         
         Map<String, Double> reference = new HashMap<String, Double>();
         
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
+        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
         
         assertEquals( reference, map );
     }
@@ -425,10 +425,10 @@ public class ReportTableManagerTest
         
         Map<String, Double> reference = new HashMap<String, Double>();
         
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'A' ), 50.0 );
-        reference.put( Integer.valueOf( 'A' ) + SEPARATOR + Integer.valueOf( 'B' ), 50.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'A' ), 50.0 );
-        reference.put( Integer.valueOf( 'B' ) + SEPARATOR + Integer.valueOf( 'B' ), 50.0 );
+        reference.put( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 50.0 );
+        reference.put( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 50.0 );
+        reference.put( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 50.0 );
+        reference.put( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 50.0 );
         
         assertEquals( reference, map );
     }
