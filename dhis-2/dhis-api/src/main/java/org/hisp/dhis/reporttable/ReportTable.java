@@ -112,6 +112,18 @@ public class ReportTable
     private static final String TABLE_PREFIX = "_report_";
     private static final String REGEX_NUMERIC = "([0-9]*)";
 
+    private static final Map<String, String> MODE_ID_MAP = new HashMap<String, String>() { {
+        put( MODE_INDICATORS, INDICATOR_ID );
+        put( MODE_DATAELEMENTS, DATAELEMENT_ID );
+        put( MODE_DATASETS, DATASET_ID );
+    } };
+    
+    private static final Map<String, String> MODE_NAME_MAP = new HashMap<String, String>() { {
+        put( MODE_INDICATORS, INDICATOR_NAME );
+        put( MODE_DATAELEMENTS, DATAELEMENT_NAME );
+        put( MODE_DATASETS, DATASET_NAME );
+    } };
+        
     // -------------------------------------------------------------------------
     // Persisted properties
     // -------------------------------------------------------------------------
@@ -459,7 +471,7 @@ public class ReportTable
             crossTabIndicators.addAll( dataElements );
             crossTabIndicators.addAll( dataSets );
             reportIndicators.add( null );
-            selectColumns.add( getIdentifier( mode ) );
+            selectColumns.add( MODE_ID_MAP.get( mode ) );
         }
         else
         {
@@ -468,8 +480,8 @@ public class ReportTable
             reportIndicators.addAll( indicators );
             reportIndicators.addAll( dataElements );
             reportIndicators.addAll( dataSets );
-            indexColumns.add( getIdentifier( mode ) );
-            indexNameColumns.add( getName( mode ) );
+            indexColumns.add( MODE_ID_MAP.get( mode ) );
+            indexNameColumns.add( MODE_NAME_MAP.get( mode ) );
         }
         
         if ( isDimensional() ) // Category options will be crosstab if dimensional
@@ -542,8 +554,8 @@ public class ReportTable
                 {
                     for ( OrganisationUnit unit : crossTabUnits )
                     {
-                        String columnName = getColumnName( indicator, categoryOptionCombo, period, unit );
-                        String prettyColumnName = getPrettyColumnName( indicator, categoryOptionCombo, period, unit );
+                        String columnName = getColumnName( indicator, categoryOptionCombo, period, unit, i18nFormat );
+                        String prettyColumnName = getPrettyColumnName( indicator, categoryOptionCombo, period, unit, i18nFormat );
                         String columnIdentifier = getColumnIdentifier( indicator, categoryOptionCombo, period, unit );
                         
                         if ( columnName != null && !columnName.isEmpty() )
@@ -719,57 +731,15 @@ public class ReportTable
     /**
      * Generates a prefixed, database encoded name.
      */
-    private String generateTableName( String name )
+    private static String generateTableName( String name )
     {
         return TABLE_PREFIX + databaseEncode( name );
-    }
-
-    /**
-     * Returns a mode identifier.
-     */
-    private String getIdentifier( String mode )
-    {
-        if ( mode == null || mode.equals( MODE_INDICATORS ) )
-        {
-            return INDICATOR_ID;
-        }
-        else if ( mode.equals( MODE_DATAELEMENTS ) )
-        {
-            return DATAELEMENT_ID;
-        }
-        else if ( mode.equals( MODE_DATASETS ) )
-        {
-            return DATASET_ID;
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Returns a mode name.
-     */
-    private String getName( String mode )
-    {
-        if ( mode == null || mode.equals( MODE_INDICATORS ) )
-        {
-            return INDICATOR_NAME;
-        }
-        else if ( mode.equals( MODE_DATAELEMENTS ) )
-        {
-            return DATAELEMENT_NAME;
-        }
-        else if ( mode.equals( MODE_DATASETS ) )
-        {
-            return DATASET_NAME;
-        }
-        
-        return null;
     }
     
     /**
      * Returns the number of empty lists among the argument lists.
      */
-    private int nonEmptyLists( List<?>... lists )
+    private static int nonEmptyLists( List<?>... lists )
     {
         int nonEmpty = 0;
         
@@ -787,7 +757,7 @@ public class ReportTable
     /**
      * Tests whether the argument list is not null and has no elements.
      */
-    private boolean listIsNonEmpty( List<?> list )
+    private static boolean listIsNonEmpty( List<?> list )
     {
         return list != null && list.size() > 0;
     }
@@ -796,7 +766,7 @@ public class ReportTable
      * Generates a pretty-print column name based on short-names of the argument
      * objects. Null arguments are ignored in the name.
      */
-    private String getPrettyColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private static String getPrettyColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit, I18nFormat format )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -810,7 +780,7 @@ public class ReportTable
         }
         if ( period != null )
         {
-            String periodName = i18nFormat == null ? period.getName() : i18nFormat.formatPeriod( period );
+            String periodName = format == null ? period.getName() : format.formatPeriod( period );
             
             buffer.append( periodName + SPACE );
         }
@@ -826,7 +796,7 @@ public class ReportTable
      * Generates a column name based on short-names of the argument objects. Null 
      * arguments are ignored in the name.
      */
-    private String getColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private static String getColumnName( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit, I18nFormat format )
     {
         StringBuffer buffer = new StringBuffer();
         
@@ -840,7 +810,7 @@ public class ReportTable
         }
         if ( period != null )
         {
-            String periodName = period.getName() != null ? period.getName() : i18nFormat.formatPeriod( period );
+            String periodName = period.getName() != null ? period.getName() : format.formatPeriod( period );
             
             buffer.append( periodName + SEPARATOR );
         }
@@ -858,27 +828,15 @@ public class ReportTable
      * Generates a column identifier based on the internal identifiers of the
      * argument objects. Null arguments are ignored in the identifier. 
      */
-    private String getColumnIdentifier( IdentifiableObject metaObject, DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit )
+    private static String getColumnIdentifier( IdentifiableObject... objects )
     {
         StringBuffer buffer = new StringBuffer();
 
-        if ( metaObject != null )
+        for ( IdentifiableObject object : objects )
         {
-            buffer.append( metaObject.getId() + SEPARATOR );
+            buffer.append( object != null ? ( object.getId() + SEPARATOR ) : EMPTY );
         }
-        if ( categoryOptionCombo != null )
-        {
-            buffer.append( categoryOptionCombo.getId() + SEPARATOR );
-        }
-        if ( period != null )
-        {
-            buffer.append( period.getId() + SEPARATOR );
-        }
-        if ( unit != null )
-        {
-            buffer.append( unit.getId() + SEPARATOR );
-        }
-
+        
         return buffer.length() > 0 ? buffer.substring( 0, buffer.lastIndexOf( SEPARATOR ) ) : buffer.toString();
     }
     
@@ -887,7 +845,7 @@ public class ReportTable
      * string, prefixes the string if it starts with a numeric character and
      * truncates the string if it is longer than 255 characters.
      */
-    private String databaseEncode( String string )
+    private static String databaseEncode( String string )
     {
         if ( string != null )
         {
@@ -938,7 +896,7 @@ public class ReportTable
     /**
      * Removes duplicates from the given list while maintaining the order.
      */
-    private <T> List<T> removeDuplicates( List<T> list )
+    private static <T> List<T> removeDuplicates( List<T> list )
     {
         final List<T> temp = new ArrayList<T>( list );
         Collections.reverse( temp );        
@@ -958,7 +916,7 @@ public class ReportTable
     /**
      * Supportive method.
      */
-    private void verify( boolean expression, String falseMessage )
+    private static void verify( boolean expression, String falseMessage )
     {
         if ( !expression )
         {

@@ -545,8 +545,7 @@ public class DefaultReportTableService
                         // Values
                         // -----------------------------------------------------
 
-                        Map<String, Double> map = reportTableManager.getAggregatedValueMap( 
-                            reportTable, metaObject, (DataElementCategoryOptionCombo) categoryOptionCombo, period, unit );
+                        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, metaObject, categoryOptionCombo, period, unit );
                         
                         for ( String identifier : reportTable.getCrossTabIdentifiers() )
                         {
