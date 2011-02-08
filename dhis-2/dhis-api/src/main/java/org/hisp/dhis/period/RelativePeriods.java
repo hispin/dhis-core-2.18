@@ -242,7 +242,7 @@ public class RelativePeriods
         
         for ( Period period : relatives )
         {
-            period.setName( dynamicNames ? format.formatPeriod( period ) : MONTHS_THIS_YEAR[c++] );
+            period.setName( dynamicNames ? format.formatPeriod( period ) : periodNames[c++] );
             period.setShortName( format.formatPeriod( period ) );
             periods.add( period );
         }
