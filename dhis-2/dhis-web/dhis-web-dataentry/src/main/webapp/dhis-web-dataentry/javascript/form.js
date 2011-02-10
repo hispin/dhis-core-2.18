@@ -314,78 +314,30 @@ function valueFocus(e)
 
 function keyPress( event, field )
 {
-    var key = 0;
-    if ( event.charCode )
-    {
-    	key = event.charCode; /* Safari2 (Mac) (and probably Konqueror on Linux, untested) */
-    }
-    else
-    {
-		if ( event.keyCode )
-		{
-			key = event.keyCode; /* Firefox1.5 (Mac/Win), Opera9 (Mac/Win), IE6, IE7Beta2, Netscape7.2 (Mac) */
-		}
-		else
-		{
-			if ( event.which )
-			{
-				key = event.which; /* Older Netscape? (No browsers triggered yet) */
-			}
-	    }
-	}
+    var key = event.keyCode || event.charCode || event.which;
     
-    if ( key == 13 ) /* CR */
+    var focusField = ( key == 13 || key == 40 ) ? getNextEntryField( field ) : ( key == 38 ) ? getPreviousEntryField( field ) : false;
+    
+    if ( focusField )
     {
-		nextField = getNextEntryField( field );
-        if ( nextField )
-        {
-            nextField.focus(); /* Does not seem to actually work in Safari, unless you also have an Alert in between */
-        }
-        return true;
+        focusField.focus();
     }
     
-    /* Illegal characters can be removed with a new if-block and return false */
     return true;
 }
 
 function getNextEntryField( field )
 {
-    var inputs = document.getElementsByName( "entryfield" );
+    var fields = $('input[name="entryfield"]');
     
-    // Simple bubble sort
-    for ( i = 0; i < inputs.length - 1; ++i )
-    {
-        for ( j = i + 1; j < inputs.length; ++j )
-        {
-            if ( inputs[i].tabIndex > inputs[j].tabIndex )
-            {
-                tmp = inputs[i];
-                inputs[i] = inputs[j];
-                inputs[j] = tmp;
-            }
-        }
-    }
+    return fields[field.tabIndex];
+}
+
+function getPreviousEntryField( field )
+{
+    var fields = $('input[name="entryfield"]');
     
-    i = 0;
-    for ( ; i < inputs.length; ++i )
-    {
-        if ( inputs[i] == field )
-        {
-            break;
-        }
-    }
-    
-    if ( i == inputs.length - 1 )
-    {
-    	// No more fields after this:
-    	return false;
-    	// First field:
-        //return inputs[0];
-    }
-    else
-    {
-        return inputs[i + 1];
-    }
+    return fields[field.tabIndex - 2];
 }
 
 // -----------------------------------------------------------------------------
