@@ -76,7 +76,7 @@ public class StdDevOutlierAnalysisService
 
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
 
-        for ( DataElement dataElement : dataElements )
+        loop : for ( DataElement dataElement : dataElements )
         {
             // TODO filter periods with data element period type
             
@@ -91,6 +91,11 @@ public class StdDevOutlierAnalysisService
                     {
                         outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods,
                             stdDevFactor ) );
+                        
+                        if ( outlierCollection.size() > MAX_OUTLIERS )
+                        {
+                            break loop;
+                        }
                     }
                 }
             }

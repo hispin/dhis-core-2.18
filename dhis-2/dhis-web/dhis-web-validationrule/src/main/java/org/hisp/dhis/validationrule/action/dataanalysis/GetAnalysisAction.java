@@ -27,6 +27,7 @@ package org.hisp.dhis.validationrule.action.dataanalysis;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -152,13 +153,20 @@ public class GetAnalysisAction
     // Output
     // -------------------------------------------------------------------------
     
-    private Collection<DeflatedDataValue> dataValues;
+    private Collection<DeflatedDataValue> dataValues = new ArrayList<DeflatedDataValue>();
 
     public Collection<DeflatedDataValue> getDataValues()
     {
         return dataValues;
     }
     
+    private boolean maxExceeded;
+
+    public boolean isMaxExceeded()
+    {
+        return maxExceeded;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -189,6 +197,8 @@ public class GetAnalysisAction
         if ( service != null ) // Follow-up analysis has no input params
         {      
             dataValues = service.analyse( unit, dataElements, periods, standardDeviation );
+            
+            maxExceeded = dataValues.size() > DataAnalysisService.MAX_OUTLIERS;
         }
         
         return SUCCESS;

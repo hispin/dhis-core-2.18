@@ -27,9 +27,18 @@
 		<td colspan="5" height="15"></td>
 	</tr>
 </table>
-#if ( $validationResults.size() == 0 )
-	<span id="info">$i18n.getString( "validation_passed_successfully" )</span>
+
+<span id="info">
+#if( $validationResults.size() == 0 )
+	$i18n.getString( "validation_passed_successfully" )
+#elseif( $maxExceeded )
+	$i18n.getString( "max_values_exceeded" )
 #else
+	$validationResults.size() $i18n.getString( "values_found" )
+#end
+</span>
+
+#if( $validationResults.size() > 0 )
 
 <div id="validationResults">
 

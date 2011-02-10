@@ -43,6 +43,8 @@ public interface DataAnalysisService
 {
     String ID = DataAnalysisService.class.getName();
 
+    int MAX_OUTLIERS = 500;
+    
     Collection<DeflatedDataValue> analyse( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
         Collection<Period> periods, Double stdDevFactor );
 }

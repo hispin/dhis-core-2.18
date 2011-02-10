@@ -108,6 +108,13 @@ public class RunValidationAction
     // Input/output
     // -------------------------------------------------------------------------
 
+    private boolean doDataMart;
+
+    public void setDoDataMart( boolean doDataMart )
+    {
+        this.doDataMart = doDataMart;
+    }
+
     private Integer organisationUnitId;
     
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -146,7 +153,7 @@ public class RunValidationAction
         this.validationRuleGroupId = validationRuleGroupId;
     }
     
-    private List<ValidationResult> validationResults;
+    private List<ValidationResult> validationResults = new ArrayList<ValidationResult>();
 
     public List<ValidationResult> getValidationResults()
     {
@@ -171,12 +178,12 @@ public class RunValidationAction
     {
         this.aggregate = aggregate;
     }
+    
+    private boolean maxExceeded;
 
-    private boolean doDataMart;
-
-    public void setDoDataMart( boolean doDataMart )
+    public boolean isMaxExceeded()
     {
-        this.doDataMart = doDataMart;
+        return maxExceeded;
     }
 
     // -------------------------------------------------------------------------
@@ -247,6 +254,8 @@ public class RunValidationAction
             }
         }
 
+        maxExceeded = validationResults.size() > ValidationRuleService.MAX_VIOLATIONS;
+        
         Collections.sort( validationResults, new ValidationResultComparator() );
 
         SessionUtils.setSessionVar( KEY_VALIDATIONRESULT, validationResults );

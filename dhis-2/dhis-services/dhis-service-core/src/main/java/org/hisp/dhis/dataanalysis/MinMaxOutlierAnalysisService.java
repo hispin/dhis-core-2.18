@@ -82,7 +82,7 @@ public class MinMaxOutlierAnalysisService
         
         Collection<DeflatedDataValue> outlierCollection = new ArrayList<DeflatedDataValue>();
         
-        for ( OrganisationUnit unit : units )
+        loop : for ( OrganisationUnit unit : units )
         {
             MinMaxValueMap map = getMinMaxValueMap( minMaxDataElementService.getMinMaxDataElements( unit, dataElements ) );
             
@@ -95,6 +95,11 @@ public class MinMaxOutlierAnalysisService
                     for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
                     {
                         outlierCollection.addAll( findOutliers( unit, dataElement, categoryOptionCombo, periods, map ) );
+                        
+                        if ( outlierCollection.size() > MAX_OUTLIERS )
+                        {
+                            break loop;
+                        }
                     }
                 }
             }
