@@ -72,7 +72,7 @@ public class GapAnalysisService
 
         Collection<DeflatedDataValue> gapCollection = new ArrayList<DeflatedDataValue>();
         
-        for ( DataElement dataElement : dataElements )
+        loop : for ( DataElement dataElement : dataElements )
         {
             // TODO filter periods with data element period type
             
@@ -84,7 +84,12 @@ public class GapAnalysisService
                 {
                     for ( OrganisationUnit unit : units )
                     {
-                        gapCollection.addAll( dataAnalysisStore.getDeflatedDataValueGaps( dataElement, categoryOptionCombo, periods, unit ) );                        
+                        gapCollection.addAll( dataAnalysisStore.getDeflatedDataValueGaps( dataElement, categoryOptionCombo, periods, unit ) ); 
+                        
+                        if ( gapCollection.size() > MAX_OUTLIERS )
+                        {
+                            break loop;
+                        }                       
                     }
                 }
             }

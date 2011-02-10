@@ -62,7 +62,7 @@ public class DefaultValidationRuleService
     implements ValidationRuleService
 {
     private static final int DECIMALS = 1;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -162,7 +162,7 @@ public class DefaultValidationRuleService
         {
             for ( Period period : periods )
             {
-                validationViolations.addAll( validateInternal( period, source, validationRules, true ) );
+                validationViolations.addAll( validateInternal( period, source, validationRules, true, validationViolations.size() ) );
             }
         }
         
@@ -187,7 +187,7 @@ public class DefaultValidationRuleService
         {
             for ( Period period : periods )
             {
-                validationViolations.addAll( validateInternal( period, source, validationRules, true ) );
+                validationViolations.addAll( validateInternal( period, source, validationRules, true, validationViolations.size() ) );
             }
         }
         
@@ -208,7 +208,7 @@ public class DefaultValidationRuleService
             {                    
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, false ) );
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
                 }
             }
         }
@@ -232,7 +232,7 @@ public class DefaultValidationRuleService
             {
                 for ( Period period : relevantPeriods )
                 {
-                    validationViolations.addAll( validateInternal( period, source, relevantRules, false ) );
+                    validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
                 }
             }
         }
@@ -250,7 +250,7 @@ public class DefaultValidationRuleService
 
         for ( Period period : relevantPeriods )
         {
-            validationViolations.addAll( validateInternal( period, source, relevantRules, false ) );
+            validationViolations.addAll( validateInternal( period, source, relevantRules, false, validationViolations.size() ) );
         }
         
         return validationViolations;
@@ -258,7 +258,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationResult> validate( DataSet dataSet, Period period, Source source )
     {
-        return validateInternal( period, source, getRelevantValidationRules( dataSet.getDataElements() ), false );
+        return validateInternal( period, source, getRelevantValidationRules( dataSet.getDataElements() ), false, 0 );
     }
 
     public Collection<DataElement> getDataElementsInValidationRules()
@@ -287,35 +287,38 @@ public class DefaultValidationRuleService
      * @returns a collection of rules that did not pass validation.
      */
     private Collection<ValidationResult> validateInternal( final Period period, final Source source,
-        final Collection<ValidationRule> validationRules, boolean aggregate )
+        final Collection<ValidationRule> validationRules, boolean aggregate, int currentSize )
     {
-        final Collection<ValidationResult> validationResults = new HashSet<ValidationResult>();
-
-        Double leftSide = null;
-        Double rightSide = null;
-
-        boolean violation = false;
-
-        for ( final ValidationRule validationRule : validationRules )
-        {
-            if ( validationRule.getPeriodType() != null && validationRule.getPeriodType().equals( period.getPeriodType() ) )
+        final Collection<ValidationResult> validationViolations = new HashSet<ValidationResult>();
+        
+        if ( currentSize < MAX_VIOLATIONS )
+        {        
+            Double leftSide = null;
+            Double rightSide = null;
+    
+            boolean violation = false;
+    
+            for ( final ValidationRule validationRule : validationRules )
             {
-                leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate );
-                rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate );
-    
-                if ( leftSide != null && rightSide != null )
+                if ( validationRule.getPeriodType() != null && validationRule.getPeriodType().equals( period.getPeriodType() ) )
                 {
-                    violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
-    
-                    if ( violation )
+                    leftSide = expressionService.getExpressionValue( validationRule.getLeftSide(), period, source, true, aggregate );
+                    rightSide = expressionService.getExpressionValue( validationRule.getRightSide(), period, source, true, aggregate );
+        
+                    if ( leftSide != null && rightSide != null )
                     {
-                        validationResults.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                        violation = !expressionIsTrue( leftSide, validationRule.getOperator(), rightSide );
+        
+                        if ( violation )
+                        {
+                            validationViolations.add( new ValidationResult( period, source, validationRule, getRounded( leftSide, DECIMALS ), getRounded( rightSide, DECIMALS ) ) );
+                        }
                     }
                 }
             }
         }
 
-        return validationResults;
+        return validationViolations;
     }
 
     /**

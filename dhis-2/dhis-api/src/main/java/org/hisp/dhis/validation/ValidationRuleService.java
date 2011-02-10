@@ -45,6 +45,8 @@ public interface ValidationRuleService
 {
     String ID = ValidationRuleService.class.getName();
 
+    int MAX_VIOLATIONS = 500;
+    
     // -------------------------------------------------------------------------
     // ValidationRule business logic
     // -------------------------------------------------------------------------
