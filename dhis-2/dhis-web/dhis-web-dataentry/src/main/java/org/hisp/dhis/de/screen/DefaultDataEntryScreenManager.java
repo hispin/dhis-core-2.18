@@ -65,9 +65,9 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
-
-        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" onkeypress=\"return keyPress(event, this)\" ";
-        final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeypress=\"return keyPress(event, this)\" >";
+        int i = 1;
+        final String jsCodeForInputs = " name=\"entryfield\" $DISABLED onchange=\"saveValue( $DATAELEMENTID, $OPTIONCOMBOID, '$DATAELEMENTNAME', $SAVEMODE )\" style=\"text-align:center\" onkeyup=\"return keyPress(event, this)\" ";
+        final String jsCodeForCombos = " name=\"entryfield\" $DISABLED onchange=\"saveBoolean( $DATAELEMENTID, $OPTIONCOMBOID, this )\" onkeyup=\"return keyPress(event, this)\" >";
         final String historyCode = " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
         
         // ---------------------------------------------------------------------
@@ -211,7 +211,7 @@ public class DefaultDataEntryScreenManager
 
                 if ( dataElement.getType().equals( VALUE_TYPE_BOOL ) )
                 {
-                    appendCode += jsCodeForCombos;
+                    appendCode += jsCodeForCombos + "tabindex=\"" + i++ + "\"";
 
                     appendCode += "<option value=\"\">" + i18n.getString( "no_value" ) + "</option>";
 
@@ -237,7 +237,7 @@ public class DefaultDataEntryScreenManager
                 }
                 else
                 {
-                    appendCode += jsCodeForInputs;
+                    appendCode += jsCodeForInputs + "tabindex=\"" + i++ + "\"";
 
                     if ( dataElement.getType().equals( VALUE_TYPE_INT ) )
                     {
