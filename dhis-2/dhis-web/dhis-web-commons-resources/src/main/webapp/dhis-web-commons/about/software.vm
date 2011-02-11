@@ -7,6 +7,9 @@
 	
 	<dt>$i18n.getString( "pdf_reader" )</dt>
 	<dd><a href="http://www.foxitsoftware.com/pdf/reader/addons.php" target="blank">Foxit Reader</a> - $i18n.getString( "foxit_description" )</dd>
+	
+	<dt>$i18n.getString( "report_designer" )</dt>
+	<dd><a href="http://jasperforge.org/projects/ireport" target="blank">iReport</a> - $i18n.getString( "ireport_description" )</dd>
 </dl>
 
 <div><input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='$!backUrl'" style="width:140px"/></div>

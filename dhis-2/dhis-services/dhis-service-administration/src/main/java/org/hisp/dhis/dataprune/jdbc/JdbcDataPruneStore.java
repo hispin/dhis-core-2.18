@@ -72,12 +72,12 @@ public class JdbcDataPruneStore
     // DataPruneService implementation
     // -------------------------------------------------------------------------
 
-    public int deleteMultiOrganisationUnit(List<OrganisationUnit> orgUnits) {
-        
-        try{
-            
-            String orgUnitIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits )) ;
-            
+    public int deleteMultiOrganisationUnit( List<OrganisationUnit> orgUnits )
+    {
+        try
+        {
+            String orgUnitIds = TextUtils.getCommaDelimitedString( ConversionUtils.getIdentifiers( OrganisationUnit.class, orgUnits ) );
+
             // delete values into datasetlocksource table
             String sql = "delete from datasetlocksource where sourceid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
@@ -282,8 +282,7 @@ public class JdbcDataPruneStore
             
             log.info( "Deleting " + orgUnits.size() + " organisations units successfully" );
 
-            return 0;
-            
+            return 0;            
         }
         catch (Exception ex) 
         {
@@ -311,24 +310,23 @@ public class JdbcDataPruneStore
         {
             holder.close();
         }
-
     }
     
-    private void deleteRepresentative( String orgUnitIds ){
-        
+    private void deleteRepresentative( String orgUnitIds )
+    {        
         StatementHolder holder = statementManager.getHolder();
         
         try
         {
             Statement statement = holder.getStatement();
             
-            ResultSet patient = statement
-                .executeQuery( "select patientid from patient where organisationunitid in ( " + orgUnitIds + ")" );
+            ResultSet patient = statement.executeQuery( "select patientid from patient where organisationunitid in ( " + orgUnitIds + ")" );
 
             String patientIds = "0";
+            
             while ( patient.next() )
             {
-                patientIds+= "," + patient.getInt( 1 );
+                patientIds += "," + patient.getInt( 1 );
             }
             
             jdbcTemplate.execute( "UPDATE patient SET representativeid=null WHERE representativeid in ( " + patientIds + " );" );
@@ -340,8 +338,7 @@ public class JdbcDataPruneStore
         finally
         {
             holder.close();
-        }
-        
+        }        
     }
     
     public void deleteOrganisation(String orgUnitIds )
@@ -356,9 +353,10 @@ public class JdbcDataPruneStore
                 .executeQuery( "select organisationunitid from organisationunit where organisationunitid in  ( " + orgUnitIds + ")" );
 
             String parentIds = "0";
+            
             while ( parent.next() )
             {
-                parentIds+= "," + parent.getInt( 1 );
+                parentIds += "," + parent.getInt( 1 );
             }
             
             jdbcTemplate.execute( "UPDATE organisationunit SET parentid=null WHERE parentid in ( " + parentIds + " );" );
