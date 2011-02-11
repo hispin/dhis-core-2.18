@@ -118,27 +118,6 @@ public class JdbcDataPruneStore
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into datamartexportorgunits sucessfully" );
     
-            // delete values into excelgroup_associations table
-            sql = "delete from excelgroup_associations where organisationid in (" + orgUnitIds + ");";
-            jdbcTemplate.execute( sql );
-            log.info( "Deleting values into excelgroup_associations sucessfully" );
-    
-            // delete values into reportexcel_associations table
-            sql = "delete from reportexcel_associations where organisationid in (" + orgUnitIds + ");";
-            jdbcTemplate.execute( sql );
-            log.info( "Deleting values into reportexcel_associations sucessfully" );
-    
-            // delete values into maporganisationunitrelation table
-            sql = "delete from maporganisationunitrelation where organisationunitid in (" + orgUnitIds + ");";
-            jdbcTemplate.execute( sql );
-            log.info( "Deleting values into maporganisationunitrelation sucessfully" );
-    
-            // delete values into maporganisationunitrelation table
-            sql = "delete from maporganisationunitrelation where mapid in (select mapid from map where organisationunitid in ("
-                + orgUnitIds + "));";
-            jdbcTemplate.execute( sql );
-            log.info( "Deleting values into maporganisationunitrelation sucessfully" );
-            
             // delete values into patientidentifier table
             sql = "delete from patientidentifier where patientid in "+
                     "( select patientid from patient where organisationunitid in (" + orgUnitIds + ") );";
@@ -187,14 +166,15 @@ public class JdbcDataPruneStore
             sql = "delete from patientdatavalue where organisationunitid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into patientdatavalue sucessfully" );
-            
+
             // delete values into patientdatavaluearchive table
-            if(isExistTable( "patientdatavaluearchive" )){
+            if ( isExistTable( "patientdatavaluearchive" ) )
+            {
                 sql = "delete from patientdatavaluearchive where organisationunitid in (" + orgUnitIds + ");";
                 jdbcTemplate.execute( sql );
                 log.info( "Deleting values into patientdatavaluearchive sucessfully" );
             }
-            
+
             // delete values into programinstance_attributes table
             sql = "delete from programinstance_attributes where programinstanceid in "+
                     "( select programinstanceid from programinstance "+
@@ -246,53 +226,50 @@ public class JdbcDataPruneStore
             sql = "delete from reporttable_organisationunits where organisationunitid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into reporttable_organisationunits sucessfully" );
-    
+
             // delete value into datavalue_audit table
-            if(isExistTable( "datavalue_audit" )){
+            if ( isExistTable( "datavalue_audit" ) )
+            {
                 sql = "delete from datavalue_audit where (dataelementid, periodid, sourceid, categoryoptioncomboid) in (select dataelementid, periodid, sourceid, categoryoptioncomboid from datavalue where sourceid in ("
                     + orgUnitIds + "));";
                 jdbcTemplate.execute( sql );
                 log.info( "Deleting values into datavalue_audit sucessfully" );
             }
-            
+
             // delete values into datavalue table
             sql = "delete from datavalue where sourceid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into datavalue sucessfully" );
-            
+
             // delete values into datavaluearchive table
-            if(isExistTable( "datavaluearchive" )){
+            if ( isExistTable( "datavaluearchive" ) )
+            {
                 sql = "delete from datavaluearchive where sourceid in (" + orgUnitIds + ");";
                 jdbcTemplate.execute( sql );
                 log.info( "Deleting values into datavaluearchive sucessfully" );
             }
-    
+
             // delete values into mapfile table
-            if(isExistTable( "mapfile" )){
+            if ( isExistTable( "mapfile" ) )
+            {
                 sql = "delete from mapfile where organisationunitid in (" + orgUnitIds + ");";
                 jdbcTemplate.execute( sql );
                 log.info( "Deleting values into mapfile sucessfully" );
             }
-            
+
             // delete values into feature table
-            if(isExistTable( "feature" )){
+            if ( isExistTable( "feature" ) )
+            {
                 sql = "delete from feature where organisationunitid in (" + orgUnitIds + ");";
                 jdbcTemplate.execute( sql );
                 log.info( "Deleting values into feature sucessfully" );
             }
-            
+
             // delete values into orgunitgroupmembers table
             sql = "delete from orgunitgroupmembers where organisationunitid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into orgunitgroupmembers sucessfully" );
-            
-            // delete values into orgunitstructure table
-            if(isExistTable( "orgunitstructure" )){
-                sql = "delete from orgunitstructure where organisationunitid in (" + orgUnitIds + ");";
-                jdbcTemplate.execute( sql );
-                log.info( "Deleting values into orgunitstructure sucessfully" );
-            }
-            
+
             // delete values into organisationunit table
             sql = "delete from organisationunit where organisationunitid in (" + orgUnitIds + ");";
             jdbcTemplate.execute( sql );
@@ -303,7 +280,7 @@ public class JdbcDataPruneStore
             jdbcTemplate.execute( sql );
             log.info( "Deleting values into source sucessfully" );
             
-            log.info( "Deleting " + orgUnits.size() + " organisations units sucessfully" );
+            log.info( "Deleting " + orgUnits.size() + " organisations units successfully" );
 
             return 0;
             
