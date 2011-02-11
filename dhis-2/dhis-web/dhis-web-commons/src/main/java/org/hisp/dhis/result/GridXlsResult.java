@@ -115,7 +115,7 @@ public class GridXlsResult
 
         WritableWorkbook workbook = Workbook.createWorkbook( out );
 
-        String sheetName = StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_SHEET_NAME );
+        String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_SHEET_NAME ) );
         
         WritableSheet sheet = workbook.createSheet( sheetName, 0 );
 
