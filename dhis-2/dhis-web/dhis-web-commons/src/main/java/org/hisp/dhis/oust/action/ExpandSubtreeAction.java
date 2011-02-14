@@ -29,6 +29,7 @@ package org.hisp.dhis.oust.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +59,17 @@ public class ExpandSubtreeAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<OrganisationUnit> organisationUnitComparator;
+
+    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
+    {
+        this.organisationUnitComparator = organisationUnitComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -140,7 +151,7 @@ public class ExpandSubtreeAction
     {
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( parent.getChildren() );
 
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, organisationUnitComparator );
 
         return children;
     }

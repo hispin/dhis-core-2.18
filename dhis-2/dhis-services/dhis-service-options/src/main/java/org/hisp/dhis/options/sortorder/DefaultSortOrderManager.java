@@ -52,6 +52,7 @@ import org.hisp.dhis.indicator.comparator.IndicatorShortNameComparator;
 import org.hisp.dhis.indicator.comparator.IndicatorSortOrderComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitCodeComparator;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitCustomComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.user.NoCurrentUserException;
@@ -92,7 +93,7 @@ public class DefaultSortOrderManager
         organisationUnitComparators.put( SORT_ORDER_SHORTNAME, new OrganisationUnitShortNameComparator() );
         organisationUnitComparators.put( SORT_ORDER_ALTERNATIVENAME, new OrganisationUnitNameComparator() ); // SIC
         organisationUnitComparators.put( SORT_ORDER_CODE, new OrganisationUnitCodeComparator() );
-        organisationUnitComparators.put( SORT_ORDER_CUSTOM, new OrganisationUnitNameComparator() ); // SIC
+        organisationUnitComparators.put( SORT_ORDER_CUSTOM, new OrganisationUnitCustomComparator() ); // SIC
         
         dataSetComparators = new HashMap<String, Comparator<DataSet>>();        
         dataSetComparators.put( SORT_ORDER_NAME, new DataSetNameComparator() );
