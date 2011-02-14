@@ -288,6 +288,7 @@ public class HibernateDataElementStore
 
         Criteria criteria = session.createCriteria( DataElement.class );
         criteria.add( Restrictions.eq( "zeroIsSignificant", zeroIsSignificant ) );
+        criteria.add( Restrictions.eq( "type", DataElement.VALUE_TYPE_INT ) );
 
         return criteria.list();
     }

@@ -202,6 +202,13 @@ public class UpdateDataElementAction
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
 
+    private Boolean zeroIsSignificant;
+
+    public void setZeroIsSignificant( Boolean zeroIsSignificant )
+    {
+        this.zeroIsSignificant = zeroIsSignificant;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -250,6 +257,8 @@ public class UpdateDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setZeroIsSignificant( zeroIsSignificant );
+        
 
         // ---------------------------------------------------------------------
         // Calculated data element
@@ -301,7 +310,7 @@ public class UpdateDataElementAction
         Set<DataSet> dataSets = dataElement.getDataSets();
         for ( DataSet dataSet : dataSets )
         {
-            if ( dataSet.getMobile() != null && dataSet.getMobile())
+            if ( dataSet.getMobile() != null && dataSet.getMobile() )
             {
                 dataSet.setVersion( dataSet.getVersion() + 1 );
                 dataSetService.updateDataSet( dataSet );
