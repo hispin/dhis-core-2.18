@@ -30,6 +30,7 @@ package org.hisp.dhis.ouwt.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
 
@@ -68,6 +68,17 @@ public class GetExpandedTreeAction
     public void setTreeStateManager( TreeStateManager treeStateManager )
     {
         this.treeStateManager = treeStateManager;
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    private Comparator<OrganisationUnit> organisationUnitComparator;
+
+    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
+    {
+        this.organisationUnitComparator = organisationUnitComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -115,7 +126,7 @@ public class GetExpandedTreeAction
 
         roots = new ArrayList<OrganisationUnit>( selectionManager.getRootOrganisationUnits() );
 
-        Collections.sort( roots, new OrganisationUnitNameComparator() );
+        Collections.sort( roots, organisationUnitComparator );
 
         // ---------------------------------------------------------------------
         // Get the children of the roots
@@ -123,7 +134,8 @@ public class GetExpandedTreeAction
 
         for ( OrganisationUnit root : roots )
         {
-            boolean hasChildren = root.getChildren().size() > 0; // Dirty loading
+            boolean hasChildren = root.getChildren().size() > 0; // Dirty
+                                                                 // loading
 
             LOG.debug( "OrganisationUnit " + root.getId() + " has children = " + hasChildren );
 
@@ -153,7 +165,8 @@ public class GetExpandedTreeAction
 
         for ( OrganisationUnit child : children )
         {
-            boolean hasChildren = child.getChildren().size() > 0; // Dirty loading
+            boolean hasChildren = child.getChildren().size() > 0; // Dirty
+                                                                  // loading
 
             LOG.debug( "OrganisationUnit " + child.getId() + " has children = " + hasChildren );
 
@@ -168,7 +181,7 @@ public class GetExpandedTreeAction
     {
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( parent.getChildren() );
 
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, organisationUnitComparator );
 
         return children;
     }

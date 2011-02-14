@@ -46,51 +46,57 @@ public class OrganisationUnit
     extends Source
 {
     public static final String FEATURETYPE_NONE = "None";
+
     public static final String FEATURETYPE_MULTIPOLYGON = "MultiPolygon";
+
     public static final String FEATURETYPE_POLYGON = "Polygon";
+
     public static final String FEATURETYPE_POINT = "Point";
-        
+
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
-    private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
-    
+
+    private static final Pattern COORDINATE_PATTERN = Pattern.compile( "([\\-0-9.]+,[\\-0-9.]+)" );
+
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private OrganisationUnit parent;
-    
+
     private Date openingDate;
 
     private Date closedDate;
 
     private boolean active;
-    
+
     private String comment;
-    
+
     private String geoCode;
 
     private String featureType;
-    
+
     private String coordinates;
-    
+
     private String url;
 
     private Date lastUpdated;
 
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
-    
+
     private String contactPerson;
-    
+
     private String address;
-    
+
     private String email;
-    
+
     private String phoneNumber;
 
     private transient int level;
-    
+
     private transient boolean currentParent;
-    
+
     private transient String type;
-    
+
+    private Integer sortOrder;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -103,7 +109,7 @@ public class OrganisationUnit
     {
         this.name = name;
     }
-    
+
     /**
      * @param name
      * @param shortName
@@ -113,8 +119,8 @@ public class OrganisationUnit
      * @param active
      * @param comment
      */
-    public OrganisationUnit( String name, String shortName, String code, Date openingDate,
-        Date closedDate, boolean active, String comment )
+    public OrganisationUnit( String name, String shortName, String code, Date openingDate, Date closedDate,
+        boolean active, String comment )
     {
         this.name = name;
         this.shortName = shortName;
@@ -135,8 +141,8 @@ public class OrganisationUnit
      * @param active
      * @param comment
      */
-    public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code,
-        Date openingDate, Date closedDate, boolean active, String comment )
+    public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code, Date openingDate,
+        Date closedDate, boolean active, String comment )
     {
         this.name = name;
         this.parent = parent;
@@ -151,10 +157,10 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-    
+
     public boolean hasChild()
     {
-    	return !this.children.isEmpty();
+        return !this.children.isEmpty();
     }
 
     public boolean hasChildrenWithCoordinates()
@@ -166,19 +172,19 @@ public class OrganisationUnit
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public boolean hasCoordinates()
     {
         return coordinates != null && coordinates.trim().length() > 0;
     }
-    
+
     public List<CoordinatesTuple> getCoordinatesAsList()
     {
         List<CoordinatesTuple> list = new ArrayList<CoordinatesTuple>();
-        
+
         if ( coordinates != null && !coordinates.trim().isEmpty() )
         {
             Matcher jsonMatcher = JSON_COORDINATE_PATTERN.matcher( coordinates );
@@ -186,29 +192,29 @@ public class OrganisationUnit
             while ( jsonMatcher.find() )
             {
                 CoordinatesTuple tuple = new CoordinatesTuple();
-                
+
                 Matcher matcher = COORDINATE_PATTERN.matcher( jsonMatcher.group() );
-                
+
                 while ( matcher.find() )
                 {
                     tuple.addCoordinates( matcher.group() );
                 }
-                
+
                 list.add( tuple );
             }
         }
-        
+
         return list;
     }
-    
+
     public void setMultiPolygonCoordinatesFromList( List<CoordinatesTuple> list )
     {
         StringBuilder builder = new StringBuilder();
-        
+
         if ( list != null && list.size() > 0 )
         {
             builder.append( "[" );
-            
+
             for ( CoordinatesTuple tuple : list )
             {
                 builder.append( "[[" );
@@ -217,22 +223,22 @@ public class OrganisationUnit
                 {
                     builder.append( "[" + coordinates + "]," );
                 }
-                
-                builder.deleteCharAt( builder.lastIndexOf( "," ) );            
+
+                builder.deleteCharAt( builder.lastIndexOf( "," ) );
                 builder.append( "]]," );
             }
-            
+
             builder.deleteCharAt( builder.lastIndexOf( "," ) );
             builder.append( "]" );
         }
-        
+
         this.coordinates = StringUtils.trimToNull( builder.toString() );
     }
-    
+
     public void setPointCoordinatesFromList( List<CoordinatesTuple> list )
     {
         StringBuilder builder = new StringBuilder();
-        
+
         if ( list != null && list.size() > 0 )
         {
             for ( CoordinatesTuple tuple : list )
@@ -243,10 +249,10 @@ public class OrganisationUnit
                 }
             }
         }
-        
+
         this.coordinates = StringUtils.trimToNull( builder.toString() );
     }
-    
+
     public String getChildrenFeatureType()
     {
         for ( OrganisationUnit child : children )
@@ -256,15 +262,15 @@ public class OrganisationUnit
                 return child.getFeatureType();
             }
         }
-        
+
         return FEATURETYPE_NONE;
     }
-    
+
     public String getValidCoordinates()
     {
         return coordinates != null && !coordinates.isEmpty() ? coordinates : "[]";
     }
-    
+
     public OrganisationUnitGroup getGroupInGroupSet( OrganisationUnitGroupSet groupSet )
     {
         if ( groupSet != null )
@@ -274,20 +280,20 @@ public class OrganisationUnit
                 if ( groupSet.getOrganisationUnitGroups().contains( group ) )
                 {
                     return group;
-                }   
+                }
             }
         }
-        
+
         return null;
     }
-    
+
     public String getGroupNameInGroupSet( OrganisationUnitGroupSet groupSet )
     {
         final OrganisationUnitGroup group = getGroupInGroupSet( groupSet );
-        
+
         return group != null ? group.getName() : null;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -370,17 +376,17 @@ public class OrganisationUnit
     {
         this.code = code;
     }
-    
+
     public String getAlternativeName()
     {
         return getShortName();
     }
-    
+
     public void setAlternativeName( String alternativeName )
     {
         throw new UnsupportedOperationException( "Cannot set alternativename on OrganisationUnit: " + alternativeName );
     }
-    
+
     public Date getOpeningDate()
     {
         return openingDate;
@@ -550,4 +556,15 @@ public class OrganisationUnit
     {
         this.type = type;
     }
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
 }

@@ -122,7 +122,9 @@
 		</property>
 		<property name="treeStateManager">
 			<ref local="org.hisp.dhis.ouwt.manager.TreeStateManager" />
-		</property>		
+		</property>
+		<property name="sortOrderManager"
+			ref="org.hisp.dhis.options.sortorder.SortOrderManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.ouwt.action.ExpandSubtreeAction" class="org.hisp.dhis.ouwt.action.ExpandSubtreeAction"
