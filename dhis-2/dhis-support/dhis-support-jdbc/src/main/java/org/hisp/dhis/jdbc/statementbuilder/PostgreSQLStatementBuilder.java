@@ -31,6 +31,7 @@ import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.Period;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -356,5 +357,40 @@ public class PostgreSQLStatementBuilder
         return "SELECT count(patientid) FROM patient " +
         "where lower( firstname || ' ' || middleName || ' ' || lastname) " +
         "like lower('%" + fullName + "%')";
+    }
+
+    public String queryDataElementStructureForOrgUnitBetweenPeriods()
+    {
+           StringBuffer sqlsb = new StringBuffer();
+           sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
+           sqlsb.append( "FROM dataelement AS de " );
+           sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
+           sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
+           sqlsb.append( "ORDER BY DataElement) " );
+           return sqlsb.toString();
+           
+    }
+
+    public String queryCountDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
+    {
+        StringBuffer sqlsb = new StringBuffer();
+
+        int i = 0;
+        for ( Integer periodId : betweenPeriodIds )
+        {
+            i++;
+
+            sqlsb.append( "SELECT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement, dv.value AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
+            sqlsb.append( "FROM dataelement AS de " );
+            sqlsb.append( "INNER JOIN datavalue AS dv ON (de.dataelementid = dv.dataelementid) " );
+            sqlsb.append( "INNER JOIN period p ON (dv.periodid = p.periodid) " );
+            sqlsb.append( "INNER JOIN categorycombos_optioncombos cat_opts on de.categorycomboid = cat_opts.categorycomboid ");
+            sqlsb.append( "INNER JOIN _categoryoptioncomboname cc on cat_opts.categoryoptioncomboid = cc.categoryoptioncomboid ");
+            sqlsb.append( "WHERE dv.sourceid = '" + orgUnitId + "' " );
+            sqlsb.append( "AND dv.periodid = '" + periodId + "' " );
+
+            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader,dataelement" : " UNION " );
+        }
+        return sqlsb.toString();
     }
 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.jdbc;
  */
 
 import org.hisp.dhis.period.Period;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -147,4 +148,9 @@ public interface StatementBuilder
     String getPatientsByFullName( String fullName );
     
     String countPatientsByFullName( String fullName );
+
+    String queryDataElementStructureForOrgUnitBetweenPeriods();
+
+    String queryCountDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
+
 }
