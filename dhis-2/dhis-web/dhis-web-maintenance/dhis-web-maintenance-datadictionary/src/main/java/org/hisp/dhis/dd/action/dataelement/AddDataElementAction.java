@@ -189,6 +189,13 @@ public class AddDataElementAction
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
 
+    private Boolean zeroIsSignificant;
+
+    public void setZeroIsSignificant( Boolean zeroIsSignificant )
+    {
+        this.zeroIsSignificant = zeroIsSignificant;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -289,6 +296,8 @@ public class AddDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
+        
+        dataElement.setZeroIsSignificant( zeroIsSignificant );
 
         dataElementService.addDataElement( dataElement );
 

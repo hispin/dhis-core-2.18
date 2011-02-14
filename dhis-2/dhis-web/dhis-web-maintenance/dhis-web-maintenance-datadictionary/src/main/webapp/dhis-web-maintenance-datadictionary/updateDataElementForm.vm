@@ -100,6 +100,23 @@
  		</td>
  	</tr>
 	<tr>
+		<td><label for="zeroIsSignificant ">$i18n.getString( "store_zero_data_values" )</label></td>
+		<td>
+			<select id="zeroIsSignificant" name="zeroIsSignificant" style="min-width:20em">
+				<option value="" selected=selected>$i18n.getString( "select" )</option>				
+				<option value="true" #if($dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "yes" )</option>				
+				<option value="false"#if(!$dataElement.zeroIsSignificant) selected="selected" #end >$i18n.getString( "no" )</option>
+			</select>
+			<script>
+				if( '$dataElement.type' == 'int' ){
+					enable('zeroIsSignificant');
+				}else{
+					disable('zeroIsSignificant');
+				}
+			</script>
+ 		</td>
+ 	</tr>
+	<tr>
 		<td><label for="aggregationOperator" id="lblOperator">$i18n.getString( "aggregation_operator" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
 			<select id="aggregationOperator" name="aggregationOperator" style="min-width:20em">

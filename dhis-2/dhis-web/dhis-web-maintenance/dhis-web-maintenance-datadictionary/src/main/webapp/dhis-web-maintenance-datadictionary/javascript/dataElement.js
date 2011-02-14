@@ -2,8 +2,10 @@ function changeValueType( value )
 {
 	if( value == 'int' ){
 		enable( 'calculated' );
+		enable( 'zeroIsSignificant' );
 	}else{
 		disable( 'calculated' );		
+		disable( 'zeroIsSignificant' );		
 	}	
 	
 	updateAggreationOperation( value );
