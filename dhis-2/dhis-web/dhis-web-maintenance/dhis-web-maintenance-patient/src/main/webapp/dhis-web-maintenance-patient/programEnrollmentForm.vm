@@ -90,7 +90,7 @@
             <input type="text" id="$duedateId" name="entryfield" value="$!format.formatDate( $programStageInstance.dueDate )" onchange="saveDueDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" tabindex="$tabIndex" >
         </td>
 		<script type="text/javascript">
-			datePickerValid( '$duedateId' );
+			datePicker( '$duedateId' );
 		</script>       
     </tr>
     #set( $tabIndex = $tabIndex + 1 )
