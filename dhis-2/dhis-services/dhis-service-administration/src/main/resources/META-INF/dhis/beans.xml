@@ -95,6 +95,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="statementManager" ref="statementManager"/>
 	<property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+      <property name="statementBuilder" ref="statementBuilder"/>
   </bean>
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserService"
@@ -107,7 +108,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="org.hisp.dhis.databrowser.DataBrowserPdfService"
     class="org.hisp.dhis.databrowser.DefaultDataBrowserPdfService"/>
-       
+
+
   <!-- Data merge -->
   
   <bean id="org.hisp.dhis.datamerge.DataMergeStore"

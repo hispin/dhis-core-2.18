@@ -29,7 +29,13 @@ public class Timer
         
         return time;
     }
-    
+
+    public long getMilliSec()
+    {
+        long endTime = System.nanoTime();
+        long time = ( endTime - startTime ) / 1000000;
+        return time;
+    }
     public long getTime( String msg )
     {
         long time = getSplitTime( msg );

@@ -450,6 +450,7 @@ public class DataBrowserServiceTest
      * periodType );
      */
     @Test
+    @Ignore
     public void testGetCountDataElementsForOrgUnitInPeriod()
     {
         // Get count for unitB from 2005-03-01 to 2005-04-30 registered on daily

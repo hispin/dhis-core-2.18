@@ -5,13 +5,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+
+
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.databrowser.DataBrowserStore;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.util.TimeUtils;
+import org.hisp.dhis.system.util.Timer;
+
+
 
 /**
  * @author joakibj, martinwa, briane, eivinhb
@@ -28,6 +35,8 @@ public class StatementManagerDataBrowserStore
 
     private StatementManager statementManager;
 
+    
+
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
@@ -39,6 +48,12 @@ public class StatementManagerDataBrowserStore
     {
         this.organisationUnitService = organisationUnitService;
     }
+    private StatementBuilder statementBuilder ;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
 
     // -------------------------------------------------------------------------
     // DataBrowserStore implementation
@@ -46,60 +61,35 @@ public class StatementManagerDataBrowserStore
 
     public DataBrowserTable getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds )
     {
-        StatementHolder holder = statementManager.getHolder();
+ 
         StringBuffer sqlsb = new StringBuffer();
 
-        DataBrowserTable table = null;
+        sqlsb.append( "(SELECT d.datasetid AS ID, d.name AS DataSet, COUNT(*) AS counts_of_aggregated_values " );
+        sqlsb.append( "FROM datavalue dv " );
+        sqlsb.append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) " );
+        sqlsb.append( "JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
+        sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
+        sqlsb.append( "WHERE dv.periodid IN " + splitListHelper( betweenPeriodIds ) + " " );
+        sqlsb.append( "GROUP BY d.datasetid, d.name " );
+        sqlsb.append( "ORDER BY counts_of_aggregated_values DESC)" );
+
 
         // Gets all the dataSets in a period with a count attached to the
         // dataSet. The table returned has only 2 columns. They are created here
         // in this method directly
-        try
-        {
-            sqlsb.append( "(SELECT d.datasetid AS ID, d.name AS DataSet, COUNT(*) AS counts_of_aggregated_values " );
-            sqlsb.append( "FROM datavalue dv " );
-            sqlsb.append( "JOIN datasetmembers dsm ON (dv.dataelementid = dsm.dataelementid) " );
-            sqlsb.append( "JOIN dataset d ON (d.datasetid = dsm.datasetid) " );
-            sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
-            sqlsb.append( "WHERE dv.periodid IN " + splitListHelper( betweenPeriodIds ) + " " );
-            sqlsb.append( "GROUP BY d.datasetid, d.name " );
-            sqlsb.append( "ORDER BY counts_of_aggregated_values DESC)" );
 
-            table = new DataBrowserTable();
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-
-            table.setQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-
-            // Create the column names.
-            table.addColumnName( "drilldown_data_set" );
-            table.addColumnName( "counts_of_aggregated_values" );
-            table.createStructure( resultSet );
-            table.addColumnToAllRows( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
+            List<String> columnNames = new ArrayList<String>();
+            columnNames.add("drilldown_data_set");
+            columnNames.add("counts_of_aggregated_values");
+            DataBrowserTable table =  getTablefromSQL(sqlsb, columnNames );
 
         return table;
     }
 
     public DataBrowserTable getDataElementGroupsBetweenPeriods( List<Integer> betweenPeriodIds )
     {
-        StatementHolder holder = statementManager.getHolder();
-        StringBuffer sqlsb = new StringBuffer();
-        DataBrowserTable table = null;
+            StringBuffer sqlsb = new StringBuffer();
 
-        try
-        {
             sqlsb.append( "(SELECT d.dataelementgroupid AS ID, d.name AS DataElementGroup, COUNT(*) AS counts_of_aggregated_values " );
             sqlsb.append( "FROM datavalue dv " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (dv.dataelementid = degm.dataelementid)" );
@@ -108,39 +98,21 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( "GROUP BY d.dataelementgroupid, d.name " );
             sqlsb.append( "ORDER BY counts_of_aggregated_values DESC)" );
 
-            table = new DataBrowserTable();
+            
+            List<String> columnNames = new ArrayList<String>();
+            columnNames.add("drilldown_data_element_group");
+            columnNames.add("counts_of_aggregated_values");
+            DataBrowserTable table =  getTablefromSQL(sqlsb, columnNames );
 
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.setQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-            table.addColumnName( "drilldown_data_element_group" );
-            table.addColumnName( "counts_of_aggregated_values" );
-            table.createStructure( resultSet );
-            table.addColumnToAllRows( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
 
         return table;
     }
 
     public DataBrowserTable getOrgUnitGroupsBetweenPeriods( List<Integer> betweenPeriodIds )
     {
-        StatementHolder holder = statementManager.getHolder();
-        StringBuffer sqlsb = new StringBuffer();
-        DataBrowserTable table = null;
 
-        try
-        {
+
+            StringBuffer sqlsb = new StringBuffer();
             sqlsb.append( "(SELECT oug.orgunitgroupid, oug.name AS OrgUnitGroup, COUNT(*) AS counts_of_aggregated_values " );
             sqlsb.append( "FROM orgunitgroup oug " );
             sqlsb.append( "JOIN orgunitgroupmembers ougm ON oug.orgunitgroupid = ougm.orgunitgroupid " );
@@ -150,27 +122,12 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( "GROUP BY oug.orgunitgroupid, oug.name " );
             sqlsb.append( "ORDER BY counts_of_aggregated_values DESC) " );
 
-            table = new DataBrowserTable();
+    
+            List<String> columnNames = new ArrayList<String>();
+            columnNames.add("drilldown_orgunit_group");
+            columnNames.add("counts_of_aggregated_values");
+            DataBrowserTable table =  getTablefromSQL(sqlsb, columnNames);
 
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.setQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-            table.addColumnName( "drilldown_orgunit_group" );
-            table.addColumnName( "counts_of_aggregated_values" );
-            table.createStructure( resultSet );
-            table.addColumnToAllRows( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
 
         return table;
     }
@@ -178,44 +135,27 @@ public class StatementManagerDataBrowserStore
     public void setDataElementStructureForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
         List<Integer> betweenPeriods )
     {
-        StatementHolder holder = statementManager.getHolder();
+       
         StringBuffer sqlsb = new StringBuffer();
 
-        try
-        {
             sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
             sqlsb.append( "FROM dataelement de " );
             sqlsb.append( "JOIN datasetmembers dsm ON (de.dataelementid = dsm.dataelementid) " );
             sqlsb.append( "WHERE dsm.datasetid = '" + dataSetId + "' " );
             sqlsb.append( "ORDER BY de.name) " );
 
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-            table.incrementQueryCount();
+            List<String> columnNames = new ArrayList<String>();
+            columnNames.add( "drilldown_data_element" );
+            setTableStructure(table, sqlsb, columnNames );
 
-            table.createStructure( resultSet );
-            table.addColumnName( "drilldown_data_element" );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value \n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 
     public void setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( DataBrowserTable table,
         Integer orgUnitGroupId, List<Integer> betweenPeriods )
     {
-        StatementHolder holder = statementManager.getHolder();
+
         StringBuffer sqlsb = new StringBuffer();
 
-        try
-        {
             sqlsb.append( "(SELECT deg.dataelementgroupid, deg.name AS DataElementGroup " );
             sqlsb.append( "FROM dataelementgroup deg " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON deg.dataelementgroupid = degm.dataelementgroupid " );
@@ -225,130 +165,58 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( "WHERE ougm.orgunitgroupid = '" + orgUnitGroupId + "' " );
             sqlsb.append( "GROUP BY deg.dataelementgroupid, deg.name " );
             sqlsb.append( "ORDER BY deg.name ASC) " );
+     
+             List<String> columnNames = new ArrayList<String>();
+            columnNames.add( "drilldown_data_element_group" );
+            setTableStructure(table, sqlsb, columnNames );
 
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.setQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-            table.addColumnName( "drilldown_data_element_group" );
-            table.createStructure( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value \n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 
     public void setDataElementStructureForDataElementGroupBetweenPeriods( DataBrowserTable table,
         Integer dataElementGroupId, List<Integer> betweenPeriods )
     {
-        StatementHolder holder = statementManager.getHolder();
+     
         StringBuffer sqlsb = new StringBuffer();
 
-        try
-        {
             sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
             sqlsb.append( "FROM dataelement de " );
             sqlsb.append( "JOIN dataelementgroupmembers degm ON (de.dataelementid = degm.dataelementid) " );
             sqlsb.append( "WHERE degm.dataelementgroupid = '" + dataElementGroupId + "' " );
             sqlsb.append( "GROUP BY de.dataelementid, de.name " );
             sqlsb.append( "ORDER BY de.name) " );
-
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-            table.incrementQueryCount();
-
-            table.addColumnName( "drilldown_data_element" );
-            table.createStructure( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value \n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
+ 
+             List<String> columnNames = new ArrayList<String>();
+            columnNames.add( "drilldown_data_element" );
+            setTableStructure(table, sqlsb, columnNames );
     }
 
     public void setStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
         List<Integer> betweenPeriods )
     {
-        StatementHolder holder = statementManager.getHolder();
+ 
         StringBuffer sqlsb = new StringBuffer();
 
-        try
-        {
             sqlsb.append( "(SELECT o.organisationunitid, o.name AS OrganisationUnit " );
             sqlsb.append( "FROM organisationunit o " );
             sqlsb.append( "WHERE o.parentid = '" + orgUnitParent + "' " );
             sqlsb.append( "ORDER BY o.name)" );
 
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
+             List<String> columnNames = new ArrayList<String>();
+            columnNames.add( "drilldown_data_element" );
+            setTableStructure(table, sqlsb, columnNames );
 
-            table.incrementQueryCount();
-
-            table.createStructure( resultSet );
-
-            table.addColumnName( "drilldown_organisation_unit" );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
     }
 
     public void setDataElementStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
         List<Integer> betweenPeriods )
     {
-        StatementHolder holder = statementManager.getHolder();
+
         StringBuffer sqlsb = new StringBuffer();
-
-        try
-        {
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement " );
-            sqlsb.append( "FROM dataelement AS de " );
-            sqlsb.append( "INNER JOIN datavalue AS dv ON (de.dataelementid = dv.dataelementid) " );
-            sqlsb.append( "INNER JOIN datasetmembers AS dsm ON (de.dataelementid = dsm.dataelementid) " );
-            sqlsb.append( "INNER JOIN organisationunit AS o ON (dv.sourceid = o.organisationunitid) " );
-            sqlsb.append( "WHERE o.organisationunitid = '" + orgUnitId + "' " );
-            sqlsb.append( "GROUP BY de.dataelementid, de.name " );
-            sqlsb.append( "ORDER BY de.name) " );
-
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-
-            table.setQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-            table.addColumnName( "drilldown_data_element" );
-            table.createStructure( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
+        String sql = statementBuilder.queryDataElementStructureForOrgUnitBetweenPeriods();
+        sqlsb.append( sql );
+        List<String> columnNames = new ArrayList<String>();
+        columnNames.add( "drilldown_data_element" );
+        setTableStructure(table, sqlsb, columnNames );
     }
 
     public Integer setCountDataElementsForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
@@ -382,10 +250,11 @@ public class StatementManagerDataBrowserStore
 
         try
         {
-            TimeUtils.start();
+            Timer timer = new Timer();
+            timer.start();
             ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
+            table.addQueryTime( timer.getMilliSec() );
+           
 
             table.incrementQueryCount();
 
@@ -406,9 +275,7 @@ public class StatementManagerDataBrowserStore
     public Integer setCountDataElementsForDataElementGroupBetweenPeriods( DataBrowserTable table,
         Integer dataElementGroupId, List<Integer> betweenPeriodIds )
     {
-        StatementHolder holder = statementManager.getHolder();
 
-        Integer numResults = 0;
         StringBuffer sqlsb = new StringBuffer();
 
         int i = 0;
@@ -427,35 +294,13 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
-        try
-        {
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
-
-            table.incrementQueryCount();
-
-            numResults = table.addColumnToAllRows( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return numResults;
+        return setCountFromSQL(table, sqlsb.toString()) ;
     }
 
     public Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( DataBrowserTable table,
         Integer orgUnitGroupId, List<Integer> betweenPeriodIds )
     {
-        StatementHolder holder = statementManager.getHolder();
 
-        Integer numResults = 0;
         StringBuffer sqlsb = new StringBuffer();
 
         int i = 0;
@@ -476,28 +321,10 @@ public class StatementManagerDataBrowserStore
             sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
         }
 
-        try
-        {
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
 
-            table.incrementQueryCount();
-
-            numResults = table.addColumnToAllRows( resultSet );
-        }
-        catch ( SQLException e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return numResults;
+        return setCountFromSQL(table, sqlsb.toString()) ;
     }
+
 
     public Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
         List<Integer> betweenPeriodIds, Integer maxLevel )
@@ -506,32 +333,11 @@ public class StatementManagerDataBrowserStore
 
         Integer numResults = 0;
         StringBuffer sqlsbDescentdants = new StringBuffer();
-
+     
         this.setUpQueryForDrillDownDescendants( sqlsbDescentdants, orgUnitParent, betweenPeriodIds, maxLevel );
 
-        try
-        {
-            TimeUtils.start();
-
-            ResultSet resultSet = this.getScrollableResult( sqlsbDescentdants.toString(), holder );
-
-            table.addQueryTime( TimeUtils.getMillis() );
-            table.incrementQueryCount();
-
-            numResults = table.addColumnToAllRows( resultSet );
-
-            TimeUtils.stop();
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsbDescentdants.toString(), e );
-        }
-        finally
-        {
-            holder.close();
-        }
-
-        return numResults;
+        return setCountFromSQL(table, sqlsbDescentdants.toString()) ;
+        
     }
 
     public Integer setCountDataElementsForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
@@ -540,39 +346,23 @@ public class StatementManagerDataBrowserStore
         StatementHolder holder = statementManager.getHolder();
 
         Integer numResults = 0;
-        StringBuffer sqlsb = new StringBuffer();
-
-        int i = 0;
-        for ( Integer periodId : betweenPeriodIds )
-        {
-            i++;
-
-            sqlsb.append( "(SELECT de.dataelementid, de.name AS DataElement, COUNT(dv.value) AS counts_of_aggregated_values, p.periodid AS PeriodId, p.startDate AS ColumnHeader " );
-            sqlsb.append( "FROM dataelement AS de " );
-            sqlsb.append( "INNER JOIN datavalue AS dv ON (de.dataelementid = dv.dataelementid) " );
-            sqlsb.append( "INNER JOIN organisationunit As o ON (dv.sourceid = o.organisationunitid) " );
-            sqlsb.append( "JOIN period p ON (dv.periodid = p.periodid) " );
-            sqlsb.append( "WHERE o.organisationunitid = '" + orgUnitId + "' " );
-            sqlsb.append( "AND dv.periodid = '" + periodId + "' " );
-            sqlsb.append( "GROUP BY de.dataelementid, de.name, p.periodid, p.startDate) " );
-
-            sqlsb.append( i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader" : " UNION " );
-        }
+        String sql = statementBuilder.queryCountDataElementsForOrgUnitBetweenPeriods(orgUnitId, betweenPeriodIds);
 
         try
         {
-            TimeUtils.start();
-            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
-            table.addQueryTime( TimeUtils.getMillis() );
-            TimeUtils.stop();
+            Timer timer = new Timer();
+            timer.start();
+            ResultSet resultSet = getScrollableResult( sql, holder );
+            table.addQueryTime( timer.getMilliSec() );
+
 
             table.incrementQueryCount();
 
             numResults = table.addColumnToAllRows( resultSet );
-        }
+    }
         catch ( SQLException e )
         {
-            throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
+            throw new RuntimeException( "Failed to get aggregated data value\n" + sql, e );
         }
         finally
         {
@@ -659,7 +449,7 @@ public class StatementManagerDataBrowserStore
              */
             sb.append( " SELECT a.parentid,a.name AS organisationunit,COUNT(*),p.periodid,p.startdate AS columnheader" );
             sb.append( " FROM datavalue dv" );
-            sb.append( " INNER JOIN (SELECT DISTINCT x.parentid,x.childid,ou.name FROM(" + descendantQuery + ")x" );
+            sb.append( " INNER JOIN (SELECT DISTINCT x.parentid,x.childid,ou.name FROM(" + descendantQuery + ") x" );
             sb.append( " INNER JOIN organisationunit ou ON x.parentid=ou.organisationunitid) a ON dv.sourceid=a.childid" );
             sb.append( " INNER JOIN period p ON dv.periodid=p.periodid" );
             sb.append( " WHERE dv.periodid=" + periodid );
@@ -696,4 +486,123 @@ public class StatementManagerDataBrowserStore
 
         return desc_query.toString();
     }
+
+    private DataBrowserTable getTablefromSQL(StringBuffer sqlsb, List<String> columnNames )
+    {
+            StatementHolder holder = statementManager.getHolder();
+            DataBrowserTable table = new DataBrowserTable();
+            Timer timer = new Timer();
+            timer.start();
+            try
+            {
+            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
+            table.setQueryTime( timer.getMilliSec() );
+            table.incrementQueryCount();
+
+
+
+            Iterator it = columnNames.iterator();
+            while (it.hasNext())
+            {
+            table.addColumnName(it.next().toString());
+
+            }
+
+            table.createStructure( resultSet );
+            table.addColumnToAllRows( resultSet );
+
+            }
+            catch (SQLException e)
+            {
+                throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
+            }
+            catch(Exception e)
+            {
+                throw new RuntimeException("Oops. Somthing else went wrong" ,e);
+                
+            }
+            finally
+            {
+            holder.close();
+            
+            }
+
+            return table;
+
+    }
+
+      private void setTableStructure(DataBrowserTable table, StringBuffer sqlsb, List<String> columnNames )
+    {
+            StatementHolder holder = statementManager.getHolder();
+
+            Timer timer = new Timer();
+            timer.start();
+            try
+            {
+            ResultSet resultSet = getScrollableResult( sqlsb.toString(), holder );
+            table.setQueryTime( timer.getMilliSec() );
+            table.incrementQueryCount();
+
+
+
+            Iterator it = columnNames.iterator();
+            while (it.hasNext())
+            {
+            table.addColumnName(it.next().toString());
+
+            }
+
+            table.createStructure( resultSet );
+
+
+            }
+            catch (SQLException e)
+            {
+                throw new RuntimeException( "Failed to get aggregated data value\n" + sqlsb.toString(), e );
+            }
+            catch(Exception e)
+            {
+                throw new RuntimeException("Oops. Somthing else went wrong" ,e);
+
+            }
+            finally
+            {
+            holder.close();
+
+            }
+
+
+    }
+
+
+            private Integer setCountFromSQL(DataBrowserTable table, String sql )
+        {
+        StatementHolder holder = statementManager.getHolder();
+
+        Integer numResults = 0;
+
+
+        try
+        {
+            Timer timer = new Timer();
+            timer.start();
+            ResultSet resultSet = getScrollableResult( sql, holder );
+            table.addQueryTime( timer.getMilliSec() );
+
+            table.incrementQueryCount();
+
+            numResults = table.addColumnToAllRows( resultSet );
+        }
+        catch ( SQLException e )
+        {
+            throw new RuntimeException( "Failed to get aggregated data value\n" + sql, e );
+        }
+        finally
+        {
+            holder.close();
+        }
+
+        return numResults;
+    }
+
 }
