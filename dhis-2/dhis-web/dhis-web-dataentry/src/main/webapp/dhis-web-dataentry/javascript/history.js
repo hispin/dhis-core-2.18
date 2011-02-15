@@ -154,7 +154,7 @@ function saveMinMaxLimit()
 		$( '#maxSpan' ).html( '' );
 	}
 	
-	if ( minValue >= maxValue ) {
+	if ( eval(minValue) > eval(maxValue) ) {
 		$( '#maxSpan' ).html( i18n_max_must_be_greater_than_min );
 		return;
 	}
