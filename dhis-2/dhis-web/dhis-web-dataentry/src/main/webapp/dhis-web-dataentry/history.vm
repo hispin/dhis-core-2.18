@@ -45,9 +45,9 @@
                     <td>$encoder.htmlEncode( $i18n.getString( "max_limit" ) ) </td>
                     <td><input type="text" id="maxLimit" style="width:10em" value="$!{dataElementHistory.maxLimit}" class="{validate:{digits:true}}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                            onchange="saveMinMaxLimit()"
+                            onkeyup="saveMinMaxLimit()"
                         #else disabled="disabled" #end onfocus="this.select()"/>
-						<span id='maxSpan' style="color:red;"></span>
+						<i><span id='maxSpan' style="color:red;"></span></i>
 						</td>
                 </tr>
                 <tr>
@@ -55,9 +55,9 @@
                     <td>$encoder.htmlEncode( $i18n.getString( "min_limit" ) ) </td>
                     <td><input type="text" id="minLimit" style="width:10em" value="$!{dataElementHistory.minLimit}"
                         #if( $auth.hasAccess( "dhis-web-dataentry", "saveMinMaxLimits" ) && $auth.hasAccess( "dhis-web-dataentry", "removeMinMaxLimits" ))
-                           onchange="saveMinMaxLimit()"
+                           onkeyup="saveMinMaxLimit()"
                         #else disabled="disabled" #end onfocus="this.select()"/>
-						<span id='minSpan' style="color:red;"></span>
+						<i><span id='minSpan' style="color:red;"></span></i>
 					</td>
                 </tr>
                 <tr>
