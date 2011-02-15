@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -55,13 +54,15 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
+import org.hisp.dhis.period.WeeklyPeriodType;
 import org.junit.Test;
 
 /**
- * Messy test class checking that jaxb produces the expected java @link{DataValueSet data value set} structure, that
- * the set is converted into a correct list of {@link DataValues data values} and also checks that it is stored.. 
+ * Messy test class checking that jaxb produces the expected java
+ * @link{DataValueSet data value set} structure, that the set is converted and
+ * stored into a correct set of {@link DataValue data values}.
  */
-public class DataValueSetMapperTest
+public class DataValueSetServiceTest
     extends DhisTest
 {
 
@@ -72,8 +73,8 @@ public class DataValueSetMapperTest
     private static final String DATA_ELEMENT_UUID = "56B2299E-ECD6-46CF-A61F-817D350C180D";
 
     private static final String DATA_ELEMENT_NOT_IN_SET_UUID = "96B2299E-ECD6-46CF-A61F-817D350C180D";
-    
-    private DataValueSetMapper mapper;
+
+    private DataValueSetService service;
 
     private DataValueSet dataValueSet;
 
@@ -97,8 +98,8 @@ public class DataValueSetMapperTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         dataSetService = (DataSetService) getBean( DataSetService.ID );
         dataValueService = (DataValueService) getBean( DataValueService.ID );
-        
-        mapper = (DataValueSetMapper) getBean( "org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" );
+
+        service = (DataValueSetService) getBean( "org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" );
 
         classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -118,7 +119,12 @@ public class DataValueSetMapperTest
         dv.setDataElementUuid( DATA_ELEMENT_UUID );
         dv.setValue( "11" );
 
-        dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.datavalueset.DataValue>() {{ add( dv ); }} );
+        dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.datavalueset.DataValue>()
+        {
+            {
+                add( dv );
+            }
+        } );
 
         defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
@@ -132,13 +138,14 @@ public class DataValueSetMapperTest
     public void testJaxb()
         throws JAXBException, IOException
     {
-        JAXBContext jc = JAXBContext.newInstance( DataValueSet.class, org.hisp.dhis.importexport.datavalueset.DataValue.class );
+        JAXBContext jc = JAXBContext.newInstance( DataValueSet.class,
+            org.hisp.dhis.importexport.datavalueset.DataValue.class );
         Unmarshaller u = jc.createUnmarshaller();
         InputStream is = classLoader.getResourceAsStream( "datavalueset/dataValueSet.xml" );
 
         DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
         is.close();
-        
+
         assertEquals( dataValueSet.getDataSetUuid(), dxfDataValueSet.getDataSetUuid() );
         assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
         assertEquals( dataValueSet.getOrganisationUnitUuid(), dxfDataValueSet.getOrganisationUnitUuid() );
@@ -159,71 +166,116 @@ public class DataValueSetMapperTest
     {
         long before = new Date().getTime();
 
-        List<DataValue> dataValues = mapper.getDataValues( dataValueSet );
+        service.saveDataValueSet( dataValueSet );
 
         long after = new Date().getTime();
 
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
         assertEquals( 1, dataValues.size() );
 
-        DataValue dv = dataValues.get( 0 );
+        DataValue dataValue = dataValues.iterator().next();
 
-        verifyDataValue( before, after, dv );
-
-        dataValueService.addDataValue( dv );
-        Collection<DataValue> persistedDataValues = dataValueService.getAllDataValues();
-        assertEquals(1, persistedDataValues.size());
-        
-        DataValue persisted = persistedDataValues.iterator().next();
-        assertEquals( dv, persisted );
-        verifyDataValue( before, after, persisted );
+        verifyDataValue( before, after, dataValue );
 
     }
 
     @Test
-    public void missingThingsFromInput() {
+    public void missingThingsFromInput()
+    {
 
         dataValueSet.setDataSetUuid( null );
-        try {
-            mapper.getDataValues( dataValueSet );
-            fail("Should miss data set");
-        
-        } catch (IllegalArgumentException e) {
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Should miss data set" );
+
+        }
+        catch ( IllegalArgumentException e )
+        {
             // Expected
         }
 
         dataValueSet.setDataSetUuid( DATA_SET_UUID );
         dataValueSet.setOrganisationUnitUuid( "ladlalad" );
-        try {
-            mapper.getDataValues( dataValueSet );
-            fail("Should miss org unit");
-        
-        } catch (IllegalArgumentException e) {
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Should miss org unit" );
+
+        }
+        catch ( IllegalArgumentException e )
+        {
             // Expected
         }
 
         dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
-        
+
         final org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
         dv.setDataElementUuid( DATA_ELEMENT_NOT_IN_SET_UUID );
         dv.setValue( "11" );
         dataValueSet.getDataValues().add( dv );
-        
-        try {
-            mapper.getDataValues( dataValueSet );
-            fail("Should not accept extra data value");
-        
-        } catch (IllegalArgumentException e) {
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Should not accept extra data value" );
+
+        }
+        catch ( IllegalArgumentException e )
+        {
             // Expected
         }
-        
+
+        dataValueSet.getDataValues().remove( dv );
+
     }
 
-    private void verifyDataValue( long before, long after, DataValue dv )
+    @Test
+    public void testUpdate()
+    {
+        long before = new Date().getTime();
+
+        service.saveDataValueSet( dataValueSet );
+
+        long after = new Date().getTime();
+
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        assertEquals( 1, dataValues.size() );
+
+        DataValue dataValue = dataValues.iterator().next();
+
+        verifyDataValue( before, after, dataValue );
+
+        // Update
+        dataValueSet.getDataValues().get( 0 ).setValue( "101" );
+        
+        before = new Date().getTime();
+
+        service.saveDataValueSet( dataValueSet );
+
+        after = new Date().getTime();
+
+        dataValues = dataValueService.getAllDataValues();
+        assertEquals( 1, dataValues.size() );
+
+        dataValue = dataValues.iterator().next();
+
+        verifyDataValue( before, after, dataValue, "101" );
+
+    }
+
+    private void verifyDataValue( long before, long after, DataValue dv)
+    {
+        verifyDataValue( before, after, dv, "11" );
+    }
+    
+    private void verifyDataValue( long before, long after, DataValue dv, String value )
     {
         assertEquals( DATA_ELEMENT_UUID, dv.getDataElement().getUuid() );
         assertEquals( ORGANISATION_UNIT_UUID, dv.getSource().getUuid() );
+        assertEquals( new WeeklyPeriodType().createPeriod( "2011W5" ), dv.getPeriod() );
         assertEquals( "misterindia", dv.getStoredBy() );
-        assertEquals( "11", dv.getValue() );
+        assertEquals( value, dv.getValue() );
 
         long time = dv.getTimestamp().getTime();
         assertTrue( time >= before );

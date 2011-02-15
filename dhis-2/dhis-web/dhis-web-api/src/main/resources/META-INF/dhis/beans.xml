@@ -82,8 +82,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 
   <bean id="org.hisp.dhis.web.api.rpc.RPCResource" class="org.hisp.dhis.web.api.rpc.RPCResource">
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="dataValueSetMapper" ref="org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" />
+    <property name="dataValueSetService" ref="org.hisp.dhis.importexport.datavalueset.DataValueSetService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 	

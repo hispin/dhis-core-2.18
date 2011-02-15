@@ -38,11 +38,13 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.springframework.beans.factory.annotation.Required;
 
-public class DataValueSetMapper
+public class DataValueSetService
 {
 
     private OrganisationUnitService organisationUnitService;
@@ -53,7 +55,9 @@ public class DataValueSetMapper
 
     private DataElementService dataElementService;
 
-    public List<DataValue> getDataValues( DataValueSet dataValueSet )
+    private DataValueService dataValueService;
+
+    public void saveDataValueSet( DataValueSet dataValueSet )
     {
         Date timestamp = new Date();
 
@@ -96,63 +100,63 @@ public class DataValueSetMapper
 
         for ( org.hisp.dhis.importexport.datavalueset.DataValue dxfValue : dxfDataValues )
         {
-            DataValue dataValue = getDataValue( dxfValue, dataSet );
-            dataValue.setSource( unit );
-            dataValue.setTimestamp( timestamp );
-            dataValue.setStoredBy( dataValueSet.getStoredBy() );
-            dataValue.setPeriod( period );
+            DataElement dataElement = dataElementService.getDataElement( dxfValue.getDataElementUuid() );
 
-            dataValues.add( dataValue );
-
-        }
-
-        return dataValues;
-    }
-
-    public DataValue getDataValue( org.hisp.dhis.importexport.datavalueset.DataValue dxfValue, DataSet dataSet )
-    {
-        DataElement dataElement = dataElementService.getDataElement( dxfValue.getDataElementUuid() );
-
-        if ( dataElement == null )
-        {
-            throw new IllegalArgumentException( "Data value with UUID " + dxfValue.getDataElementUuid()
-                + " does not exist" );
-        }
-
-        if ( !dataSet.getDataElements().contains( dataElement ) )
-        {
-            throw new IllegalArgumentException( "Data element " + dataElement.getUuid() + " isn't in data set "
-                + dataSet.getUuid() );
-        }
-
-        DataValue dv = new DataValue();
-
-        dv.setDataElement( dataElement );
-
-        dv.setValue( dxfValue.getValue() );
-
-        DataElementCategoryOptionCombo combo;
-
-        String comboId = dxfValue.getCategoryOptionComboUuid();
-
-        if ( comboId != null )
-        {
-            combo = categoryService.getDataElementCategoryOptionCombo( Integer.parseInt( comboId ) );
-
-            if ( combo == null )
+            if ( dataElement == null )
             {
-                throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID " + comboId
+                throw new IllegalArgumentException( "Data value with UUID " + dxfValue.getDataElementUuid()
                     + " does not exist" );
             }
+
+            if ( !dataSet.getDataElements().contains( dataElement ) )
+            {
+                throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in data set "
+                    + dataSet.getUuid() );
+            }
+
+            DataElementCategoryOptionCombo combo = getCombo( dxfValue.getCategoryOptionComboUuid() );
+
+            if ( !dataElement.getCategoryCombo().getOptionCombos().contains( combo ) )
+            {
+                throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + combo.getUuid()
+                    + "' isn't in DataElement '" + dataElement.getUuid() + "'" );
+            }
+
+            DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
+
+            if ( dv == null )
+            {
+                dv = new DataValue( dataElement, period, unit, dxfValue.getValue(), dataValueSet.getStoredBy(),
+                    timestamp, null, combo );
+                dataValueService.addDataValue( dv );
+            }
+            else
+            {
+                dv.setValue( dxfValue.getValue() );
+                dv.setTimestamp( timestamp );
+                dv.setStoredBy( dataValueSet.getStoredBy() );
+                dataValueService.updateDataValue( dv );
+            }
         }
-        else
+    }
+
+    private DataElementCategoryOptionCombo getCombo( String comboId )
+    {
+        if ( comboId == null )
         {
-            combo = categoryService.getDefaultDataElementCategoryOptionCombo();
+            return categoryService.getDefaultDataElementCategoryOptionCombo();
         }
 
-        dv.setOptionCombo( combo );
+        DataElementCategoryOptionCombo combo = categoryService.getDataElementCategoryOptionCombo( Integer
+            .parseInt( comboId ) );
 
-        return dv;
+        if ( combo == null )
+        {
+            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + comboId
+                + "' does not exist" );
+        }
+
+        return combo;
     }
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -173,6 +177,12 @@ public class DataValueSetMapper
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    @Required
+    public void setDataValueService( DataValueService dataValueService )
+    {
+        this.dataValueService = dataValueService;
     }
 
 }

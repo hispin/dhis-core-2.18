@@ -173,9 +173,8 @@ public class DataValueStoreTest
 
         try
         {
-            // Should give unique constraint violation
             dataValueStore.addDataValue( dataValueD );
-            fail();
+            fail("Should give unique constraint violation");
         }
         catch ( Exception e )
         {
