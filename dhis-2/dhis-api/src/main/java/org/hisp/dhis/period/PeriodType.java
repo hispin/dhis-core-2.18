@@ -221,6 +221,10 @@ public abstract class PeriodType
      */
     public abstract String getIsoDate(Period period);
 
+    public abstract Period createPeriod(String isoDate);
+
+    public abstract String getIsoFormat();
+    
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

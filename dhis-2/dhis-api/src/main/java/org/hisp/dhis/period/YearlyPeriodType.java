@@ -147,12 +147,25 @@ public class YearlyPeriodType
     public String getIsoDate( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        int year = cal.get( Calendar.YEAR);
+        int year = cal.get( Calendar.YEAR );
 
         String periodString = String.valueOf( year );
 
         return periodString;
     }
 
+    @Override
+    public Period createPeriod( String isoDate )
+    {
+        Calendar cal = createCalendarInstance();
+        cal.set( Calendar.YEAR, Integer.parseInt( isoDate ) );
+        return createPeriod( cal );
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        return "yyyy";
+    }
 
 }

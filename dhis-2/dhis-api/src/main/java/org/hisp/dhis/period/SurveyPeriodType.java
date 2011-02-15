@@ -81,4 +81,16 @@ public class SurveyPeriodType
     {
         throw new UnsupportedOperationException( "Not supported yet." );
     }
+
+    @Override
+    public Period createPeriod( String isoDate )
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        throw new UnsupportedOperationException( "Not supported yet." );
+    }
 }

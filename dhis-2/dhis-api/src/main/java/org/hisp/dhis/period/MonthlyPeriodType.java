@@ -27,6 +27,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +45,8 @@ import java.util.List;
 public class MonthlyPeriodType
     extends CalendarPeriodType
 {
+
+    private static final String ISO_FORMAT = "yyyyMM";
 
     /**
      * The name of the MonthlyPeriodType, which is "Monthly".
@@ -149,7 +152,29 @@ public class MonthlyPeriodType
     @Override
     public String getIsoDate( Period period )
     {
-        SimpleDateFormat format = new SimpleDateFormat( "yyyyMM" );
+        SimpleDateFormat format = new SimpleDateFormat( ISO_FORMAT );
         return format.format( period.getStartDate() );
     }
+
+    @Override
+    public Period createPeriod( String isoDate )
+    {
+        SimpleDateFormat format = new SimpleDateFormat( ISO_FORMAT );
+        try
+        {
+            Date date = format.parse( isoDate );
+            return createPeriod(date);
+        }
+        catch ( ParseException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        return ISO_FORMAT;
+    }
+
 }

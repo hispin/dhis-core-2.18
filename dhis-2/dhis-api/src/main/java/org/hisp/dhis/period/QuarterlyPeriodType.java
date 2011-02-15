@@ -124,7 +124,7 @@ public class QuarterlyPeriodType
 
         return new Period( this, startDate, cal.getTime() );
     }
-    
+
     /**
      * Generates quarterly Periods for the whole year in which the given
      * Period's startDate exists.
@@ -155,29 +155,62 @@ public class QuarterlyPeriodType
     public String getIsoDate( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        int year = cal.get( Calendar.YEAR);
-        int month = cal.get( Calendar.MONTH);
+        int year = cal.get( Calendar.YEAR );
+        int month = cal.get( Calendar.MONTH );
 
-        String periodString = null;
+        return year + Quarter.getByMonth( month ).name();
+    }
 
-        switch (month) {
-            case Calendar.JANUARY:
-                periodString = year + "Q1";
-                break;
-            case Calendar.APRIL:
-                periodString = year + "Q2";
-                break;
-            case Calendar.JULY:
-                periodString = year + "Q3";
-                break;
-            case Calendar.OCTOBER:
-                periodString = year + "Q1";
-                break;
-            default:
-                throw new RuntimeException("Not a valid quarterly period");
+    @Override
+    public Period createPeriod( String isoDate )
+    {
+        int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
+        int month = Quarter.valueOf( isoDate.substring( 4, 6 ) ).getMonth();
+        
+        Calendar cal = createCalendarInstance();
+        cal.set( year, month, 1 );
+        return createPeriod( cal );
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        return "yyyyQn (n: 1-4)";
+    }
+
+    public enum Quarter
+    {
+        Q1( Calendar.JANUARY ), Q2( Calendar.APRIL ), Q3( Calendar.JULY ), Q4( Calendar.OCTOBER );
+
+        private final int month;
+
+        Quarter( int month )
+        {
+            this.month = month;
         }
 
-        return periodString;
+        public int getMonth()
+        {
+            return month;
+        }
+
+        public static Quarter getByMonth( int month )
+        {
+            switch ( month )
+            {
+            case Calendar.JANUARY:
+                return Q1;
+            case Calendar.APRIL:
+                return Q2;
+            case Calendar.JULY:
+                return Q3;
+            case Calendar.OCTOBER:
+                return Q4;
+            default:
+                throw new IllegalArgumentException( "Not a valid quarterly starting month" );
+            }
+
+        }
     }
 
 }
