@@ -214,4 +214,25 @@ public class WeeklyPeriodType
         return periodString;
     }
 
+    @Override
+    public Period createPeriod( String isoDate )
+    {
+        int year = Integer.parseInt( isoDate.substring( 0, 4 ) );
+        int week = Integer.parseInt( isoDate.substring( 5 ) );
+        
+        Calendar cal = Calendar.getInstance();
+        cal.set( Calendar.YEAR, year );
+        cal.set( Calendar.WEEK_OF_YEAR, week );
+        cal.setFirstDayOfWeek( Calendar.MONDAY );
+
+        return createPeriod( cal.getTime() );
+
+    }
+
+    @Override
+    public String getIsoFormat()
+    {
+        return "yyyyWn (n: week number)";
+    }
+
 }
