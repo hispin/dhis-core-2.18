@@ -178,7 +178,6 @@ public class UpdateOrganisationUnitAction
     public String execute()
         throws Exception
     {
-        name = nullIfEmpty( name );
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
         coordinates = nullIfEmpty( coordinates );

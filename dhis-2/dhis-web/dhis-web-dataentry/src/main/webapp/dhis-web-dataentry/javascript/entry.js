@@ -21,13 +21,6 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
 	var organisationUnitId = getFieldValue( 'organisationUnitId' );
     
     field.style.backgroundColor = COLOR_YELLOW;
-	
-	if ( isZeroNumber( field.value ) && significantZeros.indexOf( dataElementId ) == -1 )
-	{
-		// If value is 0 and zero is not significant for data element, then skip value	
-		
-		field.value = '';
-	}
     
     if ( field.value && field.value != '' )
     {
@@ -52,7 +45,14 @@ function saveValue( dataElementId, optionComboId, dataElementName, zeroValueSave
             {
                 window.alert( i18n_value_must_negative_number + '\n\n' + dataElementName );
                 return alertField( field );
-            }           
+            }
+            else if ( isZeroNumber( field.value ) && significantZeros.indexOf( dataElementId ) == -1 )
+            {
+                // If value is 0 and zero is not significant for data element, then skip value
+                
+                field.style.backgroundColor = COLOR_GREEN;
+                return;
+            }
             else
             {
                 var minString = document.getElementById( 'value[' + dataElementId + ':' + optionComboId + '].min' ).innerHTML;

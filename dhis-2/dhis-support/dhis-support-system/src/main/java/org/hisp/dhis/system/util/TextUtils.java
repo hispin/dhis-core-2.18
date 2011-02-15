@@ -96,6 +96,6 @@ public class TextUtils
      */
     public static String nullIfEmpty( String string )
     {
-        return string != null && string.trim().length() == 0 ? null : string.trim();
+        return string != null && string.trim().length() == 0 ? null : string;
     }
 }
