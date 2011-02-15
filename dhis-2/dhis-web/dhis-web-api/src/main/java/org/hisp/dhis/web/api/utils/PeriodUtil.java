@@ -61,8 +61,7 @@ public class PeriodUtil
                 throw new IllegalArgumentException( "Couldn't make a period of type " + periodType.getName()
                     + " and name " + periodName, e );
             }
-            DailyPeriodType dailyPeriodType = new DailyPeriodType();
-            return dailyPeriodType.createPeriod( date );
+            return periodType.createPeriod( date );
 
         }
 
@@ -97,8 +96,7 @@ public class PeriodUtil
             cal.set( Calendar.YEAR, year );
             cal.set( Calendar.MONTH, month );
 
-            MonthlyPeriodType monthlyPeriodType = new MonthlyPeriodType();
-            return monthlyPeriodType.createPeriod( cal.getTime() );
+            return periodType.createPeriod( cal.getTime() );
         }
 
         if ( periodType instanceof YearlyPeriodType )
@@ -106,9 +104,7 @@ public class PeriodUtil
             Calendar cal = Calendar.getInstance();
             cal.set( Calendar.YEAR, Integer.parseInt( periodName ) );
 
-            YearlyPeriodType yearlyPeriodType = new YearlyPeriodType();
-
-            return yearlyPeriodType.createPeriod( cal.getTime() );
+            return periodType.createPeriod( cal.getTime() );
         }
 
         if ( periodType instanceof QuarterlyPeriodType )
@@ -138,10 +134,9 @@ public class PeriodUtil
             cal.set( Calendar.MONTH, month );
             cal.set( Calendar.YEAR, year );
 
-            QuarterlyPeriodType quarterlyPeriodType = new QuarterlyPeriodType();
             if ( month != 0 )
             {
-                return quarterlyPeriodType.createPeriod( cal.getTime() );
+                return periodType.createPeriod( cal.getTime() );
             }
 
         }

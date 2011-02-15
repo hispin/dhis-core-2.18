@@ -1,7 +1,6 @@
 package org.hisp.dhis.web.api.rpc;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -18,24 +17,16 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.datavalue.DataValue;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.importexport.datavalueset.DataValueSet;
-import org.hisp.dhis.importexport.datavalueset.DataValueSetMapper;
+import org.hisp.dhis.importexport.datavalueset.DataValueSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.beans.factory.annotation.Required;
-
-import com.ibatis.common.logging.Log;
-import com.ibatis.common.logging.LogFactory;
 
 @Path( "/rpc" )
 public class RPCResource
 {
-    private static Log log = LogFactory.getLog( RPCResource.class );
 
-    private DataValueSetMapper dataValueSetMapper;
-
-    private DataValueService dataValueService;
+    private DataValueSetService dataValueSetService;
 
     private DataSetService dataSetService;
 
@@ -47,12 +38,7 @@ public class RPCResource
     @Consumes( MediaType.APPLICATION_XML )
     public void storeDataValueSet( DataValueSet dataValueSet )
     {
-        List<DataValue> dataValues = dataValueSetMapper.getDataValues( dataValueSet );
-
-        for ( DataValue dataValue : dataValues )
-        {
-            dataValueService.addDataValue( dataValue );
-        }
+        dataValueSetService.saveDataValueSet( dataValueSet );
     }
 
     @GET
@@ -167,15 +153,9 @@ public class RPCResource
     }
 
     @Required
-    public void setDataValueSetMapper( DataValueSetMapper dataValueSetMapper )
+    public void setDataValueSetService( DataValueSetService dataValueSetService )
     {
-        this.dataValueSetMapper = dataValueSetMapper;
-    }
-
-    @Required
-    public void setDataValueService( DataValueService dataValueService )
-    {
-        this.dataValueService = dataValueService;
+        this.dataValueSetService = dataValueSetService;
     }
 
     @Required
