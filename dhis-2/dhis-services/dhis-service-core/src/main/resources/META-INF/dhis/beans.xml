@@ -1166,7 +1166,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 		<property name="runlevel" value="5" />
-		<property name="name" value="OrganisationUnitGroupSetPopulator" />
 		<property name="skipInTests" value="true" />
 	</bean>
 
@@ -1174,14 +1173,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="name" value="UuidPopulator" />
 		<property name="runlevel" value="5" />
 		<property name="skipInTests" value="true" />
 	</bean>
 
 	<bean id="org.hisp.dhis.dataset.DataSetShortNamePopulator" class="org.hisp.dhis.dataset.DataSetShortNamePopulator">
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-		<property name="name" value="DataSetShortNamePopulator" />
 		<property name="runlevel" value="5" />
 		<property name="skipInTests" value="true" />
 	</bean>
@@ -1190,7 +1187,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.dataentryform.DataEntryFormPopulator">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 		<property name="statementBuilder" ref="statementBuilder" />
-		<property name="name" value="DataEntryFormPopulator" />
 		<property name="runlevel" value="5" />
 		<property name="skipInTests" value="true" />
 	</bean>

@@ -9,6 +9,10 @@
       <generator class="native"/>
     </id>
 
+    <property name="uuid">
+      <column name="uuid" length="40"/>
+    </property>
+
     <property name="name" not-null="true" unique="true" length="230"/>
     
     <property name="shortName" unique="true" length="60"/>
