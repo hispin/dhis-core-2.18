@@ -100,7 +100,7 @@ public class ValidateOrganisationUnitAction
 
         if ( name != null )
         {
-            OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( name.trim() );
+            OrganisationUnit match = organisationUnitService.getOrganisationUnitByName( name );
 
             if ( match != null && (id == null || match.getId() != id) )
             {
@@ -108,7 +108,7 @@ public class ValidateOrganisationUnitAction
 
                 return ERROR;
             }
-        }
+        }        
         
         message = "OK";
 
