@@ -405,4 +405,11 @@
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 	</bean>
 
+  <bean id="org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" class="org.hisp.dhis.importexport.datavalueset.DataValueSetMapper">
+    <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
 </beans>
