@@ -54,8 +54,6 @@ import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.importexport.datavalueset.DataValueSet;
-import org.hisp.dhis.importexport.datavalueset.DataValueSetMapper;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.junit.Test;
 
@@ -140,7 +138,7 @@ public class DataValueSetMapperTest
 
         DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
         is.close();
-
+        
         assertEquals( dataValueSet.getDataSetUuid(), dxfDataValueSet.getDataSetUuid() );
         assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
         assertEquals( dataValueSet.getOrganisationUnitUuid(), dxfDataValueSet.getOrganisationUnitUuid() );
@@ -216,7 +214,6 @@ public class DataValueSetMapperTest
         
         } catch (IllegalArgumentException e) {
             // Expected
-            System.out.println(e.getMessage());
         }
         
     }
