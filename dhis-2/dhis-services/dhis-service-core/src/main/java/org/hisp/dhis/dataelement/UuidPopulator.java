@@ -31,12 +31,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.UUIdUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Bob Jolliffe
  * @version $Id$
  * 
  * Provides uuids to uniquely indentifiable objects which do not already have them.
+ * 
+ * <p>Should be all the things requiring uuids .. there are more.
+ *    What follows is a bit of a compromise hack essentially copying
+ *    and pasting 3 times. Should reimplement with common interface
+ *    IdentifiableObject or something similar.
  */
 public class UuidPopulator
     extends AbstractStartupRoutine
@@ -46,11 +52,6 @@ public class UuidPopulator
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    // Should be all the things requiring uuids .. there are more.
-    // What follows is a bit of a compromise hack essentially copying
-    // and pasting 3 times. Should reimplement with common interface
-    // IdentifiableObject or something similar.
 
     private DataElementCategoryService categoryService;
 
@@ -70,6 +71,7 @@ public class UuidPopulator
     // StartupRoutine implementation
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void execute()
         throws Exception
     {
@@ -108,5 +110,17 @@ public class UuidPopulator
             }
         }
         log.info( "Checked DataElement uuids" );
+
+        for ( DataElementCategoryOptionCombo combo : categoryService.getAllDataElementCategoryOptionCombos() )
+        {
+            if ( combo.getUuid() == null )
+            {
+                combo.setUuid( UUIdUtils.getUUId() );
+                categoryService.updateDataElementCategoryOptionCombo( combo );
+                log.info( "Added uuid for CategoryOptionCombo '" + combo.getName() + "'" );
+            }
+        }
+        log.info( "Checked CategoryOptionCombo uuids" );
+
     }
 }

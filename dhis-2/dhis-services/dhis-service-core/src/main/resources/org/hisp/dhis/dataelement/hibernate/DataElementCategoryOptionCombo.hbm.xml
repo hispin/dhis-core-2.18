@@ -10,6 +10,10 @@
       <generator class="native"/>
     </id>      
 
+    <property name="uuid">
+      <column name="uuid" length="40"/>
+    </property>
+
     <list name="categoryOptions" table="categoryoptioncombos_categoryoptions">
       <key column="categoryoptioncomboid"/>
       <list-index column="sort_order" base="1"/>
