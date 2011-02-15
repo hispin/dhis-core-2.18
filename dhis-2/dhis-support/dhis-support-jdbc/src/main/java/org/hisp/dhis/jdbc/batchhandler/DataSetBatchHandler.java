@@ -90,6 +90,7 @@ public class DataSetBatchHandler
 
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "shortName" );
         statementBuilder.setColumn( "code" );
@@ -100,6 +101,7 @@ public class DataSetBatchHandler
 
     protected void setValues( DataSet dataSet )
     {
+        statementBuilder.setValue( dataSet.getUuid() );
         statementBuilder.setValue( dataSet.getName() );
         statementBuilder.setValue( dataSet.getShortName() );
         statementBuilder.setValue( dataSet.getCode() );

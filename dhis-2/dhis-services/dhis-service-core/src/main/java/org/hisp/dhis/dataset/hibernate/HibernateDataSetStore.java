@@ -118,6 +118,17 @@ public class HibernateDataSetStore
         return (DataSet) session.get( DataSet.class, id );
     }
 
+    public DataSet getDataSet( String uuid )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( DataSet.class );
+        criteria.add( Restrictions.eq( "uuid", uuid ) );
+
+        return (DataSet) criteria.uniqueResult();
+    }
+
+    
     public DataSet getDataSetByName( String name )
     {
         Session session = sessionFactory.getCurrentSession();

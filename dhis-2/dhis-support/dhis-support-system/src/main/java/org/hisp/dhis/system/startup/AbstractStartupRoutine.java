@@ -37,21 +37,21 @@ package org.hisp.dhis.system.startup;
 public abstract class AbstractStartupRoutine
     implements StartupRoutine
 {
-    private String name;
+    private String name = this.getClass().getSimpleName();
     
     public void setName( String name )
     {
         this.name = name;
     }
 
-    private int runlevel;
+    private int runlevel = 0;
 
     public void setRunlevel( int runlevel )
     {
         this.runlevel = runlevel;
     }
     
-    private boolean skipInTests;
+    private boolean skipInTests = false;
 
     public void setSkipInTests( boolean skipInTests )
     {

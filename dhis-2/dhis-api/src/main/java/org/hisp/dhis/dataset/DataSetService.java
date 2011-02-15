@@ -77,6 +77,14 @@ public interface DataSetService
     DataSet getDataSet( int id );
 
     /**
+     * Returns the DataSet with the given UUID.
+     * 
+     * @param uuid the UUID.
+     * @return the DataSet with the given UUID, or null if no match.
+     */
+    DataSet getDataSet( String uuid );
+    
+    /**
      * Returns a DataSets with the given name.
      * 
      * @param name The name.
@@ -277,5 +285,6 @@ public interface DataSetService
     int getDataSetCount();
     
     Collection<DataSet> getDataSetsBetween(int first, int max );
+
 
 }

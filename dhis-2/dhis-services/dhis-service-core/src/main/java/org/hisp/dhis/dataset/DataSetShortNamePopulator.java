@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.hisp.dhis.system.util.TextUtils;
+import org.hisp.dhis.system.util.UUIdUtils;
 
 /**
  * @author Lars Helge Overland
@@ -83,6 +84,13 @@ public class DataSetShortNamePopulator
                 changed = true;
             }
 
+            if ( dataSet.getUuid() == null )
+            {
+                dataSet.setUuid( UUIdUtils.getUUId() );
+                log.info( "Adding uuid to dataset '" + dataSet.getName() + "'");
+                changed = true;
+            }
+
             if ( changed )
             {
                 try
@@ -91,13 +99,13 @@ public class DataSetShortNamePopulator
                 }
                 catch ( Exception ex )
                 {
-                    log.warn( "Could not set short name or code of DataSet: '" + dataSet.getName()
+                    log.warn( "Could not set short name, code or uuid of DataSet: '" + dataSet.getName()
                         + "', please do it manually" );
                 }
             }
         }
 
-        log.info( "Populated DataSet short name and code" );
+        log.info( "Populated DataSet short name, code and uuid" );
 
     }
 

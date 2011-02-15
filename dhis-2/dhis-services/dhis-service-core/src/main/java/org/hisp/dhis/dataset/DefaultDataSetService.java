@@ -46,6 +46,7 @@ import org.hisp.dhis.system.util.AuditLogLevel;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,6 +91,11 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
+        if ( dataSet.getUuid() == null )
+        {
+            dataSet.setUuid( UUIdUtils.getUUId() );
+        }
+
         int id = dataSetStore.addDataSet( dataSet );
 
         i18nService.addObject( dataSet );
@@ -124,6 +130,13 @@ public class DefaultDataSetService
     {
         return i18n( i18nService, dataSetStore.getDataSet( id ) );
     }
+    
+    @Override
+    public DataSet getDataSet( String uuid )
+    {
+        return i18n( i18nService, dataSetStore.getDataSet( uuid ) );
+    }
+
 
     public DataSet getDataSetByName( String name )
     {
@@ -344,4 +357,5 @@ public class DefaultDataSetService
     {
         return dataSetStore.getDataSetsBetweenByName( name, first, max );
     }
+
 }
