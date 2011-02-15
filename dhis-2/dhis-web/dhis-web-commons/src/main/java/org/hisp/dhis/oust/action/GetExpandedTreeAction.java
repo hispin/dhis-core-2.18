@@ -30,7 +30,6 @@ package org.hisp.dhis.oust.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +39,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
@@ -62,18 +62,7 @@ public class GetExpandedTreeAction
     public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
         this.selectionTreeManager = selectionTreeManager;
-    }
-    
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
+    }  
 
     // -------------------------------------------------------------------------
     // Output
@@ -117,7 +106,7 @@ public class GetExpandedTreeAction
         
         roots = new ArrayList<OrganisationUnit>( selectionTreeManager.getRootOrganisationUnits() );
 
-        Collections.sort( roots, organisationUnitComparator );
+        Collections.sort( roots, new OrganisationUnitNameComparator() );
 
         // ---------------------------------------------------------------------
         // Get the units that need to be expanded in order for the selected
@@ -173,7 +162,7 @@ public class GetExpandedTreeAction
     {
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( parent.getChildren() );
 
-        Collections.sort( children, organisationUnitComparator );
+        Collections.sort( children, new OrganisationUnitNameComparator() );
 
         return children;
     }
