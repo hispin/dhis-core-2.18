@@ -254,6 +254,11 @@ public class DefaultDataElementCategoryService
 
     public int addDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
     {
+        if ( dataElementCategoryOptionCombo != null && dataElementCategoryOptionCombo.getUuid() == null )
+        {
+            dataElementCategoryOptionCombo.setUuid( UUIdUtils.getUUId() );
+        }
+
         return dataElementCategoryOptionComboStore.save( dataElementCategoryOptionCombo );
     }
 
