@@ -60,6 +60,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper" class="org.hisp.dhis.web.api.mapping.NotAllowedExceptionMapper"
     scope="singleton" />
 
+  <bean id="org.hisp.dhis.web.api.mapping.IllegalArgumentExceptionMapper" class="org.hisp.dhis.web.api.mapping.IllegalArgumentExceptionMapper"
+    scope="singleton" />
+
   <bean id="JacksonJaxbJsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider" scope="singleton" />
 
   <!-- ImportDataValue beans -->
@@ -75,6 +78,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<!-- ModelMapping beans -->
   <bean id="org.hisp.dhis.web.api.service.ModelMapping" class="org.hisp.dhis.web.api.service.ModelMapping">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+  </bean>
+
+
+  <bean id="org.hisp.dhis.web.api.rpc.RPCResource" class="org.hisp.dhis.web.api.rpc.RPCResource">
+    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="dataValueSetMapper" ref="org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 	
 </beans>
