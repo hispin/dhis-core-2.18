@@ -93,24 +93,6 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_ORGANISATIONUNIT_DELETE</param>
 		</action>
-		
-		<action name="organisationUnitCustomSort"
-			class="org.hisp.dhis.oum.action.organisationunit.GetOrganisationUnitListAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnitCustomSort.vm</param>
-			<param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
-			<param name="menuTreeHeight">328</param>
-			<param name="javascripts">
-					../dhis-web-commons/ouwt/ouwt.js					
-			</param>			
-			<interceptor-ref name="organisationUnitTreeStack" />
-		</action>
-		
-		<action name="updateCustomSort"
-			class="org.hisp.dhis.oum.action.organisationunit.UpdateCustomSortAction">
-			<result name="success" type="redirect">organisationUnit.action</result>			
-		</action>
-		
 
 		<!-- OrganisationUnitGroup -->
 

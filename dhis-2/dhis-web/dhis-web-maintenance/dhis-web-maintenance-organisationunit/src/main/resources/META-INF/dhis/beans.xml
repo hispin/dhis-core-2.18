@@ -95,17 +95,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.oum.action.organisationunit.PrepareAddOrganisationUnitAction"
 		scope="prototype">
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.oum.action.organisationunit.UpdateCustomSortAction"
-		class="org.hisp.dhis.oum.action.organisationunit.UpdateCustomSortAction"
-		scope="prototype">
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-		</property>
-	</bean>
-	
-	
 
 	<!-- OrganisationUnitGroup -->
 

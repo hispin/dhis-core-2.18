@@ -55,8 +55,6 @@
       <key column="organisationunitid"/>
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnitGroup" column="orgunitgroupid"/>
     </set>
-    
-    <property name="sortOrder" column="sortorder"/>
 	
 	<!-- Contact info -->
 	
