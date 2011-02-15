@@ -134,21 +134,21 @@ public class DataElementCategoryOptionCombo
     @Override
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer( "[" + categoryCombo + ", [" );
+        StringBuilder builder = new StringBuilder( "[" + categoryCombo + ", [" );
 
         Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
 
         while ( iterator.hasNext() )
         {
-            buffer.append( iterator.next().toString() );
+            builder.append( iterator.next().toString() );
 
             if ( iterator.hasNext() )
             {
-                buffer.append( ", " );
+                builder.append( ", " );
             }
         }
 
-        return buffer.append( "]]" ).toString();
+        return builder.append( "]]" ).toString();
     }
 
     // -------------------------------------------------------------------------
@@ -233,7 +233,7 @@ public class DataElementCategoryOptionCombo
 
     public String getName()
     {
-        StringBuffer name = new StringBuffer();
+        StringBuilder name = new StringBuilder();
 
         if ( categoryOptions != null && categoryOptions.size() > 0 )
         {
@@ -310,7 +310,7 @@ public class DataElementCategoryOptionCombo
 
     public String toJSON()
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         result.append( "{" );
         result.append( "\"id\":" + this.getId() + "\"" );
         result.append( ",\"name\":" + StringEscapeUtils.escapeJavaScript( this.getName() ) + "\"" );
