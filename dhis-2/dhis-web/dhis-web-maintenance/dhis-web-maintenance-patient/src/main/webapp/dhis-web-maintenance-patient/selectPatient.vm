@@ -6,9 +6,14 @@
 	
 	<tr>
 		<td><label>$i18n.getString( "registering_unit" )</label></td>
-		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px"></td>
+		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px"> </td>
 	</tr>
-		
+	
+	<tr>
+		<td></td>
+		<td> <span class='warnmessage'> $i18n.getString( $!message ) </span> </td>
+	</tr>
+
 </table>
 
 </form>

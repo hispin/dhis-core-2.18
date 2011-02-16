@@ -264,4 +264,32 @@ public class HibernateOrganisationUnitStore
 
         return jdbcTemplate.queryForInt( sql );
     }
+
+    @Override
+    public void update( Collection<OrganisationUnit> units )
+    {
+        String ids = "";
+        for ( OrganisationUnit orgunit : units )
+        {
+            ids += orgunit.getId()+", ";
+        }
+        ids += "0";
+        
+        final String sqlUpdateTrue = "UPDATE organisationunit SET registered=true WHERE organisationunitid in ( " + ids +" );";
+
+        jdbcTemplate.execute( sqlUpdateTrue );
+        
+        final String sqlUpdateFalse = "UPDATE organisationunit SET registered=false WHERE organisationunitid not in ( " + ids +" );";
+        
+        jdbcTemplate.execute( sqlUpdateFalse );
+    }
+    
+    
+    @SuppressWarnings("unchecked")
+    public Collection<OrganisationUnit> get( Boolean registered )
+    {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
+        
+        return criteria.add( Restrictions.eq( "registered", registered ) ).list();
+    }
 }

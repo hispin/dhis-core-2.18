@@ -306,4 +306,8 @@ public interface OrganisationUnitService
     int getNumberOfOrganisationUnits();
     
     int getMaxOfOrganisationUnitLevels();
+    
+    void updateOrganisationUnits( Collection<OrganisationUnit> units );
+    
+    Collection<OrganisationUnit> getOrganisationUnits( Boolean registered );
 }

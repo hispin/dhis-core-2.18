@@ -360,6 +360,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.patient.SelectAction" scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.SearchPatientFormAction"
@@ -516,6 +518,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.patient.GetPatientsByNameAction"
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
+		class="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 	
 	<!-- Patient-Program Enrollment -->

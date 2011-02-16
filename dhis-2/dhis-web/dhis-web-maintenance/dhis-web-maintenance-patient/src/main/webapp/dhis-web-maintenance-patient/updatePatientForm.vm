@@ -61,9 +61,6 @@
 	<tr><td></td><td>$systemIdentifier</td></tr>
 	<tr><td>&nbsp;</td></tr>	
 	<tr>
-		<th colspan="2" class="heading-column">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></th>
-	</tr>
-	<tr>
 		<td><label for="fullName">$i18n.getString( "full_name" )</label></td>
 		<td class="input-column" ><input type="text" id="fullName" name="fullName" value="$encoder.htmlEncode( $patient.getFullName() )" style="width:30em" class="required_group {validate:{required_group:true, unicodechars:true, rangelength:[7,50]}}"></td>
 	</tr>
@@ -141,7 +138,7 @@
 	
 	<tr>
 		<td>$i18n.getString("is_underage")</td>
-		<td>
+		<td class="input-column" >
 			<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true" #if($patient.underAge) checked="checked" #end/>
 		</td>
 	</tr>

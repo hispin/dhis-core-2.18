@@ -329,6 +329,7 @@
 			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="patientform"
@@ -340,6 +341,7 @@
 			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,javascript/patient.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="validateSearchPatient"
@@ -487,6 +489,19 @@
 			<result name="success" type="velocity">/popup.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/resultSearchPatients.vm</param>
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
+		</action>
+		
+		<action name="defineOrgunitRegistrationForm"
+			class="org.hisp.dhis.patient.action.patient.GetPatientOrgnunitRegistrationAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/orgunitRegistration.vm</param>
+			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
+		</action>
+		
+		<action name="defineOrgunitRegistration"
+			class="org.hisp.dhis.patient.action.patient.DefinePatientOrgnunitRegistrationAction">
+			<result name="success" type="redirect">index.action</result>
+			<param name="requiredAuthorities">F_ORGANISATION_REGISTRATION</param>
 		</action>
 		
 		<!-- Patient-Program Enrollment -->
