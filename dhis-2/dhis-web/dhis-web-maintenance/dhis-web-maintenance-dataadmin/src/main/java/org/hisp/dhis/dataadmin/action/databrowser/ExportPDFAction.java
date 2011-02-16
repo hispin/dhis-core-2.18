@@ -100,7 +100,7 @@ public class ExportPDFAction
         return dataBrowserTable;
     }
 
-    public List<List<Integer>> getAllCounts()
+    public List<List<String>> getAllCounts()
     {
         return dataBrowserTable.getCounts();
     }
