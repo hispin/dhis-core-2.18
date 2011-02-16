@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,31 +28,33 @@
 package org.hisp.dhis.patient.action.patient;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.program.Program;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * @version $Id DefinePatientOrgnunitRegistrationAction.java Jan 7, 2011
+ *          11:04:43 AM $
  */
-public class SelectAction
+public class DefinePatientOrgnunitRegistrationAction
     implements Action
 {
-    private static final String PATIENT_FORM = "patientform";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.selectionManager = selectionManager;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -63,51 +65,16 @@ public class SelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-
-    private OrganisationUnit organisationUnit;
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
+    // Action
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        message = "";
-        
-        // ---------------------------------------------------------------------
-        // Validate selected OrganisationUnit
-        // ---------------------------------------------------------------------
-        
-        organisationUnit = selectionManager.getSelectedOrganisationUnit();
+        Collection<OrganisationUnit> orgunits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
-        if ( organisationUnit == null )
-        {
-            return SUCCESS;
-        }
+        organisationUnitService.updateOrganisationUnits( orgunits );
 
-        Collection<OrganisationUnit> orgunits = organisationUnitService.getOrganisationUnits( true );
-
-        if ( !orgunits.contains( organisationUnit ) )
-        {
-            message = "can_not_register_patient_for_orgunit";
-            return SUCCESS;
-        }
-
-        return PATIENT_FORM;
+        return SUCCESS;
     }
 }

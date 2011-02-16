@@ -91,6 +91,8 @@ public class OrganisationUnit
     
     private transient String type;
     
+    private Boolean registered;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -521,6 +523,16 @@ public class OrganisationUnit
         this.phoneNumber = phoneNumber;
     }
 
+    public Boolean getRegistered()
+    {
+        return registered;
+    }
+
+    public void setRegistered( Boolean registered )
+    {
+        this.registered = registered;
+    }
+    
     public int getLevel()
     {
         return level;
@@ -550,4 +562,5 @@ public class OrganisationUnit
     {
         this.type = type;
     }
+
 }

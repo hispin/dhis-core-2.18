@@ -66,5 +66,9 @@
 	
 	<property name="phoneNumber" length="150"/>
 	
+	<!-- Register -->
+	
+	<property name="registered"/>
+	
   </joined-subclass>
 </hibernate-mapping>

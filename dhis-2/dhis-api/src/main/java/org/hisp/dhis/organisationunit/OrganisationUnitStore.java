@@ -179,4 +179,8 @@ public interface OrganisationUnitStore
      * @return the maximum number of level.
      */
     int getMaxOfOrganisationUnitLevels();
+    
+    void update( Collection<OrganisationUnit> units );
+    
+    Collection<OrganisationUnit> get( Boolean registered );
 }
