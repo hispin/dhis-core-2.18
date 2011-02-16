@@ -186,7 +186,7 @@ public class DefaultDataBrowserPdfService
         int i = 0;
         Iterator<MetaValue> rowIt = dataBrowserTable.getRows().iterator();
 
-        for ( List<Integer> col : dataBrowserTable.getCounts() )
+        for ( List<String> col : dataBrowserTable.getCounts() )
         {
             i = i + 1;
             MetaValue rowMeta = rowIt.next();
@@ -205,13 +205,13 @@ public class DefaultDataBrowserPdfService
 
             table.addCell( cell );
 
-            for ( int rowItem : col )
+            for ( String rowItem : col )
             {
                 Phrase phrase = new Phrase( new Integer( rowItem ).toString(), FontFactory.getFont(
                     FontFactory.HELVETICA, fontSize, Font.NORMAL, Color.BLACK ) );
 
                 // Color zero values as bold red
-                if ( rowItem == 0 )
+                if ( rowItem.trim().matches("0") )
                 {
                     phrase.getFont().setStyle( Font.BOLD );
                     phrase.getFont().setColor( Color.RED );

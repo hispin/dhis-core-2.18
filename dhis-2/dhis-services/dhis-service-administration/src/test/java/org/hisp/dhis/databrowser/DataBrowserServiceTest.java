@@ -94,11 +94,11 @@ public class DataBrowserServiceTest
         assertEquals( dataSetC.getId(), table.getRows().get( 2 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataSetB", 18, table.getRowBasedOnRowName( dataSetB.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in dataSetA", 12, table.getRowBasedOnRowName( dataSetA.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in dataSetC", 3, table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ).intValue() );
+        assertEquals( "DataValues in dataSetB", "18", table.getRowBasedOnRowName( dataSetB.getName() ).get( 0 )
+           );
+        assertEquals( "DataValues in dataSetA", "12", table.getRowBasedOnRowName( dataSetA.getName() ).get( 0 )
+             );
+        assertEquals( "DataValues in dataSetC", "3" , table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ) );
 
         // Get all DataSets from 2005-05-01 to 2005-05-31 registered on weekly
         // basis (this should be only period D data values)
@@ -119,7 +119,7 @@ public class DataBrowserServiceTest
         assertEquals( dataSetC.getId(), table.getRows().get( 0 ).getId().intValue() );
 
         assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataSetC", 6, table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ).intValue() );
+        assertEquals( "DataValues in dataSetC", "6", table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ) );
     }
 
     /**
@@ -152,12 +152,12 @@ public class DataBrowserServiceTest
         assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupB", 18, table.getRowBasedOnRowName( dataElementGroupB.getName() )
-            .get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupA", 12, table.getRowBasedOnRowName( dataElementGroupA.getName() )
-            .get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupC", 3, table.getRowBasedOnRowName( dataElementGroupC.getName() )
-            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupB", "18", table.getRowBasedOnRowName( dataElementGroupB.getName() )
+            .get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupA", "12", table.getRowBasedOnRowName( dataElementGroupA.getName() )
+            .get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupC", "3", table.getRowBasedOnRowName( dataElementGroupC.getName() )
+            .get( 0 ) );
 
         // Get all DataElementGroups from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
@@ -178,8 +178,8 @@ public class DataBrowserServiceTest
         assertEquals( dataElementGroupC.getId(), table.getRows().get( 0 ).getId().intValue() );
 
         assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupC", 6, table.getRowBasedOnRowName( dataElementGroupC.getName() )
-            .get( 0 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupC", "6", table.getRowBasedOnRowName( dataElementGroupC.getName() )
+            .get( 0 ) );
     }
 
     /**
@@ -213,11 +213,11 @@ public class DataBrowserServiceTest
         assertEquals( "Row count entries", 2, table.getCounts().size() );
         // unitD has 6 datavalues, unitE has 6 datavalues and unitF has 5
         // datavalues for periods A and B
-        assertEquals( "DataValues in unitGroupB", 17, table.getRowBasedOnRowName( unitGroupB.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in unitGroupB", "17", table.getRowBasedOnRowName( unitGroupB.getName() ).get( 0 )
+             );
         // unitB has 0 datavalues and unitC has 6 datavalues for periods A and B
-        assertEquals( "DataValues in unitGroupA", 6, table.getRowBasedOnRowName( unitGroupA.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in unitGroupA", "6", table.getRowBasedOnRowName( unitGroupA.getName() ).get( 0 )
+            );
     }
 
     /**
@@ -252,18 +252,18 @@ public class DataBrowserServiceTest
         assertEquals( unitF.getId(), table.getRows().get( 2 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in unitD for periodA", 4, table.getRowBasedOnRowName( unitD.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in unitD for periodB", 2, table.getRowBasedOnRowName( unitD.getName() ).get( 1 )
-            .intValue() );
-        assertEquals( "DataValues in unitE for periodA", 4, table.getRowBasedOnRowName( unitE.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in unitE for periodB", 2, table.getRowBasedOnRowName( unitE.getName() ).get( 1 )
-            .intValue() );
-        assertEquals( "DataValues in unitF for periodA", 2, table.getRowBasedOnRowName( unitF.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in unitF for periodB", 3, table.getRowBasedOnRowName( unitF.getName() ).get( 1 )
-            .intValue() );
+        assertEquals( "DataValues in unitD for periodA", "4", table.getRowBasedOnRowName( unitD.getName() ).get( 0 )
+             );
+        assertEquals( "DataValues in unitD for periodB", "2", table.getRowBasedOnRowName( unitD.getName() ).get( 1 )
+             );
+        assertEquals( "DataValues in unitE for periodA", "4", table.getRowBasedOnRowName( unitE.getName() ).get( 0 )
+             );
+        assertEquals( "DataValues in unitE for periodB", "2", table.getRowBasedOnRowName( unitE.getName() ).get( 1 )
+            );
+        assertEquals( "DataValues in unitF for periodA", "2", table.getRowBasedOnRowName( unitF.getName() ).get( 0 )
+           );
+        assertEquals( "DataValues in unitF for periodB", "3", table.getRowBasedOnRowName( unitF.getName() ).get( 1 )
+            );
 
         // Retrieve children of unitG - zero children
         table = dataBrowserService.getOrgUnitsInPeriod( unitG.getId(), null, null, periodA.getPeriodType(), 4,
@@ -307,8 +307,8 @@ public class DataBrowserServiceTest
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
 
         assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementA", 6, table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in dataElementA", "6", table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
+             );
 
         // Get count for dataSetC from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
@@ -331,10 +331,10 @@ public class DataBrowserServiceTest
         assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementC", 3, table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in dataElementE", 3, table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in dataElementC", "3", table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
+             );
+        assertEquals( "DataValues in dataElementE", "3", table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
+          );
     }
 
     /**
@@ -365,8 +365,8 @@ public class DataBrowserServiceTest
         assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
 
         assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementA", 6, table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in dataElementA", "6", table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
+         );
 
         // Get count for dataElementGroupC from 2005-05-01 to 2005-05-31
         // registered on weekly basis (this should be only period D data values)
@@ -389,10 +389,10 @@ public class DataBrowserServiceTest
         assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementC", 3, table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
-            .intValue() );
-        assertEquals( "DataValues in dataElementE", 3, table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
-            .intValue() );
+        assertEquals( "DataValues in dataElementC", "3", table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
+         );
+        assertEquals( "DataValues in dataElementE", "3", table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
+          );
     }
 
     /**
@@ -430,18 +430,18 @@ public class DataBrowserServiceTest
         assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
 
         assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupA for periodA", 1, table.getRowBasedOnRowName(
-            dataElementGroupA.getName() ).get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupA for PeriodB", 1, table.getRowBasedOnRowName(
-            dataElementGroupA.getName() ).get( 1 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupB for PeriodA", 2, table.getRowBasedOnRowName(
-            dataElementGroupB.getName() ).get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupB for PeriodB", 1, table.getRowBasedOnRowName(
-            dataElementGroupB.getName() ).get( 1 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupC for PeriodA", 1, table.getRowBasedOnRowName(
-            dataElementGroupC.getName() ).get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementGroupC for PeriodB", 0, table.getRowBasedOnRowName(
-            dataElementGroupC.getName() ).get( 1 ).intValue() );
+        assertEquals( "DataValues in dataElementGroupA for periodA", "1", table.getRowBasedOnRowName(
+            dataElementGroupA.getName() ).get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupA for PeriodB", "1", table.getRowBasedOnRowName(
+            dataElementGroupA.getName() ).get( 1 ) );
+        assertEquals( "DataValues in dataElementGroupB for PeriodA", "2", table.getRowBasedOnRowName(
+            dataElementGroupB.getName() ).get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupB for PeriodB", "1", table.getRowBasedOnRowName(
+            dataElementGroupB.getName() ).get( 1 ) );
+        assertEquals( "DataValues in dataElementGroupC for PeriodA", "1", table.getRowBasedOnRowName(
+            dataElementGroupC.getName() ).get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupC for PeriodB", "0", table.getRowBasedOnRowName(
+            dataElementGroupC.getName() ).get( 1 ) );
     }
 
     /**
@@ -504,18 +504,18 @@ public class DataBrowserServiceTest
 
         assertEquals( "Row count entries", 4, table.getCounts().size() );
 
-        assertEquals( "DataValues in dataElementA for periodA", 1, table.getRowBasedOnRowName( dataElementA.getName() )
-            .get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementA for PeriodB", 1, table.getRowBasedOnRowName( dataElementA.getName() )
-            .get( 1 ).intValue() );
-        assertEquals( "DataValues in dataElementB for PeriodA", 1, table.getRowBasedOnRowName( dataElementB.getName() )
-            .get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementB for PeriodB", 1, table.getRowBasedOnRowName( dataElementB.getName() )
-            .get( 1 ).intValue() );
-        assertEquals( "DataValues in dataElementD for PeriodA", 0, table.getRowBasedOnRowName( dataElementD.getName() )
-            .get( 0 ).intValue() );
-        assertEquals( "DataValues in dataElementD for PeriodB", 1, table.getRowBasedOnRowName( dataElementD.getName() )
-            .get( 1 ).intValue() );
+        assertEquals( "DataValues in dataElementA for periodA", "1", table.getRowBasedOnRowName( dataElementA.getName() )
+            .get( 0 ) );
+        assertEquals( "DataValues in dataElementA for PeriodB", "1", table.getRowBasedOnRowName( dataElementA.getName() )
+            .get( 1 ) );
+        assertEquals( "DataValues in dataElementB for PeriodA", "1", table.getRowBasedOnRowName( dataElementB.getName() )
+            .get( 0 ) );
+        assertEquals( "DataValues in dataElementB for PeriodB", "1", table.getRowBasedOnRowName( dataElementB.getName() )
+            .get( 1 ) );
+        assertEquals( "DataValues in dataElementD for PeriodA", "0", table.getRowBasedOnRowName( dataElementD.getName() )
+            .get( 0 ) );
+        assertEquals( "DataValues in dataElementD for PeriodB", "1", table.getRowBasedOnRowName( dataElementD.getName() )
+            .get( 1 ) );
     }
 
     /**

@@ -41,7 +41,6 @@ import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 import org.hisp.dhis.system.util.DateUtils;
 
