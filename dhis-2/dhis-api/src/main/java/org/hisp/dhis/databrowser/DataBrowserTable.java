@@ -43,7 +43,7 @@ public class DataBrowserTable
     /**
      * A List of List with integers to simulate a 2D array.
      */
-    private List<List<Integer>> counts = new Vector<List<Integer>>();
+    private List<List<String>> counts = new Vector<List<String>>();
 
     /**
      * A List of the MetaValues for columns.
@@ -85,7 +85,7 @@ public class DataBrowserTable
             {
                 Integer rowId = resultSet.getInt( 1 );
                 String rowName = resultSet.getString( 2 );
-                List<Integer> rowItem = new Vector<Integer>();
+                List<String> rowItem = new Vector<String>();
                 counts.add( rowItem );
                 addRowNameAndId( rowId, rowName );
             }
@@ -157,9 +157,9 @@ public class DataBrowserTable
             {
                 if ( resultSet.isFirst() )
                 {
-                    for ( List<Integer> rowItem : this.counts )
+                    for ( List<String> rowItem : this.counts )
                     {
-                        rowItem.add( 0 );
+                        rowItem.add( "0" );
                     }
                     if ( hasPeriodIds && hasColumnName )
                     {
@@ -184,9 +184,9 @@ public class DataBrowserTable
                     if ( makeEmptyCol )
                     {
                         makeEmptyCol = false;
-                        for ( List<Integer> rowItem : this.counts )
+                        for ( List<String> rowItem : this.counts )
                         {
-                            rowItem.add( 0 );
+                            rowItem.add( "0" );
                         }
                         if ( hasColumnName )
                         {
@@ -196,8 +196,8 @@ public class DataBrowserTable
                 }
 
                 String name = resultSet.getString( 2 );
-                int value = resultSet.getInt( 3 );
-                List<Integer> rowItem = getRowBasedOnRowName( name );
+                String value = resultSet.getString( 3 );
+                List<String> rowItem = getRowBasedOnRowName( name );
                 rowItem.remove( rowItem.size() - 1 );
                 rowItem.add( value );
                 countRows++;
@@ -219,9 +219,9 @@ public class DataBrowserTable
     public void addZeroColumn()
     {
         this.addColumnName( "counts_of_aggregated_values" );
-        for ( List<Integer> rowItem : this.counts )
+        for ( List<String> rowItem : this.counts )
         {
-            rowItem.add( 0 );
+            rowItem.add( "0" );
         }
     }
 
@@ -276,7 +276,7 @@ public class DataBrowserTable
      * @param rowName the rowName to check
      * @return index in rowMeta
      */
-    public List<Integer> getRowBasedOnRowName( String rowName )
+    public List<String> getRowBasedOnRowName( String rowName )
     {
         int rowIndex = rowMeta.indexOf( new MetaValue( rowName ) );
         return counts.get( rowIndex );
@@ -292,9 +292,10 @@ public class DataBrowserTable
      * @param y
      * @return
      */
-    public Integer getCountFromRowAndColumnIndex( int x, int y )
+    public String getCountFromRowAndColumnIndex( int x, int y )
     {
         return counts.get( x ).get( y );
+
     }
 
     public long getQueryTime()
@@ -312,12 +313,12 @@ public class DataBrowserTable
         this.queryTime += queryTime;
     }
 
-    public List<List<Integer>> getCounts()
+    public List<List<String>> getCounts()
     {
         return counts;
     }
 
-    public void setCounts( List<List<Integer>> counts )
+    public void setCounts( List<List<String>> counts )
     {
         this.counts = counts;
     }
@@ -380,12 +381,12 @@ public class DataBrowserTable
         ret += "\n";
         Iterator<MetaValue> it = this.getRows().iterator();
 
-        for ( List<Integer> col : this.getCounts() )
+        for ( List<String> col : this.getCounts() )
         {
             MetaValue rowMeta = it.next();
             ret += "|" + rowMeta.getName();
 
-            for ( Integer rowItem : col )
+            for ( String rowItem : col )
             {
                 ret += "|" + rowItem;
             }

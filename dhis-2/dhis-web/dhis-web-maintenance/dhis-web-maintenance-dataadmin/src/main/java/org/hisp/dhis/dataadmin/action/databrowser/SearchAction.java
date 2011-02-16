@@ -180,7 +180,7 @@ public class SearchAction
         return dataElementService.getAllDataElementGroups();
     }
 
-    public List<List<Integer>> getAllCounts()
+    public List<List<String>> getAllCounts()
     {
         return dataBrowserTable.getCounts();
     }

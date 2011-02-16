@@ -165,7 +165,7 @@
 				<td style="min-width:200px">$rowMeta.name</td>
 			#end
 			#foreach ( $rowItem in $col )
-				<td style="min-width:80px;text-align:right" title="$rowItem $i18n.getString('no_hits')">#if ( $rowItem > 0 )$rowItem #else<span style="color:blue;font-weight:bold;">$rowItem</span> #end</td>
+				<td style="min-width:80px;text-align:right" title="$rowItem $i18n.getString('no_hits')">#if ( $rowItem == "0" )<span style="color:red;font-weight:bold;">$rowItem</span> #else<span style="color:blue;font-weight:bold;">$rowItem</span> #end</td>
 			#end
 			</tr>
 		#end
