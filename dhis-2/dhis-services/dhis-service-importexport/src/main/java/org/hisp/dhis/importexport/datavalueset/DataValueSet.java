@@ -27,6 +27,7 @@ package org.hisp.dhis.importexport.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -49,12 +50,13 @@ public class DataValueSet
     @XmlAttribute( name = "period", required = true )
     private String periodIsoDate;
 
-    @XmlAttribute
-    private String storedBy;
+    @XmlAttribute( name = "complete" )
+    private String completeDate;
 
     @XmlElement( name = "dataValue" )
     private List<DataValue> dataValues;
 
+    
     public String getDataSetUuid()
     {
         return dataSetUuid;
@@ -85,14 +87,14 @@ public class DataValueSet
         this.periodIsoDate = periodIsoDate;
     }
 
-    public String getStoredBy()
+    public String getCompleteDate()
     {
-        return storedBy;
+        return completeDate;
     }
 
-    public void setStoredBy( String storedBy )
+    public void setCompleteDate( String completeDate )
     {
-        this.storedBy = storedBy;
+        this.completeDate = completeDate;
     }
 
     public List<DataValue> getDataValues()

@@ -80,10 +80,10 @@ public class DefaultDataElementCategoryService
         this.dataElementCategoryComboStore = dataElementCategoryComboStore;
     }
 
-    private GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore;
+    private GenericIdentifiableObjectStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore;
 
     public void setDataElementCategoryOptionComboStore(
-        GenericStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore )
+        GenericIdentifiableObjectStore<DataElementCategoryOptionCombo> dataElementCategoryOptionComboStore )
     {
         this.dataElementCategoryOptionComboStore = dataElementCategoryOptionComboStore;
     }
@@ -228,7 +228,7 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.get( id );
     }
-
+    
     public Collection<DataElementCategoryCombo> getDataElementCategoryCombos( final Collection<Integer> identifiers )
     {
         Collection<DataElementCategoryCombo> categoryCombo = getAllDataElementCategoryCombos();
@@ -277,6 +277,12 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionComboStore.get( id );
     }
 
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uuid ) {
+        return dataElementCategoryOptionComboStore.getByUuid( uuid );
+    }
+
+
+    
     public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(
         final Collection<Integer> identifiers )
     {
@@ -735,4 +741,5 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.getBetweenByName( name, first, max );
     }
+
 }

@@ -44,7 +44,7 @@ import java.util.List;
 public class DailyPeriodType
     extends CalendarPeriodType
 {
-    private static final String ISO_FORMAT = "yyyyMMdd";
+    public static final String ISO_FORMAT = "yyyyMMdd";
 
     /**
      * The name of the DailyPeriodType, which is "Daily".

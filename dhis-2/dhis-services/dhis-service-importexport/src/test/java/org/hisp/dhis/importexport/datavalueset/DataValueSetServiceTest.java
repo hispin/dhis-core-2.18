@@ -27,10 +27,7 @@ package org.hisp.dhis.importexport.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static junit.framework.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,18 +52,24 @@ import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.period.WeeklyPeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Messy test class checking that jaxb produces the expected java
- * @link{DataValueSet data value set} structure, that the set is converted and
- * stored into a correct set of {@link DataValue data values}.
+ * Messy test class checking that jaxb produces the expected java 
+ * @link{DataValueSet data value set} structure, that the set is converted, validated and
+ * stored into a correct set of {@link DataValue data values}
+ *                    .
  */
 public class DataValueSetServiceTest
     extends DhisTest
 {
 
+    private static final String DEFAULT_COMBO_UUID = "AAB2299E-ECD6-46CF-A61F-817D350C180D";
+
     private static final String ORGANISATION_UNIT_UUID = "9C1B1B5E-3D65-48F2-8D1D-D36C60DD7344";
+
+    private static final String ORGANISATION_UNIT_NOT_IN_SET_UUID = "9C1B1B5E-3D65-48F2-8D1D-D36C60DD7345";
 
     private static final String DATA_SET_UUID = "16B2299E-ECD6-46CF-A61F-817D350C180D";
 
@@ -99,7 +102,7 @@ public class DataValueSetServiceTest
         dataSetService = (DataSetService) getBean( DataSetService.ID );
         dataValueService = (DataValueService) getBean( DataValueService.ID );
 
-        service = (DataValueSetService) getBean( "org.hisp.dhis.importexport.datavalueset.DataValueSetMapper" );
+        service = (DataValueSetService) getBean( "org.hisp.dhis.importexport.datavalueset.DataValueSetService" );
 
         classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -113,11 +116,11 @@ public class DataValueSetServiceTest
         dataValueSet.setDataSetUuid( DATA_SET_UUID );
         dataValueSet.setPeriodIsoDate( "2011W5" );
         dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
-        dataValueSet.setStoredBy( "misterindia" );
 
         final org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
         dv.setDataElementUuid( DATA_ELEMENT_UUID );
         dv.setValue( "11" );
+        dv.setStoredBy( "misterindia" );
 
         dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.datavalueset.DataValue>()
         {
@@ -127,7 +130,8 @@ public class DataValueSetServiceTest
         } );
 
         defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-
+        defaultCombo.setUuid( DEFAULT_COMBO_UUID );
+        categoryService.updateDataElementCategoryOptionCombo( defaultCombo );
     }
 
     // -------------------------------------------------------------------------
@@ -149,13 +153,14 @@ public class DataValueSetServiceTest
         assertEquals( dataValueSet.getDataSetUuid(), dxfDataValueSet.getDataSetUuid() );
         assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
         assertEquals( dataValueSet.getOrganisationUnitUuid(), dxfDataValueSet.getOrganisationUnitUuid() );
-        assertEquals( dataValueSet.getStoredBy(), dxfDataValueSet.getStoredBy() );
 
         assertEquals( 1, dxfDataValueSet.getDataValues().size() );
 
         org.hisp.dhis.importexport.datavalueset.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
+        org.hisp.dhis.importexport.datavalueset.DataValue dataValue = dataValueSet.getDataValues().get( 0 );
 
-        assertEquals( dataValueSet.getDataValues().get( 0 ).getDataElementUuid(), dv.getDataElementUuid() );
+        assertEquals( dataValue.getDataElementUuid(), dv.getDataElementUuid() );
+        assertEquals( dataValue.getStoredBy(), dv.getStoredBy() );
 
         assertNull( dv.getCategoryOptionComboUuid() );
     }
@@ -179,10 +184,53 @@ public class DataValueSetServiceTest
 
     }
 
-    @Test
-    public void missingThingsFromInput()
-    {
+    @Test @Ignore
+    public void testValidvalue() {
+        setValue( "" );
 
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+        }
+        catch ( NumberFormatException e )
+        {
+            // Expected
+        }
+        
+    }
+    
+    @Test @Ignore
+    public void testDuplicatedDataValues() {
+        
+    }
+
+    @Test @Ignore
+    public void testExistingComboButNotInDataElement() {
+        
+    }
+    
+    @Test
+    public void deleteDataValue() {
+        service.saveDataValueSet( dataValueSet );
+
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        assertEquals( 1, dataValues.size() );
+
+        dataValues = dataValueService.getAllDataValues();
+        assertEquals( 1, dataValues.size() );
+
+        setValue( null );
+
+        service.saveDataValueSet( dataValueSet );
+
+        dataValues = dataValueService.getAllDataValues();
+        assertEquals( 0, dataValues.size() );
+        
+    }
+        
+    @Test
+    public void dataSetMissing()
+    {
         dataValueSet.setDataSetUuid( null );
         try
         {
@@ -194,8 +242,11 @@ public class DataValueSetServiceTest
         {
             // Expected
         }
+    }
 
-        dataValueSet.setDataSetUuid( DATA_SET_UUID );
+    @Test
+    public void orgunitMissingOrNotInSet()
+    {
         dataValueSet.setOrganisationUnitUuid( "ladlalad" );
         try
         {
@@ -208,28 +259,127 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
-
-        final org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
-        dv.setDataElementUuid( DATA_ELEMENT_NOT_IN_SET_UUID );
-        dv.setValue( "11" );
-        dataValueSet.getDataValues().add( dv );
-
+        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_NOT_IN_SET_UUID );
+        
         try
         {
             service.saveDataValueSet( dataValueSet );
-            fail( "Should not accept extra data value" );
+            fail( "Should miss org unit association to data set" );
 
         }
         catch ( IllegalArgumentException e )
         {
             // Expected
         }
-
-        dataValueSet.getDataValues().remove( dv );
-
     }
 
+    @Test
+    public void illegalPeriod() {
+
+        dataValueSet.setPeriodIsoDate( "2011" );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "should not accept yearly period" );
+
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // Expected
+        }
+    }
+    
+    @Test
+    public void completeness() {
+
+        service.saveDataValueSet( dataValueSet );
+
+        dataValueSet.setCompleteDate( "20110101" );
+        service.saveDataValueSet( dataValueSet );
+
+        dataValueSet.setCompleteDate( null );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail("Shouldn't allow saving to a completed set");
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // TODO: Expected
+        }
+        
+        dataValueSet.setCompleteDate( "201lala" );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // Expected
+        }
+
+        dataValueSet.setCompleteDate( "20101010" );
+        service.saveDataValueSet( dataValueSet );
+        
+    }
+
+    @Test
+    public void elementExistsAndNotInSet() {
+
+        org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
+        dv.setDataElementUuid( "ladida" );
+        dv.setValue( "11" );
+        dataValueSet.getDataValues().add( dv );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Should not accept non existing data element" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // Expected
+        }
+
+        dv.setDataElementUuid( DATA_ELEMENT_NOT_IN_SET_UUID );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Should not accept data element not in set" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // Expected
+        }
+    }
+
+    @Test
+    public void optionComboExistsAndInDataElement() {
+
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( DEFAULT_COMBO_UUID );
+
+        service.saveDataValueSet( dataValueSet );
+
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( "AAB2299E-ECD6-46CF-A61F-817D350" );
+
+        try
+        {
+            service.saveDataValueSet( dataValueSet );
+            fail( "Shouldn't allow non existing option combo" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            // Expected
+        }
+
+    }
+    
+
+    
     @Test
     public void testUpdate()
     {
@@ -247,8 +397,8 @@ public class DataValueSetServiceTest
         verifyDataValue( before, after, dataValue );
 
         // Update
-        dataValueSet.getDataValues().get( 0 ).setValue( "101" );
-        
+        setValue("101");
+
         before = new Date().getTime();
 
         service.saveDataValueSet( dataValueSet );
@@ -264,11 +414,16 @@ public class DataValueSetServiceTest
 
     }
 
-    private void verifyDataValue( long before, long after, DataValue dv)
+    private void setValue(String value)
+    {
+        dataValueSet.getDataValues().get( 0 ).setValue( value );
+    }
+
+    private void verifyDataValue( long before, long after, DataValue dv )
     {
         verifyDataValue( before, after, dv, "11" );
     }
-    
+
     private void verifyDataValue( long before, long after, DataValue dv, String value )
     {
         assertEquals( DATA_ELEMENT_UUID, dv.getDataElement().getUuid() );
@@ -284,4 +439,11 @@ public class DataValueSetServiceTest
         assertEquals( defaultCombo, dv.getOptionCombo() );
     }
 
+    @Override
+    protected boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
+
+    
 }
