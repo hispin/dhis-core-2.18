@@ -251,6 +251,9 @@ public interface DataElementCategoryService
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( int id );
 
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uuid );
+
+
     /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.
      * 
@@ -371,4 +374,5 @@ public interface DataElementCategoryService
     int getDataElementCategoryComboCount();
     
     int getDataElementCategoryComboCountByName( String name );
-}
+
+}    

@@ -30,7 +30,6 @@ package org.hisp.dhis.importexport.datavalueset;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
 
 @XmlAccessorType( XmlAccessType.FIELD )
 public class DataValue
@@ -42,7 +41,10 @@ public class DataValue
     @XmlAttribute( name = "categoryOptionCombo" )
     private String categoryOptionComboUuid;
 
-    @XmlValue
+    @XmlAttribute
+    private String storedBy;
+
+    @XmlAttribute
     private String value;
 
     public String getDataElementUuid()
@@ -73,6 +75,16 @@ public class DataValue
     public void setValue( String value )
     {
         this.value = value;
+    }
+
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
     }
 
 }

@@ -139,10 +139,9 @@ public class RPCResource
         t.append( "<a href=\"" ).append( uri ).append( "\">" ).append( uri ).append( "</a>:</p>" );
 
         t.append( "<pre>" ).append( "&lt;dataValueSet xmlns=\"http://dhis2.org/schema/dataValueSet/0.1\"\n" );
-        t.append( "    dataSet=\"dataSet UUID\" \n    period=\"periodInIsoFormat\"\n    orgUnit=\"unit UUID\"" );
-        t.append( "\n    storedBy=\"user\"&gt;" );
+        t.append( "    dataSet=\"dataSet UUID\" \n    period=\"periodInIsoFormat\"\n    orgUnit=\"unit UUID\"&gt;" );
 
-        t.append( "\n  &lt;dataValue dataElement=\"data element UUID\" categoryOptionCombo=\"UUID, only specify if used\" &gt;value&lt;/dataValue&gt;" );
+        t.append( "\n  &lt;dataValue dataElement=\"data element UUID\" categoryOptionCombo=\"UUID, only specify if used\" storedBy=\"string\" value=\"value\"/&gt;" );
         t.append( "\n&lt;/dataValueSet&gt;" );
         t.append( "</pre>" );
     }
