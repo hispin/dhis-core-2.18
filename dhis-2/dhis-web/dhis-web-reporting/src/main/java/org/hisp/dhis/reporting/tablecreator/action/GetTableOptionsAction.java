@@ -333,45 +333,36 @@ public class GetTableOptionsAction
         // Available metadata
         // ---------------------------------------------------------------------
 
-        if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && !dimension )
-        {
-            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-            
-            Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-            
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-            
-            Collections.sort( dataElements, new DataElementNameComparator() );
-            
-            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-            
-            displayPropertyHandler.handle( dataElements );
-        }
-        else if ( mode != null && mode.equals( ReportTable.MODE_DATAELEMENTS ) && dimension )
-        {
-            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
-            
-            Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
-        }
-        else if ( mode != null && mode.equals( ReportTable.MODE_INDICATORS ) )
-        {
-            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-            
-            Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-                    
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-            
-            Collections.sort( indicators, indicatorComparator );
-            
-            displayPropertyHandler.handle( indicators );
-        }
-        else if ( mode != null && mode.equals( ReportTable.MODE_DATASETS ) )
-        {
-            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-            
-            Collections.sort( dataSets, new DataSetNameComparator() );            
-        }
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
         
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        
+        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+        
+        Collections.sort( dataElements, new DataElementNameComparator() );
+        
+        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+        
+        displayPropertyHandler.handle( dataElements );
+        
+        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
+        
+        Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
+        
+        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+        
+        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+                
+        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+        
+        Collections.sort( indicators, indicatorComparator );
+        
+        displayPropertyHandler.handle( indicators );
+        
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        
+        Collections.sort( dataSets, new DataSetNameComparator() ); 
+    
         periodTypes = periodService.getAllPeriodTypes();
         
         periods = new MonthlyPeriodType().generatePeriods( new Date() );

@@ -27,10 +27,13 @@ package org.hisp.dhis.reporttable.statement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.REGRESSION_COLUMN_PREFIX;
+import static org.hisp.dhis.reporttable.ReportTable.*;
 
 import java.util.Iterator;
+import java.util.List;
 
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.reporttable.ReportTable;
 
@@ -97,15 +100,15 @@ public class CreateReportTableStatement
         // Organisation unit is parent
         // ---------------------------------------------------------------------
 
-        buffer.append( ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME + SPACE + SHORT_TEXT_COLUMN_TYPE + SEPARATOR );
+        buffer.append( ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME + SPACE + NUMERIC_COLUMN_TYPE + SEPARATOR );
         
         // ---------------------------------------------------------------------
         // Crosstab
         // ---------------------------------------------------------------------
 
-        for ( String column : reportTable.getCrossTabColumns() )
+        for ( List<IdentifiableObject> column : reportTable.getColumns() )
         {
-            buffer.append( column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+            buffer.append( getColumnName( column ) + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
         }
 
         // ---------------------------------------------------------------------
@@ -114,9 +117,9 @@ public class CreateReportTableStatement
 
         if ( reportTable.doTotal() )
         {
-            for ( String column : reportTable.getCategoryOptionColumns() )
+            for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
             {
-                buffer.append( column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+                buffer.append( databaseEncode( categoryOption.getShortName() ) + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
             }
             
             buffer.append( ReportTable.TOTAL_COLUMN_NAME + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
@@ -128,9 +131,9 @@ public class CreateReportTableStatement
 
         if ( reportTable.isRegression() )
         {
-            for ( String column : reportTable.getCrossTabColumns() )
+            for ( List<IdentifiableObject> column : reportTable.getColumns() )
             {
-                buffer.append( REGRESSION_COLUMN_PREFIX + column + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
+                buffer.append( REGRESSION_COLUMN_PREFIX + getColumnName( column ) + SPACE + statementBuilder.getDoubleColumnType() + SEPARATOR );
             }            
         }
 

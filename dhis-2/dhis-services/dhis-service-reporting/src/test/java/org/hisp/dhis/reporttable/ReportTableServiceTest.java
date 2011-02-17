@@ -224,7 +224,7 @@ public class ReportTableServiceTest
         indicatorB = createIndicator( 'B', indicatorType );
         
         indicatorIdA = indicatorService.addIndicator( indicatorA );
-        indicatorIdA = indicatorService.addIndicator( indicatorB );
+        indicatorIdB = indicatorService.addIndicator( indicatorB );
                 
         indicators.add( indicatorA );
         indicators.add( indicatorB );
@@ -291,14 +291,22 @@ public class ReportTableServiceTest
         
         indicatorValueBatchHandler.init();
         
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdB, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdB, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdB, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, 8, 1, 10, 20, 2 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdB, 8, 1, 10, 20, 2 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, 8, 1, 11, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdB, 8, 1, 12, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, 8, 1, 13, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdB, 8, 1, 14, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, 8, 1, 15, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdB, 8, 1, 16, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, 8, 1, 17, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdB, 8, 1, 18, 0, 0 ) );        
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, 8, 1, 19, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdB, 8, 1, 20, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, 8, 1, 21, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdB, 8, 1, 22, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, 8, 1, 23, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdB, 8, 1, 24, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, 8, 1, 25, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdB, 8, 1, 26, 0, 0 ) );
         
         indicatorValueBatchHandler.flush();
         
@@ -306,23 +314,22 @@ public class ReportTableServiceTest
         
         dataValueBatchHandler.init();
         
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdB, 8, 10 ) );
-        
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdB, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, 8, 10 ) );
-        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdB, 8, 10 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 11 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 12 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 13 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 14 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, 8, 15 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdB, 8, 16 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, 8, 17 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdB, 8, 18 ) );        
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdA, 8, 19 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdA, 8, unitIdB, 8, 20 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdA, 8, 21 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdB, periodIdB, 8, unitIdB, 8, 22 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, 8, 23 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdB, 8, 24 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, 8, 25 ) );
+        dataValueBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdB, 8, 26 ) );
         
         dataValueBatchHandler.flush();
     }
@@ -340,7 +347,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataElementReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -354,7 +361,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataElementReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -368,7 +375,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataElementReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -382,7 +389,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataElementWithCategoryOptionComboReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             categoryComboA, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -396,7 +403,7 @@ public class ReportTableServiceTest
     @Test    
     public void testCreateDataElementWithCategoryOptionComboReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             categoryComboA, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -410,7 +417,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataElementWithCategoryOptionComboReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             categoryComboA, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -424,7 +431,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateIndicatorReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -438,7 +445,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateIndicatorReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -452,7 +459,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateIndicatorReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -466,7 +473,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataSetReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -480,7 +487,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataSetReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -494,7 +501,7 @@ public class ReportTableServiceTest
     @Test
     public void testCreateDataSetReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", ReportTable.MODE_DATASETS, false,
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 

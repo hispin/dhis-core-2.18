@@ -91,6 +91,18 @@ public class DataElementCategoryCombo
         return name.equals( DEFAULT_CATEGORY_COMBO_NAME );
     }
     
+    public List<DataElementCategoryOption> getCategoryOptions()
+    {
+        final List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+        
+        for ( DataElementCategory category : categories )
+        {
+            categoryOptions.addAll( category.getCategoryOptions() );            
+        }
+        
+        return categoryOptions;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------

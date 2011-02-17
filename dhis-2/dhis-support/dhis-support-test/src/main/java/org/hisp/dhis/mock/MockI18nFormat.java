@@ -43,19 +43,21 @@ import org.hisp.dhis.period.Period;
  */
 public class MockI18nFormat
     extends I18nFormat
-{    
+{
+    private static SimpleDateFormat FORMAT = new SimpleDateFormat( "yyyy-MM-dd" );
+    
     @Override
     public String formatPeriod( Period period )
     {
         Random random = new Random();        
-        return "Period" + random.nextInt( 1000 );
+        return "Period_" + FORMAT.format( period.getStartDate() ) + "_" + random.nextInt( 1000 );
     }
     
     @Override
     public String formatDate( Date date )
     {
         Random random = new Random();
-        return "Date" + random.nextInt( 1000 );
+        return "Date_"  + FORMAT.format( date ) + "_" + random.nextInt( 1000 );
     }
     
     @Override

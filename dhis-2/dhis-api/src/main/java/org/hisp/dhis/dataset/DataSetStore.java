@@ -29,7 +29,6 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.source.Source;
 

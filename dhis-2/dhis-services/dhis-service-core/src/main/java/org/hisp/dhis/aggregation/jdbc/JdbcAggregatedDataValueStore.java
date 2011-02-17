@@ -175,7 +175,7 @@ public class JdbcAggregatedDataValueStore
     }
 
     @Override
-    public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         final StatementHolder holder = statementManager.getHolder();
 

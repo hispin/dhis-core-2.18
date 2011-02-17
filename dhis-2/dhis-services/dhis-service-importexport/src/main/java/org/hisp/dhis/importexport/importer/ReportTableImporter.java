@@ -86,7 +86,6 @@ public class ReportTableImporter
     {
         match.setName( object.getName() );
         match.setTableName( object.getTableName() );
-        match.setMode( object.getMode() );
         match.setRegression( object.isRegression() );
         
         match.setDoIndicators( match.isDoIndicators() );
@@ -122,10 +121,6 @@ public class ReportTableImporter
             return false;
         }
         if ( !object.getTableName().equals( existing.getTableName() ) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getMode(), existing.getMode() ) || ( isNotNull( object.getMode(), existing.getMode() ) && !object.getMode().equals( existing.getMode() ) ) )
         {
             return false;
         }

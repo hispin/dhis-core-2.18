@@ -129,14 +129,7 @@ public class SaveTableAction
     {
         this.tableName = tableName;
     }
-    
-    private String mode;
-
-    public void setMode( String mode )
-    {
-        this.mode = mode;
-    }
-    
+        
     private boolean regression;
 
     public void setRegression( boolean regression )
@@ -339,7 +332,7 @@ public class SaveTableAction
         
         if ( tableId == null )
         {
-            reportTable = new ReportTable( tableName, mode, regression,
+            reportTable = new ReportTable( tableName, regression,
                 dataElements, indicators, dataSets, periods, null, units, null,
                 categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );

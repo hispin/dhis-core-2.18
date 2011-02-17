@@ -220,8 +220,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="org.hisp.dhis.datavalue.DataValueService" class="org.hisp.dhis.datavalue.DefaultDataValueService">
 		<property name="dataValueStore" ref="org.hisp.dhis.datavalue.DataValueStore" />
-		<property name="dataValueAuditService"
-			ref="org.hisp.dhis.datavalue.DataValueAuditService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.datavalue.DataValueAuditService" class="org.hisp.dhis.datavalue.DefaultDataValueAuditService">

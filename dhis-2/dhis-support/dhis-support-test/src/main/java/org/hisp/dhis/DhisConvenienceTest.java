@@ -180,7 +180,9 @@ public abstract class DhisConvenienceTest
         final Calendar calendar = Calendar.getInstance();
 
         calendar.clear();
-        calendar.set( year, month - 1, day );
+        calendar.set( Calendar.YEAR, year );
+        calendar.set( Calendar.MONTH, month - 1 );
+        calendar.set( Calendar.DAY_OF_MONTH, day );
 
         return calendar.getTime();
     }
@@ -334,10 +336,10 @@ public abstract class DhisConvenienceTest
 
         dataElement.setUuid( BASE_UUID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        dataElement.setShortName( "ShortName" + uniqueCharacter );
-        dataElement.setCode( "Code" + uniqueCharacter );
-        dataElement.setDescription( "Description" + uniqueCharacter );
+        dataElement.setAlternativeName( "DataElementAlternative" + uniqueCharacter );
+        dataElement.setShortName( "DataElementShort" + uniqueCharacter );
+        dataElement.setCode( "DataElementCode" + uniqueCharacter );
+        dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
         dataElement.setActive( true );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
         dataElement.setDomainType( DataElement.DOMAIN_TYPE_AGGREGATE );
@@ -525,10 +527,10 @@ public abstract class DhisConvenienceTest
 
         indicator.setUuid( BASE_UUID + uniqueCharacter );
         indicator.setName( "Indicator" + uniqueCharacter );
-        indicator.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        indicator.setShortName( "ShortName" + uniqueCharacter );
-        indicator.setCode( "Code" + uniqueCharacter );
-        indicator.setDescription( "Description" + uniqueCharacter );
+        indicator.setAlternativeName( "IndicatorAlternative" + uniqueCharacter );
+        indicator.setShortName( "IndicatorShort" + uniqueCharacter );
+        indicator.setCode( "IndicatorCode" + uniqueCharacter );
+        indicator.setDescription( "IndicatorDescription" + uniqueCharacter );
         indicator.setAnnualized( false );
         indicator.setIndicatorType( type );
         indicator.setNumerator( "Numerator" );
@@ -576,8 +578,8 @@ public abstract class DhisConvenienceTest
         DataSet dataSet = new DataSet();
 
         dataSet.setName( "DataSet" + uniqueCharacter );
-        dataSet.setShortName( "ShortName" + uniqueCharacter );
-        dataSet.setCode( "Code" + uniqueCharacter );
+        dataSet.setShortName( "DataSetShort" + uniqueCharacter );
+        dataSet.setCode( "DataSetCode" + uniqueCharacter );
         dataSet.setPeriodType( periodType );
 
         return dataSet;
@@ -592,8 +594,8 @@ public abstract class DhisConvenienceTest
 
         unit.setUuid( BASE_UUID + uniqueCharacter );
         unit.setName( "OrganisationUnit" + uniqueCharacter );
-        unit.setShortName( "ShortName" + uniqueCharacter );
-        unit.setCode( "Code" + uniqueCharacter );
+        unit.setShortName( "OrganisationUnitShort" + uniqueCharacter );
+        unit.setCode( "OrganisationUnitCode" + uniqueCharacter );
         unit.setOpeningDate( date );
         unit.setClosedDate( date );
         unit.setActive( true );

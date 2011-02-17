@@ -66,10 +66,10 @@ public class IndicatorServiceTest
     private void assertEq( char uniqueCharacter, Indicator indicator )
     {
         assertEquals( "Indicator" + uniqueCharacter, indicator.getName() );
-        assertEquals( "AlternativeName" + uniqueCharacter, indicator.getAlternativeName() );
-        assertEquals( "ShortName" + uniqueCharacter, indicator.getShortName() );
-        assertEquals( "Code" + uniqueCharacter, indicator.getCode() );
-        assertEquals( "Description" + uniqueCharacter, indicator.getDescription() );
+        assertEquals( "IndicatorAlternative" + uniqueCharacter, indicator.getAlternativeName() );
+        assertEquals( "IndicatorShort" + uniqueCharacter, indicator.getShortName() );
+        assertEquals( "IndicatorCode" + uniqueCharacter, indicator.getCode() );
+        assertEquals( "IndicatorDescription" + uniqueCharacter, indicator.getDescription() );
     }
     
     // -------------------------------------------------------------------------
@@ -496,11 +496,11 @@ public class IndicatorServiceTest
         assertNotNull( indicatorService.getIndicator( idA ) );
         assertNotNull( indicatorService.getIndicator( idB ) );
         
-        indicatorA = indicatorService.getIndicatorByAlternativeName( "AlternativeNameA" );
+        indicatorA = indicatorService.getIndicatorByAlternativeName( "IndicatorAlternativeA" );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        Indicator indicatorC = indicatorService.getIndicatorByAlternativeName( "AlternativeNameC" );
+        Indicator indicatorC = indicatorService.getIndicatorByAlternativeName( "IndicatorAlternativeC" );
         assertNull( indicatorC );
     }
 
@@ -521,11 +521,11 @@ public class IndicatorServiceTest
         assertNotNull( indicatorService.getIndicator( idA ) );
         assertNotNull( indicatorService.getIndicator( idB ) );
         
-        indicatorA = indicatorService.getIndicatorByShortName( "ShortNameA" );
+        indicatorA = indicatorService.getIndicatorByShortName( "IndicatorShortA" );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        Indicator indicatorC = indicatorService.getIndicatorByShortName( "ShortNameC" );
+        Indicator indicatorC = indicatorService.getIndicatorByShortName( "IndicatorShortC" );
         assertNull( indicatorC );
     }
 }
