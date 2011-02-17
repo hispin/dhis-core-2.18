@@ -86,6 +86,7 @@ public class TableAlteror
         
         executeSql( "UPDATE patient SET isdead=false WHERE isdead IS NULL" );
 
+        executeSql( "UPDATE patient SET hasPatients=false WHERE hasPatients IS NULL" );
     }
 
     private void updatePatientOrgunitAssociation()

@@ -275,21 +275,21 @@ public class HibernateOrganisationUnitStore
         }
         ids += "0";
         
-        final String sqlUpdateTrue = "UPDATE organisationunit SET registered=true WHERE organisationunitid in ( " + ids +" );";
+        final String sqlUpdateTrue = "UPDATE organisationunit SET hasPatients=true WHERE organisationunitid in ( " + ids +" );";
 
         jdbcTemplate.execute( sqlUpdateTrue );
         
-        final String sqlUpdateFalse = "UPDATE organisationunit SET registered=false WHERE organisationunitid not in ( " + ids +" );";
+        final String sqlUpdateFalse = "UPDATE organisationunit SET hasPatients=false WHERE organisationunitid not in ( " + ids +" );";
         
         jdbcTemplate.execute( sqlUpdateFalse );
     }
     
     
     @SuppressWarnings("unchecked")
-    public Collection<OrganisationUnit> get( Boolean registered )
+    public Collection<OrganisationUnit> get( Boolean hasPatients )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
         
-        return criteria.add( Restrictions.eq( "registered", registered ) ).list();
+        return criteria.add( Restrictions.eq( "hasPatients", hasPatients ) ).list();
     }
 }
