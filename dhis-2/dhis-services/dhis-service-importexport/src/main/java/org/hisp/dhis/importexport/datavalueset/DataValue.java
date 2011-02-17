@@ -35,6 +35,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class DataValue
 {
 
+    @XmlAttribute( name = "dataSet" )
+    private String dataSetUuid;
+
+    @XmlAttribute( name = "orgUnit", required = true )
+    private String organisationUnitUuid;
+
+    @XmlAttribute( name = "period", required = true )
+    private String periodIsoDate;
+
     @XmlAttribute( name = "dataElement", required = true )
     private String dataElementUuid;
 
@@ -46,6 +55,36 @@ public class DataValue
 
     @XmlAttribute
     private String value;
+
+    public String getDataSetUuid()
+    {
+        return dataSetUuid;
+    }
+
+    public void setDataSetUuid( String dataSetUuid )
+    {
+        this.dataSetUuid = dataSetUuid;
+    }
+
+    public String getOrganisationUnitUuid()
+    {
+        return organisationUnitUuid;
+    }
+
+    public void setOrganisationUnitUuid( String organisationUnitUuid )
+    {
+        this.organisationUnitUuid = organisationUnitUuid;
+    }
+
+    public String getPeriodIsoDate()
+    {
+        return periodIsoDate;
+    }
+
+    public void setPeriodIsoDate( String periodIsoDate )
+    {
+        this.periodIsoDate = periodIsoDate;
+    }
 
     public String getDataElementUuid()
     {

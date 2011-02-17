@@ -29,9 +29,9 @@ package org.hisp.dhis.importexport.datavalueset;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -82,30 +82,111 @@ public class DataValueSetService
      * For all dataValues it checks that:
      * <ul>
      * <li>dataElement exists and is in dataSet
-     * <li>optionCombo exists (defaults to 'default' if not specified) and is in dataElement
+     * <li>optionCombo exists (defaults to 'default' if not specified) and is in
+     * dataElement
      * </ul>
      * What isn't checked yet:
      * <ul>
-     * <li>That there isn't duplicated value entries (will throw Constraint exception)
+     * <li>That there isn't duplicated value entries (will throw Constraint
+     * exception)
      * <li>That the value is valid!
      * </ul>
      * Concerns:
      * <ul>
-     * <li>deletion through sending "empty string" value dependant on semantics of add/update in data value store
-     * <li>completed semantics, can't uncomplete but can complete and "recomplete"
+     * <li>deletion through sending "empty string" value dependant on semantics
+     * of add/update in data value store
+     * <li>completed semantics, can't uncomplete but can complete and
+     * "recomplete"
      * <li>what is 'comment' really?
      * 
-     * @param dataValueSet
-     * @throws IllegalArgumentException if 
+     * @param dxf
+     * @throws IllegalArgumentException if
      */
-    public void saveDataValueSet( DataValueSet dataValueSet )
+    @Transactional
+    public void saveDataValueSet( Dxf dxf )
         throws IllegalArgumentException
+    {
+        handleComplete( dxf.getDataValueSets() );
+        for ( org.hisp.dhis.importexport.datavalueset.DataValue dxfValue : dxf.getDataValues() )
+        {
+            saveDataValue( dxfValue );
+        }
+    }
+
+    private void handleComplete( List<DataValueSet> completeNotDataSets )
+    {
+        if ( completeNotDataSets == null )
+        {
+            return;
+        }
+
+        for ( DataValueSet nds : completeNotDataSets )
+        {
+            CompleteDataSetRegistration complete = null;
+
+            DataSet dataSet = getDataSet( nds.getDataSetUuid() );
+
+            OrganisationUnit unit = getOrgUnit( nds.getOrganisationUnitUuid() );
+
+            if ( !dataSet.getSources().contains( unit ) )
+            {
+                throw new IllegalArgumentException( "Org unit with UUID " + unit.getUuid()
+                    + " does not report data set with UUID " + dataSet.getUuid() );
+            }
+
+            Period period = getPeriod( nds.getPeriodIsoDate(), dataSet.getPeriodType() );
+
+            CompleteDataSetRegistration alreadyComplete = registrationService.getCompleteDataSetRegistration( dataSet,
+                period, unit );
+            String completeDateString = nds.getCompleteDate();
+
+            if ( alreadyComplete != null && completeDateString == null )
+            {
+                throw new IllegalArgumentException(
+                    "DataValueSet is complete, include a new complete date if you want to recomplete" );
+            }
+
+            if ( completeDateString != null )
+            {
+                complete = getComplete( dataSet, unit, period, completeDateString, complete );
+            }
+
+            if ( alreadyComplete != null )
+            {
+                registrationService.deleteCompleteDataSetRegistration( alreadyComplete );
+            }
+            if ( complete != null )
+            {
+                registrationService.saveCompleteDataSetRegistration( complete );
+            }
+
+        }
+    }
+
+    private void saveDataValue( org.hisp.dhis.importexport.datavalueset.DataValue dxfValue )
     {
         Date timestamp = new Date();
 
-        DataSet dataSet = getDataSet( dataValueSet.getDataSetUuid() );
+        OrganisationUnit unit = getOrgUnit( dxfValue.getOrganisationUnitUuid() );
 
-        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitUuid() );
+        DataElement dataElement = getDataElement( dxfValue.getDataElementUuid() );
+
+        DataSet dataSet = null;
+        if ( dxfValue.getDataSetUuid() != null )
+        {
+            dataSet = getDataSet( dxfValue.getDataSetUuid() );
+
+            if ( !dataSet.getDataElements().contains( dataElement ) )
+            {
+                throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in data set "
+                    + dataSet.getUuid() );
+            }
+
+        }
+        else
+        {
+            dataSet = resolveDataSet( dataElement, unit );
+        }
 
         if ( !dataSet.getSources().contains( unit ) )
         {
@@ -113,58 +194,57 @@ public class DataValueSetService
                 + " does not report data set with UUID " + dataSet.getUuid() );
         }
 
-        Period period = getPeriod( dataValueSet.getPeriodIsoDate(), dataSet.getPeriodType() );
+        Period period = getPeriod( dxfValue.getPeriodIsoDate(), dataSet.getPeriodType() );
 
-        CompleteDataSetRegistration alreadyComplete = registrationService.getCompleteDataSetRegistration( dataSet,
-            period, unit );
-        String completeDateString = dataValueSet.getCompleteDate();
+        DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboUuid(), dataElement );
 
-        if ( alreadyComplete != null && completeDateString == null )
+        String value = dxfValue.getValue();
+
+        // dataElement.isValidValue(value);
+
+        DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
+
+        if ( dv == null )
         {
-            throw new IllegalArgumentException(
-                "DataValueSet is complete, include a new complete date if you want to recomplete" );
+            dv = new DataValue( dataElement, period, unit, value, dxfValue.getStoredBy(), timestamp, null, combo );
+            dataValueService.addDataValue( dv );
         }
-
-        CompleteDataSetRegistration complete = null;
-
-        if ( completeDateString != null )
+        else
         {
-            complete = getComplete( dataSet, unit, period, completeDateString, complete );
+            dv.setValue( value );
+            dv.setTimestamp( timestamp );
+            dv.setStoredBy( dxfValue.getStoredBy() );
+            dataValueService.updateDataValue( dv );
         }
+    }
 
-        List<DataValue> newDataValues = new ArrayList<DataValue>( dataValueSet.getDataValues().size() );
-        List<DataValue> updatedDataValues = new ArrayList<DataValue>( dataValueSet.getDataValues().size() );
+    private DataSet resolveDataSet( DataElement dataElement, OrganisationUnit unit )
+    {
 
-        for ( org.hisp.dhis.importexport.datavalueset.DataValue dxfValue : dataValueSet.getDataValues() )
+        Set<DataSet> dataSets = dataElement.getDataSets();
+
+        if ( dataSets == null || dataSets.isEmpty() )
         {
-            DataElement dataElement = getDataElement( dxfValue.getDataElementUuid(), dataSet );
-
-            DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboUuid(), dataElement );
-
-            
-            
-            DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
-
-            String value = dxfValue.getValue();
-
-            // dataElement.isValidValue(value);
-            
-            if ( dv == null )
+            throw new IllegalArgumentException( "data element '" + dataElement.getName() + "' with UUID '"
+                + dataElement.getUuid() + "' isn't assigned to any data set" );
+        }
+        else if ( dataSets.size() == 1 )
+        {
+            return dataSets.iterator().next();
+        }
+        else
+        {
+            for ( DataSet dataSet : dataSets )
             {
-                dv = new DataValue( dataElement, period, unit, value, dxfValue.getStoredBy(), timestamp,
-                    null, combo );
-                newDataValues.add( dv );
-            }
-            else
-            {
-                dv.setValue( value );
-                dv.setTimestamp( timestamp );
-                dv.setStoredBy( dxfValue.getStoredBy() );
-                updatedDataValues.add( dv );
+                if ( dataSet.getOrganisationUnits().contains( unit ) )
+                {
+                    return dataSet;
+                }
             }
         }
-
-        save( alreadyComplete, complete, newDataValues, updatedDataValues );
+        throw new IllegalArgumentException( "data element '" + dataElement.getName() + "' with UUID '"
+            + dataElement.getUuid() + "' isn't assigned to any data set that in turn is assigned to org unit '"
+            + unit.getName() + "', uuid '" + unit.getUuid() + "'" );
     }
 
     private CompleteDataSetRegistration getComplete( DataSet dataSet, OrganisationUnit unit, Period period,
@@ -221,7 +301,7 @@ public class DataValueSetService
         return dataSet;
     }
 
-    private DataElement getDataElement( String uuid, DataSet dataSet )
+    private DataElement getDataElement( String uuid )
     {
         DataElement dataElement = dataElementService.getDataElement( uuid );
 
@@ -230,11 +310,6 @@ public class DataValueSetService
             throw new IllegalArgumentException( "Data element with UUID " + uuid + " does not exist" );
         }
 
-        if ( !dataSet.getDataElements().contains( dataElement ) )
-        {
-            throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in data set "
-                + dataSet.getUuid() );
-        }
         return dataElement;
     }
 
@@ -265,30 +340,31 @@ public class DataValueSetService
         return combo;
     }
 
-    @Transactional
-    private void save( CompleteDataSetRegistration alreadyComplete, CompleteDataSetRegistration complete,
-        List<DataValue> newDataValues, List<DataValue> updatedDataValues )
-    {
-        if ( alreadyComplete != null )
-        {
-            registrationService.deleteCompleteDataSetRegistration( alreadyComplete );
-        }
-
-        for ( DataValue dataValue : newDataValues )
-        {
-            dataValueService.addDataValue( dataValue );
-        }
-
-        for ( DataValue dataValue : updatedDataValues )
-        {
-            dataValueService.updateDataValue( dataValue );
-        }
-
-        if ( complete != null )
-        {
-            registrationService.saveCompleteDataSetRegistration( complete );
-        }
-    }
+    // @Transactional
+    // private void save( CompleteDataSetRegistration alreadyComplete,
+    // CompleteDataSetRegistration complete,
+    // List<DataValue> newDataValues, List<DataValue> updatedDataValues )
+    // {
+    // if ( alreadyComplete != null )
+    // {
+    // registrationService.deleteCompleteDataSetRegistration( alreadyComplete );
+    // }
+    //
+    // for ( DataValue dataValue : newDataValues )
+    // {
+    // dataValueService.addDataValue( dataValue );
+    // }
+    //
+    // for ( DataValue dataValue : updatedDataValues )
+    // {
+    // dataValueService.updateDataValue( dataValue );
+    // }
+    //
+    // if ( complete != null )
+    // {
+    // registrationService.saveCompleteDataSetRegistration( complete );
+    // }
+    // }
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
