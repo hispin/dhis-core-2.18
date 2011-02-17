@@ -44,6 +44,10 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportPipeThread;
 import org.hisp.dhis.importexport.ExportService;
+import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitGroupConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitGroupMemberConverter;
+import org.hisp.dhis.importexport.dhis14.xml.converter.OrganisationUnitHierarchyConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.CalculatedDataElementAssociationConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataElementConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.DataTypeConverter;
@@ -53,17 +57,14 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.IndicatorTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.PeriodTypeConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.UserConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.UserRoleConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.CalculatedDataElementAssociationXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataElementXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataRootXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.DataTypeXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.IndicatorTypeXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.IndicatorXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.PeriodTypeXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserRoleXSDConverter;
-import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserXSDConverter;
+
+import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.*;
+
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+
 
 /**
  * @author Lars Helge Overland
@@ -123,7 +124,18 @@ public class DefaultDhis14XMLExportService
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
+    private OrganisationUnitService organisationUnitService;
 
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+        {
+            this.organisationUnitService = organisationUnitService;
+        }
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+        {
+            this.organisationUnitGroupService = organisationUnitGroupService;
+        }
     // -------------------------------------------------------------------------
     // ExportService implementation
     // -------------------------------------------------------------------------
@@ -161,19 +173,27 @@ public class DefaultDhis14XMLExportService
             thread.setRootProperties( ROOT_PROPERTIES );
 
             thread.registerXSDConverter( new DataRootXSDConverter() );
-            
-            thread.registerXSDConverter( new PeriodTypeXSDConverter() );
             thread.registerXSDConverter( new DataElementXSDConverter() );
             thread.registerXSDConverter( new CalculatedDataElementAssociationXSDConverter() );
+            thread.registerXSDConverter( new PeriodTypeXSDConverter() );
+            thread.registerXSDConverter(new OrganisationUnitXSDConverter() );
+            thread.registerXSDConverter( new OrganisationUnitHierarchyXSDConverter() );
             thread.registerXSDConverter( new IndicatorTypeXSDConverter() );
             thread.registerXSDConverter( new IndicatorXSDConverter() );
             thread.registerXSDConverter( new DataTypeXSDConverter() );
             thread.registerXSDConverter( new UserXSDConverter() );
             thread.registerXSDConverter( new UserRoleXSDConverter() );
             
+            thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
+            thread.registerXMLConverter( new CalculatedDataElementAssociationConverter( dataElementService ) );
             thread.registerXMLConverter( new PeriodTypeConverter() );
             thread.registerXMLConverter( new CalculatedDataElementAssociationConverter( dataElementService ) );
-            thread.registerXMLConverter( new DataElementConverter( dataElementService ) );
+            thread.registerXMLConverter( new PeriodTypeConverter() );
+            thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
+            //thread.registerXMLConverter( new OrganisationUnitGroupConverter( organisationUnitGroupService ) );
+            //thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter( organisationUnitGroupService, organisationUnitService ) );
+            thread.registerXMLConverter( new OrganisationUnitHierarchyConverter(  organisationUnitService ) );
+            thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorConverter( indicatorService ) );            
             thread.registerXMLConverter( new DataTypeConverter() );

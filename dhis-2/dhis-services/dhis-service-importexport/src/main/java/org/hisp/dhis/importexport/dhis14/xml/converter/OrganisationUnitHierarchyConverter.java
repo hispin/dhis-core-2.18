@@ -42,6 +42,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.importer.OrganisationUnitRelationshipImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.importexport.dhis14.util.Dhis14DateUtil;
 import org.hisp.dhis.system.util.MimicingHashMap;
 
 /**
@@ -121,8 +122,8 @@ public class OrganisationUnitHierarchyConverter
                     writer.writeElement( FIELD_STRUCTURE, String.valueOf( STRUCTURE_ID ) );
                     writer.writeElement( FIELD_CHILD, String.valueOf( unit.getId() ) );
                     writer.writeElement( FIELD_PARENT, String.valueOf( unit.getParent().getId() ) );
-                    writer.writeElement( FIELD_LAST_USER, "" );
-                    writer.writeElement( FIELD_LAST_UPDATED, "" );
+                    writer.writeElement( FIELD_LAST_USER, String.valueOf( 1 ) );
+                    writer.writeElement( FIELD_LAST_UPDATED, Dhis14DateUtil.getDateString( unit.getLastUpdated() ) );
                     
                     writer.closeElement();
                 }

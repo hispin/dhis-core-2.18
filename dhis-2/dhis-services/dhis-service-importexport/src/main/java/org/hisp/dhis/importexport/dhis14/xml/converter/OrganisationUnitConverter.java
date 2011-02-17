@@ -107,11 +107,13 @@ public class OrganisationUnitConverter
         {
             for ( OrganisationUnit unit : units )
             {
+                int level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
                 writer.writeElement( FIELD_CODE, unit.getCode() );
-                writer.writeElement( FIELD_LEVEL, "" );
+                writer.writeElement( FIELD_LEVEL, String.valueOf( level ) );
                 writer.writeElement( FIELD_NAME, unit.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
                 writer.writeElement( FIELD_VALID_FROM, String.valueOf( VALID_FROM ) );
