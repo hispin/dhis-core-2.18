@@ -193,7 +193,6 @@ public class DefaultDhis14XMLExportService
             //thread.registerXMLConverter( new OrganisationUnitGroupConverter( organisationUnitGroupService ) );
             //thread.registerXMLConverter( new OrganisationUnitGroupMemberConverter( organisationUnitGroupService, organisationUnitService ) );
             thread.registerXMLConverter( new OrganisationUnitHierarchyConverter(  organisationUnitService ) );
-            thread.registerXMLConverter( new OrganisationUnitConverter( organisationUnitService ) );
             thread.registerXMLConverter( new IndicatorTypeConverter( indicatorService ) );
             thread.registerXMLConverter( new IndicatorConverter( indicatorService ) );            
             thread.registerXMLConverter( new DataTypeConverter() );
