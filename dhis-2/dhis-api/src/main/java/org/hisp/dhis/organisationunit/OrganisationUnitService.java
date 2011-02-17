@@ -309,5 +309,5 @@ public interface OrganisationUnitService
     
     void updateOrganisationUnits( Collection<OrganisationUnit> units );
     
-    Collection<OrganisationUnit> getOrganisationUnits( Boolean registered );
+    Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients );
 }

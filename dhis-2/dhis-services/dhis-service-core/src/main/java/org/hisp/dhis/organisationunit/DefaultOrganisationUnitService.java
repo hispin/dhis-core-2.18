@@ -601,8 +601,8 @@ public class DefaultOrganisationUnitService
     }
     
     @Override
-    public Collection<OrganisationUnit> getOrganisationUnits( Boolean registered )
+    public Collection<OrganisationUnit> getOrganisationUnits( Boolean hasPatients )
     {
-        return organisationUnitStore.get(registered);
+        return organisationUnitStore.get(hasPatients);
     }
 }

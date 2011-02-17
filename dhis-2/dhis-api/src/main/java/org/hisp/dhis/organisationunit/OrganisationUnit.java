@@ -91,7 +91,7 @@ public class OrganisationUnit
     
     private transient String type;
     
-    private Boolean registered;
+    private Boolean hasPatients;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -522,17 +522,17 @@ public class OrganisationUnit
     {
         this.phoneNumber = phoneNumber;
     }
-
-    public Boolean getRegistered()
-    {
-        return registered;
-    }
-
-    public void setRegistered( Boolean registered )
-    {
-        this.registered = registered;
-    }
     
+    public Boolean getHasPatients()
+    {
+        return hasPatients;
+    }
+
+    public void setHasPatients( Boolean hasPatients )
+    {
+        this.hasPatients = hasPatients;
+    }
+
     public int getLevel()
     {
         return level;

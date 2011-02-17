@@ -182,5 +182,5 @@ public interface OrganisationUnitStore
     
     void update( Collection<OrganisationUnit> units );
     
-    Collection<OrganisationUnit> get( Boolean registered );
+    Collection<OrganisationUnit> get( Boolean hasPatients );
 }
