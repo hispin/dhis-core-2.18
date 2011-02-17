@@ -286,7 +286,7 @@ public class DataSet
         return mobile;
     }
 
-    public Set<OrganisationUnit> getOrganisationUnis()
+    public Set<OrganisationUnit> getOrganisationUnits()
     {
         Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
 

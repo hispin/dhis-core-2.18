@@ -1,5 +1,5 @@
 @javax.xml.bind.annotation.XmlSchema( 
-    namespace = "http://dhis2.org/schema/dataValueSet/0.1", 
+    namespace = "http://dhis2.org/schema/dxf/x.x", 
     xmlns = { @javax.xml.bind.annotation.XmlNs( prefix = "xs", namespaceURI = "http://www.w3.org/2001/XMLSchema" ) }, 
     elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED )
 package org.hisp.dhis.importexport.datavalueset;

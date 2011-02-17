@@ -142,7 +142,7 @@ public class GetDataSetAction
 
         dataEntryForm = dataSet.getDataEntryForm();        
         
-        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnis() );
+        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnits() );
         
         return SUCCESS;
     }

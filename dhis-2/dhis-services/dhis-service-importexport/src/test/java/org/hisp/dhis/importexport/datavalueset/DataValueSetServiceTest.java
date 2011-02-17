@@ -79,13 +79,16 @@ public class DataValueSetServiceTest
 
     private DataValueSetService service;
 
-    private DataValueSet dataValueSet;
+    private Dxf dxf;
+    private org.hisp.dhis.importexport.datavalueset.DataValue dv;
 
     private ImportService importService;
 
     private ClassLoader classLoader;
 
     private DataElementCategoryOptionCombo defaultCombo;
+
+    private DataValueSet dataValueSet;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -112,26 +115,27 @@ public class DataValueSetServiceTest
         importService.importData( importParams, is );
         is.close();
 
-        dataValueSet = new DataValueSet();
-        dataValueSet.setDataSetUuid( DATA_SET_UUID );
-        dataValueSet.setPeriodIsoDate( "2011W5" );
-        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
+        defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
+        defaultCombo.setUuid( DEFAULT_COMBO_UUID );
+        categoryService.updateDataElementCategoryOptionCombo( defaultCombo );
 
-        final org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
+        dxf = new Dxf();
+
+        dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
+//        dv.setDataSetUuid( DATA_SET_UUID );
+        dv.setPeriodIsoDate( "2011W5" );
+        dv.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
         dv.setDataElementUuid( DATA_ELEMENT_UUID );
         dv.setValue( "11" );
         dv.setStoredBy( "misterindia" );
 
-        dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.datavalueset.DataValue>()
-        {
-            {
-                add( dv );
-            }
-        } );
+        dxf.setDataValues( new ArrayList<org.hisp.dhis.importexport.datavalueset.DataValue>() {{ add( dv ); }} );
 
-        defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        defaultCombo.setUuid( DEFAULT_COMBO_UUID );
-        categoryService.updateDataElementCategoryOptionCombo( defaultCombo );
+        dataValueSet = new DataValueSet();
+        dataValueSet.setCompleteDate( "20101010" );
+        dataValueSet.setDataSetUuid( DATA_SET_UUID );
+        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_UUID );
+        dataValueSet.setPeriodIsoDate( "201009" );
     }
 
     // -------------------------------------------------------------------------
@@ -142,27 +146,25 @@ public class DataValueSetServiceTest
     public void testJaxb()
         throws JAXBException, IOException
     {
-        JAXBContext jc = JAXBContext.newInstance( DataValueSet.class,
-            org.hisp.dhis.importexport.datavalueset.DataValue.class );
+        JAXBContext jc = JAXBContext.newInstance( Dxf.class );
         Unmarshaller u = jc.createUnmarshaller();
         InputStream is = classLoader.getResourceAsStream( "datavalueset/dataValueSet.xml" );
 
-        DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
+        Dxf dxfDataValueSet = (Dxf) u.unmarshal( is );
         is.close();
-
-        assertEquals( dataValueSet.getDataSetUuid(), dxfDataValueSet.getDataSetUuid() );
-        assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
-        assertEquals( dataValueSet.getOrganisationUnitUuid(), dxfDataValueSet.getOrganisationUnitUuid() );
 
         assertEquals( 1, dxfDataValueSet.getDataValues().size() );
 
-        org.hisp.dhis.importexport.datavalueset.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
-        org.hisp.dhis.importexport.datavalueset.DataValue dataValue = dataValueSet.getDataValues().get( 0 );
+        org.hisp.dhis.importexport.datavalueset.DataValue dxfValue = dxfDataValueSet.getDataValues().get( 0 );
 
-        assertEquals( dataValue.getDataElementUuid(), dv.getDataElementUuid() );
-        assertEquals( dataValue.getStoredBy(), dv.getStoredBy() );
+        assertEquals( dv.getDataSetUuid(), dxfValue.getDataSetUuid() );
+        assertEquals( dv.getPeriodIsoDate(), dxfValue.getPeriodIsoDate() );
+        assertEquals( dv.getOrganisationUnitUuid(), dxfValue.getOrganisationUnitUuid() );
 
-        assertNull( dv.getCategoryOptionComboUuid() );
+        assertEquals( dv.getDataElementUuid(), dxfValue.getDataElementUuid() );
+        assertEquals( dv.getStoredBy(), dxfValue.getStoredBy() );
+
+        assertNull( dxfValue.getCategoryOptionComboUuid() );
     }
 
     @Test
@@ -171,7 +173,7 @@ public class DataValueSetServiceTest
     {
         long before = new Date().getTime();
 
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         long after = new Date().getTime();
 
@@ -190,7 +192,7 @@ public class DataValueSetServiceTest
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
         }
         catch ( NumberFormatException e )
         {
@@ -211,7 +213,7 @@ public class DataValueSetServiceTest
     
     @Test
     public void deleteDataValue() {
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         Collection<DataValue> dataValues = dataValueService.getAllDataValues();
         assertEquals( 1, dataValues.size() );
@@ -221,7 +223,7 @@ public class DataValueSetServiceTest
 
         setValue( null );
 
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         dataValues = dataValueService.getAllDataValues();
         assertEquals( 0, dataValues.size() );
@@ -229,28 +231,12 @@ public class DataValueSetServiceTest
     }
         
     @Test
-    public void dataSetMissing()
-    {
-        dataValueSet.setDataSetUuid( null );
-        try
-        {
-            service.saveDataValueSet( dataValueSet );
-            fail( "Should miss data set" );
-
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // Expected
-        }
-    }
-
-    @Test
     public void orgunitMissingOrNotInSet()
     {
-        dataValueSet.setOrganisationUnitUuid( "ladlalad" );
+        dv.setOrganisationUnitUuid( "ladlalad" );
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "Should miss org unit" );
 
         }
@@ -259,11 +245,11 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_NOT_IN_SET_UUID );
+        dv.setOrganisationUnitUuid( ORGANISATION_UNIT_NOT_IN_SET_UUID );
         
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "Should miss org unit association to data set" );
 
         }
@@ -276,11 +262,11 @@ public class DataValueSetServiceTest
     @Test
     public void illegalPeriod() {
 
-        dataValueSet.setPeriodIsoDate( "2011" );
+        dv.setPeriodIsoDate( "2011" );
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "should not accept yearly period" );
 
         }
@@ -293,16 +279,17 @@ public class DataValueSetServiceTest
     @Test
     public void completeness() {
 
-        service.saveDataValueSet( dataValueSet );
+        dxf.setDataValueSets( new ArrayList() {{ add(dataValueSet); }} );
+        service.saveDataValueSet( dxf );
 
         dataValueSet.setCompleteDate( "20110101" );
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         dataValueSet.setCompleteDate( null );
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail("Shouldn't allow saving to a completed set");
         }
         catch ( IllegalArgumentException e )
@@ -314,7 +301,7 @@ public class DataValueSetServiceTest
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
         }
         catch ( IllegalArgumentException e )
         {
@@ -322,7 +309,7 @@ public class DataValueSetServiceTest
         }
 
         dataValueSet.setCompleteDate( "20101010" );
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
         
     }
 
@@ -332,11 +319,11 @@ public class DataValueSetServiceTest
         org.hisp.dhis.importexport.datavalueset.DataValue dv = new org.hisp.dhis.importexport.datavalueset.DataValue();
         dv.setDataElementUuid( "ladida" );
         dv.setValue( "11" );
-        dataValueSet.getDataValues().add( dv );
+        dxf.getDataValues().add( dv );
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "Should not accept non existing data element" );
         }
         catch ( IllegalArgumentException e )
@@ -348,7 +335,7 @@ public class DataValueSetServiceTest
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "Should not accept data element not in set" );
         }
         catch ( IllegalArgumentException e )
@@ -360,15 +347,15 @@ public class DataValueSetServiceTest
     @Test
     public void optionComboExistsAndInDataElement() {
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( DEFAULT_COMBO_UUID );
+        dxf.getDataValues().get( 0 ).setCategoryOptionComboUuid( DEFAULT_COMBO_UUID );
 
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( "AAB2299E-ECD6-46CF-A61F-817D350" );
+        dxf.getDataValues().get( 0 ).setCategoryOptionComboUuid( "AAB2299E-ECD6-46CF-A61F-817D350" );
 
         try
         {
-            service.saveDataValueSet( dataValueSet );
+            service.saveDataValueSet( dxf );
             fail( "Shouldn't allow non existing option combo" );
         }
         catch ( IllegalArgumentException e )
@@ -385,7 +372,7 @@ public class DataValueSetServiceTest
     {
         long before = new Date().getTime();
 
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         long after = new Date().getTime();
 
@@ -401,7 +388,7 @@ public class DataValueSetServiceTest
 
         before = new Date().getTime();
 
-        service.saveDataValueSet( dataValueSet );
+        service.saveDataValueSet( dxf );
 
         after = new Date().getTime();
 
@@ -416,7 +403,7 @@ public class DataValueSetServiceTest
 
     private void setValue(String value)
     {
-        dataValueSet.getDataValues().get( 0 ).setValue( value );
+        dxf.getDataValues().get( 0 ).setValue( value );
     }
 
     private void verifyDataValue( long before, long after, DataValue dv )

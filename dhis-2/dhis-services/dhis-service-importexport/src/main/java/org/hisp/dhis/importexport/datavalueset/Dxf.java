@@ -27,64 +27,45 @@ package org.hisp.dhis.importexport.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType( XmlAccessType.FIELD )
-public class DataValueSet
+@XmlRootElement
+public class Dxf
 {
 
-    @XmlAttribute( name = "dataSet" )
-    private String dataSetUuid;
+    @XmlElementWrapper( name = "dataValues" )
+    @XmlElement( name = "dataValue" )
+    private List<DataValue> dataValues;
 
-    @XmlAttribute( name = "orgUnit", required = true )
-    private String organisationUnitUuid;
-
-    @XmlAttribute( name = "period", required = true )
-    private String periodIsoDate;
-
-    @XmlAttribute( name = "complete" )
-    private String completeDate;
-
-    public String getDataSetUuid()
+    @XmlElementWrapper( name = "dataValueSets" )
+    @XmlElement( name = "dataValueSet" )
+    private List<DataValueSet> dataValueSets;
+    
+    public List<DataValue> getDataValues()
     {
-        return dataSetUuid;
+        return dataValues;
     }
 
-    public void setDataSetUuid( String dataSetUuid )
+    public void setDataValues( List<DataValue> dataValues )
     {
-        this.dataSetUuid = dataSetUuid;
+        this.dataValues = dataValues;
     }
 
-    public String getOrganisationUnitUuid()
+    public List<DataValueSet> getDataValueSets()
     {
-        return organisationUnitUuid;
+        return dataValueSets;
     }
 
-    public void setOrganisationUnitUuid( String organisationUnitUuid )
+    public void setDataValueSets( List<DataValueSet> dataValueSets )
     {
-        this.organisationUnitUuid = organisationUnitUuid;
-    }
-
-    public String getPeriodIsoDate()
-    {
-        return periodIsoDate;
-    }
-
-    public void setPeriodIsoDate( String periodIsoDate )
-    {
-        this.periodIsoDate = periodIsoDate;
-    }
-
-    public String getCompleteDate()
-    {
-        return completeDate;
-    }
-
-    public void setCompleteDate( String completeDate )
-    {
-        this.completeDate = completeDate;
+        this.dataValueSets = dataValueSets;
     }
 
     

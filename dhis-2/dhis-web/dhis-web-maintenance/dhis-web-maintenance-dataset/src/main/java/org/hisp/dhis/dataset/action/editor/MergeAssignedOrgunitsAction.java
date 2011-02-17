@@ -102,7 +102,7 @@ public class MergeAssignedOrgunitsAction
             if ( iterator.hasNext() )
             {
                 DataSet dataSet = dataSetService.getDataSet( Integer.valueOf( iterator.next() ) );
-                selectedUnits.addAll( dataSet.getOrganisationUnis() );
+                selectedUnits.addAll( dataSet.getOrganisationUnits() );
 
                 iterator.remove();
             }
@@ -111,7 +111,7 @@ public class MergeAssignedOrgunitsAction
         for ( String dataSetId : selectedDataSets )
         {
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( dataSetId ) );
-            tempUnits = dataSet.getOrganisationUnis();
+            tempUnits = dataSet.getOrganisationUnits();
 
             if ( !(tempUnits.size() == selectedUnits.size() && tempUnits.containsAll( selectedUnits )) )
             {

@@ -17,7 +17,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.importexport.datavalueset.DataValueSet;
+import org.hisp.dhis.importexport.datavalueset.Dxf;
 import org.hisp.dhis.importexport.datavalueset.DataValueSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.beans.factory.annotation.Required;
@@ -36,7 +36,7 @@ public class RPCResource
     @POST
     @Path( "dataValueSets" )
     @Consumes( MediaType.APPLICATION_XML )
-    public void storeDataValueSet( DataValueSet dataValueSet )
+    public void storeDataValueSet( Dxf dataValueSet )
     {
         dataValueSetService.saveDataValueSet( dataValueSet );
     }
@@ -91,7 +91,7 @@ public class RPCResource
         t.append( "</p>\n" );
 
         t.append( "<h2>Org units reporting data set</h2>\n<ul>" );
-        for ( OrganisationUnit unit : dataSet.getOrganisationUnis() )
+        for ( OrganisationUnit unit : dataSet.getOrganisationUnits() )
         {
             t.append( "<li><b>" ).append( unit.getName() ).append( "</b> - " ).append( unit.getUuid() )
                 .append( "</li>" );
@@ -138,7 +138,12 @@ public class RPCResource
         t.append( "<p>Post according to the following template to " );
         t.append( "<a href=\"" ).append( uri ).append( "\">" ).append( uri ).append( "</a>:</p>" );
 
-        t.append( "<pre>" ).append( "&lt;dataValueSet xmlns=\"http://dhis2.org/schema/dataValueSet/0.1\"\n" );
+        t.append( "<pre>" );
+        t.append( "&lt;dxf xmlns=\"http://dhis2.org/schema/dxf/x.x\"&gt;\n  &lt;dataValues&gt;\n    &lt;dataValue      dataSet=\"uuid - only required if data element is registered to multiple data sets\"\n      period=\"201102\"\n      orgUnit=\"uuid\"\n      storedBy=\"string\"\n      dataElement=\"uuid\"\n      value=\"value\" /&gt;\n  &lt;/dataValues&gt;\n" );
+        t.append( "  &lt;dataValueSets&gt;\n    &lt;dataValueSet\n      dataSet=\"uuid\"\n      orgUnit=\"uuid\"\n      period=\"period in iso format\"\n      complete=\"date (yyyymmdd)\"/&gt;\n  &lt;/dataValueSets&gt;\n&lt;/dxf&gt;" );
+        t.append( "</pre>" );
+        
+        t.append( "<p>Old format</p><pre>" ).append( "&lt;dataValueSet xmlns=\"http://dhis2.org/schema/dataValueSet/0.1\"\n" );
         t.append( "    dataSet=\"dataSet UUID\" \n    period=\"periodInIsoFormat\"\n    orgUnit=\"unit UUID\"&gt;" );
 
         t.append( "\n  &lt;dataValue dataElement=\"data element UUID\" categoryOptionCombo=\"UUID, only specify if used\" storedBy=\"string\" value=\"value\"/&gt;" );
