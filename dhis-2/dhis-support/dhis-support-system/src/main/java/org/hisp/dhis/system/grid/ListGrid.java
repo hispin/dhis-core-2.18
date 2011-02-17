@@ -420,12 +420,12 @@ public class ListGrid
                 headerNames.add( header.getName() );
             }
             
-            buffer.append( headerNames );
+            buffer.append( headerNames  ).append( "\n" );
         }
         
         for ( List<String> row : grid )
         {
-            buffer.append( row );
+            buffer.append( row ).append( "\n" );
         }
         
         return buffer.append( "]" ).toString();

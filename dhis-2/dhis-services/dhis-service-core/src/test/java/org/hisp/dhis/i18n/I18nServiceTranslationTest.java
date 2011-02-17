@@ -113,8 +113,8 @@ public class I18nServiceTranslationTest
         i18nService.internationalise( dataElementA );
         
         assertEquals( "DataElementA", dataElementA.getName() );
-        assertEquals( "ShortNameA", dataElementA.getShortName() );
-        assertEquals( "DescriptionA", dataElementA.getDescription() );
+        assertEquals( "DataElementShortA", dataElementA.getShortName() );
+        assertEquals( "DataElementDescriptionA", dataElementA.getDescription() );
         
         i18nService.updateTranslation( dataElementClassNameA, dataElementIdA, localeB, translationsB );
         
@@ -140,8 +140,8 @@ public class I18nServiceTranslationTest
         for ( DataElement dataElement : dataElements )
         {
             assertEquals( "DataElementA", dataElement.getName() );
-            assertEquals( "ShortNameA", dataElement.getShortName() );
-            assertEquals( "DescriptionA", dataElement.getDescription() );            
+            assertEquals( "DataElementShortA", dataElement.getShortName() );
+            assertEquals( "DataElementDescriptionA", dataElement.getDescription() );            
         }
 
         i18nService.updateTranslation( dataElementClassNameA, dataElementIdA, localeB, translationsB );

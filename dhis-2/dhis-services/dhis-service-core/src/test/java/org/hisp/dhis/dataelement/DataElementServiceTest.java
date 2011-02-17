@@ -70,9 +70,9 @@ public class DataElementServiceTest
     {
         dataElement.setUuid( UUIdUtils.getUUId() );
         dataElement.setName( "DataElement" + uniqueCharacter );
-        dataElement.setAlternativeName( "AlternativeName" + uniqueCharacter );
-        dataElement.setShortName( "DE" + uniqueCharacter );
-        dataElement.setCode( "Code" + uniqueCharacter );
+        dataElement.setAlternativeName( "DataElementAlternative" + uniqueCharacter );
+        dataElement.setShortName( "DataElementShort" + uniqueCharacter );
+        dataElement.setCode( "DataElementCode" + uniqueCharacter );
         dataElement.setDescription( "DataElementDescription" + uniqueCharacter );
         dataElement.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
         dataElement.setType( DataElement.VALUE_TYPE_INT );
@@ -223,17 +223,17 @@ public class DataElementServiceTest
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
 
-        dataElementA = dataElementService.getDataElementByAlternativeName( "AlternativeNameA" );
+        dataElementA = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementService.getDataElementByAlternativeName( "AlternativeNameB" );
+        dataElementB = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementService.getDataElementByAlternativeName( "AlternativeNameC" );
+        DataElement dataElementC = dataElementService.getDataElementByAlternativeName( "DataElementAlternativeC" );
         assertNull( dataElementC );
     }
 
@@ -246,17 +246,17 @@ public class DataElementServiceTest
         int idA = dataElementService.addDataElement( dataElementA );
         int idB = dataElementService.addDataElement( dataElementB );
 
-        dataElementA = dataElementService.getDataElementByShortName( "ShortNameA" );
+        dataElementA = dataElementService.getDataElementByShortName( "DataElementShortA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementService.getDataElementByShortName( "ShortNameB" );
+        dataElementB = dataElementService.getDataElementByShortName( "DataElementShortB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementService.getDataElementByShortName( "ShortNameC" );
+        DataElement dataElementC = dataElementService.getDataElementByShortName( "DataElementShortC" );
         assertNull( dataElementC );
     }
 

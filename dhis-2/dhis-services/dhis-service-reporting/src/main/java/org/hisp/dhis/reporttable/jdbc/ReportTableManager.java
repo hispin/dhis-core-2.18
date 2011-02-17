@@ -29,11 +29,6 @@ package org.hisp.dhis.reporttable.jdbc;
 
 import java.util.Map;
 
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -59,24 +54,9 @@ public interface ReportTableManager
     void removeReportTable( ReportTable reportTable );
     
     /**
-     * Returns an AggregatedValueMap.
+     * Generates a map with a key identifiying the dimensions of each value.
      * 
-     * @param reportTable the ReportTable.
-     * @param indicator the Indicator.
-     * @param categoryOptionCombo the DataElementCategoryOptionCombo.
-     * @param period the Period.
-     * @param unit the OrganisationUnit.
-     * @return a Map with String as keys and Double as values.
+     * @param reportTable the ReportTable for which to create the value map.
      */
-    Map<String, Double> getAggregatedValueMap( ReportTable reportTable, IdentifiableObject indicator, 
-        DataElementCategoryOptionCombo categoryOptionCombo, Period period, OrganisationUnit unit );
-    
-    /**
-     * Instantiates and populates a Grid populated with data from the given 
-     * ReportTable.
-     * 
-     * @param reportTable the ReportTable.
-     * @return a Grid.
-     */
-    Grid getReportTableGrid( ReportTable reportTable );    
+    Map<String, Double> getAggregatedValueMap( ReportTable reportTable );
 }

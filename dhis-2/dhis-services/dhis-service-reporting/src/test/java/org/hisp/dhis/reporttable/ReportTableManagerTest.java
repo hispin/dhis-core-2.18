@@ -27,21 +27,10 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.hisp.dhis.reporttable.ReportTable.*;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.amplecode.quick.BatchHandler;
-import org.amplecode.quick.BatchHandlerFactory;
 import org.hisp.dhis.DhisTest;
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -49,9 +38,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
-import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -70,8 +56,6 @@ public class ReportTableManagerTest
     extends DhisTest
 {
     private ReportTableManager reportTableManager;
-
-    private BatchHandlerFactory batchHandlerFactory;
 
     private List<DataElement> dataElements;
     private List<Indicator> indicators;
@@ -121,8 +105,6 @@ public class ReportTableManagerTest
     {
         reportTableManager = (ReportTableManager) getBean( ReportTableManager.ID );
 
-        batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
         dataElements = new ArrayList<DataElement>();
         indicators = new ArrayList<Indicator>();
         dataSets = new ArrayList<DataSet>();
@@ -224,7 +206,7 @@ public class ReportTableManagerTest
     @Test
     public void testCreateReportTable()
     {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -232,7 +214,7 @@ public class ReportTableManagerTest
         
         reportTableManager.createReportTable( reportTable );
         
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
+        reportTable = new ReportTable( "Immunization", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -240,7 +222,7 @@ public class ReportTableManagerTest
         
         reportTableManager.createReportTable( reportTable );
         
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
+        reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -252,7 +234,7 @@ public class ReportTableManagerTest
     @Test
     public void testRemoveReportTable()
     {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -260,7 +242,7 @@ public class ReportTableManagerTest
         
         reportTableManager.removeReportTable( reportTable );
 
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
+        reportTable = new ReportTable( "Immunization", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -268,169 +250,13 @@ public class ReportTableManagerTest
         
         reportTableManager.removeReportTable( reportTable );
 
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
+        reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
         reportTable.init();
         
         reportTableManager.removeReportTable( reportTable );
-    }
-
-    @Test
-    public void testGetAggregatedValueMapForIndicator()
-    {
-        BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class );
-        
-        batchHandler.init();
-        
-        batchHandler.addObject( new AggregatedIndicatorValue( 'A', 'A', 8, 'A', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'A', 'A', 8, 'B', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'A', 'B', 8, 'A', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'A', 'B', 8, 'B', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'B', 'A', 8, 'A', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'B', 'A', 8, 'B', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'B', 'B', 8, 'A', 8, 1, 10, 20, 2 ) );
-        batchHandler.addObject( new AggregatedIndicatorValue( 'B', 'B', 8, 'B', 8, 1, 10, 20, 2 ) );
-        
-        batchHandler.flush();
-        
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, null, null, null, unitA );
-        
-        assertNotNull( map );
-        assertEquals( 4, map.entrySet().size() );
-        
-        Map<String, Double> reference = new HashMap<String, Double>();
-        
-        reference.put( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( INDICATOR_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( INDICATOR_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        
-        assertEquals( reference, map );
-    }
-
-    @Test
-    public void testGetAggregatedValueForDataElement()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
-        
-        batchHandler.init();
-        
-        batchHandler.addObject( new AggregatedDataValue( 'A', 1, 'A', 1, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 1, 'A', 1, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 1, 'B', 1, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 1, 'B', 1, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 1, 'A', 1, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 1, 'A', 1, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 1, 'B', 1, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 1, 'B', 1, 'B', 2, 10.0 ) );
-        
-        batchHandler.flush();        
-
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, null, null, null, unitA );
-        
-        assertNotNull( map );
-        assertEquals( 4, map.entrySet().size() );
-        
-        Map<String, Double> reference = new HashMap<String, Double>();
-        
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        
-        assertEquals( reference, map );
-    }
-
-    @Test
-    public void testGetAggregatedValueForDataElementWithCategoryOptionCombo()
-    {
-        BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class );
-        
-        batchHandler.init();
-        
-        batchHandler.addObject( new AggregatedDataValue( 'A', 'A', 'A', 3, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 'A', 'A', 3, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 'B', 'B', 3, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'A', 'B', 'B', 3, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 'A', 'A', 3, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 'A', 'A', 3, 'B', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 'B', 'B', 3, 'A', 2, 10.0 ) );
-        batchHandler.addObject( new AggregatedDataValue( 'B', 'B', 'B', 3, 'B', 2, 10.0 ) );
-        
-        batchHandler.flush();
-
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            categoryComboA, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, null, null, null, unitA );
-
-        assertNotNull( map );
-        assertEquals( 4, map.entrySet().size() );
-        
-        Map<String, Double> reference = new HashMap<String, Double>();
-        
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'A' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 10.0 );
-        reference.put( DATAELEMENT_ID + Integer.valueOf( 'B' ) + SEPARATOR + CATEGORYCOMBO_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 10.0 );
-        
-        assertEquals( reference, map );
-    }
-
-    @Test
-    public void testGetAggregatedValueForDataSet()
-    {
-        BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
-        
-        batchHandler.init();
-        
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'A', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'A', 'B', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'A', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'A', "NameA", 20, 10, 5 ) );
-        batchHandler.addObject( new DataSetCompletenessResult( 'B', 'B', "PeriodA", 'B', "NameA", 20, 10, 5 ) );
-        
-        batchHandler.flush();        
-
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable, null, null, null, unitA );
-        
-        assertNotNull( map );
-        assertEquals( 4, map.entrySet().size() );
-        
-        Map<String, Double> reference = new HashMap<String, Double>();
-        
-        reference.put( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 50.0 );
-        reference.put( DATASET_ID + Integer.valueOf( 'A' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 50.0 );
-        reference.put( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'A' ), 50.0 );
-        reference.put( DATASET_ID + Integer.valueOf( 'B' ) + SEPARATOR + PERIOD_ID + Integer.valueOf( 'B' ), 50.0 );
-        
-        assertEquals( reference, map );
     }
 }
 

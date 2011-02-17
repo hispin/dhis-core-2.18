@@ -19,9 +19,7 @@
     </property>
     
     <property name="existingTableName"/>
-    
-    <property name="mode"/>
-    
+        
     <property name="regression"/>
     
     <list name="dataElements" table="reporttable_dataelements">

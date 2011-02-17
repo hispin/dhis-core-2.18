@@ -71,7 +71,7 @@ public class DataSetServiceTest
     private void assertEq( char uniqueCharacter, DataSet dataSet )
     {
         assertEquals( "DataSet" + uniqueCharacter, dataSet.getName() );
-        assertEquals( "ShortName" + uniqueCharacter, dataSet.getShortName() );
+        assertEquals( "DataSetShort" + uniqueCharacter, dataSet.getShortName() );
         assertEquals( periodType, dataSet.getPeriodType() );
     }
     
@@ -166,9 +166,9 @@ public class DataSetServiceTest
         int idA = dataSetService.addDataSet( dataSetA );
         int idB = dataSetService.addDataSet( dataSetB );
 
-        assertEquals( dataSetService.getDataSetByShortName( "ShortNameA" ).getId(), idA );
-        assertEquals( dataSetService.getDataSetByShortName( "ShortNameB" ).getId(), idB );
-        assertNull( dataSetService.getDataSetByShortName( "ShortNameC" ) );
+        assertEquals( dataSetService.getDataSetByShortName( "DataSetShortA" ).getId(), idA );
+        assertEquals( dataSetService.getDataSetByShortName( "DataSetShortB" ).getId(), idB );
+        assertNull( dataSetService.getDataSetByShortName( "DataSetShortC" ) );
     }
 
     @Test

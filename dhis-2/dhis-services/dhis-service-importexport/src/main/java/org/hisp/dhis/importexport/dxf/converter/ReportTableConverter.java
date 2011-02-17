@@ -66,7 +66,6 @@ public class ReportTableConverter
     private static final String FIELD_NAME = "name";
     private static final String FIELD_TABLE_NAME = "tableName";
     private static final String FIELD_EXISTING_TABLE_NAME = "existingTableName";
-    private static final String FIELD_MODE = "mode";
     private static final String FIELD_REGRESSION = "regression";
     
     private static final String FIELD_DATA_ELEMENTS = "dataElements";
@@ -184,7 +183,6 @@ public class ReportTableConverter
                 writer.writeElement( FIELD_NAME, reportTable.getName() );
                 writer.writeElement( FIELD_TABLE_NAME, reportTable.getTableName() );
                 writer.writeElement( FIELD_EXISTING_TABLE_NAME, reportTable.getExistingTableName() );
-                writer.writeElement( FIELD_MODE, reportTable.getMode() );
                 writer.writeElement( FIELD_REGRESSION, String.valueOf( reportTable.isRegression() ) );
                 
                 writer.openElement( FIELD_DATA_ELEMENTS );
@@ -270,9 +268,6 @@ public class ReportTableConverter
 
             reader.moveToStartElement( FIELD_EXISTING_TABLE_NAME );
             reportTable.setExistingTableName( reader.getElementValue() );
-
-            reader.moveToStartElement( FIELD_MODE );
-            reportTable.setMode( reader.getElementValue() );
 
             reader.moveToStartElement( FIELD_REGRESSION );
             reportTable.setRegression( Boolean.parseBoolean( reader.getElementValue() ) );

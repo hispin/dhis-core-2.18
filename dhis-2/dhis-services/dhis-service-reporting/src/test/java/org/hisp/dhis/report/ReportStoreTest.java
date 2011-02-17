@@ -69,7 +69,9 @@ public class ReportStoreTest
         
         reportTableService = (ReportTableService) getBean( ReportTableService.ID );
         
-        reportTableA = new ReportTable( "ReportTableA", "ReportTableA" );
+        reportTableA = new ReportTable();
+        reportTableA.setName( "ReportTableA" );
+        reportTableA.setTableName( "ReportTableA" );
 
         reportTables = new HashSet<ReportTable>();
         reportTables.add( reportTableA );

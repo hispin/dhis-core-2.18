@@ -57,8 +57,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="dataMartService"
       ref="org.hisp.dhis.datamart.DataMartService"/>
-	<property name="aggregatedDataValueService"
-	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="completenessService"
       ref="registrationDataCompletenessService"/>
   </bean>

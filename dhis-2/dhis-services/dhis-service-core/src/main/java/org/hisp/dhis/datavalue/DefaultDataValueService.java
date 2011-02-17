@@ -30,7 +30,6 @@ package org.hisp.dhis.datavalue;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -64,13 +63,6 @@ public class DefaultDataValueService
         this.dataValueStore = dataValueStore;
     }
 
-    private DataValueAuditService dataValueAuditService;
-
-    public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
-    {
-        this.dataValueAuditService = dataValueAuditService;
-    }
-
     // -------------------------------------------------------------------------
     // Basic DataValue
     // -------------------------------------------------------------------------
@@ -91,12 +83,6 @@ public class DefaultDataValueService
         }
         else if ( isSignificant( dataValue ) )
         {
-            String oldValue = dataValueStore.getValue( dataValue.getDataElement().getId(), dataValue.getPeriod().getId(), dataValue.getSource().getId(), dataValue.getOptionCombo().getId() );
-            
-            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), dataValue.getStoredBy(), new Date(), oldValue);
-            
-            dataValueAuditService.addDataValueAudit( audit );
-            
             dataValueStore.updateDataValue( dataValue );
         }
     }
@@ -104,24 +90,18 @@ public class DefaultDataValueService
     @Transactional
     public void deleteDataValue( DataValue dataValue )
     {
-        dataValueAuditService.deleteDataValueAuditByDataValue( dataValue );
-
         dataValueStore.deleteDataValue( dataValue );
     }
 
     @Transactional
     public int deleteDataValuesBySource( Source source )
     {
-        dataValueAuditService.deleteDataValueAuditBySource( source );
-
         return dataValueStore.deleteDataValuesBySource( source );
     }
 
     @Transactional
     public int deleteDataValuesByDataElement( DataElement dataElement )
     {
-        dataValueAuditService.deleteDataValueAuditByDataElement( dataElement );
-
         return dataValueStore.deleteDataValuesByDataElement( dataElement );
     }
 

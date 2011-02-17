@@ -51,7 +51,6 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
-import org.hisp.dhis.reporttable.statement.GetReportTableDataStatement;
 import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
 import org.hisp.dhis.reporttable.statement.ReportTableStatement;
 import org.junit.Test;
@@ -153,7 +152,7 @@ public class ReportTableStatementTest
     @Test
     public void testCreateReportTableStatement()
     {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
         
@@ -163,7 +162,7 @@ public class ReportTableStatementTest
 
         assertNotNull( statement.getStatement() );
         
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
+        reportTable = new ReportTable( "Immunization", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -173,7 +172,7 @@ public class ReportTableStatementTest
         
         assertNotNull( statement.getStatement() );
         
-        reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -182,100 +181,12 @@ public class ReportTableStatementTest
         statement = new CreateReportTableStatement( reportTable, statementBuilder );
 
         assertNotNull( statement.getStatement() );
-    }
-
-    @Test
-    public void testGetReportTableDataStatementIndicatorsMode()
-    {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false, 
-            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
-        
-        statement.setInt( ReportTable.PERIOD_ID, 5 );
-        statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
-        
-        String expected = 
-            "SELECT SUM(value), indicatorid, periodid FROM aggregatedindicatorvalue " +
-            "WHERE organisationunitid='10' GROUP BY organisationunitid, indicatorid, periodid ";
-        
-        assertNotNull( statement.getStatement() );
-        assertEquals( expected, statement.getStatement() );
-    }
-
-    @Test
-    public void testGetReportTableDataStatementDataElementsModeWithCategoryOptionCombos()
-    {        
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            categoryCombo, true, false, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
-
-        statement.setInt( ReportTable.PERIOD_ID, 5 );
-        statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
-        
-        String expected = 
-            "SELECT SUM(value), dataelementid, categoryoptioncomboid FROM aggregateddatavalue " +
-            "WHERE periodid='5' AND organisationunitid='10' GROUP BY periodid, organisationunitid, dataelementid, categoryoptioncomboid ";
-        
-        assertNotNull( statement.getStatement() );
-        assertEquals( expected, statement.getStatement() );
-    }
-
-    @Test
-    public void testGetReportTableDataStatementDataElementsMode()
-    {        
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATAELEMENTS, false,
-            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
-
-        statement.setInt( ReportTable.PERIOD_ID, 5 );
-        statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
-        
-        String expected = 
-            "SELECT SUM(value), dataelementid, periodid FROM aggregateddatavalue " +
-            "WHERE organisationunitid='10' GROUP BY organisationunitid, dataelementid, periodid ";
-        
-        assertNotNull( statement.getStatement() );
-        assertEquals( expected, statement.getStatement() );
-    }
-
-    @Test
-    public void testGetReportTableDataStatementDataSetsMode()
-    {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_DATASETS, false,
-            new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, relatives, null, i18nFormat, "january_2000" );
-
-        reportTable.init();
-        
-        ReportTableStatement statement = new GetReportTableDataStatement( reportTable );
-
-        statement.setInt( ReportTable.PERIOD_ID, 5 );
-        statement.setInt( ReportTable.ORGANISATIONUNIT_ID, 10 );
-        
-        String expected =
-            "SELECT SUM(value), datasetid, periodid FROM aggregateddatasetcompleteness " +
-            "WHERE organisationunitid='10' GROUP BY organisationunitid, datasetid, periodid ";
-        
-        assertNotNull( statement.getStatement() );
-        assertEquals( expected, statement.getStatement() );
     }
 
     @Test
     public void testRemoveReportTableStatement()
     {
-        ReportTable reportTable = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTable = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 

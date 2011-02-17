@@ -101,18 +101,18 @@ public class ImportAnalyserTest
         assertEquals( 11, violations.size() );
         
         assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "name", "DataElementA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "alternativename", "AlternativeNameA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "shortname", "ShortNameA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "code", "CodeA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "alternativename", "DataElementAlternativeA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "shortname", "DataElementShortA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( DataElement.class, "code", "DataElementCodeA" ) ) );
         
         assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "name", "IndicatorA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "alternativename", "AlternativeNameA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "shortname", "ShortNameA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "code", "CodeA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "alternativename", "IndicatorAlternativeA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "shortname", "IndicatorShortA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( Indicator.class, "code", "IndicatorCodeA" ) ) );
         
         assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "name", "OrganisationUnitA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "shortname", "ShortNameA" ) ) );
-        assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "code", "CodeA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "shortname", "OrganisationUnitShortA" ) ) );
+        assertTrue( violations.contains( new EntityPropertyValue( OrganisationUnit.class, "code", "OrganisationUnitCodeA" ) ) );
     }
 
     @Test

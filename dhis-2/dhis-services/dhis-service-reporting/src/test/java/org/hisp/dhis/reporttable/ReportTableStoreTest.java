@@ -180,13 +180,13 @@ public class ReportTableStoreTest
     @Test
     public void testSaveGetReportTable()
     {
-        ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTableA = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );        
-        ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTableB = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
-        ReportTable reportTableC = new ReportTable( "Assualt", ReportTable.MODE_DATASETS, false,
+        ReportTable reportTableC = new ReportTable( "Assualt", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
@@ -232,10 +232,10 @@ public class ReportTableStoreTest
     @Test
     public void testDeleteReportTable()
     {
-        ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTableA = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );        
-        ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTableB = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
@@ -259,10 +259,10 @@ public class ReportTableStoreTest
     @Test
     public void testGetAllReportTables()
     {
-        ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTableA = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );        
-        ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTableB = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
@@ -278,10 +278,10 @@ public class ReportTableStoreTest
     @Test
     public void testGetReportTableByName()
     {
-        ReportTable reportTableA = new ReportTable( "Immunization", ReportTable.MODE_INDICATORS, false,
+        ReportTable reportTableA = new ReportTable( "Immunization", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, true, true, false, relatives, null, i18nFormat, "january_2000" );        
-        ReportTable reportTableB = new ReportTable( "Prescriptions", ReportTable.MODE_DATAELEMENTS, false,
+        ReportTable reportTableB = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             null, false, false, true, relatives, null, i18nFormat, "january_2000" );
         
