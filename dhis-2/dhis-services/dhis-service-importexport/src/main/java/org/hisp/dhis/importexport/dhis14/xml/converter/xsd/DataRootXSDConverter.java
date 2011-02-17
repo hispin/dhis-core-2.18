@@ -40,7 +40,7 @@ import org.hisp.dhis.importexport.XMLConverter;
 public class DataRootXSDConverter
     implements XMLConverter
 {
-    private static final String DHIS_VERSION = "1.4.0.108";
+    private static final String DHIS_VERSION = "1.4.0.129";
     
     // -------------------------------------------------------------------------
     // Constructor
@@ -63,25 +63,31 @@ public class DataRootXSDConverter
 
         writer.closeElement();
         
-        /*
+        
         writer.openElement( "xsd:complexType" );
         
         writer.openElement( "xsd:sequence" );
         
         writer.writeElement( "xsd:element", "", "ref", "DataElement", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "DataElementAndIndicatorGroup", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "DataElementCalculauted", "minOccurs", "0", "maxOccurs", "unbounded" );
         writer.writeElement( "xsd:element", "", "ref", "DataElementGroupMember", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "Indicator", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "IndicatorType", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "IndicatorGroupMember", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "DataPeriodType", "minOccurs", "0", "maxOccurs", "unbounded" );
-        writer.writeElement( "xsd:element", "", "ref", "UserName", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "OrgUnit", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "OrgUnitHierarchy", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "OrgUnitStructure", "minOccurs", "0", "maxOccurs", "unbounded" );
         writer.writeElement( "xsd:element", "", "ref", "DataType", "minOccurs", "0", "maxOccurs", "unbounded" );
-        
+        //writer.writeElement( "xsd:element", "", "ref", "Indicator", "minOccurs", "0", "maxOccurs", "unbounded" );
+        //writer.writeElement( "xsd:element", "", "ref", "IndicatorType", "minOccurs", "0", "maxOccurs", "unbounded" );
+        //writer.writeElement( "xsd:element", "", "ref", "IndicatorGroupMember", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "UserName", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "UserInfoRole", "minOccurs", "0", "maxOccurs", "unbounded" );
+        //writer.writeElement( "xsd:element", "", "ref", "DataType", "minOccurs", "0", "maxOccurs", "unbounded" );
+        writer.writeElement( "xsd:element", "", "ref", "DataPeriod", "minOccurs", "0", "maxOccurs", "unbounded" );
+        //writer.writeElement( "xsd:element", "", "ref", "DataPeriodType", "minOccurs", "0", "maxOccurs", "unbounded" );
+
         writer.closeElement();
         
         writer.closeElement();
-        */
+        
     }
     
     public void read( XMLReader reader, ImportParams params )

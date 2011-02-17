@@ -160,15 +160,18 @@ public class DataElementConverter
         
         if ( elements != null && elements.size() > 0 )
         {
+            int i = 0;
             for ( DataElement object : elements )
             {
                 final boolean calculated = object instanceof CalculatedDataElement;
                 final boolean saveCalculated = calculated ? ((CalculatedDataElement)object).isSaved() : false;
-                
+               
+                i++;
+
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( object.getId() ) );
-                writer.writeElement( FIELD_SORT_ORDER, object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : EMPTY );
+                writer.writeElement( FIELD_SORT_ORDER, object.getSortOrder() != null ? String.valueOf( object.getSortOrder() ) : String.valueOf( i++ ) );
                 writer.writeElement( FIELD_CODE, object.getCode() );
                 writer.writeElement( FIELD_NAME, object.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
