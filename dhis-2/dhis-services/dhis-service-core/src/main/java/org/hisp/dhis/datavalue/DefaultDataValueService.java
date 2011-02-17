@@ -30,6 +30,7 @@ package org.hisp.dhis.datavalue;
 import static org.hisp.dhis.dataelement.DataElement.AGGREGATION_OPERATOR_AVERAGE;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -90,6 +91,12 @@ public class DefaultDataValueService
         }
         else if ( isSignificant( dataValue ) )
         {
+            String oldValue = dataValueStore.getValue( dataValue.getDataElement().getId(), dataValue.getPeriod().getId(), dataValue.getSource().getId(), dataValue.getOptionCombo().getId() );
+            
+            DataValueAudit audit = new DataValueAudit(dataValue, dataValue.getValue(), dataValue.getStoredBy(), new Date(), oldValue);
+            
+            dataValueAuditService.addDataValueAudit( audit );
+            
             dataValueStore.updateDataValue( dataValue );
         }
     }
