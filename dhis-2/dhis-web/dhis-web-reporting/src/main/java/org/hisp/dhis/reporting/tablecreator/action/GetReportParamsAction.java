@@ -195,12 +195,9 @@ public class GetReportParamsAction
                 
                 for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
                 {
-                    int month = i + 1;
-    
-                    cal.add( Calendar.MONTH, -1 );
-                    
-                    Period period = periodType.createPeriod( cal.getTime() );
-                    
+                    int month = i + 1;    
+                    cal.add( Calendar.MONTH, -1 );                    
+                    Period period = periodType.createPeriod( cal.getTime() );                    
                     String periodName = format.formatPeriod( period );
                     
                     reportingPeriods.put( month, periodName );

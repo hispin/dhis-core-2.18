@@ -168,19 +168,7 @@ public class GetTableOptionsAction
     {
         this.id = id;
     }
-    
-    private String mode;
-
-    public String getMode()
-    {
-        return mode;
-    }
-
-    public void setMode( String mode )
-    {
-        this.mode = mode;
-    }
-    
+        
     private boolean dimension;
 
     public boolean isDimension()
@@ -333,36 +321,41 @@ public class GetTableOptionsAction
         // Available metadata
         // ---------------------------------------------------------------------
 
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        if ( dimension )
+        {
+            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
+            
+            Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );            
+        }
+        else
+        {        
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+            
+            Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+            
+            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
+            
+            Collections.sort( dataElements, new DataElementNameComparator() );
+            
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+            
+            displayPropertyHandler.handle( dataElements );
+            
+            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+            
+            Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+                    
+            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+            
+            Collections.sort( indicators, indicatorComparator );
+            
+            displayPropertyHandler.handle( indicators );
+            
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+            
+            Collections.sort( dataSets, new DataSetNameComparator() ); 
+        }
         
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
-        
-        dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        
-        Collections.sort( dataElements, new DataElementNameComparator() );
-        
-        FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-        
-        displayPropertyHandler.handle( dataElements );
-        
-        categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
-        
-        Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );
-        
-        indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-        
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-                
-        indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        
-        Collections.sort( indicators, indicatorComparator );
-        
-        displayPropertyHandler.handle( indicators );
-        
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        
-        Collections.sort( dataSets, new DataSetNameComparator() ); 
-    
         periodTypes = periodService.getAllPeriodTypes();
         
         periods = new MonthlyPeriodType().generatePeriods( new Date() );
@@ -389,11 +382,8 @@ public class GetTableOptionsAction
         for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
         {
             int month = i + 1;
-
-            cal.add( Calendar.MONTH, -1 );
-            
-            Period period = periodType.createPeriod( cal.getTime() );
-            
+            cal.add( Calendar.MONTH, -1 );            
+            Period period = periodType.createPeriod( cal.getTime() );            
             String periodName = format.formatPeriod( period );
             
             reportingPeriods.put( month, periodName );

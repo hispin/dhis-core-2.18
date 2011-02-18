@@ -37,21 +37,9 @@ function saveTableReceived( messageElement )
 
 function selectTableForm()
 {
-    if ( isNotNull( "selectedDataElements" ) )
-    {
-        selectAllById( "selectedDataElements" );
-    }
-    
-    if ( isNotNull( "selectedIndicators" ) )
-    {
-       selectAllById( "selectedIndicators" );
-    }
-        
-    if ( isNotNull( "selectedDataSets" ) )
-    {
-        selectAllById( "selectedDataSets" );
-    }
-    
+    selectAllById( "selectedDataElements" );
+    selectAllById( "selectedIndicators" );
+    selectAllById( "selectedDataSets" );
     selectAllById( "selectedPeriods" );
     selectAllById( "selectedOrganisationUnits" );   
 }
@@ -77,35 +65,14 @@ function validateCollections()
         
         return false;
     }
-    
-    if ( isChecked( "doIndicators" ) && isChecked( "doPeriods" ) && isChecked( "doOrganisationUnits" ) )
+        
+    if ( !hasElements( "selectedDataElements" ) && !hasElements( "selectedIndicators" ) && !hasElements( "selectedDataSets" ) )
     {
-        setMessage( i18n_cannot_crosstab_all_dimensions );
+        setMessage( i18n_must_select_at_least_one_indictor_data_element_data_set );
         
         return false;
     }
-    
-    if ( !isTrue( "dimension" ) && !isChecked( "doIndicators" ) && !isChecked( "doPeriods" ) && !isChecked( "doOrganisationUnits" ) )
-    {
-        setMessage( i18n_cannot_crosstab_no_dimensions );
         
-        return false;
-    }
-    
-    if ( isNotNull( "selectedDataElements" ) && !hasElements( "selectedDataElements" ) )
-    {
-        setMessage( i18n_must_select_at_least_one_dataelement );
-        
-        return false;
-    }
-    
-    if ( isNotNull( "selectedIndicators" ) && !hasElements( "selectedIndicators" ) )
-    {
-        setMessage( i18n_must_select_at_least_one_indicator );
-        
-        return false;
-    }
-    
     if ( !hasElements( "selectedOrganisationUnits" ) && !organisationUnitReportParamsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_unit );
