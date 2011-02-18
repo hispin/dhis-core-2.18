@@ -230,6 +230,10 @@ public class GridTest
 
         List<String> rowB = grid.getRow( 1 );        
         assertTrue( rowB.contains( "21" ) );
+        
+        grid.limitGrid( 0 );
+        
+        assertEquals( 2, grid.getRows().size() );
     }
     
     @Test
@@ -241,7 +245,7 @@ public class GridTest
         grid.addRow().addValue( "2" ).addValue( "b" );
         grid.addRow().addValue( "3" ).addValue( "c" );
         
-        grid.sortGrid( 2, true );
+        grid.sortGrid( 2, 1 );
 
         List<String> rowA = grid.getRow( 0 );
         assertTrue( rowA.contains( "c" ) );
@@ -259,7 +263,7 @@ public class GridTest
         grid.addRow().addValue( "2" ).addValue( "b" );
         grid.addRow().addValue( "1" ).addValue( "c" );
         
-        grid.sortGrid( 1, false );
+        grid.sortGrid( 1, -1 );
 
         List<String> rowA = grid.getRow( 0 );
         assertTrue( rowA.contains( "1" ) );

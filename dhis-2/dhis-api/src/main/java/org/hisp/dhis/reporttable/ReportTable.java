@@ -88,6 +88,10 @@ public class ReportTable
     
     public static final String REGRESSION_COLUMN_PREFIX = "regression_";
     
+    public static final int ASC = -1;
+    public static final int DESC = 1;
+    public static final int NONE = 0;
+    
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>() { {
         put( DATAELEMENT_ID, "Data element ID" );
         put( DATAELEMENT_NAME, "Data element" );
@@ -197,6 +201,16 @@ public class ReportTable
      * The ReportParams of the ReportTable.
      */
     private ReportParams reportParams;
+    
+    /**
+     * The sort order if any applied to the last column of the table.
+     */
+    private Integer sortOrder;
+    
+    /**
+     * Inidicates whether the table should be limited from top by this value.
+     */
+    private Integer topLimit;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -607,6 +621,22 @@ public class ReportTable
         return string;
     }
     
+    /**
+     * Returns null-safe sort order, none if null.
+     */
+    public int sortOrder()
+    {
+        return sortOrder != null ? sortOrder : NONE;
+    }
+    
+    /**
+     * Returns null-safe top limit, 0 if null;
+     */
+    public int topLimit()
+    {
+        return topLimit != null ? topLimit : 0;
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -924,7 +954,27 @@ public class ReportTable
     {
         this.reportParams = reportParams;
     }
-    
+
+    public Integer getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    public Integer getTopLimit()
+    {
+        return topLimit;
+    }
+
+    public void setTopLimit( Integer topLimit )
+    {
+        this.topLimit = topLimit;
+    }
+
     // -------------------------------------------------------------------------
     // Get- and set-methods for transient properties
     // -------------------------------------------------------------------------

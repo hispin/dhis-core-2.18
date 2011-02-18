@@ -520,6 +520,20 @@ public class DefaultReportTableService
                 grid.addValue( toString( map.get( getIdentifier( row ) ) ) ); // Only category option combo is crosstab when total, row identifier will return total
             }
         }
+
+        // ---------------------------------------------------------------------
+        // Sort and limit
+        // ---------------------------------------------------------------------
+
+        if ( reportTable.topLimit() > 0 )
+        {
+            grid = grid.limitGrid( reportTable.topLimit() );
+        }
+        
+        if ( reportTable.sortOrder() != ReportTable.NONE )
+        {
+            grid.sortGrid( grid.getWidth(), reportTable.sortOrder() );
+        }
         
         return grid;
     }
