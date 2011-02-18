@@ -1,4 +1,8 @@
-package org.hisp.dhis.importexport.datavalueset;
+@javax.xml.bind.annotation.XmlSchema( 
+    namespace = "http://dhis2.org/schema/dxf/2.0-SNAPSHOT", 
+    xmlns = { @javax.xml.bind.annotation.XmlNs( prefix = "xs", namespaceURI = "http://www.w3.org/2001/XMLSchema" ) }, 
+    elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED )
+package org.hisp.dhis.importexport.dxf2.model;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -26,66 +30,3 @@ package org.hisp.dhis.importexport.datavalueset;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-
-@XmlAccessorType( XmlAccessType.FIELD )
-public class DataValueSet
-{
-
-    @XmlAttribute( name = "dataSet" )
-    private String dataSetUuid;
-
-    @XmlAttribute( name = "orgUnit", required = true )
-    private String organisationUnitUuid;
-
-    @XmlAttribute( name = "period", required = true )
-    private String periodIsoDate;
-
-    @XmlAttribute( name = "complete" )
-    private String completeDate;
-
-    public String getDataSetUuid()
-    {
-        return dataSetUuid;
-    }
-
-    public void setDataSetUuid( String dataSetUuid )
-    {
-        this.dataSetUuid = dataSetUuid;
-    }
-
-    public String getOrganisationUnitUuid()
-    {
-        return organisationUnitUuid;
-    }
-
-    public void setOrganisationUnitUuid( String organisationUnitUuid )
-    {
-        this.organisationUnitUuid = organisationUnitUuid;
-    }
-
-    public String getPeriodIsoDate()
-    {
-        return periodIsoDate;
-    }
-
-    public void setPeriodIsoDate( String periodIsoDate )
-    {
-        this.periodIsoDate = periodIsoDate;
-    }
-
-    public String getCompleteDate()
-    {
-        return completeDate;
-    }
-
-    public void setCompleteDate( String completeDate )
-    {
-        this.completeDate = completeDate;
-    }
-
-    
-}

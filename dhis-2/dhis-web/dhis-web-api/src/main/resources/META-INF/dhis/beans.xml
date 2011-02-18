@@ -5,17 +5,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Resources -->
 
+  <bean id="org.hisp.dhis.web.api.resources.ApiResource" class="org.hisp.dhis.web.api.resources.ApiResource" />
+
+  <bean id="org.hisp.dhis.web.api.resources.DataSetResource" class="org.hisp.dhis.web.api.resources.DataSetResource"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.web.api.resources.DataValueSetResource" class="org.hisp.dhis.web.api.resources.DataValueSetResource">
+    <property name="dataValueSetService" ref="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" />
+  </bean>
+
   <bean id="org.hisp.dhis.web.api.resources.MobileResource" class="org.hisp.dhis.web.api.resources.MobileResource"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
+  <bean id="org.hisp.dhis.web.api.resources.OrgUnitsResource" class="org.hisp.dhis.web.api.resources.OrgUnitsResource"
+    scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+  
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" class="org.hisp.dhis.web.api.resources.OrgUnitResource"
     scope="prototype">
     <property name="facilityReportingService" ref="org.hisp.dhis.web.api.service.FacilityReportingService" />
     <property name="activityReportingService" ref="org.hisp.dhis.web.api.service.ActivityReportingService" />
     <property name="programService" ref="org.hisp.dhis.web.api.service.IProgramService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
   <!-- Services -->
@@ -80,11 +96,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-
-  <bean id="org.hisp.dhis.web.api.rpc.RPCResource" class="org.hisp.dhis.web.api.rpc.RPCResource">
-    <property name="dataValueSetService" ref="org.hisp.dhis.importexport.datavalueset.DataValueSetService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
 	
 </beans>
 

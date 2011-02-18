@@ -1,4 +1,4 @@
-package org.hisp.dhis.importexport.datavalueset;
+package org.hisp.dhis.importexport.dxf2.model;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -27,27 +27,76 @@ package org.hisp.dhis.importexport.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlRootElement
-public class Dxf
+public class DataValueSet
 {
 
-    @XmlElementWrapper( name = "dataValues" )
+    @XmlAttribute( name = "dataSet", required = true )
+    private String dataSetUuid;
+
+    @XmlAttribute( name = "orgUnit", required = true )
+    private String organisationUnitUuid;
+
+    @XmlAttribute( name = "period", required = true )
+    private String periodIsoDate;
+
+    @XmlAttribute( name = "complete" )
+    private String completeDate;
+
     @XmlElement( name = "dataValue" )
     private List<DataValue> dataValues;
 
-    @XmlElementWrapper( name = "dataValueSets" )
-    @XmlElement( name = "dataValueSet" )
-    private List<DataValueSet> dataValueSets;
     
+    public String getDataSetUuid()
+    {
+        return dataSetUuid;
+    }
+
+    public void setDataSetUuid( String dataSetUuid )
+    {
+        this.dataSetUuid = dataSetUuid;
+    }
+
+    public String getOrganisationUnitUuid()
+    {
+        return organisationUnitUuid;
+    }
+
+    public void setOrganisationUnitUuid( String organisationUnitUuid )
+    {
+        this.organisationUnitUuid = organisationUnitUuid;
+    }
+
+    public String getPeriodIsoDate()
+    {
+        return periodIsoDate;
+    }
+
+    public void setPeriodIsoDate( String periodIsoDate )
+    {
+        this.periodIsoDate = periodIsoDate;
+    }
+
+    public String getCompleteDate()
+    {
+        return completeDate;
+    }
+
+    public void setCompleteDate( String completeDate )
+    {
+        this.completeDate = completeDate;
+    }
+
     public List<DataValue> getDataValues()
     {
         return dataValues;
@@ -58,15 +107,4 @@ public class Dxf
         this.dataValues = dataValues;
     }
 
-    public List<DataValueSet> getDataValueSets()
-    {
-        return dataValueSets;
-    }
-
-    public void setDataValueSets( List<DataValueSet> dataValueSets )
-    {
-        this.dataValueSets = dataValueSets;
-    }
-
-    
 }
