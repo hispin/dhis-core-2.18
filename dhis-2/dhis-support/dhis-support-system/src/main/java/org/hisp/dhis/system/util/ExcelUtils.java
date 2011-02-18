@@ -30,6 +30,8 @@ package org.hisp.dhis.system.util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import jxl.Workbook;
@@ -37,19 +39,25 @@ import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
+import jxl.format.UnderlineStyle;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
+import org.hisp.dhis.databrowser.DataBrowserTable;
+import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import com.lowagie.text.DocumentException;
 
 /**
  * @author Dang Duy Hieu
@@ -254,7 +262,7 @@ public class ExcelUtils
         throws RowsExceededException, WriteException
     {
         sheet.addCell( new Label( column, row, i18n.getString( "organisation_unit_level" ), format1 ) );
-        sheet.mergeCells( column, row, level-1, row );
+        sheet.mergeCells( column, row, level - 1, row );
 
         row++;
 
@@ -269,6 +277,119 @@ public class ExcelUtils
         throws RowsExceededException, WriteException
     {
         sheet.addCell( new Label( column, row, unit.getName(), format ) );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataBrowser
+    // -------------------------------------------------------------------------
+
+    public static void writeDataBrowserTitle( WritableSheet sheet, WritableCellFormat formatTitle,
+        WritableCellFormat formatSubTitle, String dataBrowserTitleName, String dataBrowserFromDate,
+        String dataBrowserToDate, String dataBrowserPeriodType, I18n i18n )
+    {
+        try
+        {
+            sheet.addCell( new Label( 0, 0, i18n.getString( "export_results_for" ) + " " + dataBrowserTitleName,
+                formatTitle ) );
+            sheet.mergeCells( 0, 0, 5, 0 );
+
+            if ( dataBrowserFromDate.length() == 0 )
+            {
+                dataBrowserFromDate = i18n.getString( "earliest" );
+            }
+
+            if ( dataBrowserToDate.length() == 0 )
+            {
+                dataBrowserToDate = i18n.getString( "latest" );
+            }
+
+            sheet.addCell( new Label( 0, 1, i18n.getString( "from_date" ) + ": " + dataBrowserFromDate + " "
+                + i18n.getString( "to_date" ) + ": " + dataBrowserToDate + ", " + i18n.getString( "period_type" )
+                + ": " + i18n.getString( dataBrowserPeriodType ), formatSubTitle ) );
+            sheet.mergeCells( 0, 1, 5, 1 );
+        }
+        catch ( RowsExceededException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( WriteException e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeDataBrowserHeaders( WritableSheet sheet, WritableCellFormat cellFormat,
+        DataBrowserTable dataBrowserTable, I18n i18n )
+    {
+        int column = 0;
+
+        try
+        {
+            for ( MetaValue col : dataBrowserTable.getColumns() )
+            {
+                sheet.addCell( new Label( column++, 3, i18n.getString( DateUtils.convertDate( col.getName() ) ),
+                    cellFormat ) );
+            }
+        }
+        catch ( RowsExceededException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( WriteException e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeDataBrowserResults( WritableSheet sheet, WritableCellFormat parFormat,
+        WritableCellFormat oddFormat, int fontSize, DataBrowserTable dataBrowserTable )
+        throws DocumentException
+    {
+        // Data rows
+        int i = 0;
+        int row = 4;
+        int column = 0;
+
+        WritableCellFormat cellFormat = null;
+        WritableFont zeroFont = new WritableFont( WritableFont.ARIAL, fontSize, WritableFont.BOLD, false,
+            UnderlineStyle.NO_UNDERLINE, Colour.RED );
+
+        Iterator<MetaValue> rowIt = dataBrowserTable.getRows().iterator();
+
+        for ( List<String> rows : dataBrowserTable.getCounts() )
+        {
+            i++;
+            MetaValue rowMeta = rowIt.next();
+
+            cellFormat = (i % 2 == 1) ? parFormat : oddFormat;
+
+            try
+            {
+                sheet.addCell( new Label( column++, row, rowMeta.getName(), cellFormat ) );
+
+                for ( String rowItem : rows )
+                {
+                    if ( rowItem.trim().matches( "0" ) )
+                    {
+                        cellFormat.setFont( zeroFont );
+                    }
+
+                    // Color zero values as bold red
+                    sheet.addCell( new Label( column++, row, rowItem, cellFormat ) );
+                }
+            }
+            catch ( RowsExceededException e )
+            {
+                e.printStackTrace();
+            }
+            catch ( WriteException e )
+            {
+                e.printStackTrace();
+            }
+
+            row++;
+            column = 0;
+        }
     }
 
     /**

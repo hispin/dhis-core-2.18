@@ -107,11 +107,17 @@
 	#end
 	    
 	<div>
-    	<form id="exportPDF" method="get" action="exportPDF.action">
+    	<form id="exportDrillDownForm" method="get" action="exportDrillDownResult.action">
+			$i18n.getString( "export_type" ):
+			<select id="exportType" name="exportType" onchange="changeType( this.value )">
+				<option value="pdf">$i18n.getString( "PDF" )</option>
+				<option value="xls" >$i18n.getString( "Excel" )</option>
+			</select>
 			$i18n.getString( "file_name" ):
 		    <input type="text" id="fileName" name="fileName" value="$i18n.getString( 'drilldown_export' )" class="{validate:{required:true}}"/>
 			$i18n.getString( "font_size" ): 
 			<select id="fontSize" name="fontSize" title="Font size to be used for export">
+				<option value="12">$i18n.getString( "12" )</option>
 				<option value="8">$i18n.getString( "8" )</option>
 				<option value="6">$i18n.getString( "6" )</option>
 				<option value="4">$i18n.getString( "4" )</option>
@@ -120,10 +126,10 @@
 			<select id="pageLayout" name="pageLayout" title="Page layout to be used for export">
 				<option value="Landscape">$i18n.getString( "landscape" )</option>
 				<option value="Portrait" >$i18n.getString( "portrait" )</option>
-			</select>	
-			<input type="submit" value="$i18n.getString( 'export_pdf' )" style="width:100px"/>		
+			</select>
+			<input type="submit" value="$i18n.getString( 'export' )" style="width:100px"/>
 		</form>
-	</div>    
+	</div>
     
 	<p>
 	#if ( $fromDate == "" || $toDate == "" )

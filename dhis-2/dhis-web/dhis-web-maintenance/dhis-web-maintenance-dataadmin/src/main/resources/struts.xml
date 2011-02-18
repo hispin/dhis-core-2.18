@@ -198,10 +198,10 @@
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 		</action>
 		
-		<action name="exportPDF"
-			class="org.hisp.dhis.dataadmin.action.databrowser.ExportPDFAction">
+		<action name="exportDrillDownResult"
+			class="org.hisp.dhis.dataadmin.action.databrowser.ExportDrillDownResultAction">
 			<result name="success" type="stream">
-				<param name="contentType">application/pdf</param>
+				<param name="contentType">${contentType}</param>
 				<param name="inputName">inputStream</param>
 				<param name="contentDisposition">
 					attachment;filename="${fileName}"</param>

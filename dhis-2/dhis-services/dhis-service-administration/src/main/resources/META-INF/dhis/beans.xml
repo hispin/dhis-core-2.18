@@ -109,6 +109,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.databrowser.DataBrowserPdfService"
     class="org.hisp.dhis.databrowser.DefaultDataBrowserPdfService"/>
 
+  <bean id="org.hisp.dhis.databrowser.DataBrowserXLSService"
+    class="org.hisp.dhis.databrowser.DefaultDataBrowserXLSService"/>
 
   <!-- Data merge -->
   

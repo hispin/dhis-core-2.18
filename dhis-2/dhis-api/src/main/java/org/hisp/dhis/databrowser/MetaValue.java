@@ -36,7 +36,6 @@ package org.hisp.dhis.databrowser;
  */
 public class MetaValue
 {
-
     /**
      * Id for row/column
      */

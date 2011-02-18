@@ -35,9 +35,9 @@ import org.hisp.dhis.i18n.I18n;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public interface DataBrowserPdfService
+public interface DataBrowserXLSService
 {
-    final String ID = DataBrowserPdfService.class.getName();
+    final String ID = DataBrowserXLSService.class.getName();
 
     /**
      * Returns an InputStream representing the tally sheet The InputStream will
@@ -57,6 +57,5 @@ public interface DataBrowserPdfService
      * @return void
      */
     void writeDataBrowserResult( String dataBrowserTitleName, String dataBrowserFromDate, String dataBrowserToDate,
-        String dataBrowserPeriodType, String pageLayout, int fontSize, DataBrowserTable dataBrowserTable,
-        OutputStream out, I18n i18n );
+        String dataBrowserPeriodType, int fontSize, DataBrowserTable dataBrowserTable, OutputStream out, I18n i18n );
 }
