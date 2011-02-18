@@ -252,7 +252,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet);
+			numResults = table.addColumnToAllRows(resultSet, true);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sqlsb.toString(), e);
@@ -348,7 +348,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet);
+			numResults = table.addColumnToAllRows(resultSet, false);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sql, e);
@@ -492,7 +492,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 				table.addColumnName(it.next().toString());
 			}
 			table.createStructure(resultSet);
-			table.addColumnToAllRows(resultSet);
+			table.addColumnToAllRows(resultSet, true);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sqlsb.toString(), e);
@@ -554,7 +554,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet);
+			numResults = table.addColumnToAllRows(resultSet, true);
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sql, e);
