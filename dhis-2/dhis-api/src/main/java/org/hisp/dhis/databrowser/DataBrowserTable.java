@@ -117,7 +117,7 @@ public class DataBrowserTable
      * @return 0 if ResultSet was empty else number of rows inserted with
      *         column.
      */
-    public Integer addColumnToAllRows( ResultSet resultSet )
+    public Integer addColumnToAllRows( ResultSet resultSet, Boolean addZeros )
     {
         boolean hasColumnName = false;
         boolean hasPeriodIds = false;
@@ -159,7 +159,7 @@ public class DataBrowserTable
                 {
                     for ( List<String> rowItem : this.counts )
                     {
-                        rowItem.add( "0" );
+                        rowItem.add( addZeros ?  "0": "" );
                     }
                     if ( hasPeriodIds && hasColumnName )
                     {
@@ -186,7 +186,7 @@ public class DataBrowserTable
                         makeEmptyCol = false;
                         for ( List<String> rowItem : this.counts )
                         {
-                            rowItem.add( "0" );
+                            rowItem.add( addZeros ?  "0": "" );
                         }
                         if ( hasColumnName )
                         {
@@ -213,6 +213,7 @@ public class DataBrowserTable
         {
             this.addZeroColumn();
         }
+        
         return countRows;
     }
 
