@@ -551,12 +551,14 @@ public class SearchAction
     private void convertColumnNames( DataBrowserTable dataBrowserTable )
     {
         allColumnsConverted = dataBrowserTable.getColumns();
-        PeriodType monthlyPeriodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
+
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeId );
 
         for ( MetaValue col : allColumnsConverted )
-        {
-            col.setName( dataBrowserService.convertDate( monthlyPeriodType, col.getName(), format ) );
-        }
+            {
+                   col.setName( dataBrowserService.convertDate( periodType, col.getName(), format ) );
+            }
     }
+
 
 }
