@@ -91,7 +91,7 @@
 	</table>  
 	<table width="100%">      
 		<tr>
-			<th>$i18n.getString( "design_dataentry" )</th>
+			<th>$i18n.getString( "design_dataentry_form" )</th>
 		</tr>
 		<tr>
 			<td>$editorManager.create( "designTextarea", "100%", "400" )</td>
