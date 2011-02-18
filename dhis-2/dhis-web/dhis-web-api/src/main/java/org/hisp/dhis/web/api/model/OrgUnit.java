@@ -32,7 +32,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class OrgUnit
     implements DataStreamSerializable
 {
@@ -159,4 +161,5 @@ public class OrgUnit
         this.updateProgramUrl = dataInputStream.readUTF();
         this.updateDataSetUrl = dataInputStream.readUTF();
     }
+
 }

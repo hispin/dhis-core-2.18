@@ -118,7 +118,6 @@ public class DataSet
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        // FIXME: Get implementation from client
         this.setId( dataInputStream.readInt() );
         this.setName( dataInputStream.readUTF() );
         this.setVersion( dataInputStream.readInt() );

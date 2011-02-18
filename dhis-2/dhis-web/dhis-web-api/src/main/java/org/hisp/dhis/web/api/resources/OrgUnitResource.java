@@ -36,12 +36,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
 import org.hisp.dhis.web.api.model.DataSet;
@@ -49,6 +54,7 @@ import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
 import org.hisp.dhis.web.api.model.ModelList;
+import org.hisp.dhis.web.api.model.OrgUnit;
 import org.hisp.dhis.web.api.service.ActivityReportingService;
 import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
@@ -58,9 +64,11 @@ import org.springframework.beans.factory.annotation.Required;
 
 @Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 @Consumes( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Path( "/orgUnits/{id}" )
 public class OrgUnitResource
 {
-
+    private OrganisationUnitService organisationUnitService;
+    
     private static Log log = LogFactory.getLog( ActivityReportingServiceImpl.class );
 
     private static final boolean DEBUG = log.isDebugEnabled();
@@ -71,14 +79,19 @@ public class OrgUnitResource
 
     private FacilityReportingService facilityReportingService;
 
-    // Set by parent resource
-    private OrganisationUnit unit;
+    @PathParam( "id" ) private int id;
 
-    public void setOrgUnit( OrganisationUnit unit )
-    {
-        this.unit = unit;
+    @Context UriInfo uriInfo;
+    
+    private OrganisationUnit getUnit() {
+        return organisationUnitService.getOrganisationUnit( id );
     }
-
+    
+    @GET
+    public OrgUnit getOrgUnit() {
+        return OrgUnitResource.getOrgUnit( getUnit(), uriInfo );
+    }
+    
     /**
      * Get activity plan, program forms and facility forms wrapped in a
      * {@link MobileModel}
@@ -92,11 +105,11 @@ public class OrgUnitResource
         MobileModel mobileModel = new MobileModel();
 
         if ( DEBUG )
-            log.debug( "Getting all resources for org unit " + unit.getName() );
+            log.debug( "Getting all resources for org unit " + getUnit().getName() );
 
-        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( unit, locale ) );
-        mobileModel.setPrograms( programService.getPrograms( unit, locale ) );
-        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( unit, locale ) );
+        mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
+        mobileModel.setPrograms( programService.getPrograms( getUnit(), locale ) );
+        mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale ) );
 
         return mobileModel;
     }
@@ -106,9 +119,9 @@ public class OrgUnitResource
     public DataSetList checkUpdatedDataSet( DataSetList dataSetList, @HeaderParam( "accept-language" ) String locale )
     {
         if ( DEBUG )
-            log.debug( "Checking updated datasets for org unit " + unit.getName() );
+            log.debug( "Checking updated datasets for org unit " + getUnit().getName() );
         DataSetList updatedDataSetList = new DataSetList();
-        List<DataSet> dataSets = facilityReportingService.getMobileDataSetsForUnit( unit, locale );
+        List<DataSet> dataSets = facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale );
         List<DataSet> currentDataSets = dataSetList.getCurrentDataSets();
         // List<DataSet> copyCurrentDataSets = new
         // ArrayList<DataSet>(currentDataSets.size());
@@ -158,7 +171,7 @@ public class OrgUnitResource
         }
         
         if ( DEBUG )
-            log.debug( "Returning updated datasets for org unit " + unit.getName() );
+            log.debug( "Returning updated datasets for org unit " + getUnit().getName() );
 
         return updatedDataSetList;
     }
@@ -170,7 +183,7 @@ public class OrgUnitResource
     @Path( "activitiyplan" )
     public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
     {
-        return activityReportingService.getCurrentActivityPlan( unit, locale );
+        return activityReportingService.getCurrentActivityPlan( getUnit(), locale );
     }
 
     /**
@@ -184,7 +197,7 @@ public class OrgUnitResource
     public void saveDataSetValues( DataSetValue dataSetValue )
         throws NotAllowedException
     {
-        facilityReportingService.saveDataSetValues( unit, dataSetValue );
+        facilityReportingService.saveDataSetValues( getUnit(), dataSetValue );
     }
 
     /**
@@ -199,7 +212,7 @@ public class OrgUnitResource
     public void saveActivityReport( ActivityValue activityValue )
         throws NotAllowedException
     {
-        activityReportingService.saveActivityReport( unit, activityValue );
+        activityReportingService.saveActivityReport( getUnit(), activityValue );
     }
 
     @POST
@@ -207,10 +220,39 @@ public class OrgUnitResource
     public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
-        model.setPrograms( programService.updateProgram( programsFromClient, locale, unit ) );
+        model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
         return model;
     }
 
+    public static OrgUnit getOrgUnit( OrganisationUnit unit, UriInfo uriInfo )
+    {
+        OrgUnit orgUnit = new OrgUnit();
+
+        orgUnit.setId( unit.getId() );
+        orgUnit.setName( unit.getShortName() );
+
+        orgUnit.setDownloadAllUrl( getOrgUnitUrlBuilder(uriInfo).path( "all" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setDownloadActivityPlanUrl( getOrgUnitUrlBuilder(uriInfo).path( "activitiyplan" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setUploadFacilityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "dataSets" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setUploadActivityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "activities" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setUpdateProgramUrl( getOrgUnitUrlBuilder(uriInfo).path( "programs" )
+            .build( unit.getId() ).toString() );
+        orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder(uriInfo).path( "updateDataSets" )
+            .build( unit.getId() ).toString() );
+        return orgUnit;
+    }
+
+    private static UriBuilder getOrgUnitUrlBuilder(UriInfo uriInfo)
+    {
+        return uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" );
+    }
+
+    
+    
     @Required
     public void setProgramService( IProgramService programService )
     {
@@ -227,6 +269,12 @@ public class OrgUnitResource
     public void setFacilityReportingService( FacilityReportingService facilityReportingService )
     {
         this.facilityReportingService = facilityReportingService;
+    }
+
+    @Required
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
 }

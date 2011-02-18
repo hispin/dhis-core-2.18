@@ -33,14 +33,12 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.web.api.model.OrgUnit;
@@ -48,9 +46,7 @@ import org.hisp.dhis.web.api.model.OrgUnits;
 import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
 
-import com.sun.jersey.api.core.ResourceContext;
-
-@Path( "/" )
+@Path( "/mobile" )
 @Produces( { DhisMediaType.MOBILE_SERIALIZED, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
 public class MobileResource
 {
@@ -59,13 +55,8 @@ public class MobileResource
 
     private CurrentUserService currentUserService;
 
-    private OrganisationUnitService organisationUnitService;
-
     @Context
     UriInfo uriInfo;
-
-    @Context
-    private ResourceContext rc;
 
     /**
      * Get the units associated with the currently logged in user
@@ -73,7 +64,6 @@ public class MobileResource
      * @throws NotAllowedException if no user is logged in
      */
     @GET
-    @Path( "mobile" )
     public OrgUnits getOrgUnitsForUser()
         throws NotAllowedException
     {
@@ -89,52 +79,16 @@ public class MobileResource
         List<OrgUnit> unitList = new ArrayList<OrgUnit>();
         for ( OrganisationUnit unit : units )
         {
-            unitList.add( getOrgUnit( unit ) );
+            unitList.add( OrgUnitResource.getOrgUnit( unit, uriInfo ) );
         }
 
         return new OrgUnits( unitList );
-    }
-
-    @Path( "orgUnits/{id}" )
-    public OrgUnitResource getOrgUnit( @PathParam( "id" ) int id )
-    {
-        OrgUnitResource resource = rc.getResource( OrgUnitResource.class );
-        resource.setOrgUnit( organisationUnitService.getOrganisationUnit( id ) );
-        return resource;
-    }
-
-    private OrgUnit getOrgUnit( OrganisationUnit unit )
-    {
-        OrgUnit orgUnit = new OrgUnit();
-
-        orgUnit.setId( unit.getId() );
-        orgUnit.setName( unit.getShortName() );
-
-        orgUnit.setDownloadAllUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "all" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setDownloadActivityPlanUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activitiyplan" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUploadFacilityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "dataSets" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUploadActivityReportUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "activities" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUpdateProgramUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "programs" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUpdateDataSetUrl( uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" ).path( "updateDataSets" )
-            .build( unit.getId() ).toString() );
-        return orgUnit;
     }
 
     @Required
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
-    }
-
-    @Required
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
 }
