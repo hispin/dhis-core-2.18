@@ -410,21 +410,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="selectionTreeManager"
       ref="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
   </bean>
-    
-  <bean id="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
-    class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction"
-    scope="prototype">
-    <property name="completenessService"
-      ref="registrationDataCompletenessService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
-    class="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction"
-    scope="prototype">
-    <property name="completenessService"
-      ref="registrationDataCompletenessService"/>
-  </bean>
-  
+      
   <!-- Tallysheet -->
   
   <bean id="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"

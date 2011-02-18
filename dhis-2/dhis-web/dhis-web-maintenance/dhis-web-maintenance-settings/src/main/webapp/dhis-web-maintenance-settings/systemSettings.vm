@@ -62,7 +62,13 @@
 <h4>$i18n.getString( "data_analysis_factor" )</h4>
 
 <p>
-	<input type="text" id="factorDeviation" name="factorDeviation" value="$factorDeviation"/>
+	<input type="text" id="factorDeviation" name="factorDeviation" value="$!factorDeviation"/>
+</p>
+
+<h4>$i18n.getString( "days_after_period_timeliness" )</h4>
+
+<p>
+	<input type="text" id="completenessOffset" name="completenessOffset" value="$!completenessOffset"/>
 </p>
 
 <p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></p>

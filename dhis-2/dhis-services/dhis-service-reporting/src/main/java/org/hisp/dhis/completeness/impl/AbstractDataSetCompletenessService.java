@@ -27,9 +27,11 @@ package org.hisp.dhis.completeness.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -38,17 +40,14 @@ import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.completeness.DataSetCompletenessConfiguration;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.external.configuration.ConfigurationManager;
-import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.external.location.LocationManagerException;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -67,24 +66,6 @@ public abstract class AbstractDataSetCompletenessService
     implements DataSetCompletenessService
 {
     private static final Log log = LogFactory.getLog( AbstractDataSetCompletenessService.class );
-    
-    // -------------------------------------------------------------------------
-    // Properties
-    // -------------------------------------------------------------------------
-
-    private String configDir;
-
-    public void setConfigDir( String configDir )
-    {
-        this.configDir = configDir;
-    }
-    
-    private String configFile;
-
-    public void setConfigFile( String configFile )
-    {
-        this.configFile = configFile;
-    }
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -131,19 +112,12 @@ public abstract class AbstractDataSetCompletenessService
     {
         this.completenessStore = completenessStore;
     }
+    
+    private SystemSettingManager systemSettingManager;
 
-    protected LocationManager locationManager;
-
-    public void setLocationManager( LocationManager locationManager )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.locationManager = locationManager;
-    }
-
-    protected ConfigurationManager<DataSetCompletenessConfiguration> configurationManager;
-
-    public void setConfigurationManager( ConfigurationManager<DataSetCompletenessConfiguration> configurationManager )
-    {
-        this.configurationManager = configurationManager;
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -181,7 +155,7 @@ public abstract class AbstractDataSetCompletenessService
     {
         log.info( "Data completeness export process started" );
         
-        DataSetCompletenessConfiguration config = getConfiguration();
+        int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );
         
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
         
@@ -216,7 +190,7 @@ public abstract class AbstractDataSetCompletenessService
                     {
                         if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
                         {
-                            deadline = config != null ? config.getDeadline( intersectingPeriod ) : null;
+                            deadline = getDeadline( intersectingPeriod, days );
                             
                             result = getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
                             
@@ -245,7 +219,8 @@ public abstract class AbstractDataSetCompletenessService
     {
         final Period period = periodService.getPeriod( periodId );
         
-        Date deadline = getConfiguration() != null ? getConfiguration().getDeadline( period ) : null;
+        int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );        
+        Date deadline = getDeadline( period, days );
         
         final Collection<? extends Source> children = organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId );
         
@@ -280,7 +255,8 @@ public abstract class AbstractDataSetCompletenessService
     {
         final Period period = periodService.getPeriod( periodId );
 
-        Date deadline = getConfiguration() != null ? getConfiguration().getDeadline( period ) : null;
+        int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );        
+        Date deadline = getDeadline( period, days );
         
         final DataSet dataSet = dataSetService.getDataSet( dataSetId );
         
@@ -334,39 +310,7 @@ public abstract class AbstractDataSetCompletenessService
         
         return result;
     }
-    
-    // -------------------------------------------------------------------------
-    // Configuration
-    // -------------------------------------------------------------------------
-
-    public void setConfiguration( DataSetCompletenessConfiguration configuration )
-    {
-        try
-        {
-            OutputStream out = locationManager.getOutputStream( configFile, configDir );
-            
-            configurationManager.setConfiguration( configuration, out );
-        }
-        catch ( LocationManagerException ex )
-        {
-            throw new RuntimeException( "Failed to set configuration", ex );
-        }
-    }
-    
-    public DataSetCompletenessConfiguration getConfiguration()
-    {
-        try
-        {
-            InputStream in = locationManager.getInputStream( configFile, configDir );
-            
-            return configurationManager.getConfiguration( in, DataSetCompletenessConfiguration.class );
-        }
-        catch ( LocationManagerException ex )
-        {
-            return null;
-        }
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Index
     // -------------------------------------------------------------------------
@@ -379,5 +323,27 @@ public abstract class AbstractDataSetCompletenessService
     public void dropIndex()
     {
         completenessStore.dropIndex();
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Date getDeadline( Period period, int days )
+    {
+        Calendar cal = Calendar.getInstance();
+        
+        Date date = null;
+        
+        if ( period != null )
+        {
+            cal.clear();                
+            cal.setTime( period.getEndDate() );                                       
+            cal.add( Calendar.DAY_OF_MONTH, days );
+            
+            date = cal.getTime();
+        }
+        
+        return date;
     }
 }

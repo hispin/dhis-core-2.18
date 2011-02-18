@@ -203,7 +203,6 @@ public class DefaultSelectionTreeManager
     // Session methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     protected Map getSession()
     {
         return ActionContext.getContext().getSession();

@@ -143,7 +143,6 @@ public class DefaultTreeStateManager
         return treeState;
     }
 
-    @SuppressWarnings( "unchecked" )
     protected Map getSession()
     {
         return ActionContext.getContext().getSession();

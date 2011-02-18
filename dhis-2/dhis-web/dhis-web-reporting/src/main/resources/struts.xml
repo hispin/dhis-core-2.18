@@ -283,16 +283,6 @@
       <result name="pdf" type="gridPdfResult"/>
       <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
     </action> 
-        
-    <action name="displayConfigureDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessConfigurationAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/configureDataCompletenessForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-    </action>
-    
-    <action name="setDataCompletenessConfiguration" class="org.hisp.dhis.reporting.completeness.action.SetDataCompletenessConfigurationAction">
-      <result name="success" type="redirect">displayViewDataCompletenessForm.action</result>
-    </action>
     
     <!-- DataSet Report -->
     

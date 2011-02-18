@@ -53,6 +53,7 @@ public interface SystemSettingManager
     final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
     final String KEY_AGGREGATION_STRATEGY = "aggregationStrategy";
+    final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
     
     final String KEY_CHR_IMAGE_DIRECTORY = "chrImageDirectory";
@@ -65,6 +66,7 @@ public interface SystemSettingManager
     final String AGGREGATION_STRATEGY_REAL_TIME = "real_time";
     final String AGGREGATION_STRATEGY_BATCH = "batch";
     final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
+    final int DEFAULT_COMPLETENESS_OFFSET = 15;
     
     void saveSystemSetting( String name, Serializable value );   
 
