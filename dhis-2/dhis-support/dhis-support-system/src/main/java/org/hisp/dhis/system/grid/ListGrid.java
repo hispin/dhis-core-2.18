@@ -30,6 +30,8 @@ package org.hisp.dhis.system.grid;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRException;
@@ -301,6 +303,27 @@ public class ListGrid
         return this;
     }
     
+    public Grid limitGrid( int limit )
+    {
+        grid = grid.subList( 0, limit );
+        
+        return this;
+    }
+    
+    public Grid sortGrid( int columnIndex, boolean descending )
+    {
+        columnIndex--;
+        
+        if ( columnIndex < 0 || columnIndex >= getWidth() )
+        {
+            return this; // Silently ignore
+        }
+        
+        Collections.sort( grid, new GridRowComparator( columnIndex, descending ) );
+        
+        return this;
+    }
+    
     public Grid addRegressionColumn( int columnIndex )
     {
         verifyGridState();
@@ -344,9 +367,9 @@ public class ListGrid
         return this;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // JRDataSource implementation
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public boolean next()
         throws JRException
@@ -373,9 +396,9 @@ public class ListGrid
         return headerIndex != -1 ? getRow( currentRowReadIndex ).get( headerIndex ) : null;
     }
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Supportive methods
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Verifies that all grid rows are of the same length, and that the number
@@ -402,14 +425,14 @@ public class ListGrid
         }
     }
     
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // toString
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer( "[" );
+        StringBuffer buffer = new StringBuffer( "[\n" );
         
         if ( headers != null && headers.size() > 0 )
         {
@@ -429,5 +452,29 @@ public class ListGrid
         }
         
         return buffer.append( "]" ).toString();
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator
+    // -------------------------------------------------------------------------
+
+    protected static class GridRowComparator
+        implements Comparator<List<String>>
+    {
+        private int columnIndex;
+        private boolean descending;
+
+        protected GridRowComparator( int columnIndex, boolean descending )
+        {
+            this.columnIndex = columnIndex;
+            this.descending = descending;
+        }
+        
+        @Override
+        public int compare( List<String> list1, List<String> list2 )
+        {
+            return descending ? list2.get( columnIndex ).compareTo( 
+                list1.get( columnIndex ) ) : list1.get( columnIndex ).compareTo( list2.get( columnIndex ) );
+        }
     }
 }

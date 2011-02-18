@@ -165,6 +165,21 @@ public interface Grid
     Grid removeColumn( GridHeader header );
     
     /**
+     * Limits the grid from top by the given argument number.
+     * 
+     * @param limit the top limit.
+     */
+    Grid limitGrid( int limit );
+    
+    /**
+     * Sorts the grid ascending on the column at the given columnIndex.
+     * 
+     * @param columnIndex the column index, starting on 1.
+     * @param descending indicates whether to sort ascending or descending.
+     */
+    Grid sortGrid( int columnIndex, boolean descending );
+    
+    /**
      * Adds a regression column to the grid. Column must hold numeric data.
      * 
      * @param columnIndex the index of the base column.

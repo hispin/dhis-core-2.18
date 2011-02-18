@@ -39,6 +39,8 @@ import org.hisp.dhis.common.GridHeader;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.hisp.dhis.system.grid.ListGrid;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
@@ -212,6 +214,58 @@ public class GridTest
         grid.removeColumn( headerB );
         
         assertEquals( 2, grid.getWidth() );
+    }
+
+    @Test
+    public void testLimit()
+    {
+        assertEquals( 4, grid.getRows().size() );
+        
+        grid.limitGrid( 2 );
+        
+        assertEquals( 2, grid.getRows().size() );
+        
+        List<String> rowA = grid.getRow( 0 );
+        assertTrue( rowA.contains( "11" ) );
+
+        List<String> rowB = grid.getRow( 1 );        
+        assertTrue( rowB.contains( "21" ) );
+    }
+    
+    @Test
+    public void testSortA()
+    {
+        Grid grid = new ListGrid();
+        
+        grid.addRow().addValue( "1" ).addValue( "a" );
+        grid.addRow().addValue( "2" ).addValue( "b" );
+        grid.addRow().addValue( "3" ).addValue( "c" );
+        
+        grid.sortGrid( 2, true );
+
+        List<String> rowA = grid.getRow( 0 );
+        assertTrue( rowA.contains( "c" ) );
+
+        List<String> rowB = grid.getRow( 1 );
+        assertTrue( rowB.contains( "b" ) );        
+    }
+
+    @Test
+    public void testSortB()
+    {
+        Grid grid = new ListGrid();
+        
+        grid.addRow().addValue( "3" ).addValue( "a" );
+        grid.addRow().addValue( "2" ).addValue( "b" );
+        grid.addRow().addValue( "1" ).addValue( "c" );
+        
+        grid.sortGrid( 1, false );
+
+        List<String> rowA = grid.getRow( 0 );
+        assertTrue( rowA.contains( "1" ) );
+
+        List<String> rowB = grid.getRow( 1 );
+        assertTrue( rowB.contains( "2" ) );        
     }
     
     @Test
