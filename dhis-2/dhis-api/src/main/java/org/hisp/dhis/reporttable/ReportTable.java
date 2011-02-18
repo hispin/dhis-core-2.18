@@ -388,40 +388,18 @@ public class ReportTable
         addIfEmpty( columns ); // Allow for all or none crosstab dimensions
         addIfEmpty( rows );
         
-        if ( !isDoIndicators() )
-        {
-            indexColumns.add( INDICATOR_ID );
-            indexNameColumns.add( INDICATOR_NAME );
-        }
-        
-        if ( !isDoPeriods() )
-        {
-            indexColumns.add( PERIOD_ID );
-            indexNameColumns.add( PERIOD_NAME );
-        }
-        
-        if ( !isDoUnits() )
-        {
-            indexColumns.add( ORGANISATIONUNIT_ID );
-            indexNameColumns.add( ORGANISATIONUNIT_NAME );
-        }
+        add( indexColumns, INDICATOR_ID, doIndicators );
+        add( indexColumns, PERIOD_ID, doPeriods );
+        add( indexColumns, ORGANISATIONUNIT_ID, doUnits );
+        add( indexNameColumns, INDICATOR_NAME, doIndicators );
+        add( indexNameColumns, PERIOD_NAME, doPeriods );
+        add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );        
     }
 
-    /**
-     * Adds an empty list of IdentifiableObjects to the given list if empty.
-     */
-    private void addIfEmpty( List<List<IdentifiableObject>> list )
-    {
-        if ( list != null && list.size() == 0 )
-        {
-            list.add( Arrays.asList( new IdentifiableObject[0] ) );
-        }
-    }
-    
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-        
+    
     /**
      * Updates the existing table name with the current name.
      */
@@ -667,6 +645,17 @@ public class ReportTable
     {
         return TABLE_PREFIX + databaseEncode( name );
     }
+
+    /**
+     * Adds an empty list of IdentifiableObjects to the given list if empty.
+     */
+    private void addIfEmpty( List<List<IdentifiableObject>> list )
+    {
+        if ( list != null && list.size() == 0 )
+        {
+            list.add( Arrays.asList( new IdentifiableObject[0] ) );
+        }
+    }
     
     /**
      * Returns the number of empty lists among the argument lists.
@@ -702,6 +691,17 @@ public class ReportTable
         }        
     }
 
+    /**
+     * Adds the given object to the given list if not skip argument is true.
+     */
+    private static <T> void add( List<T> list, T object, boolean skip )
+    {
+        if ( !skip )
+        {
+            list.add( object );
+        }
+    }
+    
     /**
      * Removes duplicates from the given list while maintaining the order.
      */
