@@ -902,4 +902,50 @@ public class ReportTableGridTest
         assertEquals( String.valueOf( 17.0 ), grid.getRow( 6 ).get( 9 ) );
         assertEquals( String.valueOf( 18.0 ), grid.getRow( 7 ).get( 9 ) );
     }
+
+    @Test
+    public void testGetIndicatorReportTableTopLimit()
+    {
+        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
+            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+        reportTable.setTopLimit( 2 );
+        
+        int id = reportTableService.saveReportTable( reportTable );
+
+        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, 0, 0 );
+
+        assertEquals( 2, grid.getHeight() );
+        
+        assertEquals( String.valueOf( 11.0 ), grid.getRow( 0 ).get( 7 ) );
+        assertEquals( String.valueOf( 12.0 ), grid.getRow( 0 ).get( 8 ) );
+        
+        assertEquals( String.valueOf( 13.0 ), grid.getRow( 1 ).get( 7 ) );
+        assertEquals( String.valueOf( 14.0 ), grid.getRow( 1 ).get( 8 ) );
+    }
+
+    @Test
+    public void testGetIndicatorReportTableSortOrder()
+    {
+        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
+            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+        reportTable.setSortOrder( ReportTable.DESC );
+        
+        int id = reportTableService.saveReportTable( reportTable );
+
+        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, 0, 0 );
+
+        assertEquals( String.valueOf( 17.0 ), grid.getRow( 0 ).get( 7 ) );
+        assertEquals( String.valueOf( 18.0 ), grid.getRow( 0 ).get( 8 ) );
+
+        assertEquals( String.valueOf( 15.0 ), grid.getRow( 1 ).get( 7 ) );
+        assertEquals( String.valueOf( 16.0 ), grid.getRow( 1 ).get( 8 ) );
+
+        assertEquals( String.valueOf( 13.0 ), grid.getRow( 2 ).get( 7 ) );
+        assertEquals( String.valueOf( 14.0 ), grid.getRow( 2 ).get( 8 ) );
+        
+        assertEquals( String.valueOf( 11.0 ), grid.getRow( 3 ).get( 7 ) );
+        assertEquals( String.valueOf( 12.0 ), grid.getRow( 3 ).get( 8 ) );
+    }
 }

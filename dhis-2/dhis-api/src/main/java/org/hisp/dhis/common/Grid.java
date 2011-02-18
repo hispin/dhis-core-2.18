@@ -167,7 +167,7 @@ public interface Grid
     /**
      * Limits the grid from top by the given argument number.
      * 
-     * @param limit the top limit.
+     * @param limit the top limit, must be greater than zero to have an effect.
      */
     Grid limitGrid( int limit );
     
@@ -175,9 +175,10 @@ public interface Grid
      * Sorts the grid ascending on the column at the given columnIndex.
      * 
      * @param columnIndex the column index, starting on 1.
-     * @param descending indicates whether to sort ascending or descending.
+     * @param order a negative value indicates ascending order, a positive value 
+     *        indicates descending order, zero value indicates no sorting.
      */
-    Grid sortGrid( int columnIndex, boolean descending );
+    Grid sortGrid( int columnIndex, int order );
     
     /**
      * Adds a regression column to the grid. Column must hold numeric data.

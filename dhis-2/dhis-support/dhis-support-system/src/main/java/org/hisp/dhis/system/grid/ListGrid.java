@@ -305,12 +305,15 @@ public class ListGrid
     
     public Grid limitGrid( int limit )
     {
-        grid = grid.subList( 0, limit );
+        if ( limit > 0 )
+        {
+            grid = grid.subList( 0, limit );
+        }
         
         return this;
     }
     
-    public Grid sortGrid( int columnIndex, boolean descending )
+    public Grid sortGrid( int columnIndex, int order )
     {
         columnIndex--;
         
@@ -319,7 +322,7 @@ public class ListGrid
             return this; // Silently ignore
         }
         
-        Collections.sort( grid, new GridRowComparator( columnIndex, descending ) );
+        Collections.sort( grid, new GridRowComparator( columnIndex, order ) );
         
         return this;
     }
@@ -462,18 +465,23 @@ public class ListGrid
         implements Comparator<List<String>>
     {
         private int columnIndex;
-        private boolean descending;
+        private int order;
 
-        protected GridRowComparator( int columnIndex, boolean descending )
+        protected GridRowComparator( int columnIndex, int order )
         {
             this.columnIndex = columnIndex;
-            this.descending = descending;
+            this.order = order;
         }
         
         @Override
         public int compare( List<String> list1, List<String> list2 )
         {
-            return descending ? list2.get( columnIndex ).compareTo( 
+            if ( order == 0 )
+            {
+                return 0;
+            }
+            
+            return order > 0 ? list2.get( columnIndex ).compareTo( 
                 list1.get( columnIndex ) ) : list1.get( columnIndex ).compareTo( list2.get( columnIndex ) );
         }
     }
