@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataadmin.action.databrowser;
+package org.hisp.dhis.dataadmin.action;
 
 /*
  * Copyright (c) 2004-${year}, University of Oslo
@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.databrowser.DataBrowserPdfService;
 import org.hisp.dhis.databrowser.DataBrowserTable;
 import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.i18n.I18n;
@@ -42,10 +41,10 @@ import org.hisp.dhis.util.SessionUtils;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author briane, eivinhb
- * @version $Id ExportPDFAction.java Oct 21, 2010 ddhieu$
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-public class ExportPDFAction
+public abstract class AbstractExportDataBrowserResult
     implements Action
 {
     private static final String KEY_DATABROWSERTITLENAME = "dataBrowserTitleName";
@@ -58,26 +57,11 @@ public class ExportPDFAction
 
     private static final String KEY_DATABROWSERTABLE = "dataBrowserTableResults";
 
-    private static final String REGEX_EXTENSION_PDF = "\\.pdf";
-
-    private static final String EXTENSION_PDF = ".pdf";
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private DataBrowserPdfService dataBrowserPdfService;
-
-    public void setDataBrowserPdfService( DataBrowserPdfService dataBrowserPdfService )
-    {
-        this.dataBrowserPdfService = dataBrowserPdfService;
-    }
-
     // -------------------------------------------------------------------------
     // I18n
     // -------------------------------------------------------------------------
 
-    private I18n i18n;
+    protected I18n i18n;
 
     public void setI18n( I18n i18n )
     {
@@ -88,7 +72,7 @@ public class ExportPDFAction
     // Input / output
     // -------------------------------------------------------------------------
 
-    private DataBrowserTable dataBrowserTable;
+    protected DataBrowserTable dataBrowserTable;
 
     public List<MetaValue> getAllColumns()
     {
@@ -110,18 +94,18 @@ public class ExportPDFAction
         return dataBrowserTable.getRows().iterator();
     }
 
-    private InputStream inputStream;
+    protected InputStream inputStream;
 
     public InputStream getInputStream()
     {
         return inputStream;
     }
 
-    private String fileName;
+    protected String fileName;
 
     public void setFileName( String fileName )
     {
-        this.fileName = fileName.replaceAll( REGEX_EXTENSION_PDF, "" ).concat( EXTENSION_PDF );
+        this.fileName = fileName;
     }
 
     public String getFileName()
@@ -129,18 +113,32 @@ public class ExportPDFAction
         return this.fileName;
     }
 
-    private int fontSize;
+    protected String pageLayout;
+
+    public void setPageLayout( String pageLayout )
+    {
+        this.pageLayout = pageLayout;
+    }
+
+    protected int fontSize;
 
     public void setFontSize( int fontSize )
     {
         this.fontSize = fontSize;
     }
 
-    private String pageLayout;
+    protected String exportType;
 
-    public void setPageLayout( String pageLayout )
+    public void setExportType( String type )
     {
-        this.pageLayout = pageLayout;
+        this.exportType = type;
+    }
+    
+    protected String contentType;
+    
+    public String getContentType()
+    {
+        return contentType;
     }
 
     // -------------------------------------------------------------------------
@@ -157,17 +155,21 @@ public class ExportPDFAction
         String dataBrowserPeriodType = (String) SessionUtils.getSessionVar( KEY_DATABROWSERPERIODTYPE );
         DataBrowserTable dataBrowserTable = (DataBrowserTable) SessionUtils.getSessionVar( KEY_DATABROWSERTABLE );
 
-        // Export to PDF
+        // Export to XLS
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        dataBrowserPdfService.writeDataBrowserResult( dataBrowserTitleName, dataBrowserFromDate, dataBrowserToDate,
-            dataBrowserPeriodType, pageLayout, fileName, fontSize, dataBrowserTable, baos, i18n );
+        executeExportResult( dataBrowserTitleName, dataBrowserFromDate, dataBrowserToDate, dataBrowserPeriodType,
+            pageLayout, fontSize, dataBrowserTable, baos, i18n );
 
         // Set final inputStream for Velocity
         inputStream = new ByteArrayInputStream( baos.toByteArray() );
 
         return SUCCESS;
     }
+
+    protected abstract void executeExportResult( String dataBrowserTitleName, String dataBrowserFromDate,
+        String dataBrowserToDate, String dataBrowserPeriodType, String pageLayout, int fontSize,
+        DataBrowserTable dataBrowserTable, ByteArrayOutputStream baos, I18n i18n );
 
 }

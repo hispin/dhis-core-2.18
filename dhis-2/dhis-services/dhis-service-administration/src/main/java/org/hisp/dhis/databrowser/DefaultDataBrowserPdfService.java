@@ -67,7 +67,7 @@ public class DefaultDataBrowserPdfService
     private static final Color oddColor = new Color( 0xFCFCFC ); // Whiteish
 
     public void writeDataBrowserResult( String dataBrowserTitleName, String dataBrowserFromDate,
-        String dataBrowserToDate, String dataBrowserPeriodType, String pageLayout, String fileName, int fontSize,
+        String dataBrowserToDate, String dataBrowserPeriodType, String pageLayout, int fontSize,
         DataBrowserTable dataBrowserTable, OutputStream out, I18n i18n )
     {
         // There is a problem with IText regarding setting of landscape. The
@@ -130,22 +130,21 @@ public class DefaultDataBrowserPdfService
         String dataBrowserToDate, String dataBrowserPeriodType, I18n i18n )
         throws DocumentException
     {
-        Paragraph titleParagraph = new Paragraph( i18n.getString( "export_results_for" ) + " " + dataBrowserTitleName, PDFUtils.getBoldFont( 12 ) );
+        Paragraph titleParagraph = new Paragraph( i18n.getString( "export_results_for" ) + " " + dataBrowserTitleName,
+            PDFUtils.getBoldFont( 12 ) );
 
-        String fromDate = dataBrowserFromDate;
         if ( dataBrowserFromDate.length() == 0 )
         {
-            fromDate = i18n.getString( "earliest" );
+            dataBrowserFromDate = i18n.getString( "earliest" );
         }
 
-        String toDate = dataBrowserToDate;
         if ( dataBrowserToDate.length() == 0 )
         {
-            toDate = i18n.getString( "latest" );
+            dataBrowserToDate = i18n.getString( "latest" );
         }
 
-        Paragraph periodParagraph = new Paragraph( i18n.getString( "from_date" ) + ": " + fromDate + " "
-            + i18n.getString( "to_date" ) + ": " + toDate + ", " + i18n.getString( "period_type" ) + ": "
+        Paragraph periodParagraph = new Paragraph( i18n.getString( "from_date" ) + ": " + dataBrowserFromDate + " "
+            + i18n.getString( "to_date" ) + ": " + dataBrowserToDate + ", " + i18n.getString( "period_type" ) + ": "
             + i18n.getString( dataBrowserPeriodType ), PDFUtils.getFont( 8 ) );
 
         if ( i18n != null )
@@ -184,6 +183,7 @@ public class DefaultDataBrowserPdfService
     {
         // Data rows
         int i = 0;
+        Color color;
         Iterator<MetaValue> rowIt = dataBrowserTable.getRows().iterator();
 
         for ( List<String> col : dataBrowserTable.getCounts() )
@@ -191,15 +191,7 @@ public class DefaultDataBrowserPdfService
             i = i + 1;
             MetaValue rowMeta = rowIt.next();
 
-            Color color;
-            if ( i % 2 == 1 )
-            {
-                color = oddColor;
-            }
-            else
-            {
-                color = parColor;
-            }
+            color = ( i % 2 == 1 ) ? oddColor : parColor;
 
             PdfPCell cell = this.createTextCell( rowMeta.getName(), fontSize, color );
 
@@ -211,7 +203,7 @@ public class DefaultDataBrowserPdfService
                     FontFactory.HELVETICA, fontSize, Font.NORMAL, Color.BLACK ) );
 
                 // Color zero values as bold red
-                if ( rowItem.trim().matches("0") )
+                if ( rowItem.trim().matches( "0" ) )
                 {
                     phrase.getFont().setStyle( Font.BOLD );
                     phrase.getFont().setColor( Color.RED );
