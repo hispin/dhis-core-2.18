@@ -84,6 +84,7 @@ public class TableAlteror
         executeSql( "DROP TABLE reporttable_categoryoptioncombos" );
         executeSql( "DROP TABLE dashboardcontent_datamartexports" );
         executeSql( "DROP TABLE customvalue" );
+        executeSql( "DROP TABLE reporttable_displaycolumns" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
@@ -98,7 +99,7 @@ public class TableAlteror
         executeSql( "DELETE FROM periodtype WHERE name='Relative'" );
 
         // mapping
-        executeSql( "DROP TABLE mapOrganisationUnitRelation" );
+        executeSql( "DROP TABLE maporganisationunitrelation" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
         executeSql( "DROP TABLE map" );
         
