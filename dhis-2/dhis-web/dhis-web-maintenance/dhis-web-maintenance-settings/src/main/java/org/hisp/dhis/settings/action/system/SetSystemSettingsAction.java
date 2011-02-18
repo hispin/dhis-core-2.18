@@ -27,7 +27,7 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.*;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
@@ -125,6 +125,13 @@ public class SetSystemSettingsAction
     {
         this.aggregationStrategy = aggregationStrategy;
     }
+    
+    private Integer completenessOffset;
+
+    public void setCompletenessOffset( Integer completenessOffset )
+    {
+        this.completenessOffset = completenessOffset;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -143,7 +150,7 @@ public class SetSystemSettingsAction
         {
             startModule = null;
         }
-
+        
         systemSettingManager.saveSystemSetting( KEY_APPLICATION_TITLE, applicationTitle );
         systemSettingManager.saveSystemSetting( KEY_FLAG, flag );
         systemSettingManager.saveSystemSetting( KEY_START_MODULE, startModule );
@@ -152,6 +159,7 @@ public class SetSystemSettingsAction
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         styleManager.setCurrentStyle( currentStyle );
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
+        systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
         
         return SUCCESS;
     }

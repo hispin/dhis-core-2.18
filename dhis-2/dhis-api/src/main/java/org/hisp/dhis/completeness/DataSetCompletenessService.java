@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
@@ -100,20 +99,6 @@ public interface DataSetCompletenessService
      * @return a Collection of DataSetCompletenessResults.
      */
     DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, DataSet dataSet );
-    
-    /**
-     * Sets the configuration for the data completeness functionality.
-     * @param configuration the configuration object.
-     */
-    void setConfiguration( DataSetCompletenessConfiguration configuration );
-    
-    /**
-     * Gets the configuration for the data completeness functionality.
-     * @return the configuration for the data completeness functionality.
-     * @throws NoConfigurationFoundException
-     */
-    DataSetCompletenessConfiguration getConfiguration()
-        throws NoConfigurationFoundException;
     
     /**
      * Creates an index on the aggregateddatasetcompleteness table.

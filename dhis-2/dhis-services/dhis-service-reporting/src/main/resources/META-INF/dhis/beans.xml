@@ -141,8 +141,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   
   <bean id="compulsoryDataCompletenessService"
 	class="org.hisp.dhis.completeness.impl.CompulsoryDataSetCompletenessService">
-    <property name="configDir" value="reports"/>
-    <property name="configFile" value="dataSetCompletenessConfiguration.xml"/>
     <property name="batchHandlerFactory" ref="batchHandlerFactory"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
@@ -154,8 +152,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.period.PeriodService"/>
     <property name="completenessStore"
       ref="org.hisp.dhis.completeness.DataSetCompletenessStore"/>
-	<property name="locationManager" ref="locationManager"/>
-	<property name="configurationManager" ref="configurationManager"/>
+    <property name="systemSettingManager" 
+    	ref="org.hisp.dhis.options.SystemSettingManager"/>
   </bean>
   
   <bean id="ratioDataCompletenessService"

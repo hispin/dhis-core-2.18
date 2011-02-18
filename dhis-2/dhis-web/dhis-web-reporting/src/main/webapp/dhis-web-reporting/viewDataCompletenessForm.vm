@@ -16,8 +16,7 @@
         <td valign="bottom">
         	<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:140px" onclick="getCompleteness( 'pdf' )"/>
             <input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:140px" onclick="getCompleteness( 'xls' )"/><br>
-        	<input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="getCompleteness( 'csv' )"/>
-            <input type="button" value="$i18n.getString( 'configuration' )" style="width:140px" onclick="window.location.href='displayConfigureDataCompletenessForm.action'"/><br><br>        	
+        	<input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="getCompleteness( 'csv' )"/><br><br>        	
                 	
             <input type="radio" name="criteria" id="registrationRadio" value="registration" checked="checked" onclick="displayCompleteness()"/>
             <label for="registrationRadio">$i18n.getString( 'based_on_registration' )</label><br/>

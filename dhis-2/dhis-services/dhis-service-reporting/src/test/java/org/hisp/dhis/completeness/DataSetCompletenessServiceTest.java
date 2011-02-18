@@ -40,14 +40,12 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.external.configuration.NoConfigurationFoundException;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -165,14 +163,6 @@ public class DataSetCompletenessServiceTest
         onTimeA = getDate( 2000, 2, 10 );
         tooLateA = getDate( 2000, 2, 25 );
         tooLateB = getDate( 2000, 3, 25 );
-
-        // ---------------------------------------------------------------------
-        // Configure DataSetCompleteness
-        // ---------------------------------------------------------------------
-        
-        DataSetCompletenessConfiguration config = new DataSetCompletenessConfiguration( 15 );
-                
-        completenessService.setConfiguration( config );
     }
 
     @Override
@@ -405,19 +395,5 @@ public class DataSetCompletenessServiceTest
         assertEquals( referenceA, resultA );
         assertEquals( referenceB, resultB );
         assertEquals( referenceC, resultC );        
-    }
-
-    @Ignore
-    @Test
-    public void testConfiguration()
-        throws NoConfigurationFoundException
-    {
-        DataSetCompletenessConfiguration config = new DataSetCompletenessConfiguration( 15 );
-        
-        completenessService.setConfiguration( config );
-        
-        DataSetCompletenessConfiguration receivedConfig = completenessService.getConfiguration();
-        
-        assertNotNull( receivedConfig );
     }
 }
