@@ -37,9 +37,18 @@ function saveTableReceived( messageElement )
 
 function selectTableForm()
 {
-    selectAllById( "selectedDataElements" );
-    selectAllById( "selectedIndicators" );
-    selectAllById( "selectedDataSets" );
+	selectAllById( "selectedDataElements" );
+	
+	if ( isNotNull( "selectedIndicators" ) )
+	{
+		selectAllById( "selectedIndicators" );
+	}
+    
+    if ( isNotNull( "selectedDataSets" ) )
+    {
+    	selectAllById( "selectedDataSets" );
+    }
+    
     selectAllById( "selectedPeriods" );
     selectAllById( "selectedOrganisationUnits" );   
 }

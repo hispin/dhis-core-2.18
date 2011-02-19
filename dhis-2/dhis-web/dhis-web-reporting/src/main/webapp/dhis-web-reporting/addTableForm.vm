@@ -22,21 +22,42 @@
 	</tr>
 	<tr>
 		<td><label for="tableName">$i18n.getString( "name" )</label></td>
-		<td><input type="text" id="tableName" name="tableName" style="width:270px" value="$!reportTable.name"></td>
+		<td><input type="text" id="tableName" name="tableName" style="width:260px" value="$!reportTable.name"></td>
 		<td><label for="doIndicators">$i18n.getString( "indicators_data_elements_data_sets" )</label></td>
 		<td><input type="checkbox" id="doIndicators" name="doIndicators" value="true"#if( $reportTable.doIndicators ) checked#end></td>
 	</tr>
 	<tr>
-		<td><label for="regression">$i18n.getString( "include_regression" )</label></td>
-        <td><input type="checkbox" onclick="toggleRegression()" id="regression" name="regression" value="true"#if( $reportTable.isRegression() ) checked#end></td>
+		<td><label for="sortOrder">$i18n.getString( "sort_order" )</label></td>
+		<td>
+			<select id="sortOrder" name="sortOrder" style="width:260px">
+			<option value="0"#if( $reportTable.sortOrder() == 0 ) selected#end>$i18n.getString( "none" )</option>
+			<option value="-1"#if( $reportTable.sortOrder() == -1 ) selected#end>$i18n.getString( "ascending" )</option>
+			<option value="1"#if( $reportTable.sortOrder() == 1 ) selected#end>$i18n.getString( "descending" )</option>
+    		</select>
+    	</td>
         <td><label for="doOrganisationUnits">$i18n.getString( "organisation_units" )</label></td>
 		<td><input type="checkbox" id="doOrganisationUnits" name="doOrganisationUnits" value="true"#if( $reportTable.doUnits ) checked#end></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td></td>
+		<td><label for="topLimit">$i18n.getString( "top_limit" )</label></td>
+		<td>
+			<select id="topLimit" name="topLimit" style="width:260px">
+			<option value="0"#if( $reportTable.topLimit() == 0 ) selected#end>$i18n.getString( "none" )</option>
+			<option value="5"#if( $reportTable.topLimit() == 5 ) selected#end>5</option>
+			<option value="10"#if( $reportTable.topLimit() == 10 ) selected#end>10</option>
+			<option value="20"#if( $reportTable.topLimit() == 20 ) selected#end>20</option>
+			<option value="50"#if( $reportTable.topLimit() == 50 ) selected#end>50</option>
+			<option value="100"#if( $reportTable.topLimit() == 100 ) selected#end>100</option>
+    		</select>
+    	</td>
 		<td><label for="doPeriods">$i18n.getString( "periods" )</label></td>
 		<td><input type="checkbox" id="doPeriods" name="doPeriods" value="true"#if( $reportTable.doPeriods ) checked#end></td>
+	</tr>
+	<tr>
+		<td><label for="regression">$i18n.getString( "include_regression" )</label></td>
+        <td><input type="checkbox" onclick="toggleRegression()" id="regression" name="regression" value="true"#if( $reportTable.isRegression() ) checked#end></td>
+		<td></td>
+		<td></td>
 	</tr>
 	
 	<tr>
@@ -49,8 +70,11 @@
 		
     #if( $dimension )
     
-    <!-- Dimensional -->
+    <!-- Dimensional Data Elements-->
     
+    <tr>
+        <th>$i18n.getString( "available_dataelements" )</th>      
+    </tr>
     <tr>
         <td>
             <select id="categoryComboId" name="categoryComboId" style="min-width:640px" onchange="getCategoryComboDataElements()">
@@ -60,6 +84,38 @@
                 #end
             </select>
         </td>
+    </tr>    
+    <tr>
+        <td>
+            <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">             
+                #foreach ( $element in $dataElements )
+                    <option value="$element.id">$encoder.htmlEncode( $element.name )</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"><input 
+                type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"><input 
+                type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"><input 
+                type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )">
+        </td>
+    </tr>
+    <tr>
+        <th>$i18n.getString( "selected_dataelements" )</th>
+    </tr>
+    <tr>
+        <td>
+            <select multiple size="6" id="selectedDataElements" name="selectedDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
+                #foreach( $element in $selectedDataElements )
+                    <option value="$element.id">$encoder.htmlEncode( $element.name )</option>
+                #end
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td style="height:15px"></td>
     </tr>
     
     #else
@@ -116,8 +172,7 @@
     
     <tr>
         <th>$i18n.getString( "available_dataelements" )</th>      
-    </tr>
-    
+    </tr>        
     <tr>
         <td>
             <select id="dataElementGroupId" name="dataElementGroupId" style="min-width:640px" onchange="getDataElements()">
@@ -127,8 +182,7 @@
                 #end
             </select>
         </td>
-    </tr>	    
-    
+    </tr>        
     <tr>
         <td>
             <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">             

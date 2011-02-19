@@ -32,6 +32,9 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
@@ -247,11 +250,11 @@ public class GridTest
         
         grid.sortGrid( 2, 1 );
 
-        List<String> rowA = grid.getRow( 0 );
-        assertTrue( rowA.contains( "c" ) );
+        List<String> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( "c" ) );
 
-        List<String> rowB = grid.getRow( 1 );
-        assertTrue( rowB.contains( "b" ) );        
+        List<String> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "b" ) );        
     }
 
     @Test
@@ -265,11 +268,63 @@ public class GridTest
         
         grid.sortGrid( 1, -1 );
 
-        List<String> rowA = grid.getRow( 0 );
-        assertTrue( rowA.contains( "1" ) );
+        List<String> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( "1" ) );
 
-        List<String> rowB = grid.getRow( 1 );
-        assertTrue( rowB.contains( "2" ) );        
+        List<String> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "2" ) );        
+    }
+    
+    @Test
+    public void testSortC()
+    {
+        Grid grid = new ListGrid();
+        
+        grid.addRow().addValue( "a" ).addValue( "a" ).addValue( "5.2" );
+        grid.addRow().addValue( "b" ).addValue( "b" ).addValue( "0.0" );
+        grid.addRow().addValue( "c" ).addValue( "c" ).addValue( "108.1" );
+        grid.addRow().addValue( "d" ).addValue( "d" ).addValue( "45.0" );
+        grid.addRow().addValue( "e" ).addValue( "e" ).addValue( "4043.9" );
+        grid.addRow().addValue( "f" ).addValue( "f" ).addValue( "0.1" );
+        
+        grid = grid.sortGrid( 3, 1 );
+        
+        List<String> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( "4043.9" ) );
+
+        List<String> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "108.1" ) );
+        
+        List<String> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( "45.0" ) );
+
+        List<String> row4 = grid.getRow( 3 );
+        assertTrue( row4.contains( "5.2" ) );
+
+        List<String> row5 = grid.getRow( 4 );
+        assertTrue( row5.contains( "0.1" ) );
+
+        List<String> row6 = grid.getRow( 5 );
+        assertTrue( row6.contains( "0.0" ) );    
+    }
+
+    @Test
+    public void testGridRowComparator()
+    {
+        List<List<String>> lists = new ArrayList<List<String>>();
+        List<String> l1 = Arrays.asList( "b", "b", "50" );
+        List<String> l2 = Arrays.asList( "c", "c", "400" );
+        List<String> l3 = Arrays.asList( "a", "a", "6" );
+        lists.add( l1 );
+        lists.add( l2 );
+        lists.add( l3 );
+        
+        Comparator<List<String>> comparator = new ListGrid.GridRowComparator( 2, -1 );
+        Collections.sort( lists, comparator );
+                
+        assertEquals( l3, lists.get( 0 ) );
+        assertEquals( l1, lists.get( 1 ) );
+        assertEquals( l2, lists.get( 2 ) );
     }
     
     @Test
