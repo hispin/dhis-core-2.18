@@ -522,19 +522,19 @@ public class DefaultReportTableService
         }
 
         // ---------------------------------------------------------------------
-        // Sort and limit
+        // Sort first and then limit
         // ---------------------------------------------------------------------
 
-        if ( reportTable.topLimit() > 0 )
-        {
-            grid = grid.limitGrid( reportTable.topLimit() );
-        }
-        
         if ( reportTable.sortOrder() != ReportTable.NONE )
         {
             grid.sortGrid( grid.getWidth(), reportTable.sortOrder() );
         }
-        
+
+        if ( reportTable.topLimit() > 0 )
+        {
+            grid.limitGrid( reportTable.topLimit() );
+        }
+                
         return grid;
     }
     

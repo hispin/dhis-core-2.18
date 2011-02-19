@@ -130,6 +130,20 @@ public class SaveTableAction
         this.tableName = tableName;
     }
         
+    private Integer sortOrder;
+    
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
+    }
+    
+    private Integer topLimit;
+
+    public void setTopLimit( Integer topLimit )
+    {
+        this.topLimit = topLimit;
+    }
+
     private boolean regression;
 
     public void setRegression( boolean regression )
@@ -336,12 +350,16 @@ public class SaveTableAction
                 dataElements, indicators, dataSets, periods, null, units, null,
                 categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
+            reportTable.setSortOrder( sortOrder );
+            reportTable.setTopLimit( topLimit );
         }
         else
         {
             reportTable = reportTableService.getReportTable( tableId );
             
             reportTable.setName( tableName );
+            reportTable.setSortOrder( sortOrder );
+            reportTable.setTopLimit( topLimit );
             reportTable.setRegression( regression );
             reportTable.setDataElements( dataElements );
             reportTable.setIndicators( indicators );

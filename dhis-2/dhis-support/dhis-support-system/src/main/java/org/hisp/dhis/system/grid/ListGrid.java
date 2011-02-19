@@ -28,6 +28,7 @@ package org.hisp.dhis.system.grid;
  */
 
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import static org.hisp.dhis.system.util.MathUtils.isNumeric;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -315,12 +316,14 @@ public class ListGrid
     
     public Grid sortGrid( int columnIndex, int order )
     {
-        columnIndex--;
+        columnIndex = columnIndex - 1;
         
         if ( columnIndex < 0 || columnIndex >= getWidth() )
         {
-            return this; // Silently ignore
+            throw new IllegalArgumentException( "Column index out of bounds: " + columnIndex );
         }
+        
+        System.out.println( "col index: " + columnIndex + " order " + order );
         
         Collections.sort( grid, new GridRowComparator( columnIndex, order ) );
         
@@ -461,7 +464,7 @@ public class ListGrid
     // Comparator
     // -------------------------------------------------------------------------
 
-    protected static class GridRowComparator
+    public static class GridRowComparator
         implements Comparator<List<String>>
     {
         private int columnIndex;
@@ -476,13 +479,23 @@ public class ListGrid
         @Override
         public int compare( List<String> list1, List<String> list2 )
         {
-            if ( order == 0 )
+            if ( order == 0 || list1 == null || list2 == null )
             {
                 return 0;
             }
             
-            return order > 0 ? list2.get( columnIndex ).compareTo( 
-                list1.get( columnIndex ) ) : list1.get( columnIndex ).compareTo( list2.get( columnIndex ) );
+            if ( isNumeric( list1.get( columnIndex ) ) && isNumeric( list2.get( columnIndex ) ) )
+            {
+                final Double value1 = Double.valueOf( list1.get( columnIndex ) );
+                final Double value2 = Double.valueOf( list2.get( columnIndex ) );
+                
+                return order > 0 ? value2.compareTo( value1 ) : value1.compareTo( value2 );
+            }
+            
+            final String value1 = list1.get( columnIndex );
+            final String value2 = list2.get( columnIndex );
+            
+            return order > 0 ? value2.compareTo( value1 ) : value1.compareTo( value2 );
         }
     }
 }
