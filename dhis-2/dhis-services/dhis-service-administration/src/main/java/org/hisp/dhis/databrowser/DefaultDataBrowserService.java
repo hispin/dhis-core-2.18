@@ -116,7 +116,7 @@ public class DefaultDataBrowserService
 
         DataBrowserTable table = new DataBrowserTable();
 
-        //dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
+        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
 
          dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds,
             maxLevel );

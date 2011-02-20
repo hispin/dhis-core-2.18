@@ -252,7 +252,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet, true);
+			numResults = table.addColumnToAllRows( resultSet, true );
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sqlsb.toString(), e);
@@ -262,6 +262,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 		return numResults;
 	}
+
 
 	public Integer setCountDataElementsForDataElementGroupBetweenPeriods(
 			DataBrowserTable table, Integer dataElementGroupId,
@@ -329,7 +330,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		return setCountFromSQL(table, sqlsbDescentdants.toString());
 
 	}
-
+    //This method retrieves raw data for a given orgunit, periods,
 	public Integer setCountDataElementsForOrgUnitBetweenPeriods(
 			DataBrowserTable table, Integer orgUnitId,
 			List<Integer> betweenPeriodIds) {
@@ -348,7 +349,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet, false);
+			numResults = table.addColumnToAllRows( resultSet, false );
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sql, e);
@@ -492,7 +493,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 				table.addColumnName(it.next().toString());
 			}
 			table.createStructure(resultSet);
-			table.addColumnToAllRows(resultSet, true);
+			table.addColumnToAllRows( resultSet, true );
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sqlsb.toString(), e);
@@ -554,7 +555,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 
 			table.incrementQueryCount();
 
-			numResults = table.addColumnToAllRows(resultSet, true);
+			numResults = table.addColumnToAllRows( resultSet, true );
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sql, e);

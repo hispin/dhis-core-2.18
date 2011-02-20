@@ -211,18 +211,17 @@ public class DataBrowserTable
 
         if ( countRows == 0 )
         {
-            this.addZeroColumn();
+            this.addZeroColumn(addZeros);
         }
-        
         return countRows;
     }
 
-    public void addZeroColumn()
+    public void addZeroColumn(Boolean addZeros)
     {
         this.addColumnName( "counts_of_aggregated_values" );
         for ( List<String> rowItem : this.counts )
         {
-            rowItem.add( "0" );
+            rowItem.add( addZeros ?  "0": "" );
         }
     }
 
