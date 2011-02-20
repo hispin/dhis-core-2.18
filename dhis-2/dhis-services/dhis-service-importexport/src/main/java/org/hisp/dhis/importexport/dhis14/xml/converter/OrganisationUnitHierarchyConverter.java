@@ -56,7 +56,7 @@ public class OrganisationUnitHierarchyConverter
     
     private static final String FIELD_ID = "OrgHierarchyID";
     private static final String FIELD_LEVEL = "OrgUnitLevel";
-    private static final String FIELD_STRUCTURE = "OrgUnitStructure";
+    private static final String FIELD_STRUCTURE = "OrgUnitStructureID";
     private static final String FIELD_CHILD = "OrgUnitChildID";
     private static final String FIELD_PARENT = "OrgUnitParentID";
     private static final String FIELD_LAST_USER = "LastUserID";
