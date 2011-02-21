@@ -99,9 +99,9 @@ public class UpdateProgramStageAction
         this.description = description;
     }
 
-    private int minDaysFromStart;
+    private Integer minDaysFromStart;
 
-    public void setMinDaysFromStart( int minDaysFromStart )
+    public void setMinDaysFromStart( Integer minDaysFromStart )
     {
         this.minDaysFromStart = minDaysFromStart;
     }
@@ -133,6 +133,7 @@ public class UpdateProgramStageAction
 
         programStage.setDescription( description );
 
+        minDaysFromStart = (minDaysFromStart == null ) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 
         programStageService.updateProgramStage( programStage );
