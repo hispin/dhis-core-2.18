@@ -15,6 +15,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,7 +27,7 @@ public class DataSetResource
 
     @Context
     UriInfo uriInfo;
-    
+
     @GET
     @Produces( MediaType.TEXT_HTML )
     public String getDataSetList()
@@ -49,6 +50,20 @@ public class DataSetResource
     }
 
     @GET
+    @Produces( { MediaType.APPLICATION_XML, DhisMediaType.DXF } )
+    @Path( "{uuid}/dxf" )
+    public org.hisp.dhis.importexport.dxf2.model.DataSet getDataSetXml( @PathParam( "uuid" ) String uuid )
+    {
+        DataSet dataSet = dataSetService.getDataSet( uuid );
+
+        if ( dataSet == null )
+        {
+            throw new IllegalArgumentException( "No dataset with uuid " + uuid );
+        }
+        return DataSetMapper.convert( dataSet );
+    }
+
+    @GET
     @Path( "{uuid}" )
     @Produces( MediaType.TEXT_HTML )
     public String getDataSet( @PathParam( "uuid" ) String uuid )
@@ -64,6 +79,9 @@ public class DataSetResource
         StringBuilder t = new StringBuilder();
 
         t.append( head( "Data set " + dataSet.getName() ) );
+        URI url = uriInfo.getAbsolutePathBuilder().path( "/dxf" ).build();
+        t.append( "<p>(There is also a <a href=\"" ).append( url )
+            .append( "\">prototype xml version</a> of this data set available)</p>\n" );
         t.append( "<p>Uuid: " ).append( dataSet.getUuid() ).append( "<br>\n" );
         t.append( "Period type: " ).append( dataSet.getPeriodType().getName() ).append( " - " )
             .append( dataSet.getPeriodType().getIsoFormat() );
@@ -116,14 +134,10 @@ public class DataSetResource
         return "</body>\n</html>\n";
     }
 
-
-
     @Required
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
 
-
-    
 }

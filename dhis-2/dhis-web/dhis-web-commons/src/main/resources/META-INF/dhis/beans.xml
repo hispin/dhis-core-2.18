@@ -297,7 +297,9 @@
         <sec:filter-chain pattern="/dhis-web-commons/security/**" filters="none"/>
         <sec:filter-chain pattern="/dhis-web-commons/javascripts/**" filters="none"/>
         <sec:filter-chain pattern="/dhis-web-commons/css/**" filters="none"/>
-        <sec:filter-chain pattern="/api/**/*" filters="httpSessionContextIntegrationFilter,basicAuthenticationRequiredFilter"/>
+<!--        <sec:filter-chain pattern="/api/**/*" filters="httpSessionContextIntegrationFilter,basicAuthenticationRequiredFilter"/>-->
+        <sec:filter-chain pattern="/api/**" filters="httpSessionContextIntegrationFilter,basicAuthenticationRequiredFilter"/>
+        <sec:filter-chain pattern="/api" filters="httpSessionContextIntegrationFilter,basicAuthenticationRequiredFilter"/>
         <sec:filter-chain pattern="/**" filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,logoutFilter,automaticAccessFilter,requiredLoginFilter"/>
         </sec:filter-chain-map>
     </bean>

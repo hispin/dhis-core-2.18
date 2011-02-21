@@ -29,6 +29,9 @@ package org.hisp.dhis.web.api.resources;
 
 public class DhisMediaType
 {
+    public static final String DXF = "application/vnd.org.dhis2.dxf";
+
+    
     public static final String ACTIVITYVALUELIST_SERIALIZED = "application/vnd.org.dhis2.activityvaluelist+serialized";
 
     public static final String DATASETVALUE_SERIALIZED = "application/vnd.org.dhis2.datasetvalue+serialized";

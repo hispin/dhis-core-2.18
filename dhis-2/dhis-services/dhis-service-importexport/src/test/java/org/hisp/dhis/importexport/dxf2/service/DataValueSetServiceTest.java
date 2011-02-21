@@ -58,10 +58,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * Messy test class checking that jaxb produces the expected java 
- * @link{DataValueSet data value set} structure, that the set is converted, validated and
- * stored into a correct set of {@link DataValue data values}
- *                    .
+ * Messy test class checking that jaxb produces the expected java
+ * 
+ * @link{DataValueSet data value set} structure, that the set is converted,
+ *                    validated and stored into a correct set of
+ *                    {@link DataValue data values} .
  */
 public class DataValueSetServiceTest
     extends DhisTest
@@ -186,8 +187,10 @@ public class DataValueSetServiceTest
 
     }
 
-    @Test @Ignore
-    public void testValidvalue() {
+    @Test
+    @Ignore
+    public void testValidvalue()
+    {
         setValue( "" );
 
         try
@@ -198,21 +201,26 @@ public class DataValueSetServiceTest
         {
             // Expected
         }
-        
-    }
-    
-    @Test @Ignore
-    public void testDuplicatedDataValues() {
-        
+
     }
 
-    @Test @Ignore
-    public void testExistingComboButNotInDataElement() {
-        
-    }
-    
     @Test
-    public void deleteDataValue() {
+    @Ignore
+    public void testDuplicatedDataValues()
+    {
+
+    }
+
+    @Test
+    @Ignore
+    public void testExistingComboButNotInDataElement()
+    {
+
+    }
+
+    @Test
+    public void deleteDataValue()
+    {
         service.saveDataValueSet( dataValueSet );
 
         Collection<DataValue> dataValues = dataValueService.getAllDataValues();
@@ -227,23 +235,17 @@ public class DataValueSetServiceTest
 
         dataValues = dataValueService.getAllDataValues();
         assertEquals( 0, dataValues.size() );
-        
+
     }
-        
+
     @Test
     public void dataSetMissing()
     {
         dataValueSet.setDataSetUuid( null );
-        try
-        {
-            service.saveDataValueSet( dataValueSet );
-            fail( "Should miss data set" );
+        setValue( "999" );
+        
+        testSave( "999" );
 
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // Expected
-        }
     }
 
     @Test
@@ -262,7 +264,7 @@ public class DataValueSetServiceTest
         }
 
         dataValueSet.setOrganisationUnitUuid( ORGANISATION_UNIT_NOT_IN_SET_UUID );
-        
+
         try
         {
             service.saveDataValueSet( dataValueSet );
@@ -276,7 +278,8 @@ public class DataValueSetServiceTest
     }
 
     @Test
-    public void illegalPeriod() {
+    public void illegalPeriod()
+    {
 
         dataValueSet.setPeriodIsoDate( "2011" );
 
@@ -291,9 +294,10 @@ public class DataValueSetServiceTest
             // Expected
         }
     }
-    
+
     @Test
-    public void completeness() {
+    public void completeness()
+    {
 
         service.saveDataValueSet( dataValueSet );
 
@@ -305,13 +309,13 @@ public class DataValueSetServiceTest
         try
         {
             service.saveDataValueSet( dataValueSet );
-            fail("Shouldn't allow saving to a completed set");
+            fail( "Shouldn't allow saving to a completed set" );
         }
         catch ( IllegalArgumentException e )
         {
             // TODO: Expected
         }
-        
+
         dataValueSet.setCompleteDate( "201lala" );
 
         try
@@ -325,11 +329,12 @@ public class DataValueSetServiceTest
 
         dataValueSet.setCompleteDate( "20101010" );
         service.saveDataValueSet( dataValueSet );
-        
+
     }
 
     @Test
-    public void elementExistsAndNotInSet() {
+    public void elementExistsAndNotInSet()
+    {
 
         org.hisp.dhis.importexport.dxf2.model.DataValue dv = new org.hisp.dhis.importexport.dxf2.model.DataValue();
         dv.setDataElementUuid( "ladida" );
@@ -360,7 +365,8 @@ public class DataValueSetServiceTest
     }
 
     @Test
-    public void optionComboExistsAndInDataElement() {
+    public void optionComboExistsAndInDataElement()
+    {
 
         dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboUuid( DEFAULT_COMBO_UUID );
 
@@ -379,44 +385,39 @@ public class DataValueSetServiceTest
         }
 
     }
-    
 
-    
     @Test
     public void testUpdate()
     {
+        testSave("11");
+
+        // Update
+        setValue( "101" );
+        
+        testSave( "101" );
+
+    }
+
+    private void testSave( String value )
+    {
+        Collection<DataValue> dataValues;
+        DataValue dataValue;
+
         long before = new Date().getTime();
 
         service.saveDataValueSet( dataValueSet );
 
         long after = new Date().getTime();
 
-        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
-        assertEquals( 1, dataValues.size() );
-
-        DataValue dataValue = dataValues.iterator().next();
-
-        verifyDataValue( before, after, dataValue );
-
-        // Update
-        setValue("101");
-
-        before = new Date().getTime();
-
-        service.saveDataValueSet( dataValueSet );
-
-        after = new Date().getTime();
-
         dataValues = dataValueService.getAllDataValues();
         assertEquals( 1, dataValues.size() );
 
         dataValue = dataValues.iterator().next();
 
-        verifyDataValue( before, after, dataValue, "101" );
-
+        verifyDataValue( before, after, dataValue, value );
     }
 
-    private void setValue(String value)
+    private void setValue( String value )
     {
         dataValueSet.getDataValues().get( 0 ).setValue( value );
     }
@@ -447,5 +448,4 @@ public class DataValueSetServiceTest
         return true;
     }
 
-    
 }
