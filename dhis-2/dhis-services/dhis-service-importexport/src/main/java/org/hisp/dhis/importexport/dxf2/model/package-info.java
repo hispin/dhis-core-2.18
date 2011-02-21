@@ -1,6 +1,5 @@
 @javax.xml.bind.annotation.XmlSchema( 
-    namespace = "http://dhis2.org/schema/dxf/2.0-SNAPSHOT", 
-    xmlns = { @javax.xml.bind.annotation.XmlNs( prefix = "xs", namespaceURI = "http://www.w3.org/2001/XMLSchema" ) }, 
+    namespace = "http://dhis2.org/schema/dxf/2.0-SNAPSHOT",
     elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED )
 package org.hisp.dhis.importexport.dxf2.model;
 

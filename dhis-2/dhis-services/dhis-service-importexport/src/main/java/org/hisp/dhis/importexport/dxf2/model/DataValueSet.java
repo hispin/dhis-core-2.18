@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.dxf2.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -36,12 +35,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlAccessorType( XmlAccessType.FIELD )
 @XmlRootElement
+@XmlAccessorType( XmlAccessType.FIELD )
 public class DataValueSet
 {
 
-    @XmlAttribute( name = "dataSet", required = true )
+    @XmlAttribute( name = "dataSet" )
     private String dataSetUuid;
 
     @XmlAttribute( name = "orgUnit", required = true )

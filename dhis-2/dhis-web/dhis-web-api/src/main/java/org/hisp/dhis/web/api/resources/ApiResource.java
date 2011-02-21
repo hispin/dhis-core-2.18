@@ -29,7 +29,7 @@ public class ApiResource
 
         sb.append( "<p>The api currently supports two specific pilot use cases, posting of data value sets and a mobile GPRS client." );
 
-        sb.append( "<h2>Posting data value sets (experimental)</h2>" );
+        sb.append( "<h2>Posting data value sets</h2>" );
         sb.append( "<p>To find the needed information about the data sets you want to post data about, go to " );
         URI uri = uriInfo.getBaseUriBuilder().path( DataSetResource.class ).build();
         sb.append( "<a href=\"" ).append( uri ).append( "\">the data set list</a>.</p>" );
