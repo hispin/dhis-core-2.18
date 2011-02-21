@@ -105,7 +105,7 @@ public class ActivityReportingServiceImpl
         DateMidnight from = dt.withDayOfMonth( 1 ).toDateMidnight();
         DateMidnight to = from.plusMonths( 1 );
 
-        List<ProgramStageInstance> instances = programStageInstanceService.get( unit, from.toDate(), to.toDate(), null );
+        List<ProgramStageInstance> instances = programStageInstanceService.get( unit, from.toDate(), to.toDate(), false );
 
         for ( ProgramStageInstance instance : instances )
         {
