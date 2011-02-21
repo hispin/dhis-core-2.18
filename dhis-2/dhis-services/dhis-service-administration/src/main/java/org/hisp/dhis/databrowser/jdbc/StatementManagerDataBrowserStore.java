@@ -251,8 +251,8 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 			table.addQueryTime(timer.getMilliSec());
 
 			table.incrementQueryCount();
-
 			numResults = table.addColumnToAllRows( resultSet, true );
+                        
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
 					+ sqlsb.toString(), e);
@@ -287,7 +287,8 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 					: " UNION ");
 		}
 
-		return setCountFromSQL(table, sqlsb.toString());
+                Integer numResults = setCountFromSQL(table, sqlsb.toString());
+		return numResults;
 	}
 
 	public Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods(
@@ -314,8 +315,8 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 			sqlsb.append(i == betweenPeriodIds.size() ? "ORDER BY ColumnHeader"
 					: " UNION ");
 		}
-
-		return setCountFromSQL(table, sqlsb.toString());
+                Integer numResults = setCountFromSQL(table, sqlsb.toString());
+		return numResults;
 	}
 
 	public Integer setCountOrgUnitsBetweenPeriods(DataBrowserTable table,
@@ -356,7 +357,6 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		} finally {
 			holder.close();
 		}
-
 		return numResults;
 	}
 
@@ -484,7 +484,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		Timer timer = new Timer();
 		timer.start();
 		try {
-			log.debug("getTableFromSQL: " + sqlsb.toString());
+
 			ResultSet resultSet = getScrollableResult(sqlsb.toString(), holder);
 			table.setQueryTime(timer.getMilliSec());
 			table.incrementQueryCount();
@@ -512,7 +512,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		Timer timer = new Timer();
 		timer.start();
 		try {
-			log.debug("setTableStructure: " + sqlsb.toString());
+
 			ResultSet resultSet = getScrollableResult(sqlsb.toString(), holder);
 			table.setQueryTime(timer.getMilliSec());
 			table.incrementQueryCount();
@@ -549,7 +549,6 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		try {
 			Timer timer = new Timer();
 			timer.start();
-			log.debug("setCountFromSQL: " + sql);
 			ResultSet resultSet = getScrollableResult(sql, holder);
 			table.addQueryTime(timer.getMilliSec());
 
@@ -563,6 +562,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 			holder.close();
 		}
 
+                table.setNumResults(numResults);
 		return numResults;
 	}
 

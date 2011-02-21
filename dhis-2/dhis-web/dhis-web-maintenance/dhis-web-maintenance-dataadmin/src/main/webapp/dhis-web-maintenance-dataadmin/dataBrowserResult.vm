@@ -21,6 +21,7 @@
 			$i18n.getString( "request_returned_in" ): ${requestTime} $i18n.getString( "ms" ). 
 			$i18n.getString( "query_took" ): ${queryTime} $i18n.getString( "ms" ). 
 			$i18n.getString( "number_of_queries_executed" ): ${queryCount}.
+                        $i18n.getString( "Number of results" ): ${numResults}.
 		</span>
 	</div>
 	
@@ -143,7 +144,7 @@
 	#end
 	</p>
 	
-#if ( $allCounts.isEmpty() )
+#if ( $allCounts.isEmpty()  || $numResults == "0" )
 	<br/><br/>
 	$i18n.getString( "no_data_found" )
 #else	

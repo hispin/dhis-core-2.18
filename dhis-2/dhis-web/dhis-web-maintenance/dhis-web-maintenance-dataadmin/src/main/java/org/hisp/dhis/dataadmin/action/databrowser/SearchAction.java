@@ -162,6 +162,12 @@ public class SearchAction
         return dataBrowserTable.getQueryCount();
     }
 
+    public Integer getNumResults()
+    {
+        return dataBrowserTable.getNumResults();
+
+    }
+
     public List<MetaValue> getAllColumns()
     {
         return dataBrowserTable.getColumns();
@@ -515,6 +521,7 @@ public class SearchAction
         SessionUtils.setSessionVar( KEY_DATABROWSERTABLE, dataBrowserTable );
 
         requestTime = System.currentTimeMillis() - before;
+
 
         // Convert column date names
         convertColumnNames( dataBrowserTable );

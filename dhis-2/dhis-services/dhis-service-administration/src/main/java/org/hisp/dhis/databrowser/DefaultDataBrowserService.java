@@ -165,27 +165,23 @@ public class DefaultDataBrowserService
 
         DataBrowserTable table = new DataBrowserTable();
 
-        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId,
-            betweenPeriodIds );
+        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
 
-        dataBrowserStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId,
-            betweenPeriodIds );
+        dataBrowserStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
 
         return table;
     }
 
-    public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitGroupId, String startDate,
-        String endDate, PeriodType periodType, I18nFormat format )
+    public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate,
+            String endDate, PeriodType periodType, I18nFormat format )
     {
         DataBrowserTable table = new DataBrowserTable();
 
-        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
-            format );
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType, format );
 
-        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
+        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, orgUnitId, betweenPeriodIds );
 
-        dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, orgUnitGroupId,
-            betweenPeriodIds );
+        dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, orgUnitId, betweenPeriodIds );
 
 
         return table;
