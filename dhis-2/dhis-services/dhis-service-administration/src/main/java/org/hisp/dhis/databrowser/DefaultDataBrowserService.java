@@ -183,7 +183,6 @@ public class DefaultDataBrowserService
 
         dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, orgUnitId, betweenPeriodIds );
 
-
         return table;
     }
 
