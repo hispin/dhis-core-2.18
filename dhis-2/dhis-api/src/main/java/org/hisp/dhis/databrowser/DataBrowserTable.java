@@ -66,6 +66,7 @@ public class DataBrowserTable
      * has results from.
      */
     private int queryCount = 0;
+    private Integer numResults = 0;
 
     /**
      * 
@@ -321,6 +322,14 @@ public class DataBrowserTable
     public void setCounts( List<List<String>> counts )
     {
         this.counts = counts;
+    }
+    public void setNumResults(Integer numResults)
+    {
+        this.numResults = numResults;
+    }
+    public Integer getNumResults()
+    {
+        return numResults;
     }
 
     public List<MetaValue> getColumns()
