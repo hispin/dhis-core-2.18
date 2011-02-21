@@ -47,12 +47,11 @@ public class OrgUnitTest
         OrgUnit unit = new OrgUnit();
         unit.setId( 1 );
         unit.setName( "name" );
-        unit.setDownloadActivityPlanUrl( "downloadActivityPlanUrl" );
+        unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
         unit.setDownloadAllUrl( "downloadAllUrl" );
         unit.setUploadActivityReportUrl( "uploadActivityReportUrl" );
         unit.setUploadFacilityReportUrl( "uploadFacilityReportUrl" );
         unit.setUpdateDataSetUrl( "updateDataSetUrl" );
-        unit.setUpdateProgramUrl( "updateProgramUrl" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream( baos );

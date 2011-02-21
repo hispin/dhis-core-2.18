@@ -44,13 +44,11 @@ public class OrgUnit
 
     private String downloadAllUrl;
 
-    private String downloadActivityPlanUrl;
+    private String updateActivityPlanUrl;
 
     private String uploadFacilityReportUrl;
 
     private String uploadActivityReportUrl;
-
-    private String updateProgramUrl;
 
     private String updateDataSetUrl;
 
@@ -86,16 +84,6 @@ public class OrgUnit
         this.downloadAllUrl = downloadAllUrl;
     }
 
-    public String getDownloadActivityPlanUrl()
-    {
-        return downloadActivityPlanUrl;
-    }
-
-    public void setDownloadActivityPlanUrl( String downloadActivityPlanUrl )
-    {
-        this.downloadActivityPlanUrl = downloadActivityPlanUrl;
-    }
-
     public String getUploadFacilityReportUrl()
     {
         return uploadFacilityReportUrl;
@@ -126,26 +114,23 @@ public class OrgUnit
         this.updateDataSetUrl = updateDataSetUrl;
     }
 
-    public String getUpdateProgramUrl()
-    {
-        return updateProgramUrl;
-    }
+    public String getUpdateActivityPlanUrl() {
+		return updateActivityPlanUrl;
+	}
 
-    public void setUpdateProgramUrl( String updateProgramUrl )
-    {
-        this.updateProgramUrl = updateProgramUrl;
-    }
+	public void setUpdateActivityPlanUrl(String updateActivityPlanUrl) {
+		this.updateActivityPlanUrl = updateActivityPlanUrl;
+	}
 
-    public void serialize( DataOutputStream dataOutputStream )
+	public void serialize( DataOutputStream dataOutputStream )
         throws IOException
     {
         dataOutputStream.writeInt( this.id );
         dataOutputStream.writeUTF( this.name );
         dataOutputStream.writeUTF( this.downloadAllUrl );
-        dataOutputStream.writeUTF( this.downloadActivityPlanUrl );
+        dataOutputStream.writeUTF(this.updateActivityPlanUrl);
         dataOutputStream.writeUTF( this.uploadFacilityReportUrl );
         dataOutputStream.writeUTF( this.uploadActivityReportUrl );
-        dataOutputStream.writeUTF( this.updateProgramUrl );
         dataOutputStream.writeUTF( this.updateDataSetUrl );
     }
 
@@ -155,10 +140,9 @@ public class OrgUnit
         this.id = dataInputStream.readInt();
         this.name = dataInputStream.readUTF();
         this.downloadAllUrl = dataInputStream.readUTF();
-        this.downloadActivityPlanUrl = dataInputStream.readUTF();
+        this.updateActivityPlanUrl = dataInputStream.readUTF();
         this.uploadFacilityReportUrl = dataInputStream.readUTF();
         this.uploadActivityReportUrl = dataInputStream.readUTF();
-        this.updateProgramUrl = dataInputStream.readUTF();
         this.updateDataSetUrl = dataInputStream.readUTF();
     }
 

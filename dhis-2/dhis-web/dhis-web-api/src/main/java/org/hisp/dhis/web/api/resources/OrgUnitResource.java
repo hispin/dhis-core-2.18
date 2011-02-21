@@ -177,16 +177,6 @@ public class OrgUnitResource
     }
 
     /**
-     * Get a localized representation of the current activity plan
-     */
-    @GET
-    @Path( "activitiyplan" )
-    public ActivityPlan getCurrentActivityPlan( @HeaderParam( "accept-language" ) String locale )
-    {
-        return activityReportingService.getCurrentActivityPlan( getUnit(), locale );
-    }
-
-    /**
      * Save a facility report for unit
      * 
      * @param dataSetValue - the report to save
@@ -216,11 +206,12 @@ public class OrgUnitResource
     }
 
     @POST
-    @Path( "programs" )
+    @Path( "activitiyplan" )
     public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
+		model.setActivityPlan(activityReportingService.getCurrentActivityPlan( getUnit(), locale ));
         return model;
     }
 
@@ -233,13 +224,11 @@ public class OrgUnitResource
 
         orgUnit.setDownloadAllUrl( getOrgUnitUrlBuilder(uriInfo).path( "all" )
             .build( unit.getId() ).toString() );
-        orgUnit.setDownloadActivityPlanUrl( getOrgUnitUrlBuilder(uriInfo).path( "activitiyplan" )
+        orgUnit.setUpdateActivityPlanUrl( getOrgUnitUrlBuilder(uriInfo).path( "activitiyplan" )
             .build( unit.getId() ).toString() );
         orgUnit.setUploadFacilityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "dataSets" )
             .build( unit.getId() ).toString() );
         orgUnit.setUploadActivityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "activities" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUpdateProgramUrl( getOrgUnitUrlBuilder(uriInfo).path( "programs" )
             .build( unit.getId() ).toString() );
         orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder(uriInfo).path( "updateDataSets" )
             .build( unit.getId() ).toString() );
