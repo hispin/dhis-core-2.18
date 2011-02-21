@@ -187,7 +187,7 @@ public class DataBrowserTable
                         makeEmptyCol = false;
                         for ( List<String> rowItem : this.counts )
                         {
-                            rowItem.add( addZeros ?  "0": "" );
+                            rowItem.add( addZeros ?  "0" : "" );
                         }
                         if ( hasColumnName )
                         {

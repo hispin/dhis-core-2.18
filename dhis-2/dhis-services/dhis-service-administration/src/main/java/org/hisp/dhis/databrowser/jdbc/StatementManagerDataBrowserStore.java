@@ -347,9 +347,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 			timer.start();
 			ResultSet resultSet = getScrollableResult(sql, holder);
 			table.addQueryTime(timer.getMilliSec());
-
 			table.incrementQueryCount();
-
 			numResults = table.addColumnToAllRows( resultSet, false );
 		} catch (SQLException e) {
 			throw new RuntimeException("Failed to get aggregated data value\n"
@@ -357,6 +355,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		} finally {
 			holder.close();
 		}
+                table.setNumResults( numResults );
 		return numResults;
 	}
 
@@ -483,6 +482,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		DataBrowserTable table = new DataBrowserTable();
 		Timer timer = new Timer();
 		timer.start();
+
 		try {
 
 			ResultSet resultSet = getScrollableResult(sqlsb.toString(), holder);
@@ -561,8 +561,8 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore {
 		} finally {
 			holder.close();
 		}
-
-                table.setNumResults(numResults);
+                table.setNumResults( numResults );
+                
 		return numResults;
 	}
 
