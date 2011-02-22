@@ -67,10 +67,9 @@ public class DefaultDeletionManager
         this.handlers.addAll( deletionHandlers );
     }
     
-    @SuppressWarnings( "unchecked" )
     public void execute( Object object )
     {
-        Class clazz = object.getClass();
+        Class<?> clazz = object.getClass();
 
         if ( object instanceof OrganisationUnit )
         {

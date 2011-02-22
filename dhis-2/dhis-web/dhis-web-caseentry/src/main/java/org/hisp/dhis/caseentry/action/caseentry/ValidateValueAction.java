@@ -282,7 +282,7 @@ public class ValidateValueAction
                         String dbValue = patientDataValue.getValue();
                         Object compareValue = getObject( rightSide.getDataElement().getType(), dbValue );
 
-                        i = ((Comparable) objectValue).compareTo( (Comparable) compareValue );
+                        i = ((Comparable<Object>) objectValue).compareTo( (Comparable<Object>) compareValue );
                     }
 
                 }
@@ -302,7 +302,7 @@ public class ValidateValueAction
                         String dbValue = patientDataValue.getValue();
                         Object compareValue = getObject( leftSide.getDataElement().getType(), dbValue );
 
-                        i = ((Comparable) compareValue).compareTo( (Comparable) objectValue );
+                        i = ((Comparable<Object>) compareValue).compareTo( (Comparable<Object>) objectValue );
                     }
                 }
                 

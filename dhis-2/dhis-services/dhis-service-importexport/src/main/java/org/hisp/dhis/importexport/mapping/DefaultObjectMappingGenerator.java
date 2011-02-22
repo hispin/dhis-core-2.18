@@ -391,8 +391,7 @@ public class DefaultObjectMappingGenerator
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    private Map<Object, Integer> getMapping( BatchHandler batchHandler, Map<Object, String> nameMap, boolean skipMapping )
+    private Map<Object, Integer> getMapping( BatchHandler<?> batchHandler, Map<Object, String> nameMap, boolean skipMapping )
     {
         batchHandler.init();
 

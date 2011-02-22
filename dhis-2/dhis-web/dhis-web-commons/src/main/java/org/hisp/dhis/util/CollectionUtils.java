@@ -54,7 +54,7 @@ public class CollectionUtils
             return map;
         }
 
-        Class elementClass = collection.iterator().next().getClass();
+        Class<?> elementClass = collection.iterator().next().getClass();
 
         Method getKeyMethod;
 
@@ -99,7 +99,7 @@ public class CollectionUtils
             return valueList;
         }
 
-        Class elementClass = list.iterator().next().getClass();
+        Class<?> elementClass = list.iterator().next().getClass();
 
         Method getValueMethod;
 

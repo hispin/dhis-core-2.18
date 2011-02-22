@@ -281,7 +281,7 @@ public class Program
 
                 // Compare property value with compare value
 
-                int i = ((Comparable) propertyValue).compareTo( (Comparable) criteria.getValue() );
+                int i = ((Comparable<Object>) propertyValue).compareTo( (Comparable<Object>) criteria.getValue() );
 
                 // Return validation criteria if criteria is not met
 
