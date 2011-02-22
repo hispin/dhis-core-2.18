@@ -29,6 +29,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.report.Report;
@@ -46,6 +47,8 @@ import com.opensymphony.xwork2.Action;
 public class GetReportOptionsAction
     implements Action
 {
+    private static final Comparator<ReportTable> COMPARATOR = new ReportTableComparator();
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -93,13 +96,6 @@ public class GetReportOptionsAction
         return reportTables;
     }
     
-    private List<ReportTable> selectedReportTables;
-
-    public List<ReportTable> getSelectedReportTables()
-    {
-        return selectedReportTables;
-    }
-    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -108,17 +104,11 @@ public class GetReportOptionsAction
     {
         reportTables = new ArrayList<ReportTable>( reportTableService.getAllReportTables() );
         
-        Collections.sort( reportTables, new ReportTableComparator() );
+        Collections.sort( reportTables, COMPARATOR );
         
         if ( id != null )
         {
-            report = reportService.getReport( id );
-            
-            reportTables.removeAll( report.getReportTables() );
-            
-            selectedReportTables = new ArrayList<ReportTable>( report.getReportTables() );
-            
-            Collections.sort( selectedReportTables, new ReportTableComparator() );
+            report = reportService.getReport( id );            
         }
         
         return SUCCESS;

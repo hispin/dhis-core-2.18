@@ -116,6 +116,6 @@ public class ReportTableInternalProcess
     @Override
     public void executeStatements()
     {
-        reportTableService.createReportTables( id, mode, reportingPeriod, organisationUnitId, doDataMart, format );
+        reportTableService.createReportTable( id, mode, reportingPeriod, organisationUnitId, doDataMart, format );
     }
 }

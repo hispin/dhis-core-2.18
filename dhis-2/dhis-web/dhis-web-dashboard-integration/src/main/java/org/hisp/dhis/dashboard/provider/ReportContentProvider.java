@@ -46,9 +46,6 @@ import org.hisp.dhis.user.User;
 public class ReportContentProvider
     implements ContentProvider
 {
-    private static final String JASPER_BASE_URL = "../dhis-web-reporting/getReportParams.action?id=";
-    private static final String JASPER_RENDER_URL = "&mode=report&url=renderReport.action?id=";
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -90,11 +87,6 @@ public class ReportContentProvider
             
             List<Report> reports = dashboardContent.getReports();
             
-            for ( Report report : reports )
-            {
-                report.setUrl( JASPER_BASE_URL + report.getId() + JASPER_RENDER_URL + report.getId() );
-            }
-
             Collections.sort( reports, new ReportComparator() );
             
             content.put( key, reports );

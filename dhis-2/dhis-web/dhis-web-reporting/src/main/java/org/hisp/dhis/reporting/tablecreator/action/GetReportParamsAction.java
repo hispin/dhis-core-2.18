@@ -56,8 +56,6 @@ public class GetReportParamsAction
     implements Action
 {
     private static final int AVAILABLE_REPORTING_MONTHS = 24;
-    private static final String MODE_REPORT = "report";
-    private static final String MODE_REPORT_TABLE = "table";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -68,13 +66,6 @@ public class GetReportParamsAction
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
-    }
-
-    private ReportService reportService;
-
-    public void setReportService( ReportService reportService )
-    {
-        this.reportService = reportService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -118,19 +109,7 @@ public class GetReportParamsAction
     {
         this.mode = mode;
     }
-    
-    private String url;
-
-    public String getUrl()
-    {
-        return url;
-    }
-
-    public void setUrl( String url )
-    {
-        this.url = url;
-    }
-    
+        
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -178,82 +157,38 @@ public class GetReportParamsAction
     {
         if ( mode != null && id != null )
         {
-            reportParams = getReportParams( mode, id );
+            ReportTable reportTable = reportTableService.getReportTable( id, mode);
             
-            if ( reportParams.isParamParentOrganisationUnit() || reportParams.isParamOrganisationUnit() )
+            if ( reportTable != null )
             {
-                levels = organisationUnitService.getOrganisationUnitLevels();
+                reportParams = reportTable.getReportParams();
                 
-                organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( 1 );
-            }
-            
-            if ( reportParams.isParamReportingMonth() )
-            {
-                MonthlyPeriodType periodType = new MonthlyPeriodType();
-                
-                Calendar cal = PeriodType.createCalendarInstance();
-                
-                for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
+                if ( reportParams.isParamParentOrganisationUnit() || reportParams.isParamOrganisationUnit() )
                 {
-                    int month = i + 1;    
-                    cal.add( Calendar.MONTH, -1 );                    
-                    Period period = periodType.createPeriod( cal.getTime() );                    
-                    String periodName = format.formatPeriod( period );
+                    levels = organisationUnitService.getOrganisationUnitLevels();
                     
-                    reportingPeriods.put( month, periodName );
-                }                
+                    organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( 1 );
+                }
+                
+                if ( reportParams.isParamReportingMonth() )
+                {
+                    MonthlyPeriodType periodType = new MonthlyPeriodType();
+                    
+                    Calendar cal = PeriodType.createCalendarInstance();
+                    
+                    for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
+                    {
+                        int month = i + 1;    
+                        cal.add( Calendar.MONTH, -1 );                    
+                        Period period = periodType.createPeriod( cal.getTime() );                    
+                        String periodName = format.formatPeriod( period );
+                        
+                        reportingPeriods.put( month, periodName );
+                    }                
+                }
             }
         }
         
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    /**
-     * This method will assemble a ReportParams object. If in report table mode,
-     * the ReportParams of the report table will be returned. If in report mode,
-     * the value of each report param in the ReportParams object will be true
-     * if any of the report params in the set of report tables in the report are
-     * true.
-     * 
-     * @param mode the mode
-     * @param id the id of the report table or the report
-     * @return a ReportParams object.
-     */
-    private ReportParams getReportParams( String mode, Integer id )
-    {
-        ReportParams params = new ReportParams();
-
-        if ( mode.equals( MODE_REPORT_TABLE ) )
-        {
-            params = reportTableService.getReportTable( id ).getReportParams();
-        }
-        else if ( mode.equals( MODE_REPORT ) )
-        {
-            Report report = reportService.getReport( id );
-            
-            for ( ReportTable reportTable : report.getReportTables() )
-            {                
-                if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamReportingMonth() )
-                {
-                    params.setParamReportingMonth( true );
-                }
-                
-                if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
-                {
-                    params.setParamOrganisationUnit( true );
-                }
-                
-                if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
-                {
-                    params.setParamParentOrganisationUnit( true );
-                }
-            }
-        }
-        
-        return params != null ? params : new ReportParams();
     }
 }

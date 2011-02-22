@@ -16,11 +16,8 @@
 
 	<property name="designContent" type="text"/>
         
-    <set name="reportTables" table="reportreporttables">
-      <key column="reportid"/>
-      <many-to-many column="reporttableid"
-        class="org.hisp.dhis.reporttable.ReportTable"/>
-    </set>
+    <many-to-one name="reportTable" class="org.hisp.dhis.reporttable.ReportTable"
+      column="reporttableid" foreign-key="fk_report_reporttableid"/>
     
   </class>
 </hibernate-mapping>

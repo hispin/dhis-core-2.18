@@ -27,9 +27,6 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.reporttable.ReportTable;
 
@@ -44,10 +41,8 @@ public class Report
     
     private String designContent;
          
-    private Set<ReportTable> reportTables = new HashSet<ReportTable>();
+    private ReportTable reportTable;
     
-    private transient String url;
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -56,20 +51,20 @@ public class Report
     {   
     }
     
-    public Report( String name, String designContent, Set<ReportTable> reportTable )
+    public Report( String name, String designContent, ReportTable reportTable )
     {
         this.name = name;
         this.designContent = designContent;
-        this.reportTables = reportTable;
+        this.reportTable = reportTable;
     }
 
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean isHasReportTable()
+    public boolean hasReportTable()
     {
-        return reportTables != null;
+        return reportTable != null;
     }
         
     // -------------------------------------------------------------------------
@@ -125,23 +120,13 @@ public class Report
         this.designContent = designContent;
     }
 
-    public Set<ReportTable> getReportTables()
+    public ReportTable getReportTable()
     {
-        return reportTables;
+        return reportTable;
     }
 
-    public void setReportTables( Set<ReportTable> reportTables )
+    public void setReportTable( ReportTable reportTable )
     {
-        this.reportTables = reportTables;
-    }
-
-    public String getUrl()
-    {
-        return url;
-    }
-
-    public void setUrl( String url )
-    {
-        this.url = url;
+        this.reportTable = reportTable;
     }
 }

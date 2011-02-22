@@ -44,9 +44,7 @@ import org.hisp.dhis.report.comparator.ReportComparator;
  */
 public class GetAllReportsAction
     extends ActionPagingSupport<Report>
-{
-    private static final String JASPER_BASE_URL = "renderReport.action?id=";
-    
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,13 +85,8 @@ public class GetAllReportsAction
 
     public String execute() 
         throws Exception
-    {        
-        for ( Report report : reportService.getAllReports() )
-        {
-            report.setUrl( JASPER_BASE_URL + report.getId() );
-            
-            reports.add( report );
-        }
+    {
+        reports = new ArrayList<Report>( reportService.getAllReports() );
         
         Collections.sort( reports, new ReportComparator() );
         

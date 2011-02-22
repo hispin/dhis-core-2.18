@@ -27,11 +27,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
-import static org.hisp.dhis.system.util.ConversionUtils.getSet;
-
 import java.io.File;
-import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -99,13 +95,13 @@ public class AddReportAction
         this.name = name;
     }
 
-    private Collection<String> selectedReportTables;
-
-    public void setSelectedReportTables( Collection<String> selectedReportTables )
-    {
-        this.selectedReportTables = selectedReportTables;
-    }
+    private Integer reportTableId;
     
+    public void setReportTableId( Integer reportTableId )
+    {
+        this.reportTableId = reportTableId;
+    }
+
     private File file;
 
     public void setUpload( File file )
@@ -172,7 +168,7 @@ public class AddReportAction
             return ERROR;
         }
         
-        if ( fileName == null || fileName.trim().length() == 0 )
+        if ( id == null && ( fileName == null || fileName.trim().length() == 0 ) )
         {
             message = i18n.getString( "select_file" );
             
@@ -186,8 +182,7 @@ public class AddReportAction
         Report report = ( id == null ) ? new Report() : reportService.getReport( id );
         
         report.setName( name );
-        report.setReportTables( selectedReportTables != null ? getSet( 
-            reportTableService.getReportTables( getIntegerCollection( selectedReportTables ) ) ) : null );
+        report.setReportTable( reportTableService.getReportTable( reportTableId ) );
                 
         log.info( "Upload file name: " + fileName + ", content type: " + contentType );
 
