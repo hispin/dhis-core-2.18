@@ -1,22 +1,18 @@
 package org.hisp.dhis.databrowser.jdbc;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.databrowser.DataBrowserStore;
 import org.hisp.dhis.databrowser.DataBrowserTable;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.Timer;
 
@@ -32,8 +28,6 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore
     // -------------------------------------------------------------------------
 
     private StatementManager statementManager;
-
-    private static final Log log = LogFactory.getLog( StatementManagerDataBrowserStore.class );
 
     public void setStatementManager( StatementManager statementManager )
     {

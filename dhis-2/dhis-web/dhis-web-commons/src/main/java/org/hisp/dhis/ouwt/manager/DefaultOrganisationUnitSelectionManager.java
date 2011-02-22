@@ -200,12 +200,11 @@ public class DefaultOrganisationUnitSelectionManager
     // Session methods
     // -------------------------------------------------------------------------
 
-    protected Map getSession()
+    protected Map<String, Object> getSession()
     {
         return ActionContext.getContext().getSession();
     }
 
-    @SuppressWarnings( "unchecked" )
     private final void saveToSession( String key, Object object )
     {
         getSession().put( key, object );

@@ -67,7 +67,6 @@ import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.PeriodTypeXSDConverte
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserRoleXSDConverter;
 import org.hisp.dhis.importexport.dhis14.xml.converter.xsd.UserXSDConverter;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.PeriodService;
 
@@ -136,13 +135,6 @@ public class DefaultDhis14XMLExportService
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
     }
     
     // -------------------------------------------------------------------------

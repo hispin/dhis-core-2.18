@@ -37,9 +37,9 @@ import java.util.Map;
 public class SessionReplacerOUSManager
     extends DefaultOrganisationUnitSelectionManager
 {
-    private Map<Object, Object> session = new HashMap<Object, Object>();
+    private Map<String, Object> session = new HashMap<String, Object>();
 
-    protected Map<Object, Object> getSession()
+    protected Map<String, Object> getSession()
     {
         return session;
     }

@@ -143,7 +143,7 @@ public class DefaultTreeStateManager
         return treeState;
     }
 
-    protected Map getSession()
+    protected Map<String, Object> getSession()
     {
         return ActionContext.getContext().getSession();
     }
