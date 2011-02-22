@@ -35,11 +35,12 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * @author Joakim Bj�rnstad, mod: eivinhb
+ * @author Joakim Björnstad, mod: eivinhb, mod: Jason P. Pickering
  * @version $Id$
  */
 public class DataBrowserTable
 {
+
     /**
      * A List of List with integers to simulate a 2D array.
      */
@@ -66,6 +67,7 @@ public class DataBrowserTable
      * has results from.
      */
     private int queryCount = 0;
+
     private Integer numResults = 0;
 
     /**
@@ -90,8 +92,7 @@ public class DataBrowserTable
                 counts.add( rowItem );
                 addRowNameAndId( rowId, rowName );
             }
-        }
-        catch ( SQLException e )
+        } catch ( SQLException e )
         {
             e.printStackTrace();
         }
@@ -109,12 +110,16 @@ public class DataBrowserTable
      * for each PeriodId in the Set. IMPORTANT: index4 has to have a AS PeriodId
      * in the query IMPORTANT: index5 has to have a AS ColumnHeader in the query
      * 
-     * Initially adds 0 to each row in the column. Looks up in RowMeta and finds
+     * Adds 0 to each row in the column, based on whether the cross-tab should be
+     * zero-filled or not.
+     * Looks up in RowMeta and finds
      * index based on Name. Inserts into counts based on that. If the ResultSet
      * is empty, nothing is inserted into the list. (the Period has no
      * DataValues referenced)
      * 
      * @param resultSet the SQL ResultSet
+     * @param addZeros  Determines whether the table should be filled with zeros or not for
+     * cells which are empty.
      * @return 0 if ResultSet was empty else number of rows inserted with
      *         column.
      */
@@ -136,8 +141,7 @@ public class DataBrowserTable
                     hasPeriodIds = true;
                 }
             }
-        }
-        catch ( SQLException e1 )
+        } catch ( SQLException e1 )
         {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -160,7 +164,7 @@ public class DataBrowserTable
                 {
                     for ( List<String> rowItem : this.counts )
                     {
-                        rowItem.add( addZeros ?  "0": "" );
+                        rowItem.add( addZeros ? "0" : "" );
                     }
                     if ( hasPeriodIds && hasColumnName )
                     {
@@ -187,7 +191,7 @@ public class DataBrowserTable
                         makeEmptyCol = false;
                         for ( List<String> rowItem : this.counts )
                         {
-                            rowItem.add( addZeros ?  "0" : "" );
+                            rowItem.add( addZeros ? "0" : "" );
                         }
                         if ( hasColumnName )
                         {
@@ -204,25 +208,24 @@ public class DataBrowserTable
                 countRows++;
             }
 
-        }
-        catch ( SQLException e )
+        } catch ( SQLException e )
         {
             e.printStackTrace();
         }
 
         if ( countRows == 0 )
         {
-            this.addZeroColumn(addZeros);
+            this.addZeroColumn( addZeros );
         }
         return countRows;
     }
 
-    public void addZeroColumn(Boolean addZeros)
+    public void addZeroColumn( Boolean addZeros )
     {
         this.addColumnName( "counts_of_aggregated_values" );
         for ( List<String> rowItem : this.counts )
         {
-            rowItem.add( addZeros ?  "0": "" );
+            rowItem.add( addZeros ? "0" : "" );
         }
     }
 
@@ -323,10 +326,12 @@ public class DataBrowserTable
     {
         this.counts = counts;
     }
-    public void setNumResults(Integer numResults)
+
+    public void setNumResults( Integer numResults )
     {
         this.numResults = numResults;
     }
+
     public Integer getNumResults()
     {
         return numResults;
@@ -405,5 +410,4 @@ public class DataBrowserTable
         ret += "\n\n";
         return ret;
     }
-
 }
