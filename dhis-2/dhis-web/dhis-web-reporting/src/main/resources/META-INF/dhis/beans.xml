@@ -195,8 +195,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="reportTableService"
       ref="org.hisp.dhis.reporttable.ReportTableService"/>
-    <property name="reportService"
-      ref="org.hisp.dhis.report.ReportService"/>
     <property name="organisationUnitService"
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>

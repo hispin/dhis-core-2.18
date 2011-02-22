@@ -33,8 +33,6 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
@@ -55,8 +53,6 @@ public class ReportStoreTest
     private ReportTableService reportTableService;
     
     private ReportTable reportTableA;
-    
-    private Set<ReportTable> reportTables;
 
     // -------------------------------------------------------------------------
     // Fixture
@@ -73,9 +69,6 @@ public class ReportStoreTest
         reportTableA.setName( "ReportTableA" );
         reportTableA.setTableName( "ReportTableA" );
 
-        reportTables = new HashSet<ReportTable>();
-        reportTables.add( reportTableA );
-        
         reportTableService.saveReportTable( reportTableA );
     }
 
@@ -86,8 +79,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGet()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTableA );
+        Report reportB = new Report( "ReportB", "DesignB", reportTableA );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -99,8 +92,8 @@ public class ReportStoreTest
     @Test
     public void testSaveGetUpdate()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTableA );
+        Report reportB = new Report( "ReportB", "DesignB", reportTableA );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -124,8 +117,8 @@ public class ReportStoreTest
     @Test
     public void testDelete()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTableA );
+        Report reportB = new Report( "ReportB", "DesignB", reportTableA );
         
         int idA = reportStore.save( reportA );
         int idB = reportStore.save( reportB );
@@ -147,8 +140,8 @@ public class ReportStoreTest
     @Test
     public void testGetAll()
     {
-        Report reportA = new Report( "ReportA", "DesignA", reportTables );
-        Report reportB = new Report( "ReportB", "DesignB", reportTables );
+        Report reportA = new Report( "ReportA", "DesignA", reportTableA );
+        Report reportB = new Report( "ReportB", "DesignB", reportTableA );
         
         reportStore.save( reportA );
         reportStore.save( reportB );

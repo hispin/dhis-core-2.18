@@ -153,15 +153,14 @@ public class DefaultReportTableService
     // -------------------------------------------------------------------------
 
     @Transactional
-    public void createReportTables( int id, String mode, Integer reportingPeriod, 
+    public void createReportTable( int id, String mode, Integer reportingPeriod, 
         Integer organisationUnitId, boolean doDataMart, I18nFormat format )
     {
-        for ( ReportTable reportTable : getReportTables( id, mode ) )
-        {
-            reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
+        ReportTable reportTable = getReportTable( id, mode );
+        
+        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
-            createReportTable( reportTable, doDataMart );
-        }
+        createReportTable( reportTable, doDataMart );
     }
     
     @Transactional
@@ -262,6 +261,20 @@ public class DefaultReportTableService
         reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
 
         return getGrid( reportTable );
+    }
+
+    public ReportTable getReportTable( Integer id, String mode )
+    {
+        if ( mode.equals( MODE_REPORT_TABLE ) )
+        {
+            return getReportTable( id );
+        }
+        else if ( mode.equals( MODE_REPORT ) )
+        {
+            return reportService.getReport( id ).getReportTable();
+        }
+        
+        return null;
     }
     
     // -------------------------------------------------------------------------
@@ -565,29 +578,5 @@ public class DefaultReportTableService
     private String toString( Double value )
     {
         return value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
-    }
-    
-    /**
-     * If report table mode, this method will return the report table with the
-     * given identifier. If report mode, this method will return the report
-     * tables associated with the report.
-     * 
-     * @param id the identifier.
-     * @param mode the mode.
-     */
-    private Collection<ReportTable> getReportTables( Integer id, String mode )
-    {
-        Collection<ReportTable> reportTables = new ArrayList<ReportTable>();
-
-        if ( mode.equals( MODE_REPORT_TABLE ) )
-        {
-            reportTables.add( getReportTable( id ) );
-        }
-        else if ( mode.equals( MODE_REPORT ) )
-        {
-            reportTables = reportService.getReport( id ).getReportTables();
-        }
-
-        return reportTables;
     }
 }

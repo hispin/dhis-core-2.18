@@ -323,8 +323,6 @@ public class ListGrid
             throw new IllegalArgumentException( "Column index out of bounds: " + columnIndex );
         }
         
-        System.out.println( "col index: " + columnIndex + " order " + order );
-        
         Collections.sort( grid, new GridRowComparator( columnIndex, order ) );
         
         return this;

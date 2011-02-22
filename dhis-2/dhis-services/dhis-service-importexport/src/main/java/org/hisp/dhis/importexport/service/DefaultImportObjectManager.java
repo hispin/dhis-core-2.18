@@ -1108,8 +1108,7 @@ public class DefaultImportObjectManager
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
-    private void importGroupMemberAssociation( BatchHandler batchHandler, GroupMemberType type,
+    private void importGroupMemberAssociation( BatchHandler<GroupMemberAssociation> batchHandler, GroupMemberType type,
         Map<Object, Integer> groupMapping, Map<Object, Integer> memberMapping )
     {
         GroupMemberAssociationVerifier.clear();

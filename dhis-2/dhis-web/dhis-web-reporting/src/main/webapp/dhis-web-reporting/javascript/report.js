@@ -1,8 +1,6 @@
 
 function addReport()
 {
-    selectAllById( "selectedReportTables" );
-    
     document.getElementById( "reportForm" ).submit();
 }
 

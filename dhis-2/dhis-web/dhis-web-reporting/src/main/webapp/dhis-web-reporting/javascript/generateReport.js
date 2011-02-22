@@ -85,7 +85,7 @@ function reportStatusReceived( xmlObject )
         
         if ( $( "#mode" ).val() == MODE_REPORT )
         {
-        	window.location.href = $( "#url" ).val();
+        	window.location.href = "renderReport.action?id=" + $( "#id" ).val();
         }
         else if ( $( "#mode" ).val() == MODE_TABLE )
         {

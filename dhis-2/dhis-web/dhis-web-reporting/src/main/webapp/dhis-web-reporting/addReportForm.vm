@@ -26,38 +26,18 @@
 		<td colspan="2" height="7px"></td>
 	</tr>
 	<tr>
-		<th colspan="2">$i18n.getString( "available_report_tables" )</th>
+		<th colspan="2">$i18n.getString( "report_table" )</th>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<select multiple size="5" id="availableReportTables" name="availableReportTables" style="min-width:325px" ondblclick="moveSelectedById( 'availableReportTables', 'selectedReportTables' )">
+			<select id="reportTableId" name="reportTableId" style="min-width:325px">
+			<option value="0">[ $i18n.getString( "none" ) ]</option>
 			#foreach( $table in $reportTables )
-				<option value="$table.id">$table.name</option>
+				<option value="$table.id"#if( $!report.reportTable.id == $table.id ) selected="selected"#end>$table.name</option>
 			#end
 			</select>
 		</td>
 	</tr>
-	<tr>
-		<td colspan="2">
-			<input type="button" value="$i18n.getString( 'add' )" title="$i18n.getString( 'add' )" style="width:10em" onclick="moveSelectedById( 'availableReportTables', 'selectedReportTables' )"><input
-                   type="button" value="$i18n.getString( 'remove' )" title="$i18n.getString( 'remove' )" style="width:10em" onclick="moveSelectedById( 'selectedReportTables', 'availableReportTables' )"> 
-		</td>
-	</tr>
-	<tr>
-        <th colspan="2">$i18n.getString( "selected_report_tables" )</th>
-    </tr>
-	<tr>
-        <td colspan="2">
-            <select multiple size="5" id="selectedReportTables" name="selectedReportTables" style="min-width:325px" ondblclick="moveSelectedById( 'selectedReportTables', 'availableReportTables' )">
-            #foreach( $table in $selectedReportTables )
-                <option value="$table.id">$table.name</option>
-            #end
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2" height="7px"></td>
-    </tr>
 	<tr>
 		<td colspan="2"><input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()"><input
 		           type="button" value="$i18n.getString( 'cancel' )" style="width:10em" 

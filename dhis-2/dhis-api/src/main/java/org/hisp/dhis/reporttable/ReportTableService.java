@@ -53,7 +53,7 @@ public interface ReportTableService
      *        report parameter, bot parent organisation unit and organisation unit.
      * @param format the I18nFormat to use.
      */
-    void createReportTables( int id, String mode, Integer reportingPeriod, 
+    void createReportTable( int id, String mode, Integer reportingPeriod, 
         Integer organisationUnitId, boolean doDataMart, I18nFormat format );
     
     /**
@@ -137,6 +137,16 @@ public interface ReportTableService
      * @return a Grid.
      */
     Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId );
+    
+    /**
+     * If report table mode, this method will return the report table with the
+     * given identifier. If report mode, this method will return the report
+     * tables associated with the report.
+     * 
+     * @param id the identifier.
+     * @param mode the mode.
+     */
+    ReportTable getReportTable( Integer id, String mode );
     
     Collection<ReportTable> getReportTablesBetween( int first, int max );
     
