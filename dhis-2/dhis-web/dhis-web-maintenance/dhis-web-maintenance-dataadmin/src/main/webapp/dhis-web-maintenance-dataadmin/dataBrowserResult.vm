@@ -16,15 +16,6 @@
 
 <h3>$i18n.getString( "search_results_for" ) $i18n.getString( $searchOption ) #if ($parentName != "") - $parentName #end</h3>
 
-	<div>
-		<span id="info">
-			$i18n.getString( "request_returned_in" ): ${requestTime} $i18n.getString( "ms" ). 
-			$i18n.getString( "query_took" ): ${queryTime} $i18n.getString( "ms" ). 
-			$i18n.getString( "number_of_queries_executed" ): ${queryCount}.
-                        $i18n.getString( "Number of results" ): ${numResults}.
-		</span>
-	</div>
-	
 	<h3>$i18n.getString( "navigation" )</h3>
 	
 	<!-- ORGANISATIONUNIT -->
