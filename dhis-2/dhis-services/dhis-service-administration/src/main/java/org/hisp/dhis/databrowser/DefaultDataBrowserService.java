@@ -51,6 +51,7 @@ import org.hisp.dhis.system.util.DateUtils;
 public class DefaultDataBrowserService
     implements DataBrowserService
 {
+
     private static final String STARTDATE = "1900-01-01";
 
     private static final String ENDDATE = "3000-01-01";
@@ -62,7 +63,6 @@ public class DefaultDataBrowserService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -76,11 +76,10 @@ public class DefaultDataBrowserService
     {
         this.dataBrowserStore = dataBrowserStore;
     }
-    
+
     // -------------------------------------------------------------------------
     // DataBrowserService implementation
     // -------------------------------------------------------------------------
-
     public DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType,
         I18nFormat format )
     {
@@ -118,7 +117,7 @@ public class DefaultDataBrowserService
 
         dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
 
-         dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds,
+        dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds,
             maxLevel );
 
 
@@ -173,7 +172,7 @@ public class DefaultDataBrowserService
     }
 
     public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate,
-            String endDate, PeriodType periodType, I18nFormat format )
+        String endDate, PeriodType periodType, I18nFormat format )
     {
         DataBrowserTable table = new DataBrowserTable();
 
@@ -201,8 +200,7 @@ public class DefaultDataBrowserService
             CalendarPeriodType calendarPeriodType = (CalendarPeriodType) periodType;
 
             return format.formatPeriod( calendarPeriodType.createPeriod( date ) );
-        }
-        catch ( ParseException pe )
+        } catch ( ParseException pe )
         {
             throw new RuntimeException( "Date string could not be parsed: " + dateString );
         }
@@ -220,10 +218,12 @@ public class DefaultDataBrowserService
             if ( stringFormatDate.isEmpty() )
             {
                 stringFormatDate = SPACE + sTemp;
-            }
-            else if ( !stringFormatDate.contains( sTemp ) )
+            } else
             {
-                stringFormatDate += DASH + sTemp;
+                if ( !stringFormatDate.contains( sTemp ) )
+                {
+                    stringFormatDate += DASH + sTemp;
+                }
             }
         }
 
@@ -233,7 +233,6 @@ public class DefaultDataBrowserService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
     /**
      * Helper-method that finds all PeriodIds between a given period. Uses
      * functionality already in the DHIS. Returns a list with all id's that was
@@ -243,7 +242,7 @@ public class DefaultDataBrowserService
      * @param endDate
      * @param periodType
      * @return List<Integer>
-     */    
+     */
     private List<Integer> getAllPeriodIdsBetweenDatesOnPeriodType( String startDate, String endDate,
         PeriodType periodType, I18nFormat i18nFormat )
     {
@@ -316,11 +315,9 @@ public class DefaultDataBrowserService
             Collections.sort( periods, new AscendingPeriodComparator() );
 
             return periods;
-        }
-        catch ( ParseException e )
+        } catch ( ParseException e )
         {
             return null; // The user hasn't specified any dates
         }
     }
-
 }
