@@ -100,7 +100,7 @@ public class CreateReportTableStatement
         // Organisation unit is parent
         // ---------------------------------------------------------------------
 
-        buffer.append( ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME + SPACE + NUMERIC_COLUMN_TYPE + SEPARATOR );
+        buffer.append( ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME + SPACE + SHORT_TEXT_COLUMN_TYPE + SEPARATOR );
         
         // ---------------------------------------------------------------------
         // Crosstab

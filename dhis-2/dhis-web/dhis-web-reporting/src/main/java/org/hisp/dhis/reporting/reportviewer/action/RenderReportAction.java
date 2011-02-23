@@ -39,8 +39,12 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
@@ -63,11 +67,25 @@ public class RenderReportAction
         this.reportService = reportService;
     }
 
+    private ReportTableService reportTableService;
+
+    public void setReportTableService( ReportTableService reportTableService )
+    {
+        this.reportTableService = reportTableService;
+    }
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
+    }
+    
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -79,6 +97,20 @@ public class RenderReportAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    private Integer reportingPeriod;
+
+    public void setReportingPeriod( Integer reportingPeriod )
+    {
+        this.reportingPeriod = reportingPeriod;
+    }
+
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
     }
 
     // -------------------------------------------------------------------------
@@ -93,24 +125,37 @@ public class RenderReportAction
         
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
         
-        Connection connection = statementManager.getHolder().getConnection();
-        
         JasperPrint print = null;
-        
-        try
+
+        if ( report.hasReportTable() ) // Use JR data source
         {
-            print = JasperFillManager.fillReport( jasperReport, null, connection );
+            ReportTable reportTable = report.getReportTable();
+            
+            Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
+            
+            System.out.println( grid );
+            
+            print = JasperFillManager.fillReport( jasperReport, null, grid );
         }
-        finally
-        {        
-            connection.close();
+        else // Assume SQL report and provide JDBC connection
+        {
+            Connection connection = statementManager.getHolder().getConnection();
+            
+            try
+            {
+                print = JasperFillManager.fillReport( jasperReport, null, connection );
+            }
+            finally
+            {        
+                connection.close();
+            }
         }
         
         if ( print != null )
         {
             JasperExportManager.exportReportToPdfStream( print, out );
         }
-                
+        
         return SUCCESS;
     }
 

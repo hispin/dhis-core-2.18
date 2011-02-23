@@ -86,6 +86,8 @@ public class DefaultReportTableService
     
     private static final String MODE_REPORT = "report";
     private static final String MODE_REPORT_TABLE = "table";
+    private static final String YES = "Yes";
+    private static final String NO = "No";
     
     // ---------------------------------------------------------------------
     // Dependencies
@@ -515,7 +517,7 @@ public class DefaultReportTableService
             
             grid.addValue( reportTable.getReportingMonthName() );
             grid.addValue( reportTable.getOrganisationUnitName() );
-            grid.addValue( isCurrentParent( row ) ? 1 : 0 );
+            grid.addValue( isCurrentParent( row ) ? YES : NO );
             
             for ( List<IdentifiableObject> column : reportTable.getColumns() )
             {
