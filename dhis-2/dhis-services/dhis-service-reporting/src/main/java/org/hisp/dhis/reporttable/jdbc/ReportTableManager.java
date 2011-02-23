@@ -40,20 +40,6 @@ public interface ReportTableManager
     String ID = ReportTableManager.class.getName();
     
     /**
-     * Creates a report table in the database.
-     * 
-     * @param reportTable the report table to create.
-     */
-    void createReportTable( ReportTable reportTable );
-    
-    /**
-     * Deletes a ReportTable.
-     * 
-     * @param reportTable the ReportTable to delete.
-     */
-    void removeReportTable( ReportTable reportTable );
-    
-    /**
      * Generates a map with a key identifiying the dimensions of each value.
      * 
      * @param reportTable the ReportTable for which to create the value map.
