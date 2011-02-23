@@ -115,8 +115,7 @@ public class ReportTable
         put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
     } };
 
-    private static final String EMPTY = "";    
-    private static final String TABLE_PREFIX = "_report_";
+    private static final String EMPTY = "";
     private static final IdentifiableObject[] IRT = new IdentifiableObject[0];
     private static final String[] SRT = new String[0];    
     private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"<>.]";
@@ -125,16 +124,6 @@ public class ReportTable
     // Persisted properties
     // -------------------------------------------------------------------------
 
-    /**
-     * The name of the database table corresponding to the ReportTable object name.
-     */
-    private String tableName;
-    
-    /**
-     * The name of the existing database table.
-     */
-    private String existingTableName;
-    
     /**
      * Whether the ReportTable contains regression columns.
      */
@@ -327,8 +316,6 @@ public class ReportTable
         String reportingMonthName )
     {
         this.name = name;
-        this.tableName = generateTableName( name );
-        this.existingTableName = generateTableName( name );
         this.regression = regression;
         this.dataElements = dataElements;
         this.indicators = indicators;
@@ -370,10 +357,8 @@ public class ReportTable
         }
 
         // ---------------------------------------------------------------------
-        // Init tableName, allPeriods, allUnits, allIndicators
+        // Init allPeriods, allUnits, allIndicators
         // ---------------------------------------------------------------------
-
-        this.tableName = generateTableName( name );
 
         allIndicators.addAll( dataElements );
         allIndicators.addAll( indicators );
@@ -407,15 +392,7 @@ public class ReportTable
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-    
-    /**
-     * Updates the existing table name with the current name.
-     */
-    public void updateExistingTableName()
-    {
-        this.existingTableName = generateTableName( name );
-    }
-    
+        
     /**
      * Tests whether this ReportTable is multi-dimensional.
      */
@@ -627,14 +604,6 @@ public class ReportTable
     }
 
     /**
-     * Generates a prefixed, database encoded name.
-     */
-    private static String generateTableName( String name )
-    {
-        return TABLE_PREFIX + columnEncode( name );
-    }
-
-    /**
      * Adds an empty list of IdentifiableObjects to the given list if empty.
      */
     private void addIfEmpty( List<List<IdentifiableObject>> list )
@@ -763,26 +732,6 @@ public class ReportTable
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
 
-    public String getTableName()
-    {
-        return tableName;
-    }
-    
-    public void setTableName( String tableName )
-    {
-        this.tableName = tableName;
-    }
-    
-    public String getExistingTableName()
-    {
-        return existingTableName;
-    }
-
-    public void setExistingTableName( String existingTableName )
-    {
-        this.existingTableName = existingTableName;
-    }
-    
     public boolean isRegression()
     {
         return regression;

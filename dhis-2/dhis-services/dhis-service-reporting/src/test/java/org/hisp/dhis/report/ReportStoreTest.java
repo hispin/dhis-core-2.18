@@ -67,7 +67,6 @@ public class ReportStoreTest
         
         reportTableA = new ReportTable();
         reportTableA.setName( "ReportTableA" );
-        reportTableA.setTableName( "ReportTableA" );
 
         reportTableService.saveReportTable( reportTableA );
     }

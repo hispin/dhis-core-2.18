@@ -14,12 +14,6 @@
       <column name="name" not-null="true" unique="true"/>
     </property>
     
-    <property name="tableName">
-      <column name="tablename" not-null="true" unique="true"/>
-    </property>
-    
-    <property name="existingTableName"/>
-        
     <property name="regression"/>
     
     <list name="dataElements" table="reporttable_dataelements">

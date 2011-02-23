@@ -89,6 +89,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
+        executeSql( "ALTER TABLE reporttable DROP column tablename" );
+        executeSql( "ALTER TABLE reporttable DROP column existingtablename" );
         executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN displayorder" );
         executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN shortname" );
         executeSql( "ALTER TABLE section DROP COLUMN label" );

@@ -85,7 +85,6 @@ public class ReportTableImporter
     protected void importMatching( ReportTable object, ReportTable match )
     {
         match.setName( object.getName() );
-        match.setTableName( object.getTableName() );
         match.setRegression( object.isRegression() );
         
         match.setDoIndicators( match.isDoIndicators() );
@@ -117,10 +116,6 @@ public class ReportTableImporter
     protected boolean isIdentical( ReportTable object, ReportTable existing )
     {
         if ( !object.getName().equals( existing.getName() ) )
-        {
-            return false;
-        }
-        if ( !object.getTableName().equals( existing.getTableName() ) )
         {
             return false;
         }
