@@ -89,13 +89,6 @@ public class CreateTableAction
         this.mode = mode;
     }
 
-    private boolean doDataMart;
-
-    public void setDoDataMart( boolean doDataMart )
-    {
-        this.doDataMart = doDataMart;
-    }
-
     private Integer reportingPeriod;
 
     public void setReportingPeriod( Integer reportingPeriod )
@@ -127,7 +120,6 @@ public class CreateTableAction
         process.setMode( mode );
         process.setReportingPeriod( reportingPeriod );
         process.setOrganisationUnitId( organisationUnitId );
-        process.setDoDataMart( doDataMart );
         process.setFormat( format );
 
         processCoordinator.requestProcessExecution( executor );

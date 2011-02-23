@@ -40,28 +40,21 @@ function generateReport()
 	}
 		
     setWaitMessage( i18n_please_wait );
-        
-    var url = "createTable.action?id=" + $( "#id" ).val() + 
-    	"&doDataMart=" + $( "#doDataMart" ).val() + "&mode=" + $( "#mode" ).val();
     
-    if ( $( "#reportingPeriod" ).length )
-    {
-        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
-    }
-        
-    if ( paramOrganisationUnit != null )
-    {
-        url += "&organisationUnitId=" + paramOrganisationUnit;
-    }
+    var doDataMart = ( $( "#doDataMart" ).length && $( "#doDataMart" ).val() == "true" );
     
-    var request = new Request();
-    request.setCallbackSuccess( generateReportReceived );    
-    request.send( url );
-}
-
-function generateReportReceived( messageElement )
-{   
-    getReportStatus();
+    if ( doDataMart )
+    {    
+	    var url = "createTable.action?" + getUrlParams();
+	    
+	    var request = new Request();
+	    request.setCallbackSuccess( getReportStatus );    
+	    request.send( url );
+    }
+    else
+    {
+    	viewReport();
+    }
 }
 
 function getReportStatus()
@@ -81,47 +74,49 @@ function reportStatusReceived( xmlObject )
     
     if ( finished == "true" )
     {
-        setMessage( i18n_process_completed );
-        
-        var urlParams = "id=" + $( "#id" ).val();
-        
-	    if ( $( "#reportingPeriod" ).length )
-	    {
-	        urlParams += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
-	    }
-	        
-	    if ( paramOrganisationUnit != null )
-	    {
-	        urlParams += "&organisationUnitId=" + paramOrganisationUnit;
-	    }
-    
-        if ( $( "#mode" ).val() == MODE_REPORT )
-        {
-        	window.location.href = "renderReport.action?" + urlParams;
-        }
-        else if ($( "#mode" ).val() == MODE_TABLE )
-        {
-        	window.location.href = "exportTable.action?type=html&" + urlParams;
-        }
-    }
-    else if ( statusMessage == null )
-    {
-        setWaitMessage( i18n_please_wait );
-        
-        waitAndGetReportStatus( 1000 );
+        setMessage( i18n_process_completed );        
+    	viewReport();
     }
     else
     {
-        setWaitMessage( i18n_please_wait + " - " + statusMessage );
-        
-        waitAndGetReportStatus( 1000 );
+        setTimeout( "getReportStatus();", millis );
     }
 }
 
-function waitAndGetReportStatus( millis )
+function viewReport( urlParams )
 {
-    setTimeout( "getReportStatus();", millis );
+	var mode = $( "#mode" ).val();
+	
+    if ( mode == MODE_REPORT )
+    {
+    	window.location.href = "renderReport.action?" + getUrlParams();
+    }
+    else // MODE_TABLE
+    {
+    	window.location.href = "exportTable.action?type=html&" + getUrlParams();
+    }
 }
+
+function getUrlParams()
+{
+	 var url = "id=" + $( "#id" ).val() + "&mode=" + $( "#mode" ).val();
+	    
+    if ( $( "#reportingPeriod" ).length )
+    {
+        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
+    }
+        
+    if ( paramOrganisationUnit != null )
+    {
+        url += "&organisationUnitId=" + paramOrganisationUnit;
+    }
+	
+	return url;
+}
+
+// -----------------------------------------------------------------------------
+// Report table
+// -----------------------------------------------------------------------------
 
 function exportReport( type )
 {

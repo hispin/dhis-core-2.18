@@ -89,6 +89,8 @@ public class GridJasperResult
         
         grid = _grid != null ? _grid : grid; 
 
+        System.out.println( "GRID IN JASPER RESULT " + grid );
+
         // ---------------------------------------------------------------------
         // Configure response
         // ---------------------------------------------------------------------
@@ -97,7 +99,7 @@ public class GridJasperResult
 
         String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".pdf";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, true );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
         
         // ---------------------------------------------------------------------
         // Write jrxml based on Velocity template

@@ -35,20 +35,14 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.statement.CreateReportTableStatement;
-import org.hisp.dhis.reporttable.statement.RemoveReportTableStatement;
-import org.hisp.dhis.reporttable.statement.ReportTableStatement;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
 
@@ -59,8 +53,6 @@ import org.hisp.dhis.system.util.TextUtils;
 public class JDBCReportTableManager
     implements ReportTableManager
 {
-    private static final Log log = LogFactory.getLog( JDBCReportTableManager.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -72,62 +64,9 @@ public class JDBCReportTableManager
         this.statementManager = statementManager;
     }
 
-    private StatementBuilder statementBuilder;
-
-    public void setStatementBuilder( StatementBuilder statementBuilder )
-    {
-        this.statementBuilder = statementBuilder;
-    }
-
     // -------------------------------------------------------------------------
     // ReportTableManager implementation
     // -------------------------------------------------------------------------
-
-    public void createReportTable( ReportTable reportTable )
-    {
-        removeReportTable( reportTable );
-
-        StatementHolder holder = statementManager.getHolder();
-
-        ReportTableStatement statement = new CreateReportTableStatement( reportTable, statementBuilder );
-
-        log.debug( "Creating report table with SQL statement: '" + statement.getStatement() + "'" );
-
-        try
-        {
-            holder.getStatement().executeUpdate( statement.getStatement() );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "SQL: '" + statement.getStatement() + "'" );
-
-            throw new RuntimeException( "Failed to create table: " + reportTable.getTableName(), ex );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
-
-    public void removeReportTable( ReportTable reportTable )
-    {
-        StatementHolder holder = statementManager.getHolder();
-
-        ReportTableStatement statement = new RemoveReportTableStatement( reportTable );
-
-        try
-        {
-            holder.getStatement().executeUpdate( statement.getStatement() );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table does not exist: " + reportTable.getTableName() );
-        }
-        finally
-        {
-            holder.close();
-        }
-    }
 
     public Map<String, Double> getAggregatedValueMap( ReportTable reportTable )
     {

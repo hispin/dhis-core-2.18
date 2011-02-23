@@ -81,7 +81,7 @@ public class GridJrxmlResult
         Grid _grid = (Grid) invocation.getStack().findValue( "grid" );
         
         grid = _grid != null ? _grid : grid; 
-
+        
         // ---------------------------------------------------------------------
         // Configure response
         // ---------------------------------------------------------------------

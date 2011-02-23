@@ -73,8 +73,6 @@ public class RemoveTableAction
             
             if ( table != null )
             {
-                reportTableService.removeReportTable( table );
-                
                 reportTableService.deleteReportTable( table );
             }
         }

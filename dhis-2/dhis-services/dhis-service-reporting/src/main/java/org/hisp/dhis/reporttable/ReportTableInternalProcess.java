@@ -33,7 +33,6 @@ import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class ReportTableInternalProcess
     extends AbstractStatementInternalProcess implements SerialToGroup
@@ -86,13 +85,6 @@ public class ReportTableInternalProcess
         this.organisationUnitId = organisationUnitId;
     }
     
-    private boolean doDataMart;
-        
-    public void setDoDataMart( boolean doDataMart )
-    {
-        this.doDataMart = doDataMart;
-    }
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -116,6 +108,6 @@ public class ReportTableInternalProcess
     @Override
     public void executeStatements()
     {
-        reportTableService.createReportTable( id, mode, reportingPeriod, organisationUnitId, doDataMart, format );
+        reportTableService.populateReportTableDataMart( id, mode, reportingPeriod, organisationUnitId, format );
     }
 }

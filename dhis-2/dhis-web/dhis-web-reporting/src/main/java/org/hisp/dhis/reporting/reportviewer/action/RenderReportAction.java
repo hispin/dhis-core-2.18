@@ -133,8 +133,6 @@ public class RenderReportAction
             
             Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
             
-            System.out.println( grid );
-            
             print = JasperFillManager.fillReport( jasperReport, null, grid );
         }
         else // Assume SQL report and provide JDBC connection

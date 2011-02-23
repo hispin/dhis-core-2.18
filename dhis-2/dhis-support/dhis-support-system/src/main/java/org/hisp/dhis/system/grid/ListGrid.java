@@ -482,19 +482,6 @@ public class ListGrid
                 return 0;
             }
             
-            /*
-            if ( isNumeric( list1.get( columnIndex ) ) && isNumeric( list2.get( columnIndex ) ) )
-            {
-                final Double value1 = Double.valueOf( list1.get( columnIndex ) );
-                final Double value2 = Double.valueOf( list2.get( columnIndex ) );
-                
-                return order > 0 ? value2.compareTo( value1 ) : value1.compareTo( value2 );
-            }
-            
-            final String value1 = list1.get( columnIndex );
-            final String value2 = list2.get( columnIndex );            
-            */
-            
             if ( list1.get( columnIndex ) == null || !( list1.get( columnIndex ) instanceof Comparable<?> ) || 
                 list2.get( columnIndex ) == null || !( list2.get( columnIndex ) instanceof Comparable<?> ) )
             {
