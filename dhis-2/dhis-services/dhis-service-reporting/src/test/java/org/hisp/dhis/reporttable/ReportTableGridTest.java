@@ -948,4 +948,36 @@ public class ReportTableGridTest
         assertEquals( 11.0, grid.getRow( 3 ).get( 7 ) );
         assertEquals( 12.0, grid.getRow( 3 ).get( 8 ) );
     }
+
+    @Test
+    public void testGetDataElementReportTableRegression()
+    {
+        ReportTable reportTable = new ReportTable( "Embezzlement", true, 
+            dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
+            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+
+        int id = reportTableService.saveReportTable( reportTable );
+
+        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, 0, 0 );
+        
+        assertEquals( 11.0, grid.getRow( 0 ).get( 5 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 6 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 8 ) );
+
+        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 12 ) );
+        
+        assertEquals( 13.0, grid.getRow( 1 ).get( 5 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 6 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 8 ) );
+
+        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 12 ) );
+    }    
 }

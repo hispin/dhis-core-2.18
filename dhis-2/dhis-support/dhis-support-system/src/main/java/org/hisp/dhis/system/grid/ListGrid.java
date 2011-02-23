@@ -50,6 +50,8 @@ import org.hisp.dhis.common.GridHeader;
 public class ListGrid
     implements Grid
 {
+    private static final String REGRESSION_SUFFIX = "_regression";
+    
     /**
      * The title of the grid.
      */
@@ -148,7 +150,7 @@ public class ListGrid
         
         return this;
     }
-       
+    
     public List<GridHeader> getHeaders()
     {
         return headers;
@@ -338,7 +340,7 @@ public class ListGrid
         return this;
     }
     
-    public Grid addRegressionColumn( int columnIndex )
+    public Grid addRegressionColumn( int columnIndex, boolean addHeader )
     {
         verifyGridState();
         
@@ -350,21 +352,17 @@ public class ListGrid
         
         for ( Object value : column )
         {
-            index++;
-            
             if ( Double.parseDouble( String.valueOf( value ) ) != 0.0 ) // 0 omitted from regression
             {
-                regression.addData( index, Double.parseDouble( String.valueOf(  value ) ) );
+                regression.addData( index++, Double.parseDouble( String.valueOf(  value ) ) );
             }
         }
         
         List<Object> regressionColumn = new ArrayList<Object>();
         
-        index = 0;
-        
         for ( int i = 0; i < column.size(); i++ )
         {
-            final double predicted = regression.predict( index++ );
+            final double predicted = regression.predict( i );
             
             if ( !Double.isNaN( predicted ) ) // Enough values must exist for regression
             {
@@ -377,6 +375,19 @@ public class ListGrid
         }
 
         addColumn( regressionColumn );
+        
+        if ( addHeader && columnIndex < headers.size() )
+        {
+            GridHeader header = headers.get( columnIndex );
+            
+            if ( header != null )
+            {
+                GridHeader regressionHeader = new GridHeader( header.getName() + REGRESSION_SUFFIX, 
+                    header.getColumn() + REGRESSION_SUFFIX, header.getType(), header.isHidden(), header.isMeta() );
+                
+                addHeader( regressionHeader );
+            }
+        }            
         
         return this;
     }
@@ -417,16 +428,10 @@ public class ListGrid
         {
             if ( rowLength != null && rowLength != row.size() )
             {
-                throw new IllegalStateException( "Grid rows do not have the same number of cells" );
+                throw new IllegalStateException( "Grid rows do not have the same number of cells, previous: " + rowLength + ", this: " + row.size() );
             }
             
             rowLength = row.size();
-        }
-        
-        if ( rowLength != null && headers.size() != 0 && headers.size() != rowLength )
-        {
-            throw new IllegalStateException( 
-                "Number of headers is not 0 and not equal to the number of columns (headers: " + headers.size() + ", cols: " + rowLength + ")" );
         }
     }
     

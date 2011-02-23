@@ -184,6 +184,7 @@ public interface Grid
      * Adds a regression column to the grid. Column must hold numeric data.
      * 
      * @param columnIndex the index of the base column.
+     * @oaram addHeader indicates whether to add a grid header for the regression column.
      */
-    Grid addRegressionColumn( int columnIndex );
+    Grid addRegressionColumn( int columnIndex, boolean addHeader );
 }
