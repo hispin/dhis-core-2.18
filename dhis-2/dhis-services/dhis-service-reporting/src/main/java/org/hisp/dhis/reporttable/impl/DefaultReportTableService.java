@@ -34,7 +34,7 @@ import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.SPACE;
 import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_NAME;
 import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_PRETTY_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.databaseEncode;
+import static org.hisp.dhis.reporttable.ReportTable.columnEncode;
 import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.reporttable.ReportTable.getPrettyColumnName;
@@ -343,28 +343,6 @@ public class DefaultReportTableService
     }
 
     /**
-     * Adds columns with regression values to the given grid.
-     * 
-     * @param grid the grid.
-     * @param startColumnIndex the start column index.
-     * @param numberOfColumns the number of columns.
-     * @return a grid.
-     */
-    private Grid addRegressionToGrid( Grid grid, int numberOfColumns )
-    {
-        int startColumnIndex = grid.getWidth() - numberOfColumns;
-        
-        for ( int i = 0; i < numberOfColumns; i++ )
-        {
-            int columnIndex = i + startColumnIndex;
-            
-            grid.addRegressionColumn( columnIndex );
-        }
-        
-        return grid;
-    }
-    
-    /**
      * Generates a grid based on the given report table.
      * 
      * @param reportTable the report table.
@@ -405,7 +383,7 @@ public class DefaultReportTableService
         {
             for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() ) // TOTO skip if only one category?
             {
-                grid.addHeader( new GridHeader( categoryOption.getShortName(), databaseEncode( categoryOption.getShortName() ), String.class.getName(), false, false ) );
+                grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption.getShortName() ), String.class.getName(), false, false ) );
             }
             
             grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, String.class.getName(), false, false ) );
@@ -419,7 +397,7 @@ public class DefaultReportTableService
         {
             grid.addRow();
             
-            for ( IdentifiableObject object : row ) // TODO change order and get one loop?
+            for ( IdentifiableObject object : row )
             {
                 grid.addValue( object.getId() ); // Index columns
             }
@@ -449,6 +427,11 @@ public class DefaultReportTableService
             }
         }
 
+        if ( reportTable.isRegression() && !reportTable.doTotal() )
+        {
+            addRegressionToGrid( grid, reportTable.getColumns().size() );
+        }
+        
         // ---------------------------------------------------------------------
         // Sort first and then limit
         // ---------------------------------------------------------------------
@@ -463,6 +446,26 @@ public class DefaultReportTableService
             grid.limitGrid( reportTable.topLimit() );
         }
                 
+        return grid;
+    }
+
+    /**
+     * Adds columns with regression values to the given grid.
+     * 
+     * @param grid the grid.
+     * @param numberOfColumns the number of columns.
+     */
+    private Grid addRegressionToGrid( Grid grid, int numberOfColumns )
+    {
+        int startColumnIndex = grid.getWidth() - numberOfColumns;
+        
+        for ( int i = 0; i < numberOfColumns; i++ )
+        {
+            int columnIndex = i + startColumnIndex;
+            
+            grid.addRegressionColumn( columnIndex, true );
+        }
+        
         return grid;
     }
     
