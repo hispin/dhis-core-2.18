@@ -155,14 +155,7 @@ public class ValidatePatientAction
         }
 
         fullName = fullName.trim();
-        /*
-        if( fullName.indexOf( ' ' )== -1 )
-        {
-            message = i18n.getString( "please_enter_a_valid_full_name" );
-
-            return INPUT;
-        }
-        */
+        
         // ---------------------------------------------------------------------
         // Check duplicate by FirstName, MiddleName, LastName, Birthday, Gender
         // ---------------------------------------------------------------------

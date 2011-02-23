@@ -173,7 +173,7 @@
             </td>
         #else
             <td class="input-column">
-			<input type="text" id="iden$identifierType.id" name="iden$identifierType.id"  data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td> 
+			<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" class='idfield' data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td> 
         #end
 
 	</tr>
