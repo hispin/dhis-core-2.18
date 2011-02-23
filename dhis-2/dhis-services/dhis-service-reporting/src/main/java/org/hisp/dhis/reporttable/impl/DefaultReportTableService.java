@@ -352,7 +352,7 @@ public class DefaultReportTableService
     {
         String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE + StringUtils.trimToEmpty( reportTable.getReportingMonthName() );
         
-        Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle ).setTable( reportTable.getExistingTableName() );
+        Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
         
         final Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable );
         
