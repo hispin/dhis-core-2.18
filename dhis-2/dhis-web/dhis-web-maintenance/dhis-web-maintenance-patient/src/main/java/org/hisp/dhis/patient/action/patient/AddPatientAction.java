@@ -175,36 +175,18 @@ public class AddPatientAction
             if ( startIndex == endIndex )
             {
                 middleName = "";
-                lastName = fullName.substring( startIndex, fullName.length() );
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
             }
             else
             {
                 middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex, fullName.length() );
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
 
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
-
-        /*
-        if ( startIndex == endIndex )
-        {
-            patient.setMiddleName( "" );
-            
-            lastName = fullName.substring( startIndex, fullName.length() );
-            patient.setLastName( lastName );
-        }
-        else
-        {
-            middleName = fullName.substring( startIndex + 1, endIndex );
-            patient.setMiddleName( middleName );
-            
-            lastName = fullName.substring( endIndex, fullName.length() );
-            patient.setLastName( lastName );
-        }
-        */
        
         // ---------------------------------------------------------------------
         // Set Other information for patient
