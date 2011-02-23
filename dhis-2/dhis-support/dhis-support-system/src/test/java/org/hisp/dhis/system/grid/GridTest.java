@@ -28,11 +28,10 @@ package org.hisp.dhis.system.grid;
  */
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -41,8 +40,6 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.hisp.dhis.system.grid.ListGrid;
 
 /**
  * @author Lars Helge Overland
@@ -70,24 +67,24 @@ public class GridTest
         grid.addHeader( headerC );
         
         grid.addRow();        
-        grid.addValue( "11" );
-        grid.addValue( "12" );
-        grid.addValue( "13" );
+        grid.addValue( 11 );
+        grid.addValue( 12 );
+        grid.addValue( 13 );
 
         grid.addRow();        
-        grid.addValue( "21" );
-        grid.addValue( "22" );
-        grid.addValue( "23" );
+        grid.addValue( 21 );
+        grid.addValue( 22 );
+        grid.addValue( 23 );
 
         grid.addRow();        
-        grid.addValue( "31" );
-        grid.addValue( "32" );
-        grid.addValue( "33" );
+        grid.addValue( 31 );
+        grid.addValue( 32 );
+        grid.addValue( 33 );
 
         grid.addRow();        
-        grid.addValue( "41" );
-        grid.addValue( "42" );
-        grid.addValue( "43" );
+        grid.addValue( 41 );
+        grid.addValue( 42 );
+        grid.addValue( 43 );
     }
     
     @Test
@@ -105,19 +102,19 @@ public class GridTest
     @Test
     public void testGetRow()
     {
-        List<String> rowA = grid.getRow( 0 );
+        List<Object> rowA = grid.getRow( 0 );
         
         assertTrue( rowA.size() == 3 );
-        assertTrue( rowA.contains( "11" ) );
-        assertTrue( rowA.contains( "12" ) );
-        assertTrue( rowA.contains( "13" ) );
+        assertTrue( rowA.contains( 11 ) );
+        assertTrue( rowA.contains( 12 ) );
+        assertTrue( rowA.contains( 13 ) );
         
-        List<String> rowB = grid.getRow( 1 );
+        List<Object> rowB = grid.getRow( 1 );
         
         assertTrue( rowB.size() == 3 );
-        assertTrue( rowB.contains( "21" ) );
-        assertTrue( rowB.contains( "22" ) );
-        assertTrue( rowB.contains( "23" ) );
+        assertTrue( rowB.contains( 21 ) );
+        assertTrue( rowB.contains( 22 ) );
+        assertTrue( rowB.contains( 23 ) );
     }
 
     @Test
@@ -154,49 +151,49 @@ public class GridTest
     @Test
     public void testGetColumn()
     {        
-        List<String> column1 = grid.getColumn( 1 );
+        List<Object> column1 = grid.getColumn( 1 );
         
         assertEquals( 4, column1.size() );
-        assertTrue( column1.contains( "12" ) );
-        assertTrue( column1.contains( "22" ) );
-        assertTrue( column1.contains( "32" ) );
-        assertTrue( column1.contains( "42" ) );
+        assertTrue( column1.contains( 12 ) );
+        assertTrue( column1.contains( 22 ) );
+        assertTrue( column1.contains( 32 ) );
+        assertTrue( column1.contains( 42 ) );
 
-        List<String> column2 = grid.getColumn( 2 );
+        List<Object> column2 = grid.getColumn( 2 );
         
         assertEquals( 4, column2.size() );
-        assertTrue( column2.contains( "13" ) );
-        assertTrue( column2.contains( "23" ) );
-        assertTrue( column2.contains( "33" ) );
-        assertTrue( column2.contains( "43" ) );
+        assertTrue( column2.contains( 13 ) );
+        assertTrue( column2.contains( 23 ) );
+        assertTrue( column2.contains( 33 ) );
+        assertTrue( column2.contains( 43 ) );
     }
     
     @Test
     public void testAddColumn()
     {
-        List<String> columnValues = new ArrayList<String>();
-        columnValues.add( "14" );
-        columnValues.add( "24" );
-        columnValues.add( "34" );
-        columnValues.add( "44" );
+        List<Object> columnValues = new ArrayList<Object>();
+        columnValues.add( 14 );
+        columnValues.add( 24 );
+        columnValues.add( 34 );
+        columnValues.add( 44 );
         
         grid.addColumn( columnValues );
         
-        List<String> column3 = grid.getColumn( 3 );
+        List<Object> column3 = grid.getColumn( 3 );
         
         assertEquals( 4, column3.size() );
-        assertTrue( column3.contains( "14" ) );
-        assertTrue( column3.contains( "24" ) );
-        assertTrue( column3.contains( "34" ) );
-        assertTrue( column3.contains( "44" ) );
+        assertTrue( column3.contains( 14 ) );
+        assertTrue( column3.contains( 24 ) );
+        assertTrue( column3.contains( 34 ) );
+        assertTrue( column3.contains( 44 ) );
         
-        List<String> row2 = grid.getRow( 1 );
+        List<Object> row2 = grid.getRow( 1 );
         
         assertEquals( 4, row2.size() );
-        assertTrue( row2.contains( "21" ) );
-        assertTrue( row2.contains( "22" ) );
-        assertTrue( row2.contains( "23" ) );
-        assertTrue( row2.contains( "24" ) );
+        assertTrue( row2.contains( 21 ) );
+        assertTrue( row2.contains( 22 ) );
+        assertTrue( row2.contains( 23 ) );
+        assertTrue( row2.contains( 24 ) );
     }
     
     @Test
@@ -228,11 +225,11 @@ public class GridTest
         
         assertEquals( 2, grid.getRows().size() );
         
-        List<String> rowA = grid.getRow( 0 );
-        assertTrue( rowA.contains( "11" ) );
+        List<Object> rowA = grid.getRow( 0 );
+        assertTrue( rowA.contains( 11 ) );
 
-        List<String> rowB = grid.getRow( 1 );        
-        assertTrue( rowB.contains( "21" ) );
+        List<Object> rowB = grid.getRow( 1 );        
+        assertTrue( rowB.contains( 21 ) );
         
         grid.limitGrid( 0 );
         
@@ -244,17 +241,20 @@ public class GridTest
     {
         Grid grid = new ListGrid();
         
-        grid.addRow().addValue( "1" ).addValue( "a" );
-        grid.addRow().addValue( "2" ).addValue( "b" );
-        grid.addRow().addValue( "3" ).addValue( "c" );
+        grid.addRow().addValue( 1 ).addValue( "a" );
+        grid.addRow().addValue( 2 ).addValue( "b" );
+        grid.addRow().addValue( 3 ).addValue( "c" );
         
         grid.sortGrid( 2, 1 );
 
-        List<String> row1 = grid.getRow( 0 );
+        List<Object> row1 = grid.getRow( 0 );
         assertTrue( row1.contains( "c" ) );
 
-        List<String> row2 = grid.getRow( 1 );
-        assertTrue( row2.contains( "b" ) );        
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "b" ) );
+        
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( "a" ) );
     }
 
     @Test
@@ -262,64 +262,88 @@ public class GridTest
     {
         Grid grid = new ListGrid();
         
-        grid.addRow().addValue( "3" ).addValue( "a" );
-        grid.addRow().addValue( "2" ).addValue( "b" );
-        grid.addRow().addValue( "1" ).addValue( "c" );
+        grid.addRow().addValue( 3 ).addValue( "a" );
+        grid.addRow().addValue( 2 ).addValue( "b" );
+        grid.addRow().addValue( 1 ).addValue( "c" );
         
         grid.sortGrid( 1, -1 );
 
-        List<String> row1 = grid.getRow( 0 );
-        assertTrue( row1.contains( "1" ) );
+        List<Object> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( 1 ) );
 
-        List<String> row2 = grid.getRow( 1 );
-        assertTrue( row2.contains( "2" ) );        
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( 2 ) );
+        
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( 3 ) );       
     }
-    
+
     @Test
     public void testSortC()
     {
         Grid grid = new ListGrid();
+
+        grid.addRow().addValue( 1 ).addValue( "c" );
+        grid.addRow().addValue( 3 ).addValue( "a" );
+        grid.addRow().addValue( 2 ).addValue( "b" );
         
-        grid.addRow().addValue( "a" ).addValue( "a" ).addValue( "5.2" );
-        grid.addRow().addValue( "b" ).addValue( "b" ).addValue( "0.0" );
-        grid.addRow().addValue( "c" ).addValue( "c" ).addValue( "108.1" );
-        grid.addRow().addValue( "d" ).addValue( "d" ).addValue( "45.0" );
-        grid.addRow().addValue( "e" ).addValue( "e" ).addValue( "4043.9" );
-        grid.addRow().addValue( "f" ).addValue( "f" ).addValue( "0.1" );
+        grid.sortGrid( 1, 1 );
+
+        List<Object> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( 3 ) );
+
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( 2 ) );
+        
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( 1 ) );
+    }
+    
+    @Test
+    public void testSortD()
+    {
+        Grid grid = new ListGrid();
+        
+        grid.addRow().addValue( "a" ).addValue( "a" ).addValue( 5.2 );
+        grid.addRow().addValue( "b" ).addValue( "b" ).addValue( 0.0 );
+        grid.addRow().addValue( "c" ).addValue( "c" ).addValue( 108.1 );
+        grid.addRow().addValue( "d" ).addValue( "d" ).addValue( 45.0 );
+        grid.addRow().addValue( "e" ).addValue( "e" ).addValue( 4043.9 );
+        grid.addRow().addValue( "f" ).addValue( "f" ).addValue( 0.1 );
         
         grid = grid.sortGrid( 3, 1 );
         
-        List<String> row1 = grid.getRow( 0 );
-        assertTrue( row1.contains( "4043.9" ) );
+        List<Object> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( 4043.9 ) );
 
-        List<String> row2 = grid.getRow( 1 );
-        assertTrue( row2.contains( "108.1" ) );
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( 108.1 ) );
         
-        List<String> row3 = grid.getRow( 2 );
-        assertTrue( row3.contains( "45.0" ) );
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( 45.0 ) );
 
-        List<String> row4 = grid.getRow( 3 );
-        assertTrue( row4.contains( "5.2" ) );
+        List<Object> row4 = grid.getRow( 3 );
+        assertTrue( row4.contains( 5.2 ) );
 
-        List<String> row5 = grid.getRow( 4 );
-        assertTrue( row5.contains( "0.1" ) );
+        List<Object> row5 = grid.getRow( 4 );
+        assertTrue( row5.contains( 0.1 ) );
 
-        List<String> row6 = grid.getRow( 5 );
-        assertTrue( row6.contains( "0.0" ) );    
+        List<Object> row6 = grid.getRow( 5 );
+        assertTrue( row6.contains( 0.0 ) );    
     }
 
     @Test
     public void testGridRowComparator()
     {
-        List<List<String>> lists = new ArrayList<List<String>>();
-        List<String> l1 = Arrays.asList( "b", "b", "50" );
-        List<String> l2 = Arrays.asList( "c", "c", "400" );
-        List<String> l3 = Arrays.asList( "a", "a", "6" );
+        List<List<Object>> lists = new ArrayList<List<Object>>();
+        List<Object> l1 = getList( "b", "b", 50 );
+        List<Object> l2 = getList( "c", "c", 400 );
+        List<Object> l3 = getList( "a", "a", 6 );
         lists.add( l1 );
         lists.add( l2 );
         lists.add( l3 );
         
-        Comparator<List<String>> comparator = new ListGrid.GridRowComparator( 2, -1 );
+        Comparator<List<Object>> comparator = new ListGrid.GridRowComparator( 2, -1 );
         Collections.sort( lists, comparator );
                 
         assertEquals( l3, lists.get( 0 ) );
@@ -333,48 +357,60 @@ public class GridTest
         grid = new ListGrid();        
 
         grid.addRow();        
-        grid.addValue( "10.0" );
+        grid.addValue( 10.0 );
         grid.addRow();        
-        grid.addValue( "50.0" );
+        grid.addValue( 50.0 );
         grid.addRow();        
-        grid.addValue( "20.0" );
+        grid.addValue( 20.0 );
         grid.addRow();        
-        grid.addValue( "60.0" );
+        grid.addValue( 60.0 );
         
         grid.addRegressionColumn( 0 );
         
-        List<String> column = grid.getColumn( 1 );
+        List<Object> column = grid.getColumn( 1 );
         
         assertTrue( column.size() == 4 );
-        assertTrue( column.contains( "5.0" ) );
-        assertTrue( column.contains( "17.0" ) );
-        assertTrue( column.contains( "29.0" ) );
-        assertTrue( column.contains( "41.0" ) );
+        assertTrue( column.contains( 5.0 ) );
+        assertTrue( column.contains( 17.0 ) );
+        assertTrue( column.contains( 29.0 ) );
+        assertTrue( column.contains( 41.0 ) );
     }
 
     @Test
     public void testJRDataSource() throws Exception
     {
         assertTrue( grid.next() );
-        assertEquals( "11", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( "12", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( "13", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertEquals( 11, grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 12, grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 13, grid.getFieldValue( new MockJRField( "colC" ) ) );
 
         assertTrue( grid.next() );
-        assertEquals( "21", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( "22", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( "23", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertEquals( 21, grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 22, grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 23, grid.getFieldValue( new MockJRField( "colC" ) ) );
 
         assertTrue( grid.next() );
-        assertEquals( "31", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( "32", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( "33", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertEquals( 31, grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 32, grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 33, grid.getFieldValue( new MockJRField( "colC" ) ) );
 
         assertTrue( grid.next() );
-        assertEquals( "41", (String)grid.getFieldValue( new MockJRField( "colA" ) ) );
-        assertEquals( "42", (String)grid.getFieldValue( new MockJRField( "colB" ) ) );
-        assertEquals( "43", (String)grid.getFieldValue( new MockJRField( "colC" ) ) );
+        assertEquals( 41, grid.getFieldValue( new MockJRField( "colA" ) ) );
+        assertEquals( 42, grid.getFieldValue( new MockJRField( "colB" ) ) );
+        assertEquals( 43, grid.getFieldValue( new MockJRField( "colC" ) ) );
         
         assertFalse( grid.next() );
+    }
+    
+    private static List<Object> getList( Object... items )
+    {
+        List<Object> list = new ArrayList<Object>();
+        
+        for ( Object item : items )
+        {
+            list.add( item );
+        }
+        
+        return list;
     }
 }

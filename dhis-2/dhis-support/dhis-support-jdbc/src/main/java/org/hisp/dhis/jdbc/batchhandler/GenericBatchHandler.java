@@ -81,9 +81,9 @@ public class GenericBatchHandler
     @SuppressWarnings( "unchecked" )
     protected void setValues( Object object )
     {
-        List<String> values = (List<String>) object;
+        List<Object> values = (List<Object>) object;
         
-        for ( String value : values )
+        for ( Object value : values )
         {
             statementBuilder.setValue( value );
         }

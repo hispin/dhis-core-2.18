@@ -115,9 +115,9 @@ public class GridPdfResult
 
         table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
         
-        for ( List<String> row : grid.getVisibleRows() )
+        for ( List<Object> row : grid.getVisibleRows() )
         {
-            for ( String col : row )
+            for ( Object col : row )
             {
                 table.addCell( getTextCell( col ) );
             }

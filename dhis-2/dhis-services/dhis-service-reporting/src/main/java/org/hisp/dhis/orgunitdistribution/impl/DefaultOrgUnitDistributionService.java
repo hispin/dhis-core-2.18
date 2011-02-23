@@ -98,7 +98,7 @@ public class DefaultOrgUnitDistributionService
         
         for ( int i = 1; i < grid.getWidth(); i++ ) // Skip name column
         {
-            categoryValues.put( grid.getHeaders().get( i ).getName(), Double.valueOf( grid.getRow( 0 ).get( i ) ) );
+            categoryValues.put( grid.getHeaders().get( i ).getName(), Double.valueOf( String.valueOf( grid.getRow( 0 ).get( i ) ) ) );
         }
         
         String title = groupSet.getName() + TITLE_SEP + organisationUnit.getName();
@@ -145,7 +145,7 @@ public class DefaultOrgUnitDistributionService
             {
                 Collection<OrganisationUnit> result = CollectionUtils.intersection( subTree, group.getMembers() );
                 
-                grid.addValue( result != null ? String.valueOf( result.size() ) : String.valueOf( 0 ) );
+                grid.addValue( result != null ? result.size() : 0 );
             }
         }
         
