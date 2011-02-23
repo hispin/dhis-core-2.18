@@ -84,7 +84,6 @@ public class DefaultReportTableService
 {
     private static final Log log = LogFactory.getLog( DefaultReportTableService.class );
     
-    private static final String NULL_REPLACEMENT = "0.0";
     private static final String MODE_REPORT = "report";
     private static final String MODE_REPORT_TABLE = "table";
     
@@ -237,7 +236,7 @@ public class DefaultReportTableService
         batchHandler.setTableName( reportTable.getTableName() );        
         batchHandler.init();
         
-        for ( List<String> row : grid.getRows() )
+        for ( List<Object> row : grid.getRows() )
         {
             batchHandler.addObject( row );
         }
@@ -506,7 +505,7 @@ public class DefaultReportTableService
             
             for ( IdentifiableObject object : row ) // TODO change order and get one loop?
             {
-                grid.addValue( String.valueOf( object.getId() ) ); // Index columns
+                grid.addValue( object.getId() ); // Index columns
             }
             
             for ( IdentifiableObject object : row )
@@ -516,21 +515,21 @@ public class DefaultReportTableService
             
             grid.addValue( reportTable.getReportingMonthName() );
             grid.addValue( reportTable.getOrganisationUnitName() );
-            grid.addValue( isCurrentParent( row ) ? String.valueOf( 1 ) : String.valueOf( 0 ) );
+            grid.addValue( isCurrentParent( row ) ? 1 : 0 );
             
             for ( List<IdentifiableObject> column : reportTable.getColumns() )
             {
-                grid.addValue( toString( map.get( getIdentifier( row, column ) ) ) ); // Values
+                grid.addValue( map.get( getIdentifier( row, column ) ) ); // Values
             }
             
             if ( reportTable.doTotal() )
             {
                 for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
                 {
-                    grid.addValue( toString( map.get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) ) );
+                    grid.addValue( map.get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
                 }
                 
-                grid.addValue( toString( map.get( getIdentifier( row ) ) ) ); // Only category option combo is crosstab when total, row identifier will return total
+                grid.addValue( map.get( getIdentifier( row ) ) ); // Only category option combo is crosstab when total, row identifier will return total
             }
         }
 
@@ -568,15 +567,5 @@ public class DefaultReportTableService
         }
         
         return false;
-    }
-    
-    /**
-     * Converts the given Double to String or replaces with default value if null.
-     * 
-     * @param value the Double.
-     */
-    private String toString( Double value )
-    {
-        return value != null ? String.valueOf( value ) : NULL_REPLACEMENT;
     }
 }

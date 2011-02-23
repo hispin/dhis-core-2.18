@@ -110,9 +110,9 @@ public class GridCsvResult
 
         out.write( NEWLINE );
         
-        for ( List<String> row : grid.getRows() )
+        for ( List<Object> row : grid.getRows() )
         {
-            Iterator<String> columns = row.iterator();
+            Iterator<Object> columns = row.iterator();
             
             while ( columns.hasNext() )
             {

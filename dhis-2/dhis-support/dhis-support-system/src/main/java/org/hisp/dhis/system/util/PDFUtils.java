@@ -61,6 +61,8 @@ import com.lowagie.text.pdf.PdfWriter;
  */
 public class PDFUtils
 {
+    private static final String EMPTY = "";
+    
     /**
      * Creates a document.
      * 
@@ -218,6 +220,13 @@ public class PDFUtils
     
     public static PdfPCell getTextCell( String text )
     {
+        return getCell( text, 1, getFont( 9 ), ALIGN_LEFT );
+    }
+    
+    public static PdfPCell getTextCell( Object object )
+    {
+        String text = object != null ? String.valueOf( object ) : EMPTY;
+        
         return getCell( text, 1, getFont( 9 ), ALIGN_LEFT );
     }
     

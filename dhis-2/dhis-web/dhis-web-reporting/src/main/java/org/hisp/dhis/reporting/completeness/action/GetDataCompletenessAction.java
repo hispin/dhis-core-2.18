@@ -211,11 +211,11 @@ public class GetDataCompletenessAction
         {
             grid.addRow();
             grid.addValue( result.getName() );
-            grid.addValue( String.valueOf( result.getRegistrations() ) );
-            grid.addValue( String.valueOf( result.getSources() ) );
-            grid.addValue( String.valueOf( result.getPercentage() ) );
-            grid.addValue( String.valueOf( result.getRegistrationsOnTime() ) );
-            grid.addValue( String.valueOf( result.getPercentageOnTime() ) );
+            grid.addValue( result.getRegistrations() );
+            grid.addValue( result.getSources() );
+            grid.addValue( result.getPercentage() );
+            grid.addValue( result.getRegistrationsOnTime() );
+            grid.addValue( result.getPercentageOnTime() );
         }
         
         return grid;

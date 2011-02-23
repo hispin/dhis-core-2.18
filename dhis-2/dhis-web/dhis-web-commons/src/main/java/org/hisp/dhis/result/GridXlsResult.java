@@ -27,8 +27,6 @@ package org.hisp.dhis.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.MathUtils.isNumeric;
-
 import java.io.OutputStream;
 import java.util.List;
 
@@ -60,6 +58,7 @@ public class GridXlsResult
 {
     private static final String DEFAULT_SHEET_NAME = "Sheet 1";
     private static final String DEFAULT_FILENAME = "Grid.xls";
+    private static final String EMPTY = "";
     
     private static final WritableCellFormat FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
@@ -134,19 +133,21 @@ public class GridXlsResult
 
         rowNumber++;
 
-        for ( List<String> row : grid.getVisibleRows() )
+        for ( List<Object> row : grid.getVisibleRows() )
         {
             columnIndex = 0;
 
-            for ( String column : row )
+            for ( Object column : row )
             {
-                if ( isNumeric( column ) )
+                if ( column != null && column instanceof Number )
                 {
-                    sheet.addCell( new Number( columnIndex++, rowNumber, Double.valueOf( column ), FORMAT_TEXT ) );
+                    sheet.addCell( new Number( columnIndex++, rowNumber, Double.valueOf( String.valueOf( column ) ), FORMAT_TEXT ) );
                 }
                 else
                 {
-                    sheet.addCell( new Label( columnIndex++, rowNumber, column, FORMAT_TEXT ) );
+                    String content = column != null ? String.valueOf( column ) : EMPTY;
+                    
+                    sheet.addCell( new Label( columnIndex++, rowNumber, content, FORMAT_TEXT ) );
                 }
             }
 

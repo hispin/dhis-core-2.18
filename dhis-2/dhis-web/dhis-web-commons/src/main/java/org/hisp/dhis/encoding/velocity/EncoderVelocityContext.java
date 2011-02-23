@@ -70,6 +70,11 @@ public class EncoderVelocityContext
 
     public static class Encoder
     {
+        public String htmlEncode( Object object )
+        {
+            return object != null ? StringEscapeUtils.escapeHtml( String.valueOf( object ) ) : null;
+        }
+        
         public String htmlEncode( String object )
         {
             return StringEscapeUtils.escapeHtml( object );

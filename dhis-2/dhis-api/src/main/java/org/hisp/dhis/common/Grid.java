@@ -107,32 +107,32 @@ public interface Grid
      * 
      * @param value the value to add.
      */
-    Grid addValue( String value );
+    Grid addValue( Object value );
 
     /**
      * Returns the row with the given index.
      * 
      * @param rowIndex the index of the row.
      */
-    List<String> getRow( int rowIndex );
+    List<Object> getRow( int rowIndex );
 
     /**
      * Returns all rows.
      */
-    List<List<String>> getRows();
+    List<List<Object>> getRows();
     
     /**
      * Returns all visible rows, ie. rows with a corresponding header that is
      * not hidden.
      */
-    List<List<String>> getVisibleRows();
+    List<List<Object>> getVisibleRows();
 
     /**
      * Returns the column with the given index.
      * 
      * @param columnIndex the index of the column.
      */
-    List<String> getColumn( int columnIndex );
+    List<Object> getColumn( int columnIndex );
     
     /**
      * Return the value at the given row index and the given column index.
@@ -142,7 +142,7 @@ public interface Grid
      * @return the column value.
      * @throws IllegalArgumentException if the grid does not contain the requested row / column.
      */
-    String getValue( int rowIndex, int columnIndex );
+    Object getValue( int rowIndex, int columnIndex );
 
     /**
      * Adds a new column at the end of the grid.
@@ -151,7 +151,7 @@ public interface Grid
      * @throws IllegalStateException if the columnValues has different length
      *         than the rows in grid, or if the grid rows are not of the same length.
      */
-    Grid addColumn( List<String> columnValues );
+    Grid addColumn( List<Object> columnValues );
     
     /**
      * Removes the header and column at the given index.

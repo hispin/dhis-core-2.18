@@ -74,6 +74,18 @@ public class CsvUtils
                     
         return value;
     }
+
+    /**
+     * Encodes the given value to a CSV acceptable value. Returns the empty string
+     * if argument is null.
+     * 
+     * @param value the value.
+     * @return the CSV encoded value.
+     */
+    public static String csvEncode( Object value )
+    {
+        return value != null ? csvEncode( String.valueOf( value ) ) : EMPTY;
+    }
     
     /**
      * Appends a separator to the value and returns the value as a byte array.
