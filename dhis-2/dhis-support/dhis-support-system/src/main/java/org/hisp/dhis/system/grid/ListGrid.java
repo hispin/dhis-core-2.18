@@ -32,7 +32,9 @@ import static org.hisp.dhis.system.util.MathUtils.getRounded;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -85,6 +87,11 @@ public class ListGrid
     private int currentRowReadIndex = -1;
     
     /**
+     * Represents a mapping between column names and the index of the column in the grid.
+     */
+    private Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
+    
+    /**
      * Default constructor.
      */
     public ListGrid()
@@ -132,7 +139,16 @@ public class ListGrid
         
         return this;
     }
-    
+
+    public Grid addHeader( GridHeader header )
+    {
+        headers.add( header );
+        
+        updateColumnIndexMap();
+        
+        return this;
+    }
+       
     public List<GridHeader> getHeaders()
     {
         return headers;
@@ -152,14 +168,7 @@ public class ListGrid
         
         return tempHeaders;
     }
-    
-    public Grid addHeader( GridHeader header )
-    {
-        headers.add( header );
-        
-        return this;
-    }
-        
+     
     public int getHeight()
     {        
         return ( grid != null && grid.size() > 0 ) ? grid.size() : 0;
@@ -288,6 +297,8 @@ public class ListGrid
             row.remove( columnIndex );
         }
         
+        updateColumnIndexMap();
+        
         return this;
     }
     
@@ -385,18 +396,9 @@ public class ListGrid
     public Object getFieldValue( JRField field )
         throws JRException
     {
-        int headerIndex = -1;
+        Integer index = columnIndexMap.get( field.getName() );
         
-        for ( int i = 0; i < headers.size(); i++ )
-        {
-            if ( headers.get( i ).getColumn() != null && headers.get( i ).getColumn().equals( field.getName() ) )
-            {
-                headerIndex = i;
-                break;
-            }
-        }
-        
-        return headerIndex != -1 ? getRow( currentRowReadIndex ).get( headerIndex ) : null;
+        return index != null ? getRow( currentRowReadIndex ).get( index ) : null;
     }
 
     // -------------------------------------------------------------------------
@@ -425,6 +427,20 @@ public class ListGrid
         {
             throw new IllegalStateException( 
                 "Number of headers is not 0 and not equal to the number of columns (headers: " + headers.size() + ", cols: " + rowLength + ")" );
+        }
+    }
+    
+    /**
+     * Updates the mapping between header columns and grid indexes. This method
+     * should be invoked whenever the columns are manipulated.
+     */
+    private void updateColumnIndexMap()
+    {
+        columnIndexMap.clear();
+        
+        for ( int i = 0; i < headers.size(); i++ )
+        {
+            columnIndexMap.put( headers.get( i ).getColumn(), i );
         }
     }
     

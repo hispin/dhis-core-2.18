@@ -89,8 +89,6 @@ public class GridJasperResult
         
         grid = _grid != null ? _grid : grid; 
 
-        System.out.println( "GRID IN JASPER RESULT " + grid );
-
         // ---------------------------------------------------------------------
         // Configure response
         // ---------------------------------------------------------------------
