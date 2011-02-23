@@ -28,7 +28,6 @@ package org.hisp.dhis.result;
  */
 
 import java.io.StringWriter;
-import java.sql.Connection;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,7 +37,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.velocity.VelocityContext;
@@ -63,17 +61,6 @@ public class GridJasperResult
     private static final String TEMPLATE = "grid.vm";
     private static final String RESOURCE_LOADER_NAME = "class";
     private static final String DEFAULT_FILENAME = "Grid";
-
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -138,22 +125,8 @@ public class GridJasperResult
 
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report ) );
         
-        Connection connection = statementManager.getHolder().getConnection();
+        JasperPrint print = JasperFillManager.fillReport( jasperReport, null, grid );
         
-        JasperPrint print = null;
-        
-        try
-        {
-            print = JasperFillManager.fillReport( jasperReport, null, connection );
-        }
-        finally
-        {        
-            connection.close();
-        }
-        
-        if ( print != null )
-        {
-            JasperExportManager.exportReportToPdfStream( print, response.getOutputStream() );
-        }
+        JasperExportManager.exportReportToPdfStream( print, response.getOutputStream() );
     }
 }

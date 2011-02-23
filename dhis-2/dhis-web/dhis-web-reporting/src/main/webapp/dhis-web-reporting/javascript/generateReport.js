@@ -83,25 +83,25 @@ function reportStatusReceived( xmlObject )
     {
         setMessage( i18n_process_completed );
         
+        var urlParams = "id=" + $( "#id" ).val();
+        
+	    if ( $( "#reportingPeriod" ).length )
+	    {
+	        urlParams += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
+	    }
+	        
+	    if ( paramOrganisationUnit != null )
+	    {
+	        urlParams += "&organisationUnitId=" + paramOrganisationUnit;
+	    }
+    
         if ( $( "#mode" ).val() == MODE_REPORT )
         {
-        	window.location.href = "renderReport.action?id=" + $( "#id" ).val();
+        	window.location.href = "renderReport.action?" + urlParams;
         }
-        else if ( $( "#mode" ).val() == MODE_TABLE )
+        else if ($( "#mode" ).val() == MODE_TABLE )
         {
-        	var url = "exportTable.action?id=" + $( "#id" ).val() + "&type=html";
-		    
-		    if ( $( "#reportingPeriod" ).length )
-		    {
-		        url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
-		    }
-		        
-		    if ( paramOrganisationUnit != null )
-		    {
-		        url += "&organisationUnitId=" + paramOrganisationUnit;
-		    }
-    
-        	window.location.href = url;
+        	window.location.href = "exportTable.action?type=html&" + urlParams;
         }
     }
     else if ( statusMessage == null )

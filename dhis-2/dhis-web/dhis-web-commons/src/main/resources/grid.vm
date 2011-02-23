@@ -1,17 +1,6 @@
 #set( $dollar = '$' ) 
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dpt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<subDataset name="chart">
-		<queryString language="SQL">
-			<![CDATA[select * from ${grid.table} where organisation_unit_is_parent='1';]]>
-		</queryString>
-		#foreach( $header in $grid.getHeaders() )
-		<field name="${header.column}" class="${header.type}"/>
-		#end
-	</subDataset>
-	<queryString>
-		<![CDATA[select * from ${grid.table} order by organisation_unit_is_parent;]]>
-	</queryString>
 	#foreach( $header in $grid.getHeaders() )
 	<field name="${header.column}" class="${header.type}"/>
 	#end
@@ -56,11 +45,11 @@
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
-					<dataset>
-						<datasetRun subDataset="chart"/>
+				    <dataset>
+						<incrementWhenExpression><![CDATA[${dollar}F{organisation_unit_is_parent}.equals( "Yes" )]]></incrementWhenExpression>
 					</dataset>
 					#foreach( $header in $grid.getHeaders() )
-					#if ( !$header.meta )					
+					#if ( !$header.meta )
 					<categorySeries>
 						<seriesExpression><![CDATA["${header.name}"]]></seriesExpression>
 						<categoryExpression><![CDATA[""]]></categoryExpression>
@@ -71,9 +60,7 @@
 				</categoryDataset>
 				<bar3DPlot isShowLabels="true">
 					<plot/>
-					<itemLabel color="#000000" backgroundColor="#FFFFFF">
-						<font isBold="true"/>
-					</itemLabel>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 					<categoryAxisFormat>
 						<axisFormat>
 							<labelFont/>
@@ -97,7 +84,7 @@
 		<band height="51" splitType="Stretch">
 			#set( $x = 10 )
 			#foreach( $header in $grid.getVisibleHeaders() )			
-			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
 			<staticText>
 				<reportElement x="${x}" y="26" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
@@ -116,7 +103,7 @@
 		<band height="21" splitType="Stretch">
 			#set( $x = 10 )
 			#foreach( $header in $grid.getVisibleHeaders() )			
-			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end			
+			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
 			<textField>
 				<reportElement x="${x}" y="0" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>

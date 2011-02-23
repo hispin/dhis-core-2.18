@@ -23,13 +23,8 @@
 		<td><input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'"></td>
 	</tr>
 	<tr>
-		<td colspan="2" height="7px"></td>
-	</tr>
-	<tr>
-		<th colspan="2">$i18n.getString( "report_table" )</th>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td><label for="reportTableId">$i18n.getString( "report_table" )</td>
+		<td>
 			<select id="reportTableId" name="reportTableId" style="min-width:325px">
 			<option value="0">[ $i18n.getString( "none" ) ]</option>
 			#foreach( $table in $reportTables )
@@ -39,7 +34,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2"><input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()"><input
+		<td></td>
+		<td><input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()"><input
 		           type="button" value="$i18n.getString( 'cancel' )" style="width:10em" 
 		           onclick="window.location.href='displayViewReportForm.action'"></td>
 	</tr>
