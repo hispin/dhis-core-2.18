@@ -98,28 +98,16 @@ public class WeeklyPeriodType
     public Period getNextPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
         cal.add( Calendar.WEEK_OF_YEAR, 1 );
-
-        Date startDate = cal.getTime();
-
-        cal.add( Calendar.DAY_OF_YEAR, 6 );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
         cal.add( Calendar.WEEK_OF_YEAR, -1 );
-
-        Date startDate = cal.getTime();
-
-        cal.add( Calendar.DAY_OF_YEAR, 6 );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
     
     @Override
