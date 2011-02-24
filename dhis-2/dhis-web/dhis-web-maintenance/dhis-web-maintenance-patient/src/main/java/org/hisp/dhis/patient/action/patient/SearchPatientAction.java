@@ -42,6 +42,8 @@ import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipService;
 
@@ -68,6 +70,8 @@ public class SearchPatientAction
 
     private RelationshipService relationshipService;
 
+    private ProgramService programService;
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -79,6 +83,8 @@ public class SearchPatientAction
     private Integer searchingAttributeId;
 
     private Integer sortPatientAttributeId;
+
+    private Integer programId;
 
     // -------------------------------------------------------------------------
     // Output
@@ -99,7 +105,11 @@ public class SearchPatientAction
     private PatientAttribute sortingPatientAttribute = null;
 
     private PatientAttribute searchingPatientAttribute = null;
-
+ 
+    private Collection<Program> programs;
+    
+    private Program program;
+    
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
@@ -109,16 +119,36 @@ public class SearchPatientAction
         this.selectionManager = selectionManager;
     }
 
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public Program getProgram()
+    {
+        return program;
+    }
+
+    public void setProgram( Program program )
+    {
+        this.program = program;
     }
 
     public Map<Patient, String> getMapPatientOrgunit()
     {
         return mapPatientOrgunit;
     }
-
+    
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+    
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
@@ -152,6 +182,11 @@ public class SearchPatientAction
     public Integer getSearchingAttributeId()
     {
         return searchingAttributeId;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
     }
 
     public void setSearchingAttributeId( Integer searchingAttributeId )
@@ -214,25 +249,52 @@ public class SearchPatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         // ---------------------------------------------------------------------
-        // Get all of Patient-Attributes
+        // Get all of Patient-Attributes 
+        // and programs by selected organisation unit
         // ---------------------------------------------------------------------
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
-
-        getParamsToSearch();
+        programs = programService.getPrograms( organisationUnit );
+        getParamsToSearch();      
 
         // ---------------------------------------------------------------------
         // Get all of patient into the selected organisation unit
         // ---------------------------------------------------------------------
-
+        
         if ( listAll != null && listAll )
         {
             selectedStateManager.clearSearchingAttributeId();
             selectedStateManager.clearSortingAttributeId();
             selectedStateManager.clearSearchText();
+            selectedStateManager.clearSelectedProgram();
             selectedStateManager.setListAll( listAll );
 
             listAllPatient( organisationUnit, sortingPatientAttribute );
+
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Get patients by the selected program
+        // ---------------------------------------------------------------------
+        
+        if ( searchingAttributeId != null && searchingAttributeId == 0 && programId != null )
+        {
+            program = programService.getProgram( programId );
+
+            if ( sortPatientAttributeId != null )
+            {
+                selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
+            }
+            else
+            {
+                selectedStateManager.clearSortingAttributeId();
+            }
+            
+            selectedStateManager.setSelectedProgram( program );
+            selectedStateManager.setSearchingAttributeId( searchingAttributeId );
+            
+            searchPatientByProgram( organisationUnit, program, sortingPatientAttribute );
 
             return SUCCESS;
         }
@@ -246,11 +308,17 @@ public class SearchPatientAction
         {
             selectedStateManager.clearListAll();
             selectedStateManager.setSearchingAttributeId( searchingAttributeId );
-            
-            if( sortPatientAttributeId != null )
+
+            if ( sortPatientAttributeId != null )
             {
                 selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
-            }else
+            }
+            else
+            {
+                selectedStateManager.clearSortingAttributeId();
+            }
+            
+            if ( programId != null )
             {
                 selectedStateManager.clearSortingAttributeId();
             }
@@ -261,53 +329,63 @@ public class SearchPatientAction
 
             return SUCCESS;
         }
-
+         
         if ( searchingPatientAttribute == null && searchText != null )
         {
             selectedStateManager.clearListAll();
-            
+
             selectedStateManager.clearSearchingAttributeId();
-            
-            if( sortPatientAttributeId != null )
+
+            if ( sortPatientAttributeId != null )
             {
                 selectedStateManager.setSortingAttributeId( sortPatientAttributeId );
-            }else
+            }
+            else
+            {
+                selectedStateManager.clearSortingAttributeId();
+            }
+
+            if ( programId != null )
             {
                 selectedStateManager.clearSortingAttributeId();
             }
             
-           
             selectedStateManager.setSearchText( searchText );
-            
+
             searchPatientByAttribute( searchText, sortingPatientAttribute );
-            
+
             return SUCCESS;
         }
-        
+
         // ---------------------------------------------------------------------
         // Search patients by values into section
         // ---------------------------------------------------------------------
 
         listAll = selectedStateManager.getListAll();
+        searchingAttributeId = selectedStateManager.getSearchingAttributeId();
+        sortPatientAttributeId = selectedStateManager.getSortAttributeId();
+        searchText = selectedStateManager.getSearchText();
+        program = selectedStateManager.getSelectedProgram();
+
+        getParamsToSearch();
 
         if ( listAll )
         {
-        	listAllPatient( organisationUnit, sortingPatientAttribute );
+            listAllPatient( organisationUnit, sortingPatientAttribute );
 
             return SUCCESS;
 
         }
 
-        searchingAttributeId = selectedStateManager.getSearchingAttributeId();
-        sortPatientAttributeId = selectedStateManager.getSortAttributeId();
-        searchText = selectedStateManager.getSearchText();
-        
-        getParamsToSearch();
+        if ( searchingAttributeId != null && searchingAttributeId == 0 && program != null )
+        {
+            searchPatientByProgram( organisationUnit, program, sortingPatientAttribute );
+            return SUCCESS;
+        }
 
         if ( searchingAttributeId != null && searchText != null )
         {
             searchPatientByAttribute( searchText, sortingPatientAttribute );
-
             return SUCCESS;
         }
 
@@ -316,7 +394,7 @@ public class SearchPatientAction
             searchPatientByAttribute( searchText, sortingPatientAttribute );
             return SUCCESS;
         }
-        
+
         return SUCCESS;
     }
 
@@ -329,7 +407,7 @@ public class SearchPatientAction
         // ---------------------------------------------------------------------
         // Get sorting patient-attribute
         // ---------------------------------------------------------------------
-
+        
         if ( sortPatientAttributeId != null )
         {
             sortingPatientAttribute = patientAttributeService.getPatientAttribute( sortPatientAttributeId );
@@ -355,6 +433,35 @@ public class SearchPatientAction
 
         patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, paging.getStartPos(), paging
             .getPageSize() ) );
+
+        if ( patients != null && patients.size() > 0 )
+        {
+            for ( Patient patient : patients )
+            {
+                mapRelationShip.put( patient.getId(), relationshipService.getRelationshipsForPatient( patient ) );
+
+                // Get patient-attribute-values
+                if ( sortingPatientAttribute != null )
+                {
+                    PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue(
+                        patient, sortingPatientAttribute );
+                    String value = (attributeValue == null) ? "" : attributeValue.getValue();
+
+                    mapPatientPatientAttr.put( patient, value );
+                }
+            }
+        }
+    }
+
+    private void searchPatientByProgram( OrganisationUnit organisationUnit, Program program,
+        PatientAttribute sortingPatientAttribute )
+    {
+        total = patientService.countGetPatientsByOrgUnitProgram( organisationUnit, program );
+
+        this.paging = createPaging( total );
+
+        patients = new ArrayList<Patient>( patientService.getPatients( organisationUnit, program, paging.getStartPos(),
+            paging.getPageSize() ) );
 
         if ( patients != null && patients.size() > 0 )
         {

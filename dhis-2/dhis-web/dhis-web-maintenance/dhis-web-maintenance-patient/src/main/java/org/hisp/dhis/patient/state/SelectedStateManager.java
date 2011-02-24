@@ -66,9 +66,7 @@ public interface SelectedStateManager
     ProgramStage getSelectedProgramStage();
 
     void clearSelectedProgramStage();
-
-   
-
+    
     // -------------------------------------------------------------------------
     // for Searching patients - SearchingAttribute
     // -------------------------------------------------------------------------

@@ -203,11 +203,11 @@
         <artifactId>dhis-service-patient</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
+      <!--dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-excel-reporting</artifactId>
         <version>${project.version}</version>
-      </dependency>
+      </dependency-->
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-administration</artifactId>

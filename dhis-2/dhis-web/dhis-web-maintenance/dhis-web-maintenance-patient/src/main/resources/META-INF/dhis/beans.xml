@@ -371,6 +371,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
@@ -395,6 +397,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="relationshipService"
 			ref="org.hisp.dhis.relationship.RelationshipService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.patient.GetPatientAction"

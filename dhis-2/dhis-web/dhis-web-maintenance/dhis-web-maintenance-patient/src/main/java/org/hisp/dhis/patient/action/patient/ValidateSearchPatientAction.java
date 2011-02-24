@@ -61,6 +61,13 @@ public class ValidateSearchPatientAction
         this.searchText = searchText;
     }
 
+    private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -94,7 +101,7 @@ public class ValidateSearchPatientAction
             return INPUT;
         }
 
-        if ( searchText == null || searchText.trim().length() == 0 )
+        if ( ( searchText == null || searchText.trim().length() == 0 ) && programId == null )
         {
             message = i18n.getString( "specify_a_search_criteria" );
 

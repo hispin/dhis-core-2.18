@@ -17,15 +17,26 @@
 <table>	
 	<tr>	       
 		<td>
-		  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end>
+		  <select id="searchingAttributeId" name="searchingAttributeId" style="min-width:20.2em"  #if( $patientAttributes.size() == 0 ) disabled="disabled" #end onchange="searchingAttributeOnChange()">
             <option value="">$i18n.getString( "search_by_name_identifier" )</option>
+			<option value="0" #if( $!searchingAttributeId && $!searchingAttributeId=='0' ) selected="selected" #end>$i18n.getString( "search_by_program" )</option>
                 #foreach( $attribute in $patientAttributes )
                     <option value="$attribute.id" #if( $!searchingAttributeId && $!attribute.id == $!searchingAttributeId ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
                 #end
           </select> 
 		  <em title="$i18n.getString( "required" )" class="required">*</em></label>
 		</td>		
-		<td><input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText"></td>		
+		<td>
+			<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em" value="$!searchText">
+			
+			<select id="programId" name='programId' style="display:none; width:20.2em" >
+				<option value="">[ $i18n.getString('select_program') ]</option>
+				#foreach ( $p in $programs )
+					<option value="$p.id" #if( $!program && $!p.id == $!program.id ) selected="selected" #end>$p.name</option>
+				#end
+			</select>
+			
+		</td>		
 		<td><input type="submit" value="$i18n.getString( "search" )"</td>
 		<td>&nbsp;</td>
 		<td><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientForm.action'"></td>
@@ -55,12 +66,15 @@
 <script type="text/javascript">	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
 
+	searchingAttributeOnChange();
+	
     function selectPatientAttribute()
     {
 
         var patientAttributeLB = document.getElementById('patientAttributeId');
         var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
 
-	window.location.href='listAllPatients.action?sortPatientAttributeId='+patientAttributeId;
+		window.location.href='listAllPatients.action?sortPatientAttributeId='+patientAttributeId;
     }
+	
 </script>

@@ -36,8 +36,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
 import com.opensymphony.xwork2.Action;
@@ -104,20 +102,6 @@ public class SetupRoleAction
     public List<String> getAvailableAuthorities()
     {
         return availableAuthorities;
-    }
-
-    private List<ReportExcel> availableReportExcels;
-
-    public List<ReportExcel> getAvailableReportExcels()
-    {
-        return availableReportExcels;
-    }
-
-    private List<ExcelItemGroup> availableImportExcels;
-
-    public List<ExcelItemGroup> getAvailableImportExcels()
-    {
-        return availableImportExcels;
     }
 
     // -------------------------------------------------------------------------

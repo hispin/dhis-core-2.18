@@ -10,7 +10,9 @@ tr.relationship-row{background-color: #BFFFC2; display : none}
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>
-			#if($!searchText) 
+		    #if($!program)
+				$i18n.getString( "list_patients_by_program") '$program.name'
+			#elseif($!searchText) 
 				$searchText
 			#else 
 				$i18n.getString( "list_all_patients" )
