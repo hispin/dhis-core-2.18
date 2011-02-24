@@ -9,7 +9,7 @@
       <generator class="native"/>
     </id>
     
-    <discriminator column="name" type="string" length="15" not-null="true"/>
+    <discriminator column="name" type="string" length="50" not-null="true"/>
     
     <subclass name="org.hisp.dhis.period.DailyPeriodType"
       discriminator-value="Daily"/>
@@ -31,5 +31,9 @@
       discriminator-value="Survey"/>
     <subclass name="org.hisp.dhis.period.FinancialAprilPeriodType"
       discriminator-value="FinancialApril"/>
+    <subclass name="org.hisp.dhis.period.FinancialJulyPeriodType"
+      discriminator-value="FinancialJuly"/>
+    <subclass name="org.hisp.dhis.period.FinancialOctoberPeriodType"
+      discriminator-value="FinancialOct"/>
   </class>
 </hibernate-mapping>
