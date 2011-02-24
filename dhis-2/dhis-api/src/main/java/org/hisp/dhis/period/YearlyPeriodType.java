@@ -73,10 +73,8 @@ public class YearlyPeriodType
 
     private Period createPeriod( Calendar cal )
     {
-        cal.set( Calendar.DAY_OF_YEAR, 1 );
-
+        cal.set( Calendar.DAY_OF_YEAR, 1 );        
         Date startDate = cal.getTime();
-
         cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
 
         return new Period( this, startDate, cal.getTime() );
@@ -118,17 +116,15 @@ public class YearlyPeriodType
         cal.add( Calendar.YEAR, -5 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        ArrayList<Period> years = new ArrayList<Period>();
+        ArrayList<Period> periods = new ArrayList<Period>();
 
         for ( int i = 0; i < 11; ++i )
         {
-            Date startDate = cal.getTime();
-            cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
-            years.add( new Period( this, startDate, cal.getTime() ) );
-            cal.add( Calendar.DAY_OF_YEAR, 1 );
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.YEAR, 1 );
         }
 
-        return years;
+        return periods;
     }
 
     @Override
@@ -136,10 +132,7 @@ public class YearlyPeriodType
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
         int year = cal.get( Calendar.YEAR );
-
-        String periodString = String.valueOf( year );
-
-        return periodString;
+        return String.valueOf( year );
     }
 
     @Override
@@ -155,5 +148,4 @@ public class YearlyPeriodType
     {
         return "yyyy";
     }
-
 }

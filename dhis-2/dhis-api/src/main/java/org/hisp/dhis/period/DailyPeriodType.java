@@ -122,34 +122,29 @@ public class DailyPeriodType
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
         int year = cal.get( Calendar.YEAR );
-
-        ArrayList<Period> days = new ArrayList<Period>();
+        ArrayList<Period> periods = new ArrayList<Period>();
 
         while ( cal.get( Calendar.YEAR ) == year )
         {
-            Date startDate = cal.getTime();
-
-            days.add( new Period( this, startDate, startDate ) );
+            periods.add( createPeriod( cal.getTime() ) );
             cal.add( Calendar.DAY_OF_YEAR, 1 );
         }
 
-        return days;
+        return periods;
     }
 
     @Override
     public String getIsoDate( Period period )
     {
-        SimpleDateFormat format = new SimpleDateFormat(ISO_FORMAT);
-        return format.format( period.getStartDate());
+        return new SimpleDateFormat( ISO_FORMAT ).format( period.getStartDate() );
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        SimpleDateFormat format = new SimpleDateFormat(ISO_FORMAT);
         try
         {
-            Date date = format.parse( isoDate );
+            Date date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
             return createPeriod( date );
         }
         catch ( ParseException e )
@@ -163,6 +158,4 @@ public class DailyPeriodType
     {
         return ISO_FORMAT;
     }
-    
-    
 }

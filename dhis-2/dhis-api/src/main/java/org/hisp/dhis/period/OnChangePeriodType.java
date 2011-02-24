@@ -71,10 +71,8 @@ public class OnChangePeriodType
     private Period createPeriod( Calendar cal )
     {
         Date startDate = cal.getTime();
-
         cal.set( Calendar.YEAR, INSURMOUNTABLE_YEAR );
         cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
-
         return new Period( this, startDate, cal.getTime() );
     }
 

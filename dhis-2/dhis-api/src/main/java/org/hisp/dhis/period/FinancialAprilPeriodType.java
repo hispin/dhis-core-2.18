@@ -114,29 +114,28 @@ public class FinancialAprilPeriodType
     }
 
     /**
-     * Generates FinancialAprilPeriods for the last 5, current and next 5 years.
+     * Generates YearlyPeriods for the last 5, current and next 5 years.
      */
     @Override
     public List<Period> generatePeriods( Date date )
     {
-        ArrayList<Period> years = new ArrayList<Period>();
-
         Calendar cal = createCalendarInstance( date );
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) + cal.get( Calendar.MONDAY ) / 7 - 11);
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMinimum( Calendar.DAY_OF_YEAR ) + 90 );
+        
+        boolean past = cal.get( Calendar.MONTH ) >= BASE_MONTH;
+        
+        cal.add( Calendar.YEAR, past ? -5 : -6 );
+        cal.set( Calendar.MONTH, BASE_MONTH );
+        cal.set( Calendar.DATE, 1 );
+
+        ArrayList<Period> periods = new ArrayList<Period>();
 
         for ( int i = 0; i < 11; ++i )
         {
-            Date startDate = cal.getTime();
-
-            cal.add( Calendar.DAY_OF_YEAR, -1 );
+            periods.add( createPeriod( cal ) );
             cal.add( Calendar.YEAR, 1 );
-            years.add( new Period( this, startDate, cal.getTime() ) );
-
-            cal.add( Calendar.DAY_OF_YEAR, 1 );
         }
 
-        return years;
+        return periods;
     }
 
     @Override

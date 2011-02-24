@@ -141,7 +141,7 @@ public class Period
      */
     public int frequencyOrder()
     {
-        return periodType != null ? periodType.getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER;
+        return periodType != null ? periodType.getFrequencyOrder() : YearlyPeriodType.FREQUENCY_ORDER;
     }
 
     /**

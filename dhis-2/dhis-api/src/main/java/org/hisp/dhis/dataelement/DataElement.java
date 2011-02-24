@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.TwoYearlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -256,7 +256,7 @@ public class DataElement
     {
         PeriodType periodType = getPeriodType();
         
-        return periodType != null ? periodType.getFrequencyOrder() : TwoYearlyPeriodType.FREQUENCY_ORDER;
+        return periodType != null ? periodType.getFrequencyOrder() : YearlyPeriodType.FREQUENCY_ORDER;
     }
 
     /**

@@ -75,14 +75,10 @@ public class WeeklyPeriodType
     private Period createPeriod( Calendar cal )
     {    	
         cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
-
         Date startDate = cal.getTime();
-
         cal.add( Calendar.DAY_OF_YEAR, 6 );
-
         return new Period( this, startDate, cal.getTime() );
     }
- 
 
     @Override
     public int getFrequencyOrder()
@@ -214,7 +210,6 @@ public class WeeklyPeriodType
         cal.setFirstDayOfWeek( Calendar.MONDAY );
 
         return createPeriod( cal.getTime() );
-
     }
 
     @Override
@@ -222,5 +217,4 @@ public class WeeklyPeriodType
     {
         return "yyyyWn (n: week number)";
     }
-
 }
