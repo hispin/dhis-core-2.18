@@ -27,132 +27,25 @@
 
 package org.hisp.dhis.period;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Chau Thu Tran
- * 
- * @version FinancialAprilPeriodType.java Nov 3, 2010 12:55:07 PM
  */
 public class FinancialAprilPeriodType
-    extends CalendarPeriodType
+    extends FinancialPeriodType
 {
-    /**
-     * The name of the FinancialAprilPeriods, which is "FinancialApril".
-     */
     public static final String NAME = "FinancialApril";
 
-    public static final int FREQUENCY_ORDER = 365;
+    @Override
+    protected int getBaseMonth()
+    {
+        return Calendar.APRIL;
+    }
     
-    private static final int BASE_MONTH = Calendar.APRIL;
-
-    // -------------------------------------------------------------------------
-    // PeriodType functionality
-    // -------------------------------------------------------------------------
-
     @Override
     public String getName()
     {
         return NAME;
-    }
-
-    @Override
-    public Period createPeriod()
-    {
-        return createPeriod( createCalendarInstance() );
-    }
-
-    @Override
-    public Period createPeriod( Date date )
-    {
-        return createPeriod( createCalendarInstance( date ) );
-    }
-
-    private Period createPeriod( Calendar cal )
-    {
-        boolean past = cal.get( Calendar.MONTH ) >= BASE_MONTH;
-        
-        cal.set( Calendar.YEAR, past ? cal.get( Calendar.YEAR ) : cal.get( Calendar.YEAR ) - 1 );
-        cal.set( Calendar.MONTH, BASE_MONTH );
-        cal.set( Calendar.DATE, 1 );
-
-        Date startDate = cal.getTime();
-
-        cal.add( Calendar.YEAR, 1 );
-        cal.set( Calendar.DAY_OF_YEAR, cal.get( Calendar.DAY_OF_YEAR ) - 1  );
-
-        return new Period( this, startDate, cal.getTime() );
-    }
-
-    @Override
-    public int getFrequencyOrder()
-    {
-        return FREQUENCY_ORDER;
-    }
-
-    // -------------------------------------------------------------------------
-    // CalendarPeriodType functionality
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Period getNextPeriod( Period period )
-    {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, 1 );
-        return createPeriod( cal );
-    }
-
-    @Override
-    public Period getPreviousPeriod( Period period )
-    {
-        Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.add( Calendar.YEAR, -1 );
-        return createPeriod( cal );
-    }
-
-    /**
-     * Generates YearlyPeriods for the last 5, current and next 5 years.
-     */
-    @Override
-    public List<Period> generatePeriods( Date date )
-    {
-        Calendar cal = createCalendarInstance( date );
-        
-        boolean past = cal.get( Calendar.MONTH ) >= BASE_MONTH;
-        
-        cal.add( Calendar.YEAR, past ? -5 : -6 );
-        cal.set( Calendar.MONTH, BASE_MONTH );
-        cal.set( Calendar.DATE, 1 );
-
-        ArrayList<Period> periods = new ArrayList<Period>();
-
-        for ( int i = 0; i < 11; ++i )
-        {
-            periods.add( createPeriod( cal ) );
-            cal.add( Calendar.YEAR, 1 );
-        }
-
-        return periods;
-    }
-
-    @Override
-    public String getIsoDate( Period period )
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    public Period createPeriod( String isoDate )
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
-    }
-
-    @Override
-    public String getIsoFormat()
-    {
-        throw new UnsupportedOperationException( "Not supported yet." );
     }
 }
