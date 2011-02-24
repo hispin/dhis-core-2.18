@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertEquals;
 import java.util.Calendar;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -40,24 +41,31 @@ import org.junit.Test;
 
 public class FinancialAprilPeriodTypeTest
 {
+    private Calendar startCal;
+    private Calendar endCal;
+    private FinancialAprilPeriodType periodType;
+    
+    @Before
+    public void before()
+    {
+        startCal = PeriodType.createCalendarInstance();
+        endCal = PeriodType.createCalendarInstance();
+        periodType = new FinancialAprilPeriodType();
+    }
+    
     @Test
     public void testCreatePeriod()
     {
-        FinancialAprilPeriodType periodType = new FinancialAprilPeriodType();
-
         Calendar testCal = PeriodType.createCalendarInstance();
         testCal.set( 2009, Calendar.FEBRUARY, 15 );
 
-        Calendar startCal = PeriodType.createCalendarInstance();
         startCal.set( 2008, Calendar.APRIL, 1 );
-        Calendar endCal = PeriodType.createCalendarInstance();
         endCal.set( 2009, Calendar.MARCH, 31 );
         
         Period period = periodType.createPeriod( testCal.getTime() );
         
         assertEquals( startCal.getTime(), period.getStartDate() );
         assertEquals( endCal.getTime(), period.getEndDate() );
-
         
         testCal.set( 2009, Calendar.SEPTEMBER, 12 );
 
@@ -73,16 +81,12 @@ public class FinancialAprilPeriodTypeTest
     @Test
     public void testGeneratePeriods()
     {
-        FinancialAprilPeriodType periodType = new FinancialAprilPeriodType();
-        
         Calendar testCal = PeriodType.createCalendarInstance();
         testCal.set( 2009, 1, 15 );
         
         List<Period> periods = periodType.generatePeriods( testCal.getTime() );
         
-        Calendar startCal = PeriodType.createCalendarInstance();
         startCal.set( 1998, Calendar.APRIL, 1 );
-        Calendar endCal = PeriodType.createCalendarInstance();
         endCal.set( 1999, Calendar.MARCH, 31 );
         
         Period startPeriod = periods.get( 0 );
@@ -97,6 +101,5 @@ public class FinancialAprilPeriodTypeTest
         Period endPeriod = periods.get( periods.size() - 1 );
         assertEquals( startCal.getTime(), endPeriod.getStartDate() );
         assertEquals( endCal.getTime(), endPeriod.getEndDate() );
-
     }
 }

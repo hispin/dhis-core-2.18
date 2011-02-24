@@ -46,6 +46,8 @@ public class FinancialAprilPeriodType
     public static final String NAME = "FinancialApril";
 
     public static final int FREQUENCY_ORDER = 365;
+    
+    private static final int BASE_MONTH = Calendar.APRIL;
 
     // -------------------------------------------------------------------------
     // PeriodType functionality
@@ -71,8 +73,10 @@ public class FinancialAprilPeriodType
 
     private Period createPeriod( Calendar cal )
     {
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) + cal.get( Calendar.MONDAY ) / 7 - 1);
-        cal.set( Calendar.MONTH, Calendar.APRIL );
+        boolean past = cal.get( Calendar.MONTH ) >= BASE_MONTH;
+        
+        cal.set( Calendar.YEAR, past ? cal.get( Calendar.YEAR ) : cal.get( Calendar.YEAR ) - 1 );
+        cal.set( Calendar.MONTH, BASE_MONTH );
         cal.set( Calendar.DATE, 1 );
 
         Date startDate = cal.getTime();
