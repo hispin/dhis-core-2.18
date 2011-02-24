@@ -45,7 +45,7 @@
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
-				    <dataset>
+					<dataset>
 						<incrementWhenExpression><![CDATA[${dollar}F{organisation_unit_is_parent}.equals( "Yes" )]]></incrementWhenExpression>
 					</dataset>
 					#foreach( $header in $grid.getHeaders() )
@@ -83,7 +83,7 @@
 	<columnHeader>
 		<band height="51" splitType="Stretch">
 			#set( $x = 10 )
-			#foreach( $header in $grid.getVisibleHeaders() )			
+			#foreach( $header in $grid.getVisibleHeaders() )
 			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
 			<staticText>
 				<reportElement x="${x}" y="26" width="${offset}" height="20"/>
@@ -102,7 +102,7 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			#set( $x = 10 )
-			#foreach( $header in $grid.getVisibleHeaders() )			
+			#foreach( $header in $grid.getVisibleHeaders() )
 			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 60 ) #end
 			<textField>
 				<reportElement x="${x}" y="0" width="${offset}" height="20"/>

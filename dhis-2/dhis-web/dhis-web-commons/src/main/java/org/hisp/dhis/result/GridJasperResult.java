@@ -103,15 +103,15 @@ public class GridJasperResult
         // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
 
-        StringWriter writer = new StringWriter();
+        final StringWriter writer = new StringWriter();
         
-        VelocityEngine velocity = new VelocityEngine();
+        final VelocityEngine velocity = new VelocityEngine();
         
         velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
         velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
         velocity.init();
         
-        VelocityContext context = new VelocityContext();
+        final VelocityContext context = new VelocityContext();
         
         context.put( KEY_GRID, grid );
         
