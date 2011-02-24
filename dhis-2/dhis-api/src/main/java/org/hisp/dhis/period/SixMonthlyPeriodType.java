@@ -122,19 +122,15 @@ public class SixMonthlyPeriodType
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
         int year = cal.get( Calendar.YEAR );
-
-        ArrayList<Period> sixMonths = new ArrayList<Period>();
+        ArrayList<Period> periods = new ArrayList<Period>();
 
         while ( cal.get( Calendar.YEAR ) == year )
         {
-            Date startDate = cal.getTime();
-            cal.add( Calendar.MONTH, 5 );
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-            sixMonths.add( new Period( this, startDate, cal.getTime() ) );
-            cal.add( Calendar.DAY_OF_YEAR, 1 );
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.MONTH, 6 );
         }
 
-        return sixMonths;
+        return periods;
     }
 
     @Override
@@ -156,7 +152,6 @@ public class SixMonthlyPeriodType
         Calendar cal = createCalendarInstance();
         cal.set( year, month, 1 );
         return createPeriod( cal );
-
     }
 
     @Override
@@ -192,8 +187,6 @@ public class SixMonthlyPeriodType
             default:
                 throw new IllegalArgumentException( "Not a valid six-monthly starting month" );
             }
-
         }
     }
-
 }

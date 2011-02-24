@@ -45,7 +45,6 @@ import java.util.List;
 public class MonthlyPeriodType
     extends CalendarPeriodType
 {
-
     private static final String ISO_FORMAT = "yyyyMM";
 
     /**
@@ -79,11 +78,9 @@ public class MonthlyPeriodType
     private Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.DAY_OF_MONTH, 1 );
-
         Date startDate = cal.getTime();
-
         cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
+        
         return new Period( this, startDate, cal.getTime() );
     }
 
@@ -123,35 +120,30 @@ public class MonthlyPeriodType
         Calendar cal = createCalendarInstance( date );
         cal.set( Calendar.DAY_OF_YEAR, 1 );
 
-        int year = cal.get( Calendar.YEAR );
-
-        ArrayList<Period> months = new ArrayList<Period>();
+        int year = cal.get( Calendar.YEAR );        
+        ArrayList<Period> periods = new ArrayList<Period>();
 
         while ( cal.get( Calendar.YEAR ) == year )
         {
-            Date startDate = cal.getTime();
-            cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-            months.add( new Period( this, startDate, cal.getTime() ) );
-            cal.add( Calendar.DAY_OF_YEAR, 1 );
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.MONTH, 1 );
         }
 
-        return months;
+        return periods;
     }
 
     @Override
     public String getIsoDate( Period period )
     {
-        SimpleDateFormat format = new SimpleDateFormat( ISO_FORMAT );
-        return format.format( period.getStartDate() );
+        return new SimpleDateFormat( ISO_FORMAT ).format( period.getStartDate() );
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        SimpleDateFormat format = new SimpleDateFormat( ISO_FORMAT );
         try
         {
-            Date date = format.parse( isoDate );
+            Date date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
             return createPeriod(date);
         }
         catch ( ParseException e )
@@ -165,5 +157,4 @@ public class MonthlyPeriodType
     {
         return ISO_FORMAT;
     }
-
 }
