@@ -30,7 +30,6 @@ package org.hisp.dhis.period;
 import static junit.framework.Assert.assertEquals;
 
 import java.util.Calendar;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +37,7 @@ import org.junit.Test;
 /**
  * @author Lars Helge Overland
  */
-public class FinancialAprilPeriodTypeTest
+public class QuarterlyPeriodTypeTest
 {
     private Calendar startCal;
     private Calendar endCal;
@@ -51,28 +50,28 @@ public class FinancialAprilPeriodTypeTest
         startCal = PeriodType.createCalendarInstance();
         endCal = PeriodType.createCalendarInstance();
         testCal = PeriodType.createCalendarInstance();
-        periodType = new FinancialAprilPeriodType();
+        periodType = new QuarterlyPeriodType();
     }
     
     @Test
     public void testCreatePeriod()
     {
-        testCal.set( 2009, Calendar.FEBRUARY, 15 );
-
-        startCal.set( 2008, Calendar.APRIL, 1 );
-        endCal.set( 2009, Calendar.MARCH, 31 );
+        testCal.set( 2009, Calendar.AUGUST, 15 );
         
+        startCal.set( 2009, Calendar.JULY, 1 );
+        endCal.set( 2009, Calendar.SEPTEMBER, 30 );
+
         Period period = periodType.createPeriod( testCal.getTime() );
         
         assertEquals( startCal.getTime(), period.getStartDate() );
         assertEquals( endCal.getTime(), period.getEndDate() );
         
-        testCal.set( 2009, Calendar.SEPTEMBER, 12 );
+        testCal.set( 2009, Calendar.APRIL, 15 );
+        
+        startCal.set( 2009, Calendar.APRIL, 1 );
+        endCal.set( 2009, Calendar.JUNE, 30 );
 
         period = periodType.createPeriod( testCal.getTime() );
-
-        startCal.set( 2009, Calendar.APRIL, 1 );
-        endCal.set( 2010, Calendar.MARCH , 31 );
         
         assertEquals( startCal.getTime(), period.getStartDate() );
         assertEquals( endCal.getTime(), period.getEndDate() );
@@ -81,56 +80,32 @@ public class FinancialAprilPeriodTypeTest
     @Test
     public void testGetNextPeriod()
     {
-        testCal.set( 2009, Calendar.FEBRUARY, 15 );
+        testCal.set( 2009, Calendar.AUGUST, 15 );
 
         Period period = periodType.createPeriod( testCal.getTime() );
         
         period = periodType.getNextPeriod( period );
 
-        startCal.set( 2009, Calendar.APRIL, 1 );
-        endCal.set( 2010, Calendar.MARCH, 31 );
-        
+        startCal.set( 2009, Calendar.OCTOBER, 1 );
+        endCal.set( 2009, Calendar.DECEMBER, 31 );
+
         assertEquals( startCal.getTime(), period.getStartDate() );
         assertEquals( endCal.getTime(), period.getEndDate() );
     }
-
+    
     @Test
     public void testGetPreviousPeriod()
     {
-        testCal.set( 2009, Calendar.FEBRUARY, 15 );
+        testCal.set( 2009, Calendar.AUGUST, 15 );
 
         Period period = periodType.createPeriod( testCal.getTime() );
         
         period = periodType.getPreviousPeriod( period );
 
-        startCal.set( 2007, Calendar.APRIL, 1 );
-        endCal.set( 2008, Calendar.MARCH, 31 );
-        
+        startCal.set( 2009, Calendar.APRIL, 1 );
+        endCal.set( 2009, Calendar.JUNE, 30 );
+
         assertEquals( startCal.getTime(), period.getStartDate() );
         assertEquals( endCal.getTime(), period.getEndDate() );
-    }
-
-    @Test
-    public void testGeneratePeriods()
-    {
-        testCal.set( 2009, 1, 15 );
-        
-        List<Period> periods = periodType.generatePeriods( testCal.getTime() );
-        
-        startCal.set( 1998, Calendar.APRIL, 1 );
-        endCal.set( 1999, Calendar.MARCH, 31 );
-        
-        Period startPeriod = periods.get( 0 );
-        assertEquals( startCal.getTime(), startPeriod.getStartDate() );
-        assertEquals( endCal.getTime(), startPeriod.getEndDate() );
-        
-        startCal = PeriodType.createCalendarInstance();
-        startCal.set( 2008, Calendar.APRIL, 1 );
-        endCal = PeriodType.createCalendarInstance();
-        endCal.set( 2009, Calendar.MARCH, 31 );
-        
-        Period endPeriod = periods.get( periods.size() - 1 );
-        assertEquals( startCal.getTime(), endPeriod.getStartDate() );
-        assertEquals( endCal.getTime(), endPeriod.getEndDate() );
     }
 }

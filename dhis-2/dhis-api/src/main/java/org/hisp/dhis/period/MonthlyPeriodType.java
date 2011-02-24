@@ -96,32 +96,21 @@ public class MonthlyPeriodType
     // -------------------------------------------------------------------------
     // CalendarPeriodType functionality
     // -------------------------------------------------------------------------
+    
     @Override
     public Period getNextPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_MONTH, 1 );
         cal.add( Calendar.MONTH, 1 );
-
-        Date startDate = cal.getTime();
-
-        cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_MONTH, 1 );
         cal.add( Calendar.MONTH, -1 );
-
-        Date startDate = cal.getTime();
-
-        cal.set( Calendar.DAY_OF_MONTH, cal.getActualMaximum( Calendar.DAY_OF_MONTH ) );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     /**

@@ -96,28 +96,16 @@ public class YearlyPeriodType
     public Period getNextPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_YEAR, 1 );
         cal.add( Calendar.YEAR, 1 );
-
-        Date startDate = cal.getTime();
-
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.DAY_OF_YEAR, 1 );
         cal.add( Calendar.YEAR, -1 );
-
-        Date startDate = cal.getTime();
-
-        cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
-
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     /**

@@ -101,26 +101,16 @@ public class FinancialAprilPeriodType
     public Period getNextPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 12 );
-
-        Date startDate = cal.getTime();
         cal.add( Calendar.YEAR, 1 );
-        cal.add( Calendar.DAY_OF_YEAR, -2 );
-        return new Period( this, startDate, cal.getTime() );
+        return createPeriod( cal );
     }
 
     @Override
     public Period getPreviousPeriod( Period period )
     {
         Calendar cal = createCalendarInstance( period.getStartDate() );
-        cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 + 2 );
-        Date startDate = cal.getTime();
-
-        cal.add( Calendar.YEAR, 1 );
-        cal.add( Calendar.DAY_OF_YEAR, -2 );
-
-        return new Period( this, startDate, cal.getTime() );
+        cal.add( Calendar.YEAR, -1 );
+        return createPeriod( cal );
     }
 
     /**
