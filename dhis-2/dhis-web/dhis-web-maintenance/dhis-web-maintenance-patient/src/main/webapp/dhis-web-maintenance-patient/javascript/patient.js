@@ -22,6 +22,22 @@ function isInt( value )
     return true;
 }
 
+function searchingAttributeOnChange()
+{
+	var value = byId('searchingAttributeId').value;
+	
+	if(value == '0')
+	{
+		byId('programId').style.display = 'block';
+		byId('searchText').style.display = 'none';
+	}
+	else
+	{
+		byId('searchText').style.display = 'block';
+		byId('programId').style.display = 'none';
+		byId('programId').selectedIndex = 0;
+	}
+}
 
 //------------------------------------------------------------------------------
 // Validate EnrollmentDate
@@ -241,6 +257,7 @@ function validateSearchPatient()
 {	
 	
 	var params = 'searchText=' + getFieldValue( 'searchText' );	
+		params += "&programId=" + getFieldValue( 'programId' );
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );

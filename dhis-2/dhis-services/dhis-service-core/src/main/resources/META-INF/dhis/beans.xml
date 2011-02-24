@@ -462,13 +462,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<ref bean="I18nIndicatorGroupSet" />
 				<ref bean="I18nDataSet" />
 				<ref bean="I18nOrganisationUnit" />
-				<ref bean="I18nReportExcelNormal" />
+				<!--ref bean="I18nReportExcelNormal" />
 				<ref bean="I18nReportExcelCategory" />
 				<ref bean="I18nReportExcelOganiztionGroupListing" />
 				<ref bean="I18nReportExcelPeriodColumnListing" />
 				<ref bean="I18nReportExcelItem" />
 				<ref bean="I18nExcelItemGroup" />
-				<ref bean="I18nExcelItem" />
+				<ref bean="I18nExcelItem"/ -->
 				<ref bean="I18nSection" />
 			</list>
 		</property>
@@ -924,7 +924,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		</property>
 	</bean>
 
-	<bean id="I18nReportExcelNormal" class="org.hisp.dhis.i18n.I18nObject">
+	<!--bean id="I18nReportExcelNormal" class="org.hisp.dhis.i18n.I18nObject">
 		<property name="className" value="ReportExcelNormal" />
 		<property name="propertyNames">
 			<list>
@@ -1090,7 +1090,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</entry>
 			</map>
 		</property>
-	</bean>
+	</bean-->
 
 	<bean id="I18nSection" class="org.hisp.dhis.i18n.I18nObject">
 		<property name="className" value="Section" />

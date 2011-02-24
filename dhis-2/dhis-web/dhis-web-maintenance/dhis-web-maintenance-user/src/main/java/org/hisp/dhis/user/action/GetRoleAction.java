@@ -34,8 +34,6 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.reportexcel.ReportExcel;
-import org.hisp.dhis.reportexcel.excelitem.ExcelItemGroup;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
@@ -122,27 +120,6 @@ public class GetRoleAction
     public List<String> getRoleAuthorities()
     {
         return roleAuthorities;
-    }
-
-    private List<ReportExcel> availableReportExcels;
-
-    public List<ReportExcel> getAvailableReportExcels()
-    {
-        return availableReportExcels;
-    }
-
-    private List<ReportExcel> reportExcels;
-
-    public List<ReportExcel> getReportExcels()
-    {
-        return reportExcels;
-    }
-
-    private List<ExcelItemGroup> availableImportExcels;
-
-    public List<ExcelItemGroup> getAvailableImportExcels()
-    {
-        return availableImportExcels;
     }
 
     // -------------------------------------------------------------------------
