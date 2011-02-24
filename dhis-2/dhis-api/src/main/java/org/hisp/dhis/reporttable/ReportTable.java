@@ -247,7 +247,7 @@ public class ReportTable
     /**
      * The I18nFormat used for internationalization of ie. periods.
      */
-    private transient I18nFormat i18nFormat;
+    private I18nFormat i18nFormat;
     
     /**
      * The name of the reporting month based on the report param.

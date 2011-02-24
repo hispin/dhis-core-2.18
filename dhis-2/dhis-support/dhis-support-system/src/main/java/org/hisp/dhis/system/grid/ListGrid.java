@@ -399,9 +399,14 @@ public class ListGrid
     public boolean next()
         throws JRException
     {
-        int height = getHeight();
+        boolean next = ++currentRowReadIndex < getHeight();
         
-        return ++currentRowReadIndex < height; 
+        if ( !next )
+        {
+            currentRowReadIndex = -1; // Reset and return false
+        }
+        
+        return next;
     }
     
     public Object getFieldValue( JRField field )
