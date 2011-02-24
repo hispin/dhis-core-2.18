@@ -93,16 +93,16 @@ public class DefaultI18nService
 
         internationalise( object, localeManager.getCurrentLocale() );
     }    
-    
-	public void localise(Object object, Locale locale) 
-	{		
-		if ( isCollection( object ) )
+
+    public void localise( Object object, Locale locale )
+    {
+        if ( isCollection( object ) )
         {
             internationaliseCollection( (Collection<?>) object, locale );
         }
 
-        internationalise( object, locale );		
-	}
+        internationalise( object, locale );
+    }
 
     private void internationalise( Object object, Locale locale )
     {
