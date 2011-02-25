@@ -2305,6 +2305,7 @@
     var viewHistoryButton = new Ext.Button({
         id: 'viewhistory_b',
 		iconCls: 'icon-history',
+		tooltip: G.i18n.history,
         addMenu: function() {
             this.menu = new Ext.menu.Menu({
                 id: 'viewhistory_m',
@@ -2318,6 +2319,10 @@
                         var keys = menu.items.keys;
                         items.unshift(items.pop());
                         keys.unshift(keys.pop());
+						
+						if (items.length > 3) {
+							items[items.length-1].destroy();
+						}
                     },
                     'click': function(menu, item, e) {
                         var mapView = item.mapView;
@@ -2361,8 +2366,7 @@
             this.menu.addMenuItem({
                 html: mapView.label,
                 mapView: mapView
-            });
-console.log(this.menu.items);            
+            });           
         }            
     });
 
@@ -2384,6 +2388,7 @@ console.log(this.menu.items);
 			zoomInButton,
 			zoomOutButton, ' ',
 			zoomToVisibleExtentButton,
+			viewHistoryButton,
 			'-',
 			favoritesButton,
             predefinedMapLegendSetButton,
@@ -2391,8 +2396,6 @@ console.log(this.menu.items);
 			'-',
             adminButton,
 			helpButton,
-            '-',
-            viewHistoryButton,
 			'->',
 			exitButton,' ',' '
 		]
