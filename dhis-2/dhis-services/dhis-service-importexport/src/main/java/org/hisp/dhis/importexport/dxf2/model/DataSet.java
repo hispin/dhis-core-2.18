@@ -51,7 +51,7 @@ public class DataSet extends Link
 
     @XmlElementWrapper(name="dataElements")
     @XmlElement(name="dataElement")
-    private List<Link> dataElementLinks;
+    private List<DataElement> dataElements;
 
     @XmlElementWrapper(name="orgUnits")
     @XmlElement(name="orgUnit")
@@ -87,14 +87,14 @@ public class DataSet extends Link
         this.periodType = periodType;
     }
 
-    public List<Link> getDataElementLinks()
+    public List<DataElement> getDataElements()
     {
-        return dataElementLinks;
+        return dataElements;
     }
 
-    public void setDataElementLinks( List<Link> dataElementLinks )
+    public void setDataElements( List<DataElement> dataElements )
     {
-        this.dataElementLinks = dataElementLinks;
+        this.dataElements = dataElements;
     }
 
     public List<Link> getOrgUnitLinks()

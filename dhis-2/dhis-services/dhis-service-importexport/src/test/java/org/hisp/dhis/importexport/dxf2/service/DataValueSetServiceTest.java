@@ -43,6 +43,8 @@ import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -57,13 +59,6 @@ import org.hisp.dhis.period.WeeklyPeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * Messy test class checking that jaxb produces the expected java
- * 
- * @link{DataValueSet data value set} structure, that the set is converted,
- *                    validated and stored into a correct set of
- *                    {@link DataValue data values} .
- */
 public class DataValueSetServiceTest
     extends DhisTest
 {
@@ -104,7 +99,8 @@ public class DataValueSetServiceTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
         dataSetService = (DataSetService) getBean( DataSetService.ID );
         dataValueService = (DataValueService) getBean( DataValueService.ID );
-
+        completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
+        
         service = (DataValueSetService) getBean( "org.hisp.dhis.importexport.dxf2.service.DataValueSetService" );
 
         classLoader = Thread.currentThread().getContextClassLoader();
@@ -301,9 +297,21 @@ public class DataValueSetServiceTest
 
         service.saveDataValueSet( dataValueSet );
 
+        Collection<CompleteDataSetRegistration> registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertTrue( registrations.isEmpty() );
+
+        
         dataValueSet.setCompleteDate( "20110101" );
         service.saveDataValueSet( dataValueSet );
 
+        registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertEquals( 1, registrations.size() );
+        assertEquals( 2011 - 1900, registrations.iterator().next().getDate().getYear() );
+        
         dataValueSet.setCompleteDate( null );
 
         try
@@ -316,6 +324,12 @@ public class DataValueSetServiceTest
             // TODO: Expected
         }
 
+        registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertEquals( 1, registrations.size() );
+        assertEquals( 2011 - 1900, registrations.iterator().next().getDate().getYear() );
+
         dataValueSet.setCompleteDate( "201lala" );
 
         try
@@ -327,9 +341,28 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dataValueSet.setCompleteDate( "20101010" );
+        registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertEquals( 1, registrations.size() );
+        assertEquals( 2011 - 1900, registrations.iterator().next().getDate().getYear() );
+
+        dataValueSet.setCompleteDate( "20071010" );
         service.saveDataValueSet( dataValueSet );
 
+        registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertEquals( 1, registrations.size() );
+        assertEquals( 2007 - 1900, registrations.iterator().next().getDate().getYear() );
+
+        dataValueSet.setCompleteDate( "" );
+        service.saveDataValueSet( dataValueSet );
+
+        registrations = 
+            completeDataSetRegistrationService.getAllCompleteDataSetRegistrations();
+
+        assertTrue( registrations.isEmpty() );
     }
 
     @Test

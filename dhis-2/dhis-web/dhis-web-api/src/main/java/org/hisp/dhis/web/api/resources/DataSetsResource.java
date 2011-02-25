@@ -19,6 +19,7 @@ import org.hisp.dhis.importexport.dxf2.model.Link;
 import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
+import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 @Path( "dataSets" )
@@ -35,7 +36,9 @@ public class DataSetsResource
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     public DataSetLinks getDataSetLinks() {
-        return new DataSetLinks( linkBuilder.getLinks( dataSetService.getAllDataSets() ) );
+        DataSetLinks dataSetLinks = new DataSetLinks( linkBuilder.getLinks( dataSetService.getAllDataSets() ) );
+        new UrlResourceListener( uriInfo ).beforeMarshal( dataSetLinks );
+        return dataSetLinks;
     }
     
     @GET

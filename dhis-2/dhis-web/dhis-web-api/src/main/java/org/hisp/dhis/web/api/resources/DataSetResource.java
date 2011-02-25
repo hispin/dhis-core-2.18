@@ -16,6 +16,8 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 @Path( "dataSets/{uuid}" )
@@ -37,7 +39,9 @@ public class DataSetResource
         {
             throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
-        return new DataSetMapper().convert( dataSet );
+        org.hisp.dhis.importexport.dxf2.model.DataSet dxfDataSet = new DataSetMapper().convert( dataSet );
+        new UrlResourceListener( uriInfo ).beforeMarshal( dxfDataSet );
+        return dxfDataSet;
     }
 
     @GET
@@ -55,8 +59,9 @@ public class DataSetResource
         StringBuilder t = Html.head( "Data set " + dataSet.getName() );
         t.append( "<p>See the <a href=\"" + uuid + ".xml\">xml version</a></p>\n" );
         t.append( "<p>Uuid: " ).append( dataSet.getUuid() ).append( "<br>\n" );
+        PeriodType periodType = dataSet.getPeriodType();
         t.append( "Period type: " ).append( dataSet.getPeriodType().getName() ).append( " - " )
-            .append( dataSet.getPeriodType().getIsoFormat() );
+            .append( periodType.getIsoFormat() );
         t.append( "</p>\n" );
 
         t.append( "<h2>Org units reporting data set</h2>\n<ul>" );
