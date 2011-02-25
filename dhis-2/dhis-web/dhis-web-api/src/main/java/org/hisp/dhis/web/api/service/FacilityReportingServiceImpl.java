@@ -55,6 +55,7 @@ import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.web.api.model.DataElement;
 import org.hisp.dhis.web.api.model.DataSet;
+import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.DataValue;
 import org.hisp.dhis.web.api.model.Section;
@@ -124,6 +125,64 @@ public class FacilityReportingServiceImpl
         }
 
         return datasets;
+    }
+
+    public DataSetList getUpdatedDataSet( DataSetList dataSetList, OrganisationUnit unit, String locale )
+    {
+        if ( DEBUG )
+            log.debug( "Checking updated datasets for org unit " + unit.getName() );
+        DataSetList updatedDataSetList = new DataSetList();
+        List<DataSet> dataSets = this.getMobileDataSetsForUnit( unit, locale );
+        List<DataSet> currentDataSets = dataSetList.getCurrentDataSets();
+
+        // check added dataset
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( !currentDataSets.contains( dataSet ) )
+            {
+                if ( updatedDataSetList.getAddedDataSets() == null )
+                    updatedDataSetList.setAddedDataSets( new ArrayList<DataSet>() );
+                updatedDataSetList.getAddedDataSets().add( dataSet );
+                currentDataSets.add( dataSet );
+            }
+        }
+
+        // check deleted dataset
+        for ( DataSet dataSet : currentDataSets )
+        {
+            if ( !dataSets.contains( dataSet ) )
+            {
+                if ( updatedDataSetList.getDeletedDataSets() == null )
+                    updatedDataSetList.setDeletedDataSets( new ArrayList<DataSet>() );
+                updatedDataSetList.getDeletedDataSets().add( new DataSet( dataSet ) );
+            }
+        }
+        if ( updatedDataSetList.getDeletedDataSets() != null )
+        {
+            for ( DataSet dataSet : updatedDataSetList.getDeletedDataSets() )
+            {
+                currentDataSets.remove( dataSet );
+            }
+        }
+
+        // check modified dataset
+        Collections.sort( dataSets );
+        Collections.sort( currentDataSets );
+
+        for ( int i = 0; i < dataSets.size(); i++ )
+        {
+            if ( dataSets.get( i ).getVersion() != currentDataSets.get( i ).getVersion() )
+            {
+                if ( updatedDataSetList.getModifiedDataSets() == null )
+                    updatedDataSetList.setModifiedDataSets( new ArrayList<DataSet>() );
+                updatedDataSetList.getModifiedDataSets().add( dataSets.get( i ) );
+            }
+        }
+
+        if ( DEBUG )
+            log.debug( "Returning updated datasets for org unit " + unit.getName() );
+
+        return updatedDataSetList;
     }
 
     public DataSet getDataSetForLocale( int dataSetId, Locale locale )
@@ -242,19 +301,20 @@ public class FacilityReportingServiceImpl
                 continue;
             }
 
-            saveValue(unit, period, dataElement, dataValue);
+            saveValue( unit, period, dataElement, dataValue );
 
         }
-        
-        CompleteDataSetRegistration registration = 
-            registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
 
-        if (registration != null) {
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
+            unit );
+
+        if ( registration != null )
+        {
             registrationService.deleteCompleteDataSetRegistration( registration );
         }
-        
+
         registration = new CompleteDataSetRegistration();
-        
+
         registration.setDataSet( dataSet );
         registration.setPeriod( period );
         registration.setSource( unit );
@@ -281,20 +341,22 @@ public class FacilityReportingServiceImpl
         return dataSetService.getDataSetsBySource( unit ).contains( dataSet );
     }
 
-    private void saveValue(OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement, DataValue dv) {
+    private void saveValue( OrganisationUnit unit, Period period, org.hisp.dhis.dataelement.DataElement dataElement,
+        DataValue dv )
+    {
 
         String value = dv.getValue().trim();
 
         DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
             .getCategoryOptComboID() );
 
-        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( unit, dataElement,
-            period, cateOptCombo );
+        org.hisp.dhis.datavalue.DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period,
+            cateOptCombo );
 
         if ( dataValue == null )
         {
-            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, value, "",
-                new Date(), "", cateOptCombo );
+            dataValue = new org.hisp.dhis.datavalue.DataValue( dataElement, period, unit, value, "", new Date(), "",
+                cateOptCombo );
             dataValueService.addDataValue( dataValue );
         }
         else
@@ -305,7 +367,7 @@ public class FacilityReportingServiceImpl
         }
 
     }
-    
+
     // -------------------------------------------------------------------------
     // Supportive method
     // -------------------------------------------------------------------------
@@ -393,6 +455,5 @@ public class FacilityReportingServiceImpl
     {
         this.registrationService = registrationService;
     }
-
 
 }

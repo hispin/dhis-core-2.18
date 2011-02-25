@@ -5,6 +5,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
+import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
+import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.web.util.HtmlUtils;
@@ -14,20 +17,29 @@ public class OrgUnitsResource
 {
     private OrganisationUnitService organisationUnitService;
 
+    private LinkBuilder linkBuilder = new LinkBuilderImpl();
+
+    @GET
+    @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+    public OrgUnitLinks getOrgUnits()
+    {
+        return new OrgUnitLinks( linkBuilder.getLinks( organisationUnitService.getAllOrganisationUnits() ) );
+    }
+
     @GET
     @Produces( MediaType.TEXT_HTML )
-    public String getOrgUnits()
+    public String getOrgUnitsHtml()
     {
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = Html.head( "Org units" );
 
-        sb.append( "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"> \n<html>" );
-        sb.append( "<head><title>DHIS2 Web API: Org units</title></head>\n<body>\n<h1>Data value sets</h1>\n<ul>" );
+        sb.append( "<p>See the <a href=\"orgUnits.xml\">xml version</a></p>\n" );
+        sb.append( "<ul>" );
 
         for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
         {
-            sb.append( "<li><a href=\"" ).append( unit.getId() ).append( "/\">" );
-            sb.append( HtmlUtils.htmlEscape( unit.getName()) ).append( "</a></li>" );
+            sb.append( "<li><a href=\"orgUnits/" ).append( unit.getId() ).append( "\">" );
+            sb.append( HtmlUtils.htmlEscape( unit.getName() ) ).append( "</a></li>" );
         }
 
         sb.append( "</ul></body>\n</html>\n" );
@@ -39,6 +51,5 @@ public class OrgUnitsResource
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
-    
+
 }

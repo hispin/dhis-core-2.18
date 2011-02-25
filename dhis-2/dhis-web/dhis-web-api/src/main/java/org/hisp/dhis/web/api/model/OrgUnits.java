@@ -13,24 +13,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class OrgUnits
     implements DataStreamSerializable
 {
-    private List<OrgUnit> orgUnits = new ArrayList<OrgUnit>();
+    private List<MobileOrgUnitLinks> orgUnits = new ArrayList<MobileOrgUnitLinks>();
 
     public OrgUnits()
     {
     }
 
-    public OrgUnits( List<OrgUnit> unitList )
+    public OrgUnits( List<MobileOrgUnitLinks> unitList )
     {
         this.orgUnits = unitList;
     }
 
     @XmlElement( name = "orgUnit" )
-    public List<OrgUnit> getOrgUnits()
+    public List<MobileOrgUnitLinks> getOrgUnits()
     {
         return orgUnits;
     }
 
-    public void setOrgUnits( List<OrgUnit> orgUnits )
+    public void setOrgUnits( List<MobileOrgUnitLinks> orgUnits )
     {
         this.orgUnits = orgUnits;
     }
@@ -40,7 +40,7 @@ public class OrgUnits
         throws IOException
     {
         dataOutputStream.writeInt( orgUnits.size() );
-        for ( OrgUnit unit : orgUnits )
+        for ( MobileOrgUnitLinks unit : orgUnits )
         {
             unit.serialize( dataOutputStream );
         }
@@ -51,12 +51,12 @@ public class OrgUnits
     public void deSerialize( DataInputStream dataInputStream )
         throws IOException
     {
-        orgUnits = new ArrayList<OrgUnit>();
+        orgUnits = new ArrayList<MobileOrgUnitLinks>();
         int size = dataInputStream.readInt();
 
         for ( int i = 0; i < size; i++ )
         {
-            OrgUnit unit = new OrgUnit();
+            MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
             unit.deSerialize( dataInputStream );
             orgUnits.add( unit );
         }

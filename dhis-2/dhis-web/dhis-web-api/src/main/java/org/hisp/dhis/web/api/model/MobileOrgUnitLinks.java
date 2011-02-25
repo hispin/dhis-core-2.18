@@ -34,8 +34,8 @@ import java.io.IOException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class OrgUnit
+@XmlRootElement(name="orgUnit")
+public class MobileOrgUnitLinks
     implements DataStreamSerializable
 {
     private int id;

@@ -97,7 +97,7 @@ public class DataSetMappingTest
 
         StringWriter writer = new StringWriter();
         org.hisp.dhis.dataset.DataSet dataSet = dataSetService.getDataSet( DATA_SET_UUID );
-        DataSet dxfDataSet = DataSetMapper.convert( dataSet );
+        DataSet dxfDataSet = new DataSetMapper().convert( dataSet );
         u.marshal( dxfDataSet, writer );
 
         System.out.println( writer.toString() );

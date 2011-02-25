@@ -136,7 +136,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>		
 	
-	<!-- DataSet -->	
+	<!-- DataSet -->
+	<bean id="org.hisp.dhis.dataset.action.MobileDataSetListAction"
+		class="org.hisp.dhis.dataset.action.MobileDataSetListAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="selectionManager">
+			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction"
+		class="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+	</bean>	
+		
 	
 	<bean id="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"
 		class="org.hisp.dhis.dataset.action.DefineDataSetAssociationsAction"

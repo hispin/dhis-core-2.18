@@ -104,6 +104,15 @@
 }
 
 /* Ext Menu */
+a.x-menu-item-custom {
+    padding: 2px 17px 3px 12px;
+}
+#viewhistory_m .x-menu-list {
+    background-color:#f1f1f1;
+}
+.x-menu-list-item {
+    font:10px lucida sans unicode,ubuntu,arial;
+}
 .menu-layeroptions-locate {
     background-image:url(../../../images/magnifier.png);
 }
@@ -213,6 +222,9 @@
 }
 .x-btn .icon-admin {
 	background-image:url(../../../images/settings.png);
+}
+.x-btn .icon-history {
+	background-image:url(../../../images/history.png);
 }
 .x-btn .icon-exit {
 	background-image:url(../../../images/exit.png);

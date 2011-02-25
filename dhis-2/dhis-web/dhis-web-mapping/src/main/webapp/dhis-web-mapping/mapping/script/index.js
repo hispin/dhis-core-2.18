@@ -2301,7 +2301,71 @@
 			helpWindow.show();
 		}
 	});
-	
+    
+    var viewHistoryButton = new Ext.Button({
+        id: 'viewhistory_b',
+		iconCls: 'icon-history',
+        addMenu: function() {
+            this.menu = new Ext.menu.Menu({
+                id: 'viewhistory_m',
+                defaults: {
+                    itemCls: 'x-menu-item x-menu-item-custom'
+                },
+                items: [],
+                listeners: {
+                    'add': function(menu) {
+                        var items = menu.items.items;
+                        var keys = menu.items.keys;
+                        items.unshift(items.pop());
+                        keys.unshift(keys.pop());
+                    },
+                    'click': function(menu, item, e) {
+                        var mapView = item.mapView;
+                        var scope = mapView.widget;                                            
+                        scope.mapView = mapView;
+                        scope.updateValues = true;
+                        
+                        scope.legend.value = mapView.mapLegendType;
+                        scope.legend.method = mapView.method || scope.legend.method;
+                        scope.legend.classes = mapView.classes || scope.legend.classes;
+                        
+                        G.vars.map.setCenter(new OpenLayers.LonLat(mapView.longitude, mapView.latitude), mapView.zoom);
+                        G.vars.mapDateType.value = mapView.mapDateType;
+                        Ext.getCmp('mapdatetype_cb').setValue(G.vars.mapDateType.value);
+
+                        scope.valueType.value = mapView.mapValueType;
+                        scope.form.findField('mapvaluetype').setValue(scope.valueType.value);
+                        
+                        G.util.expandWidget(scope);                        
+                        scope.setMapView();
+                    }
+                }
+            });
+        },
+        addItem: function(scope) {
+            if (!this.menu) {
+                this.addMenu();
+            }
+
+            var mapView = scope.formValues.getAllValues.call(scope);
+            mapView.widget = scope;
+            mapView.timestamp = new Date();
+            mapView.label = G.date.getNowHMS(mapView.timestamp) + '&nbsp;&nbsp;&nbsp;' + mapView.parentOrganisationUnitName + ' (' + mapView.organisationUnitLevelName + ')';
+
+            for (var i = 0; i < this.menu.items.items.length; i++) {
+                if (G.util.compareObjToObj(this.menu.items.items[i].mapView, mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
+                    this.menu.items.items[i].destroy();
+                }
+            }
+            
+            this.menu.addMenuItem({
+                html: mapView.label,
+                mapView: mapView
+            });
+console.log(this.menu.items);            
+        }            
+    });
+
 	var exitButton = new Ext.Button({
 		text: G.i18n.exit_gis,
         iconCls: 'icon-exit',
@@ -2327,6 +2391,8 @@
 			'-',
             adminButton,
 			helpButton,
+            '-',
+            viewHistoryButton,
 			'->',
 			exitButton,' ',' '
 		]

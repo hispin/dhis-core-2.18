@@ -1,6 +1,5 @@
 package org.hisp.dhis.web.api.resources;
 
-import java.net.URI;
 import java.util.Set;
 
 import javax.ws.rs.GET;
@@ -19,7 +18,7 @@ import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.springframework.beans.factory.annotation.Required;
 
-@Path( "dataSets" )
+@Path( "dataSets/{uuid}" )
 public class DataSetResource
 {
 
@@ -29,29 +28,7 @@ public class DataSetResource
     UriInfo uriInfo;
 
     @GET
-    @Produces( MediaType.TEXT_HTML )
-    public String getDataSetList()
-    {
-        StringBuilder t = new StringBuilder();
-        t.append( head( "Data sets available for reporting" ) );
-
-        t.append( "<h2>Data sets available for reporting</h2>\n<ul>\n" );
-        for ( DataSet dataSet : dataSetService.getAllDataSets() )
-        {
-            URI uri = uriInfo.getAbsolutePathBuilder().path( "{uuid}" ).build( dataSet.getUuid() );
-            t.append( "<li>" ).append( "<a href=\"" ).append( uri ).append( "\">" ).append( dataSet.getName() )
-                .append( "</a></li>\n" );
-        }
-        t.append( "</ul>" );
-        DataValueSetResource.xmlTemplate( t, uriInfo );
-        t.append( tail() );
-
-        return t.toString();
-    }
-
-    @GET
-    @Produces( { MediaType.APPLICATION_XML, DhisMediaType.DXF } )
-    @Path( "{uuid}/dxf" )
+    @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
     public org.hisp.dhis.importexport.dxf2.model.DataSet getDataSetXml( @PathParam( "uuid" ) String uuid )
     {
         DataSet dataSet = dataSetService.getDataSet( uuid );
@@ -60,11 +37,10 @@ public class DataSetResource
         {
             throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
-        return DataSetMapper.convert( dataSet );
+        return new DataSetMapper().convert( dataSet );
     }
 
     @GET
-    @Path( "{uuid}" )
     @Produces( MediaType.TEXT_HTML )
     public String getDataSet( @PathParam( "uuid" ) String uuid )
     {
@@ -76,12 +52,8 @@ public class DataSetResource
             throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
 
-        StringBuilder t = new StringBuilder();
-
-        t.append( head( "Data set " + dataSet.getName() ) );
-        URI url = uriInfo.getAbsolutePathBuilder().path( "/dxf" ).build();
-        t.append( "<p>(There is also a <a href=\"" ).append( url )
-            .append( "\">prototype xml version</a> of this data set available)</p>\n" );
+        StringBuilder t = Html.head( "Data set " + dataSet.getName() );
+        t.append( "<p>See the <a href=\"" + uuid + ".xml\">xml version</a></p>\n" );
         t.append( "<p>Uuid: " ).append( dataSet.getUuid() ).append( "<br>\n" );
         t.append( "Period type: " ).append( dataSet.getPeriodType().getName() ).append( " - " )
             .append( dataSet.getPeriodType().getIsoFormat() );
@@ -117,23 +89,15 @@ public class DataSetResource
         t.append( "</ul>" );
         t.append( "<h2>Xml template</h2>\n" );
 
-        DataValueSetResource.xmlTemplate( t, uriInfo );
-        t.append( tail() );
+        Html.xmlTemplate( t, uriInfo );
+        t.append( Html.tail() );
 
         return t.toString();
     }
 
-    private String head( String title )
-    {
-        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"> \n<html><head><title>"
-            + title + "</title></head>\n" + "<body>\n<h1>" + title + "</h1>\n";
-    }
 
-    private String tail()
-    {
-        return "</body>\n</html>\n";
-    }
 
+    
     @Required
     public void setDataSetService( DataSetService dataSetService )
     {

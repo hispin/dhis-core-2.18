@@ -1031,7 +1031,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     
     prepareMapViewValueType: function() {
         var obj = {};
-
         if (this.valueType.isIndicator()) {
             this.form.findField('indicatorgroup').showField();
             this.form.findField('indicator').showField();
@@ -1141,7 +1140,6 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         function valueTypeGroupStoreCallback() {
             obj.components.valueTypeGroup.setValue(this.mapView[obj.mapView.valueTypeGroup]);
-            
             obj.stores.valueType.setBaseParam(obj.mapView.valueTypeGroup, obj.components.valueTypeGroup.getValue());
             obj.stores.valueType.load({scope: this, callback: function() {
                 obj.components.valueType.setValue(this.mapView[obj.mapView.valueType]);
@@ -1366,30 +1364,34 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     formValues: {
 		getAllValues: function() {
 			return {
-				featureType: G.conf.map_feature_type_multipolygon,
-				mapValueType: this.form.findField('mapvaluetype').getValue(),
-				indicatorGroupId: this.form.findField('indicatorgroup').getValue(),
-				indicatorId: this.form.findField('indicator').getValue(),
-				dataElementGroupId: this.form.findField('dataelementgroup').getValue(),
-				dataElementId: this.form.findField('dataelement').getValue(),
-				periodTypeId: this.form.findField('periodtype').getValue(),
-				periodId: this.form.findField('period').getValue(),
-				startDate: this.form.findField('startdate').getValue(),
-				endDate: this.form.findField('enddate').getValue(),
-				parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
-				organisationUnitLevel: this.organisationUnitSelection.level.level,
-				mapLegendType: this.form.findField('maplegendtype').getValue(),
-				method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
-				classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
-				bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-				colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
-				colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
-				mapLegendSetId: this.form.findField('maplegendset').getValue(),
-				radiusLow: null,
-				radiusHigh: null,
-				longitude: G.vars.map.getCenter().lon,
-				latitude: G.vars.map.getCenter().lat,
-				zoom: parseFloat(G.vars.map.getZoom())
+                featureType: G.conf.map_feature_type_multipolygon,
+                mapValueType: this.form.findField('mapvaluetype').getValue(),
+                indicatorGroupId: this.form.findField('indicatorgroup').getValue(),
+                indicatorId: this.form.findField('indicator').getValue(),
+                dataElementGroupId: this.form.findField('dataelementgroup').getValue(),
+                dataElementId: this.form.findField('dataelement').getValue(),
+                mapDateType: G.vars.mapDateType.value,
+                periodTypeId: this.form.findField('periodtype').getValue(),
+                periodId: this.form.findField('period').getValue(),
+                startDate: this.form.findField('startdate').getValue(),
+                endDate: this.form.findField('enddate').getValue(),
+                parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
+                parentOrganisationUnitLevel: this.organisationUnitSelection.parent.level,
+                parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
+                organisationUnitLevel: this.organisationUnitSelection.level.level,
+                organisationUnitLevelName: this.organisationUnitSelection.level.name,
+                mapLegendType: this.form.findField('maplegendtype').getValue(),
+                method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
+                classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
+                bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
+                colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
+                colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
+                mapLegendSetId: this.form.findField('maplegendset').getValue(),
+                radiusLow: null,
+                radiusHigh: null,
+                longitude: G.vars.map.getCenter().lon,
+                latitude: G.vars.map.getCenter().lat,
+                zoom: parseFloat(G.vars.map.getZoom())
 			};
 		},
 		
@@ -1487,6 +1489,8 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
     },
 
     applyValues: function() {
+        Ext.getCmp('viewhistory_b').addItem(this);
+        
 		var options = {
             indicator: 'value',
             method: this.form.findField('method').getValue(),

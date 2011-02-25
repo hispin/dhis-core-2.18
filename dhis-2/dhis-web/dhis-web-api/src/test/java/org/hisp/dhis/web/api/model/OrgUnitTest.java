@@ -44,7 +44,7 @@ public class OrgUnitTest
     public void testSerialization()
         throws IOException
     {
-        OrgUnit unit = new OrgUnit();
+        MobileOrgUnitLinks unit = new MobileOrgUnitLinks();
         unit.setId( 1 );
         unit.setName( "name" );
         unit.setUpdateActivityPlanUrl("updateActivityPlanUrl");
@@ -57,7 +57,7 @@ public class OrgUnitTest
         DataOutputStream dos = new DataOutputStream( baos );
         unit.serialize( dos );
         dos.flush();
-        OrgUnit unit2 = new OrgUnit();
+        MobileOrgUnitLinks unit2 = new MobileOrgUnitLinks();
         unit2.deSerialize( new DataInputStream( new ByteArrayInputStream( baos.toByteArray() ) ) );
 
         assertEquals( unit.getName(), unit2.getName() );

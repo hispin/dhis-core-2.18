@@ -1,37 +1,55 @@
 package org.hisp.dhis.importexport.dxf2.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class OrgUnit
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class OrgUnit extends Link
 {
 
-    @XmlAttribute(name="id")
-    private String uuid;
-        
-    @XmlAttribute
-    private String name;
+    private Link parent;
+    
+    @XmlElementWrapper(name="children")
+    @XmlElement(name="orgUnit")
+    private List<Link> children;
 
-    public String getUuid()
+    
+    @XmlElementWrapper(name="dataSets")
+    @XmlElement(name="dataSet")
+    private List<Link> dataSets;
+    
+    public List<Link> getDataSets()
     {
-        return uuid;
+        return dataSets;
     }
 
-    public void setUuid( String uuid )
+    public void setDataSets( List<Link> dataSets )
     {
-        this.uuid = uuid;
+        this.dataSets = dataSets;
     }
 
-    public void setName( String name )
+    public List<Link> getChildren()
     {
-        this.name = name;
+        return children;
     }
 
-    public String getName()
+    public void setChildren( List<Link> children )
     {
-        return name;
+        this.children = children;
     }
 
+    public Link getParent()
+    {
+        return parent;
+    }
+
+    public void setParent( Link parent )
+    {
+        this.parent = parent;
+    }
+
+    
 }
