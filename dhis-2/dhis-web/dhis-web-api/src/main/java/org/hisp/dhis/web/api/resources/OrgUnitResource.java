@@ -27,10 +27,6 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -49,13 +45,13 @@ import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
 import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.web.api.UrlResourceListener;
 import org.hisp.dhis.web.api.model.ActivityValue;
-import org.hisp.dhis.web.api.model.DataSet;
 import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
-import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.model.MobileOrgUnitLinks;
+import org.hisp.dhis.web.api.model.ModelList;
 import org.hisp.dhis.web.api.service.ActivityReportingService;
 import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
@@ -107,7 +103,9 @@ public class OrgUnitResource
         if (unit == null)
             return null;
         
-        return new OrgUnitMapper().get( unit );
+        OrgUnit orgUnit = new OrgUnitMapper().get( unit );
+        new UrlResourceListener( uriInfo ).beforeMarshal( orgUnit );
+        return orgUnit;
     }
 
     /**

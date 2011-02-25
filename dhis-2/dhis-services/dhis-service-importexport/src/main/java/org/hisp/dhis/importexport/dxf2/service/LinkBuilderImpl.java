@@ -9,7 +9,7 @@ import org.hisp.dhis.importexport.dxf2.model.Link;
 
 public class LinkBuilderImpl implements LinkBuilder
 {
-    public List<Link> getLinks( Collection<? extends IdentifiableObject> targets )
+    public List<Link> getLinks( Collection<? extends IdentifiableObject> targets  )
     {
         List<Link> links = new ArrayList<Link>();
 
@@ -23,6 +23,7 @@ public class LinkBuilderImpl implements LinkBuilder
     public Link get( IdentifiableObject target )
     {
         Link link = new Link();
+
         link.setName( target.getName() );
         link.setId( target.getUuid() );
 

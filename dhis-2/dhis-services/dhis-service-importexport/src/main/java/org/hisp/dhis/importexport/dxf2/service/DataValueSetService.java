@@ -75,21 +75,23 @@ public class DataValueSetService
      * <p>
      * Handles the content in the following way
      * <ul>
-     * <li>if data set is not specified, will resolve it through data elements if not ambigous.
+     * <li>if data set is not specified, will resolve it through data elements if not ambiguous.
      * <li>optionCombo defaults to 'default' if not specified
      * <li>storedBy defaults to currently logged in user's name
+     * <li>if value is empty not present -> delete value
      * </ul>
      * <ul>
      * Validates the following:
      * <p>
      * First checks that:
      * <ul>
-     * <li>dataSet exists (tries to resolve it through the data elements if not specified)
+     * <li>dataSet exists (tries to resolve it through the data elements if not
+     * specified)
      * <li>orgUnit exists
      * <li>orgunit reports dataSet
      * <li>period is a valid period
-     * <li>the dataValueSet is not registered as complete or that if it is a
-     * complete date is present
+     * <li>the dataValueSet is not registered as complete or that if it is a complete date is present
+     * <li>if complete date is empty string - delete completion
      * <li>if complete date present checks validity
      * </ul>
      * For all dataValues check that:
@@ -105,8 +107,9 @@ public class DataValueSetService
      * </ul>
      * Concerns:
      * <ul>
-     * <li>deletion through sending "empty string" value dependant on semantics of add/update in data value store
-     * <li>completed semantics: can't uncomplete but can complete and "recomplete"
+     * <li>deletion through sending "empty string" value dependent on semantics of add/update in data value store
+     * <li>completed semantics: can't uncomplete but can complete and
+     * "recomplete"
      * <li>what is 'comment' good for really?
      * 
      * @param dataValueSet
@@ -143,7 +146,7 @@ public class DataValueSetService
     private DataSet getDataSet( DataValueSet dataValueSet )
     {
         DataSet dataSet = null;
-        
+
         String uuid = dataValueSet.getDataSetUuid();
         if ( uuid != null )
         {
@@ -178,8 +181,7 @@ public class DataValueSetService
 
             if ( dataSets == null || dataSets.isEmpty() )
             {
-                throw new IllegalArgumentException( "Data element '" + dataElement.getUuid()
-                    + "' isn't in a data set." );
+                throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in a data set." );
             }
             else if ( dataSets.size() == 1 )
             {
@@ -273,11 +275,10 @@ public class DataValueSetService
 
         CompleteDataSetRegistration complete = null;
 
-        if ( completeDateString != null )
+        if ( completeDateString != null && !completeDateString.trim().isEmpty())
         {
             complete = getComplete( dataSet, unit, period, completeDateString, complete );
         }
-
         if ( complete != null )
         {
             registrationService.saveCompleteDataSetRegistration( complete );
