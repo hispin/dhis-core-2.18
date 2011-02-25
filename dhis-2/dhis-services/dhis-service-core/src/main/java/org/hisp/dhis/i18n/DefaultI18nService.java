@@ -115,6 +115,9 @@ public class DefaultI18nService
 
             Map<String, String> translationsCurrentLocale = convertTranslations( translations );
 
+            Collection<Translation> translationsFallback = null; // Not initialized unless needed
+            Map<String, String> translationsFallbackLocale = null; // Not initialized unless needed
+
             List<String> propertyNames = i18nObject.getPropertyNames();
 
             for ( String property : propertyNames )
@@ -124,6 +127,23 @@ public class DefaultI18nService
                 if ( value != null && !value.isEmpty() )
                 {
                     setProperty( object, property, value );
+                }
+                else
+                {
+                    if ( translationsFallback == null )
+                    {
+                        translationsFallback = translationService.getTranslations( getClassName( object ),
+                            getId( object ), localeManager.getFallbackLocale() );
+
+                        translationsFallbackLocale = convertTranslations( translationsFallback );
+                    }
+
+                    value = translationsFallbackLocale.get( property );
+
+                    if ( value != null && !value.isEmpty() )
+                    {
+                        setProperty( object, property, value );
+                    }
                 }
             }
         }
@@ -148,6 +168,9 @@ public class DefaultI18nService
             Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(),
                 locale );
 
+            Collection<Translation> fallbackTranslations = null; // Not initialized unless needed
+            Map<String, String> fallbackTranslationsMap = null; // Not initialized unless needed
+
             for ( Object object : intObjects )
             {
                 Map<String, String> translations = getTranslationsForObject( allTranslations, getId( object ) );
@@ -159,6 +182,23 @@ public class DefaultI18nService
                     if ( value != null && !value.isEmpty() )
                     {
                         setProperty( object, property, value );
+                    }
+                    else
+                    {
+                        if ( fallbackTranslations == null )
+                        {
+                            fallbackTranslations = translationService.getTranslations( i18nObject.getClassName(),
+                                locale );
+
+                            fallbackTranslationsMap = getTranslationsForObject( fallbackTranslations, getId( object ) );
+                        }
+
+                        value = fallbackTranslationsMap.get( property );
+
+                        if ( value != null && !value.isEmpty() )
+                        {
+                            setProperty( object, property, value );
+                        }
                     }
                 }
             }
