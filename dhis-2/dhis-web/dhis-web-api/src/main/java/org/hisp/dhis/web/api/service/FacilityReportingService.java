@@ -32,6 +32,7 @@ import java.util.Locale;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.web.api.model.DataSet;
+import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 
 public interface FacilityReportingService
@@ -48,5 +49,7 @@ public interface FacilityReportingService
      */
     public void saveDataSetValues( OrganisationUnit unit, DataSetValue dataSetValue )
         throws NotAllowedException;
+    
+    public DataSetList getUpdatedDataSet(DataSetList dataSetList, OrganisationUnit unit, String locale);
 
 }

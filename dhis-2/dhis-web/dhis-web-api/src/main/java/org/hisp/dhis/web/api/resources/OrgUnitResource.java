@@ -45,6 +45,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
+import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.web.api.model.ActivityValue;
@@ -53,7 +55,7 @@ import org.hisp.dhis.web.api.model.DataSetList;
 import org.hisp.dhis.web.api.model.DataSetValue;
 import org.hisp.dhis.web.api.model.MobileModel;
 import org.hisp.dhis.web.api.model.ModelList;
-import org.hisp.dhis.web.api.model.OrgUnit;
+import org.hisp.dhis.web.api.model.MobileOrgUnitLinks;
 import org.hisp.dhis.web.api.service.ActivityReportingService;
 import org.hisp.dhis.web.api.service.ActivityReportingServiceImpl;
 import org.hisp.dhis.web.api.service.FacilityReportingService;
@@ -67,7 +69,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class OrgUnitResource
 {
     private OrganisationUnitService organisationUnitService;
-    
+
     private static Log log = LogFactory.getLog( ActivityReportingServiceImpl.class );
 
     private static final boolean DEBUG = log.isDebugEnabled();
@@ -78,19 +80,36 @@ public class OrgUnitResource
 
     private FacilityReportingService facilityReportingService;
 
-    @PathParam( "id" ) private int id;
+    @PathParam( "id" )
+    private String id;
 
-    @Context UriInfo uriInfo;
-    
-    private OrganisationUnit getUnit() {
-        return organisationUnitService.getOrganisationUnit( id );
+    @Context
+    UriInfo uriInfo;
+
+    private OrganisationUnit getUnit()
+    {
+        try
+        {
+            return organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
+        }
+        catch ( NumberFormatException e )
+        {
+            return organisationUnitService.getOrganisationUnit( id );
+        }
     }
-    
+
     @GET
-    public OrgUnit getOrgUnit() {
-        return OrgUnitResource.getOrgUnit( getUnit(), uriInfo );
+    @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+    public OrgUnit getOrgUnit()
+    {
+        OrganisationUnit unit = getUnit();
+
+        if (unit == null)
+            return null;
+        
+        return new OrgUnitMapper().get( unit );
     }
-    
+
     /**
      * Get activity plan, program forms and facility forms wrapped in a
      * {@link MobileModel}
@@ -117,62 +136,7 @@ public class OrgUnitResource
     @Path( "updateDataSets" )
     public DataSetList checkUpdatedDataSet( DataSetList dataSetList, @HeaderParam( "accept-language" ) String locale )
     {
-        if ( DEBUG )
-            log.debug( "Checking updated datasets for org unit " + getUnit().getName() );
-        DataSetList updatedDataSetList = new DataSetList();
-        List<DataSet> dataSets = facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale );
-        List<DataSet> currentDataSets = dataSetList.getCurrentDataSets();
-        // List<DataSet> copyCurrentDataSets = new
-        // ArrayList<DataSet>(currentDataSets.size());
-        // Collections.copy( copyCurrentDataSets, currentDataSets );
-        // check added dataset
-        for ( DataSet dataSet : dataSets )
-        {
-            if ( !currentDataSets.contains( dataSet ) )
-            {
-                if ( updatedDataSetList.getAddedDataSets() == null )
-                    updatedDataSetList.setAddedDataSets( new ArrayList<DataSet>() );
-                updatedDataSetList.getAddedDataSets().add( dataSet );
-                currentDataSets.add( dataSet );
-            }
-        }
-
-        // check deleted dataset
-        for ( DataSet dataSet : currentDataSets )
-        {
-            if ( !dataSets.contains( dataSet ) )
-            {
-                if ( updatedDataSetList.getDeletedDataSets() == null )
-                    updatedDataSetList.setDeletedDataSets( new ArrayList<DataSet>() );
-                updatedDataSetList.getDeletedDataSets().add( new DataSet( dataSet ) );
-            }
-        }
-        if ( updatedDataSetList.getDeletedDataSets() != null )
-        {
-            for ( DataSet dataSet : updatedDataSetList.getDeletedDataSets() )
-            {
-                currentDataSets.remove( dataSet );
-            }
-        }
-
-        // check modified dataset
-        Collections.sort( dataSets );
-        Collections.sort( currentDataSets );
-
-        for ( int i = 0; i < dataSets.size(); i++ )
-        {
-            if ( dataSets.get( i ).getVersion() != currentDataSets.get( i ).getVersion() )
-            {
-                if ( updatedDataSetList.getModifiedDataSets() == null )
-                    updatedDataSetList.setModifiedDataSets( new ArrayList<DataSet>() );
-                updatedDataSetList.getModifiedDataSets().add( dataSets.get( i ) );
-            }
-        }
-        
-        if ( DEBUG )
-            log.debug( "Returning updated datasets for org unit " + getUnit().getName() );
-
-        return updatedDataSetList;
+        return facilityReportingService.getUpdatedDataSet( dataSetList, getUnit(), locale );
     }
 
     /**
@@ -210,37 +174,34 @@ public class OrgUnitResource
     {
         MobileModel model = new MobileModel();
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
-		model.setActivityPlan(activityReportingService.getCurrentActivityPlan( getUnit(), locale ));
+        model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
         return model;
     }
 
-    public static OrgUnit getOrgUnit( OrganisationUnit unit, UriInfo uriInfo )
+    public static MobileOrgUnitLinks getOrgUnit( OrganisationUnit unit, UriInfo uriInfo )
     {
-        OrgUnit orgUnit = new OrgUnit();
+        MobileOrgUnitLinks orgUnit = new MobileOrgUnitLinks();
 
         orgUnit.setId( unit.getId() );
         orgUnit.setName( unit.getShortName() );
 
-        orgUnit.setDownloadAllUrl( getOrgUnitUrlBuilder(uriInfo).path( "all" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUpdateActivityPlanUrl( getOrgUnitUrlBuilder(uriInfo).path( "activitiyplan" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUploadFacilityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "dataSets" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUploadActivityReportUrl( getOrgUnitUrlBuilder(uriInfo).path( "activities" )
-            .build( unit.getId() ).toString() );
-        orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder(uriInfo).path( "updateDataSets" )
-            .build( unit.getId() ).toString() );
+        orgUnit.setDownloadAllUrl( getOrgUnitUrlBuilder( uriInfo ).path( "all" ).build( unit.getId() ).toString() );
+        orgUnit.setUpdateActivityPlanUrl( getOrgUnitUrlBuilder( uriInfo ).path( "activitiyplan" ).build( unit.getId() )
+            .toString() );
+        orgUnit.setUploadFacilityReportUrl( getOrgUnitUrlBuilder( uriInfo ).path( "dataSets" ).build( unit.getId() )
+            .toString() );
+        orgUnit.setUploadActivityReportUrl( getOrgUnitUrlBuilder( uriInfo ).path( "activities" ).build( unit.getId() )
+            .toString() );
+        orgUnit.setUpdateDataSetUrl( getOrgUnitUrlBuilder( uriInfo ).path( "updateDataSets" ).build( unit.getId() )
+            .toString() );
         return orgUnit;
     }
 
-    private static UriBuilder getOrgUnitUrlBuilder(UriInfo uriInfo)
+    private static UriBuilder getOrgUnitUrlBuilder( UriInfo uriInfo )
     {
         return uriInfo.getBaseUriBuilder().path( "/orgUnits/{id}" );
     }
 
-    
-    
     @Required
     public void setProgramService( IProgramService programService )
     {

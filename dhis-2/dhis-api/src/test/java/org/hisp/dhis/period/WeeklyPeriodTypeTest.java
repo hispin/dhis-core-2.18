@@ -27,10 +27,12 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.assertFalse;
+
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -96,4 +98,24 @@ public class WeeklyPeriodTypeTest
 
     }
 
+    @Test
+    public void isoDates()
+    {
+        WeeklyPeriodType weekly = new WeeklyPeriodType();
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+
+        cal.set( 2010, 11, 27 );
+
+        Period period = weekly.createPeriod( "2011W1" );
+
+        assertEquals(cal.getTime(), period.getStartDate());
+
+        period = weekly.createPeriod( "2011W11" );
+
+        cal.set( 2011, 2, 7 );
+
+        assertEquals(cal.getTime(), period.getStartDate());
+
+    }
 }

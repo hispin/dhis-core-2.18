@@ -91,6 +91,12 @@ G.conf = {
 
 G.util = {
     
+    expandWidget: function(widget) {
+        var collapsed = widget == choropleth ? symbol : choropleth;
+        collapsed.collapse();
+        widget.expand();
+    },
+    
     /* Detect mapview parameter in URL */
     getUrlParam: function(strParam) {
         var output = '';
@@ -272,19 +278,19 @@ G.util = {
     },
     
     setKeepPosition: function(cb) {
-        if (!cb.keepPosition) {
-            cb.keepPosition = true;
-        }
+        cb.keepPosition = !cb.keepPosition ? true : cb.keepPosition;
     },
  
     getTransformedPointByXY: function(x, y) {
 		var p = new OpenLayers.Geometry.Point(parseFloat(x), parseFloat(y));
         return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-     },
+    },
 
     getTransformedFeatureArray: function(features) {
+        var sourceProjection = new OpenLayers.Projection("EPSG:4326");
+        var destinationProjection = new OpenLayers.Projection("EPSG:900913");
         for (var i = 0; i < features.length; i++) {
-            features[i].geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+            features[i].geometry.transform(sourceProjection, destinationProjection);
         }
         return features;
     },
@@ -374,6 +380,40 @@ G.util = {
             }
         }
         return overlays;
+    },
+    
+    findArrayValue: function(array, value) {
+        for (var i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return true;
+            }
+        }
+        return false;
+    },
+    
+    compareObjToObj: function(obj1, obj2, exceptions) {
+        for (p in obj1) {
+            if (obj1[p] !== obj2[p]) {
+                if (!G.util.findArrayValue(exceptions, p)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
+
+G.date = {
+    getNowHMS: function(date) {
+        date = date || new Date();      
+        return G.date.getDoubleDigit(date.getHours()) + ':' +
+               G.date.getDoubleDigit(date.getMinutes()) + ':' +
+               G.date.getDoubleDigit(date.getSeconds());
+    },
+    
+    getDoubleDigit: function(unit) {
+        unit = '' + unit;
+        return unit.length < 2 ? '0' + unit : unit;
     }
 };
 
@@ -381,28 +421,6 @@ G.vars = {
     map: null,
     
     parameter: null,
-    
-    mapSourceType: {
-        value: null,
-        setDatabase: function() {
-            this.value = G.conf.map_source_type_database;
-        },
-        setGeojson: function() {
-            this.value = G.conf.map_source_type_geojson;
-        },
-        setShapefile: function() {
-            this.value = G.conf.map_source_type_shapefile;
-        },
-        isDatabase: function() {
-            return this.value == G.conf.map_source_type_database;
-        },
-        isGeojson: function() {
-            return this.value == G.conf.map_source_type_geojson;
-        },
-        isShapefile: function() {
-            return this.value == G.conf.map_source_type_shapefile;
-        }
-    },
     
     mapDateType: {
         value: null,
@@ -413,10 +431,10 @@ G.vars = {
             this.value = G.conf.map_date_type_start_end;
         },
         isFixed: function() {
-            return this.value == G.conf.map_date_type_fixed;
+            return this.value === G.conf.map_date_type_fixed;
         },
         isStartEnd: function() {
-            return this.value == G.conf.map_date_type_start_end;
+            return this.value === G.conf.map_date_type_start_end;
         }
     },
     
@@ -429,10 +447,10 @@ G.vars = {
             this.value = G.conf.thematicMap2;
         },
         isPolygon: function() {
-            return this.value == G.conf.thematicMap;
+            return this.value === G.conf.thematicMap;
         },
         isPoint: function() {
-            return this.value == G.conf.thematicMap2;
+            return this.value === G.conf.thematicMap2;
         }
     },
     

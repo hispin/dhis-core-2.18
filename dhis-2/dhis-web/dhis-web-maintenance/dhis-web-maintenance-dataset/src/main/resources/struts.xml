@@ -16,6 +16,23 @@
 	        
     <!-- Dataset -->
     
+    <action name="showMobileDataSet"
+			class="org.hisp.dhis.dataset.action.MobileDataSetListAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-dataset/mobileDatasetList.vm</param>
+			<param name="menu">/dhis-web-maintenance-dataset/menuWithTree.vm</param>
+			<param name="menuTreeHeight">300</param>
+			<param name="javascripts">
+					../dhis-web-commons/ouwt/ouwt.js,javascript/organisationUnit.js,javascript/mobiledataset.js
+			</param>
+			<interceptor-ref name="organisationUnitTreeStack" />
+	</action>
+	
+	<action name="updateMobileDataset"
+			class="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction">
+			<result name="success" type="redirect">showMobileDataSet.action</result>
+	</action>
+    
     <action name="dataSet" class="org.hisp.dhis.dataset.action.DataSetListAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>

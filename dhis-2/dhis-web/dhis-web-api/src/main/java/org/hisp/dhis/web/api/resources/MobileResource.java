@@ -41,7 +41,7 @@ import javax.ws.rs.core.UriInfo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.web.api.model.OrgUnit;
+import org.hisp.dhis.web.api.model.MobileOrgUnitLinks;
 import org.hisp.dhis.web.api.model.OrgUnits;
 import org.hisp.dhis.web.api.service.NotAllowedException;
 import org.springframework.beans.factory.annotation.Required;
@@ -76,7 +76,7 @@ public class MobileResource
 
         Collection<OrganisationUnit> units = user.getOrganisationUnits();
 
-        List<OrgUnit> unitList = new ArrayList<OrgUnit>();
+        List<MobileOrgUnitLinks> unitList = new ArrayList<MobileOrgUnitLinks>();
         for ( OrganisationUnit unit : units )
         {
             unitList.add( OrgUnitResource.getOrgUnit( unit, uriInfo ) );
