@@ -2320,7 +2320,7 @@
                         items.unshift(items.pop());
                         keys.unshift(keys.pop());
 						
-						if (items.length > 3) {
+						if (items.length > 10) {
 							items[items.length-1].destroy();
 						}
                     },
@@ -2355,7 +2355,7 @@
             var mapView = scope.formValues.getAllValues.call(scope);
             mapView.widget = scope;
             mapView.timestamp = new Date();
-            mapView.label = G.date.getNowHMS(mapView.timestamp) + '&nbsp;&nbsp;&nbsp;' + mapView.parentOrganisationUnitName + ' (' + mapView.organisationUnitLevelName + ')';
+            mapView.label = G.date.getNowHMS(mapView.timestamp) + '&nbsp;&nbsp;&nbsp;' + mapView.parentOrganisationUnitName + ' (' + mapView.	organisationUnitLevelName + ')' + '&nbsp;&nbsp;&nbsp;' + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName);
 
             for (var i = 0; i < this.menu.items.items.length; i++) {
                 if (G.util.compareObjToObj(this.menu.items.items[i].mapView, mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
