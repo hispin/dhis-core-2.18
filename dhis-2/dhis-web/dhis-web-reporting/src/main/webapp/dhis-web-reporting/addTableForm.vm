@@ -256,6 +256,14 @@
     
     #end
     
+</table>
+
+<span><a href="javascript:toggleFixedOrganisationUnits()">Toggle fixed organisation units</a>&nbsp;</span>
+
+<div id="fixedOrganisationUnits" style="display:none">
+
+<table>
+	
 	<!-- OrganisationUnits -->
 	
 	<tr>
@@ -304,6 +312,16 @@
 	<tr>
 		<td style="height:15px"></td>
 	</tr>
+	
+</table>
+
+</div>
+
+<span><a href="javascript:toggleFixedPeriods()">Toggle fixed periods</a>&nbsp;</span>
+
+<div id="fixedPeriods" style="display:none">
+
+<table>
 	
 	<!-- Periods -->
 	
@@ -357,10 +375,12 @@
 	
 </table>
 	
-	<!-- Relative Periods -->
+</div>
 	
 <table>	
 
+	<!-- Relative Periods -->
+	
 	<tr>
 		<th>$i18n.getString( "relative_periods" )</th>
 	</tr>

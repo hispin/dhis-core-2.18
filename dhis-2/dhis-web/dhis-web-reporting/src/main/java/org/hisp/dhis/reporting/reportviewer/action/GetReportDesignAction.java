@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
@@ -43,6 +44,8 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class GetReportDesignAction
     extends StreamActionSupport
 {
+    private static final String EXT_JRXML = ".jrxml";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -64,6 +67,12 @@ public class GetReportDesignAction
     {
         this.id = id;
     }
+    
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String filename;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -74,7 +83,12 @@ public class GetReportDesignAction
     {
         Report report = reportService.getReport( id );
         
-        out.write( report.getDesignContent().getBytes() );
+        if ( report.getDesignContent() != null )
+        {
+            out.write( report.getDesignContent().getBytes() );
+        }
+        
+        filename = CodecUtils.filenameEncode( report.getName() ) + EXT_JRXML;
         
         return SUCCESS;    
     }
@@ -88,6 +102,6 @@ public class GetReportDesignAction
     @Override
     protected String getFilename()
     {
-        return "report.jrxml";
+        return filename;
     }
 }

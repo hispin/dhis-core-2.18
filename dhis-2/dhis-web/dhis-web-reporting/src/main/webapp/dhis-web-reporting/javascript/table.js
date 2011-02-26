@@ -188,6 +188,16 @@ function toggleRegression()
     }
 }
 
+function toggleFixedOrganisationUnits()
+{
+	$( '#fixedOrganisationUnits' ).toggle( 'fast' );
+}
+
+function toggleFixedPeriods()
+{
+	$( '#fixedPeriods' ).toggle( 'fast' );
+}
+
 // -----------------------------------------------------------------------------
 // Dashboard
 // -----------------------------------------------------------------------------
