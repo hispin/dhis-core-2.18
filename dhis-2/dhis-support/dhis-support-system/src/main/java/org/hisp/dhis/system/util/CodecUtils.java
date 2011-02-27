@@ -49,7 +49,7 @@ public class CodecUtils
     private static final String REGEX_NUMERIC = "([0-9]*)";
     private static final String SEPARATOR = "_";
     
-    private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"<>.]";
+    private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
 
     /**
      * Encrypts a string with Base64 encoding.

@@ -38,7 +38,7 @@
     </action>
 		
     <action name="cancelExport" class="org.hisp.dhis.datamart.action.CancelExportAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseExport.vm</result>
+      <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
@@ -69,8 +69,8 @@
     </action>
     
     <action name="validateDataMartExport" class="org.hisp.dhis.datamart.action.ValidateDataMartExportAction">
-      <result name="success" type="velocity-xml">/dhis-web-datamart/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-datamart/responseInput.vm</result>
+      <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+      <result name="input" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseInput.vm</result>
     </action>
     
 	</package>

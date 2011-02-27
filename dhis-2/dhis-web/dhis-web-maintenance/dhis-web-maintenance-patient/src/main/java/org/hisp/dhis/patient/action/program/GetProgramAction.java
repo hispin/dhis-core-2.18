@@ -137,6 +137,5 @@ public class GetProgramAction
         selectionTreeManager.setSelectedOrganisationUnits( program.getOrganisationUnits() );
         
         return SUCCESS;
-
     }
 }

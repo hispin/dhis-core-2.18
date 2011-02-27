@@ -242,8 +242,8 @@ public class RelativePeriods
         
         for ( Period period : relatives )
         {
-            period.setName( dynamicNames ? format.formatPeriod( period ) : periodNames[c++] );
-            period.setShortName( format.formatPeriod( period ) );
+            period.setName( dynamicNames && format != null ? format.formatPeriod( period ) : periodNames[c++] );
+            period.setShortName( format != null ? format.formatPeriod( period ) : null );
             periods.add( period );
         }
         
@@ -264,8 +264,8 @@ public class RelativePeriods
     private Period getRelativePeriod( CalendarPeriodType periodType, String periodName, Date current, boolean dynamicNames, I18nFormat format )
     {
         Period period = periodType.createPeriod( current );
-        period.setName( dynamicNames ? format.formatPeriod( period ) : periodName );
-        period.setShortName( format.formatPeriod( period ) );
+        period.setName( dynamicNames && format != null ? format.formatPeriod( period ) : periodName );
+        period.setShortName( format != null ? format.formatPeriod( period ) : null );
         
         return period;
     }

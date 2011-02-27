@@ -115,11 +115,8 @@ public class ShowValidationDEAssociationsFormAction
 
         stages = program.getProgramStages();
 
-        // Get program-stage-validations
-
         validations = programStageDEValidationService.getProgramStageDataElementValidations( program );
 
         return SUCCESS;
     }
-
 }

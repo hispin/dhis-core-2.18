@@ -98,8 +98,6 @@ public class GetAllDataMartExportsAction
             exports = new ArrayList<DataMartExport>( dataMartService.getDataMartExportsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-//        exports = new ArrayList<DataMartExport>( dataMartService.getAllDataMartExports() );
-        
         Collections.sort( exports, new DataMartExportComparator() );
         
         return SUCCESS;
