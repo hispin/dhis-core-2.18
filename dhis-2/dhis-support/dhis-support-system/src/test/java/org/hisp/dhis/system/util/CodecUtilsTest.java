@@ -55,5 +55,6 @@ public class CodecUtilsTest
         assertEquals( "foobar", CodecUtils.filenameEncode( "foo?%*bar" ) );
         assertEquals( "foobar", CodecUtils.filenameEncode( "%foo/:|bar<>" ) );
         assertEquals( "foobar", CodecUtils.filenameEncode( "?foo.bar/" ) );
+        assertEquals( "foobar", CodecUtils.filenameEncode( "'foo'bar'" ) );
     }
 }

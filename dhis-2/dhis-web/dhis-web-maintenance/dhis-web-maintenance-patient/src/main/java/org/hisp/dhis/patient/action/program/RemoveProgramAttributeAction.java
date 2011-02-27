@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.patient.action.program;
 
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramAttribute;
 import org.hisp.dhis.program.ProgramAttributeService;
 

@@ -340,7 +340,7 @@
       <result name="pdf" type="gridPdfResult"/>
       <result name="html" type="velocity">/dhis-web-commons/ajax/htmlGrid.vm</result>
     </action>    
-  
+
     <action name="displayOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/viewOrgUnitDistribution.vm</param>

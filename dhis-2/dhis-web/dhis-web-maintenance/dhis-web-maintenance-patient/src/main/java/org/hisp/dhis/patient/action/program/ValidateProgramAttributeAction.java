@@ -99,7 +99,6 @@ public class ValidateProgramAttributeAction
 
         if ( match != null && (id == null || !match.getId().equals( id )) )
         {
-            System.out.println( "\n match.id : " + match.getId() );
             message = i18n.getString( "duplicate_names" );
 
             return ERROR;

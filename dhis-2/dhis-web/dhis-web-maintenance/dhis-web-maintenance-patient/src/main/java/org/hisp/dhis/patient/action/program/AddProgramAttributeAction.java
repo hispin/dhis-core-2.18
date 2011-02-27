@@ -116,7 +116,6 @@ public class AddProgramAttributeAction
                 opt.setName( optionName );
                 opt.setProgramAttribute( programAttribute );
                 programAttribute.addAttributeOptions( opt );
-//                programAttributeOptionService.addProgramAttributeOption( opt );
             }
         }
 
