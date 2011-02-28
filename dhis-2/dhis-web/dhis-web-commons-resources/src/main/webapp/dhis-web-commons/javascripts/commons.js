@@ -1250,6 +1250,19 @@ function exportPdfByType( type )
 	window.location.href = 'exportToPdf.action?type=' + type + activeIds;
 }
 
+/**
+ * Displays the div with the first argument id, and hides the divs with ids  in 
+ * the second array argument, except the id given in the first argument. 
+ */
+function displayDiv( divId, divIds ) {
+	$( "#" + divId ).show();
+	for ( i in divIds ) {
+		if ( divIds[i] != divId ) {
+			$( "#" + divIds[i] ).hide();
+		}
+	}
+}
+
 function isNumber( value )
 {
 	var regex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;

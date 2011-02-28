@@ -433,7 +433,7 @@ public class DefaultReportTableService
         }
         
         // ---------------------------------------------------------------------
-        // Sort first and then limit
+        // Sort and limit
         // ---------------------------------------------------------------------
 
         if ( reportTable.sortOrder() != ReportTable.NONE )
@@ -445,7 +445,7 @@ public class DefaultReportTableService
         {
             grid.limitGrid( reportTable.topLimit() );
         }
-                
+        
         return grid;
     }
 

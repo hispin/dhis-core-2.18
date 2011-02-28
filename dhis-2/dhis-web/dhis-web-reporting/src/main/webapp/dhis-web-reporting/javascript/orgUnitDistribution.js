@@ -1,6 +1,8 @@
 
 var selectedOrganisationUnit = null;
 
+var distributionDivs = ["chartDiv","tableDiv","loaderDiv"];
+
 function organisationUnitSelected( units ) {
 	if ( units && units[0] ) {	
 		selectedOrganisationUnit = units[0];
@@ -15,11 +17,14 @@ function displayOrgUnitDistribution() {
 		return false;
 	}
 	
-	$( "#chartDiv" ).hide();
-	$( "#tableDiv" ).show();	
+	displayDiv( "loaderDiv", distributionDivs );
+	
 	var groupSetId = $( "#groupSetId" ).val();
-	var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=html";
-	$( "#tableDiv" ).load( url, pageInit );
+	var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=html&r=" + getRandomNumber();
+	$( "#tableDiv" ).load( url, function() {
+		displayDiv( "tableDiv", distributionDivs );
+		pageInit();
+	} );
 }
 
 function getOrgUnitDistribution( type ) {	
@@ -28,7 +33,7 @@ function getOrgUnitDistribution( type ) {
 	}
 	
 	var groupSetId = $( "#groupSetId" ).val();
-	var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=" + type;
+	var url = "getOrgUnitDistribution.action?groupSetId=" + groupSetId + "&type=" + type + "&r=" + getRandomNumber();
 	window.location.href = url;
 }
 
@@ -37,11 +42,10 @@ function displayOrgUnitDistributionChart() {
 		return false;
 	}
 	
-	$( "#tableDiv" ).hide();
-	$( "#chartDiv" ).show();
+	displayDiv( "chartDiv", distributionDivs );
+	$( "#chartImg" ).attr( "src", "../images/ajax-loader-circle.gif" );
 	var groupSetId = $( "#groupSetId" ).val();
-	var random = getRandomNumber();
-	var source = "getOrgUnitDistributionChart.action?groupSetId=" + groupSetId + "&r=" + random;
+	var source = "getOrgUnitDistributionChart.action?groupSetId=" + groupSetId + "&r=" + getRandomNumber();
 	$( "#chartImg" ).attr( "src", source );
 }
 

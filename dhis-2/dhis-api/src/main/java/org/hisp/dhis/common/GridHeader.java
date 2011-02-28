@@ -1,5 +1,8 @@
 package org.hisp.dhis.common;
 
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -32,6 +35,8 @@ package org.hisp.dhis.common;
  */
 public class GridHeader
 {
+    private static final List<String> NUMERIC_TYPES = Arrays.asList( Float.class.getName(), Double.class.getName(), Long.class.getName(), Integer.class.getName() );
+    
     private String name;
     
     private String column;
@@ -78,6 +83,11 @@ public class GridHeader
         this.meta = meta;
     }
 
+    public boolean isNumeric()
+    {
+        return type != null && NUMERIC_TYPES.contains( type );
+    }
+    
     public String getName()
     {
         return name;
