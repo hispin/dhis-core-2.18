@@ -503,15 +503,19 @@ public class ListGrid
         @SuppressWarnings("unchecked")
         public int compare( List<Object> list1, List<Object> list2 )
         {
-            if ( order == 0 || list1 == null || list2 == null )
+            if ( order == 0 )
             {
                 return 0;
             }
             
-            if ( list1.get( columnIndex ) == null || !( list1.get( columnIndex ) instanceof Comparable<?> ) || 
-                list2.get( columnIndex ) == null || !( list2.get( columnIndex ) instanceof Comparable<?> ) )
+            if ( list1 == null || list1.get( columnIndex ) == null || !( list1.get( columnIndex ) instanceof Comparable<?> ) )
             {
-                return 0;
+                return 1; // Null comes last
+            }
+            
+            if ( list2 == null || list2.get( columnIndex ) == null || !( list2.get( columnIndex ) instanceof Comparable<?> ) )
+            {
+                return -1; // Null comes last
             }
             
             final Comparable<Object> value1 = (Comparable<Object>) list1.get( columnIndex );
