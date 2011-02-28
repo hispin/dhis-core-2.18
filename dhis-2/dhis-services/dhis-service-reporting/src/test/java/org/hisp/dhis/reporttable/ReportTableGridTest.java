@@ -690,51 +690,35 @@ public class ReportTableGridTest
 
         assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
         assertEquals( 11.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 11 ) );
 
         assertEquals( 12.0, grid.getRow( 1 ).get( 9 ) );
         assertEquals( 12.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 11 ) );
 
         assertEquals( 13.0, grid.getRow( 2 ).get( 9 ) );
         assertEquals( 13.0, grid.getRow( 2 ).get( 10 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 11 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 12 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 26.0, grid.getRow( 2 ).get( 11 ) );
 
         assertEquals( 14.0, grid.getRow( 3 ).get( 9 ) );
         assertEquals( 14.0, grid.getRow( 3 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 11 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 12 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 28.0, grid.getRow( 3 ).get( 11 ) );
         
         assertEquals( 15.0, grid.getRow( 4 ).get( 9 ) );
         assertEquals( 15.0, grid.getRow( 4 ).get( 10 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 12 ) );
-        assertEquals( 30.0, grid.getRow( 4 ).get( 13 ) );
+        assertEquals( 30.0, grid.getRow( 4 ).get( 11 ) );
 
         assertEquals( 16.0, grid.getRow( 5 ).get( 9 ) );
         assertEquals( 16.0, grid.getRow( 5 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 11 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 12 ) );
-        assertEquals( 32.0, grid.getRow( 5 ).get( 13 ) );
+        assertEquals( 32.0, grid.getRow( 5 ).get( 11 ) );
 
         assertEquals( 17.0, grid.getRow( 6 ).get( 9 ) );
         assertEquals( 17.0, grid.getRow( 6 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 11 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 12 ) );
-        assertEquals( 34.0, grid.getRow( 6 ).get( 13 ) );
+        assertEquals( 34.0, grid.getRow( 6 ).get( 11 ) );
 
         assertEquals( 18.0, grid.getRow( 7 ).get( 9 ) );
         assertEquals( 18.0, grid.getRow( 7 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 11 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 12 ) );
-        assertEquals( 36.0, grid.getRow( 7 ).get( 13 ) );
+        assertEquals( 36.0, grid.getRow( 7 ).get( 11 ) );
     }
     
     @Test

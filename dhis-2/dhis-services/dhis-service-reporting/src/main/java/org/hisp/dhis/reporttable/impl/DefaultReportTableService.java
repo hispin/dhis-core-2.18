@@ -379,13 +379,16 @@ public class DefaultReportTableService
             grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class.getName(), false, false ) );
         }
         
-        if ( reportTable.doTotal() )
+        if ( reportTable.doSubTotals() )
         {
-            for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() ) // TOTO skip if only one category?
+            for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
             {
                 grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption.getShortName() ), Double.class.getName(), false, false ) );
             }
-            
+        }
+        
+        if ( reportTable.doTotal() )
+        {
             grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, Double.class.getName(), false, false ) );
         }
         
@@ -416,13 +419,16 @@ public class DefaultReportTableService
                 grid.addValue( map.get( getIdentifier( row, column ) ) ); // Values
             }
             
-            if ( reportTable.doTotal() )
+            if ( reportTable.doSubTotals() )
             {
                 for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() )
                 {
                     grid.addValue( map.get( getIdentifier( row, DataElementCategoryOption.class, categoryOption.getId() ) ) );
                 }
-                
+            }
+            
+            if ( reportTable.doTotal() )
+            {
                 grid.addValue( map.get( getIdentifier( row ) ) ); // Only category option combo is crosstab when total, row identifier will return total
             }
         }
