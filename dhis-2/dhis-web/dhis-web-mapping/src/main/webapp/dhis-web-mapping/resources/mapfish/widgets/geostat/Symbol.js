@@ -489,6 +489,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 'select': {
                     scope: this,
                     fn: function(cb) {
+                        this.form.findField('period').clearValue();
                         G.stores.periodsByTypeStore.setBaseParam('name', cb.getValue());
                         G.stores.periodsByTypeStore.load();
                     }
@@ -1364,6 +1365,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 mapDateType: G.vars.mapDateType.value,
                 periodTypeId: G.vars.mapDateType.isFixed() ? this.form.findField('periodtype').getValue() : null,
                 periodId: G.vars.mapDateType.isFixed() ? this.form.findField('period').getValue() : null,
+                periodName: G.vars.mapDateType.isFixed() ? this.form.findField('period').getRawValue() : null,
                 startDate: G.vars.mapDateType.isStartEnd() ? this.form.findField('startdate').getRawValue() : null,
                 endDate: G.vars.mapDateType.isStartEnd() ? this.form.findField('enddate').getRawValue() : null,
 				parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
