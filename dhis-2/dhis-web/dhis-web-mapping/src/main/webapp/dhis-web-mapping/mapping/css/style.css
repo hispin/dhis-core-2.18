@@ -105,7 +105,7 @@
 
 /* Ext Menu */
 a.x-menu-item-custom {
-    padding: 2px 16px 3px 11px;
+    padding: 2px 10px 3px 11px;
 }
 #viewhistory_m .x-menu-list {
     background-color:#f1f1f1;
@@ -429,9 +429,11 @@ a.x-menu-item-custom {
 .thematic-br {
     padding:8px 0 0 0;
 }
-.inline-span-color-black {
+.menu-item-inline-c1 {
     color:#111;
+    margin-right:6px;
 }
-.inline-span-color-gray {
+.menu-item-inline-c2 {
     color:#444;
+    margin-right:6px;
 }

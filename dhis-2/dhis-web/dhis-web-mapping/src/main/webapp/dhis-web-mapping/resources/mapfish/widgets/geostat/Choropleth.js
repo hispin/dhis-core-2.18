@@ -426,7 +426,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             listeners: {
                 'select': {
                     scope: this,
-                    fn: function(cb) {2010
+                    fn: function(cb) {
                         if (G.util.setCurrentValue.call(this, cb, 'mapview')) {
                             return;
                         }
