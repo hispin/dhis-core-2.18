@@ -91,7 +91,7 @@ public class DefaultOrgUnitDistributionService
     public JFreeChart getOrganisationUnitDistributionChart( OrganisationUnitGroupSet groupSet, OrganisationUnit organisationUnit )
     {
         Map<String, Double> categoryValues = new HashMap<String, Double>();
-                
+        
         Grid grid = getOrganisationUnitDistribution( groupSet, organisationUnit, true );
         
         Assert.isTrue( grid != null && grid.getHeight() == 1 );

@@ -1,8 +1,6 @@
 package org.hisp.dhis.web.api.resources;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,12 +9,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.dxf2.model.DataSetLinks;
-import org.hisp.dhis.importexport.dxf2.model.Link;
-import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
 import org.hisp.dhis.web.api.UrlResourceListener;
@@ -31,7 +26,7 @@ public class DataSetsResource
     private DataSetService dataSetService;
 
     @Context
-    UriInfo uriInfo;
+    private UriInfo uriInfo;
 
     @GET
     @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
