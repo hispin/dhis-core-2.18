@@ -2356,9 +2356,9 @@
             mapView.widget = scope;
             mapView.timestamp = new Date();
             mapView.label = G.date.getNowHMS(mapView.timestamp) + '&nbsp;&nbsp;&nbsp;' + mapView.parentOrganisationUnitName + ' (' + mapView.	organisationUnitLevelName + ')' + '&nbsp;&nbsp;&nbsp;' + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName);
-
+            
             for (var i = 0; i < this.menu.items.items.length; i++) {
-                if (G.util.compareObjToObj(this.menu.items.items[i].mapView, mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
+                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['startdate','longitude','latitude','zoom','widget','timestamp','label'])) {
                     this.menu.items.items[i].destroy();
                 }
             }
@@ -2366,7 +2366,7 @@
             this.menu.addMenuItem({
                 html: mapView.label,
                 mapView: mapView
-            });           
+            });
         }            
     });
 
