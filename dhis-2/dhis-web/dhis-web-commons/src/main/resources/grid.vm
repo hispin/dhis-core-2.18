@@ -104,12 +104,12 @@
 			#set( $x = 10 )
 			#foreach( $header in $grid.getVisibleHeaders() )
 			#if( $header.meta )	#set( $offset = 110 ) #else	#set( $offset = 55 ) #end
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="${x}" y="0" width="${offset}" height="20"/>
 				<textElement #if( !$header.meta )textAlignment="Center"#end>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[ ( ${dollar}F{${header.column}} != null ? String.valueOf( ${dollar}F{${header.column}} ) : "" ) ]]></textFieldExpression>
+				<textFieldExpression class="${header.type}"><![CDATA[${dollar}F{${header.column}}]]></textFieldExpression>
 			</textField>			
 			#set( $x = ( $x + $offset ) )
 			#end
