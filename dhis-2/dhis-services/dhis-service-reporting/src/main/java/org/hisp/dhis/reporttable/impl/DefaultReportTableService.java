@@ -383,10 +383,10 @@ public class DefaultReportTableService
         {
             for ( DataElementCategoryOption categoryOption : reportTable.getCategoryCombo().getCategoryOptions() ) // TOTO skip if only one category?
             {
-                grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption.getShortName() ), String.class.getName(), false, false ) );
+                grid.addHeader( new GridHeader( categoryOption.getShortName(), columnEncode( categoryOption.getShortName() ), Double.class.getName(), false, false ) );
             }
             
-            grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, String.class.getName(), false, false ) );
+            grid.addHeader( new GridHeader( TOTAL_COLUMN_PRETTY_NAME, TOTAL_COLUMN_NAME, Double.class.getName(), false, false ) );
         }
         
         // ---------------------------------------------------------------------
