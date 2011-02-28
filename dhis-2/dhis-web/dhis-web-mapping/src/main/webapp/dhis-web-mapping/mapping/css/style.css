@@ -429,3 +429,9 @@ a.x-menu-item-custom {
 .thematic-br {
     padding:8px 0 0 0;
 }
+.inline-span-color-black {
+    color:#111;
+}
+.inline-span-color-gray {
+    color:#444;
+}
