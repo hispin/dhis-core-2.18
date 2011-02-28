@@ -118,7 +118,7 @@ public class ReportTable
     private static final String EMPTY = "";
     private static final IdentifiableObject[] IRT = new IdentifiableObject[0];
     private static final String[] SRT = new String[0];    
-    private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"<>.]";
+    private static final String ILLEGAL_FILENAME_CHARS_REGEX = "[/\\?%*:|\"'<>.]";
     
     // -------------------------------------------------------------------------
     // Persisted properties
@@ -548,6 +548,8 @@ public class ReportTable
     {
         if ( string != null )
         {
+            string = string.replaceAll( "<", "_lt" );
+            string = string.replaceAll( ">", "_gt" );
             string = string.replaceAll( ILLEGAL_FILENAME_CHARS_REGEX, EMPTY );
             string = string.length() > 255 ? string.substring( 0, 255 ) : string;
             string = string.toLowerCase();

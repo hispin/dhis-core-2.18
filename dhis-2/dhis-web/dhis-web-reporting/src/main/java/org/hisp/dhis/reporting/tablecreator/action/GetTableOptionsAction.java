@@ -406,7 +406,7 @@ public class GetTableOptionsAction
             periods.removeAll( reportTable.getPeriods() );
             
             organisationUnits.removeAll( reportTable.getUnits() );
-            
+
             selectedDataElements = reportTable.getDataElements();
             
             selectedIndicators = reportTable.getIndicators();

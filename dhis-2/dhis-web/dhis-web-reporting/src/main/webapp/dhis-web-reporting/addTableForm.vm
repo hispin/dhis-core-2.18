@@ -80,7 +80,7 @@
             <select id="categoryComboId" name="categoryComboId" style="min-width:640px" onchange="getCategoryComboDataElements()">
                 <option value="-1">[ $i18n.getString( "select_category_combo" ) ]</option>
                 #foreach ( $categoryCombo in $categoryCombos )
-                    <option value="$categoryCombo.id">$encoder.htmlEncode( $categoryCombo.name )</option>
+                    <option value="$categoryCombo.id"#if( $reportTable && $reportTable.categoryCombo.id == $categoryCombo.id ) selected#end>$encoder.htmlEncode( $categoryCombo.name )</option>
                 #end
             </select>
         </td>
@@ -456,7 +456,6 @@
 
 #if ( $dimension )
 <script type="text/javascript">
-	document.getElementById( "doIndicators" ).checked = true;
 	document.getElementById( "doIndicators" ).disabled = true;
     document.getElementById( "doOrganisationUnits" ).disabled = true;
     document.getElementById( "doPeriods" ).disabled = true;
