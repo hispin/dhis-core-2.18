@@ -333,6 +333,48 @@ public class GridTest
     }
 
     @Test
+    public void testSortE()
+    {
+        Grid grid = new ListGrid();
+
+        grid.addRow().addValue( "two" ).addValue( 2 );
+        grid.addRow().addValue( "null" ).addValue( null );
+        grid.addRow().addValue( "three" ).addValue( 3 );
+        
+        grid.sortGrid( 2, 1 );
+
+        List<Object> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( "three" ) );
+
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "two" ) );
+        
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( "null" ) );
+    }
+
+    @Test
+    public void testSortF()
+    {
+        Grid grid = new ListGrid();
+
+        grid.addRow().addValue( "two" ).addValue( 2 );
+        grid.addRow().addValue( "null" ).addValue( null );
+        grid.addRow().addValue( "one" ).addValue( 1 );
+        
+        grid.sortGrid( 2, -1 );
+        
+        List<Object> row1 = grid.getRow( 0 );
+        assertTrue( row1.contains( "one" ) );
+
+        List<Object> row2 = grid.getRow( 1 );
+        assertTrue( row2.contains( "two" ) );
+        
+        List<Object> row3 = grid.getRow( 2 );
+        assertTrue( row3.contains( "null" ) );
+    }
+    
+    @Test
     public void testGridRowComparator()
     {
         List<List<Object>> lists = new ArrayList<List<Object>>();
