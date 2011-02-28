@@ -394,7 +394,7 @@ public class ReportTable
     // -------------------------------------------------------------------------
         
     /**
-     * Tests whether this ReportTable is multi-dimensional.
+     * Indicates whether this ReportTable is multi-dimensional.
      */
     public boolean isDimensional()
     {
@@ -402,11 +402,21 @@ public class ReportTable
     }
         
     /**
-     * Tests whether a total column should be included.
+     * Indicates whether a total column should be included.
      */
     public boolean doTotal()
     {
         return !isDoIndicators() && !isDoPeriods() && !isDoUnits() && isDimensional();
+    }
+    
+    /**
+     * Indicates whether subtotal columns should be included. The category combo
+     * of the report table must have more than one category if subtotal columns
+     * will contribute.
+     */
+    public boolean doSubTotals()
+    {
+        return doTotal() && categoryCombo.getCategories() != null && categoryCombo.getCategories().size() > 1;
     }
     
     /**
