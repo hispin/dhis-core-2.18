@@ -2355,13 +2355,14 @@
             var mapView = scope.formValues.getAllValues.call(scope);
             mapView.widget = scope;
             mapView.timestamp = new Date();
-            var c1 = '<span class="inline-span-color-gray">';
-            var c2 = '<span class="inline-span-color-black">';
-            mapView.label = c1 + G.date.getNowHMS(mapView.timestamp) + '</span>&nbsp;&nbsp;&nbsp;' +
-                            c2 + mapView.parentOrganisationUnitName + '</span>&nbsp;&nbsp;&nbsp;' +
-                            c1 + mapView.organisationUnitLevelName + '</span>&nbsp;&nbsp;&nbsp;' + 
-                            c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + '</span>&nbsp;&nbsp;&nbsp;' +
-                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + '</span>';
+            var c1 = '<span class="menu-item-inline-c1">';
+            var c2 = '<span class="menu-item-inline-c2">';
+            var spanEnd = '</span>';
+            mapView.label = c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
+                            c2 + mapView.parentOrganisationUnitName + spanEnd +
+                            c1 + mapView.organisationUnitLevelName + spanEnd +
+                            c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
+                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd;
             
             for (var i = 0; i < this.menu.items.items.length; i++) {
                 if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
