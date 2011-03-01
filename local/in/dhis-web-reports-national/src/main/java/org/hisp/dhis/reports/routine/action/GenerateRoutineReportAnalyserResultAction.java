@@ -51,6 +51,7 @@ public class GenerateRoutineReportAnalyserResultAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -96,6 +97,7 @@ public class GenerateRoutineReportAnalyserResultAction
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
+
     private InputStream inputStream;
 
     public InputStream getInputStream()
@@ -184,7 +186,6 @@ public class GenerateRoutineReportAnalyserResultAction
     public String execute()
         throws Exception
     {
-
         statementManager.initialise();
 
         // Initialization
@@ -203,9 +204,6 @@ public class GenerateRoutineReportAnalyserResultAction
         reportModelTB = selReportObj.getModel();
         reportFileNameTB = selReportObj.getExcelTemplateName();
         
-        System.out.println( "Report name is : " + selReportObj.getName()+ " , Report Model is  " + selReportObj.getModel() + " , Excel template name is : " + selReportObj.getExcelTemplateName() );
-        System.out.println( " , Report XML file  is : " + selReportObj.getXmlTemplateName()+ " , Report Type is :  " + selReportObj.getReportType() );
-        
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
             + "template" + File.separator + reportFileNameTB;
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
@@ -218,7 +216,6 @@ public class GenerateRoutineReportAnalyserResultAction
             Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
         }
         else if( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
-        //else if( reportModelTB.equalsIgnoreCase( "dynamicwithroot" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
@@ -226,8 +223,6 @@ public class GenerateRoutineReportAnalyserResultAction
             orgUnitList.add( orgUnit );
 
             parentUnit = orgUnit.getName();
-            
-            System.out.println( " orgUnitList size is  : " + orgUnitList.size()+ " , Parent orgUnit is  : " + orgUnit.getName() );
         }
         else if( reportModelTB.equalsIgnoreCase( "STATIC" ) || reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" ) || reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) )
         {
@@ -251,16 +246,12 @@ public class GenerateRoutineReportAnalyserResultAction
             orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
             orgGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
         }
-
         
         selectedPeriod = periodService.getPeriod( availablePeriods );
-
         sDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
-
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
 
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
-
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
 
         // Getting DataValues
@@ -273,7 +264,6 @@ public class GenerateRoutineReportAnalyserResultAction
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
 
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
-            int count1 = 0;
             while ( reportDesignIterator.hasNext() )
             {
                 Report_inDesign report_inDesign = (Report_inDesign) reportDesignIterator.next();
@@ -362,7 +352,6 @@ public class GenerateRoutineReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
                 {
                     String startMonth = "";
-
                     startMonth = monthFormat.format( sDate );
 
                     if ( startMonth.equalsIgnoreCase( "April" ) )
@@ -385,7 +374,6 @@ public class GenerateRoutineReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "SIMPLE-QUARTER" ) )
                 {
                     String startMonth = "";
-
                     startMonth = monthFormat.format( sDate );
 
                     if ( startMonth.equalsIgnoreCase( "April" ) )
@@ -408,7 +396,6 @@ public class GenerateRoutineReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "QUARTER-MONTHS-SHORT" ) )
                 {
                     String startMonth = "";
-
                     startMonth = monthFormat.format( sDate );
 
                     if ( startMonth.equalsIgnoreCase( "April" ) )
@@ -705,6 +692,35 @@ public class GenerateRoutineReportAnalyserResultAction
                     tempStr = startYear + " - " + endYear;
 
                 }
+                else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH-PREV" ) )
+                {
+                    tempStr = monthFormat.format( sDate );
+                    sDateTemp = sDate;
+                    Calendar tempCalendar = Calendar.getInstance();
+                    tempCalendar.setTime( sDateTemp );
+                    String startMonth = "";
+                    startMonth = monthFormat.format( sDateTemp );
+
+                    if ( startMonth.equalsIgnoreCase("January") )
+                    {
+                        tempCalendar.set(Calendar.MONTH, Calendar.DECEMBER);
+                        tempCalendar.roll( Calendar.YEAR, -1 );
+                        sDateTemp = tempCalendar.getTime();
+                    }
+                    else
+                    {
+                        tempCalendar.roll( Calendar.MONTH, -1 );
+                        sDateTemp = tempCalendar.getTime();
+                    }
+                }
+                else if ( deCodeString.equalsIgnoreCase( "BFYEAR-FROM-TO" ) )
+                {
+                    tempStr = "" + (orgUnitCount + 1);
+                }
+                else if ( deCodeString.equalsIgnoreCase( "BFYEAR" ) )
+                {
+                    tempStr = "" + (orgUnitCount + 1);
+                }
                 else if ( deCodeString.equalsIgnoreCase( "SLNO" ) )
                 {
                     tempStr = "" + (orgUnitCount + 1);
@@ -751,8 +767,137 @@ public class GenerateRoutineReportAnalyserResultAction
 
                             tempNum = temp;
                             tempStr = String.valueOf( (int) temp );
-                            //System.out.println( tempStr );
                         }
+                    }
+                    else if ( sType.equalsIgnoreCase( "de-text-agg" ) )
+                    {
+                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
+                        {
+                            tempStr = reportService.getAggCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                        }
+                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
+                        {
+                            tempStr = reportService.getCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                        }
+                        else
+                        {
+                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                            
+                            orgUnitList.retainAll( orgGroupMembers );
+                            
+                            double temp = 0.0;
+                            double value = 0.0;
+                            for ( OrganisationUnit unit : orgUnitList )
+                            {
+                                tempStr = reportService.getAggCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit );
+
+                                try
+                                {
+                                    value = Double.valueOf( tempStr );
+                                }
+                                catch ( Exception e )
+                                {
+                                    value = 0.0;
+                                    System.out.println( e );
+                                }
+                                temp += value;
+                            }
+
+                            tempNum = temp;
+                            tempStr = String.valueOf( (int) temp );
+                        }
+                    }
+                    else if ( sType.equalsIgnoreCase( "progressivede" ) )
+                    {
+                        int year = Integer.parseInt( deType );
+                        tempStartDate.set( year, 1, 1, 0, 0, 0 );
+                        tempEndDate.setTime( selectedPeriod.getEndDate() );
+                        
+                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
+                        {
+                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
+                        {
+                            tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else
+                        {
+                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                            orgUnitList.retainAll( orgGroupMembers );
+                            
+                            double temp = 0.0;
+                            double value = 0.0;
+                            for ( OrganisationUnit unit : orgUnitList )
+                            {
+                                tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
+                                try
+                                {
+                                    value = Double.valueOf( tempStr );
+                                }
+                                catch ( Exception e )
+                                {
+                                    value = 0.0;
+                                    System.out.println( e );
+                                }
+                                temp += value;
+                            }
+                            tempNum = temp;
+                            tempStr = String.valueOf( (int) temp );
+                        }
+                    }
+                    else if ( sType.equalsIgnoreCase( "financialprogressivede" ) )
+                    {
+                        int year = Integer.parseInt( deType );
+                        tempStartDate.set( year, 1, 1, 0, 0, 0 );
+                        
+                        tempEndDate.setTime( selectedPeriod.getEndDate() );
+                        if ( tempEndDate.get( Calendar.MONTH ) < Calendar.JULY )
+                        {
+                            tempEndDate.roll( Calendar.YEAR, -1 );
+                        }
+                        tempEndDate.set( Calendar.MONTH, Calendar.JULY );
+
+                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
+                        {
+                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
+                        {
+                            tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        }
+                        else
+                        {
+                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                            orgUnitList.retainAll( orgGroupMembers );
+                            
+                            double temp = 0.0;
+                            double value = 0.0;
+                            for ( OrganisationUnit unit : orgUnitList )
+                            {
+                                tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
+                                try
+                                {
+                                    value = Double.valueOf( tempStr );
+                                }
+                                catch ( Exception e )
+                                {
+                                    value = 0.0;
+                                    System.out.println( e );
+                                }
+                                temp += value;
+                            }
+                            tempNum = temp;
+                            tempStr = String.valueOf( (int) temp );
+                        }
+                    }
+                    else if( sType.equalsIgnoreCase( "survey" ))
+                    {
+                        tempStr = reportService.getResultSurveyValue( deCodeString, currentOrgUnit );
+                    }
+                    else if( sType.equalsIgnoreCase( "surveydesc" ) )
+                    {
+                        tempStr = reportService.getSurveyDesc( deCodeString );
                     }
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
@@ -767,13 +912,39 @@ public class GenerateRoutineReportAnalyserResultAction
                     }
                     else
                     {
-                        if ( aggCB == null )
+                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
+                        {
+                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                        }
+                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
                         {
                             tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
                         }
                         else
                         {
-                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
+                            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                            orgUnitList.retainAll( orgGroupMembers );
+                            
+                            double temp = 0.0;
+                            double value = 0.0;
+                            for ( OrganisationUnit unit : orgUnitList )
+                            {
+                                tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit );
+
+                                try
+                                {
+                                    value = Double.valueOf( tempStr );
+                                }
+                                catch ( Exception e )
+                                {
+                                    value = 0.0;
+                                    System.out.println( e );
+                                }
+                                temp += value;
+                            }
+
+                            tempNum = temp;
+                            tempStr = String.valueOf( temp );
                         }
                     }
                 }
@@ -785,7 +956,6 @@ public class GenerateRoutineReportAnalyserResultAction
                
                 if ( tempStr == null || tempStr.equals( " " ) )
                 {
-                    //tempColNo += orgUnitCount;
                     tempRowNo += orgUnitCount;
                     
                     WritableCellFormat wCellformat = new WritableCellFormat();
@@ -796,7 +966,6 @@ public class GenerateRoutineReportAnalyserResultAction
                     sheet0.addCell( new Blank( tempColNo, tempRowNo, wCellformat ) );
                 }
                else 
-               // if ( tempStr != null || tempStr != " " )
                 {
                     if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-ORGUNIT" ) )
                     {
@@ -836,7 +1005,6 @@ public class GenerateRoutineReportAnalyserResultAction
                         }
                     }
                     else if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
-                    //else if ( reportModelTB.equalsIgnoreCase( "dynamicwithroot" ) )    
                     {
                         if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
                             || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" )
@@ -902,9 +1070,7 @@ public class GenerateRoutineReportAnalyserResultAction
                             sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
                         }
                     }
-
                 }
-                count1++;
             }// inner while loop end
             orgUnitCount++;
         }// outer while loop end
@@ -926,5 +1092,4 @@ public class GenerateRoutineReportAnalyserResultAction
 
         return SUCCESS;
     }
-
 }

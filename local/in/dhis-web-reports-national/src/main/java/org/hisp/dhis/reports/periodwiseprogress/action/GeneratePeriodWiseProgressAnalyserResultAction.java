@@ -156,7 +156,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
 
     Integer endMonth;
 
-    private Map<Integer, Integer> mapOfTotalValues;
+    private Map<Integer, Double> mapOfTotalValues;
 
     private int startRowNumber;
 
@@ -186,7 +186,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
         yearFormat = new SimpleDateFormat( "yyyy" );
-        mapOfTotalValues = new HashMap<Integer, Integer>();
+        mapOfTotalValues = new HashMap<Integer, Double>();
         List<Integer> totalRowList = new ArrayList<Integer>();
         
         startMonth = 0;
@@ -421,22 +421,40 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
                             tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         }
                         
-                        int totalRowValue = 0;
+                        double totalRowValue = 0.0;
     
                         if( mapOfTotalValues.get( tempRowNo ) != null )
                         {
                             totalRowValue = mapOfTotalValues.get( tempRowNo );
     
+                            try
+                            {
+                                totalRowValue += Double.parseDouble( tempStr );
+                            }
+                            catch( Exception e )
+                            {
+                                
+                            }
+                            
+                            /*
                             if ( !( tempStr.equalsIgnoreCase( " " ) || tempStr.equalsIgnoreCase( "" ) ) )
                             {
                                 totalRowValue += Integer.valueOf( tempStr );
                             }
+                            */
     
                             mapOfTotalValues.put( tempRowNo, totalRowValue );
                         } 
                         else if( !( tempStr.equalsIgnoreCase( " " ) || tempStr.equalsIgnoreCase( "" ) ) )
                         {
-                                totalRowValue += Integer.valueOf( tempStr );
+                            try
+                            {
+                                totalRowValue += Double.parseDouble( tempStr );
+                            }
+                            catch( Exception e )
+                            {
+                                
+                            }
                         }
                         mapOfTotalValues.put( tempRowNo, totalRowValue );
                     } 
@@ -528,7 +546,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         while( rowIterator.hasNext() )
         {
             Integer currentRow = (Integer) rowIterator.next();
-            int value = 0;
+            double value = 0;
 
             if( mapOfTotalValues.containsKey( currentRow ) )
             {
