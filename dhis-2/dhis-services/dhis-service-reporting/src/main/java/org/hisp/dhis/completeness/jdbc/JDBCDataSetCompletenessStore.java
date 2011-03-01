@@ -31,6 +31,7 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -179,8 +180,42 @@ public class JDBCDataSetCompletenessStore
             "AND sourceid IN (" + childrenIds + ")";
 
         return statementManager.getHolder().queryForInteger( sql );
-    }    
+    }
+    
+    public Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets )
+    {
+        Collection<DataSet> selection = new ArrayList<DataSet>();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            final String sql = "SELECT count(*) FROM completedatasetregistration WHERE datasetid = " + dataSet.getId();
+            
+            if ( statementManager.getHolder().queryForInteger( sql ) > 0 )
+            {
+                selection.add( dataSet );
+            }
+        }
+        
+        return selection;
+    }
 
+    public Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods )
+    {
+        Collection<Period> selection = new ArrayList<Period>();
+        
+        for ( Period period : periods )
+        {
+            final String sql = "SELECT count(*) FROM completedatasetregistration WHERE periodid = " + period.getId();
+            
+            if ( statementManager.getHolder().queryForInteger( sql ) > 0 )
+            {
+                selection.add( period );
+            }
+        }
+        
+        return selection;
+    }
+    
     public void createIndex()
     {
         try
