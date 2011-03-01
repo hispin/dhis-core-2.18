@@ -36,13 +36,13 @@
 
 </script>
 
-<h1>NBITS Report Analyser</h1><hr /><br />
+<h3>NBITS ActivityPlan</h3><hr /><br />
 
 <form id="reportForm" name="reportForm" action="generateActivePlanReport.action" method="post" onsubmit="return formValidations()" target="_blank">
 	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
 		<tr>
 			<td class="NormalB">
-				Reports :<br />
+				ActivityPlan Reports :<br />
                 <select id="reportList" name="reportList" style="width:200px">
 				#foreach($report in $reportList)
 					<option value="$report.id">$report.name</option>

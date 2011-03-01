@@ -68,11 +68,14 @@
 				<li><a href = "benificiaryInfoReportsAnalyser.action">NBITS Benificiary Info</a></li>
 			#end
 			#if( $auth.hasAccess( "dhis-web-reports", "activePlanReportsAnalyser") )
-				<li><a href = "activePlanReportsAnalyser.action">NBITS Reports</a></li>
+				<li><a href = "activePlanReportsAnalyser.action">NBITS ActivityPlan</a></li>
 			#end
 			#if( $auth.hasAccess( "dhis-web-reports", "portalReportsAnalyser") )
 				<li><a href = "portalReportsAnalyser.action">NBITS Portal Reports</a></li>
 			#end
+            #if( $auth.hasAccess( "dhis-web-reports", "nbitsReportsAnalyser") )
+                <li><a href = "nbitsReportsAnalyser.action">NBITS Reports</a></li>
+            #end
 		</ul>
 	</ul>
 #end

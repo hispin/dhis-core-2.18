@@ -157,8 +157,9 @@ public class GetPeriodsAction
                 int year;
                 for ( Period p1 : periods )
                 {
-                    year = Integer.parseInt( simpleDateFormat1.format( p1.getStartDate() ) ) + 1;
-                    periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) + "-" + year );
+                    //year = Integer.parseInt( simpleDateFormat1.format( p1.getStartDate() ) ) + 1;
+                    //periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) + "-" + year );
+                    periodNameList.add( simpleDateFormat1.format( p1.getStartDate() ) );
                 }
             }
             else if ( periodType.getName().equalsIgnoreCase( "daily" ) )

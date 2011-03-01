@@ -1,4 +1,6 @@
-<h2>Report Analyser</h2>
+
+<a href="index.action"><h2>Report Analyser</h2></a>
+
 <ul>
     <li>Report Analysis</li>
     <ul>
@@ -8,14 +10,8 @@
     </ul>
 </ul>
 
-<div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-15px; ">
-	<a href="index.action"><img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
-</div>
-
-##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
 
-<!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
 	
 	function orgUnitHasBeenSelected( orgUnitIds )

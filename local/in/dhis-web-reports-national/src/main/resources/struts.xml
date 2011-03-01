@@ -172,87 +172,6 @@
 			</result>
 		</action>
 		
-		<!-- ActivityPlan Reports -->
-		<action name="activePlanReportsAnalyser"
-			class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/activePlanReportsForm.vm</param>
-			<param name="menu">/dhis-web-reports/menuWithTreeForActivePlan.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_ACTIVITYPLAN</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		<action name="generateActivePlanReport"
-			class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-		<action name="activePlanFeedbackReportsAnalyser"
-			class="org.hisp.dhis.reports.activeplan.action.ActivePlanFeedBackFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/activePlanFeedBackForm.vm</param>
-			<param name="menu">/dhis-web-reports/menuWithTreeForActivePlan.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		<action name="generateActivePlanFeedbackReport"
-			class="org.hisp.dhis.reports.activeplan.action.ActivePlanFeedBackResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-		
-		<!-- BenificiaryInfo Reports -->
-		<action name="benificiaryInfoReportsAnalyser"
-			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/benificiaryInfoReportsForm.vm</param>
-			<param name="menu">/dhis-web-reports/menuWithTreeForBenificiaryInfo.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_BENIFICIARY_INFO</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		<action name="generateBenificiaryInfoReport"
-			class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-		
-		<!-- Portal Reports -->
-		<action name="portalReportsAnalyser"
-			class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/portalReportForm.vm</param>
-			<param name="menu">/dhis-web-reports/menuWithTreeForPortalReport.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_NBITS_PORTAL</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		<action name="generatePortalReport"
-			class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">application/vnd.ms-excel</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">filename="${fileName}"</param>
-				<param name="bufferSize">1024</param>
-			</result>
-		</action>
-		
 		<!-- Auto Reports -->
 		<action name="autoReportAnalyser"
 			class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction">
@@ -653,6 +572,174 @@
 			<param name="requiredAuthorities">F_REPORT_POPULATE_USERS</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
+        <!-- Quarterly PhysicalOutput Reports -->
+        <action name="quarterlyPhysicalReport" 
+            class="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/physicalReportform.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithphysicaOutputReports.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_PHYSICALOP</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generatePhysicalReport"
+            class="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param> 
+            </result>
+        </action>
+        
+        <!--Mobile Report-->
+        <action name="mobileReportAnalyser"
+            class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">
+                /dhis-web-reports/mobileReportAnalysisFront.vm</param>
+            <param name="menu">
+                /dhis-web-reports/menuWithTreeForMobileReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/datasetLockReport.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        
+        <action name="generateMobileReport"
+            class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>S </result>
+        </action>
+        
+        <!-- CS Review Reports Start -->
+        <action name="csReviewReportForm"
+            class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/csReviewReportFront.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForCSReviewReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/lists.js,javascript/reportManagement.js,javascript/hashtable.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_CSREVIEW</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generateCSReviewReportResult" class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+
+<!-- NBITS Reports Section -->        
+        <!-- ActivityPlan Reports -->
+        <action name="activePlanReportsAnalyser"
+            class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/activePlanReportsForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForActivePlan.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_ACTIVITYPLAN</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generateActivePlanReport"
+            class="org.hisp.dhis.reports.activeplan.action.ActivePlanReportsResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        <action name="activePlanFeedbackReportsAnalyser"
+            class="org.hisp.dhis.reports.activeplan.action.ActivePlanFeedBackFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/activePlanFeedBackForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForActivePlan.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generateActivePlanFeedbackReport"
+            class="org.hisp.dhis.reports.activeplan.action.ActivePlanFeedBackResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
+        <!-- BenificiaryInfo Reports -->
+        <action name="benificiaryInfoReportsAnalyser"
+            class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/benificiaryInfoReportsForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForBenificiaryInfo.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_BENIFICIARY_INFO</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generateBenificiaryInfoReport"
+            class="org.hisp.dhis.reports.benificiaryinfo.action.BenificiaryInfoReportsResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        
+        <!-- Portal Reports -->
+        <action name="portalReportsAnalyser"
+            class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/portalReportForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForPortalReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_NBITS_PORTAL</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generatePortalReport"
+            class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+        <!-- NBITS Reports -->
+        <action name="nbitsReportsAnalyser"
+            class="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/nbitsReportsForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForPortalReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_NBITS_REPORTS</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>
+        <action name="generateNBITSReport"
+            class="org.hisp.dhis.reports.nbits.action.NBITSReportResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+
+
 		
 		<!-- AJAX Requests -->
 		<action name="getDataElements"
@@ -671,8 +758,6 @@
 			class="org.hisp.dhis.reports.action.GetReportsAction">
 			<result name="success" type="velocity-xml">/dhis-web-reports/responseReport.vm</result>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
-	<!--	<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>-->
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -682,7 +767,6 @@
 				/dhis-web-reports/responseReport.vm</result>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reports.js,javascript/hashtable.js</param>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -690,7 +774,6 @@
 			class="org.hisp.dhis.reports.action.GetOrgUnitGroupsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-reports/responseOrgUnitGroup.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -698,12 +781,11 @@
 			class="org.hisp.dhis.reports.action.GetOrgUnitsAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-reports/responseOrgUnit.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
 		<!-- ReportTable -->
-		
+<!--		
 		<action name="displayManageTableForm"
 			class="org.hisp.dhis.reports.tablecreator.action.GetAllTablesAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -758,7 +840,6 @@
 			class="org.hisp.dhis.reports.tablecreator.action.GetTableAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-reports/responseTable.vm</result>
-			<!--<interceptor-ref name="transactionStack"/>-->
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 		
@@ -777,9 +858,9 @@
 				/dhis-web-reports/responseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+-->		
 		<!-- dataset report -->
-		
+<!--		
 		<action name="dataSetReport"
 			class="org.hisp.dhis.commons.action.NoAction">
 			<result name="success" type="redirect">
@@ -912,9 +993,9 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
+-->		
 		<!-- pivot table -->
-		
+<!--		
 		<action name="displayPivotTableForm"
 			class="org.hisp.dhis.reports.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -952,9 +1033,9 @@
 				/dhis-web-reports/responseIndicatorGroup.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+-->		
 		<!-- charts -->
-		
+<!--		
 		<action name="createChart"
 			class="org.hisp.dhis.reports.chart.action.CreateChartAction">
 			<result name="success" type="velocity-xml">
@@ -1030,69 +1111,7 @@
 				<param name="bufferSize">1024</param>
 			</result>
 		</action>
-		
-		<!-- Quarterly PhysicalOutput Reports -->
-        <action name="quarterlyPhysicalReport" 
-			class="org.hisp.dhis.reports.physical.action.PhysicalReportFormAction">
-            <result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-reports/physicalReportform.vm</param>
-            <param name="menu">/dhis-web-reports/menuWithphysicaOutputReports.vm</param>
-            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
-            <param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_PHYSICALOP</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        <action name="generatePhysicalReport"
-			class="org.hisp.dhis.reports.physical.action.GeneratePhysicalReportResultAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param> 
-            </result>
-        </action>
-		
-		<!--Mobile Report-->
-		<action name="mobileReportAnalyser"
-			class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserFormAction">
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">
-				/dhis-web-reports/mobileReportAnalysisFront.vm</param>
-			<param name="menu">
-				/dhis-web-reports/menuWithTreeForMobileReport.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/datasetLockReport.js,javascript/reportManagement.js,javascript/hashtable.js</param>
-			<param name="stylesheets">css/StylesForTags.css</param>
-			<interceptor-ref name="organisationUnitTreeStack"/>
-		</action>
-		
-		<action name="generateMobileReport"
-			class="org.hisp.dhis.reports.mobile.action.GenerateMobileReportAnalyserResultAction">
-			<result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>S </result>
-        </action>
-		
-		<!-- CS Review Reports Start -->
-        <action name="csReviewReportForm"
-            class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportFormAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-reports/csReviewReportFront.vm</param>
-            <param name="menu">/dhis-web-reports/menuWithTreeForCSReviewReport.vm</param>
-            <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/util/lists.js,javascript/reportManagement.js,javascript/hashtable.js,../dhis-web-commons/util/validate/jquery.validate.js,../dhis-web-commons/util/jquery.metadata.js,../dhis-web-commons/util/validate/additional-methods.js,../dhis-web-commons/util/validate/messages_locale.js</param>
-            <param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_CSREVIEW</param>
-            <interceptor-ref name="organisationUnitTreeStack"/>
-        </action>
-        <action name="generateCSReviewReportResult" class="org.hisp.dhis.reports.csreview.action.GenerateCSReviewReportResultAction">
-            <result name="success" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">inputStream</param>
-                <param name="contentDisposition">filename="${fileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
-        </action>
+-->		
 		
 	</package>
 </struts>
