@@ -59,13 +59,10 @@ import com.opensymphony.xwork2.ActionContext;
 public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction implements Action
 {
 
-   // private final String PERIODWISE = "period";
-
     private final String CHILDREN = "children";
 
     private final String SELECTED = "random";
     
-    //private final String OPTIONCOMBO = "optioncombo";
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -117,17 +114,16 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    // -------------------------------------------------------------------------
-    // Input/output
-    // -------------------------------------------------------------------------
-    
-
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
+
+    // -------------------------------------------------------------------------
+    // Input/output
+    // -------------------------------------------------------------------------
     
     private String selDrillDownData;
     
@@ -136,8 +132,44 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         this.selDrillDownData = selDrillDownData;
     }
 
-    public String[] values;
+    private String selectedButton;
     
+    public String getSelectedButton()
+    {
+        return selectedButton;
+    }
+
+    public void setSelectedButton( String selectedButton )
+    {
+        this.selectedButton = selectedButton;
+    }
+
+    private String categoryLB;
+
+    public void setCategoryLB( String categoryLB )
+    {
+        this.categoryLB = categoryLB;
+    }
+
+    public String getCategoryLB()
+    {
+        return categoryLB;
+    }
+
+    private List<String> selectedDrillDownData;
+    
+    public List<String> getSelectedDrillDownData()
+    {
+        return selectedDrillDownData;
+    }
+
+    private HttpSession session;
+
+    public HttpSession getSession()
+    {
+        return session;
+    }
+
     ListTool listTool;
 
     public ListTool getListTool()
@@ -153,79 +185,19 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
     }
     
     private List<DataElementCategoryOptionCombo> selectedOptionComboList;
-    
     private OrganisationUnit selectedOrgUnit;
-    
     private OrganisationUnitGroup selectedOrgUnitGroup;
-
     private DataElement dataElement;
-
-    //private DataElementCategoryOptionCombo categoryCombo;
-    
-    private HttpSession session;
-
-    public HttpSession getSession()
-    {
-        return session;
-    }
-    
     private List<Date> selStartPeriodList;
-
     private List<Date> selEndPeriodList;
-    
-    private String selectedButton;
-    
-    public String getSelectedButton()
-    {
-        return selectedButton;
-    }
-
-    public void setSelectedButton( String selectedButton )
-    {
-        this.selectedButton = selectedButton;
-    }
-    
+    public String[] values;
     public String[] startDateArray;
     public String[] endDateArray;
     public String[] priodNameArray;
-    
     private  List<String> periodNames;
-    
-    private String categoryLB;
-
-    public void setCategoryLB( String categoryLB )
-    {
-        this.categoryLB = categoryLB;
-    }
-
-    public String getCategoryLB()
-    {
-        return categoryLB;
-    }
-    private List<String> selectedDrillDownData;
-    
-    public List<String> getSelectedDrillDownData()
-    {
-        return selectedDrillDownData;
-    }
-    
     private String drillDownPeriodStartDate;
     private String drillDownPeriodEndDate;
     private String drillDownPeriodNames;
-    
-    /*
-    private String aggDataCB;
-    
-    public void setAggDataCB( String aggDataCB )
-    {
-        this.aggDataCB = aggDataCB;
-    }
-    
-    public String getAggDataCB()
-    {
-        return aggDataCB;
-    }
-    */
     
     // -------------------------------------------------------------------------
     // Action implements
@@ -233,26 +205,22 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
     
     public String execute()throws Exception
     {
-        
         statementManager.initialise();
         
-        selectedDrillDownData = new ArrayList<String>();//drillDown for periodWise
+        selectedDrillDownData = new ArrayList<String>();
         
         selectedOptionComboList = new ArrayList<DataElementCategoryOptionCombo>();
         
         listTool = new ListTool();
         
-        
-        
         values = selDrillDownData.split( ":" );
         
         int orgunit =Integer.parseInt( values[0] );
         int orgUnitGroup = Integer.parseInt( values[1]);
-        //System.out.println( " Group Id is " + orgUnitGroup );
+
         if ( orgUnitGroup != 0 )
         {
             selectedOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroup );
-            //System.out.println( " Group Name is " + selectedOrgUnitGroup.getName() );
         }
         
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( orgunit );
@@ -261,7 +229,6 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         int optionComboid = Integer.parseInt( values[3] );
         
         dataElement = dataElementService.getDataElement( dataElementid );
-        //categoryCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboid );
         DataElementCategoryOptionCombo categoryCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboid );
         
         List<DataElement> dataElementList = new ArrayList<DataElement>();
@@ -270,8 +237,6 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         selectedOptionComboList.add( categoryCombo );
         
         String periodTypeLB = values[4];
-       // String startD = values[5];
-        //String endD = values[6];
         
         selStartPeriodList = new ArrayList<Date>();
         selEndPeriodList = new ArrayList<Date>();
@@ -281,44 +246,29 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         drillDownPeriodEndDate = values[6];
         drillDownPeriodNames = values[7];
         
-        
-        
         startDateArray = values[5].split( ";" );
-        //String startDateArray[] = startDateString.split(";");  
-        
         for ( int i = 0 ; i < startDateArray.length ; i++ )
         {
             String startD = startDateArray[i];
             selStartPeriodList.add( format.parseDate( startD ) );
-           // System.out.println( "Start date " + startD );
         }
         
-        //String endDateString = values[6];
         endDateArray = values[6].split( ";" );
-        
         for ( int i = 0 ; i < endDateArray.length ; i++ )
         {
             String startD = endDateArray[i];
             selEndPeriodList.add( format.parseDate( startD ) );
-           // System.out.println( "End date " + startD );
         }
-       // selStartPeriodList.add( format.parseDate( startD ) );
-        //selEndPeriodList.add( format.parseDate( endD ) );
         
         priodNameArray = values[7].split( ";" );
-        
         for ( int i = 0 ; i < priodNameArray.length ; i++ )
         {
             String periodName = priodNameArray[i];
             periodNames.add( periodName );
         }
-       // selStartPeriodList.add( format.parseDate( startD ) );
-        //selEndPeriodList.add( format.parseDate( endD ) );
         
         String deSelection = values[8];
         String aggDataCB = values[9];
-        
-        //String drillDownData = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":"  + periodType + ":" + tempStartDate + ":" + tempEndDate + ":" + deSelection + ":" + aggDataCB;
         
         System.out.println( selStartPeriodList + ":" + selEndPeriodList + ":" +periodTypeLB + ":" +  dataElementList+ ":" + deSelection + ":" + selectedOptionComboList +  ":" + selectedOrgUnit + ":" + aggDataCB );
         System.out.println( "Chart Generation Start Time is for drillDown: \t" + new Date() );
@@ -331,17 +281,14 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
            for( OrganisationUnit orgChild : childOrgUnitList )
            {
                String drillDownData = orgChild.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ categoryCombo.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
+               System.out.println(drillDownData);
                selectedDrillDownData.add( drillDownData );
            }
         }
        
         if ( orgUnitGroup != 0 && ( categoryLB.equalsIgnoreCase( CHILDREN ) || ( categoryLB.equalsIgnoreCase( SELECTED )) )) 
         {
-           // List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
-            //childOrgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren());
-            
             List<OrganisationUnit> selectedOUGroupMemberList = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
-            
             List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
             childOrgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
            
@@ -350,19 +297,11 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
            for( OrganisationUnit orgChild : selectedOUGroupMemberList )
            {
                 String drillDownData = orgChild.getId() + ":" + selectedOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ categoryCombo.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
+                System.out.println(drillDownData);
                 selectedDrillDownData.add( drillDownData );
            }
-            
         }
-/*
-        if ( orgUnitGroup != 0 &&  categoryLB.equals( SELECTED ) )
-           {
-               String drillDownData = selectedOrgUnit.getId() + ":" + selectedOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ categoryCombo.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
-               selectedDrillDownData.add( drillDownData );
-            
-           }
-            
-*/       
+
         if ( orgUnitGroup != 0 )
         {
             dataElementChartResult = dashBoardService.generateDataElementChartDataWithGroupMemberWise( selStartPeriodList, selEndPeriodList, periodTypeLB, dataElementList, deSelection, selectedOptionComboList, selectedOrgUnit, selectedOrgUnitGroup ,aggDataCB );
@@ -389,6 +328,5 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         statementManager.destroy();
         return SUCCESS;
     }
-
     
 }

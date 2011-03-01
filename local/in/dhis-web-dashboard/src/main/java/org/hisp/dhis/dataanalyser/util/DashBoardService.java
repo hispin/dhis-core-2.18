@@ -34,11 +34,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -126,22 +128,6 @@ public class DashBoardService
     }
 
     /*
-     * public List<Period> getMonthlyPeriods(Date start, Date end) { PeriodType
-     * monthlyPeriodType = getPeriodTypeObject("monthly"); Calendar cal =
-     * Calendar.getInstance(); cal.setTime(start); Calendar cal1 =
-     * Calendar.getInstance(); cal1.setTime(end); boolean januaryIsFirst =
-     * false; if (cal.get(Calendar.MONTH) == Calendar.JANUARY) { januaryIsFirst
-     * = true; } List<Period> periods = new ArrayList<Period>(); while
-     * (cal.get(Calendar.MONTH) != cal1.get(Calendar.MONTH)) { Period period =
-     * getPeriodByMonth(cal.get(Calendar.MONTH), cal .get(Calendar.YEAR),
-     * monthlyPeriodType); if (period != null) { periods.add(period); }
-     * cal.roll(Calendar.MONTH, true); if (!januaryIsFirst &&
-     * cal.get(Calendar.MONTH) == 0) { cal.roll(Calendar.YEAR, true); } }
-     * periods.add(getPeriodByMonth(cal1.get(Calendar.MONTH), cal1
-     * .get(Calendar.YEAR), monthlyPeriodType)); return periods; }
-     */
-
-    /*
      * Returns the Period Object of the given date For ex:- if the month is 3,
      * year is 2006 and periodType Object of type Monthly then it returns the
      * corresponding Period Object
@@ -178,332 +164,8 @@ public class DashBoardService
         return newPeriod;
     }
 
-    /*
-    public String getRootDataPath()
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st = null;
-
-        ResultSet rs1 = null;
-
-        String rootDataPath = null;
-
-        String query = "";
-
-        try
-        {
-            st = con.createStatement();
-
-            query = "SELECT mvalue FROM maintenancein WHERE mkey LIKE '" + MaintenanceIN.KEY_ROOTDATAPATH + "'";
-            rs1 = st.executeQuery( query );
-
-            if ( rs1.next() )
-            {
-                rootDataPath = rs1.getString( 1 );
-            }
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-            return null;
-        }
-        finally
-        {
-            try
-            {
-                if ( st != null )
-                    st.close();
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-                return null;
-            }
-        }// finally block end
-
-        return rootDataPath;
-    }
-
-    public String getMYSqlPath()
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st = null;
-
-        ResultSet rs1 = null;
-
-        String mysqlPath = null;
-
-        String query = "";
-
-        try
-        {
-            st = con.createStatement();
-
-            query = "SELECT mvalue FROM maintenancein WHERE mkey LIKE '" + MaintenanceIN.KEY_MYSQLPATH + "'";
-            rs1 = st.executeQuery( query );
-
-            if ( rs1.next() )
-            {
-                mysqlPath = rs1.getString( 1 );
-            }
-
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-            return null;
-        }
-        finally
-        {
-            try
-            {
-                if ( st != null )
-                    st.close();
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-                return null;
-            }
-        }// finally block end
-
-        return mysqlPath;
-
-    }
-
-    public void setUserdefinedConfigurations( String dbPath, String dataPath )
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st = null;
-        Statement st1 = null;
-        Statement st2 = null;
-
-        Statement st3 = null;
-        Statement st4 = null;
-
-        ResultSet rs1 = null;
-        ResultSet rs2 = null;
-
-        String mysqlKey = null;
-        String mysqlPath = null;
-
-        String rootDataKey = null;
-        String rootDataPath = null;
-
-        String query = "";
-
-        try
-        {
-            st = con.createStatement();
-            st1 = con.createStatement();
-
-            query = "CREATE TABLE IF NOT EXISTS maintenancein ( mkey varchar(100) NOT NULL, mvalue varchar(400) default NULL, PRIMARY KEY  (mkey)  ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            st.executeUpdate( query );
-            System.out.println( "Table Created (if not exists) " );
-
-            // MYSQL PATH
-            query = "SELECT mkey, mvalue FROM maintenancein WHERE mkey LIKE '" + MaintenanceIN.KEY_MYSQLPATH + "'";
-            rs1 = st1.executeQuery( query );
-
-            if ( rs1.next() )
-            {
-                mysqlKey = rs1.getString( 1 );
-                mysqlPath = rs1.getString( 2 );
-            }
-
-            if ( mysqlKey == null )
-            {
-                mysqlKey = MaintenanceIN.KEY_MYSQLPATH;
-                mysqlPath = dbPath;
-
-                st2 = con.createStatement();
-                query = "INSERT INTO maintenancein VALUES ('" + mysqlKey + "','" + mysqlPath + "')";
-
-                st2.executeUpdate( query );
-                System.out.println( " MySQL UserDefined Path added" );
-            }
-            else
-            {
-                mysqlPath = dbPath;
-
-                st2 = con.createStatement();
-                query = "UPDATE maintenancein SET mvalue = '" + mysqlPath + "' WHERE mkey LIKE '"
-                    + MaintenanceIN.KEY_MYSQLPATH + "'";
-
-                st2.executeUpdate( query );
-                System.out.println( " MySQL UserDefined Path updated" );
-            }
-
-            // DATA PATH
-            st3 = con.createStatement();
-
-            query = "SELECT mkey, mvalue FROM maintenancein WHERE mkey LIKE '" + MaintenanceIN.KEY_ROOTDATAPATH + "'";
-            rs2 = st3.executeQuery( query );
-
-            if ( rs2.next() )
-            {
-                rootDataKey = rs2.getString( 1 );
-                rootDataPath = rs2.getString( 2 );
-            }
-
-            if ( rootDataKey == null )
-            {
-                rootDataKey = MaintenanceIN.KEY_ROOTDATAPATH;
-                rootDataPath = dataPath;
-
-                st4 = con.createStatement();
-                query = "INSERT INTO maintenancein VALUES ('" + rootDataKey + "','" + rootDataPath + "')";
-
-                st4.executeUpdate( query );
-                System.out.println( " RootData UserDefined Path added" );
-            }
-            else
-            {
-                rootDataPath = dataPath;
-
-                st4 = con.createStatement();
-                query = "UPDATE maintenancein SET mvalue = '" + rootDataPath + "' WHERE mkey LIKE '"
-                    + MaintenanceIN.KEY_ROOTDATAPATH + "'";
-
-                st4.executeUpdate( query );
-                System.out.println( " RootData UserDefined Path updated" );
-            }
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-        }
-        finally
-        {
-            try
-            {
-                if ( st != null )
-                    st.close();
-                if ( st1 != null )
-                    st1.close();
-                if ( st2 != null )
-                    st2.close();
-
-                if ( st3 != null )
-                    st3.close();
-                if ( st4 != null )
-                    st4.close();
-
-                if ( rs1 != null )
-                    rs1.close();
-                if ( rs2 != null )
-                    rs2.close();
-
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-            }
-        }// finally block end
-    }
-
-    public String setMYSqlDefaultPath( String path )
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st = null;
-        Statement st1 = null;
-        Statement st2 = null;
-
-        ResultSet rs1 = null;
-
-        String mysqlKey = null;
-        String mysqlPath = null;
-
-        String query = "";
-
-        try
-        {
-            st = con.createStatement();
-            st1 = con.createStatement();
-
-            query = "CREATE TABLE IF NOT EXISTS maintenancein ( mkey varchar(100) NOT NULL, mvalue varchar(400) default NULL, PRIMARY KEY  (mkey)  ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            st.executeUpdate( query );
-            System.out.println( "Table Created (if not exists) " );
-
-            query = "SELECT mkey, mvalue FROM maintenancein WHERE mkey LIKE '" + MaintenanceIN.KEY_MYSQLPATH + "'";
-            rs1 = st1.executeQuery( query );
-
-            if ( rs1.next() )
-            {
-                mysqlKey = rs1.getString( 1 );
-                mysqlPath = rs1.getString( 2 );
-            }
-
-            if ( mysqlKey == null )
-            {
-                mysqlKey = MaintenanceIN.KEY_MYSQLPATH;
-                mysqlPath = path;
-
-                st2 = con.createStatement();
-                query = "INSERT INTO maintenancein VALUES ('" + mysqlKey + "','" + mysqlPath + "')";
-
-                st2.executeUpdate( query );
-                System.out.println( " MySQL Default Path added" );
-            }
-            else if ( mysqlPath == null || mysqlPath.trim().equals( "" ) )
-            {
-                mysqlPath = path;
-
-                st2 = con.createStatement();
-                query = "UPDATE maintenancein SET mvalue = '" + mysqlPath + "' WHERE mkey LIKE '"
-                    + MaintenanceIN.KEY_MYSQLPATH + "'";
-
-                st2.executeUpdate( query );
-                System.out.println( " MySQL Default Path updated" );
-            }
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-            return null;
-        }
-        finally
-        {
-            try
-            {
-                if ( st != null )
-                    st.close();
-                if ( st1 != null )
-                    st1.close();
-                if ( st2 != null )
-                    st2.close();
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-                return null;
-            }
-        }// finally block end
-
-        return mysqlPath;
-    }
-*/
     public String createDataTable( String orgUnitInfo, String deInfo, String periodInfo, Connection con )
     {
-        // Connection con = (new DBConnection()).openConnection();
-        // Connection con = dbConnection.openConnection();
-
         Statement st1 = null;
         Statement st2 = null;
 
@@ -555,100 +217,6 @@ public class DashBoardService
         return dataTableName;
     }
 
-    /*
-    public String createDataTableForComments( String orgUnitInfo, String deInfo, String periodInfo )
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st1 = null;
-        Statement st2 = null;
-
-        String dataTableName = "data" + UUID.randomUUID().toString();
-        dataTableName = dataTableName.replaceAll( "-", "" );
-
-        String query = "DROP TABLE IF EXISTS " + dataTableName;
-
-        try
-        {
-            st1 = con.createStatement();
-            st2 = con.createStatement();
-
-            st1.executeUpdate( query );
-
-            System.out.println( "TABLE NAME : " + dataTableName );
-            System.out.println( "Table dropped Successfully (if exists) " );
-
-            query = "CREATE table " + dataTableName + " AS "
-                + " SELECT sourceid,dataelementid,periodid,value,comment FROM datavalue " + " WHERE dataelementid in ("
-                + deInfo + ") AND " + " sourceid in (" + orgUnitInfo + ") AND " + " periodid in (" + periodInfo
-                + ") AND " + " commnet IS NOT NULL";
-
-            st2.executeUpdate( query );
-
-            System.out.println( "Table created Successfully" );
-        } // try block end
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-            return null;
-        }
-        finally
-        {
-            try
-            {
-                if ( st1 != null )
-                    st1.close();
-                if ( st2 != null )
-                    st2.close();
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-                return null;
-            }
-        }// finally block end
-
-        return dataTableName;
-    }
-
-    public void deleteDataTable( String dataTableName )
-    {
-        // Connection con = (new DBConnection()).openConnection();
-        Connection con = dbConnection.openConnection();
-
-        Statement st1 = null;
-
-        String query = "DROP TABLE IF EXISTS " + dataTableName;
-
-        try
-        {
-            st1 = con.createStatement();
-            st1.executeUpdate( query );
-            System.out.println( "Table " + dataTableName + " dropped Successfully" );
-        } // try block end
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception : " + e.getMessage() );
-        }
-        finally
-        {
-            try
-            {
-                if ( st1 != null )
-                    st1.close();
-                if ( con != null )
-                    con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "SQL Exception : " + e.getMessage() );
-            }
-        }// finally block end
-    }
-*/
     public List<String> getPeriodNamesByPeriodType( PeriodType periodType, Collection<Period> periods )
     {
         SimpleDateFormat simpleDateFormat1;
@@ -693,7 +261,6 @@ public class DashBoardService
             for ( Period p1 : periods )
             {
                 String tempPeriodName = simpleDateFormat1.format( p1.getStartDate() );
-                //String tempPeriodName = ""+p1.getStartDate();   
                 periodNameList.add( tempPeriodName );
             }
         }
@@ -713,7 +280,6 @@ public class DashBoardService
     
     public double getIndividualIndicatorValue( Indicator indicator, OrganisationUnit orgunit, Date startDate, Date endDate ) 
     {
-
         String numeratorExp = indicator.getNumerator();
         String denominatorExp = indicator.getDenominator();
         int indicatorFactor = indicator.getIndicatorType().getFactor();
@@ -744,7 +310,6 @@ public class DashBoardService
         double aggregatedValue;
         try
         {
-            //aggregatedValue = ( numeratorValue / denominatorValue ) * indicatorFactor;
             if( denominatorValue == 0 )
             {
                 aggregatedValue = 0.0;
@@ -764,10 +329,9 @@ public class DashBoardService
     }
 
     // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With Children Wise start ( this method is called when view by -> periodWise and group not selected )
+    // Methods for getting Chart Data With Children Wise start 
+    // ( this method is called when view by -> periodWise and group not selected )
     // -------------------------------------------------------------------------
-        
- 
     public DataElementChartResult generateDataElementChartDataWithChildrenWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList,String  periodTypeLB ,List<DataElement> dataElementList, String deSelection, List<DataElementCategoryOptionCombo> decocList, OrganisationUnit selectedOrgUnit , String aggDataCB ) throws Exception
     {
        System.out.println( "inside Dashboard Service generateChartDataWithChildrenWise " );
@@ -777,39 +341,32 @@ public class DashBoardService
        List<OrganisationUnit> childOrgUnitList = new ArrayList<OrganisationUnit>();
        childOrgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren());
        
-       
        String[] series = new String[dataElementList.size()];
        String[] categories = new String[childOrgUnitList.size()];
        Double[][] data = new Double[dataElementList.size()][childOrgUnitList.size()];
        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
        
-      // String chartTitle = "OrganisationUnit : " + orgUnit.getShortName();
        String xAxis_Title = "Facilities";
        String yAxis_Title = "Value";
     
-      // System.out.println("\n\n +++ \n decoc : " + decocList);
-       
        int serviceCount = 0;     
      
        for( DataElement dataElement : dataElementList )
        {
            DataElementCategoryOptionCombo decoc;
-          
+           DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
+
+           List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryCombo.getOptionCombos() );
+
            if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
-           
-          // if( dataElement.isMultiDimensional() )               
            {
                decoc = decocList.get( serviceCount );
-                   
                series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
-               //yseriesList.add( dataElement.getName() + " : " + decoc.getName() );
            }
            else
            {
                decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                series[serviceCount] = dataElement.getName();
-               
-               //yseriesList.add( dataElement.getName() );
            }
            
            int childCount = 0;
@@ -824,48 +381,37 @@ public class DashBoardService
                {
                    Date endDate = selEndPeriodList.get( periodCount );
                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   //Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
                    Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                    
                    System.out.println( periods.size() + ":" + periodType + ":" + startDate + ":" +  endDate );
                    
-                  // for( Period period : periods )
-                  // {
-                      // System.out.println( dataElement + ":" + decoc + ":" +period.getStartDate() + ":" +  period.getEndDate()+ ":" + orgChild + ":" + aggDataCB );
-                       
-                      // if( aggDataCB != null )
-                       int aggChecked = Integer.parseInt( aggDataCB );
-                   
+                   int aggChecked = Integer.parseInt( aggDataCB );
+
+                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                   while ( optionComboIterator.hasNext() )
+                   {
+                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
                        if( aggChecked == 1 )
                        {
-                           //System.out.println( "inside aggDataCB check  : " );
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgChild );
-                           //System.out.println( dataElement + ":" + decoc + ":" +period.getStartDate() + ":" +  period.getEndDate()+ ":" + orgChild );
-                          
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgChild );
                            if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
-                           //System.out.println( "Agg data value after zero assign is aggDataCB check  : " + aggDataValue );
                        }
                        else
                        {
                            for( Period period : periods )
                            {
-                               //System.out.println( "inside aggDataCB not check  : " );
-                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
-                               
+                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc1 );                               
                                try
                                {
                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
                                }
                                catch( Exception e )
-                               {
-                                   
+                               {                                   
                                }
-                               
                            }
-                         
-                           //System.out.println( "Agg data value after zero assign is when aggDataCB not check  : " + aggDataValue );
                        }
-                  // }
+                   }
                    periodCount++;
                }
  
@@ -891,24 +437,18 @@ public class DashBoardService
        dataElementChartResult = new DataElementChartResult( series, categories, data, chartTitle, xAxis_Title, yAxis_Title );
        return dataElementChartResult;
     }
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With Children Wise end
-    // -------------------------------------------------------------------------
-        
     
     
     // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With groupMember Wise start ( this method is called when view by -> periodWise and group  selected )
+    // Methods for getting Chart Data With groupMember Wise start 
+    // ( this method is called when view by -> periodWise and group  selected )
     // -------------------------------------------------------------------------
-        
- 
+    
     public DataElementChartResult generateDataElementChartDataWithGroupMemberWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList,String  periodTypeLB ,List<DataElement> dataElementList, String deSelection, List<DataElementCategoryOptionCombo> decocList, OrganisationUnit selectedOrgUnit , OrganisationUnitGroup selectedOrgUnitGroup , String aggDataCB ) throws Exception
     {
         System.out.println( "inside Dashboard Service generateChartDataWithGroupMemberWise " );
         
         DataElementChartResult dataElementChartResult;
-        
-        //OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup(  selectedOrgUnitGroup  );
         
         List<OrganisationUnit> selectedOUGroupMemberList = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
        
@@ -917,40 +457,31 @@ public class DashBoardService
        
         selectedOUGroupMemberList.retainAll( childOrgUnitList );
         
-       
         String[] series = new String[dataElementList.size()];
         String[] categories = new String[selectedOUGroupMemberList.size()];
         Double[][] data = new Double[dataElementList.size()][selectedOUGroupMemberList.size()];
-        //String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
         String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName()+ "(" + selectedOrgUnitGroup.getName() +  ")";
        
-      // String chartTitle = "OrganisationUnit : " + orgUnit.getShortName();
         String xAxis_Title = "Facilities";
         String yAxis_Title = "Value";
     
-        //System.out.println("size of children : " +childOrgUnitList.size() + ", Size og GroupMember : " + selectedOUGroupMemberList.size()+ ", size of CommomGroupMember : " + selectedOUGroupMemberList.size());
-       
        int serviceCount = 0;     
      
        for( DataElement dataElement : dataElementList )
        {
            DataElementCategoryOptionCombo decoc;
+           DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
+           List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryCombo.getOptionCombos() );
           
            if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
-           
-          // if( dataElement.isMultiDimensional() )               
            {
                decoc = decocList.get( serviceCount );
-                   
                series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
-               //yseriesList.add( dataElement.getName() + " : " + decoc.getName() );
            }
            else
            {
                decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                series[serviceCount] = dataElement.getName();
-               
-               //yseriesList.add( dataElement.getName() );
            }
            
            int GroupMemberCount = 0;
@@ -964,48 +495,35 @@ public class DashBoardService
                for( Date startDate : selStartPeriodList )
                {
                    Date endDate = selEndPeriodList.get( periodCount );
-                   //PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                   //Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
                    Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-                   
-                   //System.out.println( periods.size() + ":" + periodType + ":" + startDate + ":" +  endDate );
-                   
-                  // for( Period period : periods )
-                  // {
-                      // System.out.println( dataElement + ":" + decoc + ":" +period.getStartDate() + ":" +  period.getEndDate()+ ":" + orgChild + ":" + aggDataCB );
                        
-                       int aggChecked = Integer.parseInt( aggDataCB );
-                   
+                   int aggChecked = Integer.parseInt( aggDataCB );
+
+                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                   while ( optionComboIterator.hasNext() )
+                   {
+                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
                        if( aggChecked == 1 )
                        {
-                           //System.out.println( "inside aggDataCB check  : " );
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
-                           //System.out.println( dataElement + ":" + decoc + ":" +period.getStartDate() + ":" +  period.getEndDate()+ ":" + orgChild );
-                          
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
                            if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
-                           //System.out.println( "Agg data value after zero assign is aggDataCB check  : " + aggDataValue );
                        }
                        else
                        {
                            for( Period period : periods )
                            {
-                               //System.out.println( "inside aggDataCB not check  : " );
-                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
-                               
+                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
                                try
                                {
                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
                                }
                                catch( Exception e )
                                {
-                                   
                                }
-                               
                            }
-                         
-                           //System.out.println( "Agg data value after zero assign is when aggDataCB not check  : " + aggDataValue );
                        }
-                  // }
+                   }
                    periodCount++;
                }
  
@@ -1029,16 +547,13 @@ public class DashBoardService
        }
     
        dataElementChartResult = new DataElementChartResult( series, categories, data, chartTitle, xAxis_Title, yAxis_Title );
+
        return dataElementChartResult;
     }
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With groupMember Wise end
-    // -------------------------------------------------------------------------
     
     // -------------------------------------------------------------------------
     // Methods for getting Chart Data only Period Wise start ( this method is called when view by ->Selected + children and  Group not selected,and view by -> children and group selected )
     // -------------------------------------------------------------------------
-    
     
     public DataElementChartResult generateDataElementChartDataWithPeriodWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList,List<String> periodNames,String  periodTypeLB ,List<DataElement> dataElementList, String deSelection, List<DataElementCategoryOptionCombo> decocList, OrganisationUnit selectedOrgUnit , String aggDataCB ) throws Exception
     {
@@ -1053,27 +568,23 @@ public class DashBoardService
        String xAxis_Title = "Time Line";
        String yAxis_Title = "Value";
     
-      // System.out.println("\n\n +++ \n decoc : " + decocList);
-       
        int serviceCount = 0;     
-     
      
        for( DataElement dataElement : dataElementList )
        {
            DataElementCategoryOptionCombo decoc;
+           DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
+           List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryCombo.getOptionCombos() );
+
            if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
            {
                decoc = decocList.get( serviceCount );
-                   
                series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
-               //yseriesList.add( dataElement.getName() + " : " + decoc.getName() );
            }
            else
            {
                decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                series[serviceCount] = dataElement.getName();
-               //System.out.println( "selectedStatus  : " + selectedStatus );
-               //yseriesList.add( dataElement.getName() );
            }
            
            int periodCount = 0;
@@ -1082,50 +593,36 @@ public class DashBoardService
                Date endDate = selEndPeriodList.get( periodCount );
                
                categories[periodCount] = periodNames.get( periodCount );
-               //PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
                
                Double aggDataValue = 0.0;
                int aggChecked = Integer.parseInt( aggDataCB );
                
-               if( aggChecked == 1 )
+               Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+               while ( optionComboIterator.hasNext() )
                {
-                   //System.out.println( "inside aggDataCB check  : " );
-                   aggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, selectedOrgUnit );
-                   //System.out.println( "start Date is   : " + startDate + " , End date is : " + endDate );
-                   //System.out.println( "Agg data value before is  : " + aggDataValue );
-                   if(aggDataValue == null ) aggDataValue = 0.0;
-                   //System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
-                   //System.out.println( "Agg data value after zero assign is aggDataCB check  : " + aggDataValue );
-               }
-               else
-               {
-                   //System.out.println( "inside aggDataCB not check  : " );
-                 //  PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
-                  // Collection<Period> periods = periodService.getPeriodsBetweenDates( periodType, startDate, endDate );
-                   Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-                   
-                  // System.out.println( periods.size() + ":"  + startDate + ":" +  endDate );
-                   for( Period period : periods )
+                   DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                   if( aggChecked == 1 )
                    {
-                       DataValue dataValue = dataValueService.getDataValue( selectedOrgUnit, dataElement, period, decoc );
-                      
-                      // String values = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":" + period.getId();
-                      // selectedValues.add(values);
-                       
-                      // System.out.println( "selectedValues  : " + selectedValues );
-                       
-                       try
+                       Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, selectedOrgUnit );
+                       if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                   }
+                   else
+                   {
+                       Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
+                       for( Period period : periods )
                        {
-                           aggDataValue += Double.parseDouble( dataValue.getValue() );
+                           DataValue dataValue = dataValueService.getDataValue( selectedOrgUnit, dataElement, period, decoc1 );
+                           try
+                           {
+                               aggDataValue += Double.parseDouble( dataValue.getValue() );
+                           }
+                           catch( Exception e )
+                           {
+                           }
                        }
-                       catch( Exception e )
-                       {
-                           
-                       }
-                      // System.out.println( "Agg data value after zero assign is when aggDataCB not check  : " + aggDataValue );
                    }
                }
-               
                data[serviceCount][periodCount] = aggDataValue;
                
                if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
@@ -1146,13 +643,9 @@ public class DashBoardService
        }
        
        dataElementChartResult = new DataElementChartResult( series, categories, data, chartTitle, xAxis_Title, yAxis_Title );
+
        return dataElementChartResult;
     }
-    
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data only Period Wise end
-    // -------------------------------------------------------------------------
-    
     
     // -------------------------------------------------------------------------
     // Methods for getting Chart Data OrgGroup Period Wise start
@@ -1176,29 +669,25 @@ public class DashBoardService
        String xAxis_Title = "Time Line";
        String yAxis_Title = "Value";
        
-       
        int serviceCount = 0;     
      
        for( DataElement dataElement : dataElementList )
        {
            DataElementCategoryOptionCombo decoc;
-          
+           DataElementCategoryCombo dataElementCategoryCombo = dataElement.getCategoryCombo();
+           List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryCombo.getOptionCombos() );
+
            if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
-           
-          // if( dataElement.isMultiDimensional() )               
            {
                decoc = decocList.get( serviceCount );
-                   
                series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
-               //yseriesList.add( dataElement.getName() + " : " + decoc.getName() );
            }
            else
            {
                decoc = dataElementCategoryService.getDefaultDataElementCategoryOptionCombo();
                series[serviceCount] = dataElement.getName();
-               
-               //yseriesList.add( dataElement.getName() );
            }
+
            int periodCount = 0;
            for( Date startDate : selStartPeriodList )
            {
@@ -1212,33 +701,34 @@ public class DashBoardService
                for( OrganisationUnit orgUnit : selectedOUGroupMemberList )
                {
                    int aggChecked = Integer.parseInt( aggDataCB );
-                   if( aggChecked == 1 )
+
+                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                   while ( optionComboIterator.hasNext() )
                    {
-                       Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
-                      // System.out.println( "Agg data value before is  : " + aggDataValue );
-                      
-                       if(tempAggDataValue != null ) aggDataValue = tempAggDataValue;
-                      // System.out.println( "Agg data value after zero assign is  : " + aggDataValue );
-                   }
-                   else
-                   {
-                       for( Period period : periods )
+                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                       if( aggChecked == 1 )
                        {
-                           DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
-                           
-                           try
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
+                           if(tempAggDataValue != null ) aggDataValue = tempAggDataValue;
+                       }
+                       else
+                       {
+                           for( Period period : periods )
                            {
-                               aggDataValue += Double.parseDouble( dataValue.getValue() );
-                           }
-                           catch( Exception e )
-                           {
-                               
+                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                               try
+                               {
+                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               }
+                               catch( Exception e )
+                               {
+                               }
                            }
                        }
-                      
                    }
                    orgGroupCount++;
-           }
+               }
    
            data[serviceCount][periodCount] = aggDataValue;
                
@@ -1266,19 +756,10 @@ public class DashBoardService
    }
    
     // -------------------------------------------------------------------------
-    // Methods for getting Chart Data OrgGroup Period Wise end 
-    // -------------------------------------------------------------------------
-    
-    
-    // --------------------------------------------------------
-    // for Indicators DrillDown Supportive method   ndicator Wise
-    //---------------------------------------------------------
-   
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With Children Wise start ( this method is called when view by -> periodWise and group not selected ) --ndicator Wise
+    // Methods for getting Chart Data With Children Wise start 
+    // ( this method is called when view by -> periodWise and group not selected ) -Indicator Wise
     // -------------------------------------------------------------------------
         
-    
     public IndicatorChartResult generateIndicatorChartDataWithChildrenWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList, String  periodTypeLB, List<Indicator> indicatorList, OrganisationUnit selectedOrgUnit , String aggDataCB ) throws Exception
     {
         System.out.println( "inside Dashboard Service generate Chart Data With Children Wise " );
@@ -1305,15 +786,10 @@ public class DashBoardService
         for ( Indicator indicator : indicatorList )
         {
             series[serviceCount] = indicator.getName();
-            //yseriesList.add( indicator );
-
-            //numeratorDEList.add( indicator.getNumeratorDescription() );
-           // denominatorDEList.add( indicator.getDenominatorDescription() );
 
             int childCount = 0;
             for ( OrganisationUnit orgChild : childOrgUnitList )
             {
-
                 categories[childCount] = orgChild.getName();
 
                 Double aggIndicatorValue = 0.0;
@@ -1323,9 +799,6 @@ public class DashBoardService
                 for ( Date startDate : selStartPeriodList )
                 {
                     Date endDate = selEndPeriodList.get( periodCount );
-
-                   // if ( aggDataCB != null )
-                   // {
                     int aggChecked = Integer.parseInt( aggDataCB );
                         
                     if( aggChecked == 1 )
@@ -1336,14 +809,11 @@ public class DashBoardService
                         if ( tempAggIndicatorNumValue != null )
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
-
                         }
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
-
                         }
-
                     }
                     else
                     {
@@ -1378,9 +848,6 @@ public class DashBoardService
                 }
                 try
                 {
-                    // aggIndicatorValue = ( aggIndicatorNumValue /
-                    // aggIndicatorDenumValue )*
-                    // indicator.getIndicatorType().getFactor();
                     if ( aggIndicatorDenumValue == 0 )
                     {
                         aggIndicatorValue = 0.0;
@@ -1394,6 +861,7 @@ public class DashBoardService
                 {
                     aggIndicatorValue = 0.0;
                 }
+
                 // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][childCount] = aggIndicatorValue;
                 data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
@@ -1403,7 +871,6 @@ public class DashBoardService
                 
                 denumDataArray[serviceCount][childCount] = aggIndicatorDenumValue;
                 denumDataArray[serviceCount][childCount] = Math.round( denumDataArray[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
-                // data[serviceCount][childCount] = aggDataValue;
                 childCount++;
             }
 
@@ -1415,21 +882,14 @@ public class DashBoardService
     }
 
     // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With Children Wise start ( this method is called when view by -> periodWise and group not selected ) End --ndicator Wise
-    // -------------------------------------------------------------------------
-        
-    // -------------------------------------------------------------------------
     // Methods for getting Chart Data With groupMember Wise start ( this method is called when view by -> periodWise and group  selected ) --- indicator Wise
     // -------------------------------------------------------------------------
-        
  
     public IndicatorChartResult generateIndicatorChartDataWithGroupMemberWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList,String  periodTypeLB ,List<Indicator> indicatorList, OrganisationUnit selectedOrgUnit , OrganisationUnitGroup selectedOrgUnitGroup , String aggDataCB ) throws Exception
     {
         System.out.println( " inside Dashboard Service generate Indicator Chart Data With Group Member Wise " );
         
         IndicatorChartResult indicatorChartResult;
-        
-        //OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup(  selectedOrgUnitGroup  );
         
         List<OrganisationUnit> selectedOUGroupMemberList = new ArrayList<OrganisationUnit>( selectedOrgUnitGroup.getMembers() );
        
@@ -1438,21 +898,16 @@ public class DashBoardService
        
         selectedOUGroupMemberList.retainAll( childOrgUnitList );
         
-       
         String[] series = new String[indicatorList.size()];
         String[] categories = new String[selectedOUGroupMemberList.size()];
 
         Double[][] numDataArray = new Double[indicatorList.size()][selectedOUGroupMemberList.size()];
         Double[][] denumDataArray = new Double[indicatorList.size()][selectedOUGroupMemberList.size()];
         Double[][] data = new Double[indicatorList.size()][selectedOUGroupMemberList.size()];
-        //String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
         String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName()+ "( Group - " + selectedOrgUnitGroup.getName() +  ")";
-       
-      // String chartTitle = "OrganisationUnit : " + orgUnit.getShortName();
         String xAxis_Title = "Facilities";
         String yAxis_Title = "Value";
     
-        //System.out.println("size of children : " +childOrgUnitList.size() + ", Size og GroupMember : " + selectedOUGroupMemberList.size()+ ", size of CommomGroupMember : " + selectedOUGroupMemberList.size());
        
         int serviceCount = 0;
 
@@ -1463,13 +918,12 @@ public class DashBoardService
             int childCount = 0;
             for ( OrganisationUnit orgChild : selectedOUGroupMemberList )
             {
-
                 categories[childCount] = orgChild.getName();
-
                 Double aggIndicatorValue = 0.0;
                 Double aggIndicatorNumValue = 0.0;
                 Double aggIndicatorDenumValue = 0.0;
                 int periodCount = 0;
+
                 for ( Date startDate : selStartPeriodList )
                 {
                     Date endDate = selEndPeriodList.get( periodCount );
@@ -1487,14 +941,11 @@ public class DashBoardService
                         if ( tempAggIndicatorNumValue != null )
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
-
                         }
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
-
                         }
-
                     }
                     else
                     {
@@ -1524,16 +975,12 @@ public class DashBoardService
                             tempAggIndicatorDenumValue = 0.0;
                         }
                         aggIndicatorDenumValue += tempAggIndicatorDenumValue;
-
                     }
 
                     periodCount++;
                 }
                 try
                 {
-                    // aggIndicatorValue = ( aggIndicatorNumValue /
-                    // aggIndicatorDenumValue )*
-                    // indicator.getIndicatorType().getFactor();
                     if ( aggIndicatorDenumValue == 0 )
                     {
                         aggIndicatorValue = 0.0;
@@ -1548,6 +995,7 @@ public class DashBoardService
                 {
                     aggIndicatorValue = 0.0;
                 }
+
                 // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][childCount] = aggIndicatorValue;
                 data[serviceCount][childCount] = Math.round( data[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
@@ -1557,7 +1005,6 @@ public class DashBoardService
                 
                 denumDataArray[serviceCount][childCount] = aggIndicatorDenumValue;
                 denumDataArray[serviceCount][childCount] = Math.round( denumDataArray[serviceCount][childCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
-                // data[serviceCount][childCount] = aggDataValue;
                 childCount++;
             }
 
@@ -1567,15 +1014,12 @@ public class DashBoardService
         indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,chartTitle, xAxis_Title, yAxis_Title );
         return indicatorChartResult;
     }
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data With groupMember Wise start ( this method is called when view by -> periodWise and group  selected ) --- indicator Wise
-    // ------ end
-    
+
     // -------------------------------------------------------------------------
     // for Indicator
-    // Methods for getting Chart Data only Period Wise start ( this method is called when view by ->Selected + children and  Group not selected,and view by -> children and group selected )
+    // Methods for getting Chart Data only Period Wise start 
+    // ( this method is called when view by ->Selected + children and  Group not selected,and view by -> children and group selected )
     // -------------------------------------------------------------------------
-    
     
     public IndicatorChartResult generateIndicatorChartDataWithPeriodWise( List<Date> selStartPeriodList,List<Date> selEndPeriodList,List<String> periodNames,String  periodTypeLB ,List<Indicator> indicatorList,  OrganisationUnit selectedOrgUnit , String aggDataCB ) throws Exception
     {
@@ -1590,9 +1034,6 @@ public class DashBoardService
        Double[][] numDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
        Double[][] denumDataArray = new Double[indicatorList.size()][selStartPeriodList.size()];
 
-       // Map<Integer, List<Double>> numData = new HashMap<Integer, List<Double>>();
-       // Map<Integer, List<Double>> denumData = new HashMap<Integer, List<Double>>();
-
        String chartTitle = "OrganisationUnit : " + selectedOrgUnit.getShortName();
        String xAxis_Title = "Time Line";
        String yAxis_Title = "Value";
@@ -1602,14 +1043,10 @@ public class DashBoardService
        {
            series[serviceCount] = indicator.getName();
 
-           // List<Double> numeratorValueList = new ArrayList<Double>();
-           // List<Double> denumeratorValueList = new ArrayList<Double>();
-
            int periodCount = 0;
            for ( Date startDate : selStartPeriodList )
            {
                Date endDate = selEndPeriodList.get( periodCount );
-              // String drillDownPeriodName = periodNames.get( periodCount );
 
                categories[periodCount] = periodNames.get( periodCount );
 
@@ -1627,17 +1064,11 @@ public class DashBoardService
                    aggIndicatorDenumValue = aggregationService.getAggregatedDenominatorValue( indicator, startDate, endDate, selectedOrgUnit );
 
                    if ( aggIndicatorValue == null ) aggIndicatorValue = 0.0;
-
                }
                else
                {
                    aggIndicatorValue = getIndividualIndicatorValue( indicator, selectedOrgUnit, startDate, endDate );
-
-                  // System.out.println( " \nIndicator Numerator value  : " + indicator.getNumerator()
-                     //  + ", Start Date :- " + startDate + ", End Date :- " + endDate + ", Org Unit :- " + orgUnit );
-
                    String tempStr = reportservice.getIndividualResultDataValue( indicator.getNumerator(), startDate, endDate, selectedOrgUnit, "" );
-                  // System.out.println( " \nIndicatorNumerator valu is " + tempStr );
 
                    try
                    {
@@ -1658,8 +1089,8 @@ public class DashBoardService
                    {
                        aggIndicatorDenumValue = 0.0;
                    }
-
                }
+
                // rounding indicator value ,Numenetor,denumenetor
                data[serviceCount][periodCount] = aggIndicatorValue;
                data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
@@ -1669,26 +1100,17 @@ public class DashBoardService
                
                denumDataArray[serviceCount][periodCount] = aggIndicatorDenumValue;
                denumDataArray[serviceCount][periodCount] = Math.round( denumDataArray[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
-               // numeratorValueList.add( aggIndicatorNumValue );
-               // denumeratorValueList.add( aggIndicatorDenumValue );
 
                periodCount++;
            }
-
-           // numData.put( serviceCount, numeratorValueList );
-           // denumData.put( serviceCount, denumeratorValueList );
 
            serviceCount++;
        }
 
        indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray,chartTitle, xAxis_Title, yAxis_Title );
-       return indicatorChartResult;
 
+       return indicatorChartResult;
     }
-    
-    // -------------------------------------------------------------------------
-    // Methods for getting Chart Data only Period Wise end
-    // -------------------------------------------------------------------------
     
     // -------------------------------------------------------------------------
     // Methods for getting Chart Data OrgGroup Period Wise start - IndicatorWise
@@ -1747,12 +1169,10 @@ public class DashBoardService
                         if ( tempAggIndicatorNumValue != null )
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
-
                         }
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
-
                         }
                     }
                     else
@@ -1772,10 +1192,6 @@ public class DashBoardService
 
                         Double tempAggIndicatorDenumValue = 0.0;
 
-                        // tempStr =
-                        // reportService.getIndividualResultIndicatorValue(
-                        // indicator.getDenominator(), startDate, endDate,
-                        // orgUnit );
                         tempStr = reportservice.getIndividualResultDataValue( indicator.getDenominator(), startDate, endDate, orgUnit, "" );
                         try
                         {
@@ -1793,9 +1209,6 @@ public class DashBoardService
 
                 try
                 {
-                    // aggIndicatorValue = ( aggIndicatorNumValue /
-                    // aggIndicatorDenumValue )*
-                    // indicator.getIndicatorType().getFactor();
                     if ( aggIndicatorDenumValue == 0 )
                     {
                         aggIndicatorValue = 0.0;
@@ -1810,6 +1223,7 @@ public class DashBoardService
                 {
                     aggIndicatorValue = 0.0;
                 }
+
                 // rounding indicator value ,Numenetor,denumenetor
                 data[serviceCount][periodCount] = aggIndicatorValue;
                 data[serviceCount][periodCount] = Math.round( data[serviceCount][periodCount] * Math.pow( 10, 1 ) )/ Math.pow( 10, 1 );
@@ -1827,10 +1241,8 @@ public class DashBoardService
         }
 
         indicatorChartResult = new IndicatorChartResult( series, categories, data, numDataArray, denumDataArray, chartTitle, xAxis_Title, yAxis_Title );
-        return indicatorChartResult;
 
+        return indicatorChartResult;
     }
-    
-    
     
 } // class end

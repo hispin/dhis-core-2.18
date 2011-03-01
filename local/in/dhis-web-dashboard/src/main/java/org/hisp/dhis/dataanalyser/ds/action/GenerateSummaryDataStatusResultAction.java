@@ -11,12 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hibernate.SessionFactory;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -43,14 +41,6 @@ public class GenerateSummaryDataStatusResultAction
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    @SuppressWarnings( "unused" )
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -91,14 +81,6 @@ public class GenerateSummaryDataStatusResultAction
         this.dashBoardService = dashBoardService;
     }
 
-    @SuppressWarnings("unused")
-	private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -122,20 +104,6 @@ public class GenerateSummaryDataStatusResultAction
     public List<OrganisationUnit> getOrgUnitList()
     {
         return orgUnitList;
-    }
-
-    private List<DataSet> dataSetList;
-
-    public List<DataSet> getDataSetList()
-    {
-        return dataSetList;
-    }
-
-    private List<Integer> results;
-
-    public List<Integer> getResults()
-    {
-        return results;
     }
 
     private Map<DataSet, Map<OrganisationUnit, List<Integer>>> dataStatusResult;
@@ -248,16 +216,11 @@ public class GenerateSummaryDataStatusResultAction
         this.orgUnitListCB = orgUnitListCB;
     }
 
-    private List<String> selectedDataSets;
+    private String selectedDataSets;
 
-    public void setSelectedDataSets( List<String> selectedDataSets )
+    public void setSelectedDataSets( String selectedDataSets )
     {
         this.selectedDataSets = selectedDataSets;
-    }
-
-    public List<String> getSelectedDataSets()
-    {
-        return selectedDataSets;
     }
 
     private int minOULevel;
@@ -265,13 +228,6 @@ public class GenerateSummaryDataStatusResultAction
     public int getMinOULevel()
     {
         return minOULevel;
-    }
-
-    private int number;
-
-    public int getNumber()
-    {
-        return number;
     }
 
     private DataSet selDataSet;
@@ -297,11 +253,12 @@ public class GenerateSummaryDataStatusResultAction
     int orgUnitCount;
 
     private String dataViewName;
+    
+    Set<Source> dso;
 
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
-//    @SuppressWarnings( { "deprecation", "unchecked" } )
     public String execute()
         throws Exception
     {
@@ -311,41 +268,23 @@ public class GenerateSummaryDataStatusResultAction
         // Intialization
         periodNameList = new ArrayList<String>();
         ouMapSummaryStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
-        results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-
-        //System.out.println( "BLABLA : " + immChildOption + " : " + dsId + " : " + ouId + " : " + sDateLB + " : " + eDateLB );
-        //System.out.println( "BLA : " + immChildOption + " : " + dsId + " : " + ouId + " : " + sDateLB + " : " + eDateLB );
 
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();
             orgUnitListCB.add( ouId );
             facilityLB = "immChildren";
-            selectedDataSets = new ArrayList<String>();
-            selectedDataSets.add( dsId );
+            selectedDataSets = dsId;
         }
 
         // DataSet Related Info
-        dataSetList = new ArrayList<DataSet>();
-
         deInfo = "-1";
-        if ( selectedDataSets == null )
-        {
-            System.out.println( "slectedDataSets is empty" );
-        }
-        else
-        {
-            //System.out.println( "slectedDataSets is not empty" );
-        }
-        for ( String ds : selectedDataSets )
-        {
-            DataSet dSet = dataSetService.getDataSet( Integer.parseInt( ds ) );
-            selDataSet = dSet;
-            for ( DataElement de : dSet.getDataElements() )
-                deInfo += "," + de.getId();
-        }
+        DataSet dSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets ) );
+        selDataSet = dSet;
+        for ( DataElement de : dSet.getDataElements() )
+            deInfo += "," + de.getId();
 
         // OrgUnit Related Info
         OrganisationUnit selectedOrgUnit = new OrganisationUnit();
@@ -353,26 +292,23 @@ public class GenerateSummaryDataStatusResultAction
         if ( facilityLB.equals( "children" ) )
         {
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            orgUnitList = getChildOrgUnitTree( selectedOrgUnit );
+            orgUnitList.addAll( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
+            //getChildOrgUnitTree( selectedOrgUnit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
-            @SuppressWarnings( "unused" )
-            int number;
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-            number = selectedOrgUnit.getChildren().size();
-            orgUnitList = new ArrayList<OrganisationUnit>();
+            //number = selectedOrgUnit.getChildren().size();
             Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
             while ( orgUnitIterator.hasNext() )
             {
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
                     .parseInt( (String) orgUnitIterator.next() ) );
+                orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                 Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
                 orgUnitList.addAll( organisationUnits );
-                orgUnitList.add( 0, o );
             }
-            //System.out.println( "Selected is immediate children" );
         }
         else
         {
@@ -445,14 +381,13 @@ public class GenerateSummaryDataStatusResultAction
         deInfo = getDEInfo( dataElements );
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
-        Set<Source> dso = new HashSet<Source>();
+        dso = new HashSet<Source>();
         Iterator<Period> periodIterator;
         dso = selDataSet.getSources();
         String orgUnitId = "";
         
         while ( orgUnitListIterator.hasNext() )
         {
-            //System.out.println( "Getting into first orgunit loop" );
             o = (OrganisationUnit) orgUnitListIterator.next();
             orgUnitInfo = "" + o.getId();
 
@@ -472,7 +407,6 @@ public class GenerateSummaryDataStatusResultAction
             {
                 p = (Period) periodIterator.next();
                 periodInfo = "" + p.getId();
-                //System.out.println( "Getting into period loop" );
 
                 if ( dso == null )
                 {
@@ -483,8 +417,7 @@ public class GenerateSummaryDataStatusResultAction
                 else if ( !dso.contains( o ) )
                 {
                     List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
-                    childOrgUnits = filterChildOrgUnitsByDataSet( dataSetService.getDataSet( Integer
-                        .valueOf( selectedDataSets.get( 0 ) ) ), o );
+                    childOrgUnits = filterChildOrgUnitsByDataSet( selDataSet, o );
                     Iterator<OrganisationUnit> assignedChildrenIterator = childOrgUnits.iterator();
                     int dataStatusCount = 0;
 
@@ -515,7 +448,6 @@ public class GenerateSummaryDataStatusResultAction
                         {
                             try
                             {
-                                //System.out.println( "Result is : \t" + sqlResultSet.getLong( 1 ) );
                                 dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1)) * 100.0;
                             }
                             catch ( Exception e )
@@ -538,7 +470,6 @@ public class GenerateSummaryDataStatusResultAction
                         }
                     }
                     dsSummaryResults.add( dataStatusCount );
-
                     continue;
                 }
 
@@ -586,16 +517,8 @@ public class GenerateSummaryDataStatusResultAction
                     dsSummaryResults.add( 0 );
                 }
             }
+            
             ouMapSummaryStatusResult.put( o, dsSummaryResults );
-        }
-
-        Iterator<OrganisationUnit> orgUnitListIterator2 = orgUnitList.iterator();
-
-        while ( orgUnitListIterator2.hasNext() )
-        {
-            //OrganisationUnit oo = (OrganisationUnit) orgUnitListIterator2.next();
-            //System.out.println( "OrgUnit :\t" + oo.getShortName() + " \t and value : \t "
-            //    + ouMapSummaryStatusResult.get( oo ) );
         }
 
         // For Level Names
@@ -639,6 +562,7 @@ public class GenerateSummaryDataStatusResultAction
         }// finally block end
 
         periodNameList = dashBoardService.getPeriodNamesByPeriodType( dataSetPeriodType, periodList );
+        
         return SUCCESS;
     }
 
@@ -667,15 +591,14 @@ public class GenerateSummaryDataStatusResultAction
 
         try
         {
-            @SuppressWarnings("unused")
-	    int sqlResult = jdbcTemplate.update( query );
+	    jdbcTemplate.update( query );
             System.out.println( "View " + dataViewName + " dropped Successfully (if exists) " );
 
-            query = "CREATE view " + dataViewName + " AS "
+            query = "CREATE VIEW " + dataViewName + " AS "
                 + " SELECT sourceid,dataelementid,periodid,value FROM datavalue " + " WHERE dataelementid in ("
                 + deInfo + ") AND " + " sourceid in (" + orgUnitInfo + ") AND " + " periodid in (" + periodInfo + ")";
 
-            sqlResult = jdbcTemplate.update( query );
+            jdbcTemplate.update( query );
 
             System.out.println( "View " + dataViewName + " created Successfully" );
         } // try block end
@@ -706,8 +629,7 @@ public class GenerateSummaryDataStatusResultAction
 
         try
         {
-            @SuppressWarnings("unused")
-			int sqlResult = jdbcTemplate.update( query );
+            jdbcTemplate.update( query );
             System.out.println( "View " + dataViewName + " dropped Successfully" );
         } // try block end
         catch ( Exception e )
@@ -789,12 +711,8 @@ public class GenerateSummaryDataStatusResultAction
     private List<OrganisationUnit> filterChildOrgUnitsByDataSet( DataSet selectedDataSet,
         OrganisationUnit selectedOrganisationUnit )
     {
-        List<OrganisationUnit> filteredOrganisationUnits = getChildOrgUnitTree( selectedOrganisationUnit );
-
-        @SuppressWarnings( "unused" )
-        List<OrganisationUnit> assignedOrganisationUnits = new ArrayList<OrganisationUnit>();
-        Set<Source> assignedSources = selectedDataSet.getSources();
-        filteredOrganisationUnits.retainAll( assignedSources );
+        List<OrganisationUnit> filteredOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrganisationUnit.getId() ) );
+        filteredOrganisationUnits.retainAll( dso );
         return filteredOrganisationUnits;
     }
 
