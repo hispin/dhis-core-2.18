@@ -54,7 +54,9 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.source.Source;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -143,6 +145,8 @@ public abstract class AbstractDataSetCompletenessService
         if ( relatives != null )
         {
             List<Period> periods = relatives.getRelativePeriods( 1, null, false );
+            
+            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
             
             Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
             
@@ -273,7 +277,7 @@ public abstract class AbstractDataSetCompletenessService
             children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
             
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
-            
+
             result.setSources( getSources( dataSet, children ) );
             
             if ( result.getSources() > 0 )
@@ -281,7 +285,7 @@ public abstract class AbstractDataSetCompletenessService
                 result.setName( unit.getName() );
                 result.setRegistrations( getRegistrations( dataSet, children, period ) );
                 result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, children, period, deadline ) : 0 );
-                            
+                
                 result.setDataSetId( dataSetId );
                 result.setPeriodId( periodId );
                 result.setOrganisationUnitId( unit.getId() );

@@ -101,7 +101,9 @@ public class TableCreator
 
         try
         {
-            jdbcTemplate.execute( statementBuilder.getCreateDataValueIndex() );
+            final String sql = "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )";
+            
+            jdbcTemplate.execute( sql );
             
             log.info( "Created index crosstab on table datavalue" );
         }

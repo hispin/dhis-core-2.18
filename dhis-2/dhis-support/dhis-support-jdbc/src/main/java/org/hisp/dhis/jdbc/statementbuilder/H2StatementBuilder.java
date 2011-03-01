@@ -109,13 +109,6 @@ public class H2StatementBuilder
             "valueOnTime DOUBLE );";
     }
     
-    public String getCreateDataValueIndex()
-    {
-        return
-            "CREATE INDEX crosstab " +
-            "ON datavalue ( periodid, sourceid );";
-    }
-
     public String getDeleteZeroDataValues()
     {
         return
