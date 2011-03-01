@@ -11,7 +11,7 @@
 	#end
 </script>
 
-<h1>Target Analysis Form</h1>
+<h3>Target Analysis Form</h3>
 <hr /><br/>
 
 <form id="targetAnalysisForm" name="targetAnalysisForm" action="generateChartDeTarget.action" method="post" onsubmit="return formValidationsForDeTarget()" target="chartWindow1">
@@ -96,7 +96,7 @@
 						</td>
 						<td class="NormalB">&nbsp;</td>
 						<td>
-							<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">
+							<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width:150px;height:25px; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">
 						</td>
 					</tr>
 				</table>

@@ -737,28 +737,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.user.UserStore"/>
         </property>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-<!--    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService"/> -->
     </bean>
 	
-	 <!-- DataStatus For Mobile end  -->	
 	
     <bean
 		id="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction"
 		class="org.hisp.dhis.dataanalyser.ds.action.GenerateSummaryDataStatusResultAction"
 		scope="prototype">
-        <property name="dashBoardService">
-            <ref bean="org.hisp.dhis.dataanalyser.util.DashBoardService"/>
-        </property>
-        <property name="dataSetService">
-            <ref bean="org.hisp.dhis.dataset.DataSetService"/>
-        </property>
-        <property name="periodService">
-            <ref bean="org.hisp.dhis.period.PeriodService"/>
-        </property>
-        <property name="organisationUnitService">
-            <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-        </property>
-        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 	

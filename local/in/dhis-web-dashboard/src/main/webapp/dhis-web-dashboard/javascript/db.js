@@ -1,36 +1,23 @@
 
+function getOUDeatilsForSurvey( orgUnitIds )
+{
+	jQuery.postJSON("getOrgUnitName.action",{
+  	  id : orgUnitIds[0]
+   }, function( json ){
+         setFieldValue( "ouNameTB",json.organisationUnit.name );
+   });
+}
+
+
 function getOUDeatilsForAA(orgUnitIds)
 {
 	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
 	var request = new Request();
 	request.setResponseTypeXML( 'orgunit' );
 	request.setCallbackSuccess( getOUDetailsForAARecevied );
-	request.send( url );	    
-	
-	/*
-	
-	$.post("getOrgUnitDetails.action",
-		{
-			orgUnitId:orgUnitIds
-		},
-		function (data)
-		{
-			getOUDetailsForAARecevied(data);
-		},'xml');
-		*/
+	request.send( url );	
 }
 
-/*
-function getOUDetailsForNR(orgUnitIds)
-{
-	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'orgunit' );
-	request.setCallbackSuccess( getOUDetailsForNRRecevied );
-	request.send( url );	    
-}
-*/
 function getOUDetailsForAARecevied(xmlObject)
 {
     var orgUnits = xmlObject.getElementsByTagName("orgunit");
@@ -43,50 +30,17 @@ function getOUDetailsForAARecevied(xmlObject)
         document.ChartGenerationForm.ouNameTB.value = orgUnitName;
     }    		
 }
-/*
-function getOUDetailsForNRRecevied(xmlObject)
-{
-	var orgUnits = xmlObject.getElementsByTagName("orgunit");
-	
-    for ( var i = 0; i < orgUnits.length; i++ )
-    {
-        var id = orgUnits[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-        var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
-		
-		document.ChartGenerationForm.ouIDTB.value = id;
-		document.ChartGenerationForm.ouNameTB.value = orgUnitName;
-    }
-        		
-}
-*/
 
 function getOUDeatilsForGA(orgUnitIds)
 {
-	//document.getElementById( "ougGroupSetCB" ).disabled = false;
-	//document.getElementById( "orgUnitGroup" ).disabled = false;
-	
-	
 	var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsForGARecevied );
-    //request.send( url );
 
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
-    request.send( requestString ); 
-	
-	
-	/*
-	$.post("getOrgUnitDetails.action",
-		{
-			orgUnitId:orgUnitIds
-		},
-		function (data)
-		{
-			getOUDetailsForGARecevied(data);
-		},'xml');
-		*/
+    request.send( requestString ); 	
 }
 
 function getOUDetailsForGARecevied(xmlObject)
@@ -125,6 +79,39 @@ function getOUDetailsForGARecevied(xmlObject)
     		
 }
 
+function getOUDeatilsForDataStatus( orgUnitIds )
+{
+	jQuery.postJSON("getOrgUnitName.action",{
+  	  id : orgUnitIds[0]
+   }, function( json ){
+
+	   var orgUnitId = json.organisationUnit.id;
+	   var orgUnitName = json.organisationUnit.name;
+	   var faciltyLB = document.getElementById("facilityLB");
+	   var facilityIndex =  faciltyLB.selectedIndex;
+	   var orgUnitListCB = document.getElementById("orgUnitListCB");
+	   
+	   if( faciltyLB.options[facilityIndex].value == "children" )
+       {
+           for( i = 0; i< orgUnitListCB.options.length; i++ )
+           {
+        	   orgUnitListCB.options[0] = null;
+           }
+           orgUnitListCB.options[0] = new Option( orgUnitName, orgUnitId, false, false );
+       }
+       else
+       {
+           for( i = 0; i < orgUnitListCB.options.length; i++ )
+           {
+               if( orgUnitId == orgUnitListCB.options[i].value) return;
+           }
+           orgUnitListCB.options[orgUnitListCB.options.length] = new Option( orgUnitName, orgUnitId, false, false );
+       }
+        
+   });
+}
+
+
 function getOUDetails(orgUnitIds)
 {
     var request = new Request();
@@ -135,17 +122,6 @@ function getOUDetails(orgUnitIds)
     var params = "orgUnitId=" + orgUnitIds;
     request.sendAsPost( params );
     request.send( requestString );
-
-	/*
-	$.post("getOrgUnitDetails.action",
-		{
-			orgUnitId:orgUnitIds
-		},
-		function (data)
-		{
-			getOUDetailsRecevied(data);
-		},'xml');
-	*/
 }
 
 function getOUDetailsRecevied(xmlObject)
@@ -171,8 +147,6 @@ function getOUDetailsRecevied(xmlObject)
             }
             document.ChartGenerationForm.orgUnitListCB.options[0] = new Option(orgUnitName,id,false,false);
         }
-       
-        
         else
         {
             index = document.ChartGenerationForm.orgUnitListCB.options.length;
@@ -186,8 +160,6 @@ function getOUDetailsRecevied(xmlObject)
     		
 }
 
-
-//Depends on dhis-web-commons/lists/lists.js for List functionality
 
 function getOrgUnitGroups()
 {
@@ -256,7 +228,6 @@ function getDataElements()
     }
 }// getDataElements end           
 
-//Depends on dhis-web-commons/lists/lists.js for List functionality
 function getDataElementsWithOutOptionCombo()
 {
     var dataElementGroupList = document.getElementById("dataElementGroupId");

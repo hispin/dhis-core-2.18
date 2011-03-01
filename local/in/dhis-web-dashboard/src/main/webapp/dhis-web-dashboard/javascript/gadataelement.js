@@ -1,88 +1,52 @@
 
 function getOUDeatilsForGADataElements( orgUnitIds )
 {
-	//alert( orgUnitIds );
 	document.getElementById( "ougGroupSetCB" ).disabled = false;
 	document.getElementById( "orgUnitGroupList" ).disabled = false;
-	
 	document.getElementById( "categoryLB" ).disabled = false;
 	document.getElementById( "periodTypeLB" ).disabled = false;
 	document.getElementById( "yearLB" ).disabled = false;
 	document.getElementById( "periodLB" ).disabled = false;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'orgunit' );
-	request.setCallbackSuccess( getOUDetailsForGARecevied );
-	request.send( 'getOrgUnitDetails.action?orgUnitId=' + orgUnitIds ); 
-	
-	
-	/*
-	$.post("getOrgUnitDetails.action",
-		{
-			orgUnitId:orgUnitIds
-		},
-		function (data)
-		{
-			getOUDetailsForGARecevied(data);
-		},'xml');*/
-}
 
-function getOUDetailsForGARecevied(xmlObject)
-{
-	var ouListCDId = document.getElementById( "orgUnitListCB" );
-	var categoryIndex = document.ChartGenerationForm.categoryLB.selectedIndex;
- 
-	
-    var index = 0;		
-    var i=0;
-		
-    var orgUnits = xmlObject.getElementsByTagName("orgunit");
-   
-    for ( var i = 0; i < orgUnits.length; i++ )
-    {
-       
-    	//var currentOrgUnitName = "";
-    	//var currentOrgUnitId = "";
-    	var id = orgUnits[ i ].getElementsByTagName("id")[0].firstChild.nodeValue;
-    	var orgUnitName = orgUnits[ i ].getElementsByTagName("name")[0].firstChild.nodeValue;
+	jQuery.postJSON("getOrgUnitName.action",{
+  	  id : orgUnitIds[0]
+   }, function( json ){
 
-    	
-    	currentOrgUnitId = id;
+		var ouListCBId = document.getElementById( "orgUnitListCB" );
+		var categoryLB = document.getElementById( "categoryLB");
+		var categoryIndex = categoryLB.selectedIndex;
+	    var index = 0;
+	    var orgUnitId = json.organisationUnit.id;
+	    var orgUnitName = json.organisationUnit.name;
+
+    	currentOrgUnitId = orgUnitId;
         currentOrgUnitName = orgUnitName;
-        // alert("orgUnit Id is : " + id + ", name is :" + orgUnitName );
-        if(document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "period" || document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "children" )
+        
+        if( categoryLB.options[categoryIndex].value == "period" || categoryLB.options[categoryIndex].value == "children" )
         {
-            index = document.ChartGenerationForm.orgUnitListCB.options.length;
-            for(i=0;i<index;i++)
+            for( i = 0; i < ouListCBId.options.length; i++ )
             {
-                document.ChartGenerationForm.orgUnitListCB.options[0] = null;
+                ouListCBId.options[0] = null;
             }
-            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option( orgUnitName,id,false,false );
+            ouListCBId.options[0] = new Option( orgUnitName, orgUnitId, false, false );
         }
-        //22/10/2010
-        else if( document.ChartGenerationForm.categoryLB.options[categoryIndex].value == "random" && document.getElementById( 'ougGroupSetCB' ).checked )
+        else if( categoryLB.options[categoryIndex].value == "random" && document.getElementById( 'ougGroupSetCB' ).checked )
         {
-        //ouListCDId.options[ouListCDId.options.length] = new Option(orgUnitName,id,false,false);
-        	
-        	index = document.ChartGenerationForm.orgUnitListCB.options.length;
-            for(i=0;i<index;i++)
+            for( i = 0; i < ouListCBId.options.length; i++ )
             {
-                document.ChartGenerationForm.orgUnitListCB.options[0] = null;
+            	ouListCBId.options[0] = null;
             }
-            document.ChartGenerationForm.orgUnitListCB.options[0] = new Option( orgUnitName,id,false,false );
-            
+            ouListCBId.options[0] = new Option( orgUnitName, orgUnitId, false, false );
         }
         else
         {
-            index = document.ChartGenerationForm.orgUnitListCB.options.length;
-            for(i=0;i<index;i++)
+            for( i = 0; i < ouListCBId.options.length; i++ )
             {
-                if(id == document.ChartGenerationForm.orgUnitListCB.options[i].value) return;
+                if( orgUnitId == ouListCBId.options[i].value ) return;
             }
-            document.ChartGenerationForm.orgUnitListCB.options[index] = new Option(orgUnitName,id,false,false);
+            ouListCBId.options[ ouListCBId.options.length ] = new Option( orgUnitName, orgUnitId, false, false );
         }
-    }	
-    		
+   });
 }
 
 
