@@ -2359,8 +2359,7 @@
             var c2 = '<span class="menu-item-inline-c2">';
             var spanEnd = '</span>';
             mapView.label = c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
-                            c2 + mapView.parentOrganisationUnitName + spanEnd +
-                            c1 + mapView.organisationUnitLevelName + spanEnd +
+                            c2 + mapView.parentOrganisationUnitName + ' ( ' + '<span style="color:#555">' + mapView.organisationUnitLevelName + '</span> )' + spanEnd + 
                             c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
                             c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd;
             
@@ -2374,7 +2373,7 @@
                 html: mapView.label,
                 mapView: mapView
             });
-        }            
+        }
     });
 
 	var exitButton = new Ext.Button({
