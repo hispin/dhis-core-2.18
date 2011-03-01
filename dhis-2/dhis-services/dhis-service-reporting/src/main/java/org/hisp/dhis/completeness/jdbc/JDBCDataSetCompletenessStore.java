@@ -28,15 +28,19 @@ package org.hisp.dhis.completeness.jdbc;
  */
 
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.Collection;
 import java.util.Date;
 
 import org.amplecode.quick.StatementManager;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -67,6 +71,47 @@ public class JDBCDataSetCompletenessStore
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
+    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<? extends Source> sources )
+    {
+        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        
+        if ( intersectingSources == null || intersectingSources.size() == 0 )
+        {
+            return 0;
+        }        
+        
+        final String sql =
+            "SELECT COUNT(*) " +
+            "FROM completedatasetregistration " +
+            "WHERE datasetid = " + dataSet.getId() + " " +
+            "AND periodid = " + period.getId() + " " +
+            "AND sourceid IN ( " + getCommaDelimitedString( getIdentifiers( OrganisationUnit.class, intersectingSources ) ) + " )";
+        
+        return statementManager.getHolder().queryForInteger( sql );
+    }
+
+    @SuppressWarnings("unchecked")
+    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<? extends Source> sources, Date deadline )
+    {
+        final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
+        
+        if ( intersectingSources == null || intersectingSources.size() == 0 )
+        {
+            return 0;
+        }        
+        
+        final String sql =
+            "SELECT COUNT(*) " +
+            "FROM completedatasetregistration " +
+            "WHERE datasetid = " + dataSet.getId() + " " +
+            "AND periodid = " + period.getId() + " " +
+            "AND sourceid IN ( " + getCommaDelimitedString( getIdentifiers( OrganisationUnit.class, intersectingSources ) ) + " ) " +
+            "AND date <= '" + getMediumDateString( deadline ) + "'";
+        
+        return statementManager.getHolder().queryForInteger( sql );
+    }
+    
     public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
     {
         final String sql =

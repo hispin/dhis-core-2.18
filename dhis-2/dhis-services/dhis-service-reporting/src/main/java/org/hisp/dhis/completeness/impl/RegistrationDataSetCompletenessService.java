@@ -30,7 +30,6 @@ package org.hisp.dhis.completeness.impl;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.source.Source;
@@ -41,21 +40,14 @@ import org.hisp.dhis.source.Source;
 public class RegistrationDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    private CompleteDataSetRegistrationService registrationService;
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
-    }
-
     public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
     {
-        return registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, children );
     }
 
     public int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
     {
-        return registrationService.getCompleteDataSetRegistrationsForDataSet( dataSet, children, period, deadline );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, children, deadline );
     }
     
     public int getSources( DataSet dataSet, Collection<? extends Source> children )

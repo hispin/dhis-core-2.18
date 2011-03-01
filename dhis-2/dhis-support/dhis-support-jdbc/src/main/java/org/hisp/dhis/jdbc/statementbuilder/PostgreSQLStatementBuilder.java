@@ -108,13 +108,6 @@ public class PostgreSQLStatementBuilder
             "valueOnTime DOUBLE PRECISION );";
     }
 
-    public String getCreateDataValueIndex()
-    {
-        return
-            "CREATE INDEX crosstab " +
-            "ON datavalue ( periodid, sourceid );";
-    }
-    
     public String getDeleteZeroDataValues()
     {
         return

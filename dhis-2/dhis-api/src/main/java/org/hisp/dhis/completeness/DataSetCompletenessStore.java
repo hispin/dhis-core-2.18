@@ -42,6 +42,10 @@ public interface DataSetCompletenessStore
 {
     String ID = DataSetCompletenessStore.class.getName();
     
+    int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<? extends Source> sources );
+    
+    int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<? extends Source> sources, Date deadline );
+    
     /**
      * Gets the percentage value for the datasetcompleteness with the given parameters.
      * 

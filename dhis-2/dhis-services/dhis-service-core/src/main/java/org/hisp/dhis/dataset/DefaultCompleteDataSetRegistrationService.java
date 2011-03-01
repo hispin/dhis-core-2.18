@@ -80,6 +80,7 @@ public class DefaultCompleteDataSetRegistrationService
     }    
 
     @SuppressWarnings( "unchecked" )
+    @Deprecated
     public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period )
     {
         final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );
@@ -93,6 +94,7 @@ public class DefaultCompleteDataSetRegistrationService
     }
     
     @SuppressWarnings( "unchecked" )
+    @Deprecated
     public int getCompleteDataSetRegistrationsForDataSet( DataSet dataSet, Collection<? extends Source> sources, Period period, Date deadline )
     {
         final Collection<? extends Source> intersectingSources = CollectionUtils.intersection( sources, dataSet.getSources() );

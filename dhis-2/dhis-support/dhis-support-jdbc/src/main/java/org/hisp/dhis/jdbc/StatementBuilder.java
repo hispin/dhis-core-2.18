@@ -79,12 +79,6 @@ public interface StatementBuilder
     String getCreateDataSetCompletenessTable();
     
     /**
-     * Creates a create index statement for the datavalue table.
-     * @return a create index statement for the datavalue table.
-     */
-    String getCreateDataValueIndex();
-    
-    /**
      * Creates a delete datavalue statement.
      * @return a delete datavalue statement.
      */
