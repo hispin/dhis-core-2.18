@@ -33,7 +33,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -119,9 +118,13 @@ public interface ReportService
     
     Period getPreviousPeriod( Period selectedPeriod );
     
-    // List<OrganisationUnit> getDataNotSentOrgUnits( DataSet dataSet, Period period, OrganisationUnit rootOrgunit );
-
     String getResultSurveyValue( String formula, OrganisationUnit organisationUnit );
-    
+
+    String getSurveyDesc( String formula );
+
     String getResultDataValueFromAggregateTable( String formula, Collection<Integer> periodIds, OrganisationUnit organisationUnit , String reportModelTB );
+
+    String getAggCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
+    
+    String getCountForTextData( String formula, Date startDate, Date endDate, OrganisationUnit organisationUnit );
 }
