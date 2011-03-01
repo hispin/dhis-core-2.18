@@ -187,9 +187,5 @@ public class DataSetCompletenessServiceExportTest
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitB.getId() ) );
         assertEquals( 0.0, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitC.getId() ) );
         assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitA.getId() ) );
-        
-        assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitB.getId() ) );
-        assertEquals( 50.0, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitC.getId() ) );
-        assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitA.getId() ) );   
     }
 }
