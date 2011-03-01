@@ -12,7 +12,7 @@
 					       <select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:180px">
 					           <option value="-1">[ $i18n.getString( "all" ) ]</option>
 					           #foreach( $dictionary in $dataDictionaries )
-					           <option value="$dictionary.id" #if ( $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.name</option>
+					           <option value="$dictionary.id" #if ( $!dataDictionaryId && $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.name</option>
 					           #end
 				            </select>
 						</div>
@@ -20,7 +20,7 @@
 					<td style="text-align:right">
 						<input type="button" value="$i18n.getString( 'get_pdf' )" onclick="exportPdfByType( 'dataelement' );" style="width:80px"/>
                         <input type="button" value="$i18n.getString( 'sort' )" onclick="window.location.href='showSortDataElementForm.action'" style="width:80px"/>
-                        #if ( $dataDictionaryMode == "extended" )
+                        #if ( $!dataDictionaryMode && $dataDictionaryMode == "extended" )
 							<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddExtendedDataElementForm.action'" style="width:80px">
 						#else
 							<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddDataElementForm.action'" style="width:80px"/>
