@@ -153,9 +153,15 @@ public abstract class AbstractDataSetCompletenessService
     {
         log.info( "Data completeness export process started" );
         
+        completenessStore.dropIndex();
+        
+        log.info( "Dropped potential index" );
+        
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );
         
         completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
+        
+        log.info( "Deleted existing completeness data" );
         
         BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory.createBatchHandler( DataSetCompletenessResultBatchHandler.class );
         
@@ -201,6 +207,10 @@ public abstract class AbstractDataSetCompletenessService
         }
         
         batchHandler.flush();
+        
+        completenessStore.createIndex();
+        
+        log.info( "Created index" );
         
         log.info( "Completeness export process done" );
     }
