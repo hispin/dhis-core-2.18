@@ -45,6 +45,7 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
@@ -56,6 +57,8 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class RenderReportAction
     extends StreamActionSupport
 {
+    private static final String EXT_PDF = ".pdf";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -166,7 +169,9 @@ public class RenderReportAction
     @Override
     protected String getFilename()
     {
-        return "report.pdf";
+        Report report = reportService.getReport( id );
+        
+        return CodecUtils.filenameEncode( report.getName() ) + EXT_PDF;
     }
     
     @Override
@@ -178,6 +183,6 @@ public class RenderReportAction
     @Override
     protected boolean attachment()
     {
-        return true;
+        return false;
     }
 }
