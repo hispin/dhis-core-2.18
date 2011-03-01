@@ -39,18 +39,18 @@ import org.hisp.dhis.period.Period;
 public class RegistrationDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    public int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
+    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Period period )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, children );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, relevantSources );
     }
 
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Period period, Date deadline )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, children, deadline );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, relevantSources, deadline );
     }
     
-    public int getSources( DataSet dataSet, Collection<Integer> children )
+    public int getSources( DataSet dataSet, Collection<Integer> relevantSources )
     {
-        return getSourcesAssociatedWithDataSet( dataSet, children );
+        return relevantSources.size();
     }
 }

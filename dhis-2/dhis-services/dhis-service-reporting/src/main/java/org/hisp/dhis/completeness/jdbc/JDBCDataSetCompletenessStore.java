@@ -27,7 +27,6 @@ package org.hisp.dhis.completeness.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
@@ -36,12 +35,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.amplecode.quick.StatementManager;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -70,12 +67,9 @@ public class JDBCDataSetCompletenessStore
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
-    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> sources )
+    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources )
     {
-        final Collection<Integer> intersectingSources = CollectionUtils.intersection( sources, getIdentifiers( OrganisationUnit.class, dataSet.getSources() ) );
-        
-        if ( intersectingSources == null || intersectingSources.size() == 0 )
+        if ( relevantSources == null || relevantSources.size() == 0 )
         {
             return 0;
         }        
@@ -85,17 +79,14 @@ public class JDBCDataSetCompletenessStore
             "FROM completedatasetregistration " +
             "WHERE datasetid = " + dataSet.getId() + " " +
             "AND periodid = " + period.getId() + " " +
-            "AND sourceid IN ( " + getCommaDelimitedString( intersectingSources ) + " )";
+            "AND sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " )";
         
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    @SuppressWarnings("unchecked")
-    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> sources, Date deadline )
+    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources, Date deadline )
     {
-        final Collection<Integer> intersectingSources = CollectionUtils.intersection( sources, getIdentifiers( OrganisationUnit.class, dataSet.getSources() ) );
-        
-        if ( intersectingSources == null || intersectingSources.size() == 0 )
+        if ( relevantSources == null || relevantSources.size() == 0 )
         {
             return 0;
         }        
@@ -105,7 +96,7 @@ public class JDBCDataSetCompletenessStore
             "FROM completedatasetregistration " +
             "WHERE datasetid = " + dataSet.getId() + " " +
             "AND periodid = " + period.getId() + " " +
-            "AND sourceid IN ( " + getCommaDelimitedString( intersectingSources ) + " ) " +
+            "AND sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " ) " +
             "AND date <= '" + getMediumDateString( deadline ) + "'";
         
         return statementManager.getHolder().queryForInteger( sql );

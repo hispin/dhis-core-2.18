@@ -41,20 +41,20 @@ import org.hisp.dhis.period.Period;
 public class RatioDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    public int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
+    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Period period )
     {
-        return completenessStore.getNumberOfValues( dataSet, children, period, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, period, null );
     }
 
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Period period, Date deadline )
     {
-        return completenessStore.getNumberOfValues( dataSet, children, period, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, period, null );
     }
     
-    public int getSources( DataSet dataSet, Collection<Integer> children )
+    public int getSources( DataSet dataSet, Collection<Integer> relevantSources )
     {
         Collection<DataElementOperand> operands = dataElementService.getAllGeneratedOperands( dataSet.getDataElements() );
         
-        return operands != null && children != null ? operands.size() * children.size() : 0; // Number of operands in data set times number of organisation units
+        return operands != null && relevantSources != null ? operands.size() * relevantSources.size() : 0; // Number of operands in data set times number of organisation units
     }
 }

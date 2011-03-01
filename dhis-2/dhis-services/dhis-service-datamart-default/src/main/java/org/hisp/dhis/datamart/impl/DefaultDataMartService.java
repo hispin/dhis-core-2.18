@@ -31,7 +31,6 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
@@ -43,9 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.process.OutputHolderState;
-import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -123,11 +120,7 @@ public class DefaultDataMartService
     {
         if ( relatives != null )
         {
-            List<Period> periods = relatives.getRelativePeriods( 1, null, false );
-            
-            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-            
-            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( periods ) ) );
+            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
         }
         
         return dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, useIndexes, new OutputHolderState() );
