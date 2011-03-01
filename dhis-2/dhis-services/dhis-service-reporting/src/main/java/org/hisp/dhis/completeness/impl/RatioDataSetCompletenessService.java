@@ -33,7 +33,6 @@ import java.util.Date;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.source.Source;
 
 /**
  * @author Lars Helge Overland
@@ -42,17 +41,17 @@ import org.hisp.dhis.source.Source;
 public class RatioDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    public int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period )
+    public int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
     {
         return completenessStore.getNumberOfValues( dataSet, children, period, null );
     }
 
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
     {
         return completenessStore.getNumberOfValues( dataSet, children, period, null );
     }
     
-    public int getSources( DataSet dataSet, Collection<? extends Source> children )
+    public int getSources( DataSet dataSet, Collection<Integer> children )
     {
         Collection<DataElementOperand> operands = dataElementService.getAllGeneratedOperands( dataSet.getDataElements() );
         

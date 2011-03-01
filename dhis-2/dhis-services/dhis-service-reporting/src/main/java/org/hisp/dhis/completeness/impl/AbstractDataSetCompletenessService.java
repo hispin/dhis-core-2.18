@@ -29,6 +29,7 @@ package org.hisp.dhis.completeness.impl;
 
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +54,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.source.Source;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -130,11 +130,11 @@ public abstract class AbstractDataSetCompletenessService
     // Abstract methods
     // -------------------------------------------------------------------------
     
-    public abstract int getRegistrations( DataSet dataSet, Collection<? extends Source> children, Period period );
+    public abstract int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period );
     
-    public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<? extends Source> children, Period period, Date deadline );
+    public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
     
-    public abstract int getSources( DataSet dataSet, Collection<? extends Source> children );
+    public abstract int getSources( DataSet dataSet, Collection<Integer> children );
     
     // -------------------------------------------------------------------------
     // DataSetCompleteness
@@ -226,9 +226,9 @@ public abstract class AbstractDataSetCompletenessService
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );        
         Date deadline = getDeadline( period, days );
         
-        final Collection<? extends Source> children = organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId );
+        final Collection<Integer> children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId ) );
         
-        final Collection<DataSet> dataSets = dataSetService.getDataSetsBySources( children );
+        final Collection<DataSet> dataSets = dataSetService.getAllDataSets(); // getDataSetsBySources( children ); TODO fix?
         
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
@@ -270,11 +270,11 @@ public abstract class AbstractDataSetCompletenessService
         
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
-        Collection<OrganisationUnit> children = null;
+        Collection<Integer> children = null;
         
         for ( final OrganisationUnit unit : units )
         {
-            children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+            children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
 
@@ -299,7 +299,7 @@ public abstract class AbstractDataSetCompletenessService
 
     public DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, DataSet dataSet )
     {        
-        final Collection<OrganisationUnit> children = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() );
+        final Collection<Integer> children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
         
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
         
@@ -332,6 +332,23 @@ public abstract class AbstractDataSetCompletenessService
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
+
+    protected int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<Integer> sources )
+    {
+        int count = 0;
+
+        Collection<Integer> dataSetSources = getIdentifiers( OrganisationUnit.class, dataSet.getSources() );
+        
+        for ( Integer source : sources )
+        {
+            if ( dataSetSources.contains( source ) ) // TODO simplify?
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
 
     private Date getDeadline( Period period, int days )
     {
