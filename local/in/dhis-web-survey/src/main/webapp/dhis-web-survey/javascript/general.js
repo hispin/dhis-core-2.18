@@ -216,10 +216,11 @@ function targetValueSaver( dataElementId_, optionComboid_, value_, resultColor_,
     }   
     
     function markTargetValue( color )
-    {        
+    {  
+    	var elementId = 'value[' + dataElementId + ':' + optionComboId +'].value'
        //var element = document.getElementById( 'value[' + deOptionComboId + '].value' );
        // var element = document.getElementById( 'value[' + optionComboId + '].value' );
-        var element = document.getElementById( 'value[' + dataElementId + '].value' );
+        var element = document.getElementById( elementId );
         element.style.backgroundColor = color;
     }
 }
