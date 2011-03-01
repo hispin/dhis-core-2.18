@@ -27,6 +27,7 @@ package org.hisp.dhis.datasetreport.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -103,13 +104,13 @@ public class DefaultDataSetReportService
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
         
-        Collection<DataElement> dataElements = dataSet.getDataElements();
+        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements());
         
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         
         Map<String, String> map = new TreeMap<String,String>();            
         
-        for ( DataElement dataElement : dataSet.getDataElements() )
+        for ( DataElement dataElement : dataElements )
         {
             DataElementCategoryCombo categoryCombo = dataElement.getCategoryCombo();                                        
             
