@@ -839,6 +839,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 					G.vars.topLevelUnit = {
 						id: rootNode.id,
 						name: rootNode.name,
+                        level: 1,
 						hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
 					};
 					
@@ -867,6 +868,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
 										root: {
 											id: G.vars.topLevelUnit.id,
 											text: G.vars.topLevelUnit.name,
+                                            level: G.vars.topLevelUnit.level,
 											hasChildrenWithCoordinates: G.vars.topLevelUnit.hasChildrenWithCoordinates,
 											nodeType: 'async',
 											draggable: false,
