@@ -42,7 +42,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -372,31 +371,5 @@ public class DataSetCompletenessServiceTest
         assertEquals( 2, results.size() );
         assertTrue( results.contains( resultA ) );
         assertTrue( results.contains( resultB ) );        
-    }
-
-    @Test
-    public void testGetDataSetCompletenessPeriodOrganisationUnitDataSet()
-    {
-        dataSetA.getSources().add( unitE );
-        dataSetA.getSources().add( unitF );
-        
-        dataSetIdA = dataSetService.addDataSet( dataSetA );
-        
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, onTimeA ) );
-        
-        OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
-        
-        DataSetCompletenessResult resultA = completenessService.getDataSetCompleteness( periodA, tooLateA, unitB, hierarchy, dataSetA );
-        DataSetCompletenessResult resultB = completenessService.getDataSetCompleteness( periodA, tooLateA, unitE, hierarchy, dataSetA );
-        DataSetCompletenessResult resultC = completenessService.getDataSetCompleteness( periodA, tooLateA, unitG, hierarchy, dataSetA );
-        
-        DataSetCompletenessResult referenceA = new DataSetCompletenessResult( unitB.getName(), 2, 2, 2 );
-        DataSetCompletenessResult referenceB = new DataSetCompletenessResult( unitE.getName(), 1, 1, 1 );
-        DataSetCompletenessResult referenceC = new DataSetCompletenessResult( unitG.getName(), 0, 0, 0 );
-        
-        assertEquals( referenceA, resultA );
-        assertEquals( referenceB, resultB );
-        assertEquals( referenceC, resultC );        
     }
 }
