@@ -75,6 +75,10 @@ public interface DataSetCompletenessStore
     
     int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
     
+    Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
+    
+    Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods );
+    
     void createIndex();
     
     void dropIndex();

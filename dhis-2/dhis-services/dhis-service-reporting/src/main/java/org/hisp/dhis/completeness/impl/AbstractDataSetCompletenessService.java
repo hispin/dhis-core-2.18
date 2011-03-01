@@ -172,6 +172,9 @@ public abstract class AbstractDataSetCompletenessService
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
         
+        periods = completenessStore.getPeriodsWithRegistrations( periods );
+        dataSets = completenessStore.getDataSetsWithRegistrations( dataSets );
+        
         OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
         hierarchy.prepareChildren( units );
         
@@ -179,17 +182,20 @@ public abstract class AbstractDataSetCompletenessService
         
         for ( final Period period : periods )
         {
-            for ( final OrganisationUnit unit : units )
+            for ( final DataSet dataSet : dataSets )
             {
-                for ( final DataSet dataSet : dataSets )
+                if ( period.getPeriodType() != null && dataSet.getPeriodType() != null && period.getPeriodType().equals( dataSet.getPeriodType() ) )
                 {
-                    final Date deadline = getDeadline( period, days );
-                            
-                    final DataSetCompletenessResult result = getDataSetCompleteness( period, deadline, unit, hierarchy, dataSet );
-                    
-                    if ( result.getSources() > 0 )
+                    for ( final OrganisationUnit unit : units )
                     {
-                        batchHandler.addObject( result );
+                        final Date deadline = getDeadline( period, days );
+                                
+                        final DataSetCompletenessResult result = getDataSetCompleteness( period, deadline, unit, hierarchy, dataSet );
+                        
+                        if ( result.getSources() > 0 )
+                        {
+                            batchHandler.addObject( result );
+                        }
                     }
                 }
             }
