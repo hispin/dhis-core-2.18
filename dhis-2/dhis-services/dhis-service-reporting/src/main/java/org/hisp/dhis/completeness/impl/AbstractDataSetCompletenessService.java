@@ -39,6 +39,7 @@ import java.util.List;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
@@ -323,19 +324,8 @@ public abstract class AbstractDataSetCompletenessService
 
     protected int getSourcesAssociatedWithDataSet( DataSet dataSet, Collection<Integer> sources )
     {
-        int count = 0;
-
         Collection<Integer> dataSetSources = getIdentifiers( OrganisationUnit.class, dataSet.getSources() );
-        
-        for ( Integer source : sources )
-        {
-            if ( dataSetSources.contains( source ) ) // TODO simplify?
-            {
-                count++;
-            }
-        }
-
-        return count;
+        return CollectionUtils.intersection( dataSetSources, sources ).size();
     }
 
     private Date getDeadline( Period period, int days )
