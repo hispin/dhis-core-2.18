@@ -2,6 +2,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.comparator.ProgramStageInstanceComparator;
 
 public class GetDataRecordsAction
     extends ActionPagingSupport<Patient>
@@ -132,6 +134,13 @@ public class GetDataRecordsAction
     public Collection<ProgramInstance> getProgramInstances()
     {
         return programInstances;
+    }
+
+    private Map<ProgramInstance, List<ProgramStageInstance>> programStageInstanceMap = new HashMap<ProgramInstance,List<ProgramStageInstance>>();
+    
+    public Map<ProgramInstance, List<ProgramStageInstance>> getProgramStageInstanceMap()
+    {
+        return programStageInstanceMap;
     }
 
     private Map<Integer, String> colorMap = new HashMap<Integer, String>();
@@ -246,7 +255,11 @@ public class GetDataRecordsAction
 
                     patinetAttributeValueMap.put( patient, patientAttributeValue );
 
-                    programStageInstances.addAll( programInstance.getProgramStageInstances() );
+                    List<ProgramStageInstance> programStageInstanceList = new ArrayList<ProgramStageInstance>( programInstance.getProgramStageInstances() );
+                    Collections.sort( programStageInstanceList, new ProgramStageInstanceComparator() );
+                    
+                    programStageInstanceMap.put( programInstance, programStageInstanceList );
+                    programStageInstances.addAll( programStageInstanceList );
                 }
             }
         }
