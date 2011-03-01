@@ -6,117 +6,65 @@
     // Global Variables
     var selCategory = "";
     var selFacility = "";
-    var ouName="";
-    var dsName="";
-    var sDateIndex=0;
-    var eDateIndex=0;
-    var sDate="";
-    var eDate="";
-    var curPeriodType="";
+    var ouName = "";
+    var dsName = "";
+    var sDateIndex = 0;
+    var eDateIndex = 0;
+    var sDate = "";
+    var eDate = "";
+    var curPeriodType = "";
 </script>
 
-<h1>DataStatus Form</h1>
+<h3>DataStatus Form</h3>
 <hr />
-<form id="ChartGenerationForm" name="ChartGenerationForm" method="get" target="chartWindow1">
-    <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
-        <colgroup>
-            <col width="325">
-            <col width="80">
-            <col width="325">
-        </colgroup>
 
+<form id="ChartGenerationForm" name="ChartGenerationForm" method="get" target="chartWindow1">
+    <table align="center" style="border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="80%" border="0">
         <tr>
-            <td class="NormalB" align="center">
-                <table>
-                    <tr>
-                        <td class="NormalB" colspan="2">
-                            $i18n.getString( "ds_dataset_list" ) : <br>
-                            <select id="selectedDataSets" name="selectedDataSets" onchange="getdSetPeriods()" >
-                                #foreach ( $dataSet in $dataSetList )
-                                    <option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
-                                #end
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="NormalB">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="NormalB">
-                            $i18n.getString( "ga_facilityby" )<br>
-                                <select id="facilityLB" name="facilityLB" onchange="facilityChangeFunction(event)">
-                                    <option value="random" >Selected</option>
-                                    <option value="immChildren" selected>Immediate Children</option>
-                                    <option value="children" >Child Tree</option>
-                                </select>
-                        </td>
-                        <td class="NormalB" display="none">
-                            <br>
-                            <select class='hidden' id="categoryLB" name="categoryLB" onchange="categoryChangeFunction(event)" disabled>
-                                <option value="period">Period</option>
-                                <option value="facility" selected>Facility</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="NormalB">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td class="NormalB">
-                            $i18n.getString( "ga_from" )<br>
-                            <select id="sDateLB" name="sDateLB"></select>
-                        </td>
-                        <td class="NormalB">
-                            $i18n.getString( "ga_to" )<br>
-                            <select id="eDateLB" name="eDateLB"></select>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td class="NormalB">&nbsp; </td>
             <td class="NormalB">
-                <table>
-                    <tr>
-                        <td class="NormalB">
-                            <input type="checkbox" name="includeZeros" id="includeZeros" checked> Include Zero
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="NormalB">
-                            $i18n.getString( "ga_orgunit" )<br>
-                            <select name="orgUnitListCB" id="orgUnitListCB" multiple style="width: 325px;height: 110px" ondblclick="remOUFunction()">
-                            </select>
-                        </td>
-                    </tr>
-               </table>
-            </td>
-        </tr>
-        <tr>
-            <td align="center" class="NormalB"> </td>
-            <td class="NormalB"> </td>
-            <td class="NormalB"> </td>
-            <td class="NormalB"> </td>
-        </tr>
-        <tr>
-            <td>
-                
-                <input type="button" name="ViewSummary" value="View DataSummary" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/>
-                <input type="button" name="ViewStatus" value="View DataStatus" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/>
-            </td>
-            <td class="NormalB">
-            	<br/><br/><br/><br/><br/>
-                <input type="button" name="LastUpdatedStatus" value="   User Details   " style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/>
-            </td>
-            <td>
-                
-                <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/>
-                <input type="button" name="ValidationStatus" value="Validation Status" style="font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/>
-            </td>
-        </tr>
+				$i18n.getString( "ds_dataset_list" ) : <br>
+				<select id="selectedDataSets" name="selectedDataSets" onchange="getdSetPeriods()" style="width:300px">
+					#foreach ( $dataSet in $dataSetList )
+						<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
+					#end
+				</select>
+				<br/><br/>
+                $i18n.getString( "ga_facilityby" )<br/>
+                <select id="facilityLB" name="facilityLB" onchange="facilityChangeFunction(event)" style="width:300px">
+                    <option value="random" >Selected</option>
+                    <option value="immChildren" selected>Immediate Children</option>
+                    <option value="children" >Child Tree</option>
+                </select>
+				<br/>
+                <select class='hidden' id="categoryLB" name="categoryLB" onchange="categoryChangeFunction(event)" disabled>
+                    <option value="period">Period</option>
+                    <option value="facility" selected>Facility</option>
+                </select>
+				<br/>
+                <input type="button" name="ViewStatus" value="View DataStatus" style="width:300px;height:25px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('DataStatus')"/><br/><br/>
+                <input type="button" name="ViewGroupWise" value="View By Data Element Group" style="width:300px;height:25px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/><br/><br/>
+                <input type="button" name="ViewSummary" value="View DataSummary" style="width:300px;height:25px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/><br/><br/>
+                <input type="button" name="LastUpdatedStatus" value="User Details" style="width:300px;height:25px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/><br/><br/>
+                <input type="button" name="ValidationStatus" value="Validation Status" style="width:300px;height:25px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/>
+			</td>
+			<td class="NormalB">
+				<input type="checkbox" name="includeZeros" id="includeZeros" checked> Include Zero
+				<br/><br/>
+				$i18n.getString( "ga_orgunit" )<br />
+				<select name="orgUnitListCB" id="orgUnitListCB" multiple style="width:250px;height:125px" ondblclick="remOUFunction()">
+				</select>
+				<br/><br/>
+				$i18n.getString( "ga_from" )<br />
+				<select id="sDateLB" name="sDateLB" style="width:250px"></select>
+				<br/><br/>
+				$i18n.getString( "ga_to" )<br />
+				<select id="eDateLB" name="eDateLB" style="width:250px"></select>
+			</td>
+		</tr>
     </table>
     <input type="hidden" name="selectedButton" id="selectedButton"/>
 </form>
 
 <script>
 	getdSetPeriods();
-</script>            
+</script>

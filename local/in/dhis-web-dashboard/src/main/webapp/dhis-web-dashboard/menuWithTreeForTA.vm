@@ -1,35 +1,30 @@
-<h2>$i18n.getString( "dataanalyser" )</h2>
+
+<a href="index.action"><h2>$i18n.getString( "dataanalyser" )</h2></a>
+
+<ul>
+	<li>Data Analysis</li>
 	<ul>
-		<li>Data Analysis</li>
-		<ul>
-		 	<li>Tabular Analysis</li>
-		 </ul>
-	</ul>
-<div style=" float:right; font-size:6pt; cursor:pointer; margin-top:-20px; ">
-        <a href="index.action">
-          <img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
-</div>
-##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+		<li>Tabular Analysis</li>
+	 </ul>
+</ul>
+
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
 
-<!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
 
-function orgUnitHasBeenSelected( orgUnitIds )
-{    
-
-	if(orgUnitIds == null || orgUnitIds == "" )
-	{
-		return;
+	function orgUnitHasBeenSelected( orgUnitIds )
+	{    
+		if(orgUnitIds == null || orgUnitIds == "" )
+		{
+			return;
+		}
+		if(orgUnitIds != null)
+		{
+			selOrgUnitId = orgUnitIds;
+			getOUDeatilsForTA( orgUnitIds );
+		}		
 	}
-	if(orgUnitIds != null)
-	{
-		selOrgUnitId = orgUnitIds;
-		
-		getOUDeatilsForTA(orgUnitIds);
-	}		
-}
 
-selection.setListenerFunction( orgUnitHasBeenSelected );
+	selection.setListenerFunction( orgUnitHasBeenSelected );
 
 </script>

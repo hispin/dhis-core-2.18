@@ -1,30 +1,22 @@
 <script>
+
 	// Global Variables
 	var selriRadioButton = "indicatorsRadio";
 	var selCategory = "";
 	var selFacility = "";
-	
-	
-    
-    // Global Variables
     var dailyPeriodTypeName = '$dailyPeriodTypeName';
     var weeklyPeriodTypeName = '$weeklyPeriodTypeName';
     var monthlyPeriodTypeName = '$monthlyPeriodTypeName';
     var quarterlyPeriodTypeName = '$quarterlyPeriodTypeName';
     var sixmonthPeriodTypeName = '$sixMonthPeriodTypeName';
     var yearlyPeriodTypeName = '$yearlyPeriodTypeName';
-    
-   // var maxOrgUnitLevels = $maxOrgUnitLevels;
     var orgUnitIds="NONE";
     var currentOrgUnitId;
     var currentOrgUnitName;
-    
-  
   
     var monthDays = new Array(31,29,31,30,31,30,31,31,30,31,30,31); // for daily Period
     var days = new Array();
     
-  //var monthNames = new Array("Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar");
     var monthNames = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
     var quarterNames = new Array("Q1","Q2","Q3","Q4");
     var halfYearNames = new Array("HY1","HY2");
@@ -39,13 +31,11 @@
         {
             if( (i+1) <= 9 )
             {
-               // i = "0"+(i+1);
                days[k]=  "0"+ (i+1);
-               
             }
             else
             {
-            days[k]=  i+1;
+	            days[k]=  i+1;
             }
             if( j <= 9 )
             {
@@ -53,13 +43,11 @@
             }
             else
             {
-            days[k] +=  "-"+j;
+	            days[k] +=  "-"+j;
             }    
         
-            //days[k]= (i+1)+"-"+j;
-            //  days[k]=  i+"-"+j;
             k++;
-         }
+		}
     }
    
     var orgUnitGroupIds = new Array();
@@ -72,151 +60,138 @@
        #set( $count1 = $count1 + 1 );
     #end
   
-
 </script>
 
-<h1>$i18n.getString( "dataelements_wise_graphical_analyser" )</h1>
+<h3>$i18n.getString( "dataelements_wise_graphical_analyser" )</h3>
 <hr />
+
 <form id="ChartGenerationForm" name="ChartGenerationForm" action="generateChartDataElement.action" method="post" onSubmit="return formValidationsDataElement()" target="chartWindowDataElement">
-  <table style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" border=0>
-
-     <tr>
+	<table style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" border=0>
+		<tr>
+		<td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
+			<select id="dataElementGroupId" name="dataElementGroupId" style="width:325px" onChange="getDataElements()" >
+				<option value="$ALL">[ Select DataElementGroup / All ]</option>
+				#foreach ( $group in $dataElementGroups )
+					<option value="$group.id" title="$group.name">$group.name</option>
+				#end
+			</select>
+		</td>
+	    <td class="NormalB">&nbsp;</td>
+		<td class="NormalB">$i18n.getString( "compare_view" )<br>
+			<select id="deSelection" name="deSelection" style="width:350px" onChange="deSelectionChangeFuntion(event)" >
+				<option value="dataelement" selected>DataElements</option>
+				<option value="optioncombo">Options in DataElements</option>
+			</select>
+		</td>
+    </tr>
+    <tr>
+      <td class="NormalB">&nbsp;</td>
+      <td class="NormalB">&nbsp;</td>
+      <td class="NormalB">&nbsp;</td>
+    </tr>
+    <tr>
+		<td class="NormalB">$i18n.getString( "ga_available_delist" )<br>
+			<select multiple size="7" id="availableDataElements" name="availableDataElements"  style="width:325px; height:100px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
+				#foreach ( $element in $dataElements )
+				<option value="$element.id" title="$element.name">$element.name</option>
+				#end
+			</select>
+		</td>
+		<td class="NormalB" align="center"><br />
+			&nbsp;&nbsp;<input type="button" value="&gt;" style="width:40px" onClick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">&nbsp;&nbsp;<br />
+			&nbsp;&nbsp;<input type="button" value="&lt;" style="width:40px" onClick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">&nbsp;&nbsp;<br />
+			&nbsp;&nbsp;<input type="button" value="&gt;&gt;" style="width:40px" onClick="moveAllById( 'availableDataElements', 'selectedDataElements' )">&nbsp;&nbsp;<br />
+			&nbsp;&nbsp;<input type="button" value="&lt;&lt;" style="width:40px" onClick="moveAllById( 'selectedDataElements', 'availableDataElements' )">&nbsp;&nbsp;
+		</td>
+		<td class="NormalB"> $i18n.getString( "ga_selected_delist" )<br />
+			<select multiple size="7" id="selectedDataElements" name="selectedDataElements" style="width:350px; height:100px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
+			</select>
+		</td>
+	</tr>
+    <tr>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+    </tr>
+    <tr>
+		<td class="NormalB">
+			<input type="checkbox"  id="aggDataCB" name="aggDataCB" checked="true" >$i18n.getString( "ga_aggregated_data" )
+		</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">
+			<table>
+				<tr>
+					<td class="NormalB"> $i18n.getString( "ga_viewby" )<br>
+						<select id="categoryLB" name="categoryLB" onChange="categoryChangeFunction1(event)" disabled="true" style="width: 150px;">
+							<option value="period">Period Wise</option>
+							<option value="children">Children</option>
+							<option value="random">Selected</option>    
+						</select>
+					</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td align="left" class="NormalB"> $i18n.getString( "periodType" )<br>
+						<select id="periodTypeLB" name="periodTypeLB" onchange="getPeriods()" style="width: 175px;" disabled="true">                                
+						#foreach ( $periodType in $periodTypes )
+							<option value="$periodType.name" #if($periodType.name==$monthlyPeriodTypeName) selected #end>$periodType.name</option>                              
+						#end
+						</select>
+					</td>
+				</tr>
+			</table>            
+		</td>
+	</tr>
+    <tr>
+        <td class="NormalB">
+			<table>
+				<tr>
+					<td class="NormalB">$i18n.getString( "ga_orgunit" )<br>
+						<select name="orgUnitListCB" id="orgUnitListCB" multiple size="7" style="width:150px;height:100px"  ondblclick="remOUFunction()"> >
+						</select>                       
+					</td>
+					<td class="NormalB"><input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
+						<select name="orgUnitGroupList" id="orgUnitGroupList" multiple size="7"  onChange="selectSingleOptionOrgUnitGroup()"  style="width:150px;height:100px" disabled="true">
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td class="NormalB" align="center"></td>
+		<td class="NormalB" align="center">
+			<table>
+				<tr>
+					<td class="NormalB">$i18n.getString( "year" )<br>
+						<select id="yearLB" name="yearLB" onchange="getWeeklyPeriod()" size="7" multiple style="width:150px;height:100px" disabled="true">                                                                                
+						#foreach($periodName in $periodNameList)
+						<option value="$periodName">$periodName</option>                                
+						#end
+						</select>
+					</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td class="NormalB">$i18n.getString( "period" )<br>
+						<select id="periodLB" name="periodLB" size="7" multiple style="width:175px;height:100px" disabled="true">                              
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>	
+    <tr>
         <td class="NormalB">&nbsp;</td>
-        <td class="NormalB">&nbsp;</td>
-        <td class="NormalB">&nbsp;</td>
-    </tr>
-    <tr>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">&nbsp;</td>
-    </tr>
-    <tr>
-      <td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
-        <select id="dataElementGroupId" name="dataElementGroupId" style="width:325px" onChange="getDataElements()" >
-          <option value="$ALL">[ Select DataElementGroup / All ]</option>
-          #foreach ( $group in $dataElementGroups )
-          <option value="$group.id" title="$group.name">$group.name</option>
-          #end
-        </select>
-      </td>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">$i18n.getString( "compare_view" )<br>
-        <select id="deSelection" name="deSelection" style="width:325px" onChange="deSelectionChangeFuntion(event)" >
-          <option value="dataelement" selected>DataElements</option>
-          <option value="optioncombo">Options in DataElements</option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB">&nbsp;</td>
-    </tr>
-    <tr>
-      <td class="NormalB">$i18n.getString( "ga_available_delist" )<br>
-        <select multiple size="7" id="availableDataElements" name="availableDataElements"  style="width:325px; height:100px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
-      #foreach ( $element in $dataElements )
-          <option value="$element.id" title="$element.name">$element.name</option>
-          #end
-        </select>
-      </td>
-      <td class="NormalB" align="center"><br />
-        &nbsp;&nbsp;<input type="button" value="&gt;" style="width:40px" onClick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">&nbsp;&nbsp;
-        <br>
-        &nbsp;&nbsp;<input type="button" value="&lt;" style="width:40px" onClick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">&nbsp;&nbsp;
-        <br>
-       &nbsp;&nbsp;<input type="button" value="&gt;&gt;" style="width:40px" onClick="moveAllById( 'availableDataElements', 'selectedDataElements' )">&nbsp;&nbsp;
-        <br>
-      &nbsp;&nbsp;<input type="button" value="&lt;&lt;" style="width:40px" onClick="moveAllById( 'selectedDataElements', 'availableDataElements' )">&nbsp;&nbsp;
-      </td>
-      <td class="NormalB"> $i18n.getString( "ga_selected_delist" )<br />
-        <select multiple size="7" id="selectedDataElements" name="selectedDataElements" style="width:325px; height:100px" ondblclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )">
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td class="NormalB">&nbsp;<br/></td>
-      <td class="NormalB">&nbsp;<br/></td>
-      <td class="NormalB">&nbsp;<br/></td>
-    </tr>
-
-    <tr>
-      <td class="NormalB"><br><input type="checkbox"  id="aggDataCB" name="aggDataCB" checked="true" >$i18n.getString( "ga_aggregated_data" )</td>
-      <td class="NormalB">&nbsp;</td>
-      <td class="NormalB"><br>
-	      <table>
-	        <tr>
-	            <td class="NormalB"> $i18n.getString( "ga_viewby" )<br>
-	              <select id="categoryLB" name="categoryLB" onChange="categoryChangeFunction1(event)" disabled="true">
-	                <option value="period">Period Wise</option>
-	                <option value="children">Children</option>
-	                <option value="random">Selected</option>    
-	              </select>
-	              <br />
-	              <br />
-	            </td>
-	        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-	            <td align="left" class="NormalB"> $i18n.getString( "periodType" )<br>
-	                <select id="periodTypeLB" name="periodTypeLB" onchange="getPeriods()" style="width: 150px;" disabled="true">                                
-	                    #foreach ( $periodType in $periodTypes )
-	                    <option value="$periodType.name" #if($periodType.name==$monthlyPeriodTypeName) selected #end>$periodType.name</option>                              
-	                     #end
-	                 </select>
-	              <br />
-	              <br />
-	            </td>
-	          </tr>
-             </table>            
-      </td>
-    </tr>
-   
-    <tr>
-        <td class="NormalB"><br>
-		<table>
-	        <td class="NormalB">$i18n.getString( "ga_orgunit" )<br>
-	            <select name="orgUnitListCB" id="orgUnitListCB" multiple size="7" style="width: 150px;"  ondblclick="remOUFunction()"> >
-	            </select>                       
-	        </td>
-	        <td class="NormalB"><input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
-	            <select name="orgUnitGroupList" id="orgUnitGroupList" multiple size="7"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 150px;" disabled="true">
-	            </select>
-	        </td>
-	    </tr>
-		</table>
-      </td>
-      <td class="NormalB" align="center"></td>
-      <td class="NormalB" align="center"><br>
-        <table>
-          <tr>
-            <td class="NormalB"> $i18n.getString( "year" )<br>
-              <select id="yearLB" name="yearLB" onchange="getWeeklyPeriod()" size="5" multiple style="width: 150px;" disabled="true">                                                                                
-                    #foreach($periodName in $periodNameList)
-                    <option value="$periodName">$periodName</option>                                
-                    #end
-              </select>
-              <br />
-              <br />
-            </td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td class="NormalB"> $i18n.getString( "period" )<br>
-            <select id="periodLB" name="periodLB" size="5" multiple style="width: 175px;" disabled="true">                              
-            </select>
-              <br />
-              <br />
-            </td>
-          </tr>
-          <tr>
-            <td><input type="submit" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewChart')">
-            </td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td align="right"><input type="submit" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewSummary')">
-            </td>
-          </tr>
-          <input type="hidden" name="selectedButton" id="selectedButton">
-        </table></td>
-    </tr>
+        <td class="NormalB" align="center">&nbsp;</td>
+        <td class="NormalB" align="center">
+            <table>
+                <tr>
+		            <td><input type="submit" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width:150px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewChart')"></td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td align="right"><input type="submit" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width:175px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewSummary')"></td>
+					<input type="hidden" name="selectedButton" id="selectedButton">
+                </tr>
+            </table>
+        </td>
+    </tr>   			
   </table>
 </form>
+
 <script>
-  getPeriods();
+	getPeriods();
 </script>

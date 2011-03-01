@@ -563,33 +563,19 @@ function getPeriodsReceived( xmlObject )
 function getOUDeatilsForTA( orgUnitIds )
 {
 	showOverlay();
-     //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds+"&type=ta";
 	
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsForTARecevied );
-    //request.send( url );
 
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
     request.send( requestString ); 
-	
-	/*
-	$.post("getOrgUnitDetails.action",
-		{
-			orgUnitId:orgUnitIds,
-			type:"ta"
-		},
-		function (data)
-		{
-			getOUDetailsForTARecevied(data);
-		},'xml'); */
 }
 
 function getOUDetailsForTARecevied(xmlObject)
 {
-    // var ouSelCBId = document.getElementById( "ouSelCB" );
     var ouListCDId = document.getElementById( "orgUnitListCB" );
     var ouLevelId = document.getElementById( "orgUnitLevelCB" );
     var ouRadioVal = $( "input[name='ouRadio']:checked" ).val();
@@ -603,7 +589,6 @@ function getOUDetailsForTARecevied(xmlObject)
         var ouLevel = orgUnits[ i ].getElementsByTagName("level")[0].firstChild.nodeValue;
         var maxOULevel = orgUnits[ i ].getElementsByTagName("maxoulevel")[0].firstChild.nodeValue;
          
-        
         if( ouRadioVal == "orgUnitSelectedRadio"  )
         {
             ouListCDId.disabled = false;
