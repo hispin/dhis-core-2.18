@@ -42,6 +42,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -383,10 +384,12 @@ public class DataSetCompletenessServiceTest
         
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, onTimeA ) );
-                
-        DataSetCompletenessResult resultA = completenessService.getDataSetCompleteness( periodA, tooLateA, unitB, dataSetA );
-        DataSetCompletenessResult resultB = completenessService.getDataSetCompleteness( periodA, tooLateA, unitE, dataSetA );
-        DataSetCompletenessResult resultC = completenessService.getDataSetCompleteness( periodA, tooLateA, unitG, dataSetA );
+        
+        OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+        
+        DataSetCompletenessResult resultA = completenessService.getDataSetCompleteness( periodA, tooLateA, unitB, hierarchy, dataSetA );
+        DataSetCompletenessResult resultB = completenessService.getDataSetCompleteness( periodA, tooLateA, unitE, hierarchy, dataSetA );
+        DataSetCompletenessResult resultC = completenessService.getDataSetCompleteness( periodA, tooLateA, unitG, hierarchy, dataSetA );
         
         DataSetCompletenessResult referenceA = new DataSetCompletenessResult( unitB.getName(), 2, 2, 2 );
         DataSetCompletenessResult referenceB = new DataSetCompletenessResult( unitE.getName(), 1, 1, 1 );

@@ -39,6 +39,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -160,13 +161,15 @@ public class DataSetCompletenessServiceExportTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitB, null ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, null ) );
         
-        DataSetCompletenessResult resultA = completenessService.getDataSetCompleteness( periodA, null, unitB, dataSetA );
-        DataSetCompletenessResult resultB = completenessService.getDataSetCompleteness( periodA, null, unitC, dataSetA );
-        DataSetCompletenessResult resultC = completenessService.getDataSetCompleteness( periodA, null, unitA, dataSetA );
-        DataSetCompletenessResult resultD = completenessService.getDataSetCompleteness( periodB, null, unitB, dataSetA );
-        DataSetCompletenessResult resultE = completenessService.getDataSetCompleteness( periodB, null, unitC, dataSetA );
-        DataSetCompletenessResult resultF = completenessService.getDataSetCompleteness( periodB, null, unitA, dataSetA );
-                
+        OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+        
+        DataSetCompletenessResult resultA = completenessService.getDataSetCompleteness( periodA, null, unitB, hierarchy, dataSetA );
+        DataSetCompletenessResult resultB = completenessService.getDataSetCompleteness( periodA, null, unitC, hierarchy, dataSetA );
+        DataSetCompletenessResult resultC = completenessService.getDataSetCompleteness( periodA, null, unitA, hierarchy, dataSetA );
+        DataSetCompletenessResult resultD = completenessService.getDataSetCompleteness( periodB, null, unitB, hierarchy, dataSetA );
+        DataSetCompletenessResult resultE = completenessService.getDataSetCompleteness( periodB, null, unitC, hierarchy, dataSetA );
+        DataSetCompletenessResult resultF = completenessService.getDataSetCompleteness( periodB, null, unitA, hierarchy, dataSetA );
+        
         assertEquals( new DataSetCompletenessResult( unitB.getName(), 1, 1, 0 ), resultA );
         assertEquals( new DataSetCompletenessResult( unitC.getName(), 1, 1, 0 ), resultB );
         assertEquals( new DataSetCompletenessResult( unitA.getName(), 3, 2, 0 ), resultC );

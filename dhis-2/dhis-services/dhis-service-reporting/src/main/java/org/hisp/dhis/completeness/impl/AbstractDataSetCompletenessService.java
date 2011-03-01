@@ -50,6 +50,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -171,6 +172,9 @@ public abstract class AbstractDataSetCompletenessService
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
         
+        OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+        hierarchy.prepareChildren( units );
+        
         Collection<Period> intersectingPeriods = null;
         Date deadline = null;
         DataSetCompletenessResult result = null;
@@ -196,7 +200,7 @@ public abstract class AbstractDataSetCompletenessService
                         {
                             deadline = getDeadline( intersectingPeriod, days );
                             
-                            result = getDataSetCompleteness( intersectingPeriod, deadline, unit, dataSet );
+                            result = getDataSetCompleteness( intersectingPeriod, deadline, unit, hierarchy, dataSet );
                             
                             aggregatedResult.incrementSources( result.getSources() );
                             aggregatedResult.incrementRegistrations( result.getRegistrations() );
@@ -295,9 +299,9 @@ public abstract class AbstractDataSetCompletenessService
         return results;
     }
 
-    public DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, DataSet dataSet )
+    public DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, OrganisationUnitHierarchy hierarchy, DataSet dataSet )
     {
-        final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( unit.getId() );
+        final Collection<Integer> children = hierarchy.getChildren( unit.getId() );
         
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
         
