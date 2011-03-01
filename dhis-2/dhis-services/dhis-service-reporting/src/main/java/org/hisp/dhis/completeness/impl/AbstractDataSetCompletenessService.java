@@ -175,42 +175,21 @@ public abstract class AbstractDataSetCompletenessService
         OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
         hierarchy.prepareChildren( units );
         
-        Collection<Period> intersectingPeriods = null;
-        Date deadline = null;
-        DataSetCompletenessResult result = null;
+        //TODO Re-implement period aggregation with sql to improve performance
         
         for ( final Period period : periods )
         {
-            intersectingPeriods = periodService.getIntersectingPeriods( period.getStartDate(), period.getEndDate() );
-            
             for ( final OrganisationUnit unit : units )
             {
                 for ( final DataSet dataSet : dataSets )
                 {
-                    final DataSetCompletenessResult aggregatedResult = new DataSetCompletenessResult();
-                    
-                    aggregatedResult.setDataSetId( dataSet.getId() );
-                    aggregatedResult.setPeriodId( period.getId() );
-                    aggregatedResult.setPeriodName( period.getName() );
-                    aggregatedResult.setOrganisationUnitId( unit.getId() );
-                    
-                    for ( final Period intersectingPeriod : intersectingPeriods )
-                    {
-                        if ( intersectingPeriod.getPeriodType().equals( dataSet.getPeriodType() ) )
-                        {
-                            deadline = getDeadline( intersectingPeriod, days );
+                    final Date deadline = getDeadline( period, days );
                             
-                            result = getDataSetCompleteness( intersectingPeriod, deadline, unit, hierarchy, dataSet );
-                            
-                            aggregatedResult.incrementSources( result.getSources() );
-                            aggregatedResult.incrementRegistrations( result.getRegistrations() );
-                            aggregatedResult.incrementRegistrationsOnTime( result.getRegistrationsOnTime() );
-                        }
-                    }
+                    final DataSetCompletenessResult result = getDataSetCompleteness( period, deadline, unit, hierarchy, dataSet );
                     
-                    if ( aggregatedResult.getSources() > 0 )
+                    if ( result.getSources() > 0 )
                     {
-                        batchHandler.addObject( aggregatedResult );
+                        batchHandler.addObject( result );
                     }
                 }
             }
@@ -312,6 +291,7 @@ public abstract class AbstractDataSetCompletenessService
         
         result.setDataSetId( dataSet.getId() );
         result.setPeriodId( period.getId() );
+        result.setPeriodName( period.getName() );
         result.setOrganisationUnitId( unit.getId() );
         
         return result;
