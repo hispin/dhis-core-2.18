@@ -6,49 +6,86 @@ function organisationUnitSelected( organisationUnits )
 	selectedOrganisationUnit = organisationUnits[0];
 }
 
-function analyseData()
+function validateRunAnalyseData()
 {
-	if ( analysisFormIsValid() == true )
+	if( analyseDataInvalid() )
 	{
-		setWaitMessage( i18n_analysing_please_wait );
-		
-		var url = "getAnalysis.action" +
-			"?key=" + $( "#key" ).val() +
-			"&toDate=" + $( "#toDate" ).val() + 
-			"&fromDate=" + $( "#fromDate" ).val() +
-			"&organisationUnit=" + selectedOrganisationUnit +
-			"&" + getParamString( "dataSets", "dataSets" );
-			
-		if ( byId( "standardDeviation" ) != null )
+		$.post("validateRunAnalysis.action",
 		{
-			url += "&standardDeviation=" + $( "#standardDeviation" ).val();
-		}
-		
-		$.get( url, function( data ) {
-			$( "div#analysisInput" ).hide();
-			$( "div#analysisResult" ).show();
-			$( "div#analysisResult" ).html( data );
-		} );
+			fromDate: getFieldValue( 'fromDate' ),
+			toDate: getFieldValue( 'toDate' )
+		},
+		function (data)
+		{
+			runValidationCompleted(data);
+		},'xml');
 	}
 }
 
-function analysisFormIsValid()
-{	
+function analyseDataInvalid ()
+{
+	if( $('#fromDate').val().length == 0 )
+	{
+		setMessage(i18n_specify_a_start_date);
+		return false;
+	}
+	
+	if( $('#toDate').val().length == 0 )
+	{
+		setMessage(i18n_specify_an_ending_date);
+		return false;
+	}
+	
 	var dataSets = document.getElementById( "dataSets" );
 	
 	if ( dataSets.options.length == 0 )
 	{
-		setMessage( "Please select at least one data set" );
-		return false;
-	}
-	
-	if ( selectedOrganisationUnit == null )
-	{
-		setMessage( "Please select an organisation unit" );
+		setMessage( i18n_specify_dataset );
 		return false;
 	}
 	
 	return true;
+}
+
+function runValidationCompleted( messageElement )
+{ 
+	var type = messageElement.firstChild.getAttribute( 'type' );
+	var message = messageElement.firstChild.firstChild.nodeValue;
+
+	if ( type == 'success' )
+	{
+		analyseData();
+	}
+	else if ( type == 'error' )
+	{
+		window.alert( i18n_validation_failed + ':' + '\n' + message );
+	}
+	else if ( type == 'input' )
+	{
+		setMessage( message );
+	} 
+}
+
+function analyseData()
+{
+	setWaitMessage( i18n_analysing_please_wait );
+	
+	var url = "getAnalysis.action" +
+		"?key=" + $( "#key" ).val() +
+		"&toDate=" + $( "#toDate" ).val() + 
+		"&fromDate=" + $( "#fromDate" ).val() +
+		"&" + getParamString( "dataSets", "dataSets" );
+		
+	if ( byId( "standardDeviation" ) != null )
+	{
+		url += "&standardDeviation=" + $( "#standardDeviation" ).val();
+	}
+	
+	$.get( url, function( data ) {
+		$( "div#analysisInput" ).hide();
+		$( "div#analysisResult" ).show();
+		$( "div#analysisResult" ).html( data );
+	} );
 }
 
 function getFollowUpAnalysis()

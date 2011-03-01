@@ -42,6 +42,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -58,7 +59,7 @@ public class GetAnalysisAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( GetAnalysisAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -70,11 +71,11 @@ public class GetAnalysisAction
         this.serviceProvider = serviceProvider;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private SelectionTreeManager selectionTreeManager;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private PeriodService periodService;
@@ -129,17 +130,10 @@ public class GetAnalysisAction
     }
 
     private Collection<String> dataSets;
-    
+
     public void setDataSets( Collection<String> dataSets )
     {
         this.dataSets = dataSets;
-    }
-
-    private Integer organisationUnit;
-    
-    public void setOrganisationUnit( Integer organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
     }
 
     private Double standardDeviation;
@@ -148,18 +142,25 @@ public class GetAnalysisAction
     {
         this.standardDeviation = standardDeviation;
     }
-    
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private Collection<DeflatedDataValue> dataValues = new ArrayList<DeflatedDataValue>();
 
     public Collection<DeflatedDataValue> getDataValues()
     {
         return dataValues;
     }
-    
+
     private boolean maxExceeded;
 
     public boolean isMaxExceeded()
@@ -175,9 +176,9 @@ public class GetAnalysisAction
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
         Collection<Period> periods = null;
-        OrganisationUnit unit = null;
-        
-        if ( fromDate != null && toDate != null && dataSets != null && organisationUnit != null )
+        OrganisationUnit unit = selectionTreeManager.getReloadedSelectedOrganisationUnit();;
+
+        if ( fromDate != null && toDate != null && dataSets != null )
         {
             periods = periodService.getPeriodsBetweenDates( format.parseDate( fromDate ), format.parseDate( toDate ) );
 
@@ -185,22 +186,22 @@ public class GetAnalysisAction
             {
                 dataElements.addAll( dataSetService.getDataSet( Integer.parseInt( id ) ).getDataElements() );
             }
-        
-            unit = organisationUnitService.getOrganisationUnit( organisationUnit );
-            
-            log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit + ", Std dev: " + standardDeviation + ", Key: " + key );
+
+
+            log.info( "From date: " + fromDate + ", To date: " + toDate + ", Organisation unit: " + unit
+                + ", Std dev: " + standardDeviation + ", Key: " + key );
             log.info( "Nr of data elements: " + dataElements.size() + " Nr of periods: " + periods.size() );
         }
-        
+
         DataAnalysisService service = serviceProvider.provide( key );
 
         if ( service != null ) // Follow-up analysis has no input params
-        {      
+        {
             dataValues = service.analyse( unit, dataElements, periods, standardDeviation );
-            
+
             maxExceeded = dataValues.size() > DataAnalysisService.MAX_OUTLIERS;
         }
-        
+
         return SUCCESS;
     }
 }
