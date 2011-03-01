@@ -115,7 +115,7 @@ public class DashBoardHomePageAction
     {
         statementManager.initialise();
         
-        clearCache();
+        //clearCache();
         
         resultString = "";
         //getIndicatorValues();

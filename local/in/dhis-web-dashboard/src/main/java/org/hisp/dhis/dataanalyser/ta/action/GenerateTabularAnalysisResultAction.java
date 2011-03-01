@@ -214,11 +214,6 @@ public class GenerateTabularAnalysisResultAction
         this.deSelection = deSelection;
     }
 
-    /*
-     * private String ouSelCB;
-     * 
-     * public void setOuSelCB( String ouSelCB ) { this.ouSelCB = ouSelCB; }
-     */
     private List<String> orgUnitListCB;
 
     public void setOrgUnitListCB( List<String> orgUnitListCB )
@@ -283,21 +278,11 @@ public class GenerateTabularAnalysisResultAction
         /* Initialization */
         statementManager.initialise();
 
-        /* Service Info */
-        /*
-         * Indicator selIndicator = new Indicator(); DataElement selDataElement
-         * = new DataElement(); DataElementCategoryOptionCombo selDecoc = new
-         * DataElementCategoryOptionCombo();
-         */
-        // int flag = 0;
         selOUList = new ArrayList<OrganisationUnit>();
         selStartPeriodList = new ArrayList<Date>();
         selEndPeriodList = new ArrayList<Date>();
 
         ouChildCountMap = new HashMap<OrganisationUnit, Integer>();
-
-      //  String monthOrder[] = { "04", "05", "06", "07", "08", "09", "10", "11", "12", "01", "02", "03" };
-       // int monthDays[] = { 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31 };
 
         String monthOrder[] = {  "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
         int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -309,7 +294,6 @@ public class GenerateTabularAnalysisResultAction
         String endD = "";
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
-       // SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat( "yyyy-MM-dd" );
        
         periodNames = new ArrayList<String>();
         // for weekly period
@@ -338,30 +322,15 @@ public class GenerateTabularAnalysisResultAction
             System.out.println( " Inside other than weekly" );
             for ( String year : yearLB )
             {
-                //int selYear = Integer.parseInt( year.split( "-" )[0] );
-                
                 int selYear = Integer.parseInt( year );
         
                 if ( periodTypeLB.equalsIgnoreCase( YearlyPeriodType.NAME ) )
                 {
-        
-                   // startD = "" + selYear + "-04-01";
-                   // endD = "" + (selYear + 1) + "-03-31";
-                    
-                    
                     startD = "" + selYear + "-01-01";
                     endD = "" + selYear  + "-12-31";
                     
-                   // System.out.println( " Start Peroid  : " + format.parseDate( startD ) + " , End Peroid : " + format.parseDate( endD ) );
-                    
                     selStartPeriodList.add( format.parseDate( startD ) );
                     selEndPeriodList.add( format.parseDate( endD ) );
-                    
-                   // System.out.println( "Size of Start Peroid List : " + selStartPeriodList.size() + " , Size of End Peroid List : " + selEndPeriodList.size() );
-                    
-                    //System.out.println( " Start Peroid List : " + selStartPeriodList + " , End Peroid List : " + selEndPeriodList );
-                    
-                   // periodNames.add( "" + selYear + "-" + (selYear + 1) );
                     
                     periodNames.add( "" + selYear );
         
@@ -370,8 +339,6 @@ public class GenerateTabularAnalysisResultAction
         
                 for ( String periodStr : periodLB )
                 {
-                   // int period = Integer.parseInt( periodStr );
-        
                     if ( periodTypeLB.equalsIgnoreCase( MonthlyPeriodType.NAME ) )
                     {
                         int period = Integer.parseInt( periodStr );
@@ -388,10 +355,7 @@ public class GenerateTabularAnalysisResultAction
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
                         
-                       // System.out.println( "Size of Start Date List : " + selStartPeriodList.size() + " , Size of End Date List : " + selEndPeriodList.size() );
-                        
                         periodNames.add( simpleDateFormat.format( format.parseDate( startD ) ) );
-                        
                     }
                     else if ( periodTypeLB.equalsIgnoreCase( QuarterlyPeriodType.NAME ) )
                     {
@@ -422,7 +386,6 @@ public class GenerateTabularAnalysisResultAction
                         }
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
-                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
                     }
                     else if ( periodTypeLB.equalsIgnoreCase( SixMonthlyPeriodType.NAME ) )
                     {
@@ -442,7 +405,6 @@ public class GenerateTabularAnalysisResultAction
                        
                         selStartPeriodList.add( format.parseDate( startD ) );
                         selEndPeriodList.add( format.parseDate( endD ) );
-                        //System.out.println( "Start Date : " + startD + " , End Date : " + endD );
                     }
                     else if ( periodTypeLB.equalsIgnoreCase( DailyPeriodType.NAME ) )
                     {
@@ -452,22 +414,18 @@ public class GenerateTabularAnalysisResultAction
                        startD = selYear + "-" + periodStr;
                        endD = selYear + "-" + periodStr ;
                        
-                       if ( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
+                       if( selYear  % 4 != 0 && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) )
                        {
-                            startD = selYear + "-" + month + "-" + date;
-                            endD = selYear + "-" + month + "-" + date;
-                            continue;
+                           continue;
                        }
-                       if ( (( selYear % 400 == 0) || (( selYear % 100 != 0 && selYear % 4 == 0))) && month.trim().equalsIgnoreCase( "02" )  && date.trim().equalsIgnoreCase( "29" ) ); 
-                       {
-                            startD = selYear + "-" + month + "-" + date;
-                            endD = selYear  + "-" + month + "-" + date;
-                       }
+
+                       startD = selYear + "-" + month + "-" + date;
+                       endD = selYear  + "-" + month + "-" + date;
+                       
                        selStartPeriodList.add( format.parseDate( startD ) );
                        selEndPeriodList.add( format.parseDate( endD ) );
-                        
+                       System.out.println( startD + " *** " + endD );
                        periodNames.add( startD );
-                       // System.out.println( startD + " : " + endD );
                     }
                 }
             }
@@ -872,40 +830,35 @@ public class GenerateTabularAnalysisResultAction
         sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
 
         selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( organisationUnitService
+        List<OrganisationUnit> selOUList = new ArrayList<OrganisationUnit>( organisationUnitService
             .getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
-        System.out.println( "ordunitlevelcb = " + orgUnitLevelCB );
         OrganisationUnitGroup selOrgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitLevelCB );
-        selOUList = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
+        List<OrganisationUnit> orgUnitList1 = new ArrayList<OrganisationUnit>( selOrgUnitGroup.getMembers() );
 
         selOUList.retainAll( orgUnitList1 );
-        // List<OrganisationUnit> ouList = new
-        // ArrayList<OrganisationUnit>(selOUList);
-        // int minLevel = organisationUnitService.getLevelOfOrganisationUnit(
-        // selOrgUnit );
-        // int maxLevel = organisationUnitService.getLevelOfOrganisationUnit(
-        // ouList.get( 0 ) );
 
-        Collections.sort( selOUList, new OrganisationUnitNameComparator() );
+        //Collections.sort( selOUList, new OrganisationUnitNameComparator() );
         // displayPropertyHandler.handle( selOUList );
 
         int minOULevel = 1;
+        int maxOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
+        
+        
         /*
-         * int maxOuLevel = 1; if( selOUList != null && selOUList.size() > 0 ) {
-         * if(orgUnitLevelCB != null ) { maxOuLevel =
-         * organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0
-         * ) ); }
-         * 
-         * }
-         */
         if ( orgUnitLevelCB != null )
+        {
             minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOrgUnit );
-
+        }
+        */
+        
         int c1 = headerCol + 1;
 
-        sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
-        sheet0.addCell( new Label( c1, headerRow, "Facility", getCellFormat1() ) );
-        c1++;
+        for( int i = minOULevel; i <= maxOULevel; i++ )
+        {
+            sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
+            sheet0.addCell( new Label( c1, headerRow, "Level- "+i, getCellFormat1() ) );
+            c1++;
+        }
 
         /* Calculation Part */
         int rowCount = 1;
@@ -919,8 +872,19 @@ public class GenerateTabularAnalysisResultAction
 
             // sheet0.mergeCells( colCount, headerRow+1+rowCount, colCount,
             // headerRow+1+rowCount+ouChildCountMap.get( ou ));
-            sheet0.addCell( new Label( 1, rowCount + 1, ou.getName(), getCellFormat2() ) );
-
+            sheet0.addCell( new Label( colCount, rowCount + 1, ou.getName(), getCellFormat2() ) );
+            
+            OrganisationUnit orgUnit = new OrganisationUnit();
+            orgUnit = ou;
+            int count1=1;
+            while( orgUnit.getParent() != null )
+            {
+                orgUnit = orgUnit.getParent();
+                sheet0.addCell( new Label( colCount-count1, rowCount + 1, orgUnit.getName(), getCellFormat2() ) );
+                count1++;
+            }
+            
+            
             /*
              * 
              * OrganisationUnit parentOu = ou; for(int i =
@@ -1227,23 +1191,17 @@ public class GenerateTabularAnalysisResultAction
     }
 
     // -------------------------------------------------------------------------
-    // Methods for getting OrgUnit Lebel wise List in Excel Sheet
+    // Method for getting OrgUnit Level wise List in Excel Sheet
     // -------------------------------------------------------------------------
-
     public void generateOrgUnitLevel()
         throws Exception
     {
         int startRow = 0;
-        // int startCol = 0;
         int headerRow = 0;
         int headerCol = 0;
 
-        System.out.println( "inside the generateOrgUnitLevel" );
-
-        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER )
-            .getValue();
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-            + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+        String raFolderName = configurationService.getConfigurationByKey( Configuration_IN.KEY_REPORTFOLDER ).getValue();
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
         WritableSheet sheet0 = outputReportWorkbook.createSheet( "TabularAnalysis", 0 );
 
@@ -1251,9 +1209,7 @@ public class GenerateTabularAnalysisResultAction
         sheet0.addCell( new Label( headerCol, headerRow, "Sl.No.", getCellFormat1() ) );
 
         selOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
-
-        selOUList = getChildOrgUnitTree( selOrgUnit );
-        System.out.println( "selected OugUnit : " + selOUList.get( 0 ).getName() );
+        selOUList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selOrgUnit.getId() ) );
 
         Iterator<OrganisationUnit> ouIterator = selOUList.iterator();
         while ( ouIterator.hasNext() )
@@ -1273,10 +1229,7 @@ public class GenerateTabularAnalysisResultAction
         }
         maxOuLevel = orgUnitLevelCB;
 
-        System.out.println( "minOULevel : " + minOULevel + ", maxOuLevel : " + maxOuLevel );
-
         int c1 = headerCol + 1;
-
         for ( int i = minOULevel; i <= maxOuLevel; i++ )
         {
             sheet0.mergeCells( c1, headerRow, c1, headerRow + 1 );
@@ -1297,21 +1250,7 @@ public class GenerateTabularAnalysisResultAction
         {
             sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
             colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou ) - minOULevel;
-            // System.out.println(colCount + " : " + minOULevel + " : " +
-            // organisationUnitService.getLevelOfOrganisationUnit( ou ));
-
-            // sheet0.mergeCells( colCount, headerRow+1+rowCount, colCount,
-            // headerRow+1+rowCount+ouChildCountMap.get( ou ));
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
-
-            /*
-             * OrganisationUnit parentOu = ou; for(int i =
-             * maxOuLevel-minOULevel+1; i >= minOULevel-1; i-- ) { if( i ==
-             * colCount ) { sheet0.addCell( new Label( colCount-1,
-             * headerRow+1+rowCount, ou.getName(), getCellFormat2() ) ); } else
-             * { parentOu = parentOu.getParent(); sheet0.addCell( new Label( i,
-             * headerRow+rowCount, parentOu.getName(), getCellFormat2() ) ); } }
-             */
 
             colCount = c1;
             for ( String service : selectedServices )
@@ -1331,7 +1270,6 @@ public class GenerateTabularAnalysisResultAction
                         {
                             sheet0.mergeCells( colCount, startRow, colCount, startRow + 1 );
                         }
-
                         sheet0.addCell( new Label( colCount, startRow, selIndicator.getName(), getCellFormat1() ) );
                     }
                 }
@@ -1342,22 +1280,18 @@ public class GenerateTabularAnalysisResultAction
 
                     if ( deSelection.equalsIgnoreCase( "optioncombo" ) )
                     {
-                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer
-                            .parseInt( partsOfService[2] ) );
+                        selDecoc = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( partsOfService[2] ) );
                         if ( rowCount == 1 )
                         {
                             if ( aggPeriodCB == null )
                             {
-                                sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1,
-                                    startRow );
+                                sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
                             }
                             else
                             {
                                 sheet0.mergeCells( colCount, startRow, colCount, startRow + 1 );
                             }
-
-                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-"
-                                + selDecoc.getName(), getCellFormat1() ) );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName() + "-" + selDecoc.getName(), getCellFormat1() ) );
                         }
                     }
                     else
@@ -1366,16 +1300,13 @@ public class GenerateTabularAnalysisResultAction
                         {
                             if ( aggPeriodCB == null )
                             {
-                                sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1,
-                                    startRow );
+                                sheet0.mergeCells( colCount, startRow, colCount + selStartPeriodList.size() - 1, startRow );
                             }
                             else
                             {
                                 sheet0.mergeCells( colCount, startRow, colCount, startRow + 1 );
                             }
-
-                            sheet0
-                                .addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
+                            sheet0.addCell( new Label( colCount, startRow, selDataElement.getName(), getCellFormat1() ) );
                         }
                     }
                 }
@@ -1403,6 +1334,7 @@ public class GenerateTabularAnalysisResultAction
                         if ( tempAggVal == null )
                             tempAggVal = 0.0;
                         pwnumAggValue = tempAggVal;
+                        
                         tempAggVal = aggregationService.getAggregatedDenominatorValue( selIndicator, sDate, eDate, ou );
                         if ( tempAggVal == null )
                             tempAggVal = 0.0;
@@ -1415,7 +1347,6 @@ public class GenerateTabularAnalysisResultAction
 
                         pwdAggIndValue = Math.round( pwdAggIndValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
                         tempStr = "" + pwdAggIndValue;
-
                     }
                     else if ( flag == 2 )
                     {
@@ -1423,8 +1354,7 @@ public class GenerateTabularAnalysisResultAction
                         {
                             if ( selDataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
                             {
-                                tempAggVal = aggregationService.getAggregatedDataValue( selDataElement, selDecoc,
-                                    sDate, eDate, ou );
+                                tempAggVal = aggregationService.getAggregatedDataValue( selDataElement, selDecoc, sDate, eDate, ou );
                                 if ( tempAggVal == null )
                                     tempAggVal = 0.0;
                                 pwdvAggValue = tempAggVal;
@@ -1437,10 +1367,9 @@ public class GenerateTabularAnalysisResultAction
                                 Period tempPeriod = periodService.getPeriod( sDate, eDate, periodType );
                                 if ( tempPeriod != null )
                                 {
-                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement,
-                                        tempPeriod, selDecoc );
+                                    DataValue dataValue = dataValueService.getDataValue( ou, selDataElement, tempPeriod, selDecoc );
 
-                                    if ( dataValue != null )
+                                    if ( dataValue != null && dataValue.getValue() != null )
                                     {
                                         tempStr = dataValue.getValue();
                                     }

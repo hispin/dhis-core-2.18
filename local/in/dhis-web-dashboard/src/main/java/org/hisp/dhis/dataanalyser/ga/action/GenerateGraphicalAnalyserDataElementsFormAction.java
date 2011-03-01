@@ -189,11 +189,9 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         return orgUnitGroups;
     }
 
-    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    
 
     public String execute() throws Exception
     {
@@ -201,22 +199,19 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         /* DataElements and Groups */
         dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         
-        System.out.println(" dataElements size before filter = "+ dataElements.size());
         // take only those dataElement which are VALUE_TYPE_INT and DOMAIN_TYPE_AGGREGATE
         Iterator<DataElement> alldeIterator = dataElements.iterator();
         while ( alldeIterator.hasNext() )
         {
             DataElement de1 = alldeIterator.next();
             if ( !de1.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) || !de1.getDomainType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_AGGREGATE ) )
-           // if ( !de1.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) || !de1.getType().equalsIgnoreCase( DataElement.DOMAIN_TYPE_AGGREGATE ) )
             {
                 alldeIterator.remove();
             }
         }
-        System.out.println(" dataElements size after filter= " + dataElements.size());
-       // Collections.sort( dataElements, dataElementComparator );
-        
+
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
+        
         Collections.sort( dataElements, new DataElementNameComparator() );
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
         
@@ -224,18 +219,6 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
         
         Iterator<PeriodType> ptIterator = periodTypes.iterator();
-       /*
-        while ( ptIterator.hasNext() )
-        {
-            String pTName = ptIterator.next().getName();
-            if ( pTName.equalsIgnoreCase( DailyPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME )
-                || pTName.equalsIgnoreCase( OnChangePeriodType.NAME )
-                || pTName.equalsIgnoreCase( WeeklyPeriodType.NAME ) || pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME) )
-            {
-                ptIterator.remove();
-            }
-        }
-        */
         while ( ptIterator.hasNext() )
         {
             String pTName = ptIterator.next().getName();
@@ -248,14 +231,15 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         
         dailyPeriodTypeName = DailyPeriodType.NAME;
         weeklyPeriodTypeName = WeeklyPeriodType.NAME;
-        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
-        periodNameList = new ArrayList<String>();
-        Collections.sort( monthlyPeriods, new PeriodComparator() );
-        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthlyPeriodTypeName = MonthlyPeriodType.NAME;
         quarterlyPeriodTypeName = QuarterlyPeriodType.NAME;
         sixMonthPeriodTypeName = SixMonthlyPeriodType.NAME;
         yearlyPeriodTypeName = YearlyPeriodType.NAME;
+        
+        monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );
+        periodNameList = new ArrayList<String>();
+        Collections.sort( monthlyPeriods, new PeriodComparator() );
+        simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
 
         yearlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new YearlyPeriodType() ) );
         Iterator<Period> periodIterator = yearlyPeriods.iterator();
@@ -272,13 +256,8 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         
         Collections.sort( yearlyPeriods, new PeriodComparator() );
         simpleDateFormat = new SimpleDateFormat( "yyyy" );
-        //System.out.println( monthlyPeriodTypeName );
-       // int year;
         for ( Period p1 : yearlyPeriods )
         {
-           // year = Integer.parseInt( simpleDateFormat.format( p1.getStartDate() ) ) + 1;
-           // periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) + "-" + year );
-            
             periodNameList.add( simpleDateFormat.format( p1.getStartDate() ) );
         }
         

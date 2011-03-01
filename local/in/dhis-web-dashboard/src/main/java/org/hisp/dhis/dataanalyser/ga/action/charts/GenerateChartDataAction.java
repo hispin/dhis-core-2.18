@@ -986,10 +986,8 @@ public class GenerateChartDataAction
                                 String values = selectedOrgUnit.getId() + ":"+ dElement.getId() + ":"+ decoc1.getId() + ":" + p.getId();
                                 selectedValues.add(values);
 
-                                CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService.getCaseAggregationCondition( dElement, decoc );
+                                CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService.getCaseAggregationCondition( dElement, decoc1 );
 
-                                //CaseAggregationMapping caseAggMapping = caseAggregationMappingService.getCaseAggregationMappingByOptionCombo( dElement, decoc1 );
-                                
                                 if( caseAggregationCondition == null )
                                 {
                                     selectedStatus.add( "no" );
