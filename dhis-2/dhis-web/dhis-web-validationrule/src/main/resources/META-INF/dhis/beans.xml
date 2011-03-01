@@ -248,8 +248,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
 	<property name="serviceProvider"
 	  ref="dataAnalysisServiceProvider"/>
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="selectionTreeManager"
+      ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
     <property name="periodService" 
       ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataSetService" 
@@ -288,6 +288,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
   </bean>	
 
+ <bean id="org.hisp.dhis.validationrule.action.dataanalysis.ValidationRunAnalysisAction"
+    class="org.hisp.dhis.validationrule.action.dataanalysis.ValidationRunAnalysisAction" 
+    scope="prototype">
+    <property name="selectionTreeManager">
+      <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+    </property>
+  </bean>
   <!-- PDF -->
 
   <bean id="org.hisp.dhis.validationrule.action.pdf.ExportToPdfAction" 
