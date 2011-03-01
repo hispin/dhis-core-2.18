@@ -106,7 +106,7 @@ public class SaveValueAction
         this.indicatorId = indicatorId;
     }    
 
-    private int statusCode;
+    private int statusCode=0;
 
     public int getStatusCode()
     {
