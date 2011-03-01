@@ -226,9 +226,9 @@ public abstract class AbstractDataSetCompletenessService
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET );        
         Date deadline = getDeadline( period, days );
         
-        final Collection<Integer> children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( organisationUnitId ) );
+        final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitId );
         
-        final Collection<DataSet> dataSets = dataSetService.getAllDataSets(); // getDataSetsBySources( children ); TODO fix?
+        final Collection<DataSet> dataSets = dataSetService.getAllDataSets();
         
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
@@ -270,11 +270,9 @@ public abstract class AbstractDataSetCompletenessService
         
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
         
-        Collection<Integer> children = null;
-        
         for ( final OrganisationUnit unit : units )
         {
-            children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+            final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( unit.getId() );
             
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
 
@@ -298,8 +296,8 @@ public abstract class AbstractDataSetCompletenessService
     }
 
     public DataSetCompletenessResult getDataSetCompleteness( Period period, Date deadline, OrganisationUnit unit, DataSet dataSet )
-    {        
-        final Collection<Integer> children = getIdentifiers( OrganisationUnit.class, organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+    {
+        final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren( unit.getId() );
         
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
         
