@@ -114,30 +114,37 @@ public class AddRepresentativeAction
         // Get FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
+     // ---------------------------------------------------------------------
+        // Set FirstName, MiddleName, LastName by FullName
+        // ---------------------------------------------------------------------
+        
+        fullName = fullName.trim();
+        
         int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
-        String name = fullName.substring( 0, startIndex );
-        patient.setFirstName( name );
+        String firstName = fullName.toString();
+        String middleName = "";
+        String lastName = "";
 
-        if ( startIndex == endIndex )
+        if( fullName.indexOf( ' ' ) != -1 )
         {
-            patient.setMiddleName( "" );
-            
-            name = fullName.substring( startIndex, fullName.length() );
-            patient.setLastName( name );
+            firstName = fullName.substring( 0, startIndex );
+            if ( startIndex == endIndex )
+            {
+                middleName = "";
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
+            }
+            else
+            {
+                middleName = fullName.substring( startIndex + 1, endIndex );
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
+            }
         }
-        else
-        {
-            name = fullName.substring( startIndex + 1, endIndex );
-            patient.setMiddleName( name );
-            
-            name = fullName.substring( endIndex, fullName.length() );
-            patient.setLastName( name );
-        }
-        
-        patient.setLastName( fullName.substring( endIndex, fullName.length() ) );
 
+        patient.setFirstName( firstName );
+        patient.setMiddleName( middleName );
+        patient.setLastName( lastName );
         // ---------------------------------------------------------------------
         // Get Other information for patient
         // ---------------------------------------------------------------------
