@@ -30,40 +30,38 @@ public class UpdateMobileDataSetAction
     {
         this.selectedList = selectedList;
     }
-    
+
     private Collection<String> availableList = new HashSet<String>();
-    
+
     public void setAvailableList( Collection<String> availableList )
     {
         this.availableList = availableList;
     }
-    
+
     @Override
     public String execute()
         throws Exception
     {
-        try{
         DataSet dataset = null;
-        for(String id : selectedList){
+        for ( String id : selectedList )
+        {
             dataset = dataSetService.getDataSet( Integer.parseInt( id ) );
-            if(!dataset.isMobile()){
-                System.out.println("set dataset "+ dataset.getName()+" to true");
+            if ( !dataset.isMobile() )
+            {
                 dataset.setMobile( true );
                 dataSetService.updateDataSet( dataset );
             }
         }
-        for(String id : availableList){
+        for ( String id : availableList )
+        {
             dataset = dataSetService.getDataSet( Integer.parseInt( id ) );
-            if(dataset.isMobile()){
-                System.out.println("set dataset "+ dataset.getName()+" to false");
+            if ( dataset.isMobile() )
+            {
                 dataset.setMobile( false );
                 dataSetService.updateDataSet( dataset );
             }
         }
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        
         return SUCCESS;
     }
 
