@@ -41,7 +41,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
