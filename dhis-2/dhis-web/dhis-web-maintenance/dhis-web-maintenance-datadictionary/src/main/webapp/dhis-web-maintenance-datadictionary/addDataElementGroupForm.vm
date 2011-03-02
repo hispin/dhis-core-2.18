@@ -17,7 +17,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
