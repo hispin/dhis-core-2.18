@@ -675,7 +675,6 @@ public class DefaultImportObjectService<T>
         importObjectManager.importOlapURLs();
         importObjectManager.importCompleteDataSetRegistrations();
         importObjectManager.importDataValues();
-        importObjectManager.importDataElements();
 
         NameMappingUtil.clearMapping();
 
