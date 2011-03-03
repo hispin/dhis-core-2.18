@@ -208,8 +208,16 @@ public class HibernateDataSetStore
         query.setEntity( "source", source );
 
         return query.list();
-
     }
+    
+    @SuppressWarnings( "unchecked" )
+    public Collection<DataSet> getDataSetsForMobile()
+    {
+        String hql = "from DataSet d where d.mobile = true";
+        Query query = sessionFactory.getCurrentSession().createQuery( hql );
+
+        return query.list();
+    }    
 
     public Collection<DataSet> getMobileDataSetsFromCategoryOption( int categoryOptionId )
     {

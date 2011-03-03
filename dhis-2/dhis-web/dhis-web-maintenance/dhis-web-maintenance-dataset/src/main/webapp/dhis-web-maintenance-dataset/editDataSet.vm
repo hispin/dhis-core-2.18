@@ -46,14 +46,7 @@
             #end
           </select>
         </td>
-      </tr>	 
-      <tr>
-		<td>$i18n.getString("available_for_mobile_reporting")</td>
-		<td>
-			<input type="checkbox" name="mobile" id="mobile" value="true" #if( $dataSet.mobile ) checked="checked"#end>
-		</td>
-	  </tr>
-	   
+      </tr>	   
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
     </tbody>
   </table>

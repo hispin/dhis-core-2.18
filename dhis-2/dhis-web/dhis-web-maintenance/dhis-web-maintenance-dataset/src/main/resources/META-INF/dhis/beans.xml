@@ -143,9 +143,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService">
 			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
 		</property>
-		<property name="selectionManager">
-			<ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
-		</property>
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.UpdateMobileDataSetAction"
