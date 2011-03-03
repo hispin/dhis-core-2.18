@@ -1,9 +1,13 @@
 package org.hisp.dhis.dataset.action;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
@@ -23,36 +27,29 @@ public class MobileDataSetListAction
         this.dataSetService = dataSetService;
     }
     
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-    
     // -------------------------------------------------------------------------
     // Getters and Setters
     // -------------------------------------------------------------------------
-    private Collection<DataSet> dataSets;
+    private List<DataSet> dataSets;
     
-    public void setDataSets( Collection<DataSet> dataSets )
+    public void setDataSets( List<DataSet> dataSets )
     {
         this.dataSets = dataSets;
     }
     
-    public Collection<DataSet> getDataSets()
+    public List<DataSet> getDataSets()
     {
         return dataSets;
     }
     
-    private Collection<DataSet> mobileDatasets;
+    private List<DataSet> mobileDatasets;
 
-    public Collection<DataSet> getMobileDatasets()
+    public List<DataSet> getMobileDatasets()
     {
         return mobileDatasets;
     }
 
-    public void setMobileDatasets( Collection<DataSet> mobileDatasets )
+    public void setMobileDatasets( List<DataSet> mobileDatasets )
     {
         this.mobileDatasets = mobileDatasets;
     }
@@ -61,11 +58,11 @@ public class MobileDataSetListAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit selectedUnits =  selectionManager.getSelectedOrganisationUnit();
-        dataSets = dataSetService.getDataSetsBySource( selectedUnits );
-        mobileDatasets = dataSetService.getDataSetsForMobile( selectedUnits );
+        dataSets = new ArrayList<DataSet>(dataSetService.getAllDataSets());
+        mobileDatasets = new ArrayList<DataSet>(dataSetService.getDataSetsForMobile());
         dataSets.removeAll( mobileDatasets );
-        System.out.println("Number of datasets:"+ dataSets.size());
+        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( mobileDatasets, new DataSetNameComparator() );
         return SUCCESS;
     }
 

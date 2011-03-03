@@ -203,10 +203,15 @@ public interface DataSetService
     Collection<DataElement> getDataElements( DataSet dataSet );
     
     /**
-     * Returns all DataSets that can be collected through mobile.
+     * Returns all DataSets that can be collected through mobile (one organisation unit).
      */
     Collection<DataSet> getDataSetsForMobile(Source source);
 
+    /**
+     * Returns all DataSets that can be collected through mobile (all organisation unit).
+     */
+    Collection<DataSet> getDataSetsForMobile();
+    
     /**
      * Get list of realted datasets from categoryOption
      * 

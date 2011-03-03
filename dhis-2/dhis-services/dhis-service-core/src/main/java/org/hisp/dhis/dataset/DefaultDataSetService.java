@@ -293,6 +293,10 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getDataSetsForMobile(source) );		
     }
     
+    public Collection<DataSet> getDataSetsForMobile(){
+        return i18n( i18nService, dataSetStore.getDataSetsForMobile() );
+    }
+    
     public Collection<DataSet> getMobileDataSetsFromCategoryOption(int categoryOptionId){
         return dataSetStore.getMobileDataSetsFromCategoryOption(categoryOptionId);
     }

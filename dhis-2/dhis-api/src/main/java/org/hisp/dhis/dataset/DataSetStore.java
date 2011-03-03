@@ -128,6 +128,8 @@ public interface DataSetStore
      * Returns all DataSets that can be collected through mobile.
      */
     Collection<DataSet> getDataSetsForMobile(Source source);
+    
+    Collection<DataSet> getDataSetsForMobile();
 
     Collection<DataSet> getDataSetsBySources( Collection<? extends Source> sources );
     
