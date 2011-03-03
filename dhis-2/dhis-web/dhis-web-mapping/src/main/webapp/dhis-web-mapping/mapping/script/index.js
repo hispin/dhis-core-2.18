@@ -378,18 +378,28 @@
     pointLayer.layerType = G.conf.map_layer_type_thematic;
     G.vars.map.addLayer(pointLayer);
     
-    /* Init base layers */	
-    var osmarender = new OpenLayers.Layer.OSM.Osmarender("OSM Osmarender");
-    osmarender.layerType = G.conf.map_layer_type_baselayer;
-    G.vars.map.addLayer(osmarender);
-    
-    var mapnik = new OpenLayers.Layer.OSM.Mapnik("OSM Mapnik");
-    mapnik.layerType = G.conf.map_layer_type_baselayer;
-    G.vars.map.addLayer(mapnik);
-    
-    var cyclemap = new OpenLayers.Layer.OSM.CycleMap("OSM CycleMap");
-    cyclemap.layerType = G.conf.map_layer_type_baselayer;
-    G.vars.map.addLayer(cyclemap);
+    /* Init base layers */
+	var gm_normal = new OpenLayers.Layer.Google("GM Default", {
+		type: G_NORMAL_MAP,
+		sphericalMercator: true,
+		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+		numZoomLevels: 21
+	});
+	gm_normal.layerType = G.conf.map_layer_type_baselayer;
+	G.vars.map.addLayer(gm_normal);
+	
+	var gm_hybrid = new OpenLayers.Layer.Google("GM Hybrid", {
+		type: G_HYBRID_MAP,
+		sphericalMercator: true,
+		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+		numZoomLevels: 21
+	});
+	gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
+	G.vars.map.addLayer(gm_hybrid);
+	
+    var osm = new OpenLayers.Layer.OSM.Osmarender("OpenStreetMap");
+    osm.layerType = G.conf.map_layer_type_baselayer;
+    G.vars.map.addLayer(osm);
     
     /* Init overlays */
 	function addOverlaysToMap(init) {

@@ -280,10 +280,26 @@ G.util = {
     setKeepPosition: function(cb) {
         cb.keepPosition = !cb.keepPosition ? true : cb.keepPosition;
     },
- 
-    getTransformedPointByXY: function(x, y) {
-		var p = new OpenLayers.Geometry.Point(parseFloat(x), parseFloat(y));
-        return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+    
+    mergeSvg: function(str, ext) {
+        if (ext.length) {
+            str = str || '<svg>';
+            for (var i = 0; i < ext.length; i++) {
+                str = str.replace('</svg>');
+                ext[i] = ext[i].substring(ext[i].indexOf('>')+1);
+                str += ext[i];
+            }
+        }
+        return str;
+    },
+    
+    getOverlaysSvg: function(overlays) {
+        if (overlays.length) {
+            for (var i = 0; i < overlays.length; i++) {
+                overlays[i] = document.getElementById(overlays[i].svgId).parentNode.innerHTML;
+            }
+        }
+        return overlays;
     },
 
     getTransformedFeatureArray: function(features) {
@@ -293,6 +309,11 @@ G.util = {
             features[i].geometry.transform(sourceProjection, destinationProjection);
         }
         return features;
+    },
+ 
+    getTransformedPointByXY: function(x, y) {
+		var p = new OpenLayers.Geometry.Point(parseFloat(x), parseFloat(y));
+        return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
     },
     
     createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {
@@ -314,20 +335,14 @@ G.util = {
         });
     },
     
-    setOpacityByLayerType: function(type, opacity) {
-        for (var i = 0; i < G.vars.map.layers.length; i++) {
-            if (G.vars.map.layers[i].layerType == type) {
-                G.vars.map.layers[i].setOpacity(opacity);
+    getVisibleLayers: function(layers) {
+        var vLayers = [];
+        for (var i = 0; i < layers.length; i++) {
+            if (layers[i].visibility) {
+                vLayers.push(layers[i]);
             }
         }
-    },
-    
-    setZIndexByLayerType: function(type, index) {
-        for (var i = 0; i < G.vars.map.layers.length; i++) {
-            if (G.vars.map.layers[i].layerType == type) {
-                G.vars.map.layers[i].setZIndex(index);
-            }
-        }
+        return vLayers;
     },
     
     getVectorLayers: function() {
@@ -351,35 +366,20 @@ G.util = {
         return layers;
     },
     
-    getVisibleLayers: function(layers) {
-        var vLayers = [];
-        for (var i = 0; i < layers.length; i++) {
-            if (layers[i].visibility) {
-                vLayers.push(layers[i]);
+    setZIndexByLayerType: function(type, index) {
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == type) {
+                G.vars.map.layers[i].setZIndex(index);
             }
         }
-        return vLayers;
     },
     
-    mergeSvg: function(str, ext) {
-        if (ext.length) {
-            str = str || '<svg>';
-            for (var i = 0; i < ext.length; i++) {
-                str = str.replace('</svg>');
-                ext[i] = ext[i].substring(ext[i].indexOf('>')+1);
-                str += ext[i];
+    setOpacityByLayerType: function(type, opacity) {
+        for (var i = 0; i < G.vars.map.layers.length; i++) {
+            if (G.vars.map.layers[i].layerType == type) {
+                G.vars.map.layers[i].setOpacity(opacity);
             }
         }
-        return str;
-    },
-    
-    getOverlaysSvg: function(overlays) {
-        if (overlays.length) {
-            for (var i = 0; i < overlays.length; i++) {
-                overlays[i] = document.getElementById(overlays[i].svgId).parentNode.innerHTML;
-            }
-        }
-        return overlays;
     },
     
     findArrayValue: function(array, value) {
