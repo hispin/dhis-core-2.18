@@ -1,7 +1,7 @@
 <project>
     <shortName>DHIS2</shortName>
     <fullName>DHIS2</fullName>
-    <version>2.0.5</version>
+    <version>2.1</version>
     <installerFilename>${product_shortname}-${product_version}-${platform_name}-live-JRE-en.${platform_exec_suffix}</installerFilename>
     <readmeFile>../../resources/files/Readme.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
@@ -20,7 +20,16 @@
         <createDirectory>
             <path>${installdir}/webapps</path>
         </createDirectory>
+        <createDirectory>
+            <explanation>Creating temporary directory</explanation>
+            <path>${installdir}\tmp\</path>
+        </createDirectory>
     </readyToInstallActionList>
+    <postUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}</path>
+        </deleteFile>
+    </postUninstallationActionList>
     <allowComponentSelection>1</allowComponentSelection>
     <compressionAlgorithm>lzma</compressionAlgorithm>
     <enableRollback>1</enableRollback>
@@ -44,10 +53,10 @@
                     <platforms>all</platforms>
                     <distributionFileList>
                         <distributionDirectory>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis2-live-installer/resources/conf</origin>
+                            <origin>../../resources/conf</origin>
                         </distributionDirectory>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis-live/target/dhis2-live-jar-with-dependencies.jar</origin>
+                            <origin>../../../dhis-live/target/dhis2-live-jar-with-dependencies.jar</origin>
                         </distributionFile>
                     </distributionFileList>
                     <shortcutList>
@@ -80,7 +89,7 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis-live/target/dhis2-live.exe</origin>
+                            <origin>../../../dhis-live/target/dhis2-live.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -109,8 +118,8 @@
                     <windowsPath>${installdir}/</windowsPath>
                 </startMenuShortcut>
                 <startMenuShortcut>
-                    <comment>Start DHIS2</comment>
-                    <name>Start DHIS2</name>
+                    <comment>Start DHIS 2</comment>
+                    <name>Start DHIS 2</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/dhis2-live.exe</windowsExec>
@@ -142,7 +151,7 @@
                     <platforms>all</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis-2/dhis-web/dhis-web-portal/target/dhis.war</origin>
+                            <origin>../../../dhis-2/dhis-web/dhis-web-portal/target/dhis.war</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -175,7 +184,7 @@
                     <platforms>all</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../Users/jason/dhis2-docbook-docs/target/site/en/pdf/dhis2_user_manual_en.pdf</origin>
+                            <origin>../../../dhis2-docbook-docs/target/docbkx/pdf/dhis2_user_manual_en.pdf</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -191,12 +200,12 @@
             <folderList>
                 <folder>
                     <description>postgres</description>
-                    <destination>${installdir}/temp/postgres</destination>
+                    <destination>${installdir}\tmp\</destination>
                     <name>postgres</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis2-live-installer/resources/postgres/postgresql-9.0.1-1-windows.exe</origin>
+                            <origin>../../resources/postgres/postgresql-9.0.1-1-windows.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -207,7 +216,7 @@
                     <program>postgresql-9.0.1-1-windows.exe</program>
                     <programArguments></programArguments>
                     <progressText>Installing Postgresql</progressText>
-                    <workingDirectory>${installdir}/temp/postgres</workingDirectory>
+                    <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
         </component>
@@ -220,12 +229,12 @@
             <folderList>
                 <folder>
                     <description>JRE</description>
-                    <destination>${installdir}/temp/jre</destination>
+                    <destination>${installdir}\tmp\</destination>
                     <name>JRE</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis2-live-installer/resources/jre/jre-6u18-windows-i586-s.exe</origin>
+                            <origin>../../resources/jre/jre-6u24-windows-i586-s.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -233,32 +242,32 @@
             <postInstallationActionList>
                 <runProgram>
                     <explanation>Installing Java Runtime Enviornment</explanation>
-                    <program>jre-6u18-windows-i586-s.exe</program>
+                    <program>jre-6u24-windows-i586-s.exe</program>
                     <programArguments></programArguments>
                     <progressText>Installing Java Runtime Enviornment</progressText>
-                    <workingDirectory>${installdir}/temp/jre</workingDirectory>
+                    <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
         </component>
         <component>
-            <name>zm_db</name>
-            <description>Zambia DB</description>
+            <name>dhis2db</name>
+            <description>DHIS2 database</description>
             <canBeEdited>1</canBeEdited>
-            <detailedDescription>Zambia DHIS2 Database</detailedDescription>
+            <detailedDescription>DHIS2 Database</detailedDescription>
             <selected>1</selected>
             <show>1</show>
             <folderList>
                 <folder>
                     <description>New Folder</description>
-                    <destination>c:\tmp\</destination>
+                    <destination>${installdir}\tmp\</destination>
                     <name>newfolder</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis2-live-installer/resources/postgres/zm_dhis2.backup</origin>
+                            <origin>../../resources/postgres/dhis2db.backup</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../../../dhis2-2.0.5/2.0.5/dhis2-live-installer/resources/postgres/zm_restore.bat</origin>
+                            <origin>../../resources/postgres/restore_db.bat</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -266,16 +275,16 @@
             <postInstallationActionList>
                 <runProgram>
                     <explanation>Restoring Zambia Database</explanation>
-                    <program>c:/tmp/zm_restore.bat</program>
+                    <program>restore_db.bat</program>
                     <programArguments></programArguments>
                     <progressText>Please be patient. Restoring DB.</progressText>
-                    <workingDirectory>c:/tmp</workingDirectory>
+                    <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
                 <deleteFile>
-                    <path>c:\tmp\zm_dhis2.backup</path>
+                    <path>${installdir}\tmp\dhis2db.backup</path>
                 </deleteFile>
                 <deleteFile>
-                    <path>c:\tmp\zm_restore.bat</path>
+                    <path>${installdir}\tmp\restore_db.bat</path>
                 </deleteFile>
             </postInstallationActionList>
         </component>
@@ -284,7 +293,7 @@
         <deleteFile>
             <abortOnError>0</abortOnError>
             <explanation>Delete temporary files</explanation>
-            <path>${installdir}/temp/postgres/postgresql-9.0.1-1-windows.exe</path>
+            <path>${installdir}\tmp\postgresql-9.0.1-1-windows.exe</path>
         </deleteFile>
         <runProgram>
             <program>${installdir}\dhis2-live.exe</program>

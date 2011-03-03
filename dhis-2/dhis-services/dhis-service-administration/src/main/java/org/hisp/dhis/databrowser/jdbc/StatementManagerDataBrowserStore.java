@@ -52,6 +52,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore
     // -------------------------------------------------------------------------
     // DataBrowserStore implementation
     // -------------------------------------------------------------------------
+    @Override
     public DataBrowserTable getDataSetsBetweenPeriods(
         List<Integer> betweenPeriodIds )
     {
@@ -80,6 +81,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore
         return table;
     }
 
+    @Override
     public DataBrowserTable getDataElementGroupsBetweenPeriods(
         List<Integer> betweenPeriodIds )
     {
@@ -102,6 +104,7 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore
         return table;
     }
 
+    @Override
     public DataBrowserTable getOrgUnitGroupsBetweenPeriods(
         List<Integer> betweenPeriodIds )
     {
@@ -365,8 +368,10 @@ public class StatementManagerDataBrowserStore implements DataBrowserStore
             numResults = table.addColumnToAllRows( resultSet, false );
         } catch ( SQLException e )
         {
+            numResults = 0;
             throw new RuntimeException( "Failed to get aggregated data value\n"
                 + sql, e );
+            
         } finally
         {
             holder.close();
