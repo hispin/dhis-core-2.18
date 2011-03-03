@@ -79,7 +79,7 @@ function reportStatusReceived( xmlObject )
     }
     else
     {
-        setTimeout( "getReportStatus();", millis );
+        setTimeout( "getReportStatus();", 1500 );
     }
 }
 
