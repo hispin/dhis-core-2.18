@@ -92,10 +92,9 @@ public class ViewByPeriodFormAction
     public String execute()
         throws Exception
     {
-
         DataSet dataSet = dataSetService.getDataSet( id );
 
-        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnis() );
+        selectionTreeManager.setSelectedOrganisationUnits( dataSet.getOrganisationUnits() );
 
         periods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( dataSet.getPeriodType() ) );
 
