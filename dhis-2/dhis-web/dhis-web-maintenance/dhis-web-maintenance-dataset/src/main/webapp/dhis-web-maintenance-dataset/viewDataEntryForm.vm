@@ -122,7 +122,17 @@
           <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataSet.action'"/>
         </td>
         <td id="cde_deletebuttoncell">
-          <input type="button" name="delete" value="$i18n.getString( 'delete' )" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )" #if($!status && $status == "ADD") disabled #end/>
+          <input type="button" id='delete' name="delete" value="$i18n.getString( 'delete' )" onclick="removeDataEntryForm( '$dataSet.id', '$dataEntryForm.id', '$dataEntryForm.name' )"/>
+		  <script>
+			if(stat == "EDIT")
+			{
+				enable('delete');
+			}
+			else
+			{
+				disable('delete');
+			}
+		  </script>
         </td>
         </tr>
 		<tr><td><span id="message"></span></td></tr>

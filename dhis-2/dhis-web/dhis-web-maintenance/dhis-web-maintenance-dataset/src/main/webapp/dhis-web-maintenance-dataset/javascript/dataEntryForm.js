@@ -53,7 +53,7 @@ function validateDataEntryForm()
   }
   
   var requestString = 'validateDataEntryForm.action';
-  
+
   var params = 'name=' + document.getElementById( 'nameField' ).value;
   
   if(stat == "ADD")
@@ -191,6 +191,7 @@ function autoSaveDataEntryForm(){
 				setMessage(i18n_save_success); 
 				stat = "EDIT";
 				dataEntryFormId = xmlObject.firstChild.nodeValue;
+				enable('delete');
 			} );
 	  
 	var params = 'nameField=' + getFieldValue('nameField');
