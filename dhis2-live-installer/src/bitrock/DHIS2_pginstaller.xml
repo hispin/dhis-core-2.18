@@ -218,7 +218,8 @@
                     <explanation></explanation>
                     <value></value>
                     <default>postgres</default>
-                    <allowEmptyValue>1</allowEmptyValue>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <askForConfirmation>0</askForConfirmation>
                     <descriptionRetype></descriptionRetype>
                     <width>20</width>
                 </passwordParameter>
@@ -227,7 +228,7 @@
                 <runProgram>
                     <explanation>Installing Postgresql</explanation>
                     <program>postgresql-9.0.1-1-windows.exe</program>
-                    <programArguments>--unattendedmodeui none --superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
+                    <programArguments>--unattendedmodeui none --mode unattended --superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
                     <progressText>Installing Postgresql</progressText>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
