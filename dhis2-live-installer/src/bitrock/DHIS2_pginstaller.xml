@@ -267,7 +267,7 @@
                 <runProgram>
                     <explanation>Installing Java Runtime Enviornment</explanation>
                     <program>jre-6u24-windows-i586-s.exe</program>
-                    <programArguments></programArguments>
+                    <programArguments>/s /v</programArguments>
                     <progressText>Installing Java Runtime Enviornment</progressText>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
