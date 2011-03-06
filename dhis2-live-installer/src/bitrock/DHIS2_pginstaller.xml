@@ -210,14 +210,37 @@
                     </distributionFileList>
                 </folder>
             </folderList>
+            <parameterList>
+                <passwordParameter>
+                    <name>pg_password</name>
+                    <title>Postgresql Password</title>
+                    <description>Please enter a password for the Postgresql superuser.</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>postgres</default>
+                    <allowEmptyValue>1</allowEmptyValue>
+                    <descriptionRetype></descriptionRetype>
+                    <width>20</width>
+                </passwordParameter>
+            </parameterList>
             <postInstallationActionList>
                 <runProgram>
                     <explanation>Installing Postgresql</explanation>
                     <program>postgresql-9.0.1-1-windows.exe</program>
-                    <programArguments></programArguments>
+                    <programArguments>--unattendedmodeui none --superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
                     <progressText>Installing Postgresql</progressText>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
+                <substitute>
+                    <files>${installdir}\tmp\restore_db.bat</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>PG_PASSWORD</pattern>
+                            <value>${pg_password}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
             </postInstallationActionList>
         </component>
         <component>
