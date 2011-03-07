@@ -1,7 +1,7 @@
 <script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
 
 ## You don't have to use this template directly if you don't want to
-<table cellspacing=0 width="760px">
+<table cellspacing=0 width="795px">
 	<thead>
 		<tr>
 			<th colspan="2">$i18n.getString( "organisation_unit_selection_tree" )			

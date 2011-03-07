@@ -14,7 +14,7 @@
 		</table>
       <table class="listTable" id="listTable">
           <col/>          
-          <col width="190"/>     
+          <col width="200"/>     
           <thead>
           <tr>
             <th>$i18n.getString( "name" )</th>
