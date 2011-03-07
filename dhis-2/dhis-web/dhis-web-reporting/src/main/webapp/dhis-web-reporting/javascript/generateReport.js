@@ -39,7 +39,7 @@ function generateReport()
 		return false;
 	}
 		
-    setMessage( i18n_please_wait + "..." );
+    setWaitMessage( i18n_please_wait );
     
     var doDataMart = ( $( "#doDataMart" ).length && $( "#doDataMart" ).val() == "true" );
     
