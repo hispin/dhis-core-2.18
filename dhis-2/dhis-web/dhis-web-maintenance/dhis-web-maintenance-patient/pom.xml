@@ -47,8 +47,7 @@
 	
 	<dependency>
 		<groupId>org.apache.poi</groupId>
-		<artifactId>poi</artifactId>		
-		<version>3.5-FINAL</version>
+		<artifactId>poi</artifactId>
 	</dependency>
 	
      <!-- Other -->

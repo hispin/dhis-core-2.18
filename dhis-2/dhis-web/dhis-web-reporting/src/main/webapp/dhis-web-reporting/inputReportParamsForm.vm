@@ -77,11 +77,13 @@
         <td>
         	#if( $!reportParams.isSet() )
         	
-            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport()" style="width:140px">
         	#if ( $mode == "table" )
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( '' )" style="width:140px">        	
             <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px">
         	#elseif ( $mode == "report" )
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewReportForm.action'" style="width:140px">
+            <input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="generateReport( 'pdf' )" style="width:140px">
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewReportForm.action'" style="width:140px"><br>
+            <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="generateReport( 'xls' )" style="width:140px">
         	#end
         	
             #end
@@ -100,6 +102,6 @@
 
 #if( !$!reportParams.isSet() )
 <script type="text/javascript">
-generateReport();
+generateReport( '' );
 </script>
 #end

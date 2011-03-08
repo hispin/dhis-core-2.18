@@ -2,6 +2,8 @@
 var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
+var reportType;
+
 // -----------------------------------------------------------------------------
 // Report params
 // -----------------------------------------------------------------------------
@@ -32,8 +34,10 @@ function validationError()
 // Report
 // -----------------------------------------------------------------------------
 
-function generateReport()
+function generateReport( type )
 {
+	reportType = type != null && type != "" ? type : "pdf";
+	
 	if ( validationError() )
 	{
 		return false;
@@ -74,7 +78,7 @@ function reportStatusReceived( xmlObject )
     
     if ( finished == "true" )
     {
-        setMessage( i18n_process_completed );        
+        setMessage( i18n_process_completed );
     	viewReport();
     }
     else
@@ -87,9 +91,11 @@ function viewReport( urlParams )
 {
 	var mode = $( "#mode" ).val();
 	
+	setMessage( i18n_process_completed );
+	
     if ( mode == MODE_REPORT )
     {
-    	window.location.href = "renderReport.action?" + getUrlParams();
+    	window.location.href = "renderReport.action?type=" + reportType + "&" + getUrlParams();
     }
     else // MODE_TABLE
     {
