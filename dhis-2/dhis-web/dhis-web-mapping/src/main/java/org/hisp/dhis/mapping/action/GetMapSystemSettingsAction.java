@@ -27,9 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
-
-import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -37,29 +35,29 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class SetMapUserSettingsAction
+public class GetMapSystemSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingService userSettingService;
+    private SystemSettingManager systemSettingManager;
 
-    public void setUserSettingService( UserSettingService userSettingService )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.userSettingService = userSettingService;
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
-    
-    private String mapDateType;
 
-    public void setMapDateType( String mapDateType )
+    private String googleKey;
+
+    public String getGoogleKey()
     {
-        this.mapDateType = mapDateType;
+        return googleKey;
     }
 
     // -------------------------------------------------------------------------
@@ -69,11 +67,10 @@ public class SetMapUserSettingsAction
     public String execute()
         throws Exception
     {
-        if ( mapDateType != null )
-        {
-            userSettingService.saveUserSetting( KEY_MAP_DATE_TYPE, mapDateType );
-        }
-        
+        googleKey = "<script src='http://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false&amp;key="
+            + (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_GOOGLE_MAPS_API_KEY,
+                SystemSettingManager.DEFAULT_GOOGLE_MAPS_API_KEY ) + "' type='text/javascript'></script>";
+
         return SUCCESS;
     }
 }

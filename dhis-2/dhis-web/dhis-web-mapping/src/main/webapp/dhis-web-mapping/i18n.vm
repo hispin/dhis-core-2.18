@@ -240,5 +240,6 @@ G.i18n = {
     max: '$encoder.jsEscape($i18n.getString( 'max' ) , "'")',
     characters: '$encoder.jsEscape($i18n.getString( 'characters' ) , "'")',
     geojson_file: '$encoder.jsEscape($i18n.getString( 'geojson_file' ) , "'")',
-    history: '$encoder.jsEscape($i18n.getString( 'history' ) , "'")'
+    history: '$encoder.jsEscape($i18n.getString( 'history' ) , "'")',
+    api_key: '$encoder.jsEscape($i18n.getString( 'api_key' ) , "'")'
 };

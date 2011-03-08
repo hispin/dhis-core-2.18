@@ -48,8 +48,7 @@ public interface SystemSettingManager
     final String KEY_REPORT_TEMPLATE_DIRECTORY = "reportTemplateDirectory";
     final String KEY_MAX_NUMBER_OF_ATTEMPTS = "maxAttempts";
     final String KEY_TIMEFRAME_MINUTES = "lockoutTimeframe";
-    final String KEY_GIS_LONGITUDE = "longitude";
-    final String KEY_GIS_LATITUDE = "latitude";
+    final String KEY_GOOGLE_MAPS_API_KEY = "googleMapsAPIKey";
     final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
     final String KEY_AGGREGATION_STRATEGY = "aggregationStrategy";
@@ -63,14 +62,15 @@ public interface SystemSettingManager
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
     
+    final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
     final String AGGREGATION_STRATEGY_REAL_TIME = "real_time";
     final String AGGREGATION_STRATEGY_BATCH = "batch";
     final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     
-    void saveSystemSetting( String name, Serializable value );   
+    void saveSystemSetting( String name, Serializable value );
 
-    Serializable getSystemSetting( String name );   
+    Serializable getSystemSetting( String name );
     
     Serializable getSystemSetting( String name, Serializable defaultValue );
 
