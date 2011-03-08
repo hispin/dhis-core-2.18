@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:sec="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+">
 
 	<!-- Store definitions -->
 
@@ -1184,40 +1187,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.dataelement.DataElementService" />
 	</bean>
 	
-	<!-- Security -->
-
-	<bean id="org.hisp.dhis.security.PasswordManager"
-		class="org.hisp.dhis.security.spring.SpringSecurityPasswordManager">
-		<property name="passwordEncoder" ref="passwordEncoder" />
-		<property name="usernameSaltSource" ref="usernameSaltSource" />
-	</bean>
-
-	<bean id="authenticationManager"
-		class="org.springframework.security.authentication.ProviderManager">
-		<property name="providers" ref="daoAuthenticationProvider" />
-		<property name="authenticationEventPublisher" ref="defaultAuthenticationEventPublisher" />
-	</bean>
-
-	<bean id="defaultAuthenticationEventPublisher"
-		class="org.springframework.security.authentication.DefaultAuthenticationEventPublisher" />
-
-	<bean id="daoAuthenticationProvider"
-		class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="userDetailsService" />
-		<property name="passwordEncoder" ref="passwordEncoder" />
-		<property name="saltSource" ref="usernameSaltSource" />
-	</bean>
-
-	<bean id="userDetailsService"
-		class="org.hisp.dhis.security.hibernate.HibernateUserDetailsService">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-
-	<bean id="passwordEncoder"
-		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
-
-	<bean id="usernameSaltSource" class="org.hisp.dhis.security.DefaultUsernameSaltSource" />
-
 	<!-- DeletionManager -->
 
 	<bean
@@ -1343,7 +1312,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			org.hisp.dhis.organisationunit.OrganisationUnitGroupService.get*(..)
 			)" method="intercept" returning="object"/> </aop:aspect>
 		-->
-
 	</aop:config>
 
+	<!-- Security import -->
+	<import resource="security.xml" />
 </beans>
