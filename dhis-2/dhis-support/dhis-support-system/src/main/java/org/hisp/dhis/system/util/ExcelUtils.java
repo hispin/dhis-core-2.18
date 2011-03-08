@@ -369,7 +369,11 @@ public class ExcelUtils
 
                 for ( String rowItem : rows )
                 {
-                    if ( rowItem.trim().matches( "0" ) )
+                    if ( rowItem == null )
+                    {
+                        rowItem = "";
+                    }
+                    else if ( rowItem.trim().matches( "0" ) )
                     {
                         cellFormat.setFont( zeroFont );
                     }
