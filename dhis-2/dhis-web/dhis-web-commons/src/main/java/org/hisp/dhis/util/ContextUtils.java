@@ -56,6 +56,24 @@ public class ContextUtils
     private static final String PORT_SEPARATOR = ":";    
     private static final String PROTOCOL = "http://";
     
+    private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() { {
+        put( "pdf", CONTENT_TYPE_PDF );
+        put( "zip", CONTENT_TYPE_ZIP );
+        put( "json", CONTENT_TYPE_JSON );
+        put( "html", CONTENT_TYPE_HTML );
+        put( "txt", CONTENT_TYPE_TEXT );
+        put( "xml", CONTENT_TYPE_XML );
+        put( "csv", CONTENT_TYPE_CSV );
+        put( "png", CONTENT_TYPE_PNG );
+        put( "xls", CONTENT_TYPE_EXCEL );
+    } };
+    
+    public static String getContentType( String type, String defaultType )
+    {
+        String contentType = CONTENT_TYPE_MAP.get( type );
+        return contentType != null ? contentType : defaultType;
+    }
+    
     @SuppressWarnings( "unchecked" )
     public static Map<String, String> getParameterMap( HttpServletRequest request )
     {

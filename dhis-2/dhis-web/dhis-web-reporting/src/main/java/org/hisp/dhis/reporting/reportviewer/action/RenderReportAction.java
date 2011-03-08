@@ -27,13 +27,14 @@ package org.hisp.dhis.reporting.reportviewer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 import java.io.OutputStream;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -48,6 +49,7 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.util.JRExportUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 /**
@@ -57,7 +59,7 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class RenderReportAction
     extends StreamActionSupport
 {
-    private static final String EXT_PDF = ".pdf";
+    private static final String DEFAULT_TYPE = "pdf";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -115,6 +117,13 @@ public class RenderReportAction
     {
         this.organisationUnitId = organisationUnitId;
     }
+    
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -124,6 +133,8 @@ public class RenderReportAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
+        type = defaultIfEmpty( type, DEFAULT_TYPE );
+        
         Report report = reportService.getReport( id );
         
         JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report.getDesignContent() ) );
@@ -154,7 +165,7 @@ public class RenderReportAction
         
         if ( print != null )
         {
-            JasperExportManager.exportReportToPdfStream( print, out );
+            JRExportUtils.export( type, out, print );
         }
         
         return SUCCESS;
@@ -163,7 +174,7 @@ public class RenderReportAction
     @Override
     protected String getContentType()
     {
-        return ContextUtils.CONTENT_TYPE_PDF;
+        return ContextUtils.getContentType( type, ContextUtils.CONTENT_TYPE_PDF );
     }
 
     @Override
@@ -171,7 +182,7 @@ public class RenderReportAction
     {
         Report report = reportService.getReport( id );
         
-        return CodecUtils.filenameEncode( report.getName() ) + EXT_PDF;
+        return CodecUtils.filenameEncode( report.getName() ) + "." + defaultIfEmpty( type, DEFAULT_TYPE );
     }
     
     @Override
@@ -183,6 +194,6 @@ public class RenderReportAction
     @Override
     protected boolean attachment()
     {
-        return false;
+        return !defaultIfEmpty( type, DEFAULT_TYPE ).equals( DEFAULT_TYPE );
     }
 }
