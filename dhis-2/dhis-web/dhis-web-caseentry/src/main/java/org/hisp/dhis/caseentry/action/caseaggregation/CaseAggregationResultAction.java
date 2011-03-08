@@ -285,13 +285,13 @@ public class CaseAggregationResultAction
                         }
                         else if ( dataValue != null )
                         {
-                                dataValue.setValue( "" + resultValue );
-                                dataValue.setTimestamp( new Date() );
-                                dataValue.setStoredBy( storedBy );
-
+                                DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy,
+                                    new Date(), null, optionCombo );
+                                dvalue.setValue( dataValue.getValue() + i18n.getString( "old_value" ) ); 
+                                
                                 dataValueService.deleteDataValue( dataValue );
 
-                                mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
+                                mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
                         }
 
                     }// PeriodList end
