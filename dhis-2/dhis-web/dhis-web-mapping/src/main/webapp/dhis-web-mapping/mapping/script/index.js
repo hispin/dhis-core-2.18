@@ -8,8 +8,8 @@
         controls: [new OpenLayers.Control.MouseToolbar()],
         displayProjection: new OpenLayers.Projection("EPSG:4326")
     });
-
-	G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
+    
+    G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
     G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
 	
     Ext.Ajax.request({
@@ -379,7 +379,7 @@
     G.vars.map.addLayer(pointLayer);
     
     /* Init base layers */
-	var gm_normal = new OpenLayers.Layer.Google("GM Default", {
+	var gm_normal = new OpenLayers.Layer.Google("Google Normal", {
 		type: G_NORMAL_MAP,
 		sphericalMercator: true,
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
@@ -388,7 +388,7 @@
 	gm_normal.layerType = G.conf.map_layer_type_baselayer;
 	G.vars.map.addLayer(gm_normal);
 	
-	var gm_hybrid = new OpenLayers.Layer.Google("GM Hybrid", {
+	var gm_hybrid = new OpenLayers.Layer.Google("Google Hybrid", {
 		type: G_HYBRID_MAP,
 		sphericalMercator: true,
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
@@ -1391,6 +1391,7 @@
             }
         }
     });
+    
 			
     /* Section: help */
 	function setHelpText(topic, tab) {
@@ -1827,59 +1828,154 @@
         layout: 'accordion',
         closeAction: 'hide',
         width: G.conf.window_width,
-        height: 119,
+        height: 145,
+        minHeight: 77,
         items: [
             {
-                xtype: 'form',
-                title: 'Date type',
-                bodyStyle: 'padding:8px',
-                labelWidth: G.conf.label_width,
+                title: 'Date',
                 items: [
-                    {html: '<div class="window-info">Set thematic map date type</div>'},
                     {
-                        xtype: 'combo',
-                        id: 'mapdatetype_cb',
-                        fieldLabel: G.i18n.date_type,
-                        labelSeparator: G.conf.labelseparator,
-						disabled: G.system.aggregationStrategy == G.conf.aggregation_strategy_batch,
-                        editable: false,
-                        valueField: 'value',
-                        displayField: 'text',
-                        mode: 'local',
-                        value: G.conf.map_date_type_fixed,
-                        triggerAction: 'all',
-                        width: G.conf.combo_width_fieldset,
-                        minListWidth: G.conf.combo_width_fieldset,
-                        store: {
-                            xtype: 'arraystore',
-                            fields: ['value', 'text'],
-                            data: [
-                                [G.conf.map_date_type_fixed, G.i18n.fixed_periods],
-                                [G.conf.map_date_type_start_end, G.i18n.start_end_dates]
-                            ]
-                        },
-                        listeners: {
-                            'select': function(cb) {
-                                if (cb.getValue() != G.vars.mapDateType.value) {
-                                    G.vars.mapDateType.value = cb.getValue();
-                                    Ext.Ajax.request({
-                                        url: G.conf.path_mapping + 'setMapUserSettings' + G.conf.type,
-                                        method: 'POST',
-                                        params: {mapDateType: G.vars.mapDateType.value},
-                                        success: function() {
-                                            Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+ G.i18n.saved_as_date_type);
-                                            choropleth.prepareMapViewDateType();
-                                            symbol.prepareMapViewDateType();
+                        xtype: 'form',
+                        bodyStyle: 'padding:8px',
+                        labelWidth: G.conf.label_width,
+                        items: [
+                            {html: '<div class="window-info">Set thematic map date type</div>'},
+                            {
+                                xtype: 'combo',
+                                id: 'mapdatetype_cb',
+                                fieldLabel: G.i18n.date_type,
+                                labelSeparator: G.conf.labelseparator,
+                                disabled: G.system.aggregationStrategy === G.conf.aggregation_strategy_batch,
+                                editable: false,
+                                valueField: 'value',
+                                displayField: 'text',
+                                mode: 'local',
+                                value: G.conf.map_date_type_fixed,
+                                triggerAction: 'all',
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset,
+                                store: {
+                                    xtype: 'arraystore',
+                                    fields: ['value', 'text'],
+                                    data: [
+                                        [G.conf.map_date_type_fixed, G.i18n.fixed_periods],
+                                        [G.conf.map_date_type_start_end, G.i18n.start_end_dates]
+                                    ]
+                                },
+                                listeners: {
+                                    'select': function(cb) {
+                                        if (cb.getValue() !== G.vars.mapDateType.value) {
+                                            G.vars.mapDateType.value = cb.getValue();
+                                            Ext.Ajax.request({
+                                                url: G.conf.path_mapping + 'setMapUserSettings' + G.conf.type,
+                                                method: 'POST',
+                                                params: {mapDateType: G.vars.mapDateType.value},
+                                                success: function() {
+                                                    Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+ G.i18n.saved_as_date_type);
+                                                    choropleth.prepareMapViewDateType();
+                                                    symbol.prepareMapViewDateType();
+                                                }
+                                            });
                                         }
-                                    });
+                                    }
                                 }
                             }
-                        }
+                        ]
                     }
-                ]
-            }			
-        ]
+                ],
+                listeners: {
+                    expand: function() {
+                        adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143);
+                    },
+                    collapse: function() {
+                        adminWindow.setHeight(77);
+                    }
+                }
+            },
+            {
+                title: 'Google Maps',
+                items: [
+                    {   
+                        xtype: 'form',
+                        bodyStyle: 'padding:8px',
+                        labelWidth: G.conf.label_width,
+                        items: [
+                            {html: '<div class="window-info">Update Google Maps API key</div>'},
+                            {
+                                xtype: 'textfield',
+                                id: 'googlemapsapikey_tf',
+                                fieldLabel: G.i18n.api_key,
+                                labelSeparator: G.conf.labelseparator,
+                                width: G.conf.combo_width_fieldset,
+                                minListWidth: G.conf.combo_width_fieldset
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'form',
+                        items: [
+                            {
+                                xtype: 'toolbar',
+                                style: 'padding-top:4px',
+                                items: [
+                                    '->',
+                                    {
+                                        xtype: 'button',
+                                        text: G.i18n.update,
+                                        iconCls: 'icon-assign',
+                                        handler: function() {
+                                            if (!Ext.getCmp('googlemapsapikey_tf').getValue()) {
+                                                Ext.message.msg(false, G.i18n.form_is_not_complete);
+                                                return;
+                                            }
+                                            
+                                            Ext.Ajax.request({
+                                                url: G.conf.path_mapping + 'setMapSystemSettings' + G.conf.type,
+                                                method: 'POST',
+                                                params: {googleKey: Ext.getCmp('googlemapsapikey_tf').getValue()},
+                                                success: function(r) {
+                                                    window.location.reload();
+                                                }
+                                            });                                                
+                                        }
+                                    },
+                                    {
+                                        xtype: 'button',
+                                        text: 'Use localhost',
+                                        iconCls: 'icon-remove',
+                                        handler: function() {
+                                            Ext.Ajax.request({
+                                                url: G.conf.path_mapping + 'deleteMapSystemSettings' + G.conf.type,
+                                                method: 'POST',
+                                                params: {googleKey: true},
+                                                success: function() {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                listeners: {
+                    expand: function() {
+                        adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 169 : 166);
+                    },
+                    collapse: function() {
+                        adminWindow.setHeight(77);
+                    }
+                }
+            }
+        ],
+        listeners: {
+            afterrender: function() {
+                adminWindow.setHeight(Ext.isChrome || (Ext.isWindows && Ext.isGecko) ? 145 : 143);
+            }
+        }
     });
+
         
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',

@@ -34,8 +34,28 @@
 
         <action name="setMapUserSettings"
             class="org.hisp.dhis.mapping.action.SetMapUserSettingsAction">
-            <result name="success" type="velocity-json">/dhis-web-mapping/void.vm
-            </result>
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/void.vm</result>
+        </action>
+        
+        <!-- SystemSetting -->
+
+        <action name="getMapSystemSettings"
+            class="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/jsGoogleKey.vm</result>
+        </action>
+
+        <action name="setMapSystemSettings"
+            class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/void.vm</result>
+        </action>
+
+        <action name="deleteMapSystemSettings"
+            class="org.hisp.dhis.mapping.action.DeleteMapSystemSettingsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-mapping/void.vm</result>
         </action>
 
 		<!-- OrganisationUnit -->
@@ -351,7 +371,7 @@
 		
 		<!-- i18n -->
 		
-		<action name="i18nJavaScript" class="org.hisp.dhis.mapping.action.NoAction">
+		<action name="i18n" class="org.hisp.dhis.mapping.action.NoAction">
             <result name="success" type="velocity">/dhis-web-mapping/i18n.vm</result>
 		</action>
 

@@ -108,6 +108,8 @@ public class TableAlteror
         executeSql( "DROP TABLE maporganisationunitrelation" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapid" );
         executeSql( "DROP TABLE map" );
+        executeSql( "DELETE FROM systemsetting WHERE name = 'longitude'" );
+        executeSql( "DELETE FROM systemsetting WHERE name = 'latitude'" );
         
         executeSql( "ALTER TABLE map DROP CONSTRAINT fk_map_organisationunitid" );
         executeSql( "ALTER TABLE map DROP COLUMN organisationunitid" );

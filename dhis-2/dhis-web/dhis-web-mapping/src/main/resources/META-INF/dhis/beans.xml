@@ -61,6 +61,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     </bean>
+    
+    <!-- SystemSetting -->
+
+    <bean id="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction"
+        class="org.hisp.dhis.mapping.action.GetMapSystemSettingsAction"
+        scope="prototype">
+        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    </bean>
+
+    <bean id="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction"
+        class="org.hisp.dhis.mapping.action.SetMapSystemSettingsAction"
+        scope="prototype">
+        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    </bean>
+
+    <bean id="org.hisp.dhis.mapping.action.DeleteMapSystemSettingsAction"
+        class="org.hisp.dhis.mapping.action.DeleteMapSystemSettingsAction"
+        scope="prototype">
+        <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    </bean>
 
 	<!-- Map values -->
 

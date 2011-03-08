@@ -27,9 +27,7 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.mapping.MappingService.KEY_MAP_DATE_TYPE;
-
-import org.hisp.dhis.user.UserSettingService;
+import org.hisp.dhis.options.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -37,29 +35,29 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class SetMapUserSettingsAction
+public class SetMapSystemSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private UserSettingService userSettingService;
+    private SystemSettingManager systemSettingManager;
 
-    public void setUserSettingService( UserSettingService userSettingService )
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
-        this.userSettingService = userSettingService;
+        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
     
-    private String mapDateType;
+    private String googleKey;
 
-    public void setMapDateType( String mapDateType )
+    public void setGoogleKey( String googleKey )
     {
-        this.mapDateType = mapDateType;
+        this.googleKey = googleKey;
     }
 
     // -------------------------------------------------------------------------
@@ -69,9 +67,9 @@ public class SetMapUserSettingsAction
     public String execute()
         throws Exception
     {
-        if ( mapDateType != null )
+        if ( googleKey != null )
         {
-            userSettingService.saveUserSetting( KEY_MAP_DATE_TYPE, mapDateType );
+            systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_GOOGLE_MAPS_API_KEY, googleKey );
         }
         
         return SUCCESS;

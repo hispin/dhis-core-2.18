@@ -62,7 +62,7 @@ public class GetMapLegendSetByIndicatorAction
     }
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
 
     private MapLegendSet object;
