@@ -31,11 +31,6 @@ G.conf = {
 	emptytext: '',
 	labelseparator: '',
 	
-//	Styles
-
-	assigned_row_color: '#90ee90',
-	unassigned_row_color: '#ffffff',
-	
 //	DHIS variables
 
 	map_source_type_database: 'database',

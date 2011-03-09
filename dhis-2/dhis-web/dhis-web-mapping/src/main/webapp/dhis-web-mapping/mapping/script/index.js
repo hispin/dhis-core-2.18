@@ -436,7 +436,7 @@
 	/* Section: mapview */
 	var favoriteWindow = new Ext.Window({
         id: 'favorite_w',
-        title: '<span id="window-favorites-title">' + G.i18n.favorites + '</span>',
+        title: '<span id="window-favorites-title">' + G.i18n.favorite_map_views + '</span>',
 		layout: 'fit',
         closeAction: 'hide',
 		width: G.conf.window_width,
@@ -467,7 +467,7 @@
                     },
                         
                     {html: '<div class="window-p"></div>'},
-                    {html: '<div class="window-info">Delete / Add favorite to dashboard</div>'},
+                    {html: '<div class="window-info">Delete favorite / Add to dashboard</div>'},
                     {
                         xtype: 'combo',
                         id: 'favorite_cb',
@@ -2659,8 +2659,8 @@
 	G.vars.map.addControl(new OpenLayers.Control.MousePosition({
         displayClass: 'void', 
         div: $('mouseposition'), 
-        prefix: '<span style="color:#666;">x: &nbsp;</span>',
-        separator: '<br/><span style="color:#666;">y: &nbsp;</span>'
+        prefix: '<span style="color:#666">x: &nbsp;</span>',
+        separator: '<br/><span style="color:#666">y: &nbsp;</span>'
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.OverviewMap({
