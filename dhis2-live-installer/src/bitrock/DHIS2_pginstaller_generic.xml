@@ -1,0 +1,331 @@
+<project>
+    <shortName>DHIS2</shortName>
+    <fullName>DHIS2</fullName>
+    <version>2.1</version>
+    <installerFilename>${product_shortname}-${product_version}-${platform_name}-live-generic-en.${platform_exec_suffix}</installerFilename>
+    <readmeFile>../../resources/files/Readme.txt</readmeFile>
+    <licenseFile>../../resources/files/Licence.txt</licenseFile>
+    <leftImage>../../resources/images/dhis2-logo-blue-rotated.png</leftImage>
+    <logoImage>../../resources/images/dhis2-logo-blue.png</logoImage>
+    <splashImage>../../resources/images/dhis2-splash-blue.png</splashImage>
+    <allowLanguageSelection>1</allowLanguageSelection>
+    <readyToInstallActionList>
+        <createDirectory>
+            <path>${installdir}/database</path>
+            <progressText>Creating database directory.</progressText>
+        </createDirectory>
+        <createDirectory>
+            <path>${installdir}/log</path>
+        </createDirectory>
+        <createDirectory>
+            <path>${installdir}/webapps</path>
+        </createDirectory>
+        <createDirectory>
+            <explanation>Creating temporary directory</explanation>
+            <path>${installdir}\tmp\</path>
+        </createDirectory>
+    </readyToInstallActionList>
+    <postUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}</path>
+        </deleteFile>
+    </postUninstallationActionList>
+    <allowComponentSelection>1</allowComponentSelection>
+    <compressionAlgorithm>lzma</compressionAlgorithm>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <requestedExecutionLevel>highestAvailable</requestedExecutionLevel>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>DHIS2</vendor>
+    <componentList>
+        <component>
+            <name>dhis2live</name>
+            <description>DHIS2 Live</description>
+            <canBeEdited>0</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <desktopShortcutList>
+                <shortcut>
+                    <comment>Start DHIS 2</comment>
+                    <exec></exec>
+                    <icon></icon>
+                    <name>DHIS 2</name>
+                    <path></path>
+                    <platforms>windows</platforms>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/dhis2-live.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon></windowsIcon>
+                    <windowsPath></windowsPath>
+                </shortcut>
+            </desktopShortcutList>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <distributionFileList>
+                        <distributionDirectory>
+                            <origin>../../resources/conf</origin>
+                        </distributionDirectory>
+                        <distributionFile>
+                            <origin>../../../dhis-live/target/dhis2-live-jar-with-dependencies.jar</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Uninstall</comment>
+                            <exec>${installdir}/${uninstallerName}</exec>
+                            <icon></icon>
+                            <name>Uninstall ${product_fullname}</name>
+                            <path>${installdir}</path>
+                            <platforms>all</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath>${installdir}</windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux</name>
+                    <platforms>linux</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../../../dhis-live/target/dhis2-live.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosx</name>
+                    <platforms>osx</platforms>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <renameFile>
+                    <destination>${installdir}/dhis2-live.jar</destination>
+                    <origin>${installdir}/dhis2-live-jar-with-dependencies.jar</origin>
+                </renameFile>
+            </postInstallationActionList>
+            <startMenuShortcutList>
+                <startMenuShortcut>
+                    <comment>Uninstall ${product_fullname}</comment>
+                    <name>Uninstall ${product_fullname}</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon></windowsIcon>
+                    <windowsPath>${installdir}/</windowsPath>
+                </startMenuShortcut>
+                <startMenuShortcut>
+                    <comment>Start DHIS 2</comment>
+                    <name>Start DHIS 2</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/dhis2-live.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon></windowsIcon>
+                    <windowsPath></windowsPath>
+                </startMenuShortcut>
+                <startMenuFileShortcut>
+                    <comment>DHIS2 Docs</comment>
+                    <filePath>${installdir}/docs/dhis2_user_manual_en.pdf</filePath>
+                    <name>DHIS2 Documentation</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsIcon></windowsIcon>
+                </startMenuFileShortcut>
+            </startMenuShortcutList>
+        </component>
+        <component>
+            <name>dhis2core</name>
+            <description>DHIS2 Core</description>
+            <canBeEdited>0</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <postInstallationActionList>
+                <createDirectory>
+                    <path>${installdir}\webapps\dhis</path>
+                </createDirectory>
+                <unzip>
+                    <destinationDirectory>${installdir}\webapps\dhis</destinationDirectory>
+                    <explanation>Extracting the dhis.war file to the installer directory</explanation>
+                    <progressText>Copying DHIS 2 files</progressText>
+                    <zipFile>${installer_directory}\resources\dhis.war</zipFile>
+                </unzip>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>Java</name>
+            <description>Java</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <postInstallationActionList>
+                <runProgram>
+                    <explanation>Installing Java Runtime Environment</explanation>
+                    <program>jre*.exe</program>
+                    <programArguments>/s /v</programArguments>
+                    <progressText>Installing Java</progressText>
+                    <workingDirectory>${installer_directory}\resources</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>postgres</name>
+            <description>Postgres</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <parameterList>
+                <passwordParameter>
+                    <name>pg_password</name>
+                    <title>Postgresql Password</title>
+                    <description>Please enter a password for the Postgresql superuser.</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>postgres</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <askForConfirmation>0</askForConfirmation>
+                    <descriptionRetype></descriptionRetype>
+                    <width>20</width>
+                </passwordParameter>
+            </parameterList>
+            <postInstallationActionList>
+                <runProgram>
+                    <explanation>Installing PostgreSQL</explanation>
+                    <program>postgresql*.exe</program>
+                    <programArguments>--unattendedmodeui none --mode unattended --superaccount postgres --servicepassword postgres --superpassword postgres</programArguments>
+                    <progressText>Installing Postgres</progressText>
+                    <workingDirectory>${installer_directory}\resources</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>dhis2db</name>
+            <description>DHIS2 database</description>
+            <canBeEdited>1</canBeEdited>
+            <detailedDescription>DHIS2 Database</detailedDescription>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <destination>${installdir}\tmp\</destination>
+                    <name>newfolder</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../../resources/postgres/restore_db_psql.bat</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <unzip>
+                    <destinationDirectory>${installdir}\tmp\</destinationDirectory>
+                    <zipFile>${installer_directory}\resources\dhis2db.zip</zipFile>
+                </unzip>
+                <substitute>
+                    <files>${installdir}\tmp\restore_db_psql.bat</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>PG_PASSWORD</pattern>
+                            <value>${pg_password}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+                <runProgram>
+                    <explanation>Restoring database</explanation>
+                    <program>restore_db_psql.bat</program>
+                    <programArguments></programArguments>
+                    <progressText>Restoring database. This might take a few minutes.</progressText>
+                    <workingDirectory>${installdir}\tmp\</workingDirectory>
+                </runProgram>
+                <deleteFile>
+                    <path>${installdir}\tmp\dhis2db.dump</path>
+                </deleteFile>
+                <deleteFile>
+                    <path>${installdir}\tmp\restore_db_psql.bat</path>
+                </deleteFile>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>dhis2docs</name>
+            <description>DHIS2 Docs</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <postInstallationActionList>
+                <createDirectory>
+                    <path>${installdir}\docs</path>
+                </createDirectory>
+                <copyFile>
+                    <destination>${installdir}\docs\dhis2_user_manual_en.pdf</destination>
+                    <origin>${installer_directory}\resources\dhis2_user_manual_en.pdf</origin>
+                    <progressText>Adding DHIS 2 documentation</progressText>
+                </copyFile>
+            </postInstallationActionList>
+        </component>
+        <component>
+            <name>Chrome</name>
+            <description>Google Chrome</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <postInstallationActionList>
+                <runProgram>
+                    <explanation>Installing Google Chrome</explanation>
+                    <program>ChromeStandaloneSetup.exe</program>
+                    <programArguments></programArguments>
+                    <progressText>Installling Google Chrome web browser</progressText>
+                    <workingDirectory>${installer_directory}\resources</workingDirectory>
+                </runProgram>
+            </postInstallationActionList>
+        </component>
+    </componentList>
+    <finalPageActionList>
+        <deleteFile>
+            <abortOnError>0</abortOnError>
+            <explanation>Delete temporary files</explanation>
+            <path>${installdir}\tmp\postgresql-9.0.3-1-windows.exe</path>
+        </deleteFile>
+    </finalPageActionList>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${product_shortname}-${product_version}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <ask>yes</ask>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>yes</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>40</width>
+        </directoryParameter>
+    </parameterList>
+    <platformOptionsList>
+        <platformOptions>
+            <platform>windows</platform>
+        </platformOptions>
+    </platformOptionsList>
+</project>
+
