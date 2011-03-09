@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="35" autocomplete="off" class="{validate:{required:true,minlength:8,equalTo:'#rawPassword'}}"/></td>		
+		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="35" autocomplete="off" class="{validate:{required:true,equalTo:'#rawPassword'}}"/></td>		
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
