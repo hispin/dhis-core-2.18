@@ -208,6 +208,16 @@
                 </passwordParameter>
             </parameterList>
             <postInstallationActionList>
+                <substitute>
+                    <files>${installdir}\tmp\restore_db_psql.bat</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>PG_PASSWORD</pattern>
+                            <value>${pg_password}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
                 <runProgram>
                     <explanation>Installing PostgreSQL</explanation>
                     <program>postgresql*.exe</program>
