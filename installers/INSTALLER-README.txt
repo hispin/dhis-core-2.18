@@ -3,13 +3,18 @@ create a simple process for the complete build of DHIS2 with the aim of deployme
 to a desktop computer. The installer, along with the build script should build
 a complete DHIS2 system ready for deployment from source.
 
+There are several different installers, utilizing different framworks, and which are intented
+for different purposes and deployment architectures. 
+
+
 BitRock installer notes
 
- The most up to date is the BitRock installer. 
-The current install will build a Windows 
-executable which will offer an install of Postgresql, Java, and a template DHIS2 database. The source of the current installer
-can be found in the file named DHIS2_pginstaller.  A few alternative installer
-flavors are described at the end of this document.
+ 
+The current install will build a Windows executable which will offer an install of Postgresql, Java, 
+and a template DHIS2 database. The database can be easily replaced by a Postgresql dump and restored instead
+of the empty template databse. 
+The source of the current installer can be found in the file named DHIS2_pginstaller.
+  A few alternative installer flavors utilizing Bitrock are described at the end of this document.
 
 It is critical that you set all of the environment variables to the correct paths in your system. 
 Modify the environment variables in the build.sh (on Linux) or build.bat (on Windows) script to suit your needs. 
@@ -118,3 +123,10 @@ Basically, you will need to populate some different directories with prerequisit
 
 Questions about these installer can be directed to Jason Pickering <jason.p.pickering@gmail.com>. 
 
+
+
+NSIS Installer
+
+This installer (located in the /src/nsis) folder is based on the NSIS installer framework (http://nsis.sourceforge.net/)
+. This installer will install MySQL, Tomcat, Java  (if needed) and Google Chrome and of course DHIS2, 
+as well as restoring the MySQL database from a file included in the installer itself. 
