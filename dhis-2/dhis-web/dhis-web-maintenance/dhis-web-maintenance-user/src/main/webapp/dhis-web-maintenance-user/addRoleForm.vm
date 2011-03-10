@@ -1,17 +1,28 @@
 <script>
 	jQuery(document).ready(	function(){
 		jQuery("#name").focus();
-		validation( 'addRoleForm', function( form ){
+
+		var rules = {
+			name: {required:true,minlength:2},
+			description: {required:true}
+		}
+
+		validation2( 'addRoleForm', function( form ) {
 			selectAllById( 'selectedList' );
 			selectAllById( 'selectedListAuthority' );
-			form.submit();			
-		});					
+			form.submit();	
+		}, {
+			'rules': rules
+		});
+
+		jQuery("#name").attr("maxlength", "160");
+
+		/* remote validation */
 		checkValueIsExist( "name", "validateRole.action");
 	});		
 </script>
 
 <h3>$i18n.getString( "create_new_user_role" )</h3>
-
 
 <form id="addRoleForm" name="addRoleForm" action="addRole.action" method="post" >
   <table>
@@ -20,13 +31,13 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em"></td>
 		<td></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" style="width:20em" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="description" name="description" style="width:20em""></td>
 		<td></td>
 		<td></td>
 	</tr>
