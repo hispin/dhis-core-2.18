@@ -223,6 +223,16 @@
                     <descriptionRetype></descriptionRetype>
                     <width>20</width>
                 </passwordParameter>
+                <stringParameter>
+                    <name>dbname</name>
+                    <title>Please enter the name of the DHIS2 database.</title>
+                    <description></description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>dhis2db</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>40</width>
+                </stringParameter>
             </parameterList>
             <postInstallationActionList>
                 <runProgram>
@@ -239,6 +249,20 @@
                         <substitution>
                             <pattern>PG_PASSWORD</pattern>
                             <value>${pg_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>DHIS2DBNAME</pattern>
+                            <value>${dbname}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+                <substitute>
+                    <files>${installdir}\conf\hibernate.properties</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>DHIS2DBNAME</pattern>
+                            <value>${dbname}</value>
                         </substitution>
                     </substitutionList>
                 </substitute>
@@ -282,7 +306,6 @@
             <show>1</show>
             <folderList>
                 <folder>
-                    <description>New Folder</description>
                     <destination>${installdir}\tmp\</destination>
                     <name>newfolder</name>
                     <platforms>windows</platforms>
