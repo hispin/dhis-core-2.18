@@ -1020,7 +1020,6 @@ function validation2(formId, submitHandler, kwargs)
 
 function validation( formId, submitHandler, beforeValidateHandler )
 {
-	console.log("validation");
 	var nameField = jQuery('#' + formId + ' :input')[0];
 
 	var validator = jQuery("#" + formId ).validate({
