@@ -1,12 +1,36 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'addUserForm', function( form ){ form.submit() }, function(){
-			listValidator( 'roleValidator','selectedList');
-		} );
-		checkValueIsExist( "username", "validateUser.action");	
-	});		
-</script>
+		var rules = {
+			username: {required:true, firstletteralphabet:true, minlength:2, alphanumeric:true},
+			rawPassword: {required:false, password:true, minlength:8, notequalto:'#username'},
+			retypePassword: {required:true, equalTo:'#rawPassword'},
+			surname: {required:true, minlength:2},
+			firstName: {required:true, minlength:2},
+			email: {email:true},
+			phoneNumber: {}
+		};
 
+		validation2('addUserForm', function( form ){ form.submit() },
+			{
+				'beforeValidateHandler': function() {
+					listValidator( 'roleValidator','selectedList');
+				},
+				'rules' : rules 
+			}
+		);
+
+		jQuery("#username").attr("maxlength", "50");
+		jQuery("#rawPassword").attr("maxlength", "35");
+		jQuery("#retypePassword").attr("maxlength", "35");
+		jQuery("#surname").attr("maxlength", "160");
+		jQuery("#firstName").attr("maxlength", "160");
+		jQuery("#email").attr("maxlength", "160");
+		jQuery("#phoneNumber").attr("maxlength", "80");
+
+		/* remote validation */
+		checkValueIsExist( "username", "validateUser.action");	
+	});
+</script>
 
 <h3>$i18n.getString( "create_new_user" )</h3>
 <form id="addUserForm" action="addUser.action" method="post" >
@@ -17,31 +41,31 @@
 	</tr>
 	<tr>
 		<td><label for="username">$i18n.getString( "username" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="username" name="username" style="width:20em" maxlength="50" autocomplete="off" class="{validate:{required:true,firstletteralphabet:true,minlength:2,alphanumeric:true}}"/></td>			
+		<td colspan="3"><input type="text" id="username" name="username" style="width:20em" autocomplete="off"></td>
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="35" autocomplete="off" class="{validate:{required:true,password:true,minlength:8,notequalto:'#username'}}"/></td>			
+		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" autocomplete="off"></td>			
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="35" autocomplete="off" class="{validate:{required:true,equalTo:'#rawPassword'}}"/></td>		
+		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" autocomplete="off"></td>		
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="surname" name="surname" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>				
+		<td colspan="3"><input type="text" id="surname" name="surname" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="firstName" name="firstName" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"></td>		
+		<td colspan="3"><input type="text" id="firstName" name="firstName" style="width:20em"></td>		
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" style="width:20em" maxlength="160" class="{validate:{email:true}}"/></td>			
+		<td colspan="3"><input type="text" id="email" name="email" style="width:20em"></td>			
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em" maxlength="80"/></td>             
+        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em"></td>             
     </tr>	
 	<tr>
 		<td colspan="4" height="10"></td>
