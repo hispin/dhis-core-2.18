@@ -19,21 +19,21 @@
 			<textField>
 				<reportElement x="12" y="67" width="253" height="20"/>
 				<textElement textAlignment="Right">
-					<font size="12"/>
+					<font size="13"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{reporting_month_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="289" y="67" width="255" height="20"/>
 				<textElement>
-					<font size="12"/>
+					<font size="13"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[${dollar}F{param_organisationunit_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="265" y="67" width="24" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[-]]></text>
 			</staticText>
