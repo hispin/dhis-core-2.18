@@ -422,11 +422,13 @@ public class PeriodServiceTest
         
         Collection<Period> periods = periodService.getIntersectingPeriods( getDay( 4 ), getDay( 10 ) );
         
-        assertEquals( periods.size(), 6 );
-        
+        assertEquals( periods.size(), 8 );
+
+        assertTrue( periods.contains( periodB ) );
         assertTrue( periods.contains( periodC ) );
         assertTrue( periods.contains( periodD ) );
         assertTrue( periods.contains( periodE ) );
+        assertTrue( periods.contains( periodF ) );
         assertTrue( periods.contains( periodH ) );
         assertTrue( periods.contains( periodI ) );
         assertTrue( periods.contains( periodJ ) );
