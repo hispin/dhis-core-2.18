@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.dataset.action;
+package org.hisp.dhis.dataelement.comparator;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,52 +27,19 @@ package org.hisp.dhis.reporting.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
 /**
- * @author Lars Helge Overland
+ * @author Chau Thu Tran
+ * @version $Id$
  */
-public class GetDataSetReportOptionsAction
-    implements Action
+public class DataElementCategoryOptionComboNameComparator
+    implements Comparator<DataElementCategoryOptionCombo>
 {
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
+    public int compare( DataElementCategoryOptionCombo categoryOptionCombo1, DataElementCategoryOptionCombo categoryOptionCombo2 )
     {
-        this.dataSetService = dataSetService;
-    }
-    
-    private List<DataSet> dataSets;
-
-    public List<DataSet> getDataSets()
-    {
-        return dataSets;
-    }
-
-    private List<PeriodType> periodTypes;
-
-    public List<PeriodType> getPeriodTypes()
-    {
-        return periodTypes;
-    }
-
-    public String execute()
-    {
-        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        
-        Collections.sort( dataSets, new DataSetNameComparator() );
-        
-        periodTypes = PeriodType.getAvailablePeriodTypes();
-        
-        return SUCCESS;
+        return categoryOptionCombo1.getName().compareToIgnoreCase( categoryOptionCombo2.getName() );
     }
 }

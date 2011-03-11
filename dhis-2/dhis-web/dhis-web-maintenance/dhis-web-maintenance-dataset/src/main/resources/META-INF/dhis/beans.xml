@@ -317,7 +317,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.user.UserSettingService"/>
 		</property>
 		<property name="editorManager" ref="editorManager"/>
-					
 	</bean>
 	
 	<bean id="org.hisp.dhis.dataset.action.dataentryform.SaveDataEntryFormAction"

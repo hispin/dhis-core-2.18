@@ -31,13 +31,10 @@ import java.util.Map;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,120 +48,101 @@ public class GenerateCustomDataSetReportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-            
+
     private DataSetReportService dataSetReportService;
 
+    private I18nFormat format;
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private OrganisationUnit selectedOrgunit;
+
+    private DataSet selectedDataSet;
+
+    private Period selectedPeriod;
+
+    private boolean selectedUnitOnly;
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String customDataEntryFormCode;
+
+    private String reportingUnit;
+
+    private String reportingPeriod;
+
+    // -----------------------------------------------------------------------
+    // Getters && Setters
+    // -----------------------------------------------------------------------
+    
     public void setDataSetReportService( DataSetReportService dataSetReportService )
     {
         this.dataSetReportService = dataSetReportService;
     }
-
-    private DataSetService dataSetService;
-
-    public void setDataSetService( DataSetService dataSetService )
-    {
-        this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-    
-    private SelectionTreeManager selectionTreeManager;
-
-    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
-    {
-        this.selectionTreeManager = selectionTreeManager;
-    }
-
-    private I18nFormat format;
 
     public void setFormat( I18nFormat format )
     {
         this.format = format;
     }
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------      
-    
-    private Integer dataSetId;
-    
-    public void setDataSetId( Integer dataSetId )
+    public String getCustomDataEntryFormCode()
     {
-        this.dataSetId = dataSetId;
+        return customDataEntryFormCode;
     }
 
-    private String periodId;
-
-    public void setPeriodId( String periodId )
+    public String getReportingUnit()
     {
-        this.periodId = periodId;
+        return reportingUnit;
     }
 
-    private boolean selectedUnitOnly;
-    
+    public String getReportingPeriod()
+    {
+        return reportingPeriod;
+    }
+
+    public void setSelectedOrgunit( OrganisationUnit selectedOrgunit )
+    {
+        this.selectedOrgunit = selectedOrgunit;
+    }
+
+    public void setSelectedDataSet( DataSet selectedDataSet )
+    {
+        this.selectedDataSet = selectedDataSet;
+    }
+
+    public void setSelectedPeriod( Period selectedPeriod )
+    {
+        this.selectedPeriod = selectedPeriod;
+    }
+
     public void setSelectedUnitOnly( boolean selectedUnitOnly )
     {
         this.selectedUnitOnly = selectedUnitOnly;
     }
-    
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------      
-    
-    private String customDataEntryFormCode;
 
-    public String getCustomDataEntryFormCode()
-    {
-        return this.customDataEntryFormCode;
-    }
-    
-    private String reportingUnit;
-    
-    public String getReportingUnit()
-    {
-    	return this.reportingUnit;
-    }
-    
-    private String reportingPeriod;
-    
-    public String getReportingPeriod()
-    {
-    	return this.reportingPeriod;
-    }  
-   
     // -----------------------------------------------------------------------
     // Action implementation
     // -----------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
-    {        
-        OrganisationUnit unit = selectionTreeManager.getSelectedOrganisationUnit();
-        
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+    {
+        Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( selectedDataSet, selectedOrgunit, selectedPeriod,
+            selectedUnitOnly );
 
-        Period period = periodService.getPeriodByExternalId( periodId );
-        
-        if ( unit != null && dataSet != null && period != null )
-        {
-            Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly );
-            
-            DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
-            
-            customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(), aggregatedDataValueMap );
-            
-            reportingUnit = unit.getName();
-            
-            reportingPeriod = format.formatPeriod( period );
-           
-            return SUCCESS;           	
-        }
-        
-        return ERROR;
+        DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
+
+        customDataEntryFormCode = dataSetReportService.prepareReportContent( dataEntryForm.getHtmlCode(),
+            aggregatedDataValueMap );
+
+        reportingUnit = selectedOrgunit.getName();
+
+        reportingPeriod = format.formatPeriod( selectedPeriod );
+
+        return SUCCESS;
     }
 }

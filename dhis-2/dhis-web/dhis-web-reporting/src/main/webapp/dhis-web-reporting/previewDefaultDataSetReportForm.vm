@@ -1,0 +1,15 @@
+
+<h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
+<p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/></p>
+
+<div id="printDateSetPreviewDiv">
+#parse( "dhis-web-commons/ajax/htmlGrid.vm" )
+</div>
+
+<script>	
+function printDateSetReportPreview()
+{
+	var o = $("div#printDateSetPreviewDiv");
+	o.jqprint(); 
+}
+</script>
