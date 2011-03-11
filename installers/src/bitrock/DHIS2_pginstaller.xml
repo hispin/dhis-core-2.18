@@ -11,7 +11,9 @@
     <allowLanguageSelection>1</allowLanguageSelection>
     <initializationActionList>
         <autodetectJava>
+            <abortOnError>0</abortOnError>
             <promptUser>0</promptUser>
+            <showMessageOnError>0</showMessageOnError>
             <validVersionList>
                 <validVersion>
                     <maxVersion></maxVersion>
@@ -73,19 +75,33 @@
             </folderList>
             <postInstallationActionList>
                 <runProgram>
-                    <customErrorMessage>No valid JRE was detcted and one could not be installed. The installation of DHIS2 will be aborted.</customErrorMessage>
+                    <abortOnError>0</abortOnError>
                     <explanation>Installing Java Runtime Enviornment</explanation>
                     <program>jre-6u24-windows-i586-s.exe</program>
-                    <programArguments>/s /v /log ${installdir}\logs\javainstall.txt </programArguments>
+                    <programArguments>/s /v /log javainstall.txt </programArguments>
                     <progressText>Installing Java Runtime Enviornment</progressText>
+                    <showMessageOnError>0</showMessageOnError>
                     <useMSDOSPath>0</useMSDOSPath>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                     <onErrorActionList>
                         <showQuestion>
                             <default>yes</default>
-                            <text>Java was unable to be installed. Do you wish to proceed anyway?</text>
-                            <variable>${proceed_without_java}</variable>
+                            <text>Java was unable to be installed. Do you wish to try and install it manually?</text>
+                            <variable>${java_gui_install}</variable>
                         </showQuestion>
+                        <runConsoleProgram>
+                            <program>jre-6u24-windows-i586-s.exe</program>
+                            <programArguments></programArguments>
+                            <useMSDOSPath>0</useMSDOSPath>
+                            <workingDirectory>${installdir}\tmp\</workingDirectory>
+                            <ruleList>
+                                <compareValues>
+                                    <logic>equals</logic>
+                                    <value1>${java_gui_install}</value1>
+                                    <value2>1</value2>
+                                </compareValues>
+                            </ruleList>
+                        </runConsoleProgram>
                     </onErrorActionList>
                     <ruleList>
                         <compareValues>
