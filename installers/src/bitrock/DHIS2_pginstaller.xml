@@ -9,19 +9,19 @@
     <logoImage>../../resources/images/dhis2-logo.png</logoImage>
     <splashImage>../../resources/images/dhis2-logo.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
-    <preInstallationActionList>
+    <initializationActionList>
         <autodetectJava>
-            <explanation>Detecting Java</explanation>
             <promptUser>0</promptUser>
-            <ruleList>
-                <compareValues>
-                    <logic>equals</logic>
-                    <value1>${java_autodetected}</value1>
-                    <value2>1</value2>
-                </compareValues>
-            </ruleList>
+            <validVersionList>
+                <validVersion>
+                    <maxVersion></maxVersion>
+                    <minVersion>1.6.0_18</minVersion>
+                    <requireJDK>0</requireJDK>
+                    <vendor></vendor>
+                </validVersion>
+            </validVersionList>
         </autodetectJava>
-    </preInstallationActionList>
+    </initializationActionList>
     <readyToInstallActionList>
         <createDirectory>
             <path>${installdir}/database</path>
@@ -224,67 +224,44 @@
                 </folder>
             </folderList>
             <parameterList>
-                <passwordParameter>
-                    <name>pg_password</name>
-                    <title>Postgresql Password</title>
-                    <description>Please enter a password for the Postgresql superuser.</description>
+                <booleanParameter>
+                    <name>postgres_overwrite</name>
+                    <title>Overwrite Postgresql</title>
+                    <description>An existing Postgresql installation has been detected. Are you sure you want to overwrite this instance?</description>
                     <explanation></explanation>
                     <value></value>
-                    <default>postgres</default>
-                    <allowEmptyValue>0</allowEmptyValue>
-                    <askForConfirmation>0</askForConfirmation>
-                    <descriptionRetype></descriptionRetype>
-                    <width>20</width>
-                </passwordParameter>
-                <stringParameter>
-                    <name>dbname</name>
-                    <title>Please enter the name of the DHIS2 database.</title>
-                    <description></description>
-                    <explanation></explanation>
-                    <value></value>
-                    <default>dhis2db</default>
-                    <allowEmptyValue>0</allowEmptyValue>
-                    <width>40</width>
-                </stringParameter>
+                    <default>1</default>
+                    <displayStyle>radiobuttons</displayStyle>
+                    <ruleList>
+                        <registryTest>
+                            <key>HKEY_LOCAL_MACHINE\SOFTWARE\PostgreSQL\Installations\postgresql*</key>
+                            <logic>exists</logic>
+                            <name></name>
+                        </registryTest>
+                    </ruleList>
+                </booleanParameter>
             </parameterList>
             <postInstallationActionList>
                 <runProgram>
                     <explanation>Installing Postgresql</explanation>
-                    <program>postgresql-9.0.1-1-windows.exe</program>
-                    <programArguments>--unattendedmodeui none --mode unattended --superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
+                    <program>postgresql*.exe</program>
+                    <programArguments>--superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
                     <progressText>Installing Postgresql</progressText>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
+                    <ruleList>
+                        <compareValues>
+                            <logic>equals</logic>
+                            <value1>${postgres_overwrite}</value1>
+                            <value2>1</value2>
+                        </compareValues>
+                    </ruleList>
                 </runProgram>
-                <substitute>
-                    <files>${installdir}\tmp\restore_db.bat</files>
-                    <type>regexp</type>
-                    <substitutionList>
-                        <substitution>
-                            <pattern>PG_PASSWORD</pattern>
-                            <value>${pg_password}</value>
-                        </substitution>
-                        <substitution>
-                            <pattern>DHIS2DBNAME</pattern>
-                            <value>${dbname}</value>
-                        </substitution>
-                    </substitutionList>
-                </substitute>
-                <substitute>
-                    <files>${installdir}\conf\hibernate.properties</files>
-                    <type>regexp</type>
-                    <substitutionList>
-                        <substitution>
-                            <pattern>DHIS2DBNAME</pattern>
-                            <value>${dbname}</value>
-                        </substitution>
-                    </substitutionList>
-                </substitute>
             </postInstallationActionList>
         </component>
         <component>
             <name>jre</name>
             <description>JRE</description>
-            <canBeEdited>1</canBeEdited>
+            <canBeEdited>0</canBeEdited>
             <selected>1</selected>
             <show>1</show>
             <folderList>
@@ -310,9 +287,8 @@
                     <ruleList>
                         <compareValues>
                             <logic>equals</logic>
-                            <negate>1</negate>
                             <value1>${java_autodetected}</value1>
-                            <value2>1</value2>
+                            <value2>0</value2>
                         </compareValues>
                     </ruleList>
                 </runProgram>
@@ -340,9 +316,59 @@
                     </distributionFileList>
                 </folder>
             </folderList>
+            <parameterList>
+                <passwordParameter>
+                    <name>pg_password</name>
+                    <title>Postgresql Password</title>
+                    <description>Please enter a password for the Postgresql superuser.</description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>postgres</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <askForConfirmation>0</askForConfirmation>
+                    <descriptionRetype></descriptionRetype>
+                    <width>20</width>
+                </passwordParameter>
+                <stringParameter>
+                    <name>dbname</name>
+                    <title>Please enter the name of the DHIS2 database.</title>
+                    <description></description>
+                    <explanation></explanation>
+                    <value></value>
+                    <default>dhis2db</default>
+                    <allowEmptyValue>0</allowEmptyValue>
+                    <width>40</width>
+                </stringParameter>
+            </parameterList>
             <postInstallationActionList>
+                <substitute>
+                    <files>${installdir}\tmp\restore_db.bat</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>PG_PASSWORD</pattern>
+                            <value>${pg_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>DHIS2DBNAME</pattern>
+                            <value>${dbname}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
+                <substitute>
+                    <files>${installdir}\conf\hibernate.properties</files>
+                    <type>regexp</type>
+                    <substitutionList>
+                        <substitution>
+                            <pattern>DHIS2DBNAME</pattern>
+                            <value>${dbname}</value>
+                        </substitution>
+                    </substitutionList>
+                </substitute>
                 <runProgram>
-                    <explanation>Restoring Zambia Database</explanation>
+                    <abortOnError>0</abortOnError>
+                    <customErrorMessage>An error occured. Your database may not have been restored.</customErrorMessage>
+                    <explanation>Restoring DHIS2 Database</explanation>
                     <program>restore_db.bat</program>
                     <programArguments></programArguments>
                     <progressText>Please be patient. Restoring DB.</progressText>
