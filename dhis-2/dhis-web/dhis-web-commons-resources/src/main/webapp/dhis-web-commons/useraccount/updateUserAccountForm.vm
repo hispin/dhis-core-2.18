@@ -4,7 +4,7 @@
 		var rules = {
 			oldPassword: {required: true},
 			rawPassword: {required:false, password:true, rangelength: [8, 35], notequalto:'#username'},
-			retypePassword: {required:true, equalTo:'#rawPassword'},
+			retypePassword: {required:false, equalTo:'#rawPassword'},
 			surname: {required:true, minlength:2},
 			firstName: {required:true, minlength:2},
 			email: {email:true},
