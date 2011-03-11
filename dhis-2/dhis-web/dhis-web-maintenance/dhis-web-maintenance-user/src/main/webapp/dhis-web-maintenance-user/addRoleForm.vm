@@ -1,5 +1,5 @@
 <script>
-	jQuery(document).ready(	function(){
+ 	jQuery(document).ready(	function() {
 		jQuery("#name").focus();
 
 		var rules = {
@@ -15,7 +15,7 @@
 			'rules': rules
 		});
 
-		jQuery("#name").attr("maxlength", "160");
+		jQuery("#name").attr("maxlength", "140");
 
 		/* remote validation */
 		checkValueIsExist( "name", "validateRole.action");

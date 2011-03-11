@@ -1,8 +1,26 @@
 <script>
-	jQuery(document).ready(	function(){
-	validation( 'updateUserForm', function( form ){ form.submit() }, function(){
-			listValidator( 'roleValidator','selectedList');
-		} );	
+	jQuery(document).ready(	function() {
+		var rules = {
+			rawPassword: {rangelength: [8,35], password:true, notequalto:'#username'},
+			retypePassword: {rangelength: [8,35], equalTo:'#rawPassword'},
+			surname: {required:true,minlength:2},
+			firstName: {required:true,minlength:2},
+			email: {email:true},
+			phoneNumber: {}			
+		};
+
+		validation2( 'updateUserForm', function( form ) { form.submit() }, {
+			'beforeValidateHandler': function() {
+				listValidator( 'roleValidator','selectedList');
+			},
+			'rules': rules
+		});
+
+		jQuery("#rawPassword").attr("maxlength", "35");
+		jQuery("#retypePassword").attr("maxlength", "35");
+		jQuery("#surname").attr("maxlength", "140");
+		jQuery("#firstName").attr("maxlength", "140");
+		jQuery("#email").attr("maxlength", "160");
 	});
 </script>
 
@@ -24,27 +42,27 @@
 	</tr>
 	<tr>
 		<td><label for="rawPassword">$i18n.getString( "password" )</label></td>
-		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" maxlength="50" autocomplete="off" class="{validate:{rangelength:[8,35],password:true,notequalto:'#username'}}"/></td>			
+		<td colspan="3"><input type="password" id="rawPassword" name="rawPassword" style="width:20em" autocomplete="off"></td>			
 	</tr>
 	<tr>
 		<td><label for="retypePassword">$i18n.getString( "retype_password" ) </label></td>
-		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" maxlength="50" autocomplete="off" class="{validate:{rangelength:[8,35],equalTo:'#rawPassword'}}"/></td>	
+		<td colspan="3"><input type="password" id="retypePassword" name="retypePassword" style="width:20em" autocomplete="off"></td>	
 	</tr>
 	<tr>
 		<td><label for="surname">$i18n.getString( "surname" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>	
+		<td colspan="3"><input type="text" id="surname" name="surname" value="$encoder.htmlEncode( $userCredentials.user.surname )" style="width:20em"></td>	
 	</tr>
 	<tr>
 		<td><label for="firstName">$i18n.getString( "firstName" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td colspan="3"><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>		
+		<td colspan="3"><input type="text" id="firstName" name="firstName" value="$encoder.htmlEncode( $userCredentials.user.firstName )" style="width:20em"></td>		
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em" maxlength="160" class="{validate:{email:true}}"/></td>		
+		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"></td>		
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" maxlength="80" style="width:20em"/></td> 
+        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $userCredentials.user.phoneNumber )" style="width:20em"/></td> 
     </tr>
 	<tr>
 		<td colspan="4" height="10"></td>

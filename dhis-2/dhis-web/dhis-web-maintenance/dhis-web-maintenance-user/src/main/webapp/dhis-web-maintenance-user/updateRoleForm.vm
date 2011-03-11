@@ -1,11 +1,23 @@
 <script>
-	jQuery(document).ready(	function(){
+	jQuery(document).ready(	function() {
 		jQuery("#name").focus();
-		validation( 'updateRoleForm', function( form ){
+
+		var rules = {
+			name: {required:true, minlength:2},
+			description: {required:true}
+		};
+
+		validation2( 'updateRoleForm', function( form ) {
 			selectAllById( 'selectedList' );
 			selectAllById( 'selectedListAuthority' );
 			form.submit();			
+		}, {
+			'rules': rules
 		});
+
+		jQuery("#name").attr("maxlength", "140");
+
+		/* remote validation */
 		checkValueIsExist( "name", "validateRole.action", {id:getFieldValue('id')});				
 	});		
 </script>
@@ -23,13 +35,13 @@
 		</tr>
 		<tr>
 			<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em"  maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $userAuthorityGroup.name )" style="width:20em"></td>
 			<td></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em" class="{validate:{required:true}}"/></td>
+			<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $userAuthorityGroup.description )" style="width:20em"/></td>
 			<td></td>
 			<td></td>
 		</tr>
@@ -93,6 +105,7 @@
 		</tr>
 	</table>
 </form>
+
 <script>
 	sortList('availableListAuthority','ASC');
 	sortList('selectedListAuthority','ASC');

@@ -1,15 +1,27 @@
 <script>
-	jQuery(document).ready(	function(){
-		validation( 'addUserGroupForm', function( form ){ form.submit() }, function(){
-			listValidator( 'memberValidator','groupMembers');
-		} );
+	jQuery(document).ready(	function() {
+		var rules = {
+			name: {required:true, minlength:2, alphanumericwithbasicpuncspaces:true, firstletteralphabet:true},
+			memberValidator: {required:true},			
+		};
+
+		validation2( 'addUserGroupForm', function( form ) { form.submit() }, {
+			'beforeValidateHandler': function() {
+				listValidator( 'memberValidator','groupMembers');
+			},
+			'rules': rules
+		});
+
+		 jQuery("#name").attr("maxlength", "210");
+
+		/* remote validation */
 		checkValueIsExist( "name", "validateUserGroup.action");	
 	});		
 </script>
 
 <h3>$i18n.getString( "add_user_group" )</h3>
 
-<form id="addUserGroupForm" name="addUserGroupForm" action = " addUserGroup.action"  method="post" >
+<form id="addUserGroupForm" name="addUserGroupForm" action="addUserGroup.action" method="post" >
  
 <table id="detailsList">
 	<col/>
@@ -22,9 +34,7 @@
 	<tbody>
 	<tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" 
-            class="{validate:{required:true,minlength:4,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/>
-		</td>
+		<td><input type="text" id="name" name="name" style="width:20em"></td>
 	</tr>
 	<tr><td colspan="2" style="height:15px"></td></tr>
 	</tbody>
@@ -33,7 +43,7 @@
     <tr>
         <th>$i18n.getString( "available_users" )</th><td></td>
         <th>$i18n.getString( "group_members" )
-            <select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+            <select id="memberValidator" multiple="multiple" style="display:none"/>
         </th>
     </tr>
     <tr>        
