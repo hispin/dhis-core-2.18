@@ -187,11 +187,11 @@ public class AggregationStoreTest
         
         Collection<DataValue> dataValues3 = aggregationStore.getDataValues( sources, dataElementA.getId(), optionCombo.getId(), periods );
 
-        assertEquals( dataValues3.size(), 6 );
+        assertEquals( dataValues3.size(), 8 );
 
         Collection<DataValue> dataValues4 = aggregationStore.getDataValues( sourceA.getId(), dataElementA.getId(), optionCombo.getId(), periods );
 
-        assertEquals( dataValues4.size(), 2 );        
+        assertEquals( dataValues4.size(), 3 );        
 
         statementManager.destroy();
     }
