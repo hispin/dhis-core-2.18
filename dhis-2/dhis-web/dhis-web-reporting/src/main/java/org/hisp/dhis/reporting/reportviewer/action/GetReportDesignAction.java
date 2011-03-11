@@ -104,4 +104,10 @@ public class GetReportDesignAction
     {
         return filename;
     }
+    
+    @Override
+    public boolean attachment()
+    {
+        return true;
+    }
 }
