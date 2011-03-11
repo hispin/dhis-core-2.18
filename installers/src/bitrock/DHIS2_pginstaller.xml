@@ -53,6 +53,60 @@
     <vendor>DHIS2</vendor>
     <componentList>
         <component>
+            <name>jre</name>
+            <description>JRE</description>
+            <canBeEdited>0</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>JRE</description>
+                    <destination>${installdir}\tmp\</destination>
+                    <name>JRE</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../../resources/jre/jre-6u24-windows-i586-s.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <runProgram>
+                    <customErrorMessage>No valid JRE was detcted and one could not be installed. The installation of DHIS2 will be aborted.</customErrorMessage>
+                    <explanation>Installing Java Runtime Enviornment</explanation>
+                    <program>jre-6u24-windows-i586-s.exe</program>
+                    <programArguments>/s /v /log ${installdir}\logs\javainstall.txt </programArguments>
+                    <progressText>Installing Java Runtime Enviornment</progressText>
+                    <useMSDOSPath>0</useMSDOSPath>
+                    <workingDirectory>${installdir}\tmp\</workingDirectory>
+                    <onErrorActionList>
+                        <showQuestion>
+                            <default>yes</default>
+                            <text>Java was unable to be installed. Do you wish to proceed anyway?</text>
+                            <variable>${proceed_without_java}</variable>
+                        </showQuestion>
+                    </onErrorActionList>
+                    <ruleList>
+                        <compareValues>
+                            <logic>equals</logic>
+                            <value1>${java_autodetected}</value1>
+                            <value2>0</value2>
+                        </compareValues>
+                    </ruleList>
+                </runProgram>
+                <exit>
+                    <ruleList>
+                        <compareValues>
+                            <logic>equals</logic>
+                            <value1>${proceed_without_java}</value1>
+                            <value2>0</value2>
+                        </compareValues>
+                    </ruleList>
+                </exit>
+            </postInstallationActionList>
+        </component>
+        <component>
             <name>dhis2live</name>
             <description>DHIS2 Live</description>
             <canBeEdited>0</canBeEdited>
@@ -223,6 +277,12 @@
                     </distributionFileList>
                 </folder>
             </folderList>
+            <initializationActionList>
+                <setInstallerVariable>
+                    <name>${postgres_overwrite|</name>
+                    <value>1</value>
+                </setInstallerVariable>
+            </initializationActionList>
             <parameterList>
                 <booleanParameter>
                     <name>postgres_overwrite</name>
@@ -244,51 +304,16 @@
             <postInstallationActionList>
                 <runProgram>
                     <explanation>Installing Postgresql</explanation>
-                    <program>postgresql*.exe</program>
-                    <programArguments>--superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
+                    <program>postgresql-9.0.1-1-windows.exe</program>
+                    <programArguments>--unattendedmodeui none --mode unattended --superaccount postgres --servicepassword ${pg_password} --superpassword ${pg_password}</programArguments>
                     <progressText>Installing Postgresql</progressText>
+                    <useMSDOSPath>0</useMSDOSPath>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                     <ruleList>
                         <compareValues>
                             <logic>equals</logic>
                             <value1>${postgres_overwrite}</value1>
                             <value2>1</value2>
-                        </compareValues>
-                    </ruleList>
-                </runProgram>
-            </postInstallationActionList>
-        </component>
-        <component>
-            <name>jre</name>
-            <description>JRE</description>
-            <canBeEdited>0</canBeEdited>
-            <selected>1</selected>
-            <show>1</show>
-            <folderList>
-                <folder>
-                    <description>JRE</description>
-                    <destination>${installdir}\tmp\</destination>
-                    <name>JRE</name>
-                    <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>../../resources/jre/jre-6u24-windows-i586-s.exe</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-            </folderList>
-            <postInstallationActionList>
-                <runProgram>
-                    <explanation>Installing Java Runtime Enviornment</explanation>
-                    <program>jre-6u24-windows-i586-s.exe</program>
-                    <programArguments>/s /v</programArguments>
-                    <progressText>Installing Java Runtime Enviornment</progressText>
-                    <workingDirectory>${installdir}\tmp\</workingDirectory>
-                    <ruleList>
-                        <compareValues>
-                            <logic>equals</logic>
-                            <value1>${java_autodetected}</value1>
-                            <value2>0</value2>
                         </compareValues>
                     </ruleList>
                 </runProgram>
@@ -331,8 +356,8 @@
                 </passwordParameter>
                 <stringParameter>
                     <name>dbname</name>
-                    <title>Please enter the name of the DHIS2 database.</title>
-                    <description></description>
+                    <title>DHIS2 Database</title>
+                    <description>Please provide the name of the database for DHIS2.</description>
                     <explanation></explanation>
                     <value></value>
                     <default>dhis2db</default>
@@ -367,11 +392,11 @@
                 </substitute>
                 <runProgram>
                     <abortOnError>0</abortOnError>
-                    <customErrorMessage>An error occured. Your database may not have been restored.</customErrorMessage>
                     <explanation>Restoring DHIS2 Database</explanation>
                     <program>restore_db.bat</program>
                     <programArguments></programArguments>
                     <progressText>Please be patient. Restoring DB.</progressText>
+                    <showMessageOnError>0</showMessageOnError>
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
                 <deleteFile>
