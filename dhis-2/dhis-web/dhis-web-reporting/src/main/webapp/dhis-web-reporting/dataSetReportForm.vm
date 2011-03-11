@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dataset_report" )</h3>
 
-<form id="reportForm" name="reportForm" action="generateCustomDataSetReport.action" method="post">	
+<form id="reportForm" name="reportForm" action="generateDataSetReport.action" method="post">	
 
 <table>
 	<tr>
