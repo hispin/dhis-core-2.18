@@ -29,6 +29,8 @@ package org.hisp.dhis.databrowser;
 
 import java.util.List;
 
+import org.hisp.dhis.common.Grid;
+
 /**
  * Contains methods for creating aggregated count queries for the Data Browser
  * module.
@@ -36,9 +38,9 @@ import java.util.List;
  * @author joakibj, martinwa, briane, eivinhb
  * 
  */
-public interface DataBrowserStore
+public interface DataBrowserGridStore
 {
-    String ID = DataBrowserStore.class.getName();
+    String ID = DataBrowserGridStore.class.getName();
 
     // -------------------------------------------------------------------------
     // DataBrowser
@@ -49,27 +51,30 @@ public interface DataBrowserStore
      * an aggregated count.
      * 
      * @param betweenPeriodIds list of Period ids
-     * @return the DataBrowserTable with structure for presentation
+     * @param isZeroAdded if true then Zero can be added and false is not
+     * @return the Grid with structure for presentation
      */
-    DataBrowserTable getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds );
+    Grid getDataSetsBetweenPeriods( List<Integer> betweenPeriodIds, boolean isZeroAdded );
 
     /**
      * Finds all DataElementGroups connected to any period in betweenPeriodIds
      * and does an aggregated count.
      * 
      * @param betweenPeriodIds list of Period ids
-     * @return the DataBrowserTable with structure for presentation
+     * @param isZeroAdded if true then Zero can be added and false is not
+     * @return the Grid with structure for presentation
      */
-    DataBrowserTable getDataElementGroupsBetweenPeriods( List<Integer> betweenPeriodIds );
+    Grid getDataElementGroupsBetweenPeriods( List<Integer> betweenPeriodIds, boolean isZeroAdded );
 
     /**
      * Finds all OrganisationUnitGroups connected to any period in
      * betweenPeriodIds and does an aggregated count.
      * 
      * @param betweenPeriodIds list of Period ids
-     * @return the DataBrowserTable with structure for presentation
+     * @param isZeroAdded if true then Zero can be added and false is not
+     * @return the Grid with structure for presentation
      */
-    DataBrowserTable getOrgUnitGroupsBetweenPeriods( List<Integer> betweenPeriodIds );
+    Grid getOrgUnitGroupsBetweenPeriods( List<Integer> betweenPeriodIds, boolean isZeroAdded );
 
     /**
      * Always called first.
@@ -78,12 +83,11 @@ public interface DataBrowserStore
      * DataSets with DataValue in betweenPeriod List and given DataSetId. Then
      * calls on helpers internally to set it up.
      * 
-     * @param table the DataBrowserTable to set the structure in
+     * @param grid the Grid to set the structure in
      * @param dataSetId the DataSet id
-     * @param betweenPeriods list of Period ids
+     * @param metaIds list of MetaValue ids
      */
-    void setDataElementStructureForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
-        List<Integer> betweenPeriods );
+    void setDataElementStructureForDataSet( Grid grid, Integer dataSetId, List<Integer> metaIds );
 
     /**
      * Always called first.
@@ -92,12 +96,11 @@ public interface DataBrowserStore
      * DataElementGroups with DataValue in betweenPeriod List and given
      * DataElementGroupId. Then calls on helpers internally to set it up.
      * 
-     * @param table the DataBrowserTable to set the structure in
+     * @param grid the Grid to set the structure in
      * @param dataElementGroupId the DataElementGroup id
-     * @param betweenPeriods list of Period ids
+     * @param metaIds list of MetaValue ids
      */
-    void setDataElementStructureForDataElementGroupBetweenPeriods( DataBrowserTable table, Integer dataElementGroupId,
-        List<Integer> betweenPeriods );
+    void setDataElementStructureForDataElementGroup( Grid grid, Integer dataElementGroupId, List<Integer> metaIds );
 
     /**
      * Always called first.
@@ -107,12 +110,11 @@ public interface DataBrowserStore
      * OrganisationUnitGroup id. Then calls on helpers in DataBrowserTable to
      * set it up.
      * 
-     * @param table the DataBrowserTable to set the structure in
+     * @param grid the Grid to set the structure in
      * @param orgUnitGroupId the OrganisationUnitGroup id
-     * @param betweenPeriods lit of Period ids
+     * @param metaIds list of MetaValue ids
      */
-    void setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( DataBrowserTable table, Integer orgUnitGroupId,
-        List<Integer> betweenPeriods );
+    void setDataElementGroupStructureForOrgUnitGroup( Grid grid, Integer orgUnitGroupId, List<Integer> metaIds );
 
     /**
      * Always called first.
@@ -122,12 +124,11 @@ public interface DataBrowserStore
      * OrganisationUnit parent id. Then calls on helpers in DataBrowserTable to
      * set it up.
      * 
-     * @param table the DataBrowserTable to set the structure in
+     * @param grid the Grid to set the structure in
      * @param orgUnitParent the OrganisationUnit parent id
-     * @param betweenPeriods list of Period ids
+     * @param metaIds list of MetaValue ids
      */
-    void setStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
-        List<Integer> betweenPeriods );
+    void setStructureForOrgUnit( Grid grid, Integer orgUnitParent, List<Integer> metaIds );
 
     /**
      * Always called first.
@@ -137,72 +138,81 @@ public interface DataBrowserStore
      * OrganisationUnit id. Then calls on helpers in DataBrowserTable to set it
      * up.
      * 
-     * @param table the DataBrowserTable to set the structure in
+     * @param grid the Grid to set the structure in
      * @param orgUnitId the OrganisationUnit id
-     * @param betweenPeriodIds List of Period ids
+     * @param metaIds List of MetaValue ids
      */
-    void setDataElementStructureForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
-        List<Integer> betweenPeriodIds );
+    void setDataElementStructureForOrgUnit( Grid grid, Integer orgUnitId, List<Integer> metaIds );
 
     /**
      * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
      * connected to one DataSet.
      * 
-     * @param table the DataBrowserTable to insert column into
+     * @param grid the Grid to insert column into
      * @param dataSetId id of DataSet the DataElements are for
-     * @param betweenPeriodIds list of Period ids
+     * @param betweenPeriodIds List of Period ids
+     * @param metaIds List of MetaValue ids
+     * @param isZeroAdded if true then Zero can be added and false is not
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountDataElementsForDataSetBetweenPeriods( DataBrowserTable table, Integer dataSetId,
-        List<Integer> betweenPeriodIds );
+    Integer setCountDataElementsForDataSetBetweenPeriods( Grid grid, Integer dataSetId, List<Integer> betweenPeriodIds,
+        List<Integer> metaIds, boolean isZeroAdded );
 
     /**
      * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
      * connected to one DataElementGroup.
      * 
-     * @param table the DataBrowserTable to insert column into
+     * @param grid the Grid to insert column into
      * @param dataElementGroupId id of DataElementGroup the DataElements are for
      * @param betweenPeriodIds list of Period ids
+     * @param metaIds List of MetaValue ids
+     * @param isZeroAdded if true then Zero can be added and false is not
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountDataElementsForDataElementGroupBetweenPeriods( DataBrowserTable table, Integer dataElementGroupId,
-        List<Integer> betweenPeriodIds );
+    Integer setCountDataElementsForDataElementGroupBetweenPeriods( Grid grid, Integer dataElementGroupId,
+        List<Integer> betweenPeriodIds, List<Integer> metaIds, boolean isZeroAdded );
 
     /**
      * Sets the DataElementGroup count-Columns in DataBrowserTable for
      * betweenPeriod List connected to one OrgUnitGroup.
      * 
-     * @param table the DataBrowserTable to insert column into
+     * @param grid the Grid to insert column into
      * @param orgUnitGroupId id of OrgUnitGroup the DataElementGroups are for
      * @param betweenPeriodIds list of Period ids
+     * @param metaIds List of MetaValue ids
+     * @param isZeroAdded if true then Zero can be added and false is not
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( DataBrowserTable table, Integer orgUnitGroupId,
-        List<Integer> betweenPeriodIds );
+    Integer setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( Grid grid, Integer orgUnitGroupId,
+        List<Integer> betweenPeriodIds, List<Integer> metaIds, boolean isZeroAdded );
 
     /**
      * Sets OrgUnit count-Columns in DataBrowserTable for betweenPeriod List
      * connected to one OrganisationUnit parent.
      * 
-     * @param table the DataBrowserTable to insert column into
+     * @param grid the Grid to insert column into
      * @param orgUnitParent the OrganisationUnit parent id
      * @param betweenPeriodIds list of Period ids
      * @param maxLevel is the max level of the hierarchy
+     * @param metaIds List of MetaValue ids
+     * @param isZeroAdded if true then Zero can be added and false is not
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountOrgUnitsBetweenPeriods( DataBrowserTable table, Integer orgUnitParent,
-        List<Integer> betweenPeriodIds, Integer maxLevel );
+    Integer setCountOrgUnitsBetweenPeriods( Grid grid, Integer orgUnitParent, List<Integer> betweenPeriodIds,
+        Integer maxLevel, List<Integer> metaIds, boolean isZeroAdded );
 
     /**
      * Sets DataElement count-Columns in DataBrowserTable for betweenPeriod List
      * connected to one OrgUnit.
      * 
-     * @param table the DataBrowserTable to insert column into
+     * @param grid the Grid to insert column into
      * @param orgUnitId id of OrganisationUnit the DataElements are for
      * @param betweenPeriodIds list of Period ids
+     * @param metaIds List of MetaValue ids
+     * @param isZeroAdded if true then Zero can be added and false is not
      * @return 0 if no results are found else number of rows inserted
      */
-    Integer setCountDataElementsForOrgUnitBetweenPeriods( DataBrowserTable table, Integer orgUnitId,
-        List<Integer> betweenPeriodIds );
+    Integer setRawDataElementsForOrgUnitBetweenPeriods( Grid grid, Integer orgUnitId, List<Integer> betweenPeriodIds,
+        List<Integer> metaIds, boolean isZeroAdded );
 
 }

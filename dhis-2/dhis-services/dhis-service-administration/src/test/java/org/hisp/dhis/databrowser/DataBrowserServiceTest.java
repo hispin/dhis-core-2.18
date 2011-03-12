@@ -29,30 +29,31 @@ package org.hisp.dhis.databrowser;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
-import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.PeriodType;
 import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * @author joakibj, briane, eivinhb
+ * @author Dang Duy Hieu
  * @version $Id$
- * @modifier Dang Duy Hieu
  * @since 2010-04-15
  */
 public class DataBrowserServiceTest
     extends DataBrowserTest
 {
-    private DataBrowserService dataBrowserService;
+    private DataBrowserGridService dataBrowserService;
+
+    private boolean isZeroAdded;
 
     @Override
     public void setUpTest()
         throws Exception
     {
-        dataBrowserService = (DataBrowserService) getBean( DataBrowserService.ID );
+        dataBrowserService = (DataBrowserGridService) getBean( DataBrowserGridService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
 
         super.setUpDataBrowserTest();
@@ -73,53 +74,45 @@ public class DataBrowserServiceTest
     {
         // Get all DataSets from earliest to latest registered on daily basis
         // (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getDataSetsInPeriod( null, null, periodA.getPeriodType(),
-            mockFormat );
+        Grid grid = dataBrowserService.getDataSetsInPeriod( null, null, periodA.getPeriodType(), mockFormat,
+            isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_set", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_set", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // Sorted by count
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( dataSetB.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataSetB.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataSetA.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataSetA.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( dataSetC.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( dataSetC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( "Metarows", 3, grid.getRows().size() );
+        assertEquals( dataSetB.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataSetB.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataSetA.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataSetA.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
+        assertEquals( dataSetC.getName(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getName() );
+        assertEquals( dataSetC.getId(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataSetB", "18", table.getRowBasedOnRowName( dataSetB.getName() ).get( 0 )
-           );
-        assertEquals( "DataValues in dataSetA", "12", table.getRowBasedOnRowName( dataSetA.getName() ).get( 0 )
-             );
-        assertEquals( "DataValues in dataSetC", "3" , table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ) );
+        assertEquals( "DataValues in dataSetB", "18", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataSetA", "12", grid.getRow( 1 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataSetC", "3", grid.getRow( 2 ).get( 1 ).toString() );
 
         // Get all DataSets from 2005-05-01 to 2005-05-31 registered on weekly
         // basis (this should be only period D data values)
-        table = dataBrowserService
-            .getDataSetsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat );
+        grid = dataBrowserService.getDataSetsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat,
+            isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_set", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_set", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // Sorted by count
-        assertEquals( "Metarows", 1, table.getRows().size() );
-        assertEquals( dataSetC.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataSetC.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( "No.Row entries", 1, grid.getRows().size() );
+        assertEquals( dataSetC.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataSetC.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataSetC", "6", table.getRowBasedOnRowName( dataSetC.getName() ).get( 0 ) );
+        assertEquals( "DataValues in dataSetC", "6", grid.getRow( 0 ).get( 1 ).toString() );
     }
 
     /**
@@ -131,55 +124,45 @@ public class DataBrowserServiceTest
     {
         // Get all DataElementGroups from earliest to latest registered on daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getDataElementGroupsInPeriod( null, null, periodA.getPeriodType(),
-            mockFormat );
+        Grid grid = dataBrowserService.getDataElementGroupsInPeriod( null, null, periodA.getPeriodType(), mockFormat,
+            isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_element_group", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element_group", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // Sorted by count
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( dataElementGroupB.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementGroupB.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataElementGroupA.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataElementGroupA.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( "No.Row entries", 3, grid.getRows().size() );
+        assertEquals( dataElementGroupB.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupB.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementGroupA.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupA.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupC.getId(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupB", "18", table.getRowBasedOnRowName( dataElementGroupB.getName() )
-            .get( 0 ) );
-        assertEquals( "DataValues in dataElementGroupA", "12", table.getRowBasedOnRowName( dataElementGroupA.getName() )
-            .get( 0 ) );
-        assertEquals( "DataValues in dataElementGroupC", "3", table.getRowBasedOnRowName( dataElementGroupC.getName() )
-            .get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupB", "18", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementGroupA", "12", grid.getRow( 1 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementGroupC", "3", grid.getRow( 2 ).get( 1 ).toString() );
 
         // Get all DataElementGroups from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
-        table = dataBrowserService.getDataElementGroupsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(),
-            mockFormat );
+        grid = dataBrowserService.getDataElementGroupsInPeriod( "2005-05-01", "2005-05-31", periodD.getPeriodType(),
+            mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_element_group", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element_group", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // Sorted by count
-        assertEquals( "Metarows", 1, table.getRows().size() );
-        assertEquals( dataElementGroupC.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementGroupC.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( "No.Row entries", 1, grid.getRows().size() );
+        assertEquals( dataElementGroupC.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupC.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupC", "6", table.getRowBasedOnRowName( dataElementGroupC.getName() )
-            .get( 0 ) );
+        assertEquals( "DataValues in dataElementGroupC", "6", grid.getRow( 0 ).get( 1 ).toString() );
     }
 
     /**
@@ -192,92 +175,75 @@ public class DataBrowserServiceTest
         // Get all OrganisationUnitGroups from earliest to latest registered on
         // daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getOrgUnitGroupsInPeriod( null, null, periodA.getPeriodType(),
-            mockFormat );
+        Grid grid = dataBrowserService.getOrgUnitGroupsInPeriod( null, null, periodA.getPeriodType(), mockFormat,
+            isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 1, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_orgunit_group", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_orgunit_group", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // Sorted by count
-        assertEquals( "Metarows", 2, table.getRows().size() );
-        assertEquals( unitGroupB.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( unitGroupB.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( unitGroupA.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( unitGroupA.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( "No.Row entries", 2, grid.getRows().size() );
+        assertEquals( unitGroupB.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( unitGroupB.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( unitGroupA.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( unitGroupA.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 2, table.getCounts().size() );
         // unitD has 6 datavalues, unitE has 6 datavalues and unitF has 5
         // datavalues for periods A and B
-        assertEquals( "DataValues in unitGroupB", "17", table.getRowBasedOnRowName( unitGroupB.getName() ).get( 0 )
-             );
+        assertEquals( "DataValues in unitGroupB", "17", grid.getRow( 0 ).get( 1 ).toString() );
         // unitB has 0 datavalues and unitC has 6 datavalues for periods A and B
-        assertEquals( "DataValues in unitGroupA", "6", table.getRowBasedOnRowName( unitGroupA.getName() ).get( 0 )
-            );
+        assertEquals( "DataValues in unitGroupA", "6", grid.getRow( 1 ).get( 1 ).toString() );
     }
 
     /**
      * DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String
      * startDate, String endDate, PeriodType periodType );
      */
-    @Test
     @Ignore
     public void testGetOrgUnitsInPeriod()
     {
         // Get all children of unit B from 2005-03-01 to 2005-04-30 registered
         // on daily basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getOrgUnitsInPeriod( unitB.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType(), 4, mockFormat );
+        Grid grid = dataBrowserService.getOrgUnitsInPeriod( unitB.getId(), "2005-03-01", "2005-04-30", periodA
+            .getPeriodType(), 4, mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 3, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_organisation_unit", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
-        assertEquals( "Period column header", "2005-04-01", table.getColumns().get( 2 ).getName() );
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_organisation_unit", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", grid.getVisibleHeaders().get( 1 ).getName() );
+        assertEquals( "Period column header", "2005-04-01", grid.getVisibleHeaders().get( 2 ).getName() );
 
         // unitB has three children - sorted by name
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( unitD.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( unitD.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( unitE.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( unitE.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( unitF.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( unitF.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( "No.Row entries", 3, grid.getRows().size() );
+        assertEquals( unitD.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( unitD.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( unitE.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( unitE.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
+        assertEquals( unitF.getName(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getName() );
+        assertEquals( unitF.getId(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in unitD for periodA", "4", table.getRowBasedOnRowName( unitD.getName() ).get( 0 )
-             );
-        assertEquals( "DataValues in unitD for periodB", "2", table.getRowBasedOnRowName( unitD.getName() ).get( 1 )
-             );
-        assertEquals( "DataValues in unitE for periodA", "4", table.getRowBasedOnRowName( unitE.getName() ).get( 0 )
-             );
-        assertEquals( "DataValues in unitE for periodB", "2", table.getRowBasedOnRowName( unitE.getName() ).get( 1 )
-            );
-        assertEquals( "DataValues in unitF for periodA", "2", table.getRowBasedOnRowName( unitF.getName() ).get( 0 )
-           );
-        assertEquals( "DataValues in unitF for periodB", "3", table.getRowBasedOnRowName( unitF.getName() ).get( 1 )
-            );
+        assertEquals( "DataValues in unitD for periodA", "4", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in unitD for periodB", "2", grid.getRow( 1 ).get( 1 ).toString() );
+        assertEquals( "DataValues in unitE for periodA", "4", grid.getRow( 2 ).get( 1 ).toString() );
+        assertEquals( "DataValues in unitE for periodB", "2", grid.getRow( 3 ).get( 1 ).toString() );
+        assertEquals( "DataValues in unitF for periodA", "2", grid.getRow( 4 ).get( 1 ).toString() );
+        assertEquals( "DataValues in unitF for periodB", "3", grid.getRow( 5 ).get( 1 ).toString() );
 
         // Retrieve children of unitG - zero children
-        table = dataBrowserService.getOrgUnitsInPeriod( unitG.getId(), null, null, periodA.getPeriodType(), 4,
-            mockFormat );
+        grid = dataBrowserService.getOrgUnitsInPeriod( unitG.getId(), null, null, periodA.getPeriodType(), 4,
+            mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 3, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_organisation_unit", table.getColumns().get( 0 ).getName() );
-        assertEquals( "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_organisation_unit", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 ).getName() );
         // Service layer adds "zero-column"
-        assertEquals( "Metarows", 0, table.getRows().size() );
+        assertEquals( "No.Row entries", 0, grid.getRows().size() );
     }
 
     /**
@@ -289,52 +255,43 @@ public class DataBrowserServiceTest
     {
         // Get count for dataSetA from 2005-03-01 to 2005-04-30 registered on
         // daily basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetA.getId(),
-            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
+        Grid grid = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetA.getId(), "2005-03-01",
+            "2005-04-30", periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
-        assertEquals( "Period column header", "2005-04-01", table.getColumns().get( 2 ).getName() );
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", grid.getVisibleHeaders().get( 1 ).getName() );
+        assertEquals( "Period column header", "2005-04-01", grid.getVisibleHeaders().get( 2 ).getName() );
 
         // dataSetA has one dataElement - sorted by name
-        assertEquals( "Metarows", 1, table.getRows().size() );
-        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( "No.Row entries", 1, grid.getRows().size() );
+        assertEquals( dataElementA.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementA.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementA", "6", table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
-             );
+        assertEquals( "DataValues in dataElementA", "6", grid.getRow( 0 ).get( 1 ).toString() );
 
         // Get count for dataSetC from 2005-05-01 to 2005-05-31 registered on
         // weekly basis (this should be only period D data values)
-        table = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetC.getId(), "2005-05-01",
-            "2005-05-31", periodD.getPeriodType(), mockFormat );
+        grid = dataBrowserService.getCountDataElementsForDataSetInPeriod( dataSetC.getId(), "2005-05-01", "2005-05-31",
+            periodD.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-05-01", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-05-01", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // dataSetC has two dataElements - sorted by name
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( "No.Row entries", 3, grid.getRows().size() );
+        assertEquals( dataElementC.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementC.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementE.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataElementE.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementC", "3", table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
-             );
-        assertEquals( "DataValues in dataElementE", "3", table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
-          );
+        assertEquals( "DataValues in dataElementC", "3", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementE", "3", grid.getRow( 1 ).get( 1 ).toString() );
     }
 
     /**
@@ -347,101 +304,85 @@ public class DataBrowserServiceTest
     {
         // Get count for dataElementGroupA from 2005-03-01 to 2005-04-30
         // registered on daily basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupA
-            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
+        Grid grid = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupA.getId(),
+            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
-        assertEquals( "Period column header", "2005-04-01", table.getColumns().get( 2 ).getName() );
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", grid.getVisibleHeaders().get( 1 ).getName() );
+        assertEquals( "Period column header", "2005-04-01", grid.getVisibleHeaders().get( 2 ).getName() );
 
         // dataElementGroupA has one dataElement - sorted by name
-        assertEquals( "Metarows", 1, table.getRows().size() );
-        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
+        assertEquals( "No.Row entries", 1, grid.getRows().size() );
+        assertEquals( dataElementA.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementA.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 1, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementA", "6", table.getRowBasedOnRowName( dataElementA.getName() ).get( 0 )
-         );
+        assertEquals( "DataValues in dataElementA", "6", grid.getRow( 0 ).get( 1 ).toString() );
 
         // Get count for dataElementGroupC from 2005-05-01 to 2005-05-31
         // registered on weekly basis (this should be only period D data values)
-        table = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupC.getId(),
-            "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat );
+        grid = dataBrowserService.getCountDataElementsForDataElementGroupInPeriod( dataElementGroupC.getId(),
+            "2005-05-01", "2005-05-31", periodD.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-05-01", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-05-01", grid.getVisibleHeaders().get( 1 ).getName() );
 
         // dataElementGroupC has two dataElements - sorted by name
-        assertEquals( "Metarows", 3, table.getRows().size() );
-        assertEquals( dataElementC.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementC.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataElementE.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataElementE.getId(), table.getRows().get( 1 ).getId().intValue() );
+        assertEquals( "No.Row entries", 3, grid.getRows().size() );
+        assertEquals( dataElementC.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementC.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementE.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataElementE.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementC", "3", table.getRowBasedOnRowName( dataElementC.getName() ).get( 0 )
-         );
-        assertEquals( "DataValues in dataElementE", "3", table.getRowBasedOnRowName( dataElementE.getName() ).get( 0 )
-          );
+        assertEquals( "DataValues in dataElementC", "3", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementE", "3", grid.getRow( 1 ).get( 1 ).toString() );
     }
 
     /**
      * DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod(
      * Integer orgUnitGroupId, String startDate, String endDate, PeriodType
-     * periodType );
+     * periodType, I18nFormat format, boolean zeroShowed );
      */
     @Test
     public void testGetCountDataElementGroupsForOrgUnitGroupInPeriod()
     {
+        isZeroAdded = true;
+
         // Get count for unitGroupA from 2005-03-01 to 2005-04-30 registered on
         // daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( unitGroupA
-            .getId(), "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
+        Grid grid = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( unitGroupA.getId(),
+            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
         // unitGroupA has data values for dataElementGroup A, B and C in the two
         // periods
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_data_element_group", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
-        assertEquals( "Period column header", "2005-04-01", table.getColumns().get( 2 ).getName() );
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element_group", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", grid.getVisibleHeaders().get( 1 ).getName() );
+        assertEquals( "Period column header", "2005-04-01", grid.getVisibleHeaders().get( 2 ).getName() );
 
         // unitGroupA has data values for dataElementGroup A, B and C - sorted
         // by name
-        assertEquals( dataElementGroupA.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementGroupA.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataElementGroupB.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataElementGroupB.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( dataElementGroupC.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( dataElementGroupC.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( dataElementGroupA.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupA.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementGroupB.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupB.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementGroupC.getName(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getName() );
+        assertEquals( dataElementGroupC.getId(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 3, table.getCounts().size() );
-        assertEquals( "DataValues in dataElementGroupA for periodA", "1", table.getRowBasedOnRowName(
-            dataElementGroupA.getName() ).get( 0 ) );
-        assertEquals( "DataValues in dataElementGroupA for PeriodB", "1", table.getRowBasedOnRowName(
-            dataElementGroupA.getName() ).get( 1 ) );
-        assertEquals( "DataValues in dataElementGroupB for PeriodA", "2", table.getRowBasedOnRowName(
-            dataElementGroupB.getName() ).get( 0 ) );
-        assertEquals( "DataValues in dataElementGroupB for PeriodB", "1", table.getRowBasedOnRowName(
-            dataElementGroupB.getName() ).get( 1 ) );
-        assertEquals( "DataValues in dataElementGroupC for PeriodA", "1", table.getRowBasedOnRowName(
-            dataElementGroupC.getName() ).get( 0 ) );
-        assertEquals( "DataValues in dataElementGroupC for PeriodB", "0", table.getRowBasedOnRowName(
-            dataElementGroupC.getName() ).get( 1 ) );
+        assertEquals( "DataValues in dataElementGroupA for periodA", "1", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementGroupA for PeriodB", "1", grid.getRow( 0 ).get( 2 ).toString() );
+        assertEquals( "DataValues in dataElementGroupB for PeriodA", "2", grid.getRow( 1 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementGroupB for PeriodB", "1", grid.getRow( 1 ).get( 2 ).toString() );
+        assertEquals( "DataValues in dataElementGroupC for PeriodA", "1", grid.getRow( 2 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementGroupC for PeriodB", "0", grid.getRow( 2 ).get( 2 ).toString() );
     }
 
     /**
@@ -449,43 +390,38 @@ public class DataBrowserServiceTest
      * organizationUnitId, String startDate, String endDate, PeriodType
      * periodType );
      */
-    @Test
     @Ignore
-    public void testGetCountDataElementsForOrgUnitInPeriod()
+    public void testGetRawDataElementsForOrgUnitInPeriod()
     {
         // Get count for unitB from 2005-03-01 to 2005-04-30 registered on daily
         // basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( unitB.getId(),
-            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat );
+        Grid grid = dataBrowserService.getRawDataElementsForOrgUnitInPeriod( unitB.getId(), "2005-03-01", "2005-04-30",
+            periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
         // unitB has no data values
-        assertEquals( "Metacolumns", 2, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
+        assertEquals( "Header Size", 2, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
         // Service layer adds "zero-column"
-        assertEquals( "Period column header", "counts_of_aggregated_values", table.getColumns().get( 1 ).getName() );
+        assertEquals( "Period column header", "counts_of_aggregated_values", grid.getVisibleHeaders().get( 1 )
+            .getName() );
 
         // Sorted by name
-        assertEquals( "Metarows", 0, table.getRows().size() );
-        assertEquals( "Row count entries", 0, table.getCounts().size() );
+        assertEquals( "No.Row entries", 0, grid.getRows().size() );
 
         // Get count for unitF from 2005-03-01 to 2005-04-30 registered on daily
         // basis (this should be period A and B data values)
-        table = dataBrowserService.getCountDataElementsForOrgUnitInPeriod( unitF.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType(), mockFormat );
+        grid = dataBrowserService.getRawDataElementsForOrgUnitInPeriod( unitF.getId(), "2005-03-01", "2005-04-30",
+            periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 2, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        assertNotNull( "Grid not supposed to be null", grid );
 
         // unitF has data values for dataElements A, B, D and E in two periods
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_data_element", table.getColumns().get( 0 ).getName() );
-        assertEquals( "Period column header", "2005-03-01", table.getColumns().get( 1 ).getName() );
-        assertEquals( "Period column header", "2005-04-01", table.getColumns().get( 2 ).getName() );
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element", grid.getVisibleHeaders().get( 0 ).getName() );
+        assertEquals( "Period column header", "2005-03-01", grid.getVisibleHeaders().get( 1 ).getName() );
+        assertEquals( "Period column header", "2005-04-01", grid.getVisibleHeaders().get( 2 ).getName() );
 
         // unitF has data values for data elements A, B, and D - sorted by name
         // Consists:
@@ -493,29 +429,21 @@ public class DataBrowserServiceTest
         // two data values for B count
         // one data value for D count
 
-        assertEquals( "Metarows", 4, table.getRows().size() );
+        assertEquals( "No.Row entries", 4, grid.getRows().size() );
 
-        assertEquals( dataElementA.getName(), table.getRows().get( 0 ).getName() );
-        assertEquals( dataElementA.getId(), table.getRows().get( 0 ).getId().intValue() );
-        assertEquals( dataElementB.getName(), table.getRows().get( 1 ).getName() );
-        assertEquals( dataElementB.getId(), table.getRows().get( 1 ).getId().intValue() );
-        assertEquals( dataElementD.getName(), table.getRows().get( 2 ).getName() );
-        assertEquals( dataElementD.getId(), table.getRows().get( 2 ).getId().intValue() );
+        assertEquals( dataElementA.getName(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getName() );
+        assertEquals( dataElementA.getId(), ((MetaValue) grid.getRow( 0 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementB.getName(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getName() );
+        assertEquals( dataElementB.getId(), ((MetaValue) grid.getRow( 1 ).get( 0 )).getId().intValue() );
+        assertEquals( dataElementD.getName(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getName() );
+        assertEquals( dataElementD.getId(), ((MetaValue) grid.getRow( 2 ).get( 0 )).getId().intValue() );
 
-        assertEquals( "Row count entries", 4, table.getCounts().size() );
-
-        assertEquals( "DataValues in dataElementA for periodA", "1", table.getRowBasedOnRowName( dataElementA.getName() )
-            .get( 0 ) );
-        assertEquals( "DataValues in dataElementA for PeriodB", "1", table.getRowBasedOnRowName( dataElementA.getName() )
-            .get( 1 ) );
-        assertEquals( "DataValues in dataElementB for PeriodA", "1", table.getRowBasedOnRowName( dataElementB.getName() )
-            .get( 0 ) );
-        assertEquals( "DataValues in dataElementB for PeriodB", "1", table.getRowBasedOnRowName( dataElementB.getName() )
-            .get( 1 ) );
-        assertEquals( "DataValues in dataElementD for PeriodA", "0", table.getRowBasedOnRowName( dataElementD.getName() )
-            .get( 0 ) );
-        assertEquals( "DataValues in dataElementD for PeriodB", "1", table.getRowBasedOnRowName( dataElementD.getName() )
-            .get( 1 ) );
+        assertEquals( "DataValues in dataElementA for periodA", "1", grid.getRow( 0 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementA for PeriodB", "1", grid.getRow( 0 ).get( 2 ).toString() );
+        assertEquals( "DataValues in dataElementB for PeriodA", "1", grid.getRow( 1 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementB for PeriodB", "1", grid.getRow( 1 ).get( 2 ).toString() );
+        assertEquals( "DataValues in dataElementD for PeriodA", "0", grid.getRow( 2 ).get( 1 ).toString() );
+        assertEquals( "DataValues in dataElementD for PeriodB", "1", grid.getRow( 2 ).get( 2 ).toString() );
     }
 
     /**
@@ -523,22 +451,27 @@ public class DataBrowserServiceTest
      * format );
      */
     @Test
-    @Ignore
     public void testConvertDate()
     {
-        PeriodType monthlyPeriodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        // Get count for unitGroupA from 2005-03-01 to 2005-04-30 registered on
+        // daily
+        // basis (this should be period A and B data values)
+        Grid grid = dataBrowserService.getCountDataElementGroupsForOrgUnitGroupInPeriod( unitGroupA.getId(),
+            "2005-03-01", "2005-04-30", periodA.getPeriodType(), mockFormat, isZeroAdded );
 
-        // Get all children of unit B from 2005-03-01 to 2005-04-30 registered
-        // on monthly basis (this should be period A and B data values)
-        DataBrowserTable table = dataBrowserService.getOrgUnitsInPeriod( unitB.getId(), "2005-03-01", "2005-04-30",
-            periodA.getPeriodType(), 4, mockFormat );
+        assertNotNull( "Grid not supposed to be null", grid );
 
-        assertNotNull( "DataBrowserTable not supposed to be null", table );
-        assertEquals( "No. of queries", 3, table.getQueryCount() );
-        assertNotSame( "Querytime more than 0", 0, table.getQueryTime() );
+        // unitGroupA has data values for dataElementGroup A, B and C in the two
+        // periods
+        assertEquals( "Header Size", 3, grid.getVisibleHeaders().size() );
+        assertEquals( "drilldown_data_element_group", grid.getVisibleHeaders().get( 0 ).getName() );
 
-        assertEquals( "Metacolumns", 3, table.getColumns().size() );
-        assertEquals( "drilldown_organisation_unit", dataBrowserService.convertDate( monthlyPeriodType, table
-            .getColumns().get( 0 ).getName(), mockFormat ) );
+        assertEquals( "drilldown_data_element_group", dataBrowserService.convertDate( periodA.getPeriodType(), grid
+            .getVisibleHeaders().get( 0 ).getName(), mockFormat ) );
+        assertTrue( "Period column header 2005-03-01", dataBrowserService.convertDate( periodA.getPeriodType(),
+            grid.getVisibleHeaders().get( 1 ).getName(), mockFormat ).startsWith( "Period_2005-03-01" ) );
+        assertTrue( "Period column header 2005-04-01", dataBrowserService.convertDate( periodA.getPeriodType(),
+            grid.getVisibleHeaders().get( 2 ).getName(), mockFormat ).startsWith( "Period_2005-04-01" ) );
+
     }
 }

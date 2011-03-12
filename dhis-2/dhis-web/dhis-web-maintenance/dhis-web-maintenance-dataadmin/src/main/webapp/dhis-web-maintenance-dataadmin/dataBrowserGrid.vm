@@ -1,0 +1,74 @@
+
+#if ( $grid.getHeight() == 0 || $grid.getWidth() == 0 )
+<br/><br/>$i18n.getString( "no_data_found" )
+#else
+
+<table id="drillDownGrid" class="listTable" border="1">
+	<thead>
+		<tr>
+			#foreach( $header in $grid.getVisibleHeaders() )
+			<th #if( $header.meta )style="text-align:left"#else style="text-align:center"#end>$i18n.getString( $!encoder.htmlEncode( $header.name ) )</th>
+			#end
+		</tr>
+	</thead>
+
+	<tbody>
+		#if ( $summary )
+		#set( $title = "$!item $i18n.getString( 'no_hits' )" )
+		#else
+		#set( $title = "$i18n.getString( 'raw_data' )" )
+		#end
+	
+		#foreach( $meta in $!MetaValues )
+		#set( $list = $!MetaValueMaps.get( $meta ) )
+		<tr>
+			#if ( $mode=="OU" && !$parent && $meta.id )
+			#set ( $URL = "?mode=OU&periodTypeId=$periodTypeId&fromDate=$fromDate&toDate=$toDate&showZeroCheckBox=$!showZeroCheckBox&selectedUnitChanger=$meta.id" )
+			<td style="min-width:200px;cursor:pointer" onclick="viewDrillDownMenu( '$URL', '$meta.id' );" title="$i18n.getString('click_on_this_orgunit')">$meta.name</td>
+			
+			#elseif ( !$parent && $meta.id )
+			<td style="min-width:200px"><a href="?mode=$mode&periodTypeId=$periodTypeId&fromDate=$fromDate&toDate=$toDate&showZeroCheckBox=$!showZeroCheckBox&parent=$meta.id">$meta.name</a></td>
+			
+			#else
+			<td style="min-width:200px">$meta.name</td>
+			#end
+			
+			#foreach( $item in $list )
+			<td style="min-width:80px;text-align:right" title="$title">
+			#if ( $!item == "0" )<span style="color:red;font-weight:bold;">$!item</span> 
+			#else<span style="color:blue;font-weight:bold;">$!item</span>#end
+			</td>
+			#end
+		</tr>
+		#end
+	</tbody>
+</table>
+<br/>
+<div>
+	<table>
+		<tr>
+			<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
+		</tr>
+	</table>
+</div>
+	
+<!-- Drill-down menu -->
+
+<div id="drillDownMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+  <ul class="menuDropDownBox">
+	<li class="menuDropDownItem" onclick="viewDrillDownData( 'descendant_level' )">$i18n.getString( "view_data_at_descendant_levels" )&nbsp;</li>
+	<li class="menuDropDownItem" onclick="viewDrillDownData( 'current_level' )">$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
+  </ul>
+</div>
+
+<script type="text/javascript">
+	
+	loadListeners();
+	
+	jQuery(document).ready(	function()
+	{		
+		validation( 'exportPDF', function( form ){ form.submit() });	
+	});
+</script>
+
+#end

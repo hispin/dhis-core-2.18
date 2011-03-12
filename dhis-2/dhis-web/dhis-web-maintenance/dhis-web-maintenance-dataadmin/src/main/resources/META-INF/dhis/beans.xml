@@ -121,11 +121,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
 	</bean>
 
-	<!-- Databrowser -->
+	<!-- Databrowser Grid -->
 
-	<bean id="org.hisp.dhis.dataadmin.action.databrowser.SearchAction"
-		class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction" scope="prototype">
-		<property name="dataBrowserService" ref="org.hisp.dhis.databrowser.DataBrowserService" />
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction" 
+		scope="prototype">
+		<property name="dataBrowserGridService" ref="org.hisp.dhis.databrowser.DataBrowserGridService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
@@ -136,22 +137,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitGroupService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	</bean>
-
+	
 	<bean id="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
 		class="org.hisp.dhis.dataadmin.action.databrowser.GetPeriodTypesAction"
 		scope="prototype">
 		<property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
 	</bean>
 	
-	<bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportDrillDownResultAction"
-		class="org.hisp.dhis.dataadmin.action.databrowser.ExportDrillDownResultAction"
-		scope="prototype">
-		<property name="dataBrowserPdfService" 
-			ref="org.hisp.dhis.databrowser.DataBrowserPdfService"/>
-		<property name="dataBrowserXLSService" 
-			ref="org.hisp.dhis.databrowser.DataBrowserXLSService"/>
-	</bean>
-
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.ExportResultAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.ExportResultAction"
+		scope="prototype"/>
+	
 	<!-- Organisation unit merge -->
 
 	<bean

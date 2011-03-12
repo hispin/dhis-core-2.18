@@ -143,8 +143,8 @@ public interface StatementBuilder
     
     String countPatientsByFullName( String fullName );
 
-    String queryDataElementStructureForOrgUnitBetweenPeriods();
+    String queryDataElementStructureForOrgUnit();
 
-    String queryCountDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
+    String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
 
 }

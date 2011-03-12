@@ -352,7 +352,7 @@ public class PostgreSQLStatementBuilder
         "like lower('%" + fullName + "%')";
     }
 
-    public String queryDataElementStructureForOrgUnitBetweenPeriods()
+    public String queryDataElementStructureForOrgUnit()
     {
            StringBuffer sqlsb = new StringBuffer();
            sqlsb.append( "(SELECT DISTINCT de.dataelementid, (de.name || ' ' || cc.categoryoptioncomboname) AS DataElement " );
@@ -364,7 +364,7 @@ public class PostgreSQLStatementBuilder
            
     }
 
-    public String queryCountDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
+    public String queryRawDataElementsForOrgUnitBetweenPeriods(Integer orgUnitId, List<Integer> betweenPeriodIds)
     {
         StringBuffer sqlsb = new StringBuffer();
 

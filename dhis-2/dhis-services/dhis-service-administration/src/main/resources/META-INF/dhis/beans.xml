@@ -88,29 +88,23 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
   
-  <!-- Databrowser -->
+  <!-- Databrowser Grid -->
   
-  <bean id="org.hisp.dhis.databrowser.DataBrowserStore"
-    class="org.hisp.dhis.databrowser.jdbc.StatementManagerDataBrowserStore">
+  <bean id="org.hisp.dhis.databrowser.DataBrowserGridStore"
+    class="org.hisp.dhis.databrowser.jdbc.JDBCDataBrowserStore">
+	<property name="statementBuilder" ref="statementBuilder"/>
 	<property name="statementManager" ref="statementManager"/>
 	<property name="organisationUnitService" 
       ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-      <property name="statementBuilder" ref="statementBuilder"/>
   </bean>
   
-  <bean id="org.hisp.dhis.databrowser.DataBrowserService"
-    class="org.hisp.dhis.databrowser.DefaultDataBrowserService">
+  <bean id="org.hisp.dhis.databrowser.DataBrowserGridService"
+    class="org.hisp.dhis.databrowser.DefaultDataBrowserGridService">
     <property name="periodService" 
       ref="org.hisp.dhis.period.PeriodService"/>
-    <property name="dataBrowserStore"
-      ref="org.hisp.dhis.databrowser.DataBrowserStore" />
+    <property name="dataBrowserGridStore"
+      ref="org.hisp.dhis.databrowser.DataBrowserGridStore" />
   </bean>
-  
-  <bean id="org.hisp.dhis.databrowser.DataBrowserPdfService"
-    class="org.hisp.dhis.databrowser.DefaultDataBrowserPdfService"/>
-
-  <bean id="org.hisp.dhis.databrowser.DataBrowserXLSService"
-    class="org.hisp.dhis.databrowser.DefaultDataBrowserXLSService"/>
 
   <!-- Data merge -->
   

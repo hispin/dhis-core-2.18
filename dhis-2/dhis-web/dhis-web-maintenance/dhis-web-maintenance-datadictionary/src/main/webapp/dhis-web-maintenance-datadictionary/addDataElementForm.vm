@@ -7,7 +7,7 @@
 			getFactors();
 			setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
 			setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
-		});				
+		});
 		
 		checkValueIsExist( "name", "validateDataElement.action");
 		checkValueIsExist( "shortName", "validateDataElement.action");
