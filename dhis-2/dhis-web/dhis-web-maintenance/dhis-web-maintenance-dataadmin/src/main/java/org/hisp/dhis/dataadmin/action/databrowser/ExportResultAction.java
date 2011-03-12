@@ -1,7 +1,7 @@
-package org.hisp.dhis.databrowser;
+package org.hisp.dhis.dataadmin.action.databrowser;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-${year}, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,36 +27,58 @@ package org.hisp.dhis.databrowser;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.OutputStream;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.util.SessionUtils;
 
-import org.hisp.dhis.i18n.I18n;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public interface DataBrowserPdfService
+public class ExportResultAction
+    implements Action
 {
-    final String ID = DataBrowserPdfService.class.getName();
+    private static final String KEY_DATABROWSERGRID = "dataBrowserGridResults";
 
-    /**
-     * Returns an InputStream representing the tally sheet The InputStream will
-     * give the opportunity to either print or save the tally sheet.
-     * 
-     * @param dataBrowserTitleName the title name of data browser
-     * @param dataBrowserFromDate the start date
-     * @param dataBrowserToDate the end date
-     * @param dataBrowserPeriodType the period type
-     * @param pageLayout the layout of page
-     * @param fileName the output file name
-     * @param fontSize the font size
-     * @param dataBrowserTable the given instance of DataBrowserTable
-     * @param out the output stream
-     * @param i18n the internationalization
-     * @param format the formatter for Date
-     * @return void
-     */
-    void writeDataBrowserResult( String dataBrowserTitleName, String dataBrowserFromDate, String dataBrowserToDate,
-        String dataBrowserPeriodType, String pageLayout, int fontSize, DataBrowserTable dataBrowserTable,
-        OutputStream out, I18n i18n );
+    // -------------------------------------------------------------------------
+    // Input / Output
+    // -------------------------------------------------------------------------
+
+    private String type;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    private Grid grid;
+
+    public Grid getGrid()
+    {
+        return grid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+    {
+        Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATABROWSERGRID );
+
+        if ( _grid != null && type != null )
+        {
+            grid = _grid;
+
+            return type;
+        }
+
+        return ERROR;
+    }
 }

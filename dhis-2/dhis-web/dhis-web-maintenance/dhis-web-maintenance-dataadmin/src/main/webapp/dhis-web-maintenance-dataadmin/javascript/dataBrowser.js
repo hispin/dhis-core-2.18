@@ -9,13 +9,13 @@ currentParentId = "";
 
 function modeHandler()
 {
-    var modeList = byId( "searchOption" );
+    var modeList = byId( "mode" );
     var modeSelection = modeList.value;
     
     var treeSection = byId( "organisationUnitSection" );
     var drillDownCheckBoxDiv = byId( "drillDownCheckBoxDiv" );
     
-    if ( modeSelection == "OrganisationUnit" )
+    if ( modeSelection == "OU" )
     {   
         treeSection.style.display = "block";
         drillDownCheckBoxDiv.style.display = "block";
@@ -37,7 +37,7 @@ function modeHandler()
  */
 function loadListeners()
 {
-	var table = byId( "drillDownTable" );
+	var table = byId( "drillDownGrid" );
 
 	if ( table != null )
 	{

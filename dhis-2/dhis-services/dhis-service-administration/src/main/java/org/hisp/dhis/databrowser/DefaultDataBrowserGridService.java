@@ -36,22 +36,23 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**
- * @author joakibj, briane, eivinhb, jetonm
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class DefaultDataBrowserService
-    implements DataBrowserService
+public class DefaultDataBrowserGridService
+    implements DataBrowserGridService
 {
-
     private static final String STARTDATE = "1900-01-01";
 
     private static final String ENDDATE = "3000-01-01";
@@ -63,6 +64,7 @@ public class DefaultDataBrowserService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -70,120 +72,142 @@ public class DefaultDataBrowserService
         this.periodService = periodService;
     }
 
-    private DataBrowserStore dataBrowserStore;
+    private DataBrowserGridStore dataBrowserGridStore;
 
-    public void setDataBrowserStore( DataBrowserStore dataBrowserStore )
+    public void setDataBrowserGridStore( DataBrowserGridStore dataBrowserGridStore )
     {
-        this.dataBrowserStore = dataBrowserStore;
+        this.dataBrowserGridStore = dataBrowserGridStore;
     }
 
     // -------------------------------------------------------------------------
-    // DataBrowserService implementation
+    // DataBrowserGridService implementation
+    //
+    // Basic
     // -------------------------------------------------------------------------
-    public DataBrowserTable getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType,
-        I18nFormat format )
+
+    public Grid getDataSetsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format,
+        boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        return dataBrowserStore.getDataSetsBetweenPeriods( betweenPeriodIds );
+        return dataBrowserGridStore.getDataSetsBetweenPeriods( betweenPeriodIds, isZeroAdded );
     }
 
-    public DataBrowserTable getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType,
-        I18nFormat format )
+    public Grid getDataElementGroupsInPeriod( String startDate, String endDate, PeriodType periodType,
+        I18nFormat format, boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        return dataBrowserStore.getDataElementGroupsBetweenPeriods( betweenPeriodIds );
+        return dataBrowserGridStore.getDataElementGroupsBetweenPeriods( betweenPeriodIds, isZeroAdded );
     }
 
-    public DataBrowserTable getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType,
-        I18nFormat format )
+    public Grid getOrgUnitGroupsInPeriod( String startDate, String endDate, PeriodType periodType, I18nFormat format,
+        boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        return dataBrowserStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds );
+        return dataBrowserGridStore.getOrgUnitGroupsBetweenPeriods( betweenPeriodIds, isZeroAdded );
     }
 
-    public DataBrowserTable getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate,
-        PeriodType periodType, Integer maxLevel, I18nFormat format )
+    // -------------------------------------------------------------------------
+    // Advance
+    // -------------------------------------------------------------------------
+
+    public Grid getOrgUnitsInPeriod( Integer orgUnitParent, String startDate, String endDate, PeriodType periodType,
+        Integer maxLevel, I18nFormat format, boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        DataBrowserTable table = new DataBrowserTable();
+        Grid grid = new ListGrid();
+        List<Integer> metaIds = new ArrayList<Integer>();
 
-        dataBrowserStore.setStructureForOrgUnitBetweenPeriods( table, orgUnitParent, betweenPeriodIds );
+        dataBrowserGridStore.setStructureForOrgUnit( grid, orgUnitParent, metaIds );
 
-        dataBrowserStore.setCountOrgUnitsBetweenPeriods( table, orgUnitParent, betweenPeriodIds,
-            maxLevel );
+        dataBrowserGridStore.setCountOrgUnitsBetweenPeriods( grid, orgUnitParent, betweenPeriodIds, maxLevel, metaIds,
+            isZeroAdded );
 
-
-        return table;
+        return grid;
     }
 
-    public DataBrowserTable getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate,
-        String endDate, PeriodType periodType, I18nFormat format )
+    public Grid getCountDataElementsForDataSetInPeriod( Integer dataSetId, String startDate, String endDate,
+        PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        DataBrowserTable table = new DataBrowserTable();
+        Grid grid = new ListGrid();
+        List<Integer> metaIds = new ArrayList<Integer>();
 
-        dataBrowserStore.setDataElementStructureForDataSetBetweenPeriods( table, dataSetId, betweenPeriodIds );
+        dataBrowserGridStore.setDataElementStructureForDataSet( grid, dataSetId, metaIds );
 
-        dataBrowserStore.setCountDataElementsForDataSetBetweenPeriods( table, dataSetId, betweenPeriodIds );
+        dataBrowserGridStore.setCountDataElementsForDataSetBetweenPeriods( grid, dataSetId, betweenPeriodIds, metaIds,
+            isZeroAdded );
 
-        return table;
+        return grid;
     }
 
-    public DataBrowserTable getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId,
-        String startDate, String endDate, PeriodType periodType, I18nFormat format )
+    public Grid getCountDataElementsForDataElementGroupInPeriod( Integer dataElementGroupId, String startDate,
+        String endDate, PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        DataBrowserTable table = new DataBrowserTable();
+        Grid grid = new ListGrid();
+        List<Integer> metaIds = new ArrayList<Integer>();
 
-        dataBrowserStore.setDataElementStructureForDataElementGroupBetweenPeriods( table, dataElementGroupId,
-            betweenPeriodIds );
+        dataBrowserGridStore.setDataElementStructureForDataElementGroup( grid, dataElementGroupId, metaIds );
 
-        dataBrowserStore.setCountDataElementsForDataElementGroupBetweenPeriods( table, dataElementGroupId,
-            betweenPeriodIds );
+        dataBrowserGridStore.setCountDataElementsForDataElementGroupBetweenPeriods( grid, dataElementGroupId,
+            betweenPeriodIds, metaIds, isZeroAdded );
 
-        return table;
+        return grid;
     }
 
-    public DataBrowserTable getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
-        String endDate, PeriodType periodType, I18nFormat format )
+    public Grid getCountDataElementGroupsForOrgUnitGroupInPeriod( Integer orgUnitGroupId, String startDate,
+        String endDate, PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
         List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
             format );
 
-        DataBrowserTable table = new DataBrowserTable();
+        Grid grid = new ListGrid();
+        List<Integer> metaIds = new ArrayList<Integer>();
 
-        dataBrowserStore.setDataElementGroupStructureForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
+        dataBrowserGridStore.setDataElementGroupStructureForOrgUnitGroup( grid, orgUnitGroupId, metaIds );
 
-        dataBrowserStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( table, orgUnitGroupId, betweenPeriodIds );
+        dataBrowserGridStore.setCountDataElementGroupsForOrgUnitGroupBetweenPeriods( grid, orgUnitGroupId,
+            betweenPeriodIds, metaIds, isZeroAdded );
 
-        return table;
+        return grid;
     }
 
-    public DataBrowserTable getCountDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate,
-        String endDate, PeriodType periodType, I18nFormat format )
+    // -------------------------------------------------------------------------
+    // Advance - Raw data
+    // -------------------------------------------------------------------------
+
+    public Grid getRawDataElementsForOrgUnitInPeriod( Integer orgUnitId, String startDate, String endDate,
+        PeriodType periodType, I18nFormat format, boolean isZeroAdded )
     {
-        DataBrowserTable table = new DataBrowserTable();
+        Grid grid = new ListGrid();
+        List<Integer> metaIds = new ArrayList<Integer>();
 
-        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType, format );
+        List<Integer> betweenPeriodIds = getAllPeriodIdsBetweenDatesOnPeriodType( startDate, endDate, periodType,
+            format );
 
-        dataBrowserStore.setDataElementStructureForOrgUnitBetweenPeriods( table, orgUnitId, betweenPeriodIds );
+        dataBrowserGridStore.setDataElementStructureForOrgUnit( grid, orgUnitId, metaIds );
 
-        dataBrowserStore.setCountDataElementsForOrgUnitBetweenPeriods( table, orgUnitId, betweenPeriodIds );
+        dataBrowserGridStore.setRawDataElementsForOrgUnitBetweenPeriods( grid, orgUnitId, betweenPeriodIds, metaIds,
+            isZeroAdded );
 
-        return table;
+        return grid;
     }
+
+    // -------------------------------------------------------------------------
+    // Others
+    // -------------------------------------------------------------------------
 
     public String convertDate( PeriodType periodType, String dateString, I18nFormat format )
     {
@@ -200,7 +224,8 @@ public class DefaultDataBrowserService
             CalendarPeriodType calendarPeriodType = (CalendarPeriodType) periodType;
 
             return format.formatPeriod( calendarPeriodType.createPeriod( date ) );
-        } catch ( ParseException pe )
+        }
+        catch ( ParseException pe )
         {
             throw new RuntimeException( "Date string could not be parsed: " + dateString );
         }
@@ -218,7 +243,8 @@ public class DefaultDataBrowserService
             if ( stringFormatDate.isEmpty() )
             {
                 stringFormatDate = SPACE + sTemp;
-            } else
+            }
+            else
             {
                 if ( !stringFormatDate.contains( sTemp ) )
                 {
@@ -315,7 +341,8 @@ public class DefaultDataBrowserService
             Collections.sort( periods, new AscendingPeriodComparator() );
 
             return periods;
-        } catch ( ParseException e )
+        }
+        catch ( ParseException e )
         {
             return null; // The user hasn't specified any dates
         }

@@ -48,7 +48,8 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
-import org.hisp.dhis.databrowser.DataBrowserTable;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.ExpressionService;
@@ -318,14 +319,13 @@ public class ExcelUtils
         }
     }
 
-    public static void writeDataBrowserHeaders( WritableSheet sheet, WritableCellFormat cellFormat,
-        DataBrowserTable dataBrowserTable, I18n i18n )
+    public static void writeDataBrowserHeaders( WritableSheet sheet, WritableCellFormat cellFormat, Grid grid, I18n i18n )
     {
         int column = 0;
 
         try
         {
-            for ( MetaValue col : dataBrowserTable.getColumns() )
+            for ( GridHeader col : grid.getVisibleHeaders() )
             {
                 sheet.addCell( new Label( column++, 3, i18n.getString( DateUtils.convertDate( col.getName() ) ),
                     cellFormat ) );
@@ -342,7 +342,7 @@ public class ExcelUtils
     }
 
     public static void writeDataBrowserResults( WritableSheet sheet, WritableCellFormat parFormat,
-        WritableCellFormat oddFormat, int fontSize, DataBrowserTable dataBrowserTable )
+        WritableCellFormat oddFormat, int fontSize, Grid grid )
         throws DocumentException
     {
         // Data rows
@@ -354,12 +354,12 @@ public class ExcelUtils
         WritableFont zeroFont = new WritableFont( WritableFont.ARIAL, fontSize, WritableFont.BOLD, false,
             UnderlineStyle.NO_UNDERLINE, Colour.RED );
 
-        Iterator<MetaValue> rowIt = dataBrowserTable.getRows().iterator();
+        Iterator<Object> rowIt = grid.getColumn( 0 ).iterator();
 
-        for ( List<String> rows : dataBrowserTable.getCounts() )
+        for ( List<Object> rows : grid.getRows() )
         {
             i++;
-            MetaValue rowMeta = rowIt.next();
+            MetaValue rowMeta = (MetaValue) rowIt.next();
 
             cellFormat = (i % 2 == 1) ? parFormat : oddFormat;
 
@@ -367,19 +367,21 @@ public class ExcelUtils
             {
                 sheet.addCell( new Label( column++, row, rowMeta.getName(), cellFormat ) );
 
-                for ( String rowItem : rows )
+                for ( Object rowItem : rows )
                 {
-                    if ( rowItem == null )
+                    String temp = (String)rowItem;
+                    
+                    if ( temp == null )
                     {
-                        rowItem = "";
+                        temp = "";
                     }
-                    else if ( rowItem.trim().matches( "0" ) )
+                    else if ( ((String) temp).trim().matches( "0" ) )
                     {
                         cellFormat.setFont( zeroFont );
                     }
 
                     // Color zero values as bold red
-                    sheet.addCell( new Label( column++, row, rowItem, cellFormat ) );
+                    sheet.addCell( new Label( column++, row, temp, cellFormat ) );
                 }
             }
             catch ( RowsExceededException e )

@@ -1,4 +1,3 @@
-
 <style>
 
 	div#drillDownMenu
@@ -14,188 +13,85 @@
 
 </style>
 
-<h3>$i18n.getString( "search_results_for" ) $i18n.getString( $searchOption ) #if ($parentName != "") - $parentName #end</h3>
+<h3>$!encoder.htmlEncode( $grid.title )</h3>
 
-	<h3>$i18n.getString( "navigation" )</h3>
-	
-	<!-- ORGANISATIONUNIT -->
-	#if ($searchOption=="OrganisationUnit")
-	<div>
-		<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
-		#foreach($parent in $BreadCrumbOrgUnit)
-			#if($parent.getName()==$ParentName)
-				&raquo; <span style="font-weight:bold;">$parent.getName()</span>
-			#else
-				&raquo; <a style="$tmpStyle" href="searchResult.action?searchOption=$searchOption&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;selectedUnitChanger=$parent.getId()">$parent.getName()</a>
-			#end
-		#end
-		
-		<div id="orgUnitTree" style="margin:0 0 10px 0;">
-			<form method="get" id="childSelectorForm" action="searchResult.action">
-				<div>
-					<input type="hidden" name="searchOption" value="$searchOption"/>
-					<input type="hidden" name="periodTypeId" value="$periodTypeId"/>
-					<input type="hidden" name="fromDate" value="$fromDate"/>
-					<input type="hidden" name="toDate" value="$toDate"/>
-					<select name="selectedUnitChanger" onchange="javascript:document.getElementById('childSelectorForm').submit();">
-						<option>$i18n.getString( "select_children" )</option>
-						#foreach ($child in $CurrentChildren)
-							<option value="$child.getId()" id="orgUnit$child.getId()">
-								$child.getName()
-							</option>
-						#end
-					</select>
-				</div>
-			</form>
-		</div>
-	</div>
-	
-	<!-- DATAELEMENTGROUP -->
-	#elseif ($searchOption=="DataElementGroup")
-	<div>
-		<div style="margin:0 0 10px 0;">
-		<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
-		#if($parent != "")
-			&raquo; <a style="$tmpStyle" href="?periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;searchOption=DataElementGroup">Data Element Group list</a>
-			&raquo; <span style="font-weight:bold;">$ParentName</span>
-		#else
-			&raquo; <span style="font-weight:bold;">$i18n.getString( "data_element_group_list" )</span>
-		#end
-		</div>
-	</div>
-	
-	<!-- ORGANISATIONUNITGROUP -->
-	#elseif ($searchOption=="OrganisationUnitGroup")
-	<div>
-		<div style="margin:0 0 10px 0;">
-		<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
-		#if($parent != "")
-			&raquo; <a style="$tmpStyle" href="?periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;searchOption=OrganisationUnitGroup">Organisation Unit Groups list</a>
-			&raquo; <span style="font-weight:bold;">$ParentName</span>
-		#else
-			&raquo; <span style="font-weight:bold;">$i18n.getString( "orgunit_group_list" )</span>
-		#end
-		</div>
-	</div>
-	
-	<!-- DATASET -->
-	#elseif ($searchOption=="DataSet")
-	<div>
-		<div style="margin:0 0 10px 0;">
-		<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a> 
-		#if($parent != "")
-			&raquo; <a style="$tmpStyle" href="?periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;searchOption=DataSet">Data Set list</a>
-			&raquo; <span style="font-weight:bold;">$ParentName</span>
-		#else
-			&raquo; <span style="font-weight:bold;">$i18n.getString( "data_set_list" )</span>
-		#end
-		</div>
-	</div>
-	
-	#else
-	<div>
-		<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
-	</div>
-	#end
-	    
-	<div>
-    	<form id="exportDrillDownForm" method="get" action="exportDrillDownResult.action">
-			$i18n.getString( "export_type" ):
-			<select id="exportType" name="exportType" onchange="changeType( this.value )">
-				<option value="pdf">$i18n.getString( "PDF" )</option>
-				<option value="xls" >$i18n.getString( "Excel" )</option>
-			</select>
-			$i18n.getString( "file_name" ):
-		    <input type="text" id="fileName" name="fileName" value="$i18n.getString( 'drilldown_export' )" class="{validate:{required:true}}"/>
-			$i18n.getString( "font_size" ): 
-			<select id="fontSize" name="fontSize" title="Font size to be used for export">
-				<option value="12">$i18n.getString( "12" )</option>
-				<option value="8">$i18n.getString( "8" )</option>
-				<option value="6">$i18n.getString( "6" )</option>
-				<option value="4">$i18n.getString( "4" )</option>
-			</select>
-			$i18n.getString( "page_layout" ):
-			<select id="pageLayout" name="pageLayout" title="Page layout to be used for export">
-				<option value="Landscape">$i18n.getString( "landscape" )</option>
-				<option value="Portrait" >$i18n.getString( "portrait" )</option>
-			</select>
-			<input type="submit" value="$i18n.getString( 'export' )" style="width:100px"/>
-		</form>
-	</div>
-    
-	<p>
-	#if ( $fromDate == "" || $toDate == "" )
-	    <strong>$i18n.getString( "from_date" ):</strong> $i18n.getString( "earliest" ) 
-	    <strong>$i18n.getString( "to_date" ):</strong> $i18n.getString( "latest" ) 
-	    <strong>$i18n.getString( "period_type" ):</strong> $periodTypeId
-	#else
-	    <strong>$i18n.getString( "from_date" ):</strong> $fromDate
-	    <strong>$i18n.getString( "to_date" ):</strong> $toDate 
-	    <strong>$i18n.getString( "period_type" ):</strong> $i18n.getString( $periodTypeId )
-	#end
-	</p>
-	
-#if ( $allCounts.isEmpty()  || $numResults == "0" )
-	<br/><br/>
-	$i18n.getString( "no_data_found" )
-#else	
-	<table id="drillDownTable" class="listTable" border="1">
-	<thead>
-		<tr>
-		#foreach ( $col in $allColumnsConverted )
-			<th title="$col.metaValue" class="formatLabel">$i18n.getString( $col.name )</th>
-		#end
-		</tr>
-	</thead>
-	<tbody>
-		#set ( $rowIt = $rowNamesIterator )
-		#set ($i = 0)
-		#foreach ( $col in $allCounts )
-			#set ($i = ($i + 1))
-			#set ( $rowMeta = $rowIt.next() )
-			<tr>
-			#if ( $searchOption=="OrganisationUnit" && !$parent && $rowMeta.id)
-			#set ( $urlLink = "searchResult.action?searchOption=OrganisationUnit&amp;selectedUnitChanger=" + $rowMeta.id + "&amp;periodType=" + $periodTypeId + "&amp;toDate=" + $toDate + "&amp;fromDate=" + $fromDate )
-				<td style="min-width:200px;cursor:pointer" onclick="javascript:viewDrillDownMenu( '$urlLink', '$rowMeta.id' );" title="$i18n.getString('click_on_this_orgunit')">$rowMeta.name</td>
-			#elseif ( $rowMeta.id && !$parent )
-				<td style="min-width:200px"><a href="searchResult.action?searchOption=$searchOption&amp;parent=$rowMeta.id&amp;periodType=$periodTypeId&amp;toDate=$toDate&amp;fromDate=$fromDate">$rowMeta.name</a></td>
-			#else
-				<td style="min-width:200px">$rowMeta.name</td>
-			#end
-			#foreach ( $rowItem in $col )
-				<td style="min-width:80px;text-align:right" title="$!rowItem $i18n.getString('no_hits')">#if ( $!rowItem == "0" )<span style="color:red;font-weight:bold;">$!rowItem</span> #else<span style="color:blue;font-weight:bold;">$!rowItem</span> #end</td>
-			#end
-			</tr>
-		#end
+<h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-	</tbody>
-	</table>
+<h6>$i18n.getString( "navigation" )</h6>
+
+<!-- ORGANISATIONUNIT -->
+#if ( $mode == "OU" )
+<div>
+	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
+	#foreach( $parent in $BreadCrumbOrgUnit )
+		#if( $parent.name == $ParentName )
+			&raquo; <span style="font-weight:bold;">$parent.name</span>
+		#else
+			&raquo; <a style="$tmpStyle" href="?mode=$mode&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox&amp;selectedUnitChanger=$parent.id">$parent.name</a>
+		#end
+	#end
+</div>
+
+<!-- DATAELEMENTGROUP -->
+#elseif ( $mode == "DEG" )
+<div>
+	<div style="margin:0 0 10px 0;">
+	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
+	#if( $parent != "" )
+		&raquo; <a style="$tmpStyle" href="?mode=DEG&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "data_element_group_list" )</a>
+		&raquo; <span style="font-weight:bold;">$ParentName</span>
+	#else
+		&raquo; <span style="font-weight:bold;">$i18n.getString( "data_element_group_list" )</span>
+	#end
+	</div>
+</div>
+
+<!-- ORGANISATIONUNITGROUP -->
+#elseif ( $mode == "OUG" )
+<div>
+	<div style="margin:0 0 10px 0;">
+	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
+	#if( $parent != "" )
+		&raquo; <a style="$tmpStyle" href="?mode=OUG&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "orgunit_group_list" )</a>
+		&raquo; <span style="font-weight:bold;">$ParentName</span>
+	#else
+		&raquo; <span style="font-weight:bold;">$i18n.getString( "orgunit_group_list" )</span>
+	#end
+	</div>
+</div>
+
+<!-- DATASET -->
+#elseif ( $mode == "DS" )
+<div>
+	<div style="margin:0 0 10px 0;">
+	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a> 
+	#if( $parent != "" )
+		&raquo; <a style="$tmpStyle" href="?mode=DS&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "data_set_list" )</a>
+		&raquo; <span style="font-weight:bold;">$ParentName</span>
+	#else
+		&raquo; <span style="font-weight:bold;">$i18n.getString( "data_set_list" )</span>
+	#end
+	</div>
+</div>
+
+#else
+<div>
+	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
+</div>
 #end
 
-	<br/>
-	
-	<div>
-		<table>
-			<tr>
-				<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
-			</tr>
-		</table>
-	</div>
-		
-	<!-- Drill-down menu -->
+<div>
+	<form id="exportForm" method="get" action="exportResult.action">
+		$i18n.getString( "export_to" ):
+		<select id="type" name="type">
+			<option value="csv">$i18n.getString( "CSV" )</option>
+			<option value="pdf" selected="selected">$i18n.getString( "PDF" )</option>
+			<option value="xls">$i18n.getString( "Excel" )</option>
+		</select>
+		<input type="submit" value="$i18n.getString( 'export' )" style="width:100px"/>
+	</form>
+</div>
+<br/>
+<!-- Data Browser Grid -->
 
-	<div id="drillDownMenu" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
-	  <ul class="menuDropDownBox">
-		<li class="menuDropDownItem" onclick="viewDrillDownData( 'descendant_level' )">$i18n.getString( "view_data_at_descendant_levels" )&nbsp;</li>
-		<li class="menuDropDownItem" onclick="viewDrillDownData( 'current_level' )">$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
-	  </ul>
-	</div>
-
-	<script type="text/javascript">
-		loadListeners();	
-		jQuery(document).ready(	function()
-		{		
-			validation( 'exportPDF', function( form ){ form.submit() });	
-		});
-	</script>
-	
+#parse( "/dhis-web-maintenance-dataadmin/dataBrowserGrid.vm" )

@@ -190,9 +190,9 @@
 				javascript/dataBrowser.js</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
-		
+
 		<action name="searchResult"
-			class="org.hisp.dhis.dataadmin.action.databrowser.SearchAction">
+			class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<result name="error" type="redirect">error.action</result>
 			<param name="page">
@@ -207,16 +207,12 @@
 			<param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
 		</action>
 		
-		<action name="exportDrillDownResult"
-			class="org.hisp.dhis.dataadmin.action.databrowser.ExportDrillDownResultAction">
-			<result name="success" type="stream">
-				<param name="contentType">${contentType}</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentDisposition">
-					attachment;filename="${fileName}"</param>
-				<param name="bufferSize">10240</param>
-			</result>
-		</action>
+		<action name="exportResult" class="org.hisp.dhis.dataadmin.action.databrowser.ExportResultAction">
+			<result name="csv" type="gridCsvResult"/>
+			<result name="xls" type="gridXlsResult"/>
+			<result name="pdf" type="gridPdfResult"/>
+			<result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action> 
 		
 		<!-- Organisation unit merge -->
 		

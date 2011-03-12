@@ -53,7 +53,6 @@ public class MetaValue
 
     public MetaValue()
     {
-
     }
 
     public MetaValue( String name )
@@ -137,5 +136,11 @@ public class MetaValue
     public int hashCode()
     {
         return name.hashCode();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return name;
     }
 }
