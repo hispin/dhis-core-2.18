@@ -32,6 +32,7 @@ import static junit.framework.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.SortedMap;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
@@ -333,9 +334,10 @@ public class DataIntegrityServiceTest
     @Test
     public void testGetOrganisationUnitsViolatingExclusiveGroupSets()
     {
-        Collection<OrganisationUnit> expected = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
+        SortedMap<OrganisationUnit, Collection<OrganisationUnitGroup>> expected = dataIntegrityService.getOrganisationUnitsViolatingExclusiveGroupSets();
         
-        assertTrue( message( expected ), equals( expected, unitA ) );
+        assertEquals( 1, expected.size() );
+        assertEquals( expected.keySet().iterator().next(), unitA );
     }
 
     @Test
