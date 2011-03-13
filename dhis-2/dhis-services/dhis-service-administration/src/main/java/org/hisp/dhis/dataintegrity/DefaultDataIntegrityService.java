@@ -188,30 +188,6 @@ public class DefaultDataIntegrityService
     }
 
     @Override
-    public Collection<DataElement> getDataElementsViolatingCompulsoryGroupSets()
-    {
-        Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
-
-        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
-
-        Set<DataElement> targets = new HashSet<DataElement>();
-
-        for ( DataElement de : dataElements )
-        {
-            for ( DataElementGroupSet groupSet : groupSets )
-            {
-                if ( !CollectionUtils.containsAny( groupSet.getMembers(), de.getGroups() ) )
-                {
-                    targets.add( de );
-                }
-            }
-        }
-
-        return targets;
-
-    }
-
-    @Override
     public Collection<DataElement> getDataElementsViolatingExclusiveGroupSets()
     {
         Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
@@ -342,29 +318,6 @@ public class DefaultDataIntegrityService
         }
 
         return invalids;
-    }
-
-    @Override
-    public Collection<Indicator> getIndicatorsViolatingCompulsoryGroupSets()
-    {
-        Collection<IndicatorGroupSet> groupSets = indicatorService.getAllIndicatorGroupSets();
-
-        Collection<Indicator> indicators = indicatorService.getAllIndicators();
-
-        Set<Indicator> targets = new HashSet<Indicator>();
-
-        for ( Indicator in :  indicators)
-        {
-            for ( IndicatorGroupSet groupSet : groupSets )
-            {
-                if ( !CollectionUtils.containsAny( groupSet.getMembers(), in.getGroups() ) )
-                {
-                    targets.add( in );
-                }
-            }
-        }
-
-        return targets;
     }
 
     @Override
