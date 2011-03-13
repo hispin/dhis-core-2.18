@@ -65,12 +65,6 @@ public interface DataIntegrityService
     Collection<DataElement> getDataElementsWithoutGroups();
     
     /**
-     * Gets all data elements which are not members of one or more groups
-     * which enter into a compulsory group set.
-     */
-    Collection<DataElement> getDataElementsViolatingCompulsoryGroupSets();
-    
-    /**
      * Gets all data elements units which are members of more than one group
      * which enter into an exclusive group set.
      */    
@@ -124,12 +118,6 @@ public interface DataIntegrityService
      * Gets all indicators with invalid indicator denominators.
      */
     SortedMap<Indicator, String> getInvalidIndicatorDenominators();
-    
-    /**
-     * Gets all indicators which are not members of one or more groups
-     * which enter into a compulsory group set.
-     */
-    Collection<Indicator> getIndicatorsViolatingCompulsoryGroupSets();
     
     /**
      * Gets all indicators units which are members of more than one group

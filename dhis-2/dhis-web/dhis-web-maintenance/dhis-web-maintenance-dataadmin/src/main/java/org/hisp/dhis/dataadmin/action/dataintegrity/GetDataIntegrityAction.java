@@ -91,13 +91,6 @@ public class GetDataIntegrityAction
         return dataElementsWithoutGroups;
     }
 
-    private List<DataElement> dataElementsViolatingCompulsoryGroupSets;
-
-    public List<DataElement> getDataElementsViolatingCompulsoryGroupSets()
-    {
-        return dataElementsViolatingCompulsoryGroupSets;
-    }
-
     private List<DataElement> dataElementsViolatingExclusiveGroupSets;
 
     public List<DataElement> getDataElementsViolatingExclusiveGroupSets()
@@ -152,13 +145,6 @@ public class GetDataIntegrityAction
     public Map<Indicator, String> getInvalidIndicatorDenominators()
     {
         return invalidIndicatorDenominators;
-    }
-
-    private List<Indicator> indicatorsViolatingCompulsoryGroupSets;
-
-    public List<Indicator> getIndicatorsViolatingCompulsoryGroupSets()
-    {
-        return indicatorsViolatingCompulsoryGroupSets;
     }
 
     private List<Indicator> indicatorsViolatingExclusiveGroupSets;
@@ -240,7 +226,6 @@ public class GetDataIntegrityAction
         dataElementsWithoutDataSet = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutDataSet() );
         dataElementsWithoutGroups = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutGroups() );
         dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
-        dataElementsViolatingCompulsoryGroupSets = new ArrayList<DataElement>( dataIntegrityService.getDataElementsViolatingCompulsoryGroupSets() );
         dataElementsViolatingExclusiveGroupSets = new ArrayList<DataElement>( dataIntegrityService.getDataElementsViolatingExclusiveGroupSets() );
 
         log.info( "Checked data elements" );
@@ -254,7 +239,6 @@ public class GetDataIntegrityAction
         indicatorsWithoutGroups = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsWithoutGroups() );
         invalidIndicatorNumerators = dataIntegrityService.getInvalidIndicatorNumerators();
         invalidIndicatorDenominators = dataIntegrityService.getInvalidIndicatorDenominators();
-        indicatorsViolatingCompulsoryGroupSets = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsViolatingCompulsoryGroupSets() );
         indicatorsViolatingExclusiveGroupSets = new ArrayList<Indicator>( dataIntegrityService.getIndicatorsViolatingExclusiveGroupSets() );
 
         log.info( "Checked indicators" );
@@ -283,12 +267,10 @@ public class GetDataIntegrityAction
         
         Collections.sort( dataElementsWithoutDataSet, new DataElementNameComparator() );
         Collections.sort( dataElementsWithoutGroups, new DataElementNameComparator() );
-        Collections.sort( dataElementsViolatingCompulsoryGroupSets, new DataElementNameComparator() );
         Collections.sort( dataElementsViolatingExclusiveGroupSets, new DataElementNameComparator() );
         Collections.sort( dataSetsNotAssignedToOrganisationUnits, new DataSetNameComparator() );
         Collections.sort( sectionsWithInvalidCategoryCombinations, new SectionOrderComparator() );
         Collections.sort( indicatorsWithoutGroups, new IndicatorNameComparator() );
-        Collections.sort( indicatorsViolatingCompulsoryGroupSets, new IndicatorNameComparator() );
         Collections.sort( indicatorsViolatingExclusiveGroupSets, new IndicatorNameComparator() );
         Collections.sort( organisationUnitsWithCyclicReferences, new OrganisationUnitNameComparator() );
         Collections.sort( orphanedOrganisationUnits, new OrganisationUnitNameComparator() );
