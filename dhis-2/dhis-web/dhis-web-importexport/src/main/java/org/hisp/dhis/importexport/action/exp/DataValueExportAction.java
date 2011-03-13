@@ -217,7 +217,7 @@ public class DataValueExportAction
         // Get OrganisationUnit
         // ---------------------------------------------------------------------
         
-        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getSelectedOrganisationUnits();
+        Collection<OrganisationUnit> selectedUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
         
         if ( selectedUnits != null )
         {
