@@ -3,7 +3,7 @@
     <fullName>DHIS2</fullName>
     <version>2.1</version>
     <installerFilename>${product_shortname}-${product_version}-${platform_name}-live-generic-en.${platform_exec_suffix}</installerFilename>
-    <readmeFile>../../resources/files/Readme.txt</readmeFile>
+    <readmeFile>../../resources/files/Readme_generic.txt</readmeFile>
     <licenseFile>../../resources/files/Licence.txt</licenseFile>
     <leftImage>../../resources/images/dhis2-logo-blue-rotated.png</leftImage>
     <logoImage>../../resources/images/dhis2-logo-blue.png</logoImage>
@@ -170,6 +170,50 @@
                     <zipFile>${installer_directory}\resources\dhis.war</zipFile>
                 </unzip>
             </postInstallationActionList>
+            <preInstallationActionList>
+                <setInstallerVariable>
+                    <name>coreWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis.war</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find dhis.war in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>dhis.war is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis.war</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find dhis.war in the resources folder.</customErrorMessage>
+                    <text>Could not find dhis.war in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis.war</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! dhis.war was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\dhis.war</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${coreWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </preInstallationActionList>
         </component>
         <component>
             <name>Java</name>
@@ -186,6 +230,50 @@
                     <workingDirectory>${installer_directory}\resources</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
+            <readyToInstallActionList>
+                <setInstallerVariable>
+                    <name>jreWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\jre*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find jre*.exe in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>JRE is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\jre*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find jre*.exe in the resources folder.</customErrorMessage>
+                    <text>Could not find jre*.exe in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\jre*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! The JRE file was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\jre*.exe</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${jreWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </readyToInstallActionList>
         </component>
         <component>
             <name>postgres</name>
@@ -226,6 +314,50 @@
                     <workingDirectory>${installer_directory}\resources</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
+            <readyToInstallActionList>
+                <setInstallerVariable>
+                    <name>postgresWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\postgresql*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find postgresql*.exe in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>postgresql*.exe is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\postgresql*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find postgresql*.exe in the resources folder.</customErrorMessage>
+                    <text>Could not find postgresql*.exe in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\postgresql*.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! The PostgreSQL setup file was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\postgresql*.exe</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${postgresWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </readyToInstallActionList>
         </component>
         <component>
             <name>dhis2db</name>
@@ -247,10 +379,18 @@
                 </folder>
             </folderList>
             <postInstallationActionList>
+                <createDirectory>
+                    <path>${installdir}\tmp\dhis2db</path>
+                </createDirectory>
                 <unzip>
-                    <destinationDirectory>${installdir}\tmp\</destinationDirectory>
+                    <destinationDirectory>${installdir}\tmp\dhis2db\</destinationDirectory>
                     <zipFile>${installer_directory}\resources\dhis2db.zip</zipFile>
                 </unzip>
+                <findFile>
+                    <baseDirectory>${installdir}\tmp\dhis2db</baseDirectory>
+                    <pattern>*dhis*</pattern>
+                    <variable>databaseFile</variable>
+                </findFile>
                 <substitute>
                     <files>${installdir}\tmp\restore_db_psql.bat</files>
                     <type>regexp</type>
@@ -258,6 +398,10 @@
                         <substitution>
                             <pattern>PG_PASSWORD</pattern>
                             <value>${pg_password}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>DATABASE_FILE</pattern>
+                            <value>${databaseFile}</value>
                         </substitution>
                     </substitutionList>
                 </substitute>
@@ -275,6 +419,50 @@
                     <path>${installdir}\tmp\restore_db_psql.bat</path>
                 </deleteFile>
             </postInstallationActionList>
+            <readyToInstallActionList>
+                <setInstallerVariable>
+                    <name>dhis2dbWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2db.zip</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find dhis2db.zip in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>dhis2db.zip is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2db.zip</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find dhis2db.zip in the resources folder.</customErrorMessage>
+                    <text>Could not find dhis2db.zip in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2db.zip</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! dhis2db.zip was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\dhis2db.zip</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${dhis2dbWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </readyToInstallActionList>
         </component>
         <component>
             <name>dhis2docs</name>
@@ -292,6 +480,50 @@
                     <progressText>Adding DHIS 2 documentation</progressText>
                 </copyFile>
             </postInstallationActionList>
+            <readyToInstallActionList>
+                <setInstallerVariable>
+                    <name>docsWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2_user_manual_en.pdf</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find dhis2_user_manual_en.pdf in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>dhis2_user_manual_en.pdf is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2_user_manual_en.pdf</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find dhis2_user_manual_en.pdf in the resources folder.</customErrorMessage>
+                    <text>Could not find dhis2_user_manual_en.pdf in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\dhis2_user_manual_en.pdf</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! dhis2_user_manual_en.pdf was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\dhis2_user_manual_en.pdf</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${docsWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </readyToInstallActionList>
         </component>
         <component>
             <name>Chrome</name>
@@ -308,6 +540,50 @@
                     <workingDirectory>${installer_directory}\resources</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
+            <readyToInstallActionList>
+                <setInstallerVariable>
+                    <name>chromeWarningIsShown</name>
+                    <value>true</value>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\ChromeStandaloneSetup.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </setInstallerVariable>
+                <showWarning>
+                    <text>Cannot find ChromeStandaloneSetup.exe in the resources folder. Place it there and press OK. If it is still not found, the installation process will be aborted.</text>
+                    <title>ChromeStandaloneSetup.exe is missing</title>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\ChromeStandaloneSetup.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </showWarning>
+                <throwError>
+                    <customErrorMessage>Could not find ChromeStandaloneSetup.exe in the resources folder.</customErrorMessage>
+                    <text>Could not find ChromeStandaloneSetup.exe in the resources folder.</text>
+                    <ruleList>
+                        <fileExists>
+                            <negate>1</negate>
+                            <path>${installer_directory}\resources\ChromeStandaloneSetup.exe</path>
+                        </fileExists>
+                    </ruleList>
+                </throwError>
+                <showInfo>
+                    <text>Thank you! ChromeStandaloneSetup.exe was located. The installation process will continue.</text>
+                    <title>Thank you!</title>
+                    <ruleList>
+                        <fileExists>
+                            <path>${installer_directory}\resources\ChromeStandaloneSetup.exe</path>
+                        </fileExists>
+                        <isTrue>
+                            <value>${chromeWarningIsShown}</value>
+                        </isTrue>
+                    </ruleList>
+                </showInfo>
+            </readyToInstallActionList>
         </component>
     </componentList>
     <finalPageActionList>
