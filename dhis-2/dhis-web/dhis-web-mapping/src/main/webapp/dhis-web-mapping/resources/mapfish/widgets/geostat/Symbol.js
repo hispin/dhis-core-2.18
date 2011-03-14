@@ -587,7 +587,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             style: 'cursor:pointer',
             node: {attributes: {hasChildrenWithCoordinates: false}},
             selectedNode: null,
-            treeWindow: false,
+            treeWindow: null,
             listeners: {
                 'focus': {
                     scope: this,
@@ -857,9 +857,10 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 				scope: this,
 				success: function(r) {
 					var rootNode = Ext.util.JSON.decode(r.responseText).organisationUnits[0];
-					G.vars.topLevelUnit = {
+                    var rootUnit = {
 						id: rootNode.id,
 						name: rootNode.name,
+                        level: 1,
 						hasChildrenWithCoordinates: rootNode.hasChildrenWithCoordinates
 					};
 					
@@ -886,9 +887,10 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 											dataUrl: G.conf.path_mapping + 'getOrganisationUnitChildren' + G.conf.type
 										}),
 										root: {
-											id: G.vars.topLevelUnit.id,
-											text: G.vars.topLevelUnit.name,
-											hasChildrenWithCoordinates: G.vars.topLevelUnit.hasChildrenWithCoordinates,
+											id: rootUnit.id,
+											text: rootUnit.name,
+                                            level: rootUnit.level,
+											hasChildrenWithCoordinates: rootUnit.hasChildrenWithCoordinates,
 											nodeType: 'async',
 											draggable: false,
 											expanded: true
