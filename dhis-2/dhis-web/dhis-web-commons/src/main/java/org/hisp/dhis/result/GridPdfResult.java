@@ -40,7 +40,6 @@ import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfPTable;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
@@ -60,7 +59,7 @@ public class GridPdfResult
     // -------------------------------------------------------------------------
 
     private Grid grid;
-
+    
     public void setGrid( Grid grid )
     {
         this.grid = grid;
@@ -79,8 +78,8 @@ public class GridPdfResult
         // ---------------------------------------------------------------------
 
         Grid _grid = (Grid) invocation.getStack().findValue( "grid" );
-
-        grid = _grid != null ? _grid : grid;
+        
+        grid = _grid != null ? _grid : grid; 
 
         // ---------------------------------------------------------------------
         // Configure response
@@ -90,36 +89,33 @@ public class GridPdfResult
 
         OutputStream out = response.getOutputStream();
 
-        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) )
-            + ".pdf";
-
+        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".pdf";
+        
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
 
         // ---------------------------------------------------------------------
         // Write PDF to output stream
         // ---------------------------------------------------------------------
-
+        
         Document document = openDocument( out );
-
+        
         PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
-
+        
         table.setHeaderRows( 1 );
-        table.setWidthPercentage( 100f );
-        table.setKeepTogether( false );
 
-        // TODO make wider
+        //TODO make wider
         table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
         table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
         table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
         table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
-
+        
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
             table.addCell( getItalicCell( header.getName() ) );
         }
 
         table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
-
+        
         for ( List<Object> row : grid.getVisibleRows() )
         {
             for ( Object col : row )
@@ -128,24 +124,8 @@ public class GridPdfResult
             }
         }
 
-        adjustColumnWitdh( grid, table );
-
         addTableToDocument( document, table );
 
         closeDocument( document );
-    }
-
-    private void adjustColumnWitdh( Grid grid, PdfPTable table )
-        throws DocumentException
-    {
-        int numColumns = grid.getWidth();
-        float[] widths = new float[numColumns];
-        widths[0] = 2;
-
-        for ( int i = 1; i < numColumns; i++ )
-        {
-            widths[i] = 1;
-        }
-        table.setWidths( widths );
     }
 }
