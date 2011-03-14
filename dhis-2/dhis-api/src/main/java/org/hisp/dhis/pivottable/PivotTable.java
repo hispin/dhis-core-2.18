@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -42,7 +42,7 @@ import org.hisp.dhis.period.Period;
  */
 public class PivotTable
 {
-    private List<Indicator> indicators = new ArrayList<Indicator>();
+    private List<? extends IdentifiableObject> indicators = new ArrayList<IdentifiableObject>();
     
     private List<Period> periods = new ArrayList<Period>();
     
@@ -62,12 +62,12 @@ public class PivotTable
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public List<Indicator> getIndicators()
+    public List<? extends IdentifiableObject> getIndicators()
     {
         return indicators;
     }
 
-    public void setIndicators( List<Indicator> indicators )
+    public void setIndicators( List<? extends IdentifiableObject> indicators )
     {
         this.indicators = indicators;
     }

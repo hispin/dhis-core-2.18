@@ -27,11 +27,7 @@ package org.hisp.dhis.reporting.pivottable.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collections;
-import java.util.Comparator;
-
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.pivottable.PivotTable;
 import org.hisp.dhis.pivottable.PivotTableService;
@@ -63,13 +59,6 @@ public class GetPivotTableAction
         this.format = format;
     }
     
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -132,9 +121,7 @@ public class GetPivotTableAction
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
-        Collections.sort( pivotTable.getIndicators(), indicatorComparator );
-        
+                
         return SUCCESS;
     }
 }
