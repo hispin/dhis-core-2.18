@@ -1,22 +1,6 @@
-
+<script type="text/javascript" src="/dhis-web-commons/javascripts/feedbackForm.js"></script>
 <script type="text/javascript">
-
-var i18n_enter_message = '$encoder.jsEscape( $i18n.getString( "enter_message" ) , "'")';
-
-function validateForm()
-{
-	var userMessage = document.getElementById( "userMessage" );
-	
-	if ( userMessage.value.length == 0 )
-	{
-	    setMessage( i18n_enter_message );
-	}
-	else
-	{
-	    document.getElementById( "messageForm" ).submit();
-	}
-}
-
+	var i18n_enter_message = '$encoder.jsEscape( $i18n.getString( "enter_message" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "send_feedback" )</h3>

@@ -1,4 +1,21 @@
 <script type="text/javascript" src="../dhis-web-commons/oust/oust.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/oust/selectionTreeSingleSelect.js"></script>
+<script type="text/javascript">
+jQuery(document).ready( function()
+{
+	selectionTreeSelection.setMultipleSelectionAllowed( false );
+	selectedOrganisationUnitListABCDEF = jQuery( "#treeSelectedId" );
+
+	#if( $required )
+		selectionTreeSelection.setListenerFunction( selectOrganisationUnitABCDEF );
+	#end
+	#if( $cleanAll )						
+		selectionTree.clearSelectedOrganisationUnits();			
+	#end	
+
+	selectionTree.buildSelectionTree();
+});
+</script>
 
 ## You don't have to use this template directly if you don't want to
 <table cellspacing=0 width="100%">
@@ -17,33 +34,3 @@
 		</tr>
 	</tbody>
 </table>
-<script>
-	
-	var selectedOrganisationUnitListABCDEF;
-	
-	function addSelectedOrganisationUnitABCDEF( id )
-	{
-		selectedOrganisationUnitListABCDEF.append( '<option value="' + id + ' selected="selected">' + id + '</option>');
-	}	
-	
-	function selectOrganisationUnitABCDEF( ids )
-	{
-		selectedOrganisationUnitListABCDEF.empty();
-		
-		jQuery.each( ids, function(i, item ){
-			selectedOrganisationUnitListABCDEF.append( '<option value="' + item + ' selected="selected">' + item + '</option>');
-		});
-	}
-
-	jQuery(document).ready( function(){				
-		selectionTreeSelection.setMultipleSelectionAllowed( false );
-		selectedOrganisationUnitListABCDEF = jQuery( "#treeSelectedId" );
-		#if( $required )			
-			selectionTreeSelection.setListenerFunction( selectOrganisationUnitABCDEF );
-		#end
-		#if( $cleanAll )						
-			selectionTree.clearSelectedOrganisationUnits();			
-		#end	
-		selectionTree.buildSelectionTree();	
-	});	
-</script>
