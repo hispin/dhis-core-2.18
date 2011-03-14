@@ -185,6 +185,7 @@
 		}
 		
 		sortList( 'availableIndicators', 'ASC' );
+		sortList( 'availableIndicators2', 'ASC' );
 		list_1.find(":first").attr("selected", "selected");		
 		list_2.find(":first").attr("selected", "selected");		
 		
@@ -207,6 +208,9 @@
 				list_2.append('<option value="' + id + '">' + text + '</option>' );
 			}
 		}
+		
+		sortList( 'indicatorGroups', 'ASC' );
+		sortList( 'availableGroups', 'ASC' );
 		list_1.find(":first").attr("selected", "selected");		
 		list_2.find(":first").attr("selected", "selected");
 		
