@@ -184,6 +184,7 @@
 			}
 		}
 		
+		sortList( 'availableIndicators', 'ASC' );
 		list_1.find(":first").attr("selected", "selected");		
 		list_2.find(":first").attr("selected", "selected");		
 		
