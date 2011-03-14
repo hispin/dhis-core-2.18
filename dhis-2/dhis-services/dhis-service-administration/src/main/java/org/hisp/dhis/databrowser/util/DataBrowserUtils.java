@@ -75,7 +75,7 @@ public class DataBrowserUtils
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( "Oops. Somthing else went wrong in setMetaStructure()", e );
+            throw new RuntimeException( "Oops. Something else went wrong in setMetaStructure()", e );
         }
         finally
         {
@@ -116,7 +116,7 @@ public class DataBrowserUtils
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( "Oops. Somthing else went wrong in setHeaderStructure()", e );
+            throw new RuntimeException( "Oops. Something else went wrong in setHeaderStructure()", e );
         }
     }
 
@@ -144,7 +144,7 @@ public class DataBrowserUtils
         }
         catch ( Exception e )
         {
-            throw new RuntimeException( "Oops. Somthing else went wrong", e );
+            throw new RuntimeException( "Oops. Something else went wrong", e );
         }
         finally
         {
@@ -217,7 +217,7 @@ public class DataBrowserUtils
         }
         catch ( IOException e )
         {
-            System.out.println( "Error while writing file : " + e );
+            throw new RuntimeException( "Error while writing file : " + e );
         }
     }
 

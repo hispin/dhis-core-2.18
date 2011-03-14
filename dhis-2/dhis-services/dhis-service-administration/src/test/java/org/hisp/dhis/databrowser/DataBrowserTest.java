@@ -44,6 +44,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.mock.MockI18n;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -108,11 +109,15 @@ public abstract class DataBrowserTest
     protected OrganisationUnitGroup unitGroupA;
     protected OrganisationUnitGroup unitGroupB;
     
+    protected MockI18n mockI18n;
+    
     protected MockI18nFormat mockFormat; 
 
     public void setUpDataBrowserTest()
         throws Exception
     {
+        mockI18n = new MockI18n();
+        
         mockFormat = new MockI18nFormat();
         
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );

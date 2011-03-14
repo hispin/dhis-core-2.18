@@ -7,18 +7,12 @@
 	<thead>
 		<tr>
 			#foreach( $header in $grid.getVisibleHeaders() )
-			<th #if( $header.meta )style="text-align:left"#else style="text-align:center"#end>$i18n.getString( $!encoder.htmlEncode( $header.name ) )</th>
+			<th #if( $header.meta )style="text-align:left"#else style="text-align:center"#end>$!encoder.htmlEncode( $header.name )</th>
 			#end
 		</tr>
 	</thead>
 
-	<tbody>
-		#if ( $summary )
-		#set( $title = "$!item $i18n.getString( 'no_hits' )" )
-		#else
-		#set( $title = "$i18n.getString( 'raw_data' )" )
-		#end
-	
+	<tbody>	
 		#foreach( $meta in $!MetaValues )
 		#set( $list = $!MetaValueMaps.get( $meta ) )
 		<tr>

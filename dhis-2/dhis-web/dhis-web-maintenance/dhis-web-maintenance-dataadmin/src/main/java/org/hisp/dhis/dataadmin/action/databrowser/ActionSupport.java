@@ -421,7 +421,7 @@ public abstract class ActionSupport
 
         for ( GridHeader col : grid.getVisibleHeaders() )
         {
-            col.setName( dataBrowserGridService.convertDate( periodType, col.getName(), format ) );
+            col.setName( dataBrowserGridService.convertDate( periodType, col.getName(), i18n, format ) );
         }
     }
 
