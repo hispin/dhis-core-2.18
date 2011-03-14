@@ -1,25 +1,6 @@
-<script>
- 	jQuery(document).ready(	function() {
-		jQuery("#name").focus();
-
-		var rules = {
-			name: {required:true,minlength:2},
-			description: {required:true}
-		}
-
-		validation2( 'addRoleForm', function( form ) {
-			selectAllById( 'selectedList' );
-			selectAllById( 'selectedListAuthority' );
-			form.submit();	
-		}, {
-			'rules': rules
-		});
-
-		jQuery("#name").attr("maxlength", "140");
-
-		/* remote validation */
-		checkValueIsExist( "name", "validateRole.action");
-	});		
+<script type="text/javascript" src="javascript/addRoleForm.js"></script>
+<script type="text/javascript">
+	var i18n_adding_role_failed = '$encoder.jsEscape( $i18n.getString( "adding_role_failed" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "create_new_user_role" )</h3>
@@ -93,8 +74,3 @@
 	</tr>
   </table>
 </form>
-
-<script type="text/javascript">
-	var i18n_adding_role_failed = '$encoder.jsEscape( $i18n.getString( "adding_role_failed" ) , "'")';
-	sortList('availableListAuthority','ASC');
-</script>
