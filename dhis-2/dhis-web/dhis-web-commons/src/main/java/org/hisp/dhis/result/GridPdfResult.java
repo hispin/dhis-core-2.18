@@ -102,6 +102,7 @@ public class GridPdfResult
         PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
         
         table.setHeaderRows( 1 );
+        table.setWidthPercentage( 100f );
 
         //TODO make wider
         table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
