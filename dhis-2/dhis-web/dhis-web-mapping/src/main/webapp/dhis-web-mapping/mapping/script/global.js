@@ -451,9 +451,7 @@ G.vars = {
     
     mask: null,
     
-    exportValues: null,
-    
-    topLevelUnit: null
+    exportValues: null
 };
 
 G.user = {
