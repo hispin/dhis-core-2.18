@@ -467,11 +467,11 @@ public class DataBrowserServiceTest
         assertEquals( "drilldown_data_element_group", grid.getVisibleHeaders().get( 0 ).getName() );
 
         assertEquals( "drilldown_data_element_group", dataBrowserService.convertDate( periodA.getPeriodType(), grid
-            .getVisibleHeaders().get( 0 ).getName(), mockFormat ) );
+            .getVisibleHeaders().get( 0 ).getName(), mockI18n, mockFormat ) );
         assertTrue( "Period column header 2005-03-01", dataBrowserService.convertDate( periodA.getPeriodType(),
-            grid.getVisibleHeaders().get( 1 ).getName(), mockFormat ).startsWith( "Period_2005-03-01" ) );
+            grid.getVisibleHeaders().get( 1 ).getName(), mockI18n, mockFormat ).startsWith( "Period_2005-03-01" ) );
         assertTrue( "Period column header 2005-04-01", dataBrowserService.convertDate( periodA.getPeriodType(),
-            grid.getVisibleHeaders().get( 2 ).getName(), mockFormat ).startsWith( "Period_2005-04-01" ) );
+            grid.getVisibleHeaders().get( 2 ).getName(), mockI18n, mockFormat ).startsWith( "Period_2005-04-01" ) );
 
     }
 }

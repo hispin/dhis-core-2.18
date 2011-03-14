@@ -19,13 +19,19 @@
 
 <h6>$i18n.getString( "navigation" )</h6>
 
+#if ( $summary )
+#set( $title = "$!item $i18n.getString( 'no_hits' )" )
+#else
+#set( $title = "$i18n.getString( 'raw_data' )" )
+#end
+
 <!-- ORGANISATIONUNIT -->
 #if ( $mode == "OU" )
 <div>
 	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
 	#foreach( $parent in $BreadCrumbOrgUnit )
 		#if( $parent.name == $ParentName )
-			&raquo; <span style="font-weight:bold;">$parent.name</span>
+			&raquo; <span style="font-weight:bold;">$ParentName</span> ( $title )
 		#else
 			&raquo; <a style="$tmpStyle" href="?mode=$mode&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox&amp;selectedUnitChanger=$parent.id">$parent.name</a>
 		#end
@@ -39,7 +45,7 @@
 	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
 	#if( $parent != "" )
 		&raquo; <a style="$tmpStyle" href="?mode=DEG&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "data_element_group_list" )</a>
-		&raquo; <span style="font-weight:bold;">$ParentName</span>
+		&raquo; <span style="font-weight:bold;">$ParentName</span> ( $title )
 	#else
 		&raquo; <span style="font-weight:bold;">$i18n.getString( "data_element_group_list" )</span>
 	#end
@@ -53,7 +59,7 @@
 	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a>
 	#if( $parent != "" )
 		&raquo; <a style="$tmpStyle" href="?mode=OUG&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "orgunit_group_list" )</a>
-		&raquo; <span style="font-weight:bold;">$ParentName</span>
+		&raquo; <span style="font-weight:bold;">$ParentName</span> ( $title )
 	#else
 		&raquo; <span style="font-weight:bold;">$i18n.getString( "orgunit_group_list" )</span>
 	#end
@@ -67,7 +73,7 @@
 	<a href="displayDataBrowserForm.action">$i18n.getString( "start" )</a> 
 	#if( $parent != "" )
 		&raquo; <a style="$tmpStyle" href="?mode=DS&amp;periodTypeId=$periodTypeId&amp;fromDate=$fromDate&amp;toDate=$toDate&amp;showZeroCheckBox=$!showZeroCheckBox">$i18n.getString( "data_set_list" )</a>
-		&raquo; <span style="font-weight:bold;">$ParentName</span>
+		&raquo; <span style="font-weight:bold;">$ParentName</span> ( $title )
 	#else
 		&raquo; <span style="font-weight:bold;">$i18n.getString( "data_set_list" )</span>
 	#end

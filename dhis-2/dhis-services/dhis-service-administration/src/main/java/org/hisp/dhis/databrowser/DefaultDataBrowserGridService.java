@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
@@ -209,11 +210,11 @@ public class DefaultDataBrowserGridService
     // Others
     // -------------------------------------------------------------------------
 
-    public String convertDate( PeriodType periodType, String dateString, I18nFormat format )
+    public String convertDate( PeriodType periodType, String dateString, I18n i18n, I18nFormat format )
     {
         if ( !DateUtils.dateIsValid( dateString ) )
         {
-            return dateString;
+            return i18n.getString( dateString );
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat( Period.DEFAULT_DATE_FORMAT );

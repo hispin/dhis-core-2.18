@@ -28,6 +28,7 @@ package org.hisp.dhis.databrowser;
  */
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.period.PeriodType;
 
@@ -166,7 +167,7 @@ public interface DataBrowserGridService
      * @return converted string if the date is valid, else the original string
      *         is returned
      */
-    String convertDate( PeriodType periodType, String dateString, I18nFormat format );
+    String convertDate( PeriodType periodType, String dateString, I18n i18n, I18nFormat format );
 
     /**
      * This method returns the string of name of periods in the list which
