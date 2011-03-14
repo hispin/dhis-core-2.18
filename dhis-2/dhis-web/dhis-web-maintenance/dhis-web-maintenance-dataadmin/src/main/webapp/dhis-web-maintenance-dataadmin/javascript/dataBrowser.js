@@ -90,7 +90,9 @@ function viewDrillDownData( levelStyle )
 	window.location.href = currentUrlLink;
 }
 
-function changeType( type )
+function exportResult( type )
 {
-	type == "xls" ? disable( "pageLayout" ) : enable( "pageLayout" );
+	var url = "exportResult.action?type=" + type;
+	
+	window.location.href = url;
 }
