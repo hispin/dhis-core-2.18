@@ -123,8 +123,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Databrowser Grid -->
 
-	<bean id="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction"
-		class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction" 
+	<bean id="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction"
+		class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction" 
 		scope="prototype">
 		<property name="dataBrowserGridService" ref="org.hisp.dhis.databrowser.DataBrowserGridService" />
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
