@@ -12,7 +12,3 @@
 ##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
 
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" ) 
-
-<script type="text/javascript">
-
-</script>

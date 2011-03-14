@@ -1,3 +1,9 @@
+<script type="text/javascript" src="javascript/user_tmpl.js"></script>
+<script type="text/javascript">
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_user" ) , "'")';
+	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
+</script>
+
 <h3>$i18n.getString( "user_management" ) #openHelp( "users" )</h3>
 
 <form id="userForm" method="POST">
@@ -62,7 +68,7 @@
                 <p><label>$i18n.getString( "phone_number" ):</label><br/><span id="phoneNumberField"></span></p>
 				<p><label>$i18n.getString( "number_of_orgunit" ):</label><br/><span id="numberOrgunitField"></span></p>					
 			</div>
-			
+
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
 				<div style="float:right">
 					<a href="javascript:hideWarning()" title="$i18n.getString( 'hide_warning' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_warning' )"/></a>
@@ -73,24 +79,4 @@
 		</td>
 	</tr>
 </table>
-
-
-<script>
-	jQuery(document).ready(function(){	
-		tableSorter( 'userList' );
-	});
-</script>
 </form>
-
-<script type="text/javascript">
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_user" ) , "'")';
-	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
-
-	function orgUnitSelected( orgUnitIds )
-	{
-		window.location.href = "user.action";
-	}
-
-	selection.setListenerFunction( orgUnitSelected );
-
-</script>
