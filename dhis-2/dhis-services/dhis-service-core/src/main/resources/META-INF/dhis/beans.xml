@@ -1030,12 +1030,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
 	<!-- DeletionHandlers -->
 
-	<bean id="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler"
-		class="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler">
-		<property name="dataEntryFormService"
-			ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler"
 		class="org.hisp.dhis.datadictionary.DataDictionaryDeletionHandler">
 		<property name="dataDictionaryService"
@@ -1205,7 +1199,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 					<ref local="org.hisp.dhis.dataset.DataSetDeletionHandler" />
 					<ref local="org.hisp.dhis.dataset.CompleteDataSetRegistrationDeletionHandler" />
 					<ref local="org.hisp.dhis.dataset.SectionDeletionHandler" />
-					<ref local="org.hisp.dhis.dataentryform.DataEntryFormDeletionHandler" />
 					<ref local="org.hisp.dhis.dataset.FrequencyOverrideAssociationDeletionHandler" />
 					<ref local="org.hisp.dhis.expression.ExpressionDeletionHandler" />
 					<ref local="org.hisp.dhis.indicator.IndicatorDeletionHandler" />

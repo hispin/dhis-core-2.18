@@ -104,7 +104,6 @@ public class GridPdfResult
         table.setHeaderRows( 1 );
         table.setWidthPercentage( 100f );
 
-        //TODO make wider
         table.addCell( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ) );
         table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
         table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
