@@ -37,12 +37,12 @@ public interface PivotTableService
     /**
      * Returns a PivotTable object.
      * 
-     * @param indicatorGroupId the identifier of the IndicatorGroup.
+     * @param groupId the identifier of the IndicatorGroup.
      * @param periodTypeName the identifier of the PeriodType.
      * @param startDate the start date string.
      * @param endDate the end date string.
      * @param level the OrganisationUnit level.
      * @return a PivotTable object.
      */
-    PivotTable getPivotTable( int indicatorGroupId, String periodTypeName, String startDate, String endDate, int level );
+    PivotTable getPivotTable( int groupId, String periodTypeName, String startDate, String endDate, int level );
 }

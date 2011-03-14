@@ -346,27 +346,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="pivotTableService"
       ref="org.hisp.dhis.pivottable.PivotTableService"/>
   </bean>
-  
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetOrganisationUnitLevelsAction"
-    class="org.hisp.dhis.reporting.pivottable.action.GetOrganisationUnitLevelsAction"
-    scope="prototype">
-    <property name="organisationUnitService"
-      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetPeriodTypesAction"
-    class="org.hisp.dhis.reporting.pivottable.action.GetPeriodTypesAction"
-    scope="prototype">
-    <property name="periodService"
-      ref="org.hisp.dhis.period.PeriodService"/>
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.pivottable.action.GetIndicatorGroupsAction"
-    class="org.hisp.dhis.reporting.pivottable.action.GetIndicatorGroupsAction"
-    scope="prototype">
-    <property name="indicatorService"
-      ref="org.hisp.dhis.indicator.IndicatorService"/>
-  </bean>
     
   <!-- Custom DataSet Report -->
 	

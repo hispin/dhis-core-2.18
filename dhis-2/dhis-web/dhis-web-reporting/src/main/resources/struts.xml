@@ -252,22 +252,7 @@
       <result name="success" type="velocity-json">/dhis-web-reporting/responsePivotTable.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-    
-    <action name="getOrganisationUnitLevels" class="org.hisp.dhis.reporting.pivottable.action.GetOrganisationUnitLevelsAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/responseOrganisationUnitLevel.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="getPeriodTypes" class="org.hisp.dhis.reporting.pivottable.action.GetPeriodTypesAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/responsePeriodType.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
-    <action name="getIndicatorGroups" class="org.hisp.dhis.reporting.pivottable.action.GetIndicatorGroupsAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/responseIndicatorGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-    
+        
     <!-- Data Completeness -->
     
     <action name="displayViewDataCompletenessForm" class="org.hisp.dhis.reporting.completeness.action.GetDataCompletenessOptionsAction">

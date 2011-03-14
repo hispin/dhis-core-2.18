@@ -99,7 +99,7 @@ public class DefaultPivotTableService
     // PivotTableService implementation
     // -------------------------------------------------------------------------
 
-    public PivotTable getPivotTable( int indicatorGroupId, String periodTypeName, String startDate, String endDate, int organisationUnitId )
+    public PivotTable getPivotTable( int groupId, String periodTypeName, String startDate, String endDate, int organisationUnitId )
     {
         PeriodType periodType = PeriodType.getPeriodTypeByName( periodTypeName );
         
@@ -109,10 +109,10 @@ public class DefaultPivotTableService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
             organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildren() );
          
-        List<Indicator> indicators = null;
+        List<? extends Indicator> indicators = null;
         Collection<AggregatedIndicatorValue> indicatorValues = null;
         
-        if ( indicatorGroupId == -1 ) // -1 -> All
+        if ( groupId == -1 ) // -1 -> All
         {
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
             
@@ -122,7 +122,7 @@ public class DefaultPivotTableService
         }
         else
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( indicatorGroupId ).getMembers() );
+            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( groupId ).getMembers() );
             
             indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
                 ConversionUtils.getIdentifiers( Indicator.class, indicators ),
