@@ -45,7 +45,10 @@
 					<option value ="OU">$i18n.getString( "organisation_units" )</option>
 				</select>
 			</td>
-		</tr>	
+		</tr>
+		<tr>
+			<td colspan="2" style="height:10px"></td>
+		</tr>		
 		<tr>
 			<td>$i18n.getString( "allow_show_zero" )</td>
 			<td><input type="checkbox" id="showZeroCheckBox" name="showZeroCheckBox"/></td>

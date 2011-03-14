@@ -80,17 +80,6 @@
 </div>
 #end
 
-<div>
-	<form id="exportForm" method="get" action="exportResult.action">
-		$i18n.getString( "export_to" ):
-		<select id="type" name="type">
-			<option value="csv">$i18n.getString( "CSV" )</option>
-			<option value="pdf" selected="selected">$i18n.getString( "PDF" )</option>
-			<option value="xls">$i18n.getString( "Excel" )</option>
-		</select>
-		<input type="submit" value="$i18n.getString( 'export' )" style="width:100px"/>
-	</form>
-</div>
 <br/>
 <!-- Data Browser Grid -->
 

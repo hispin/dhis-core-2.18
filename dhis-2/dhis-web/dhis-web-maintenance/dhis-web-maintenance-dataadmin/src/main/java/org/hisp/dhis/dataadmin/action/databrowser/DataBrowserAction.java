@@ -37,7 +37,7 @@ import org.hisp.dhis.util.SessionUtils;
  * @author espenjac, joakibj, briane, eivinhb
  * @version $Id DataBrowerAction.java Apr 06, 2010 ddhieu
  */
-public class DataBrowerAction
+public class DataBrowserAction
     extends ActionSupport
 {
     private boolean isZeroAdded = false;

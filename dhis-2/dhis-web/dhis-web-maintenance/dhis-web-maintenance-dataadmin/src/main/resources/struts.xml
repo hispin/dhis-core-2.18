@@ -192,7 +192,7 @@
 		</action>
 
 		<action name="searchResult"
-			class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowerAction">
+			class="org.hisp.dhis.dataadmin.action.databrowser.DataBrowserAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<result name="error" type="redirect">error.action</result>
 			<param name="page">
