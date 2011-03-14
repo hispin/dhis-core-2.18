@@ -179,6 +179,7 @@
 		}
 		
 		sortList( 'availableDataElements', 'ASC' );
+		sortList( 'availableDataElements2', 'ASC' );
 		list_1.find(":first").attr("selected", "selected");		
 		list_2.find(":first").attr("selected", "selected");		
 		
@@ -201,6 +202,8 @@
 				list_2.append('<option value="' + id + '">' + text + '</option>' );
 			}
 		}
+		sortList( 'dataElementGroups', 'ASC' );
+		sortList( 'availableGroups', 'ASC' );
 		list_1.find(":first").attr("selected", "selected");		
 		list_2.find(":first").attr("selected", "selected");	
 		
