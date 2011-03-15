@@ -147,7 +147,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
 {
     var dataElementId = dataElementId_;
     var optionComboId = optionComboId_;
-    var value = value_;
+    var value = new Number( value_ );
     var resultColor = resultColor_;
     var selectedOption = selectedOption_;
     var organisationUnitId = organisationUnitId_;
@@ -207,6 +207,8 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, value_
         }
 
         element.style.backgroundColor = color;
+		
+		element.value = new Number(element.value);
     }
 }
 
