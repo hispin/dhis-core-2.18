@@ -17,7 +17,12 @@
 
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-<h6>$i18n.getString( "navigation" )</h6>
+<div>
+	<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportResult( 'xls' )" style="width:140px"/>
+	<input type="button" value="$i18n.getString( 'get_report_as_csv' )" onclick="exportResult( 'csv' )" style="width:140px"/>
+	<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportResult( 'pdf' )" style="width:140px"/>
+	<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='displayDataBrowserForm.action'" style="width:10em"/>
+</div>
 
 #if ( $summary )
 #set( $title = "$!item $i18n.getString( 'no_hits' )" )
@@ -25,6 +30,7 @@
 #set( $title = "$i18n.getString( 'raw_data' )" )
 #end
 
+<br/>
 <!-- ORGANISATIONUNIT -->
 #if ( $mode == "OU" )
 <div>
