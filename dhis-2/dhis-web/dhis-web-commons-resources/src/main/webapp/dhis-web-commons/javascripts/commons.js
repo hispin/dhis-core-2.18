@@ -774,15 +774,16 @@ function datePicker( id )
 {
 	$("#" + id).datepicker(
 	{
-		dateFormat:dateFormat,
+		dateFormat: dateFormat,
 		changeMonth: true,
-		changeYear: true,			
+		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
-		constrainInput: true		
+		constrainInput: true,
+        yearRange: '-11'
 	});
 	s = jQuery("#" + id );		
 	if( s.val()=='' ) s.val( getCurrentDate() );		
@@ -792,38 +793,40 @@ function datePicker( id, today )
 {
 	$("#" + id).datepicker(
 	{
-		dateFormat:dateFormat,
+		dateFormat: dateFormat,
 		changeMonth: true,
-		changeYear: true,			
+		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
-		constrainInput: true		
+		constrainInput: true,
+        yearRange: '-11'
 	});
 	
 	if( today == undefined ) today = false;
 	
 	if( today ){
-		s = jQuery("#" + id );		
-		if( s.val()=='' ) s.val( getCurrentDate() );		
-	}		
+		s = jQuery("#" + id );
+		if( s.val()=='' ) s.val( getCurrentDate() );
+	}
 }
 
 function datePickerjQuery( jQueryString )
 {
 	jQuery( jQueryString ).datepicker(
 	{
-		dateFormat:dateFormat,
+		dateFormat: dateFormat,
 		changeMonth: true,
-		changeYear: true,			
+		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
-		constrainInput: true		
+		constrainInput: true,
+        yearRange: '-11'
 	});
 		
 }
@@ -833,26 +836,27 @@ function datePickerjQuery( jQueryString )
  * @param id the id of input field which you want enter date *
  */
 function datePickerValid( id, today )
-{	
+{
 	jQuery("#" + id).datepicker(
 	{
-		dateFormat:dateFormat,
+		dateFormat: dateFormat,
 		changeMonth: true,
-		changeYear: true,			
+		changeYear: true,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		maxDate: '+0d +0w',
-		constrainInput: true
+		constrainInput: true,
+        yearRange: '-11'
 	});
 	
 	if( today == undefined ) today = false;
 	
 	if( today ){
-		s = jQuery("#" + id );		
-		if( s.val()=='' ) s.val( getCurrentDate() );		
+		s = jQuery("#" + id );
+		if( s.val()=='' ) s.val( getCurrentDate() );
 	}
 }
 
@@ -869,31 +873,31 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 	
 	s = jQuery("#" + startdate );
 	e = jQuery("#" + enddate );
-	if( setCurrentStartDate && s.val()=='') s.val( getCurrentDate() );	
+	if( setCurrentStartDate && s.val()=='') s.val( getCurrentDate() );
 	if( setCurrentEndDate && e.val()=='' ) e.val( getCurrentDate() );
 
 	var dates = $('#'+startdate+', #' + enddate).datepicker(
 	{
-		dateFormat:dateFormat,
+		dateFormat: dateFormat,
 		defaultDate: "+1w",
 		changeMonth: true,
 		changeYear: true,
 		numberOfMonths: 1,
 		monthNamesShort: monthNames,
 		dayNamesMin: dayNamesMin,
-		showAnim:'',
+		showAnim: '',
 		showOn: 'both',
 		buttonImage: '../images/calendar.png',
-		buttonImageOnly: true,	
+		buttonImageOnly: true,
+		constrainInput: true,
+        yearRange: '-11',
 		onSelect: function(selectedDate)
 		{
 			var option = this.id == startdate ? "minDate" : "maxDate";
 			var instance = $(this).data("datepicker");
 			var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
 			dates.not(this).datepicker("option", option, date);
-		},
-		constrainInput: true
-		
+		}
 	});
 }
 
