@@ -168,7 +168,7 @@ public class OrgUnitResource
 
     @POST
     @Path( "activitiyplan" )
-    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
+    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient)
     {
         MobileModel model = new MobileModel();
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
