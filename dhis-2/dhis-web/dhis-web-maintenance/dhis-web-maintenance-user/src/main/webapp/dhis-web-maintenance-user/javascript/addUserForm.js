@@ -1,17 +1,19 @@
 jQuery( document ).ready( function()
 {
+	var r = getValidationRules();
+
 	var rules = {
 		username : {
 			required : true,
-			firstletteralphabet : true,
-			minlength : 2,
-			alphanumeric : true
+			firstletteralphabet : r.user.username.firstletteralphabet,
+			alphanumeric : r.user.username.alphanumeric,
+			rangelength : r.user.username.length
 		},
 		rawPassword : {
-			required : false,
+			required : true,
 			password : true,
-			rangelength : [ 8, 35 ],
-			notequalto : '#username'
+			notequalto : '#username',
+			rangelength : r.user.password.length
 		},
 		retypePassword : {
 			required : true,
@@ -19,16 +21,19 @@ jQuery( document ).ready( function()
 		},
 		surname : {
 			required : true,
-			minlength : 2
+			rangelength : r.user.name.length
 		},
 		firstName : {
 			required : true,
-			minlength : 2
+			rangelength : r.user.name.length
 		},
 		email : {
-			email : true
+			email : true,
+			rangelength : r.user.email.length
 		},
-		phoneNumber : {},
+		phoneNumber : {
+			rangelength : r.user.phone.length
+		},
 		roleValidator : {
 			required : true
 		}
@@ -45,13 +50,13 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#username" ).attr( "maxlength", "140" );
-	jQuery( "#rawPassword" ).attr( "maxlength", "35" );
-	jQuery( "#retypePassword" ).attr( "maxlength", jQuery( "#rawPassword" ).attr( "maxlength" ) );
-	jQuery( "#surname" ).attr( "maxlength", "140" );
-	jQuery( "#firstName" ).attr( "maxlength", "140" );
-	jQuery( "#email" ).attr( "maxlength", "160" );
-	jQuery( "#phoneNumber" ).attr( "maxlength", "80" );
+	jQuery( "#username" ).attr( "maxlength", r.user.username.length[1] );
+	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#surname" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#firstName" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#email" ).attr( "maxlength", r.user.email.length[1] );
+	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.length[1] );
 
 	/* remote validation */
 	checkValueIsExist( "username", "validateUser.action" );
