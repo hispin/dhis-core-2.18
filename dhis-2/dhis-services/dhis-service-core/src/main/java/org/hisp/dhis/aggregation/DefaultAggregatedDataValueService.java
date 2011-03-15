@@ -93,9 +93,19 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement, categoryOption, period, organisationUnit );
     }
     
+    public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValues( periodIds, organisationUnitIds );
+    }
+    
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedDataValues( dataElementId, periodIds, organisationUnitIds );
+    }
+    
+    public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
     }
     
     public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
@@ -113,7 +123,6 @@ public class DefaultAggregatedDataValueService
        return aggregatedDataValueStore.getAggregatedDataValuesAtLevel(orgunit, level, periods);
     }
 
-    @Override
     public int countDataValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         return aggregatedDataValueStore.countDataValuesAtLevel( orgunit, level, periods );
@@ -162,11 +171,13 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
+    
     public int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
+    
     public int deleteAggregatedIndicatorValues()
     {
         return aggregatedDataValueStore.deleteAggregatedIndicatorValues();
@@ -183,7 +194,8 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.countIndicatorValuesAtLevel( orgunit, level, periods );
     }
-// -------------------------------------------------------------------------
+    
+    // -------------------------------------------------------------------------
     // AggregatedIndicatorMapValue
     // -------------------------------------------------------------------------
     

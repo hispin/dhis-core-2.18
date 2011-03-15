@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
@@ -51,6 +54,13 @@ public class GetPivotTableOptionsAction
         this.indicatorService = indicatorService;
     }
 
+    private DataElementService dataElementService;
+    
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private List<PeriodType> periodTypes = PeriodType.getAvailablePeriodTypes();
     
     public List<PeriodType> getPeriodTypes()
@@ -65,13 +75,22 @@ public class GetPivotTableOptionsAction
         return indicatorGroups;
     }
 
+    private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>(); 
+    
+    public List<DataElementGroup> getDataElementGroups()
+    {
+        return dataElementGroups;
+    }
+
     @Override
     public String execute()
         throws Exception
     {
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
+        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
         
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
         
         return SUCCESS;
     }

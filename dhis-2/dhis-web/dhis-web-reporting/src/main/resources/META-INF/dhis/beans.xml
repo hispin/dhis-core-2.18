@@ -338,6 +338,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="indicatorService"
       ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
   </bean>
   
   <bean id="org.hisp.dhis.reporting.pivottable.action.GetPivotTableAction"
