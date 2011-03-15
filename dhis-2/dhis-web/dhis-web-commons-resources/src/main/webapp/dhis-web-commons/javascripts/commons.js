@@ -1088,6 +1088,9 @@ function validation2(formId, submitHandler, kwargs)
 	return validator;	
 }
 
+/*
+ * @return A dictionary containing the default validation rules.
+ */
 function getValidationRules() {
 	var validationRules;
 
