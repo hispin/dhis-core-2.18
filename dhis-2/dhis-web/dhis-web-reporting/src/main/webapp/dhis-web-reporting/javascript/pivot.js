@@ -20,6 +20,10 @@ var currentOrgunit = 0;
 
 var organisationUnitId = -1;
 
+var DATA_TYPE_INDICATOR = 0;
+var DATA_TYPE_DATA_ELEMENT = 1;
+var currentDataType = DATA_TYPE_INDICATOR;
+
 // -----------------------------------------------------------------------------
 // Public methods
 // -----------------------------------------------------------------------------
@@ -40,7 +44,9 @@ function getData()
 {
   clearGlobalVariables();
   
+  var dataType = $( "#dataType" ).val();
   var indicatorGroupId = $( "#indicatorGroup" ).val();
+  var dataElementGroupId = $( "#dataElementGroup" ).val();
   var startDate = $( "#startDate" ).val();
   var endDate = $( "#endDate" ).val();
   var periodTypeName = $( "#periodType" ).val();
@@ -50,6 +56,10 @@ function getData()
   
   var url = "getPivotTable.action";
   
+  var groupId = dataType == DATA_TYPE_INDICATOR ? indicatorGroupId : dataElementGroupId;
+  
+  currentDataType = dataType;
+  
   hideDivs();
   
   showLoader();
@@ -57,7 +67,8 @@ function getData()
   $.getJSON(
     url,
     {
-      "indicatorGroupId": indicatorGroupId, 
+      "dataType": dataType,
+      "groupId": groupId,
       "periodTypeName": periodTypeName, 
       "startDate": startDate, 
       "endDate": endDate, 
@@ -172,11 +183,14 @@ function viewChart( chartIndicators, chartDimension )
  */
 function viewChartMenu( indicatorId, periodId, orgunitId )
 {
-  currentIndicator = indicatorId;
-  currentPeriod = periodId;
-  currentOrgunit = orgunitId;
+  if ( currentDataType == DATA_TYPE_INDICATOR ) // Currently indicators only supported
+  {
+    currentIndicator = indicatorId;
+    currentPeriod = periodId;
+    currentOrgunit = orgunitId;
   
-  showDropDown( "pivotMenu" );
+    showDropDown( "pivotMenu" );
+  }
 }
 
 /**
@@ -184,8 +198,7 @@ function viewChartMenu( indicatorId, periodId, orgunitId )
  */
 function loadListeners()
 {
-  var table = document.getElementById( "pivotTable" );
-  
+  var table = document.getElementById( "pivotTable" ); 
   table.addEventListener( "click", setPosition, false );
 }
 

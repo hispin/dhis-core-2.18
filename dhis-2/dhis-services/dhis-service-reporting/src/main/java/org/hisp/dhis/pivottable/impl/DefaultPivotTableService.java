@@ -36,9 +36,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.common.AggregatedValue;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -79,8 +81,15 @@ public class DefaultPivotTableService
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
-    }    
+    }
     
+    private DataElementService dataElementService;
+    
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -99,8 +108,8 @@ public class DefaultPivotTableService
     // PivotTableService implementation
     // -------------------------------------------------------------------------
 
-    public PivotTable getPivotTable( int groupId, String periodTypeName, String startDate, String endDate, int organisationUnitId )
-    {
+    public PivotTable getPivotTable( int dataType, int groupId, String periodTypeName, String startDate, String endDate, int organisationUnitId )
+    {        
         PeriodType periodType = PeriodType.getPeriodTypeByName( periodTypeName );
         
         List<Period> periods = new ArrayList<Period>( 
@@ -109,25 +118,52 @@ public class DefaultPivotTableService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
             organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildren() );
          
-        List<? extends Indicator> indicators = null;
-        Collection<AggregatedIndicatorValue> indicatorValues = null;
+        List<? extends IdentifiableObject> indicators = null;
+        Collection<? extends AggregatedValue> aggregatedValues = null;
         
-        if ( groupId == -1 ) // -1 -> All
+        if ( dataType == DATA_TYPE_INDICATOR )
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-            
-            indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
-                ConversionUtils.getIdentifiers( Period.class, periods ), 
-                ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+            if ( groupId == -1 ) // All
+            {
+                indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
+                
+                aggregatedValues = aggregatedDataValueService.getAggregatedIndicatorValues(
+                    ConversionUtils.getIdentifiers( Period.class, periods ), 
+                    ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+            }
+            else
+            {
+                indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( groupId ).getMembers() );
+                
+                aggregatedValues = aggregatedDataValueService.getAggregatedIndicatorValues(
+                    ConversionUtils.getIdentifiers( Indicator.class, indicators ),
+                    ConversionUtils.getIdentifiers( Period.class, periods ), 
+                    ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );            
+            }
+        }
+        else if ( dataType == DATA_TYPE_DATA_ELEMENT )
+        {
+            if ( groupId == -1 ) // All
+            {
+                indicators = new ArrayList<DataElement>( dataElementService.getAggregateableDataElements() );
+                
+                aggregatedValues = aggregatedDataValueService.getAggregatedDataValues( 
+                    ConversionUtils.getIdentifiers( Period.class, periods ), 
+                    ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );
+            }
+            else
+            {
+                indicators = new ArrayList<IdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
+                
+                aggregatedValues = aggregatedDataValueService.getAggregatedDataValues(
+                    ConversionUtils.getIdentifiers( Indicator.class, indicators ),
+                    ConversionUtils.getIdentifiers( Period.class, periods ), 
+                    ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );  
+            }
         }
         else
         {
-            indicators = new ArrayList<Indicator>( indicatorService.getIndicatorGroup( groupId ).getMembers() );
-            
-            indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
-                ConversionUtils.getIdentifiers( Indicator.class, indicators ),
-                ConversionUtils.getIdentifiers( Period.class, periods ), 
-                ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnits ) );            
+            throw new IllegalArgumentException( "Illegal data type: " + dataType );
         }
         
         PivotTable pivotTable = new PivotTable();
@@ -135,7 +171,7 @@ public class DefaultPivotTableService
         pivotTable.setIndicators( indicators );
         pivotTable.setPeriods( periods );
         pivotTable.setOrganisationUnits( organisationUnits );
-        pivotTable.setIndicatorValues( indicatorValues );
+        pivotTable.setIndicatorValues( aggregatedValues );
         
         Collections.sort( pivotTable.getIndicators(), INDICATOR_COMPARATOR );
         Collections.sort( pivotTable.getOrganisationUnits(), ORGUNIT_COMPARATOR );

@@ -116,6 +116,14 @@ public interface AggregatedDataValueService
      */
     Double getAggregatedValue( int dataElement, int categoryOptionCombo, Collection<Integer> periodIds, int organisationUnit );
     
+    /**
+     * Gets a collection of AggregatedDataValues.
+     * 
+     * @param periodIds the collection of Period identifiers.
+     * @param organisationUnitIds the collection of OrganisationUnit identifiers.
+     * @return a collection of AggregatedDataValues.
+     */
+    Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
      * Gets a collection of AggregatedDataValues.
@@ -126,6 +134,16 @@ public interface AggregatedDataValueService
      * @return a collection of AggregatedDataValues.
      */
     Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+
+    /**
+     * Gets a collection of AggregatedDataValues.
+     * 
+     * @param dataElementIds the collection of DataElement identifiers.
+     * @param periodIds the collection of Period identifiers.
+     * @param organisationUnitIds the collection of OrganisationUnit identifiers.
+     * @return a collection of AggregatedDataValues.
+     */
+    Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
      * Deletes AggregatedDataValues registered for the given parameters.

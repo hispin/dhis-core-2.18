@@ -3,6 +3,12 @@
 // Public methods
 // -------------------------------------------------------------------------
 
+function toggleDataType()
+{	
+  $( "#indicatorGroupDiv" ).toggle();
+  $( "#dataElementGroupDiv" ).toggle();
+}
+
 function showCriteria()
 {
   $( "div#criteria" ).show( "fast" );

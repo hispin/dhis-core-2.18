@@ -175,11 +175,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="aggregatedDataValueService"
 	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="indicatorService" 
-        ref="org.hisp.dhis.indicator.IndicatorService"/>
+      ref="org.hisp.dhis.indicator.IndicatorService"/>
+    <property name="dataElementService"
+      ref="org.hisp.dhis.dataelement.DataElementService"/>
     <property name="periodService" 
-        ref="org.hisp.dhis.period.PeriodService"/>
+      ref="org.hisp.dhis.period.PeriodService"/>
     <property name="organisationUnitService" 
-        ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+      ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
   </bean>
   
   <!-- DataSetReport -->

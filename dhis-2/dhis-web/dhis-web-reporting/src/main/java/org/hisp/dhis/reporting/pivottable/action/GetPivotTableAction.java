@@ -63,13 +63,20 @@ public class GetPivotTableAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer indicatorGroupId;
-
-    public void setIndicatorGroupId( Integer indicatorGroupId )
-    {
-        this.indicatorGroupId = indicatorGroupId;
-    }
+    private Integer dataType = 0;
     
+    public void setDataType( Integer dataType )
+    {
+        this.dataType = dataType;
+    }
+
+    private Integer groupId = -1;
+    
+    public void setGroupId( Integer groupId )
+    {
+        this.groupId = groupId;
+    }
+
     private String periodTypeName;
 
     public void setPeriodTypeName( String periodTypeName )
@@ -91,7 +98,7 @@ public class GetPivotTableAction
         this.endDate = endDate;
     }
     
-    private Integer organisationUnitId;
+    private Integer organisationUnitId = 0;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
@@ -115,7 +122,7 @@ public class GetPivotTableAction
 
     public String execute()
     {
-        pivotTable = pivotTableService.getPivotTable( indicatorGroupId, periodTypeName, startDate, endDate, organisationUnitId );
+        pivotTable = pivotTableService.getPivotTable( dataType, groupId, periodTypeName, startDate, endDate, organisationUnitId );
         
         for ( Period period : pivotTable.getPeriods() )
         {

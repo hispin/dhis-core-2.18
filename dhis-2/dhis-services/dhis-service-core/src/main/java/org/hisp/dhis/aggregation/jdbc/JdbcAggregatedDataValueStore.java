@@ -143,7 +143,35 @@ public class JdbcAggregatedDataValueStore
 
         return statementManager.getHolder().queryForDouble( sql );
     }
-    
+
+    public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        final ObjectMapper<AggregatedDataValue> mapper = new ObjectMapper<AggregatedDataValue>();
+        
+        try
+        {
+            final String sql = 
+                "SELECT * " +
+                "FROM aggregateddatavalue " +
+                "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+                "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new AggregatedDataValueRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated data value", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
     public Collection<AggregatedDataValue> getAggregatedDataValues( int dataElementId, 
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
@@ -157,6 +185,35 @@ public class JdbcAggregatedDataValueStore
                 "SELECT * " +
                 "FROM aggregateddatavalue " +
                 "WHERE dataelementid = " + dataElementId + " " +
+                "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+                "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+            
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
+            
+            return mapper.getCollection( resultSet, new AggregatedDataValueRowMapper() );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get aggregated data value", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    public Collection<AggregatedDataValue> getAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        final ObjectMapper<AggregatedDataValue> mapper = new ObjectMapper<AggregatedDataValue>();
+        
+        try
+        {
+            final String sql = 
+                "SELECT * " +
+                "FROM aggregateddatavalue " +
+                "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
                 "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                 "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
             

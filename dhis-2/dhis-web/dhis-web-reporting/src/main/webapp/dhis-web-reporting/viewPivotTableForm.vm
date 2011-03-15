@@ -15,7 +15,7 @@ div#criteria
   position: relative;
   left: 2px;
   width: 265px;
-  height: 470px;
+  height: 500px;
   border: 1px solid #b0b0b0;
   background-color: #d9ece1;
   padding-left: 20px;
@@ -32,6 +32,12 @@ div#pivot
   background-color: #d9ece1;
   padding-left: 20px;
   margin-bottom: 6px;
+}
+
+div.inputSection
+{
+  padding-top: 7px;
+  padding-bottom: 5px;
 }
 
 td.column
@@ -72,7 +78,15 @@ div#pivotMenu
 
 <div id="criteria" style="display:none">
 
-<p>
+<div class="inputSection">
+<label>$i18n.getString( "data_type" )</label>
+<select id="dataType" style="width:250px" onchange="toggleDataType()">
+  <option value="0">$i18n.getString( "indicator" )</option>
+  <option value="1">$i18n.getString( "data_element" )</option>
+</select>
+</div>
+
+<div id="indicatorGroupDiv" class="inputSection">
 <label>$i18n.getString( "indicator_group" )</label>
 <select id="indicatorGroup" style="width:250px">
   <option value="-1">[ All ]</option>
@@ -80,35 +94,43 @@ div#pivotMenu
   <option value="${group.id}">$encoder.htmlEncode( $group.name )</option>
   #end
 </select>
-</p>
+</div>
 
-<p>
+<div id="dataElementGroupDiv" class="inputSection" style="display:none">
+<label>$i18n.getString( "data_element_group" )</label>
+<select id="dataElementGroup" style="width:250px">
+  <option value="-1">[ All ]</option>
+  #foreach( $group in $dataElementGroups )
+  <option value="${group.id}">$encoder.htmlEncode( $group.name )</option>
+  #end
+</select>
+</div>
+
+<div class="inputSection">
 <label>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</label><br>
 <input type="text" id="startDate" style="width:210px">
-</p>
+</div>
 
-<p>
+<div class="inputSection">
 <label>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</label><br>
 <input type="text" id="endDate" style="width:210px">
-</p>
+</div>
 
-<p>
+<div class="inputSection">
 <label>$i18n.getString( "period_type" )</label>
 <select id="periodType" style="width:250px">
   #foreach( $type in $periodTypes )
   <option value="${type.name}" #if( $type.name == "Monthly" )selected="selected"#end>$encoder.htmlEncode( $type.name )</option>
   #end
 </select>
-</p>
+</div>
 
-<p>
 <div id="selectionTree" style="width:250px; height:200px"></div>
-</p>
 
-<p>
+<div class="inputSection">
 <input type="button" value='$i18n.getString( "get_data" )' style="width:80px" onclick="getData()">
 <input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
-</p>
+</div>
 
 </div>
  
@@ -116,7 +138,7 @@ div#pivotMenu
 
 <div id="pivot" style="display:none">
 
-<p>
+<div class="inputSection">
 <table>
   <tr>
     <td><label>$i18n.getString( "indicators" )</label></td>
@@ -131,12 +153,12 @@ div#pivotMenu
     <td><input type="checkbox" id="orgunitBox"></td>
   </tr>
 </table>
-</p>
+</div>
 
-<p>
+<div class="inputSection">
 <input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()">
 <input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
-</p>
+</div>
 
 </div>
 

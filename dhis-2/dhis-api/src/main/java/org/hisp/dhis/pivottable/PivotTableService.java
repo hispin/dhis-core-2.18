@@ -34,9 +34,13 @@ package org.hisp.dhis.pivottable;
  */
 public interface PivotTableService
 {
+    final int DATA_TYPE_INDICATOR = 0;
+    final int DATA_TYPE_DATA_ELEMENT = 1;
+    
     /**
      * Returns a PivotTable object.
      * 
+     * @param dataType the type of data, can be 1 for indicator and 2 for data element.
      * @param groupId the identifier of the IndicatorGroup.
      * @param periodTypeName the identifier of the PeriodType.
      * @param startDate the start date string.
@@ -44,5 +48,5 @@ public interface PivotTableService
      * @param level the OrganisationUnit level.
      * @return a PivotTable object.
      */
-    PivotTable getPivotTable( int groupId, String periodTypeName, String startDate, String endDate, int level );
+    PivotTable getPivotTable( int dataType, int groupId, String periodTypeName, String startDate, String endDate, int level );
 }
