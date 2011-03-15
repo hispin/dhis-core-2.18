@@ -2,13 +2,16 @@ jQuery( document ).ready( function()
 {
 	jQuery( "#name" ).focus();
 
+	var r = getValidationRules();
+
 	var rules = {
 		name : {
 			required : true,
-			minlength : 2
+			rangelength : r.role.name.length
 		},
 		description : {
-			required : true
+			required : true,
+			rangelength : r.role.description.length
 		}
 	};
 
@@ -21,7 +24,8 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", "140" );
+	jQuery( "#name" ).attr( "maxlength", r.role.name.length[1] );
+	jQuery( "#description" ).attr( "maxlength", r.role.description.length[1] );
 
 	/* remote validation */
 	checkValueIsExist( "name", "validateRole.action", {

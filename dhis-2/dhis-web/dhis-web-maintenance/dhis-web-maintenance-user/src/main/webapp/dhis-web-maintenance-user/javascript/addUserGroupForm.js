@@ -1,11 +1,13 @@
 jQuery( document ).ready( function()
 {
+	var r = getValidationRules();
+
 	var rules = {
 		name : {
 			required : true,
-			minlength : 2,
-			alphanumericwithbasicpuncspaces : true,
-			firstletteralphabet : true
+			alphanumericwithbasicpuncspaces : r.userGroup.name.alphanumericwithbasicpuncspaces,
+			firstletteralphabet : r.userGroup.name.firstletteralphabet,
+			rangelength : r.userGroup.name.length
 		},
 		memberValidator : {
 			required : true
@@ -23,7 +25,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", "210" );
+	jQuery( "#name" ).attr( "maxlength", r.userGroup.name.length[1] );
 
 	/* remote validation */
 	checkValueIsExist( "name", "validateUserGroup.action" );

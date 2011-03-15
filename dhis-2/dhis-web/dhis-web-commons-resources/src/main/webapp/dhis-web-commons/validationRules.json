@@ -1,0 +1,36 @@
+{
+    "user": {
+        "name": {
+            "length": [2,140]
+        },
+        "username": {
+            "length": [2,140],
+ 			"firstletteralphabet" : true,
+			"alphanumeric" : true
+        },
+        "password": {
+            "length": [8,35]
+        },
+        "email": {
+            "length": [0,160]
+        },
+        "phone": {
+            "length": [0,80]
+        }
+    },
+    "role": {
+        "name": {
+            "length": [2,140]
+        },
+        "description": {
+            "length": [2,210]
+        }
+    },
+    "userGroup": {
+        "name": {
+            "length": [2,210],
+            "alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+        }
+    }
+}

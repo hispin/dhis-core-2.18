@@ -1,27 +1,33 @@
 jQuery( document ).ready( function()
 {
+	var r = getValidationRules();
+
 	var rules = {
 		rawPassword : {
-			rangelength : [ 8, 35 ],
 			password : true,
-			notequalto : '#username'
+			notequalto : '#username',
+			rangelength : r.user.password.length
 		},
 		retypePassword : {
-			rangelength : [ 8, 35 ],
-			equalTo : '#rawPassword'
+			required : false,
+			equalTo : '#rawPassword',
+			rangelength : r.user.password.length
 		},
 		surname : {
 			required : true,
-			minlength : 2
+			rangelength : r.user.name.length
 		},
 		firstName : {
 			required : true,
-			minlength : 2
+			rangelength : r.user.name.length
 		},
 		email : {
-			email : true
+			email : true,
+			rangelength : r.user.email.length
 		},
-		phoneNumber : {},
+		phoneNumber : {
+			rangelength : r.user.phone.length
+		},
 		roleValidator : {
 			required : true
 		}
