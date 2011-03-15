@@ -30,11 +30,13 @@ package org.hisp.dhis.aggregation;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.common.AggregatedValue;
+
 /**
  * @author Lars Helge Overland
  */
 public class AggregatedIndicatorValue
-    implements Serializable
+    implements AggregatedValue, Serializable
 {
     private int indicatorId;
     
@@ -151,6 +153,12 @@ public class AggregatedIndicatorValue
         this.value = 0.0;
         this.numeratorValue = 0.0;
         this.denominatorValue = 0.0;
+    }
+
+    @Override
+    public int getElementId()
+    {
+        return indicatorId;
     }
     
     // ----------------------------------------------------------------------

@@ -29,12 +29,14 @@ package org.hisp.dhis.completeness;
 
 import java.io.Serializable;
 
+import org.hisp.dhis.common.AggregatedValue;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public class DataSetCompletenessResult
-    implements Serializable
+    implements AggregatedValue, Serializable
 {
     // -------------------------------------------------------------------------
     // Properties 1
@@ -132,6 +134,18 @@ public class DataSetCompletenessResult
         }
         
         return 0.0;
+    }
+
+    @Override
+    public int getElementId()
+    {
+        return dataSetId;
+    }
+
+    @Override
+    public double getValue()
+    {
+        return registrations;
     }
     
     // -------------------------------------------------------------------------
