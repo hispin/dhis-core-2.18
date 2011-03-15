@@ -52,6 +52,7 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.web.api.model.Activity;
 import org.hisp.dhis.web.api.model.ActivityPlan;
 import org.hisp.dhis.web.api.model.ActivityValue;
@@ -211,6 +212,8 @@ public class ActivityReportingServiceImpl
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
         activity.setLate( late );
+        activity.setExpireDate(DateUtils.getDateAfterAddition(instance.getDueDate(), instance.getProgramInstance().getProgram().getMaxDaysAllowedInputData()));
+        
         return activity;
     }
 

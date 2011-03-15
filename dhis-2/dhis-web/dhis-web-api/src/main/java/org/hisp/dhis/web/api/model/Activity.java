@@ -45,6 +45,8 @@ public class Activity
     private Task task;
 
     private Date dueDate;
+    
+    private Date expireDate;
 
     public Beneficiary getBeneficiary()
     {
@@ -87,7 +89,15 @@ public class Activity
         this.late = late;
     }
 
-    @Override
+    public Date getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(Date expireDate) {
+		this.expireDate = expireDate;
+	}
+
+	@Override
     public void serialize( DataOutputStream dout )
         throws IOException
     {
@@ -95,6 +105,7 @@ public class Activity
         this.getBeneficiary().serialize( dout );
         dout.writeBoolean( late );
         dout.writeLong( this.getDueDate().getTime() );
+        dout.writeLong(this.getExpireDate().getTime());
     }
 
     @Override
@@ -109,6 +120,7 @@ public class Activity
 
         this.late = dataInputStream.readBoolean();
         this.dueDate = new Date( dataInputStream.readLong() );
+        this.expireDate = new Date(dataInputStream.readLong());
     }
 
 }
