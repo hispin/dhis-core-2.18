@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/dhis-web-commons/javascripts/feedbackForm.js"></script>
+<script type="text/javascript" src="../dhis-web-commons/javascripts/feedbackForm.js"></script>
 <script type="text/javascript">
 	var i18n_enter_message = '$encoder.jsEscape( $i18n.getString( "enter_message" ) , "'")';
 </script>
