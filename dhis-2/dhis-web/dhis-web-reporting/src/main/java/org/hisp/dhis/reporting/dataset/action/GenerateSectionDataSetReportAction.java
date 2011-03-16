@@ -41,6 +41,8 @@ import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
@@ -66,6 +68,7 @@ public class GenerateSectionDataSetReportAction
     implements Action
 {
     private static final String DEFAULT_HEADER = "Value";
+    private static final String TOTAL_HEADER = "Total";
     
     // -------------------------------------------------------------------------
     // Dependencies
@@ -193,7 +196,8 @@ public class GenerateSectionDataSetReportAction
         throws Exception
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-
+        boolean realTime = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME );
+        
         List<Section> sections = new ArrayList<Section>( selectedDataSet.getSections() );
         Collections.sort( sections, new SectionOrderComparator() );
 
@@ -205,17 +209,32 @@ public class GenerateSectionDataSetReportAction
         {
             Grid grid = new ListGrid().setTitle( section.getName() );
 
+            DataElementCategoryCombo categoryCombo = section.getCategoryCombo();
+            
             // -----------------------------------------------------------------
             // Grid headers
             // -----------------------------------------------------------------
 
             grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
 
-            for ( DataElementCategoryOptionCombo optionCombo : section.getCategoryCombo().getOptionCombos() ) // Value headers
+            for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Value headers
             {
                 grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
             }
 
+            if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total headers
+            {
+                for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
+                {
+                    grid.addHeader( new GridHeader( categoryOption.getName(), false, false ) );
+                }
+            }
+            
+            if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total header
+            {
+                grid.addHeader( new GridHeader( TOTAL_HEADER, false, false ) );
+            }
+            
             // -----------------------------------------------------------------
             // Grid values
             // -----------------------------------------------------------------
@@ -229,7 +248,7 @@ public class GenerateSectionDataSetReportAction
                 grid.addRow();
                 grid.addValue( dataElement.getName() ); // Data element name
 
-                for ( DataElementCategoryOptionCombo optionCombo : section.getCategoryCombo().getOptionCombos() ) // Values
+                for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Values
                 {
                     String value = null;
 
@@ -240,14 +259,35 @@ public class GenerateSectionDataSetReportAction
                     }
                     else
                     {
-                        Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                            .getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit )
-                            : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod, selectedOrgunit );
+                        Double aggregatedValue = realTime ? 
+                            aggregationService.getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) : 
+                            aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod, selectedOrgunit );
 
-                        value = ( aggregatedValue != null ) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
+                        value = aggregatedValue != null ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
                     }
                     
                     grid.addValue( value );
+                }
+                
+                if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total values
+                {
+                    for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
+                    {
+                        Double value = realTime ? 
+                            aggregationService.getAggregatedDataValue( dataElement, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit, categoryOption ) : 
+                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, selectedPeriod, selectedOrgunit );
+
+                        grid.addValue( value != null ? String.valueOf( MathUtils.getRounded( value, 0 ) ) : null );
+                    }
+                }
+                
+                if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total value
+                {
+                    Double value = realTime ?
+                        aggregationService.getAggregatedDataValue( dataElement, null, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) :
+                        aggregatedDataValueService.getAggregatedValue( dataElement, selectedPeriod, selectedOrgunit );
+                        
+                    grid.addValue( value != null ? String.valueOf( MathUtils.getRounded( value, 0 ) ) : null );
                 }
             }
 
