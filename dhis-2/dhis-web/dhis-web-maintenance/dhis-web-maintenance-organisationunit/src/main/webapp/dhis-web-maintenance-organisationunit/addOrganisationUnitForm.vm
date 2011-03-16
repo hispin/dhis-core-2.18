@@ -1,11 +1,6 @@
-<script>
-	jQuery(document).ready(	function(){
-		validation( 'addOrganisationUnitForm' );	
-		
-		checkValueIsExist( "name", "validateOrganisationUnit.action");
-		
-		datePickerValid( 'openingDate', false );			
-	});
+<script type="text/javascript" src="javascript/addOrganisationUnitForm.js"></script>
+<script type="text/javascript">
+	var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
 </script>
 
 <h3>$i18n.getString( "create_new_org_unit" ) #openHelp( "ou_edit" )</h3>
@@ -18,19 +13,19 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="25" style="width:20em" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="shortName" name="shortName" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" style="width:20em" class="{validate:{maxlength:25}}"></td>
+		<td><input type="text" id="code" name="code" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="openingDate" name="openingDate" value="$format.formatDate( $defaultDate )" style="width:20em" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="openingDate" name="openingDate" value="$format.formatDate( $defaultDate )" style="width:20em"></td>
 		<td></td>
 	</tr>	
 	<tr>
@@ -47,39 +42,27 @@
     </tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" style="width:20em" maxlength="255" class="{validate:{url:true}}"/></td>
+        <td><input type="text" id="url" name="url" style="width:20em"></td>
     </tr>
 	<tr>
 		<td><label for="contactPerson">$i18n.getString( "contact_person" ) </label></td>
-		<td colspan="3"><input type="text" id="contactPerson" name="contactPerson" style="width:20em" maxlength="255"/></td>
+		<td colspan="3"><input type="text" id="contactPerson" name="contactPerson" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="address">$i18n.getString( "address" ) </label></td>
-		<td colspan="3"><input type="text" id="address" name="address" style="width:20em" maxlength="255"/></td>
+		<td colspan="3"><input type="text" id="address" name="address" style="width:20em"></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" style="width:20em" maxlength="150" class="{validate:{email:true}}"/></td>
+		<td colspan="3"><input type="text" id="email" name="email" style="width:20em"></td>
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em" maxlength="150"/></td>
+        <td colspan="3"><input type="text" id="phoneNumber" name="phoneNumber" style="width:20em"></td>
     </tr>
 	<tr>
 		<td></td>
 		<td><input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='organisationUnit.action'" style="width:10em"/></td>
 	</tr>
 </table>
-
 </form>
-
-<script type="text/javascript">
-
-	var previousName = '';
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-	var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
-	
-</script>

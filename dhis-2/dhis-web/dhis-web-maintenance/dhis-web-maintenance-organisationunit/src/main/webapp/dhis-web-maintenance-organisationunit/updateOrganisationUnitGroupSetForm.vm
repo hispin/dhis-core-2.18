@@ -1,22 +1,12 @@
-<script>
-	jQuery(document).ready(	function(){
-		validation( 'updateOrganisationUnitGroupSetForm', function( form ){ validateAddOrganisationGroupSet( form ) }, function(){
-			selectAllById( 'selectedGroups' );
-		} );	
-		
-		checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action", {id: $organisationUnitGroupSet.id});	
-
-		changeCompulsory( getFieldValue( 'compulsory' ) );
-	});
-	
+<script type="text/javascript" src="javascript/updateOrganisationUnitGroupSetForm.js"></script>
+<script type="text/javascript">
+	var saving_the_org_unit_group_set_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_group_set_failed" ) , "'" )';	
 </script>
 
 <h3>$i18n.getString( "edit_org_unit_group_set" ) #openHelp( "ou_groupsets_edit" )</h3>
 
 <form id="updateOrganisationUnitGroupSetForm" action="updateOrganisationUnitGroupSet.action" method="post" >
-
 <input type="hidden" id="id" name="id" value="$organisationUnitGroupSet.id"/>
-
 <table>
 	<tr>
 		<th colspan="2">$i18n.getString( "details" )</th>
@@ -24,12 +14,12 @@
 	
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnitGroupSet.name )" style="width:20em" maxlength="230" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnitGroupSet.name )" style="width:20em"></td>
 	</tr>
 	
 	<tr>
 		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnitGroupSet.description )" style="width:20em" maxlength="255" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnitGroupSet.description )" style="width:20em"></td>
 	</tr>
 	
 	<tr>
@@ -98,9 +88,4 @@
 		</td>		
 	</tr>
 </table>
-
 </form>
-
-<script type="text/javascript">
-	var saving_the_org_unit_group_set_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_group_set_failed" ) , "'" )';
-</script>
