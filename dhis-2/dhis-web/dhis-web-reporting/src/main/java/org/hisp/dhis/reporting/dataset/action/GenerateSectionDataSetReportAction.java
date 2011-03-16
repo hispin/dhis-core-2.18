@@ -34,9 +34,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEG
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
@@ -44,7 +42,6 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryOptionComboNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
@@ -102,7 +99,7 @@ public class GenerateSectionDataSetReportAction
     // Output
     // -------------------------------------------------------------------------
     
-    private List<Grid> grids;
+    private List<Grid> grids = new ArrayList<Grid>();
 
     private String reportingUnit;
 
@@ -195,55 +192,33 @@ public class GenerateSectionDataSetReportAction
     public String execute()
         throws Exception
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
-
-        // ---------------------------------------------------------------------
-        // Get option-combo by sectionId
-        // ---------------------------------------------------------------------
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
 
         List<Section> sections = new ArrayList<Section>( selectedDataSet.getSections() );
-
         Collections.sort( sections, new SectionOrderComparator() );
-
-        Map<Integer, List<DataElementCategoryOptionCombo>> optionCombosMap = new HashMap<Integer, List<DataElementCategoryOptionCombo>>();
-
-        for ( Section section : sections )
-        {
-            List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>( section
-                .getDataElements().iterator().next().getCategoryCombo().getOptionCombos() );
-
-            Collections.sort( optionCombos, new DataElementCategoryOptionComboNameComparator() );
-
-            optionCombosMap.put( section.getId(), optionCombos );
-        }
 
         // ---------------------------------------------------------------------
         // Create a grid for each section
         // ---------------------------------------------------------------------
 
-        grids = new ArrayList<Grid>();
-
         for ( Section section : sections )
         {
             Grid grid = new ListGrid().setTitle( section.getName() );
 
-            List<DataElementCategoryOptionCombo> optionComnbos = optionCombosMap.get( section.getId() );
+            // -----------------------------------------------------------------
+            // Grid headers
+            // -----------------------------------------------------------------
 
-            // ---------------------------------------------------------------------
-            // Headers for GRID
-            // ---------------------------------------------------------------------
+            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
 
-            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
-
-            for ( DataElementCategoryOptionCombo optionCombo : optionComnbos )
+            for ( DataElementCategoryOptionCombo optionCombo : section.getCategoryCombo().getOptionCombos() ) // Value headers
             {
                 grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
             }
 
-            // ---------------------------------------------------------------------
-            // Values for GRID
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
+            // Grid values
+            // -----------------------------------------------------------------
 
             List<DataElement> dataElements = new ArrayList<DataElement>( section.getDataElements() );
             Collections.sort( dataElements, dataElementComparator );
@@ -252,28 +227,24 @@ public class GenerateSectionDataSetReportAction
             for ( DataElement dataElement : dataElements )
             {
                 grid.addRow();
-                grid.addValue( dataElement.getName() );
+                grid.addValue( dataElement.getName() ); // Data element name
 
-                for ( DataElementCategoryOptionCombo optionCombo : optionComnbos )
+                for ( DataElementCategoryOptionCombo optionCombo : section.getCategoryCombo().getOptionCombos() ) // Values
                 {
-                    String value = "";
+                    String value = null;
 
                     if ( selectedUnitOnly )
                     {
-                        DataValue dataValue = dataValueService.getDataValue( selectedOrgunit, dataElement,
-                            selectedPeriod, optionCombo );
+                        DataValue dataValue = dataValueService.getDataValue( selectedOrgunit, dataElement, selectedPeriod, optionCombo );
                         value = (dataValue != null) ? dataValue.getValue() : null;
                     }
                     else
                     {
                         Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                            .getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(),
-                                selectedPeriod.getEndDate(), selectedOrgunit )
-                            : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo,
-                                selectedPeriod, selectedOrgunit );
+                            .getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit )
+                            : aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod, selectedOrgunit );
 
-                        value = (aggregatedValue != null) ? String.valueOf( MathUtils.getRounded( aggregatedValue,
-                            0 ) ) : null;
+                        value = ( aggregatedValue != null ) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
                     }
                     
                     grid.addValue( value );
@@ -284,7 +255,6 @@ public class GenerateSectionDataSetReportAction
         }
 
         reportingUnit = selectedOrgunit.getName();
-
         reportingPeriod = format.formatPeriod( selectedPeriod );
 
         return SUCCESS;
