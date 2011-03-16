@@ -102,6 +102,16 @@ public class DataElementCategoryCombo
         
         return categoryOptions;
     }
+
+    public boolean doTotal()
+    {
+        return optionCombos != null && optionCombos.size() > 1;
+    }
+    
+    public boolean doSubTotals()
+    {
+        return categories != null && categories.size() > 1;
+    }
     
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

@@ -30,8 +30,15 @@ package org.hisp.dhis.system.util;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.expression.Operator.equal_to;
+import static org.hisp.dhis.expression.Operator.greater_than;
+import static org.hisp.dhis.expression.Operator.greater_than_or_equal_to;
+import static org.hisp.dhis.expression.Operator.less_than;
+import static org.hisp.dhis.expression.Operator.less_than_or_equal_to;
+import static org.hisp.dhis.expression.Operator.not_equal_to;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
-import static org.hisp.dhis.expression.Operator.*;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -104,5 +111,11 @@ public class MathUtilsTest
         assertFalse( MathUtils.isNumeric( "" ) );
         assertFalse( MathUtils.isNumeric( " " ) );
         assertFalse( MathUtils.isNumeric( null ) );
+    }
+    
+    @Test
+    public void testGetAverage()
+    {
+        assertEquals( 7.5, MathUtils.getAverage( Arrays.asList( 5.0, 5.0, 10.0, 10.0 ) ) );
     }
 }

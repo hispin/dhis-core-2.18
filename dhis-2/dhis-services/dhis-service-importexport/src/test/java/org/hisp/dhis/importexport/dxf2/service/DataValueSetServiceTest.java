@@ -27,7 +27,10 @@ package org.hisp.dhis.importexport.dxf2.service;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +56,6 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
-import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.junit.Ignore;

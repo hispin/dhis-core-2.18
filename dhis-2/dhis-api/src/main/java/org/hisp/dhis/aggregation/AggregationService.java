@@ -30,6 +30,7 @@ package org.hisp.dhis.aggregation;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,6 +58,21 @@ public interface AggregationService
     Double getAggregatedDataValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, Date startDate, Date endDate,
         OrganisationUnit organisationUnit );
 
+    /**
+     * Calculates the aggregated value based on the aggregation operator defined
+     * in the given dataelement.
+     * 
+     * @param dataElement the DataElement to aggregate over.
+     * @param categoryOption the DataElementCategoryOption to aggregate over.
+     * @param startDate the start date of the aggregation period.
+     * @param endDate the end date of the aggregation period.
+     * @param organisationUnit the OrganisationUnit to aggregate over.
+     * @return the aggregated value or null if no values are found.
+     * @throws AggregationStoreException
+     */
+    Double getAggregatedDataValue( DataElement dataElement, Date startDate, Date endDate, OrganisationUnit organisationUnit, 
+        DataElementCategoryOption categoryOption );
+    
     /**
      * Calculates the aggregated value of the given indicator.
      * 

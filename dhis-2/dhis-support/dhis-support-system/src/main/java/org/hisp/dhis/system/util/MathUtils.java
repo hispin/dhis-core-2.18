@@ -29,6 +29,7 @@ package org.hisp.dhis.system.util;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -266,5 +267,36 @@ public class MathUtils
         }
         
         return max;
+    }
+    
+    /**
+     * Returns the average of the given values.
+     * 
+     * @param values the values.
+     * @return the average.
+     */
+    public static Double getAverage( List<Double> values )
+    {
+        Double sum = getSum( values );
+        
+        return sum / values.size();
+    }
+    
+    /**
+     * Returns the sum of the given values.
+     * 
+     * @param values the values.
+     * @return the sum.
+     */
+    public static Double getSum( List<Double> values )
+    {
+        Double sum = 0.0;
+        
+        for ( Double value : values )
+        {
+            sum += value;
+        }
+        
+        return sum;
     }
 }
