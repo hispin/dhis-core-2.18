@@ -30,6 +30,7 @@ package org.hisp.dhis.web.api.model;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,6 +42,8 @@ public class MobileModel
     private ActivityPlan activityPlan;
 
     private List<Program> programs;
+    
+    private Date serverCurrentDate;
 
     private List<DataSet> datasets;
 
@@ -63,8 +66,17 @@ public class MobileModel
     {
         this.programs = programs;
     }
+    
 
-    public List<DataSet> getDatasets()
+    public Date getServerCurrentDate() {
+		return serverCurrentDate;
+	}
+
+	public void setServerCurrentDate(Date serverCurrentDate) {
+		this.serverCurrentDate = serverCurrentDate;
+	}
+
+	public List<DataSet> getDatasets()
     {
         return datasets;
     }
@@ -102,6 +114,8 @@ public class MobileModel
         {
             this.activityPlan.serialize( dout );
         }
+        
+        dout.writeLong(serverCurrentDate.getTime());
 
         // Write DataSets
         if ( datasets == null )
