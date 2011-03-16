@@ -55,13 +55,13 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
         var numColors = this.classification.bins.length;
 		var mapLegendType = choropleth.form.findField('maplegendtype').getValue();
         
-        if (mapLegendType == G.fnl.map_legend_type_automatic) {
+        if (mapLegendType == G.conf.map_legend_type_automatic) {
 			this.colorInterpolation = mapfish.ColorRgb.getColorsArrayByRgbInterpolation(initialColors[0], initialColors[1], numColors);
             for (var i = 0; i < choropleth.imageLegend.length && i < this.colorInterpolation.length; i++) {
                 choropleth.imageLegend[i].color = this.colorInterpolation[i].toHexString();
             }
 		}
-		else if (mapLegendType == G.fnl.map_legend_type_predefined) {
+		else if (mapLegendType == G.conf.map_legend_type_predefined) {
 			this.colorInterpolation = choropleth.colorInterpolation;
             for (var j = 0; j < choropleth.imageLegend.length && j < this.colorInterpolation.length; j++) {
                 choropleth.imageLegend[j].color = this.colorInterpolation[j].toHexString();
