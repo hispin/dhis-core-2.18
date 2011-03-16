@@ -27,17 +27,22 @@ package org.hisp.dhis.aggregation.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.aggregation.impl.cache.AggregationCache;
 import org.hisp.dhis.aggregation.impl.dataelement.AbstractDataElementAggregation;
 import org.hisp.dhis.aggregation.impl.indicator.IndicatorAggregation;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import static org.hisp.dhis.system.util.DateUtils.*;
+import static org.hisp.dhis.system.util.MathUtils.getAverage;
+import static org.hisp.dhis.system.util.MathUtils.getSum;
 
 import static org.hisp.dhis.dataelement.DataElement.*;
 
@@ -114,6 +119,18 @@ public class DefaultAggregationService
         return dataElementAggregation.getAggregatedValue( dataElement, optionCombo, startDate, endDate, organisationUnit );
     }
 
+    public Double getAggregatedDataValue( DataElement dataElement, Date startDate, Date endDate, OrganisationUnit organisationUnit, DataElementCategoryOption categoryOption )
+    {
+        final List<Double> values = new ArrayList<Double>();
+        
+        for ( DataElementCategoryOptionCombo optionCombo : categoryOption.getCategoryOptionCombos() )
+        {
+            values.add( getAggregatedDataValue( dataElement, optionCombo, startDate, endDate, organisationUnit ) );
+        }
+        
+        return dataElement.getAggregationOperator().equals( AGGREGATION_OPERATOR_SUM ) ? getSum( values ) : getAverage( values );
+    }
+    
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
