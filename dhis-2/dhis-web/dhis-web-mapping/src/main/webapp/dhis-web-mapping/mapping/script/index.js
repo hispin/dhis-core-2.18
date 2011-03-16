@@ -22,8 +22,8 @@
             G.user.initOverlays = init.overlays;
             G.user.isAdmin = init.security.isAdmin;
             G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
-            G.vars.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
-				G.conf.map_date_type_fixed : init.userSettings.mapDateType;
+            G.vars.mapDateType.value = G.system.aggregationStrategy == G.fnl.aggregation_strategy_batch ?
+				G.fnl.map_date_type_fixed : init.userSettings.mapDateType;
 
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
@@ -44,7 +44,7 @@
     
     var polygonMapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
+        baseParams: {featureType: G.fnl.map_feature_type_multipolygon},
         root: 'mapViews',
         fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
@@ -61,7 +61,7 @@
     
     var pointMapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapViewsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_point},
+        baseParams: {featureType: G.fnl.map_feature_type_point},
         root: 'mapViews',
         fields: [ 'id', 'name', 'userId', 'featureType', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
             'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
@@ -203,7 +203,7 @@
     
     var predefinedMapLegendSetStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLegendSetsByType' + G.conf.type,
-        baseParams: {type: G.conf.map_legend_type_predefined},
+        baseParams: {type: G.fnl.map_legend_type_predefined},
         root: 'mapLegendSets',
         fields: ['id', 'name', 'indicators', 'dataelements'],
         sortInfo: {field:'name', direction:'ASC'},
@@ -237,7 +237,7 @@
     
 	var polygonOrganisationUnitLevelStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getOrganisationUnitLevelsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
+        baseParams: {featureType: G.fnl.map_feature_type_multipolygon},
         root: 'organisationUnitLevels',
         fields: ['id', 'level', 'name'],
         autoLoad: false,
@@ -282,7 +282,7 @@
     
 	var baseLayerStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
-        baseParams: {type: G.conf.map_layer_type_baselayer},
+        baseParams: {type: G.fnl.map_layer_type_baselayer},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -295,7 +295,7 @@
     
     var overlayStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
-        baseParams: {type: G.conf.map_layer_type_overlay},
+        baseParams: {type: G.fnl.map_layer_type_overlay},
         root: 'mapLayers',
         fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
         sortInfo: {field: 'name', direction: 'ASC'},
@@ -356,7 +356,7 @@
         })
     });
     
-    polygonLayer.layerType = G.conf.map_layer_type_thematic;
+    polygonLayer.layerType = G.fnl.map_layer_type_thematic;
     G.vars.map.addLayer(polygonLayer);
     
     pointLayer = new OpenLayers.Layer.Vector('Point layer', {
@@ -375,7 +375,7 @@
         })
     });
     
-    pointLayer.layerType = G.conf.map_layer_type_thematic;
+    pointLayer.layerType = G.fnl.map_layer_type_thematic;
     G.vars.map.addLayer(pointLayer);
     
     /* Init base layers */
@@ -385,7 +385,7 @@
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 		numZoomLevels: 21
 	});
-	gm_normal.layerType = G.conf.map_layer_type_baselayer;
+	gm_normal.layerType = G.fnl.map_layer_type_baselayer;
 	G.vars.map.addLayer(gm_normal);
 	
 	var gm_hybrid = new OpenLayers.Layer.Google("Google Hybrid", {
@@ -394,11 +394,11 @@
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 		numZoomLevels: 21
 	});
-	gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
+	gm_hybrid.layerType = G.fnl.map_layer_type_baselayer;
 	G.vars.map.addLayer(gm_hybrid);
 	
     var osm = new OpenLayers.Layer.OSM.Osmarender("OpenStreetMap");
-    osm.layerType = G.conf.map_layer_type_baselayer;
+    osm.layerType = G.fnl.map_layer_type_baselayer;
     G.vars.map.addLayer(osm);
     
     /* Init overlays */
@@ -411,7 +411,7 @@
                         G.conf.path_mapping + 'getGeoJsonFromFile.action?name=' + r[i].data.mapSource
                     );
                     
-                    overlay.layerType = G.conf.map_layer_type_overlay;
+                    overlay.layerType = G.fnl.map_layer_type_overlay;
                     
                     overlay.events.register('loadstart', null, G.func.loadStart);
                     overlay.events.register('loadend', null, G.func.loadEnd);
@@ -528,10 +528,10 @@
                         success: function(r) {
                             Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + vn + '</span> ' + G.i18n.registered);
                             G.stores.mapView.load();
-                            if (params.featureType == G.conf.map_feature_type_multipolygon) {
+                            if (params.featureType == G.fnl.map_feature_type_multipolygon) {
 								G.stores.polygonMapView.load();
 							}
-							else if (params.featureType == G.conf.map_feature_type_multipolygon) {
+							else if (params.featureType == G.fnl.map_feature_type_multipolygon) {
 								G.stores.pointMapView.load();
 							}
                             Ext.getCmp('favoritename_tf').reset();
@@ -566,10 +566,10 @@
                                 Ext.getCmp('favorite_cb').clearValue();
                                 
                                 var featureType = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.featureType;
-                                if (featureType == G.conf.map_feature_type_multipolygon) {
+                                if (featureType == G.fnl.map_feature_type_multipolygon) {
                                     G.stores.polygonMapView.load();
                                 }
-                                else if (featureType == G.conf.map_feature_type_point) {
+                                else if (featureType == G.fnl.map_feature_type_point) {
                                     G.stores.pointMapView.load();
                                 }
                                 
@@ -766,7 +766,7 @@
                         document.getElementById('layerField').value = 0;
                     }
                     
-                    var overlays = G.util.getVisibleLayers(G.util.getLayersByType(G.conf.map_layer_type_overlay));
+                    var overlays = G.util.getVisibleLayers(G.util.getLayersByType(G.fnl.map_layer_type_overlay));
                     svg = G.util.mergeSvg(svg, G.util.getOverlaysSvg(overlays));
                     
                     if (!svg) {
@@ -1076,7 +1076,7 @@
                                             Ext.Ajax.request({
                                                 url: G.conf.path_mapping + 'addOrUpdateMapLegendSet.action' + params,
                                                 method: 'POST',
-                                                params: {name: mlsv, type: G.conf.map_legend_type_predefined},
+                                                params: {name: mlsv, type: G.fnl.map_legend_type_predefined},
                                                 success: function(r) {
                                                     Ext.message.msg(true, G.i18n.new_legend_set+' <span class="x-msg-hl">' + mlsv + '</span> ' + G.i18n.was_registered);
                                                     G.stores.predefinedMapLegendSet.load();
@@ -1423,31 +1423,31 @@
                 listeners: {
                     tabchange: function(panel, tab) {
                         if (tab.id == 'help0') {
-							setHelpText(G.conf.thematicMap, tab);
+							setHelpText(G.help.thematicMap, tab);
                             helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help1') {
-							setHelpText(G.conf.favorites, tab);
+							setHelpText(G.help.favorites, tab);
                             helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help2') {
-                            setHelpText(G.conf.legendSets, tab);
+                            setHelpText(G.help.legendSets, tab);
                             helpWindow.setHeight(290);
                         }
 						if (tab.id == 'help3') { 
-                            setHelpText(G.conf.imageExport, tab);
+                            setHelpText(G.help.imageExport, tab);
                             helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help4') {
-                            setHelpText(G.conf.administration, tab);
+                            setHelpText(G.help.administration, tab);
                             helpWindow.setHeight(290);
                         }
                         else if (tab.id == 'help5') {
-                            setHelpText(G.conf.overlayRegistration, tab);
+                            setHelpText(G.help.overlayRegistration, tab);
                             helpWindow.setHeight(530);
                         }
                         else if (tab.id == 'help6') {
-                            setHelpText(G.conf.setup, tab);
+                            setHelpText(G.help.setup, tab);
                             helpWindow.setHeight(530);
                         }
                     }
@@ -1640,7 +1640,7 @@
                             overlay.events.register('loadstart', null, G.func.loadStart);
                             overlay.events.register('loadend', null, G.func.loadEnd);
                             overlay.setOpacity(mlfo);
-                            overlay.layerType = G.conf.map_layer_type_overlay;
+                            overlay.layerType = G.fnl.map_layer_type_overlay;
                             
                             G.vars.map.addLayer(overlay);
                             G.vars.map.getLayersByName(mln)[0].setZIndex(G.conf.defaultLayerZIndex);
@@ -1678,7 +1678,7 @@
                     
                     G.vars.map.getLayersByName(mln)[0].destroy();
                     
-                    G.util.setZIndexByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerZIndex);
+                    G.util.setZIndexByLayerType(G.fnl.map_layer_type_overlay, G.conf.defaultLayerZIndex);
                 }
             }
         ]
@@ -1768,7 +1768,7 @@
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
                         method: 'POST',
-                        params: {name: mlbn, type: G.conf.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
+                        params: {name: mlbn, type: G.fnl.map_layer_type_baselayer, mapSource: mlbu, layer: mlbl, fillColor: '', fillOpacity: 0, strokeColor: '', strokeWidth: 0},
                         success: function(r) {
                             Ext.message.msg(true, G.i18n.baselayer + '<span class="x-msg-hl"> ' + mlbn + '</span> ' + G.i18n.registered);                            
                             G.vars.map.addLayers([
@@ -1845,12 +1845,12 @@
                                 id: 'mapdatetype_cb',
                                 fieldLabel: G.i18n.date_type,
                                 labelSeparator: G.conf.labelseparator,
-                                disabled: G.system.aggregationStrategy === G.conf.aggregation_strategy_batch,
+                                disabled: G.system.aggregationStrategy === G.fnl.aggregation_strategy_batch,
                                 editable: false,
                                 valueField: 'value',
                                 displayField: 'text',
                                 mode: 'local',
-                                value: G.conf.map_date_type_fixed,
+                                value: G.fnl.map_date_type_fixed,
                                 triggerAction: 'all',
                                 width: G.conf.combo_width_fieldset,
                                 minListWidth: G.conf.combo_width_fieldset,
@@ -1858,8 +1858,8 @@
                                     xtype: 'arraystore',
                                     fields: ['value', 'text'],
                                     data: [
-                                        [G.conf.map_date_type_fixed, G.i18n.fixed_periods],
-                                        [G.conf.map_date_type_start_end, G.i18n.start_end_dates]
+                                        [G.fnl.map_date_type_fixed, G.i18n.fixed_periods],
+                                        [G.fnl.map_date_type_start_end, G.i18n.start_end_dates]
                                     ]
                                 },
                                 listeners: {
@@ -2127,14 +2127,14 @@
                                                     var color = Ext.getCmp('highlightcolor_cf').getValue();
                                                     var symbolizer;
                                                     
-                                                    if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_multipolygon_class_name ||
-                                                        feature.geometry.CLASS_NAME == G.conf.map_feature_type_polygon_class_name) {
+                                                    if (feature.geometry.CLASS_NAME == G.fnl.map_feature_type_multipolygon_class_name ||
+                                                        feature.geometry.CLASS_NAME == G.fnl.map_feature_type_polygon_class_name) {
                                                         symbolizer = new OpenLayers.Symbolizer.Polygon({
                                                             'strokeColor': color,
                                                             'fillColor': color
                                                         });
                                                     }
-                                                    else if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
+                                                    else if (feature.geometry.CLASS_NAME == G.fnl.map_feature_type_point_class_name) {
                                                         symbolizer = new OpenLayers.Symbolizer.Point({
                                                             'pointRadius': 7,
                                                             'fillColor': color
@@ -2466,8 +2466,8 @@
             var spanEnd = '</span>';
             mapView.label = c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
                             c2 + mapView.parentOrganisationUnitName + ' ( ' + '<span style="color:#555">' + mapView.organisationUnitLevelName + '</span> )' + spanEnd + 
-                            c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
-                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd;
+                            c2 + (mapView.mapValueType == G.fnl.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
+                            c1 + (mapView.mapDateType == G.fnl.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd;
             
             for (var i = 0; i < this.menu.items.items.length; i++) {
                 if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
@@ -2619,8 +2619,8 @@
         ],
         listeners: {
             'afterrender': function() {
-                G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
-                G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
+                G.util.setOpacityByLayerType(G.fnl.map_layer_type_overlay, G.conf.defaultLayerOpacity);
+                G.util.setOpacityByLayerType(G.fnl.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 
                 var svg = document.getElementsByTagName('svg');
                 
@@ -2630,7 +2630,7 @@
                 }
                 
                 for (var i = 0, j = 2; i < G.vars.map.layers.length; i++) {
-                    if (G.vars.map.layers[i].layerType == G.conf.map_layer_type_overlay) {
+                    if (G.vars.map.layers[i].layerType == G.fnl.map_layer_type_overlay) {
                         G.vars.map.layers[i].svgId = svg[j++].id;
                     }
                 }
