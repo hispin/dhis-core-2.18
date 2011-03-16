@@ -1,10 +1,8 @@
-<script>
-	jQuery(document).ready(	function(){
-		validation( 'updateOrganisationUnitGroupForm', function( form ){ form.submit() } );	
-		
-		checkValueIsExist( "name", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );	
-	
-	});	
+<script type="text/javascript" src="javascript/updateOrganisationUnitGroupForm.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		checkValueIsExist( "name", "validateOrganisationUnitGroup.action", {id:$!organisationUnitGroup.id} );
+	});
 </script>
 
 <h3>$i18n.getString( "edit_org_unit_group" ) #openHelp( "ou_groups_edit" )</h3>
@@ -12,7 +10,10 @@
 <form id="updateOrganisationUnitGroupForm" action="updateOrganisationUnitGroup.action" method="post">
 	<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
 	
-	<p>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em><input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name" maxlength="160" class="{validate:{required:true,minlength:2}}"/></p>
+	<p>$i18n.getString( "name" )
+		<em title="$i18n.getString( "required" )" class="required">*</em>
+		<input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name">
+	</p>
 	<table>
 		<tr>
 			<td>
