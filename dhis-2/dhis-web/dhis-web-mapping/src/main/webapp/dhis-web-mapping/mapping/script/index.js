@@ -2178,10 +2178,10 @@
                         
                         if (layer.features.length) {
                             if (layer.name == 'Polygon layer') {
-                                G.util.toggleFeatureLabels(choropleth);
+                                G.util.labels.toggleFeatureLabels(layer.widget);
                             }
                             else if (layer.name == 'Point layer') {
-                                G.util.toggleFeatureLabels(symbol);
+                                G.util.labels.toggleFeatureLabels(layer.widget);
                             }
                         }
                         else {
@@ -2260,6 +2260,9 @@
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setPolygon();
+            },
+            'afterrender': function() {
+                this.layer.widget = this;
             }
         }
     });
@@ -2281,6 +2284,9 @@
 						G.stores.organisationUnitLevel.load();
 					}
 				}
+            },
+            'afterrender': function() {
+                this.layer.widget = this;
             }
         }
     });
