@@ -195,27 +195,26 @@ G.util = {
                     'cursor': 'pointer'
                 })
             });
-        }
-    },
-
-    toggleFeatureLabels: function(widget) {
-        function activateLabels(scope) {
-            widget.layer.styleMap = scope.labels.getActivatedOpenLayersStyleMap();
-            widget.labels = true;
-        }
-        function deactivateLabels(scope) {
-            widget.layer.styleMap = scope.labels.getDeactivatedOpenLayersStyleMap();
-            widget.labels = false;
-        }
+        },
+        toggleFeatureLabels: function(widget) {
+            function activateLabels() {
+                widget.layer.styleMap = this.getActivatedOpenLayersStyleMap();
+                widget.labels = true;
+            }
+            function deactivateLabels(scope) {
+                widget.layer.styleMap = this.getDeactivatedOpenLayersStyleMap();
+                widget.labels = false;
+            }
+            
+            if (widget.labels) {
+                deactivateLabels.call(this);
+            }
+            else {
+                activateLabels.call(this);
+            }
         
-        if (widget.labels) {
-            deactivateLabels(this);
+            widget.applyValues();
         }
-        else {
-            activateLabels(this);
-        }
-        
-        widget.applyValues();
     },
 
     sortByValue: function(a,b) {
