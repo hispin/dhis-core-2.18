@@ -281,9 +281,9 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     classify: function(method, nbBins, bounds) {
         var mlt = G.vars.activePanel.isPolygon() ?
             choropleth.legend.value : G.vars.activePanel.isPoint() ?
-                symbol.legend.value : G.conf.map_legend_type_automatic;
+                symbol.legend.value : G.fnl.map_legend_type_automatic;
     
-		if (mlt == G.conf.map_legend_type_automatic) {
+		if (mlt == G.fnl.map_legend_type_automatic) {
 			if (method == mapfish.GeoStat.Distribution.CLASSIFY_WITH_BOUNDS) {
 				var str = G.vars.activePanel.isPolygon() ? choropleth.form.findField('bounds').getValue() : symbol.form.findField('bounds').getValue();
 				
@@ -325,7 +325,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
 				bounds.push(this.maxVal);
 			}
 		}
-		else if (mlt == G.conf.map_legend_type_predefined) {
+		else if (mlt == G.fnl.map_legend_type_predefined) {
 			bounds = G.vars.activePanel.isPolygon() ? choropleth.bounds : symbol.bounds;
 
 			if (bounds[0] > this.minVal) {

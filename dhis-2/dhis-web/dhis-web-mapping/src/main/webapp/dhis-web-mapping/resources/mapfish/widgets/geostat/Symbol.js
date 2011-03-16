@@ -87,7 +87,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.createSelectFeatures();
 
         if (G.vars.parameter.id) {
-			if (G.vars.parameter.mapView.featureType == G.conf.map_feature_type_point) {
+			if (G.vars.parameter.mapView.featureType == G.fnl.map_feature_type_point) {
 				this.mapView = G.vars.parameter.mapView;
 				this.updateValues = true;
 				this.legend = {
@@ -146,8 +146,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     initProperties: function() {
         this.legend = {
-            value: G.conf.map_legend_type_automatic,
-            method: G.conf.classify_by_equal_intervals,
+            value: G.fnl.map_legend_type_automatic,
+            method: G.fnl.classify_by_equal_intervals,
             classes: 5
         };
         
@@ -194,18 +194,18 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         };
         
         this.valueType = {
-            value: G.conf.map_value_type_indicator,
+            value: G.fnl.map_value_type_indicator,
             setIndicator: function() {
-                this.value = G.conf.map_value_type_indicator;
+                this.value = G.fnl.map_value_type_indicator;
             },
             setDatElement: function() {
-                this.value = G.conf.map_value_type_dataelement;
+                this.value = G.fnl.map_value_type_dataelement;
             },
             isIndicator: function() {
-                return this.value == G.conf.map_value_type_indicator;
+                return this.value == G.fnl.map_value_type_indicator;
             },
             isDataElement: function() {
-                return this.value == G.conf.map_value_type_dataelement;
+                return this.value == G.fnl.map_value_type_dataelement;
             }
         };
     },
@@ -264,12 +264,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             mode: 'local',
             triggerAction: 'all',
             width: G.conf.combo_width,
-			value: G.conf.map_value_type_indicator,
+			value: G.fnl.map_value_type_indicator,
             store: new Ext.data.ArrayStore({
                 fields: ['id', 'name'],
                 data: [
-                    [G.conf.map_value_type_indicator, 'Indicator'],
-                    [G.conf.map_value_type_dataelement, 'Data element']
+                    [G.fnl.map_value_type_indicator, 'Indicator'],
+                    [G.fnl.map_value_type_dataelement, 'Data element']
                 ]
             }),
 			listeners: {
@@ -347,7 +347,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                             success: function(r) {
                                 var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
                                 if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legend_type_predefined;
+                                    this.legend.value = G.fnl.map_legend_type_predefined;
                                     this.prepareMapViewLegend();
                                     
                                     function load() {
@@ -365,7 +365,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                     }
                                 }
                                 else {
-                                    this.legend.value = G.conf.map_legend_type_automatic;
+                                    this.legend.value = G.fnl.map_legend_type_automatic;
                                     this.prepareMapViewLegend();
                                     this.classify(false, cb.keepPosition);
                                     G.util.setKeepPosition(cb);
@@ -439,7 +439,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                             success: function(r) {
                                 var mapLegendSet = Ext.util.JSON.decode(r.responseText).mapLegendSet[0];
                                 if (mapLegendSet.id) {
-                                    this.legend.value = G.conf.map_legend_type_predefined;
+                                    this.legend.value = G.fnl.map_legend_type_predefined;
                                     this.prepareMapViewLegend();
                                     
                                     function load() {
@@ -457,7 +457,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                                     }
                                 }
                                 else {
-                                    this.legend.value = G.conf.map_legend_type_automatic;
+                                    this.legend.value = G.fnl.map_legend_type_automatic;
                                     this.prepareMapViewLegend();
                                     this.classify(false, cb.keepPosition);
                                     G.util.setKeepPosition(cb);
@@ -635,24 +635,24 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             store: new Ext.data.ArrayStore({
                 fields: ['value', 'text'],
                 data: [
-					[G.conf.map_legend_type_automatic, G.i18n.automatic],
-					[G.conf.map_legend_type_predefined, G.i18n.predefined]
+					[G.fnl.map_legend_type_automatic, G.i18n.automatic],
+					[G.fnl.map_legend_type_predefined, G.i18n.predefined]
 				]
             }),
             listeners: {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        if (cb.getValue() == G.conf.map_legend_type_predefined && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legend_type_predefined;
+                        if (cb.getValue() == G.fnl.map_legend_type_predefined && cb.getValue() != this.legend.value) {
+							this.legend.value = G.fnl.map_legend_type_predefined;
                             this.prepareMapViewLegend();
 							
 							if (this.form.findField('maplegendset').getValue()) {
                                 this.applyPredefinedLegend();
 							}
                         }
-                        else if (cb.getValue() == G.conf.map_legend_type_automatic && cb.getValue() != this.legend.value) {
-							this.legend.value = G.conf.map_legend_type_automatic;
+                        else if (cb.getValue() == G.fnl.map_legend_type_automatic && cb.getValue() != this.legend.value) {
+							this.legend.value = G.fnl.map_legend_type_automatic;
 							this.prepareMapViewLegend();                            
                             this.classify(false, true);
                         }
@@ -712,8 +712,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     scope: this,
                     fn: function(cb) {
                         this.form.findField('mapview').clearValue();
-                        if (cb.getValue() == G.conf.classify_with_bounds && cb.getValue() != this.legend.method) {
-							this.legend.method = G.conf.classify_with_bounds;
+                        if (cb.getValue() == G.fnl.classify_with_bounds && cb.getValue() != this.legend.method) {
+							this.legend.method = G.fnl.classify_with_bounds;
                             this.prepareMapViewLegend();
                         }
                         else if (cb.getValue() != this.legend.method) {
@@ -1092,13 +1092,13 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     prepareMapViewLegend: function() {
         this.form.findField('maplegendtype').setValue(this.legend.value);
         
-        if (this.legend.value == G.conf.map_legend_type_automatic) {
+        if (this.legend.value == G.fnl.map_legend_type_automatic) {
             this.form.findField('method').showField();
             this.form.findField('startcolor').showField();
             this.form.findField('endcolor').showField();
             this.form.findField('maplegendset').hideField();
             
-            if (this.legend.method == G.conf.classify_with_bounds) {
+            if (this.legend.method == G.fnl.classify_with_bounds) {
                 this.form.findField('classes').hideField();
                 this.form.findField('bounds').showField();
             }
@@ -1107,7 +1107,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 this.form.findField('bounds').hideField();
             }                
         }
-        else if (this.legend.value == G.conf.map_legend_type_predefined) {
+        else if (this.legend.value == G.fnl.map_legend_type_predefined) {
             this.form.findField('method').hideField();
             this.form.findField('classes').hideField();
             this.form.findField('bounds').hideField();
@@ -1182,12 +1182,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.form.findField('radiuslow').setValue(this.mapView.radiusLow);
         this.form.findField('radiushigh').setValue(this.mapView.radiusHigh);
 
-        if (this.legend.value == G.conf.map_legend_type_automatic) {
+        if (this.legend.value == G.fnl.map_legend_type_automatic) {
             this.form.findField('method').setValue(this.mapView.method);
             this.form.findField('startcolor').setValue(this.mapView.colorLow);
             this.form.findField('endcolor').setValue(this.mapView.colorHigh);
 
-            if (this.legend.method == G.conf.classify_with_bounds) {
+            if (this.legend.method == G.fnl.classify_with_bounds) {
                 this.form.findField('bounds').setValue(this.mapView.bounds);
             }
             else {
@@ -1196,7 +1196,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 
             this.setMapViewMap();
         }
-        else if (this.legend.value == G.conf.map_legend_type_predefined) {
+        else if (this.legend.value == G.fnl.map_legend_type_predefined) {
             if (G.stores.predefinedMapLegendSet.isLoaded) {
                 predefinedMapLegendSetStoreCallback.call(this);
             }
@@ -1220,7 +1220,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
 	
 	applyPredefinedLegend: function(isMapView) {
-        this.legend.value = G.conf.map_legend_type_predefined;
+        this.legend.value = G.fnl.map_legend_type_predefined;
 		var mls = this.form.findField('maplegendset').getValue();
 		var bounds = [];
 		Ext.Ajax.request({
@@ -1260,7 +1260,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     formValidation: {
         validateForm: function(exception) {
             var scope = symbol;
-            if (scope.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_indicator) {
+            if (scope.form.findField('mapvaluetype').getValue() == G.fnl.map_value_type_indicator) {
                 if (!scope.form.findField('indicator').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
@@ -1268,7 +1268,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     return false;
                 }
             }
-            else if (scope.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_dataelement) {
+            else if (scope.form.findField('mapvaluetype').getValue() == G.fnl.map_value_type_dataelement) {
                 if (!scope.form.findField('dataelement').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
@@ -1301,8 +1301,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 return false;
             }
 
-            if (scope.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_automatic) {
-                if (scope.form.findField('method').getValue() == G.conf.classify_with_bounds) {
+            if (scope.form.findField('maplegendtype').getValue() == G.fnl.map_legend_type_automatic) {
+                if (scope.form.findField('method').getValue() == G.fnl.classify_with_bounds) {
                     if (!scope.form.findField('bounds').getValue()) {
                         if (exception) {
                             Ext.message.msg(false, G.i18n.form_is_not_complete);
@@ -1311,7 +1311,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     }
                 }
             }
-            else if (scope.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_predefined) {
+            else if (scope.form.findField('maplegendtype').getValue() == G.fnl.map_legend_type_predefined) {
                 if (!scope.form.findField('maplegendset').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
@@ -1356,7 +1356,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     formValues: {
 		getAllValues: function() {
 			return {
-				featureType: G.conf.map_feature_type_point,
+				featureType: G.fnl.map_feature_type_point,
 				mapValueType: this.form.findField('mapvaluetype').getValue(),
                 indicatorGroupId: this.valueType.isIndicator() ? this.form.findField('indicatorgroup').getValue() : null,
                 indicatorId: this.valueType.isIndicator() ? this.form.findField('indicator').getValue() : null,
@@ -1376,12 +1376,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 				organisationUnitLevel: this.organisationUnitSelection.level.level,
                 organisationUnitLevelName: this.organisationUnitSelection.level.name,
 				mapLegendType: this.form.findField('maplegendtype').getValue(),
-				method: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
-				classes: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
-				bounds: this.legend.value == G.conf.map_legend_type_automatic && this.legend.method == G.conf.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
-				colorLow: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
-				colorHigh: this.legend.value == G.conf.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
-                mapLegendSetId: this.legend.value == G.conf.map_legend_type_predefined ? this.form.findField('maplegendset').getValue() : null,
+				method: this.legend.value == G.fnl.map_legend_type_automatic ? this.form.findField('method').getValue() : null,
+				classes: this.legend.value == G.fnl.map_legend_type_automatic ? this.form.findField('classes').getValue() : null,
+				bounds: this.legend.value == G.fnl.map_legend_type_automatic && this.legend.method == G.fnl.classify_with_bounds ? this.form.findField('bounds').getValue() : null,
+				colorLow: this.legend.value == G.fnl.map_legend_type_automatic ? this.form.findField('startcolor').getValue() : null,
+				colorHigh: this.legend.value == G.fnl.map_legend_type_automatic ? this.form.findField('endcolor').getValue() : null,
+                mapLegendSetId: this.legend.value == G.fnl.map_legend_type_predefined ? this.form.findField('maplegendset').getValue() : null,
 				radiusLow: this.form.findField('radiuslow').getValue(),
 				radiusHigh: this.form.findField('radiushigh').getValue(),
 				longitude: G.vars.map.getCenter().lon,
@@ -1392,7 +1392,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         
         getImageExportValues: function() {
 			return {
-				mapValueTypeValue: this.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_indicator ?
+				mapValueTypeValue: this.form.findField('mapvaluetype').getValue() == G.fnl.map_value_type_indicator ?
 					this.form.findField('indicator').getRawValue() : this.form.findField('dataelement').getRawValue(),
 				dateValue: G.vars.mapDateType.isFixed() ?
 					this.form.findField('period').getRawValue() : new Date(this.form.findField('startdate').getRawValue()).format('Y M j') + ' - ' + new Date(this.form.findField('enddate').getRawValue()).format('Y M j')
