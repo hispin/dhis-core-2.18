@@ -27,6 +27,8 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -126,7 +128,7 @@ public class OrgUnitResource
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
         mobileModel.setPrograms( programService.getPrograms( getUnit(), locale ) );
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale ) );
-
+        mobileModel.setServerCurrentDate(new Date());
         return mobileModel;
     }
 
@@ -173,6 +175,7 @@ public class OrgUnitResource
         MobileModel model = new MobileModel();
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
         model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
+        model.setServerCurrentDate(new Date());
         return model;
     }
 
