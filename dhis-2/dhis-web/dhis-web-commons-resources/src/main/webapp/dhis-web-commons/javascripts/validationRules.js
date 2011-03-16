@@ -1,4 +1,5 @@
-{
+
+var validationRules = {
     "user": {
         "name": {
             "length": [2,140]

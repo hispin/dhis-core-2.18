@@ -1092,17 +1092,6 @@ function validation2(formId, submitHandler, kwargs)
  * @return A dictionary containing the default validation rules.
  */
 function getValidationRules() {
-	var validationRules;
-
-	jQuery.ajax({
-		'url': '../dhis-web-commons/validationRules.json',
-		async: false,
-		cache: false,
-		success: function(data) {
-			validationRules = jQuery.parseJSON(data);
-		}
-	});
-
 	return validationRules;
 }
 
