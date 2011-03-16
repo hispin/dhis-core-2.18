@@ -290,7 +290,7 @@
     <action name="generateCustomDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateCustomDataSetReportAction">
       <result name="success" type="velocity">/popup.vm</result>
       <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/previewCustomDataSetReportForm.vm</param>
+      <param name="page">/dhis-web-reporting/renderCustomDataSetReportForm.vm</param>
       <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>  
@@ -298,7 +298,7 @@
     <action name="generateSectionDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateSectionDataSetReportAction">
       <result name="success" type="velocity">/popup.vm</result>
       <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/previewSectionDataSetReportForm.vm</param>
+      <param name="page">/dhis-web-reporting/renderSectionDataSetReportForm.vm</param>
       <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action> 
@@ -306,7 +306,7 @@
     <action name="generateDefaultDataSetReport" class="org.hisp.dhis.reporting.dataset.action.GenerateDefaultDataSetReportAction">
       <result name="success" type="velocity">/popup.vm</result>
       <result name="error" type="chain">showDataSetReportForm</result>
-      <param name="page">/dhis-web-reporting/previewDefaultDataSetReportForm.vm</param>
+      <param name="page">/dhis-web-reporting/renderDefaultDataSetReportForm.vm</param>
       <param name="javascripts">../dhis-web-commons/util/jquery.jqprint.0.3.js</param>
       <interceptor-ref name="organisationUnitTreeStack"/>
     </action>   
