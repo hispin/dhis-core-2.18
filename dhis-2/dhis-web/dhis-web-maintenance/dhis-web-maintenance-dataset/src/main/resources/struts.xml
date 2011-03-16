@@ -305,60 +305,6 @@
 	  class="org.hisp.dhis.dataset.action.compulsory.SaveCompulsoryDataElementsAction">
 	  <result name="success" type="redirect">dataSet.action</result>
 	</action>
-	
-	<!-- Editor -->
-	
-	<action name="showAssignMultiDataSetForOrgunitForm"
-	  class="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction">
-	  <result name="success" type="velocity">/main.vm</result>
-	  <param name="page">/dhis-web-maintenance-dataset/showAssignMultiDataSetForm.vm</param>
-	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
-	  <param name="javascripts">../dhis-web-commons/oust/oust.js</param>
-	</action>
-	
-	<action name="saveAssignMultiDataSetForOrgunit"
-	  class="org.hisp.dhis.dataset.action.editor.SaveAssignMultiDataSetForOrgunitAction">
-	  <result name="success" type="redirect">index.action</result>
-	</action>
-	
-    <action name="periodTypeListEditor"
-      class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responsePeriodTypeList.vm</result>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-	
-	<action name="addDataSetEditor"
-      class="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction">
-	  <result name="success" type="chain">showAssignMultiDataSetForOrgunitForm</result>
-      <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-	
-	<action name="validateRenameDataSetEditor"
-      class="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-		
-	<action name="renameDataSetEditor"
-      class="org.hisp.dhis.dataset.action.editor.RenameDataSetEditorAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <result name="error" type="velocity-xml">/dhis-web-maintenance-dataset/responseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
-	<action name="deleteDataSetEditor"
-      class="org.hisp.dhis.dataset.action.DelDataSetAction">
-      <result name="success" type="velocity-xml">/dhis-web-maintenance-dataset/responseSuccess.vm</result>
-      <param name="requiredAuthorities">F_DATASET_DELETE</param>
-    </action>
-	
-	<action name="mergeAssignedOrgunits"
-		class="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction">
-		<result name="success" type="velocity-xml">
-			/dhis-web-commons/ouwt/responseSelect.vm</result>
-		<param name="onExceptionReturn">plainTextError</param>
-	</action>
 
   </package>
 </struts>

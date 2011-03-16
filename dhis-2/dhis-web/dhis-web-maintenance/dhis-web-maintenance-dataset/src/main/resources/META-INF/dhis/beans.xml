@@ -404,72 +404,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<!-- Editor -->
-	
-	<bean
-		id="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
-		class="org.hisp.dhis.dataset.action.editor.ShowAssignMultiDataSetForOrgunitAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-		<property name="organisationUnitGroupService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitGroupService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.dataset.action.editor.SaveAssignMultiDataSetForOrgunitAction"
-		class="org.hisp.dhis.dataset.action.editor.SaveAssignMultiDataSetForOrgunitAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-		<property name="organisationUnitService">
-			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction"
-		class="org.hisp.dhis.dataset.action.editor.AddDataSetEditorAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="periodService">
-			<ref bean="org.hisp.dhis.period.PeriodService"/>
-		</property>
-		<property name="userService">
-			<ref bean="org.hisp.dhis.user.UserService"/>
-		</property>
-		<property name="currentUserService">
-			<ref bean="org.hisp.dhis.user.CurrentUserService"/>
-		</property>
-	</bean>
-	
-	<bean
-		id="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction"
-		class="org.hisp.dhis.dataset.action.editor.ValidateRenameDataSetEditorAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-	</bean>
-	
-	<bean id="org.hisp.dhis.dataset.action.editor.RenameDataSetEditorAction"
-		class="org.hisp.dhis.dataset.action.editor.RenameDataSetEditorAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-	</bean>
-	
 	<bean id="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection"
 		class="org.hisp.dhis.dataset.action.section.DataElementListFilteredByGroupForSection"
 		scope="prototype">
@@ -484,23 +418,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
-	<bean id="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction"
-		class="org.hisp.dhis.dataset.action.editor.MergeAssignedOrgunitsAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>
-		<property name="selectionTreeManager">
-			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
-		</property>
-	</bean>
-	<!-- 
-	<bean id="org.hisp.dhis.dataset.action.dataentryform.ExportDataEntryFormAction"
-		class="org.hisp.dhis.dataset.action.dataentryform.ExportDataEntryFormAction"
-		scope="prototype">
-		<property name="dataSetService">
-			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
-		</property>		
-	</bean>
-	-->
 </beans>
