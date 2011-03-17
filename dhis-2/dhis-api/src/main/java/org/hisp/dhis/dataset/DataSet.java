@@ -286,6 +286,9 @@ public class DataSet
         return mobile;
     }
 
+    /**
+     * Use getSources() for persistence operations.
+     */
     public Set<OrganisationUnit> getOrganisationUnits()
     {
         Set<OrganisationUnit> result = new HashSet<OrganisationUnit>();
