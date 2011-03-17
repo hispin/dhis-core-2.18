@@ -1,26 +1,29 @@
-<script>
-var isGenerate = true;
-//-----------------------------------------------------------------------
-//init jQuery validation for reportAssociation
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#minMaxGeneratingForm").validate({
-					 meta:"validate"
-					,errorElement:"td"
-					,submitHandler: function(form)
-						{
-							if(isGenerate){
-								generateMinMaxValue();
-							}else{
-								removeMinMaxValue();
-							}
-						}
-				});
-			}
-	);
+<script type="text/javascript">
+	var isGenerate = true;
+	var numberOfSelects = 0;
 
+	//-----------------------------------------------------------------------
+	//init jQuery validation for reportAssociation
+	//-----------------------------------------------------------------------
+	jQuery(document).ready(function() {
+		jQuery("#minMaxGeneratingForm").validate({
+			 meta:"validate"
+			,errorElement:"td"
+			,submitHandler: function(form)
+				{
+					if(isGenerate){
+						generateMinMaxValue();
+					}else{
+						removeMinMaxValue();
+					}
+				}
+		});
+	});
+
+	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
+	var levelMustBeInt = '$encoder.jsEncode( $i18n.getString( "level_must_be_int" ) )';
+	var i18n_not_choose_dataset = '$encoder.jsEncode( $i18n.getString( "not_choose_dataset" ) )';
+	var i18n_not_choose_organisation = '$encoder.jsEncode( $i18n.getString( "not_choose_organisation" ) )';
 </script>
 
 <h3>$i18n.getString( "min_max_value_generation" )</h3>
@@ -49,13 +52,4 @@ var isGenerate = true;
 </table>
 </form>
 
-<script type="text/javascript">
-
-	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
-	var levelMustBeInt = '$encoder.jsEncode( $i18n.getString( "level_must_be_int" ) )';
-	var i18n_not_choose_dataset = '$encoder.jsEncode( $i18n.getString( "not_choose_dataset" ) )';
-	var i18n_not_choose_organisation = '$encoder.jsEncode( $i18n.getString( "not_choose_organisation" ) )';
-	var numberOfSelects = 0;
- 
-</script>
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>

@@ -1,3 +1,7 @@
+<script type="text/javascript">
+	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_sqlview" ) , "'")';
+</script>
 
 <h3>$encoder.htmlEncode( $i18n.getString( "sql_view_management" ) ) #openHelp( "sqlView" )</h3>
 <table>
@@ -65,8 +69,3 @@
 		</td>
 	</tr>
 </table>
-
-<script type="text/javascript">
-	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ) , "'")';
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_sqlview" ) , "'")';
-</script>

@@ -1,11 +1,11 @@
-<script>
-jQuery(document).ready(function() {
-
-	validation( 'addSqlViewForm', function() {
-		validateAddUpdateSqlView( 'add' );
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		validation( 'addSqlViewForm', function() {
+			validateAddUpdateSqlView( 'add' );
+		});
 	});
-});
 </script>
+
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <h3>$encoder.htmlEncode( $i18n.getString( "add_new_sql_view" ) )</h3>

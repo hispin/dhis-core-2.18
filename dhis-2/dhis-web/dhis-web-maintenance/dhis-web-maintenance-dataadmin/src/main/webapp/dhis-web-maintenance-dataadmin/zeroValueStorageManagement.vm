@@ -1,3 +1,20 @@
+<script type="text/javascript">
+	function getSaveZeroDataElements( value )
+	{		
+		jQuery.postJSON('../dhis-web-commons-ajax-json/getDataElements.action', {id: value },
+		function( json ) {
+			var ignoreZeroValueDataElements = jQuery("#ignoreZeroValueDataElements");
+			ignoreZeroValueDataElements.empty();
+			jQuery.each( json.dataElements, function(i, item) {
+				if( item.zeroIsSignificant == 'false' )
+				{
+					ignoreZeroValueDataElements.append( "<option value='" + item.id + "'>" + item.name + "</option>");
+				}
+			});
+		});
+	}	
+</script>
+
 <h3>$i18n.getString( "zero_storage_management" ) #openHelp( "zeroValueStorage" )</h3>
 <br/>
 <form id="ZeroDataValueManagement" method="POST" action="updateZeroIsSignificantForDataElements.action" onsubmit="selectAllById( 'zeroDataValueElements' )">
@@ -58,21 +75,3 @@
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'" style="width:100px"/>
 </p>
 </form>
-<script>
-	function getSaveZeroDataElements( value )
-	{		
-		jQuery.postJSON('../dhis-web-commons-ajax-json/getDataElements.action'
-		, {id: value },
-		function( json ){
-			var ignoreZeroValueDataElements = jQuery("#ignoreZeroValueDataElements");
-			ignoreZeroValueDataElements.empty();
-			jQuery.each( json.dataElements, function(i, item){
-				if( item.zeroIsSignificant == 'false' )
-				{
-					ignoreZeroValueDataElements.append( "<option value='" + item.id + "'>" + item.name + "</option>");
-				}
-			});
-		});
-	}	
-	
-</script>

@@ -1,29 +1,14 @@
-<h2>Data Administration</h2>
-<ul>
-    <li>Data Administration</li>
-    <ul>
-      <li>
-            Data Locking
-        </li>
-    </ul>
-</ul>
-<div style=" float:right; font-size:8pt; cursor:pointer; margin-top:-15px; ">
-        <a href="index.action">
-		<img src="images/goback.png" width="36" height="30" alt="$i18n.getString( 'go_back' )"/></a>
-</div>
-
-<br/><br/>
-
-#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-
 <!-- The script that registeres selctions in the orgunit tree -->
 <script type="text/javascript">
+	jQuery(document).ready(function() {
+		selection.setListenerFunction( orgUnitHasBeenSelected );
+	});
 
-function orgUnitHasBeenSelected( orgUnitIds )
-{
-	
-	getSelectedOrgUnit( orgUnitIds );
-}
+	function orgUnitHasBeenSelected( orgUnitIds )
+	{
+		
+		getSelectedOrgUnit( orgUnitIds );
+	}
 	
 	function getSelectedOrgUnit( orgUnitIds )
 	{
@@ -95,7 +80,22 @@ function orgUnitHasBeenSelected( orgUnitIds )
             document.getElementById( "organisationUnitIds" ).disabled=true;
         }
 	}
-	
-
-selection.setListenerFunction( orgUnitHasBeenSelected );
 </script>
+
+<h2>Data Administration</h2>
+<ul>
+    <li>Data Administration</li>
+    <ul>
+      <li>
+            Data Locking
+        </li>
+    </ul>
+</ul>
+<div style=" float:right; font-size:8pt; cursor:pointer; margin-top:-15px; ">
+        <a href="index.action">
+		<img src="images/goback.png" width="36" height="30" alt="$i18n.getString( 'go_back' )"/></a>
+</div>
+
+<br/><br/>
+
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
