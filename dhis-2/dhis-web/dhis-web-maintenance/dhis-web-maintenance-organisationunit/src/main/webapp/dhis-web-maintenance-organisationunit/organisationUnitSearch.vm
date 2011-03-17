@@ -8,6 +8,9 @@
 <h3>$i18n.getString( "org_unit_search_management" )</h3>
 
 <form action="organisationUnitSearch.action" method="post">
+
+<input type="hidden" name="search" value="true">
+
 <table>
 <tr>
 <th>$i18n.getString( "criteria" )</th>
@@ -61,7 +64,7 @@
 
 #if ( $organisationUnits )
 
-<h4>$i18n.getString( "found" ) $organisationUnits.size() $i18n.getString( "organisation_units" )</h4>
+<h4>$i18n.getString( "found" ) $organisationUnits.size() $i18n.getString( "organisation_units" ) #if( $limited )($i18n.getString( "limited" ))#end</h4>
 
 <table class="listTable" style="width:90%">
 <thead>

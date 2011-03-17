@@ -83,7 +83,7 @@ public interface OrganisationUnitStore
      */
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
     
-    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups );
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit );
     
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy

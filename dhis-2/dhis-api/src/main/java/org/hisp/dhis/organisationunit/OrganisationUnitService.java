@@ -44,6 +44,8 @@ public interface OrganisationUnitService
 {
     String ID = OrganisationUnitService.class.getName();
 
+    final int MAX_LIMIT = 500;
+    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
@@ -233,7 +235,7 @@ public interface OrganisationUnitService
      * @param groups the organisation unit groups.
      * @return a collection of organisation units.
      */
-    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups );
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit );
 
     /**
      * Get the units which name are like the given name, are members of the
@@ -245,7 +247,7 @@ public interface OrganisationUnitService
      * @param groups the organisation unit groups.
      * @return a collection of organisation units.
      */
-    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent );
+    Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit );
     
     /**
      * Get the units in tree by the collection of given roots
