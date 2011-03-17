@@ -25,7 +25,7 @@
             #set ( $rightFormula = $rightsideFormulaMap.get( $id ) )
             <tr>
                 <td style="height:32px"#alternate( $mark )>$encoder.htmlEncode( $result.validationRule.name )</td>
-                <td#alternate( $mark )>$!encoder.htmlEncode( $leftFormula ) $i18n.getString( $result.validationRule.operator.mathematicalOperator ) $!encoder.htmlEncode( $rightFormula )</td>
+                <td#alternate( $mark )>$!encoder.htmlEncode( $leftFormula ) $encoder.htmlEncode( $i18n.getString( $result.validationRule.operator.mathematicalOperator ) ) $!encoder.htmlEncode( $rightFormula )</td>
                 <td#alternate( $mark )>$!encoder.htmlEncode( $result.validationRule.leftSide.description )</td>
                 <td#alternate( $mark )>$result.leftsideValue</td>
                 <td#alternate( $mark )>$encoder.htmlEncode( $i18n.getString( $result.validationRule.operator.mathematicalOperator ) )</td>
