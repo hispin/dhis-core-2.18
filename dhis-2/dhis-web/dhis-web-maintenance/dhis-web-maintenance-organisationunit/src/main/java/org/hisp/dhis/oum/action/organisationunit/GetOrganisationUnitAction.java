@@ -27,6 +27,13 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -48,6 +55,13 @@ public class GetOrganisationUnitAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -75,6 +89,20 @@ public class GetOrganisationUnitAction
         return numberOfChildren;
     }
 
+    private List<DataSet> availableDataSets;
+    
+    public List<DataSet> getAvailableDataSets()
+    {
+        return availableDataSets;
+    }
+
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -86,6 +114,14 @@ public class GetOrganisationUnitAction
 
         numberOfChildren = organisationUnit.getChildren().size();
 
+        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );        
+        availableDataSets.removeAll( organisationUnit.getDataSets() );
+        
+        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+
+        Collections.sort( availableDataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, new DataSetNameComparator() );
+        
         return SUCCESS;
     }
 }

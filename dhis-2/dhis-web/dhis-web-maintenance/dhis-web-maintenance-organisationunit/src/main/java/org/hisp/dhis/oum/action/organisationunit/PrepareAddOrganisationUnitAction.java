@@ -27,23 +27,43 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+import org.hisp.dhis.period.Cal;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Nguyen Dang Quang
- * @version $Id: PrepareAddOrganisationUnitAction.java 1898 2006-09-22 12:06:56Z torgeilo $
  */
-@SuppressWarnings("serial")
 public class PrepareAddOrganisationUnitAction
     extends ActionSupport
 {
+    private DataSetService dataSetService;
+    
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private Date defaultDate;
 
     public Date getDefaultDate()
     {
         return defaultDate;
+    }
+    
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
     }
 
     // -------------------------------------------------------------------------
@@ -52,11 +72,11 @@ public class PrepareAddOrganisationUnitAction
 
     public String execute()
     {
-        Calendar cal = Calendar.getInstance();
-        cal.set( Calendar.YEAR, 1990 );
-        cal.set( Calendar.MONTH, 0 );
-        cal.set( Calendar.DATE, 1 );
-        this.defaultDate = cal.getTime();
+        defaultDate = new Cal().set( 1900, 1, 1 ).time();
+        
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
+        Collections.sort( dataSets, new DataSetNameComparator() );
         
         return SUCCESS;
     }

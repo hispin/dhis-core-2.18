@@ -29,8 +29,12 @@ package org.hisp.dhis.oum.action.organisationunit;
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -70,7 +74,14 @@ public class AddOrganisationUnitAction
     {
         this.selectionManager = selectionManager;
     }
+    
+    private DataSetService dataSetService;
 
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -158,6 +169,13 @@ public class AddOrganisationUnitAction
     {
         this.phoneNumber = phoneNumber;
     }
+    
+    private Collection<String> dataSets = new HashSet<String>();
+
+    public void setDataSets( Collection<String> dataSets )
+    {
+        this.dataSets = dataSets;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -223,7 +241,13 @@ public class AddOrganisationUnitAction
 
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
+        for ( String id : dataSets )
+        {
+            DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
+            dataSet.getSources().add( organisationUnit );
+            dataSetService.updateDataSet( dataSet );
+        }
+                
         return SUCCESS;
     }
-
 }
