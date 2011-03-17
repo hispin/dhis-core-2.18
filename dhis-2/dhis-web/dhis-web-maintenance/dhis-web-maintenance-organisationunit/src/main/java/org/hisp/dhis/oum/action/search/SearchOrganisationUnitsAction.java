@@ -41,7 +41,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.springframework.util.CollectionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -81,6 +80,13 @@ public class SearchOrganisationUnitsAction
     // -------------------------------------------------------------------------
     // Input and output
     // -------------------------------------------------------------------------
+
+    private boolean search;
+    
+    public void setSearch( boolean search )
+    {
+        this.search = search;
+    }
 
     private String name;
     
@@ -130,6 +136,13 @@ public class SearchOrganisationUnitsAction
     {
         return selectedOrganisationUnit;
     }
+    
+    boolean limited = false;
+
+    public boolean isLimited()
+    {
+        return limited;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -142,24 +155,26 @@ public class SearchOrganisationUnitsAction
         // Assemble groups and get search result
         // ---------------------------------------------------------------------
 
-        name = StringUtils.trimToNull( name );
-        
-        selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
-        
-        Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
-        
-        for ( Integer id : groupId )
+        if ( search )
         {
-            if ( id != ANY )
+            name = StringUtils.trimToNull( name );
+            
+            selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
+            
+            Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
+            
+            for ( Integer id : groupId )
             {
-                OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
-                groups.add( group );
+                if ( id != ANY )
+                {
+                    OrganisationUnitGroup group = organisationUnitGroupService.getOrganisationUnitGroup( id );
+                    groups.add( group );
+                }
             }
-        }
-                
-        if ( !( name == null && CollectionUtils.isEmpty( groups ) ) )
-        {
-            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit );
+        
+            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, true );
+            
+            limited = organisationUnits != null && organisationUnits.size() == OrganisationUnitService.MAX_LIMIT;
         }
         
         // ---------------------------------------------------------------------

@@ -28,7 +28,6 @@ package org.hisp.dhis.organisationunit.hibernate;
  */
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
@@ -43,6 +42,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -128,33 +128,34 @@ public class HibernateOrganisationUnitStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit )
     {
+        boolean first = true;
+        
         name = StringUtils.trimToNull( name );
         groups = CollectionUtils.isEmpty( groups ) ? null : groups;
         
-        if ( name == null && groups == null )
-        {
-            return new HashSet<OrganisationUnit>();
-        }
-        
-        StringBuilder hql = new StringBuilder( "from OrganisationUnit o where" );
+        StringBuilder hql = new StringBuilder( "from OrganisationUnit o" );
         
         if ( name != null )
         {
-            hql.append(  " lower(name) like :name and" );
+            hql.append(  " where lower(name) like :name" );
+            
+            first = false;
         }
         
         if ( groups != null )
         {
             for ( int i = 0; i < groups.size(); i++ )
             {
-                hql.append( " :g" ).append( i ).append( " in elements( o.groups ) and" );
+                String clause = first ? " where" : " and";
+                
+                hql.append( clause ).append( " :g" ).append( i ).append( " in elements( o.groups )" );
+                
+                first = false;
             }
         }
 
-        hql.delete( hql.length() - " and".length(), hql.length() );
-        
         Query query = sessionFactory.getCurrentSession().createQuery( hql.toString() );
         
         if ( name != null )
@@ -170,6 +171,11 @@ public class HibernateOrganisationUnitStore
             {
                 query.setEntity( "g" + i++, group );
             }
+        }
+        
+        if ( limit )
+        {
+            query.setMaxResults( OrganisationUnitService.MAX_LIMIT );
         }
         
         return query.list();        

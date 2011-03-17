@@ -385,32 +385,32 @@ public class OrganisationUnitServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( groupC );
         
         List<OrganisationUnitGroup> groups = Arrays.asList( groupA );        
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
+        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, false );
         assertEquals( 3, units.size() );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName().toLowerCase(), groups );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName().toLowerCase(), groups, false );
         assertEquals( 1, units.size() );
         assertTrue( units.contains( unitA ) );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName(), null );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitA.getName(), null, false );
         assertEquals( 1, units.size() );
         assertEquals( unitA, units.iterator().next() );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA, false );
         assertEquals( 2, units.size() );
         assertFalse( units.contains( unitC ) );
 
         groups = Arrays.asList( groupA, groupB );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, false );
         assertEquals( 2, units.size() );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName().toUpperCase(), groups );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName().toUpperCase(), groups, false );
         assertEquals( 1, units.size() );
         assertEquals( unitB, units.iterator().next() );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName(), null );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( unitB.getName(), null, false );
         assertEquals( 1, units.size() );
         assertEquals( unitB, units.iterator().next() );
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA );
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, unitA, false );
         assertEquals( 2, units.size() );
 
         groups = Arrays.asList( groupA, groupB, groupC );        
-        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups );        
+        units = organisationUnitService.getOrganisationUnitsByNameAndGroups( null, groups, false );        
         assertEquals( 1, units.size() );
     }
     

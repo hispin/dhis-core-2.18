@@ -405,15 +405,15 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitsWithoutGroups();
     }
 
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit )
     {
-        return organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups );
+        return organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, limit );
     }
 
     @SuppressWarnings("unchecked")    
-    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent )
+    public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
     {
-        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups );
+        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, limit );
         
         if ( parent == null )
         {
