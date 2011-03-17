@@ -199,4 +199,27 @@ public class HibernateResourceTableStore
         
         jdbcTemplate.update( statement.getStatement() );
     }
+
+    // -------------------------------------------------------------------------
+    // DataElementStructure
+    // -------------------------------------------------------------------------
+
+    public void createDataElementStructure()
+    {
+        try
+        {
+            jdbcTemplate.update( "DROP TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE );            
+        }
+        catch ( BadSqlGrammarException ex )
+        {
+            // Do nothing, table does not exist
+        }
+        
+        String sql = "CREATE TABLE " + TABLE_NAME_DATA_ELEMENT_STRUCTURE + 
+            " ( dataelementid INTEGER NOT NULL, dataelementname VARCHAR(250), periodtypeid INTEGER, periodtypename VARCHAR(250) )";
+        
+        log.info( "Create data element structure SQL: " + sql );
+        
+        jdbcTemplate.update( sql );        
+    }
 }

@@ -43,6 +43,7 @@ public interface ResourceTableStore
 
     final String TABLE_NAME_CATEGORY_OPTION_COMBO_NAME = "_categoryoptioncomboname";
     final String TABLE_NAME_ORGANISATION_UNIT_STRUCTURE = "_orgunitstructure";
+    final String TABLE_NAME_DATA_ELEMENT_STRUCTURE = "_dataelementstructure";
     
     // -------------------------------------------------------------------------
     // OrganisationUnitStructure
@@ -94,4 +95,8 @@ public interface ResourceTableStore
      */
     void createCategoryStructure( List<DataElementCategory> categories );
     
+    /**
+     * Creates table.
+     */
+    void createDataElementStructure();    
 }
