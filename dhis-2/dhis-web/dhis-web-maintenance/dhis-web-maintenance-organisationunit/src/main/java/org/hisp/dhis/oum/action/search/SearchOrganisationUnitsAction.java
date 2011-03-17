@@ -34,6 +34,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -41,6 +45,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.system.grid.ListGrid;
 
 import com.opensymphony.xwork2.Action;
 
@@ -50,8 +55,11 @@ import com.opensymphony.xwork2.Action;
 public class SearchOrganisationUnitsAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( SearchOrganisationUnitsAction.class );
+    
     private static final int ANY = 0;
-
+    private static final String DEFAULT_TYPE = "html";
+    
     // -------------------------------------------------------------------------
     // Depdencies
     // -------------------------------------------------------------------------
@@ -81,11 +89,11 @@ public class SearchOrganisationUnitsAction
     // Input and output
     // -------------------------------------------------------------------------
 
-    private boolean search;
+    private boolean skipSearch;
     
-    public void setSearch( boolean search )
+    public void setSkipSearch( boolean skipSearch )
     {
-        this.search = search;
+        this.skipSearch = skipSearch;
     }
 
     private String name;
@@ -143,6 +151,20 @@ public class SearchOrganisationUnitsAction
     {
         return limited;
     }
+    
+    private String type;
+    
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
+    private Grid grid;
+
+    public Grid getGrid()
+    {
+        return grid;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -151,15 +173,27 @@ public class SearchOrganisationUnitsAction
     public String execute()
         throws Exception
     {
+        type = StringUtils.trimToNull( type );
+        
+        // ---------------------------------------------------------------------
+        // Get group sets
+        // ---------------------------------------------------------------------
+
+        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
+        
+        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        
         // ---------------------------------------------------------------------
         // Assemble groups and get search result
         // ---------------------------------------------------------------------
 
-        if ( search )
+        if ( !skipSearch )
         {
             name = StringUtils.trimToNull( name );
             
             selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
+
+            log.debug( "Name: " + name + ", Orgunit: " + selectedOrganisationUnit + ", type: " + type );
             
             Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
             
@@ -171,20 +205,49 @@ public class SearchOrganisationUnitsAction
                     groups.add( group );
                 }
             }
-        
-            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, true );
+            
+            boolean limit = type == null; // Only limit for HTML view since browser is memory constrained
+            
+            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, limit );
             
             limited = organisationUnits != null && organisationUnits.size() == OrganisationUnitService.MAX_LIMIT;
+            
+            if ( type != null && !type.equalsIgnoreCase( DEFAULT_TYPE ) )
+            {
+                grid = generateGrid();
+            }            
         }
         
-        // ---------------------------------------------------------------------
-        // Get group sets
-        // ---------------------------------------------------------------------
+        return type != null ? type : SUCCESS;
+    }
 
-        groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Grid generateGrid()
+    {
+        final Grid orgUnitGrid = new ListGrid().setTitle( "Organisation unit search result" );
         
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        orgUnitGrid.addHeader( new GridHeader( "Organisation unit", false, true ) );
         
-        return SUCCESS;
+        for ( OrganisationUnitGroupSet groupSet : groupSets )
+        {
+            orgUnitGrid.addHeader( new GridHeader( groupSet.getName(), false, true ) );
+        }
+        
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            orgUnitGrid.addRow();
+            
+            orgUnitGrid.addValue( unit.getName() );
+            
+            for ( OrganisationUnitGroupSet groupSet : groupSets )
+            {
+                orgUnitGrid.addValue( unit.getGroupNameInGroupSet( groupSet ) );
+            }
+        }
+        
+        return orgUnitGrid;
     }
 }
