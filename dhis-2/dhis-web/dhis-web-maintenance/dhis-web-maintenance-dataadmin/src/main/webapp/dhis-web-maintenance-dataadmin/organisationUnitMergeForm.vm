@@ -1,14 +1,21 @@
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+	    selectionTreeSelection.setMultipleSelectionAllowed( false );
+	    selectionTreeSelection.setListenerFunction( treeSelected );
+		selectionTree.clearSelectedOrganisationUnits();
+	    selectionTree.buildSelectionTree();
+	});
+
+    var i18n_merging = '$encoder.jsEscape( $i18n.getString( "merging" ), "'" )';
+    var i18n_merging_done = '$encoder.jsEscape( $i18n.getString( "merging_done" ), "'" )';
+    var i18n_select_different_org_units = '$encoder.jsEscape( $i18n.getString( "select_different_org_units" ), "'" )';
+</script>
+
 
 <h3>$i18n.getString( "organisation_unit_merge" ) #openHelp( "organisationUnitMerge" )</h3>
 
 <div id="selectionTree" style="width:500px; height:200px"></div>
                     
-<script type="text/javascript">
-    selectionTreeSelection.setMultipleSelectionAllowed( false );
-    selectionTreeSelection.setListenerFunction( treeSelected );
-	selectionTree.clearSelectedOrganisationUnits();
-    selectionTree.buildSelectionTree();
-</script>
 
 <br/>
 	
@@ -52,9 +59,3 @@
 </table>
 
 <p><span id="message"></span></p>
-
-<script type="text/javascript">
-    var i18n_merging = '$encoder.jsEscape( $i18n.getString( "merging" ), "'" )';
-    var i18n_merging_done = '$encoder.jsEscape( $i18n.getString( "merging_done" ), "'" )';
-    var i18n_select_different_org_units = '$encoder.jsEscape( $i18n.getString( "select_different_org_units" ), "'" )';
-</script>

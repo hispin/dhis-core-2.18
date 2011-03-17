@@ -1,3 +1,8 @@
+<script type="text/javascript">
+	var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
+	var i18n_performing_maintenance = '$encoder.jsEscape( $i18n.getString( "performing_maintenance" ), "'" )';
+	var i18n_maintenance_performed = '$encoder.jsEscape( $i18n.getString( "maintenance_performed" ), "'" )';
+</script>
 
 <h3>$i18n.getString( "maintenance" ) #openHelp( "maintenance" )</h3>
 
@@ -31,9 +36,3 @@
 </p>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-	var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
-	var i18n_performing_maintenance = '$encoder.jsEscape( $i18n.getString( "performing_maintenance" ), "'" )';
-	var i18n_maintenance_performed = '$encoder.jsEscape( $i18n.getString( "maintenance_performed" ), "'" )';
-</script>

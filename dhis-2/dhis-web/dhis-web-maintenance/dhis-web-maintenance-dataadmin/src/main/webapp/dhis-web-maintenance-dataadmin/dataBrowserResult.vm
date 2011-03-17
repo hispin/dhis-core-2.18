@@ -1,5 +1,4 @@
-<style>
-
+<style type="text/css">
 	div#drillDownMenu
 	{
 	  position: absolute;
@@ -10,7 +9,6 @@
 	{
 	  text-align: center;
 	}
-
 </style>
 
 <h3>$!encoder.htmlEncode( $grid.title )</h3>

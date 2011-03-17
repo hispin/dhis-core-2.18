@@ -3,6 +3,12 @@
 		// Override the listener after tree loaded succesfully
 		selectionTreeSelection.setListenerFunction( treeSelected );
 	});
+
+	var i18n_confirmation = '$encoder.jsEscape( $i18n.getString( "prune_organisation_unit_confirmation" ), "'" )';
+    var i18n_pruning = '$encoder.jsEscape( $i18n.getString( "pruning" ), "'" )';
+	var i18n_not_selected = '$encoder.jsEscape( $i18n.getString( "not_selected" ), "'" )';
+    var i18n_pruning_done = '$encoder.jsEscape( $i18n.getString( "pruning_done" ), "'" )';
+    var i18n_pruning_interrupted = '$encoder.jsEscape( $i18n.getString( "pruning_interrupted" ), "'" )';
 </script>
 
 <h3>$i18n.getString( "organisation_unit_pruning" )</h3>
@@ -27,11 +33,3 @@
 </table>
 
 <p><span id="message"></span></p>
-
-<script type="text/javascript">
-	var i18n_confirmation = '$encoder.jsEscape( $i18n.getString( "prune_organisation_unit_confirmation" ), "'" )';
-    var i18n_pruning = '$encoder.jsEscape( $i18n.getString( "pruning" ), "'" )';
-	var i18n_not_selected = '$encoder.jsEscape( $i18n.getString( "not_selected" ), "'" )';
-    var i18n_pruning_done = '$encoder.jsEscape( $i18n.getString( "pruning_done" ), "'" )';
-    var i18n_pruning_interrupted = '$encoder.jsEscape( $i18n.getString( "pruning_interrupted" ), "'" )';
-</script>

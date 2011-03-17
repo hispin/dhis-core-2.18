@@ -1,3 +1,10 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function()
+	{		
+		validation( 'exportPDF', function( form ){ form.submit() });	
+		loadListeners();
+	});
+</script>
 
 #if ( $grid.getHeight() == 0 || $grid.getWidth() == 0 )
 <br/><br/>$i18n.getString( "no_data_found" )
@@ -46,15 +53,5 @@
 	<li class="menuDropDownItem" onclick="viewDrillDownData( 'current_level' )">$i18n.getString( "view_data_at_this_level" )&nbsp;</li>
   </ul>
 </div>
-
-<script type="text/javascript">
-	
-	loadListeners();
-	
-	jQuery(document).ready(	function()
-	{		
-		validation( 'exportPDF', function( form ){ form.submit() });	
-	});
-</script>
 
 #end
