@@ -1,15 +1,5 @@
-﻿<script>
-	jQuery(document).ready(	function()
-	{		
-		validation( 'editDataSetForm', function( form ){ form.submit() }, function() {
-			selectAllById('selectedList') 
-		});
-		
-		checkValueIsExist( "name", "validateDataSet.action", {dataSetId: $("#dataSetId").val()} );
-		checkValueIsExist( "shortName", "validateDataSet.action", {dataSetId: $("#dataSetId").val()} );
-		checkValueIsExist( "code", "validateDataSet.action", {dataSetId: $("#dataSetId").val()} );		
-	});	
-	
+<script type="text/javascript" src="javascript/editDataSet.js"></script>
+<script type="text/javascript">
 	var previousName = '';
 </script>
 
@@ -27,15 +17,15 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )" maxlength="150" class="{validate:{required:true,minlength:4,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"></td>
       </tr>      
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )" maxlength="20" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
+        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"></td>
       </tr>     
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )" maxlength="40" class="{validate:{minlength:4,alphanumericwithbasicpuncspaces:true,notOnlyDigits:false}}"/></td>
+        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

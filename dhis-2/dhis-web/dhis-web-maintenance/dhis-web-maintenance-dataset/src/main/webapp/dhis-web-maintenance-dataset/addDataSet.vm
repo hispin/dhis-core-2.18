@@ -1,15 +1,5 @@
-<script>
-	jQuery(document).ready(	function()
-	{		
-		validation( 'addDataSetForm', function( form ){ form.submit() }, function()	{
-			selectAllById('selectedList')  
-		});
-		
-		checkValueIsExist( "name", "validateDataSet.action" );		
-		checkValueIsExist( "shortName", "validateDataSet.action" );		
-		checkValueIsExist( "code", "validateDataSet.action" );		
-	});
-	
+<script type="text/javascript" src="javascript/addDataSet.js"></script>
+<script type="text/javascript">
 	var previousName = '';
 </script>
 
@@ -27,22 +17,20 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em" maxlength="150" 
-			class="{validate:{required:true,minlength:4,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/>
-		</td>
+        <td><input type="text" id="name" name="name" onchange="nameChanged()" style="width:20em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" maxlength="20" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,firstletteralphabet:false}}"/></td>
+        <td><input type="text" id="shortName" name="shortName" style="width:20em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" maxlength="40" class="{validate:{minlength:4,alphanumericwithbasicpuncspaces:true,notOnlyDigits:false}}"/></td>
+        <td><input type="text" id="code" name="code" style="width:20em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-          <select id="frequencySelect" name="frequencySelect" style="min-width:20em" class="{validate:{required:true}}">
+          <select id="frequencySelect" name="frequencySelect" style="min-width:20em">
             #foreach ( $periodType in $periodTypes )
               <option value="$periodType.name">$i18n.getString( $periodType.name )</option>
             #end
