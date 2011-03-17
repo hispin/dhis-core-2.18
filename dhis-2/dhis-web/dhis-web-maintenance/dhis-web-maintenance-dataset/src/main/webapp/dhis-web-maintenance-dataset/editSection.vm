@@ -1,17 +1,4 @@
-<script>
-	jQuery(document).ready(	function()
-	{		
-		validation( 'editDataSetForm', function( form ){ form.submit() }, function() {
-			selectAllById('selectedList') 
-		});
-		
-		checkValueIsExist( "sectionName", "validateSection.action", {
-			dataSetId:$("#dataSetId").val(),
-			name: $("#sectionName").val(),
-			sectionId: $("#sectionId").val()
-		});		
-	});
-</script>
+<script type="text/javascript" src="javascript/editSection.js"></script>
 
 <h3>$i18n.getString( "edit_section" )</h3>
 
@@ -31,7 +18,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>        
+        <td><input type="text" id="sectionName" name="sectionName" style="width:20em" value= "$section.name"></td>        
       </tr>     
       <tr>
       	<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

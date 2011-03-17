@@ -1,44 +1,30 @@
+<script type="text/javascript" src="javascript/viewDataEntryForm.js"></script>
 <script type="text/javascript">
+    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
+	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
+	var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
+
     var stat = ('$!dataEntryForm') ? "EDIT" : "ADD";
     var dataEntryFormId = -1;
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "dataentryform_confirm_delete" ) , "'" )';
-    	
+	var selected = null;
+	var autoSave = '$!autoSave';
+	var t;
+	var timer_is_on=0;
+
     #if($!dataEntryForm)
         dataEntryFormId = $dataEntryForm.id;
     #end    
   
-	var autoSave = '$!autoSave';
-	
-	
-	jQuery(document).ready(	function(){
-			validation( 'saveDataEntryForm', function(){
-				autoSave = false;
-				validateDataEntryForm();
-			} );	
-						
-			jQuery("#dataElementSelection").resizable({
-				minHeight:210,
-				minWidth:400,
-				width:400,
-				alsoResize: "#dataElementList"				
-			});			
-			
-			jQuery("#dataElementSelection").draggable({
-				handle:'h3'
-			});
-
-			
-			leftBar.hideAnimated();
-			
-			select( 1 );
-
-	});
-	
-	
+	if('$autoSave' == 'true'){
+		if (!timer_is_on)
+		  {
+			  timer_is_on=1;
+			  timedCount();
+		  }
+	}
 </script>
 
 <style>
-
 #dataElementSelection { 
 	padding: 0.5em; 
 	position:fixed;
@@ -91,7 +77,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="nameField" name="nameField" value='$!dataEntryForm.name' style="width:20em" maxlength="100" class="{validate:{required:true,minlength:4}}"/></td>
+        <td><input type="text" id="nameField" name="nameField" value='$!dataEntryForm.name' style="width:20em"></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -175,111 +161,3 @@
 		</tr>
 	</table>	
 </div>
-
-<script>
-	var i18n_save_success = '$encoder.jsEscape( $i18n.getString( "save_success" ) , "'" )';
-	var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
-	
-	var t;
-	var timer_is_on=0;
-	
-	if('$autoSave' == 'true'){
-		if (!timer_is_on)
-		  {
-			  timer_is_on=1;
-			  timedCount();
-		  }
-	}
-	
-	function timedCount()
-	{
-		validateDataEntryForm();
-		t=setTimeout("timedCount()", 20000);//1000 -> 1s
-		byId( 'message' ).style.display = 'none';
-	}	
-
-var selected = null;
-
-function select( id )
-{
-	if( selected != null )
-	{
-		jQuery("#tr" + selected ).removeClass( "selected");
-	}
-	
-	jQuery("#tr" + id ).addClass( "selected");
-	
-	selected = id;
-}
-
-
-function insertDataElement()
-{
-	var oEditor = FCKeditorAPI.GetInstance('designTextarea') ;
-	var viewByValue = getFieldValue( 'viewBySelector' );
-	
-	var json = JSON.parse( jQuery("#json_" + selected ).val() );
-	
-	var dataElementId = json.dataElement.id;
-	var dataElementName = json.dataElement.name;
-	var dataElementType = json.dataElement.type;
-	var optionComboName = json.optionCombo.name;
-	var optionComboId = json.optionCombo.id;
-	
-	if(viewByValue == "deid") dispName = "[ " + dataElementId;
-	else if (viewByValue == "deshortname") dispName = "[ " + json.dataElement.shortName;
-	else dispName = "[ " + json.dataElement.name;
-	
-	var titleValue = "-- " + dataElementId + ". " 
-					+ dataElementName + " " 
-					+ optionComboId + ". " 
-					+ optionComboName + " (" 
-					+ dataElementType + ") --";
-					
-	var displayName = dispName + " - " + optionComboName + " ]";
-	var dataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-	var boolDataEntryId = "value[" + dataElementId + "].value:value[" + optionComboId + "].value";
-	
-	viewByValue = "@@" + viewByValue + "@@";
-	
-	var id = "";
-	var html = "";
-	
-	if (dataElementType == "bool")
-	{
-		id = boolDataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" id=\""+ boolDataEntryId +"\" style=\"width:4em;text-align:center\"/>";
-		
-		
-	}else 
-	{	
-		id = dataEntryId;
-		html = "<input title=\"" + titleValue + "\" view=\""+viewByValue+"\" value=\"" + displayName + "\" id=\"" + dataEntryId + "\" style=\"width:4em;text-align:center\"/>" ;			
-	}	
-	
-	if( checkExisted( id ) )
-	{		
-		jQuery( "#message_").html( "<b>" + i18n_dataelement_is_inserted + "</b>" );
-		return;
-	}else{
-		jQuery( "#message_").html("");
-	}
-	
-	oEditor.InsertHtml( html );
-	
-}
-
-function checkExisted( id )
-{	
-	var result = false;
-	var html = FCKeditorAPI.GetInstance('designTextarea').GetHTML();
-	var input = jQuery( html ).find("select, :text");
-	input.each( function(i, item){		
-		if( id == item.id ) result = true;		
-	});
-	
-	return result;
-}
-
-	
-</script>
