@@ -9,6 +9,116 @@
     <logoImage>../../resources/images/dhis2-logo-blue.png</logoImage>
     <splashImage>../../resources/images/dhis2-splash-blue.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
+    <initializationActionList>
+        <registryFind>
+            <dataPattern>Java(TM)*6*</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>*</namePattern>
+            <rootKey>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>jreInstalled</variable>
+            <wowMode>64</wowMode>
+        </registryFind>
+        <registryFind>
+            <dataPattern>Java(TM)*6*</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>*</namePattern>
+            <rootKey>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>jreInstalled</variable>
+            <wowMode>32</wowMode>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${jreInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </registryFind>
+        <registryFind>
+            <dataPattern>PostgreSQL 9*</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>*</namePattern>
+            <rootKey>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>postgresInstalled</variable>
+            <wowMode>64</wowMode>
+        </registryFind>
+        <registryFind>
+            <dataPattern>PostgreSQL 9*</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>*</namePattern>
+            <rootKey>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>postgresInstalled</variable>
+            <wowMode>32</wowMode>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${postgresInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </registryFind>
+        <registryFind>
+            <dataPattern>Google Chrome</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>DisplayName</namePattern>
+            <rootKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>chromeInstalled</variable>
+            <wowMode>64</wowMode>
+        </registryFind>
+        <registryFind>
+            <dataPattern>Google Chrome</dataPattern>
+            <keyPattern>*</keyPattern>
+            <namePattern>DisplayName</namePattern>
+            <rootKey>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall</rootKey>
+            <searchDepth>1</searchDepth>
+            <variable>chromeInstalled</variable>
+            <wowMode>32</wowMode>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${chromeInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </registryFind>
+        <componentSelection>
+            <deselect></deselect>
+            <select>Java</select>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${jreInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </componentSelection>
+        <componentSelection>
+            <deselect></deselect>
+            <select>postgres</select>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${postgresInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </componentSelection>
+        <componentSelection>
+            <deselect></deselect>
+            <select>Chrome</select>
+            <ruleList>
+                <compareTextLength>
+                    <length>1</length>
+                    <logic>less</logic>
+                    <text>${chromeInstalled}</text>
+                </compareTextLength>
+            </ruleList>
+        </componentSelection>
+    </initializationActionList>
     <readyToInstallActionList>
         <createDirectory>
             <path>${installdir}/database</path>
@@ -22,9 +132,14 @@
         </createDirectory>
         <createDirectory>
             <explanation>Creating temporary directory</explanation>
-            <path>${installdir}\tmp\</path>
+            <path>${installdir}/tmp</path>
         </createDirectory>
     </readyToInstallActionList>
+    <postInstallationActionList>
+        <deleteFile>
+            <path>${installdir}\tmp</path>
+        </deleteFile>
+    </postInstallationActionList>
     <postUninstallationActionList>
         <deleteFile>
             <path>${installdir}</path>
@@ -120,6 +235,13 @@
                 <renameFile>
                     <destination>${installdir}/dhis2-live.jar</destination>
                     <origin>${installdir}/dhis2-live-jar-with-dependencies.jar</origin>
+                </renameFile>
+                <deleteFile>
+                    <path>${installdir}/conf/hibernate.properties</path>
+                </deleteFile>
+                <renameFile>
+                    <destination>${installdir}/conf/hibernate.properties</destination>
+                    <origin>${installdir}/conf/generic_hibernate.properties</origin>
                 </renameFile>
             </postInstallationActionList>
             <startMenuShortcutList>
@@ -219,7 +341,7 @@
             <name>Java</name>
             <description>Java</description>
             <canBeEdited>1</canBeEdited>
-            <selected>1</selected>
+            <selected>0</selected>
             <show>1</show>
             <postInstallationActionList>
                 <runProgram>
@@ -279,7 +401,7 @@
             <name>postgres</name>
             <description>Postgres</description>
             <canBeEdited>1</canBeEdited>
-            <selected>1</selected>
+            <selected>0</selected>
             <show>1</show>
             <parameterList>
                 <passwordParameter>
@@ -379,6 +501,25 @@
                 </folder>
             </folderList>
             <postInstallationActionList>
+                <registryGetMatch>
+                    <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\PostgreSQL*</key>
+                    <name>InstallLocation</name>
+                    <variable>postgresInstallLocation</variable>
+                    <wowMode>64</wowMode>
+                </registryGetMatch>
+                <registryGetMatch>
+                    <key>HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\PostgreSQL*</key>
+                    <name>InstallLocation</name>
+                    <variable>postgresInstallLocation</variable>
+                    <wowMode>32</wowMode>
+                    <ruleList>
+                        <compareTextLength>
+                            <length>1</length>
+                            <logic>less</logic>
+                            <text>${postgresInstallLocation}</text>
+                        </compareTextLength>
+                    </ruleList>
+                </registryGetMatch>
                 <createDirectory>
                     <path>${installdir}\tmp\dhis2db</path>
                 </createDirectory>
@@ -393,7 +534,7 @@
                 </findFile>
                 <substitute>
                     <files>${installdir}\tmp\restore_db_psql.bat</files>
-                    <type>regexp</type>
+                    <type>exact</type>
                     <substitutionList>
                         <substitution>
                             <pattern>PG_PASSWORD</pattern>
@@ -402,6 +543,10 @@
                         <substitution>
                             <pattern>DATABASE_FILE</pattern>
                             <value>${databaseFile}</value>
+                        </substitution>
+                        <substitution>
+                            <pattern>POSTGRES_INSTALL_LOCATION</pattern>
+                            <value>${postgresInstallLocation}</value>
                         </substitution>
                     </substitutionList>
                 </substitute>
@@ -529,7 +674,7 @@
             <name>Chrome</name>
             <description>Google Chrome</description>
             <canBeEdited>1</canBeEdited>
-            <selected>1</selected>
+            <selected>0</selected>
             <show>1</show>
             <postInstallationActionList>
                 <runProgram>
@@ -540,6 +685,12 @@
                     <workingDirectory>${installer_directory}\resources</workingDirectory>
                 </runProgram>
             </postInstallationActionList>
+            <preInstallationActionList>
+                <componentSelection>
+                    <deselect></deselect>
+                    <select>Google Chrome</select>
+                </componentSelection>
+            </preInstallationActionList>
             <readyToInstallActionList>
                 <setInstallerVariable>
                     <name>chromeWarningIsShown</name>

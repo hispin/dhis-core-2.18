@@ -1,19 +1,26 @@
 
 
-REM Adjust these enviornment variables to suit your system.
+REM Adjust these environment variables to suit your system.
 REM They are needed by this build script as well as maven during the build.
+
 REM Path to the Java SDK
 JAVA_HOME="C:\Program Files\Java\jdk1.6.0_10\"
+
 REM Be sure maven is in your path
 PATH=%PATH%;"C:\apache-maven-2.2.1\bin\"
+
 REM Be sure that the Bitrock installer is in your path
 BITROCK_HOME="C:\Program Files\BitRock InstallBuilder Professional 6.2.7"
+
 REM If you are including Birt in the build, be sure it is available here
 BIRT_WAR="C:\apache-tomcat-6.0.18\webapps\birt\"
+
 REM Path to the root of the documentation branch source tree
 DHIS2_DOCS="C:\src\dhis2-docbook-docs"
+
 REM Path to the root of the DHIS2 branch source tree
 DHIS2_SRC="C:\src\dhis2"
+
 REM Path to the root of the DHIS2 Live installer source tree
 DHIS2_INSTALL="C:\src\dhis2-live-installer"
 
