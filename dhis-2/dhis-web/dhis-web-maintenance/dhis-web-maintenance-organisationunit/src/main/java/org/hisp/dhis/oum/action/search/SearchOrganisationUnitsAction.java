@@ -229,7 +229,8 @@ public class SearchOrganisationUnitsAction
     {
         final Grid orgUnitGrid = new ListGrid().setTitle( "Organisation unit search result" );
         
-        orgUnitGrid.addHeader( new GridHeader( "Organisation unit", false, true ) );
+        orgUnitGrid.addHeader( new GridHeader( "Code", false, true ) );
+        orgUnitGrid.addHeader( new GridHeader( "Name", false, true ) );
         
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
@@ -239,7 +240,8 @@ public class SearchOrganisationUnitsAction
         for ( OrganisationUnit unit : organisationUnits )
         {
             orgUnitGrid.addRow();
-            
+
+            orgUnitGrid.addValue( unit.getCode() );
             orgUnitGrid.addValue( unit.getName() );
             
             for ( OrganisationUnitGroupSet groupSet : groupSets )

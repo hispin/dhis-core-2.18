@@ -81,6 +81,7 @@ type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:120px"
 <table class="listTable" style="width:90%">
 <thead>
 <tr>
+<th style="width:100px">$i18n.getString( "code" )</th>
 <th style="min-width:300px">$i18n.getString( "name" )</th>
 #foreach( $groupSet in $groupSets )
 <th>$encoder.htmlEncode( $groupSet.name )</th>
@@ -92,7 +93,8 @@ type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:120px"
 <tbody id="list">
 #foreach( $unit in $organisationUnits )
 <tr>
-<td>$encoder.htmlEncode( $unit.name )</td>
+<td>$!encoder.htmlEncode( $unit.code )</td>
+<td>$!encoder.htmlEncode( $unit.name )</td>
 #foreach( $groupSet in $groupSets )
 <td>$!unit.getGroupNameInGroupSet( $groupSet )</td>
 #end
