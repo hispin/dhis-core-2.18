@@ -413,7 +413,9 @@ public class DefaultOrganisationUnitService
     @SuppressWarnings("unchecked")    
     public Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, OrganisationUnit parent, boolean limit )
     {
-        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, limit );
+        boolean _limit = limit && parent == null; // Can only limit in query if parent is not set and we get all units
+        
+        final Collection<OrganisationUnit> result = organisationUnitStore.getOrganisationUnitsByNameAndGroups( name, groups, _limit );
         
         if ( parent == null )
         {
@@ -422,7 +424,9 @@ public class DefaultOrganisationUnitService
         
         final Collection<OrganisationUnit> subTree = getOrganisationUnitWithChildren( parent.getId() );
         
-        return CollectionUtils.intersection( subTree, result );
+        List<OrganisationUnit> intersection = new ArrayList<OrganisationUnit>( CollectionUtils.intersection( subTree, result ) );
+
+        return limit && intersection != null && intersection.size() > MAX_LIMIT ? intersection.subList( 0, MAX_LIMIT ) : intersection;   
     }
     
     // -------------------------------------------------------------------------

@@ -486,7 +486,7 @@ function setMessage( message )
  */
 function setWaitMessage( message )
 {
-	setMessage( message + "&nbsp;&nbsp;&nbsp;<img src='../images/ajax-loader-bar-small.gif'>" );
+	setMessage( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
 }
 
 /**
@@ -529,7 +529,7 @@ function updateHeaderMessage( message )
  */
 function setHeaderWaitMessage( message )
 {
-	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../images/ajax-loader-bar-small.gif'>" );
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
     $( 'div#headerMessage' ).slideDown( 'fast' );
 }
 
@@ -541,7 +541,7 @@ function setHeaderWaitMessage( message )
  */
 function updateHeaderWaitMessage( message )
 {
-	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../images/ajax-loader-bar-small.gif'>" );
+	$( 'div#headerMessage' ).html( message + "&nbsp;&nbsp;&nbsp;<img src='../../images/ajax-loader-bar-small.gif'>" );
 }
 
 /**
@@ -550,6 +550,18 @@ function updateHeaderWaitMessage( message )
 function setHeaderDelayMessage( message )
 {
 	setHeaderMessage( message );
+	
+	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
+	
+	headerMessageTimeout = window.setTimeout( "hideHeaderMessage();", 3000 );
+}
+
+/**
+ * Sets the header wait message and hides it after 3 seconds.
+ */
+function setHeaderWaitDelayMessage( message )
+{
+	setHeaderWaitMessage( message );
 	
 	window.clearTimeout( headerMessageTimeout ); // Clear waiting invocations
 	

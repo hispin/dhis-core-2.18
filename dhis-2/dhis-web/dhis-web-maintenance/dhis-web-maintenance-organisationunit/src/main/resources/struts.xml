@@ -297,6 +297,9 @@
 			<param name="page">/dhis-web-maintenance-organisationunit/organisationUnitSearch.vm</param>
 			<param name="menu">/dhis-web-maintenance-organisationunit/menuWithTree.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/organisationUnitSearch.js</param>
+			<result name="csv" type="gridCsvResult"/>
+			<result name="xls" type="gridXlsResult"/>
+			<result name="pdf" type="gridPdfResult"/>
 			<interceptor-ref name="organisationUnitTreeStack" />
 		</action>
 		

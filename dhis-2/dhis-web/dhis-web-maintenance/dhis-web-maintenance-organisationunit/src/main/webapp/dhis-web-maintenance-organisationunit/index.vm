@@ -6,6 +6,6 @@
     #introListImgItem( "organisationUnitGroup.action" "org_unit_group" "organisationunit" )
     #introListImgItem( "organisationUnitGroupSet.action" "org_unit_group_set" "organisationunit" )
     #introListImgItem( "organisationUnitLevel.action" "org_unit_level" "organisationunit" )
-    #introListImgItem( "organisationUnitSearch.action" "org_unit_search" "search" )
+    #introListImgItem( "organisationUnitSearch.action?skipSearch=true" "org_unit_search" "search" )
     #introListImgItem( "hierarchyOperations.action" "hierarchy_operations_menu" "hierarchy" )
 </ul>
