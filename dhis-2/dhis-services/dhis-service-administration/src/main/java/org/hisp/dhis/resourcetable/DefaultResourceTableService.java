@@ -61,6 +61,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
@@ -135,12 +136,9 @@ public class DefaultResourceTableService
     {
         resourceTableStore.createOrganisationUnitStructure();
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE );
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE ).init();
         
-        batchHandler.init();
-
         for ( int i = 0; i < 8; i++ )
         {
             int level = i + 1;
@@ -189,11 +187,8 @@ public class DefaultResourceTableService
 
         Collection<DataElementCategoryOptionCombo> combos = categoryService.getAllDataElementCategoryOptionCombos();
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME );
-        
-        batchHandler.init();        
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME ).init();
         
         for ( DataElementCategoryOptionCombo combo : combos )
         {
@@ -232,11 +227,8 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( CreateDataElementGroupSetTableStatement.TABLE_NAME );
-
-        batchHandler.init();
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CreateDataElementGroupSetTableStatement.TABLE_NAME ).init();
 
         for ( DataElement dataElement : dataElements )
         {
@@ -282,11 +274,8 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( CreateIndicatorGroupSetTableStatement.TABLE_NAME );
-
-        batchHandler.init();
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CreateIndicatorGroupSetTableStatement.TABLE_NAME ).init();
 
         for ( Indicator indicator : indicators )
         {
@@ -334,11 +323,8 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME );
-
-        batchHandler.init();
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CreateOrganisationUnitGroupSetTableStatement.TABLE_NAME ).init();
 
         for ( OrganisationUnit unit : units )
         {
@@ -383,11 +369,8 @@ public class DefaultResourceTableService
         // Populate table
         // ---------------------------------------------------------------------
 
-        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class );
-
-        batchHandler.setTableName( CreateCategoryTableStatement.TABLE_NAME );
-
-        batchHandler.init();
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CreateCategoryTableStatement.TABLE_NAME ).init();
         
         for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
         {
@@ -402,6 +385,44 @@ public class DefaultResourceTableService
                 
                 values.add( dimensionOption != null ? dimensionOption.getName() : null );    
             }
+            
+            batchHandler.addObject( values );
+        }
+        
+        batchHandler.flush();
+    }
+
+    // -------------------------------------------------------------------------
+    // DataElementTable
+    // -------------------------------------------------------------------------
+
+    public void generateDataElementTable()
+    {
+        // ---------------------------------------------------------------------
+        // Create table
+        // ---------------------------------------------------------------------
+
+        Collection<DataElement> dataElements = dataElementService.getAllDataElements();
+        
+        resourceTableStore.createDataElementStructure();
+
+        // ---------------------------------------------------------------------
+        // Populate table
+        // ---------------------------------------------------------------------
+
+        BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( ResourceTableStore.TABLE_NAME_DATA_ELEMENT_STRUCTURE ).init();
+        
+        for ( DataElement dataElement : dataElements )
+        {
+            final List<String> values = new ArrayList<String>();
+            
+            final PeriodType periodType = dataElement.getPeriodType();
+            
+            values.add( String.valueOf( dataElement.getId() ) );
+            values.add( dataElement.getName() );
+            values.add( periodType != null ? String.valueOf( periodType.getId() ) : null );
+            values.add( periodType != null ? periodType.getName() : null );
             
             batchHandler.addObject( values );
         }

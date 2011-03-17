@@ -107,6 +107,13 @@ public class GenerateResourceTableAction
         this.categoryOptionComboName = categoryOptionComboName;
     }
     
+    private boolean dataElementStructure;
+
+    public void setDataElementStructure( boolean dataElementStructure )
+    {
+        this.dataElementStructure = dataElementStructure;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -146,6 +153,11 @@ public class GenerateResourceTableAction
         if ( categoryOptionComboName )
         {
             resourceTableService.generateCategoryOptionComboNames();
+        }
+        
+        if ( dataElementStructure )
+        {
+            resourceTableService.generateDataElementTable();
         }
         
         log.info( "Generated resource tables" );

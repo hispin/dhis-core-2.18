@@ -9,9 +9,10 @@ function generateResourceTable()
     var organisationUnitGroupSetStructure = document.getElementById( "organisationUnitGroupSetStructure" ).checked;
     var categoryStructure = document.getElementById( "categoryStructure" ).checked;
     var categoryOptionComboName = document.getElementById( "categoryOptionComboName" ).checked;
+    var dataElementStructure = document.getElementById( "dataElementStructure" ).checked;
     
     if ( organisationUnit || dataElementGroupSetStructure || indicatorGroupSetStructure || 
-        organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName )
+        organisationUnitGroupSetStructure || categoryStructure || categoryOptionComboName || dataElementStructure )
     {
         setWaitMessage( i18n_generating_resource_tables );
             
@@ -20,7 +21,8 @@ function generateResourceTable()
             "&indicatorGroupSetStructure=" + indicatorGroupSetStructure +
             "&organisationUnitGroupSetStructure=" + organisationUnitGroupSetStructure +
             "&categoryStructure=" + categoryStructure +
-            "&categoryOptionComboName=" + categoryOptionComboName;
+            "&categoryOptionComboName=" + categoryOptionComboName +
+            "&dataElementStructure=" + dataElementStructure;
             
         var url = "generateResourceTable.action";
         
@@ -50,4 +52,5 @@ function toggleAll()
 	document.getElementById( "organisationUnitGroupSetStructure" ).checked = selected;
 	document.getElementById( "categoryStructure" ).checked = selected;
 	document.getElementById( "categoryOptionComboName" ).checked = selected;
+	document.getElementById( "dataElementStructure" ).checked = selected;	
 }
