@@ -1,23 +1,24 @@
-<script>
-	jQuery(document).ready(	function(){
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
 		validation( 'addIndicatorForm', 
 			function( form )
 			{ 
 				form.submit()
 			}
 		);	
+
 		checkValueIsExist( "name", "validateIndicator.action" );
 		checkValueIsExist( "shortName", "validateIndicator.action" );
 		checkValueIsExist( "alternativeName", "validateIndicator.action" );
 		checkValueIsExist( "code", "validateIndicator.action" );
 	});
+
 	var previousName = '';
 </script>
 
 <h3>$i18n.getString( "create_new_indicator" )</h3>
 
 <form id="addIndicatorForm" action="addIndicator.action" method="post" >
-
 <div>
 	
 	<input type="hidden" id="numeratorDescription" name="numeratorDescription"/>
@@ -102,4 +103,3 @@
 </form>
 
 #parse( "/dhis-web-maintenance-datadictionary/indicatorExpressionBuilderForm.vm" )
-

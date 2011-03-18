@@ -1,13 +1,13 @@
-<script>	
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'editDataElementCategoryComboForm', function( form ){ 
 			validateSelectedCategories( form );
 		}, function(){
 			listValidator( 'selectedCategories', 'selectedList' );			
 		} );		
+
 		checkValueIsExist( "name", "validateDataElementCategoryCombo.action", {id: $dataElementCategoryCombo.id});				
 	});
-	
 </script>
 
 <h3>$i18n.getString( "edit_data_element_category_combo" )</h3>

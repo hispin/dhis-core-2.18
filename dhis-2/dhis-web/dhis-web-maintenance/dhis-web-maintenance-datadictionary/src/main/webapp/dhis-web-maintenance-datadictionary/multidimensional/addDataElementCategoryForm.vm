@@ -1,4 +1,4 @@
-<script>	
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'addDataElementCategoryForm', function( form ){ form.submit()}, function(){
 			listValidator( 'memberValidator', 'categoryOptionNames' );			
@@ -6,24 +6,33 @@
 		checkValueIsExist( "name", "validateDataElementCategory.action");	
 					
 	});
+
+    var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
+    var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
+    var i18n_must_include_category_option = '$encoder.jsEscape( $i18n.getString( "must_include_category_option" ) , "'")';
 	
+	function removeDataElementCategory( categoryId, categoryName )
+	{
+		removeItem( categoryId, categoryName, i18n_confirm_delete, 'removeDataElementCategory.action' );
+	}
+		
 	function addCategoryOption()
 	{
 		var value = getFieldValue( 'categoryOptionName' );
-		if( value.length == 0 ) markInvalid( 'categoryOptionName', i18n_specify_category_option_name );
-		else if( listContainsById( 'categoryOptionNames', value ) ) markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
-		else{
+		if( value.length == 0 ) {
+			markInvalid( 'categoryOptionName', i18n_specify_category_option_name );
+		} else if( listContainsById( 'categoryOptionNames', value ) ) {
+			markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
+		} else {
 			jQuery.postJSON( 'validateDataElementCategoryOption.action', 
-			{name: value }, function(json){
+			{name: value }, function(json) {
 				if( json.response == 'success' ){					
 					addOption( 'categoryOptionNames', value, value );
 				}else{
 					markInvalid( 'categoryOptionName', i18n_category_option_name_already_exists );
 				}
 			});
-			
 		}
-
 	}
 </script>
 
@@ -99,15 +108,3 @@
 	</tr>
   </table>
 </form>
-
-<script type="text/javascript">
-    var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
-    var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
-    var i18n_must_include_category_option = '$encoder.jsEscape( $i18n.getString( "must_include_category_option" ) , "'")';
-	
-	function removeDataElementCategory( categoryId, categoryName )
-	{
-		removeItem( categoryId, categoryName, i18n_confirm_delete, 'removeDataElementCategory.action' );
-	}
-		
-</script>

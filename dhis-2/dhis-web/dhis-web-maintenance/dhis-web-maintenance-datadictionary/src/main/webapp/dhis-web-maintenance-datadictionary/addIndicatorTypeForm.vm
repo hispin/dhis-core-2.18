@@ -1,13 +1,10 @@
-<script>
-
-	jQuery(document).ready(	function(){
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
 		validation( 'addIndicatorTypeForm', function( form ){ form.submit()} );	
-		
 		checkValueIsExist( "name", "validateIndicatorType.action");
-			
 	});
-
 </script>
+
 <h3>$i18n.getString( "create_new_indicator_type" )</h3>
 
 <form id="addIndicatorTypeForm" action="addIndicatorType.action" method="post" >

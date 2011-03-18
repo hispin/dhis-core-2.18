@@ -1,13 +1,14 @@
-<script>
-
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'updateIndicatorTypeForm', function( form ){ form.submit()} );	
-		
 		checkValueIsExist( "name", "validateIndicatorType.action", {id: $indicatorType.id});
-			
-	});
 
+		var nameField = document.getElementById( 'name' );
+		nameField.select();
+		nameField.focus();
+	});
 </script>
+
 <h3>$i18n.getString( "edit_indicator_type" )</h3>
 
 <form id="updateIndicatorTypeForm" action="updateIndicatorType.action" method="post" >
@@ -41,13 +42,4 @@
 		<td><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='indicatorType.action'" style="width:10em"/></td>
 	</tr>
 </table>
-
 </form>
-
-<script type="text/javascript">
-
-	var nameField = document.getElementById( 'name' );
-	nameField.select();
-	nameField.focus();
-
-</script>

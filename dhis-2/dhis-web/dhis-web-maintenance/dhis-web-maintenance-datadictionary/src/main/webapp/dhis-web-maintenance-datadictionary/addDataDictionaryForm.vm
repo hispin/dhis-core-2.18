@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'addDataDictionaryForm', function( form ){ form.submit()}, function(){
 			listValidator( 'memberValidator', 'selectedDataElements' );
@@ -6,10 +6,8 @@
 		} );	
 		
 		checkValueIsExist( "name", "validateDataDictionary.action");
-			
 	});
 </script>
-
 
 <h3>$i18n.getString( "create_new_data_dictionary" )</h3>
 
