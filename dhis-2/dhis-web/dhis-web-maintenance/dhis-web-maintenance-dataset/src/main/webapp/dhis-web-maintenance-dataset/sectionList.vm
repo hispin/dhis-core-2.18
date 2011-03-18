@@ -1,3 +1,9 @@
+<script type="text/javascript">
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_section" ) , "'" )';
+	var i18n_please_select_dataset = '$encoder.jsEscape( $i18n.getString( "please_select_dataset" ) , "'" )';
+	var i18n_please_select_dataset_categorycombo = '$encoder.jsEscape( $i18n.getString( "please_select_dataset_or_categorycombo" ) , "'" )';
+</script>
+
 <h3>$i18n.getString( "section_management" ) #openHelp( "dataset_sections" )</h3>
 
 <table class="mainPageTable">
@@ -78,13 +84,3 @@
 		</td>
   </tr>
 </table>
-
-<script type="text/javascript">
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_section" ) , "'" )';
-	var i18n_please_select_dataset = '$encoder.jsEscape( $i18n.getString( "please_select_dataset" ) , "'" )';
-	var i18n_please_select_dataset_categorycombo = '$encoder.jsEscape( $i18n.getString( "please_select_dataset_or_categorycombo" ) , "'" )';
-	
-	jQuery(document).ready(function(){
-		//TODO: nothing
-	});
-</script>

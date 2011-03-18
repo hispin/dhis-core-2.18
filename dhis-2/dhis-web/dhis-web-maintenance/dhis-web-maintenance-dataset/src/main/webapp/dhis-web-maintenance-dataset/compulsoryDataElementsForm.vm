@@ -1,12 +1,9 @@
-
 <script type="text/javascript">
-	
-function saveCompulsoryDataElements()
-{
-    selectAllById( "selectedOperands" );
-    document.getElementById( "compulsoryDataElementsForm" ).submit();
-}
-
+	function saveCompulsoryDataElements()
+	{
+	    selectAllById( "selectedOperands" );
+	    document.getElementById( "compulsoryDataElementsForm" ).submit();
+	}
 </script>
 
 <h3>$i18n.getString( "edit_compulsory_data_elements" )</h3>
