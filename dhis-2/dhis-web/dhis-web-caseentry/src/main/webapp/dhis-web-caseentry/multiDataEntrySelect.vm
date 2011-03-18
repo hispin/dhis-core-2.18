@@ -1,12 +1,30 @@
-<script>
-	
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		selection.setListenerFunction( organisationUnitSelected );
+	});
+
 	function organisationUnitSelected( orgUnits )
 	{
 		window.location.href = 'multipledataEntrySelect.action';
 	}
 
-	selection.setListenerFunction( organisationUnitSelected );
+	function selectProgram()
+	{
+		var programLB = document.getElementById('programId');
+		var selPrgroamId = programLB.options[programLB.selectedIndex].value;
+		window.location.href='getDataRecords.action?programId='+selPrgroamId;
+	}
 	
+    function selectPatientAttribute()
+    {
+	    var programLB = document.getElementById('programId');
+        var selPrgroamId = programLB.options[programLB.selectedIndex].value;
+	
+        var patientAttributeLB = document.getElementById('patientAttributeId');
+        var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
+    
+	    window.location.href='getDataRecords.action?programId='+selPrgroamId+'&sortPatientAttributeId='+patientAttributeId;
+    }
 </script>
 
 <h3>$i18n.getString( "" )</h3>
@@ -45,25 +63,3 @@
 </form>
 
 <hr style="clear:both">
-
-<script>
-	
-	function selectProgram()
-	{
-		var programLB = document.getElementById('programId');
-		var selPrgroamId = programLB.options[programLB.selectedIndex].value;
-		window.location.href='getDataRecords.action?programId='+selPrgroamId;
-	}
-	
-    function selectPatientAttribute()
-    {
-	    var programLB = document.getElementById('programId');
-        var selPrgroamId = programLB.options[programLB.selectedIndex].value;
-	
-        var patientAttributeLB = document.getElementById('patientAttributeId');
-        var patientAttributeId = patientAttributeLB.options[patientAttributeLB.selectedIndex].value;
-    
-	    window.location.href='getDataRecords.action?programId='+selPrgroamId+'&sortPatientAttributeId='+patientAttributeId;
-    }
-	
-</script>
