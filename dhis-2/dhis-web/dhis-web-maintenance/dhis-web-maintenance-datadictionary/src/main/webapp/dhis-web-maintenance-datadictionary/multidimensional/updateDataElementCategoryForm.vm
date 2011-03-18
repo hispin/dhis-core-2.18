@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'editDataElementCategoryForm', function( form ){ form.submit()}, function(){
 			listValidator( 'memberValidator', 'categoryOptions' );			
@@ -6,6 +6,11 @@
 		checkValueIsExist( "name", "validateDataElementCategory.action", {id: $dataElementCategory.id});		
 		
 	});
+
+    var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
+    var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
+	var i18n_option_rename_successfully = '$encoder.jsEscape( $i18n.getString( "option_rename_successfully" ) , "'")';
+	var mode = 'update';
 	
 	function updateCategoryOption()
 	{
@@ -27,6 +32,27 @@
 				});
 			}
 		} catch(e) { markInvalid( 'categoryOptionName', i18n_specify_category_option_name ); }
+	}
+
+	function getSelectedCategoryOption(){
+		var categoryOptions = byId('categoryOptions');
+		byId('categoryOptionName').value=categoryOptions[categoryOptions.selectedIndex].text;
+	}
+	
+	function updateCategoryOptionName(){
+		var request = new Request();
+	    request.setResponseTypeXML( 'xmlObject' );
+	    request.setCallbackSuccess( updateCategoryOptionNameReceived );
+		var params = "id=" + byId('categoryOptions').value;
+			params += '&name=' + byId('categoryOptionName').value;
+		request.sendAsPost(params);
+		request.send('updateDataElementCategoryOption.action');
+	}
+
+	function updateCategoryOptionNameReceived(xmlObject){
+		var categoryOptions = byId('categoryOptions');
+		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
+		showSuccessMessage( i18n_option_rename_successfully );
 	}
 </script>
 
@@ -109,32 +135,3 @@
     </tr>
   </table>
 </form>
-
-<script type="text/javascript">
-    var i18n_specify_category_option_name = '$encoder.jsEscape( $i18n.getString( "specify_category_option_name" ) , "'")';
-    var i18n_category_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "category_option_name_already_exists" ) , "'")';
-	var i18n_option_rename_successfully = '$encoder.jsEscape( $i18n.getString( "option_rename_successfully" ) , "'")';
-	var mode = 'update';
-	
-	function getSelectedCategoryOption(){
-		var categoryOptions = byId('categoryOptions');
-		byId('categoryOptionName').value=categoryOptions[categoryOptions.selectedIndex].text;
-	}
-	
-	function updateCategoryOptionName(){
-		var request = new Request();
-	    request.setResponseTypeXML( 'xmlObject' );
-	    request.setCallbackSuccess( updateCategoryOptionNameReceived );
-		var params = "id=" + byId('categoryOptions').value;
-			params += '&name=' + byId('categoryOptionName').value;
-		request.sendAsPost(params);
-		request.send('updateDataElementCategoryOption.action');
-	}
-
-	function updateCategoryOptionNameReceived(xmlObject){
-		var categoryOptions = byId('categoryOptions');
-		categoryOptions[categoryOptions.selectedIndex].text = byId('categoryOptionName').value;
-		showSuccessMessage( i18n_option_rename_successfully );
-	}
-	
-</script>

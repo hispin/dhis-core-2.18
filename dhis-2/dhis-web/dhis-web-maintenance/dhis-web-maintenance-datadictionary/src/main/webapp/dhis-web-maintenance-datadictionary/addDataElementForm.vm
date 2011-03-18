@@ -1,5 +1,5 @@
-<script>
-	jQuery(document).ready(	function(){
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
 		validation( 'addDataElementForm', function( form ){
 			form.submit();
 		},function(){
@@ -12,9 +12,11 @@
 		checkValueIsExist( "name", "validateDataElement.action");
 		checkValueIsExist( "shortName", "validateDataElement.action");
 		checkValueIsExist( "alternativeName", "validateDataElement.action");
+
 		toggleCDEForm();
-		}  
-	);
+	});
+
+	var previousName = '';
 </script>
 
 <h3>$i18n.getString( "create_new_data_element" )</h3>
@@ -230,9 +232,3 @@
 </p>
 
 </form>
-
-<script type="text/javascript">
-
-	var previousName = '';
-
-</script>

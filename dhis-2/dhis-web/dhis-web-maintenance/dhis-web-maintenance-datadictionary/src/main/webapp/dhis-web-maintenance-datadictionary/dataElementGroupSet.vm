@@ -1,3 +1,14 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'groupSetList' );	
+	});
+
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
+	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
+	var i18n_delete = '$encoder.jsEscape( $i18n.getString( "delete" ) , "'")';
+	var i18n_information = '$encoder.jsEscape( $i18n.getString( "show_details" ) , "'")';	
+</script>
+
 <h3>$i18n.getString( "data_element_group_set" ) #openHelp( "dataElementGroupSet" )</h3>
 
 <table class="mainPageTable">
@@ -57,14 +68,3 @@
 		
 	</tr>
 </table>
-
-<script>
-	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_data_element_group" ) , "'")';
-	var i18n_edit = '$encoder.jsEscape( $i18n.getString( "edit" ) , "'")';
-	var i18n_delete = '$encoder.jsEscape( $i18n.getString( "delete" ) , "'")';
-	var i18n_information = '$encoder.jsEscape( $i18n.getString( "show_details" ) , "'")';	
-	
-	jQuery(document).ready(function(){	
-		tableSorter( 'groupSetList' );	
-	});
-</script>

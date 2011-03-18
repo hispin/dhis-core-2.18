@@ -1,3 +1,10 @@
+<script type="text/javascript">
+    function submitForm()
+    {
+        selectAllById( "dataElements" );
+        document.getElementById( "sortOrderForm" ).submit();
+    }
+</script>
 
 <h3>$i18n.getString( "data_element_sort_order" )</h3>
 
@@ -19,16 +26,8 @@ type="button" value="$i18n.getString( 'move_to_bottom' )" style="width:130px" on
 </p>
 
 <p>
-<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"/><input 
-type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='dataElement.action'"/>
+	<input type="button" value="$i18n.getString( 'save' )" style="width:130px" onclick="submitForm()"/>
+	<input type="button" value="$i18n.getString( 'cancel' )" style="width:130px" onclick="window.location.href='dataElement.action'"/>
 </p>
 
 </form>
-
-<script type="text/javascript">
-    function submitForm()
-    {
-        selectAllById( "dataElements" );
-        document.getElementById( "sortOrderForm" ).submit();
-    }
-</script>

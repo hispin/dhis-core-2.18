@@ -1,5 +1,5 @@
-<script>
-	jQuery(document).ready(	function(){
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
 		validation( 'updateDataElementForm', function( form ){			
 			form.submit();
 		},function(){
@@ -8,18 +8,19 @@
 			setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
 			setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
 		});				
-		
+
 		checkValueIsExist( "name", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "shortName", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "alternativeName", "validateDataElement.action", {id:getFieldValue('id')});
-		
+
 		#if ( $calculatedDataElement )
 			toggleCDEForm();
 		#else
 			updateAggreationOperation( getFieldValue('valueType') );
 		#end
-		}  
-	);
+	});
+
+	var previousName = '$encoder.jsEscape( $dataElement.name, "'" )';
 </script>
 
 <h3>$i18n.getString( "edit_data_element" )</h3>
@@ -267,5 +268,4 @@
 
 <script type="text/javascript">
 
-	var previousName = '$encoder.jsEscape( $dataElement.name, "'" )';       
 </script>

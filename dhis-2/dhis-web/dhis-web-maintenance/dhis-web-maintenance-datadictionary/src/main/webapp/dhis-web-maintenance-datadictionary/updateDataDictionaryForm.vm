@@ -1,15 +1,12 @@
-<script>
-
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'updateDataDictionaryForm', function( form ){ form.submit()}, function(){
+		validation( 'updateDataDictionaryForm', function( form ) { form.submit()}, function() {
 			listValidator( 'memberValidator', 'selectedDataElements' );
 			listValidator( 'memberValidatorIn', 'selectedIndicators' );
-		} );	
-		
-		checkValueIsExist( "name", "validateDataDictionary.action", {id: $dataDictionary.id});
-			
-	});
+		} );
 
+		checkValueIsExist( "name", "validateDataDictionary.action", {id: $dataDictionary.id});
+	});
 </script>
 
 <h3>$i18n.getString( "edit_data_dictionary" )</h3>

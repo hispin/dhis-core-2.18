@@ -1,4 +1,4 @@
-<script>	
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'addDataElementCategoryComboForm', function( form ){ 
 			validateSelectedCategories( form );
@@ -7,8 +7,8 @@
 		} );		
 		checkValueIsExist( "name", "validateDataElementCategoryCombo.action");				
 	});
-	
 </script>
+
 <h3>$i18n.getString( "create_new_data_element_category_combo" )</h3>
 
 <form id="addDataElementCategoryComboForm" name="addDataElementCategoryComboForm" action="addDataElementCategoryCombo.action" method="post" >
