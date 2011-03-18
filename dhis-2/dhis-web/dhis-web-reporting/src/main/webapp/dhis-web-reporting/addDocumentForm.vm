@@ -1,10 +1,13 @@
-<script>
+<script type="text/javascript">
 	jQuery(document).ready(	function(){
 		validation( 'documentForm', function( form ){			
 			form.submit();
 		},function(){
 		});	
+	
 		checkValueIsExist( "name", "validateDocument.action", {id: "$!document.id"} );
+	
+		toggleExternal();
 	});	
 	
 	function checkUploadFile(){
@@ -74,7 +77,3 @@
 </table>
 
 </form>
-
-<script>
-	toggleExternal();
-</script>

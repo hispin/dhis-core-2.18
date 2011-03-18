@@ -1,3 +1,20 @@
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		#if ( $dimension )
+		document.getElementById( "doIndicators" ).disabled = true;
+	    document.getElementById( "doOrganisationUnits" ).disabled = true;
+	    document.getElementById( "doPeriods" ).disabled = true;
+		#end
+    });
+
+    var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'")';
+    var i18n_must_enter_name = '$encoder.jsEscape( $i18n.getString( "must_enter_name" ), "'")';
+    var i18n_cannot_include_more_organisation_unit_regression = '$encoder.jsEscape( $i18n.getString( "cannot_include_more_organisation_unit_regression" ), "'")';
+    var i18n_must_select_at_least_one_indictor_data_element_data_set = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indictor_data_element_data_set" ), "'")';
+    var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
+    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
+    var i18n_cannot_select_orgunit_and_parent_orgunit_param = '$encoder.jsEscape( $i18n.getString( "cannot_select_orgunit_and_parent_orgunit_param" ), "'")';
+</script>
 
 <h3>$i18n.getString( "create_report_table" )</h3>
 
@@ -443,21 +460,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-    var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'")';
-    var i18n_must_enter_name = '$encoder.jsEscape( $i18n.getString( "must_enter_name" ), "'")';
-    var i18n_cannot_include_more_organisation_unit_regression = '$encoder.jsEscape( $i18n.getString( "cannot_include_more_organisation_unit_regression" ), "'")';
-    var i18n_must_select_at_least_one_indictor_data_element_data_set = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indictor_data_element_data_set" ), "'")';
-    var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
-    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
-    var i18n_cannot_select_orgunit_and_parent_orgunit_param = '$encoder.jsEscape( $i18n.getString( "cannot_select_orgunit_and_parent_orgunit_param" ), "'")';
-</script>
-
-#if ( $dimension )
-<script type="text/javascript">
-	document.getElementById( "doIndicators" ).disabled = true;
-    document.getElementById( "doOrganisationUnits" ).disabled = true;
-    document.getElementById( "doPeriods" ).disabled = true;
-</script>
-#end

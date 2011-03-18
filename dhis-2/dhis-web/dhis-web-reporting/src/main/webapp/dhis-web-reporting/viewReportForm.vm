@@ -1,3 +1,11 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){		
+		tableSorter( 'listTable' );	
+	});
+
+    var i18n_confirm_remove_report = '$encoder.jsEscape( $i18n.getString( "confirm_remove_report" ) , "'")';
+    var i18n_confirm_add_to_dashboard = '$encoder.jsEscape( $i18n.getString( "confirm_add_to_dashboard" ) , "'")';
+</script>
 
 <h3>$i18n.getString( "standard_report" )</h3>
 
@@ -57,11 +65,3 @@
         </td>
     </tr>
 </table>
-
-<script type="text/javascript">
-    var i18n_confirm_remove_report = '$encoder.jsEscape( $i18n.getString( "confirm_remove_report" ) , "'")';
-    var i18n_confirm_add_to_dashboard = '$encoder.jsEscape( $i18n.getString( "confirm_add_to_dashboard" ) , "'")';
-	jQuery(document).ready(function(){		
-		tableSorter( 'listTable' );	
-	});
-</script>

@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
+    var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
+    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
+</script>
+
 #macro ( getHeader )
 	#if ( $dimension == "period" )
 		$i18n.getString( "create_indicator_by_period_chart" )
@@ -16,7 +22,6 @@
 <input type="hidden" id="dimension" name="dimension" value="$!dimension">
 
 <table>
-    
     <tr>
         <th colspan="2">$i18n.getString( "chart" )</th>
     </tr>
@@ -91,9 +96,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-    var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
-    var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
-    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
-</script>
