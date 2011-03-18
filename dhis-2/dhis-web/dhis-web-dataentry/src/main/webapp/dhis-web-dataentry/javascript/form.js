@@ -330,14 +330,40 @@ function getNextEntryField( field )
 {
     var fields = $('input[name="entryfield"]');
     
-    return fields[field.tabIndex];
+    if (fields[field.tabIndex]) {
+        if (!fields[field.tabIndex].disabled) {
+            return fields[field.tabIndex];
+        }
+        else {
+            var index = field.tabIndex + 1;
+            while (fields[index]) {
+                if (!fields[index].disabled) {
+                    return fields[index];
+                }
+                index++;
+            }
+        }
+    }
 }
 
 function getPreviousEntryField( field )
 {
     var fields = $('input[name="entryfield"]');
     
-    return fields[field.tabIndex - 2];
+    if (fields[field.tabIndex - 2]) {
+        if (!fields[field.tabIndex - 2].disabled) {
+            return fields[field.tabIndex - 2];
+        }
+        else {
+            var index = field.tabIndex - 3;
+            while (fields[index]) {
+                if (!fields[index].disabled) {
+                    return fields[index];
+                }
+                index--;
+            }
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
