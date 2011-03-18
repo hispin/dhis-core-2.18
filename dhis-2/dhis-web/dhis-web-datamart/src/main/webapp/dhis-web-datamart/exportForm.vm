@@ -1,3 +1,15 @@
+<script type="text/javascript">
+    var i18n_select_min_datatype = '$encoder.jsEscape( $i18n.getString( "select_min_datatype" ), "'" )';
+    var i18n_select_min_level = '$encoder.jsEscape( $i18n.getString( "select_min_level" ), "'" )';
+    var i18n_select_min_period = '$encoder.jsEscape( $i18n.getString( "select_min_period" ), "'" )';
+    var i18n_nr_of_comb = '$encoder.jsEscape( $i18n.getString( "nr_of_comb" ), "'" )';
+    var i18n_completed = '$encoder.jsEscape( $i18n.getString( "completed" ), "'" )';	
+    var i18n_export_process_started = '$encoder.jsEscape( $i18n.getString( "export_process_started" ), "'" )';
+    var i18n_export_saved = '$encoder.jsEscape( $i18n.getString( "export_saved" ), "'" )';
+    var i18n_must_select_at_least_one_dataelement_or_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_dataelement_or_indicator" ), "'" )';
+    var i18n_must_select_at_least_one_organisation_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_organisation_unit" ), "'" )';
+    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'" )';
+</script>
 
 <h3>$i18n.getString( "generate_data_mart" ) #openHelp( "datamarthowto" )</h3>
 
@@ -228,16 +240,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-    var i18n_select_min_datatype = '$encoder.jsEscape( $i18n.getString( "select_min_datatype" ), "'" )';
-    var i18n_select_min_level = '$encoder.jsEscape( $i18n.getString( "select_min_level" ), "'" )';
-    var i18n_select_min_period = '$encoder.jsEscape( $i18n.getString( "select_min_period" ), "'" )';
-    var i18n_nr_of_comb = '$encoder.jsEscape( $i18n.getString( "nr_of_comb" ), "'" )';
-    var i18n_completed = '$encoder.jsEscape( $i18n.getString( "completed" ), "'" )';	
-    var i18n_export_process_started = '$encoder.jsEscape( $i18n.getString( "export_process_started" ), "'" )';
-    var i18n_export_saved = '$encoder.jsEscape( $i18n.getString( "export_saved" ), "'" )';
-    var i18n_must_select_at_least_one_dataelement_or_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_dataelement_or_indicator" ), "'" )';
-    var i18n_must_select_at_least_one_organisation_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_organisation_unit" ), "'" )';
-    var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'" )';
-</script>
