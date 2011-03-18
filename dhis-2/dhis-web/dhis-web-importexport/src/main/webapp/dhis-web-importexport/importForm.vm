@@ -1,6 +1,12 @@
-
 <script type="text/javascript">
 	getImportStatus();
+
+	var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'" )';
+	var i18n_importing = '$encoder.jsEscape( $i18n.getString( "importing" ), "'" )';
+	var i18n_show_advanced_options = '$encoder.jsEscape( $i18n.getString( "show_advanced_options" ), "'" )';
+	var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ), "'" )';
+	var i18n_completed = '$encoder.jsEscape( $i18n.getString( "completed" ), "'" )';
+	var i18n_current_import_file = '$encoder.jsEscape( $i18n.getString( "current_import_file" ), "'" )';
 </script>
 
 <h3>$i18n.getString( "$importFormat" ) $i18n.getString( "import" ) #openHelp( "import" )</h3>
@@ -127,14 +133,4 @@
 </form>
 
 <span id="message"></span>
-
 <span id="info"></span>
-
-<script type="text/javascript">
-	var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'" )';
-	var i18n_importing = '$encoder.jsEscape( $i18n.getString( "importing" ), "'" )';
-	var i18n_show_advanced_options = '$encoder.jsEscape( $i18n.getString( "show_advanced_options" ), "'" )';
-	var i18n_hide_advanced_options = '$encoder.jsEscape( $i18n.getString( "hide_advanced_options" ), "'" )';
-	var i18n_completed = '$encoder.jsEscape( $i18n.getString( "completed" ), "'" )';
-	var i18n_current_import_file = '$encoder.jsEscape( $i18n.getString( "current_import_file" ), "'" )';
-</script>
