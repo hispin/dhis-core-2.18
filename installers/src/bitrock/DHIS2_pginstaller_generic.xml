@@ -558,9 +558,6 @@
                     <workingDirectory>${installdir}\tmp\</workingDirectory>
                 </runProgram>
                 <deleteFile>
-                    <path>${installdir}\tmp\dhis2db.dump</path>
-                </deleteFile>
-                <deleteFile>
                     <path>${installdir}\tmp\restore_db_psql.bat</path>
                 </deleteFile>
             </postInstallationActionList>
