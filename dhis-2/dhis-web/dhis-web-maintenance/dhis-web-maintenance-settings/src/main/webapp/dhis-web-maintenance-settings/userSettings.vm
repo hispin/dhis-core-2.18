@@ -1,49 +1,41 @@
-
 #if( $availableLocales )
-
 <script type="text/javascript">
+	function languageChanged( list )
+	{
+		var locale = list.options[list.selectedIndex].value;
+		window.location.href = "setCurrentLocale.action?currentLocale=" + locale;
+	}
 
-function languageChanged( list )
-{
-	var locale = list.options[list.selectedIndex].value;
+	function languageChangedDb( list )
+	{
+		var locale = list.options[list.selectedIndex].value;
+		window.location.href = "setCurrentLocaleDb.action?currentLocaleDb=" + locale;
+	}
 
-	window.location.href = "setCurrentLocale.action?currentLocale=" + locale;
-}
+	function sortOrderChanged( list )
+	{
+		var sortOrder = list.options[list.selectedIndex].value;
+		window.location.href = "setCurrentSortOrder.action?currentSortOrder=" + sortOrder;
+	}
 
-function languageChangedDb( list )
-{
-	var locale = list.options[list.selectedIndex].value;
+	function displayPropertyChanged( list )
+	{
+		var property = list.options[list.selectedIndex].value;
+		window.location.href = "setCurrentDisplayProperty.action?currentDisplayProperty=" + property;
+	}
 
-	window.location.href = "setCurrentLocaleDb.action?currentLocaleDb=" + locale;
-}
+	function autoSaveDataEntryForm( value )
+	{
+		window.location.href = "setAutoSaveDataEntryForm.action?autoSave=" + value;
+	}
 
-function sortOrderChanged( list )
-{
-	var sortOrder = list.options[list.selectedIndex].value;
-	
-	window.location.href = "setCurrentSortOrder.action?currentSortOrder=" + sortOrder;
-}
-
-function displayPropertyChanged( list )
-{
-	var property = list.options[list.selectedIndex].value;
-	
-	window.location.href = "setCurrentDisplayProperty.action?currentDisplayProperty=" + property;
-}
-
-function autoSaveDataEntryForm( value )
-{
-	window.location.href = "setAutoSaveDataEntryForm.action?autoSave=" + value;
-}
-
-function styleChanged( list )
-{
-	var style = list.options[list.selectedIndex].value;
-	
-	window.location.href = "setCurrentStyle.action?currentStyle=" + style;
-}
-
+	function styleChanged( list )
+	{
+		var style = list.options[list.selectedIndex].value;
+		window.location.href = "setCurrentStyle.action?currentStyle=" + style;
+	}
 </script>
+
 <form>
 <h3>$i18n.getString("user_settings")</h3>
 
