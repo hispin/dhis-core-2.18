@@ -1,3 +1,10 @@
+<script type="text/javascript">
+    function submitForm()
+    {
+        selectAllById( "dataSets" );
+        document.getElementById( "sortOrderForm" ).submit();
+    }
+</script>
 
 <h3>$i18n.getString( "data_set_sort_order" )</h3>
 
@@ -24,11 +31,3 @@
 </p>
 
 </form>
-
-<script type="text/javascript">
-    function submitForm()
-    {
-        selectAllById( "dataSets" );
-        document.getElementById( "sortOrderForm" ).submit();
-    }
-</script>

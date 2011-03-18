@@ -1,28 +1,35 @@
-  <h3>$i18n.getString( "section_grey_field_managment" ) #openHelp( "grey_field" )</h3>
+<script type="text/javascript">
+    var i18n_enable = '$encoder.jsEscape( $i18n.getString( "enable" ) , "'" )';
+    var i18n_disable = '$encoder.jsEscape( $i18n.getString( "disable" ) , "'" )';
+</script>
+
+<h3>$i18n.getString( "section_grey_field_managment" ) #openHelp( "grey_field" )</h3>
   
-  <table id="detailsList">
-    <col/> ## Labels
-    <col/> ## Input
-    <thead>
-      <tr>
-        <th colspan="2">$i18n.getString( "section_details" )</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><b>$section.name</b></td>        
-      </tr>
-      <tr>
-        <td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><b>$section.dataSet.name</b></td>
-      </tr>
-      <tr>
-        <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><b>$categoryCombo.name</b></td>
-      </tr>
+<table id="detailsList">
+	<col/> ## Labels
+	<col/> ## Input
+	<thead>
+		<tr>
+			<th colspan="2">$i18n.getString( "section_details" )</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><b>$section.name</b></td>        
+		</tr>
+		<tr>
+			<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><b>$section.dataSet.name</b></td>
+		</tr>
+		<tr>
+	    <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+	        <td><b>$categoryCombo.name</b></td>
+		</tr>
     </tbody>    
-  </table>
+</table>
+
 <br/>
 <hr style="clear:both"/>
 <br/> 
@@ -42,8 +49,3 @@
 <p>
 	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'done' )"/>
 </p>
-	
-<script type="text/javascript">
-    var i18n_enable = '$encoder.jsEscape( $i18n.getString( "enable" ) , "'" )';
-    var i18n_disable = '$encoder.jsEscape( $i18n.getString( "disable" ) , "'" )';
-</script>
