@@ -30,7 +30,11 @@
 <tr>
 #foreach( $col in $row )
 #set( $index = ( $velocityCount - 1 ) )
-<td #if( $grid.getVisibleHeaders().get( $index ).meta )style="text-align:left"#end>$!encoder.htmlEncode( $col )</td>
+#if( $grid.getVisibleHeaders().get( $index ).meta )
+<td style="text-align:left">$!encoder.htmlEncode( $col )</td>
+#else
+<td>$!format.formatValue( $col )</td>
+#end
 #end
 </tr>
 #end
