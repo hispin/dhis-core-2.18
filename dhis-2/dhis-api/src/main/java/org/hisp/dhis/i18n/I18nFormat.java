@@ -44,7 +44,7 @@ import org.hisp.dhis.period.Period;
  */
 public class I18nFormat
 {
-    private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat( "#.#;#.#" ); // Fixed for now
+    private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#;#.#" ); // Fixed for now
     private static final String EMPTY = "";
     
     private ResourceBundle resourceBundle;
@@ -185,7 +185,7 @@ public class I18nFormat
     
     public String formatValue( Object value )
     {
-        return value != null ? FORMAT_DOUBLE.format( value ) : EMPTY;
+        return value != null ? FORMAT_VALUE.format( value ) : EMPTY;
     }
     
     // -------------------------------------------------------------------------
