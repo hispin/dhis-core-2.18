@@ -221,7 +221,11 @@ public class DataIntegrityServiceTest
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupB );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupC );
         organisationUnitGroupService.addOrganisationUnitGroup( unitGroupD );
-        
+
+        // ---------------------------------------------------------------------
+        // Group sets
+        // ---------------------------------------------------------------------
+
         unitGroupSetA = createOrganisationUnitGroupSet( 'A' );
         unitGroupSetB = createOrganisationUnitGroupSet( 'B' );
         
