@@ -1,4 +1,3 @@
-<script type="text/javascript" src="javascript/editDataSet.js"></script>
 <script type="text/javascript">
 	var previousName = '';
 </script>
