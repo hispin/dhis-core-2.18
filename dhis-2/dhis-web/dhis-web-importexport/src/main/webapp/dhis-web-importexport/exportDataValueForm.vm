@@ -1,3 +1,13 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		datePickerInRange( 'startDate' , 'endDate' );	
+	});
+
+    var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
+    var i18n_select_startdate = '$encoder.jsEscape( $i18n.getString( "select_startdate" ), "'")';
+    var i18n_select_enddate = '$encoder.jsEscape( $i18n.getString( "select_enddate" ), "'")';
+    var i18n_select_datasets = '$encoder.jsEscape( $i18n.getString( "select_datasets" ), "'")';
+</script>
 
 <h3>$i18n.getString( "$exportFormat" ) $i18n.getString( "data_export" ) #openHelp( "export" )</h3>
 
@@ -97,13 +107,7 @@
   	<tr>
 		<td colspan="3" height="15"></td>
 	</tr>
-  
-	<script type="text/javascript">
-    	$(document).ready(function(){	
-			datePickerInRange( 'startDate' , 'endDate' );	
-		});
-	</script>
-	  
+  	  
 	<!-- DataSets -->
 	
 	<tr>
@@ -143,10 +147,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-    var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
-    var i18n_select_startdate = '$encoder.jsEscape( $i18n.getString( "select_startdate" ), "'")';
-    var i18n_select_enddate = '$encoder.jsEscape( $i18n.getString( "select_enddate" ), "'")';
-    var i18n_select_datasets = '$encoder.jsEscape( $i18n.getString( "select_datasets" ), "'")';
-</script>
