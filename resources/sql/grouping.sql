@@ -3,7 +3,7 @@
 
 insert into orgunitgroupmembers(orgunitgroupid,organisationunitid)
 select 22755 as orgunitgroupid,ou.organisationunitid as organisationunitid from organisationunit ou 
-where (name like '%Dispensary%' or name like '%dispensary%')
+where lower(name) like '%dispensary%'
 and not exists (
 select orgunitgroupid from orgunitgroupmembers om 
 where ou.organisationunitid=om.organisationunitid
