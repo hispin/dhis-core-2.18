@@ -12,6 +12,9 @@
 		datePickerValid( 'openingDate', false );
 		#end			
 	});
+	
+	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
+	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
 </script>
 
 
@@ -119,10 +122,3 @@
 </table>
 
 </form>
-
-<script type="text/javascript">
-	
-	var previousName = '$encoder.jsEscape( $organisationUnit.name, "'" )';
-	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
-	
-</script>

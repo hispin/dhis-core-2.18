@@ -25,5 +25,4 @@
     	   type="button" value="$i18n.getString( 'cancel' )" onclick="javascript:window.location.href='index.action'" style="width:10em"/></td>
     </tr>
 </table>
-
 </form>
