@@ -1,3 +1,15 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+		pageInit();
+	});
+
+    var i18n_value_must_be_a_number = '$encoder.jsEscape( $i18n.getString( "value_must_be_a_number" ) , "'")';
+    var i18n_value_is_lower_than_min_value = '$encoder.jsEscape( $i18n.getString( "value_is_lower_than_min_value" ) , "'")';
+    var i18n_value_is_higher_than_max_value = '$encoder.jsEscape( $i18n.getString( "value_is_higher_than_max_value" ) , "'")';
+    var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
+    var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
+</script>
 
 #if ( $dataValues.size() == 0 )
 
@@ -60,19 +72,4 @@
 	#end
 	</tbody>
 </table>
-
 #end
-
-<script type="text/javascript">
-    var i18n_value_must_be_a_number = '$encoder.jsEscape( $i18n.getString( "value_must_be_a_number" ) , "'")';
-    var i18n_value_is_lower_than_min_value = '$encoder.jsEscape( $i18n.getString( "value_is_lower_than_min_value" ) , "'")';
-    var i18n_value_is_higher_than_max_value = '$encoder.jsEscape( $i18n.getString( "value_is_higher_than_max_value" ) , "'")';
-    var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
-    var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
-    
-   
-	jQuery(document).ready(function(){	
-		tableSorter( 'listTable' );	
-		pageInit();
-	});
-</script>

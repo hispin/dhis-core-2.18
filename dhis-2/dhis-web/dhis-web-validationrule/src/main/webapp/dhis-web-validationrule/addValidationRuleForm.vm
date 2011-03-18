@@ -1,23 +1,19 @@
-<script>
-
-//-----------------------------------------------------------------------
-//init jQuery validation for addValidationRuleForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#name").focus();
+<script type="text/javascript">
+	//-----------------------------------------------------------------------
+	//init jQuery validation for addValidationRuleForm
+	//-----------------------------------------------------------------------
+	jQuery(document).ready(function() {
+		jQuery("#name").focus();
+		
+		// validation form
+		validation( 'addValidationRuleForm', function( form ){ 			
+			form.submit();			
+		});
 				
-				// validation form
-				validation( 'addValidationRuleForm', function( form ){ 			
-					form.submit();			
-				});
-				
-				checkValueIsExist( "name", "validateValidationRule.action");
-			}
-	);
-
+		checkValueIsExist( "name", "validateValidationRule.action");
+	});
 </script>
+
 <h3>$encoder.htmlEncode( $i18n.getString( "create_new_validation_rule" ) )</h3>
 
 <form id="addValidationRuleForm" action="addValidationRule.action" method="post" onsubmit="enable('periodTypeName');">
@@ -82,5 +78,3 @@
 </form>
 
 #parse( "/dhis-web-validationrule/expressionBuilderForm.vm" )
-
-

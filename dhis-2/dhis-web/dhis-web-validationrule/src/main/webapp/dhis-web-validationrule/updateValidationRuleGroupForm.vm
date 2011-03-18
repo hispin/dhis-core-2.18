@@ -1,21 +1,30 @@
-<script>
-//-----------------------------------------------------------------------
-//init jQuery validation for updateValidationRuleGroupForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#name").focus();
-				
-				validation( 'updateValidationRuleGroupForm', 
-					function( form ){ form.submit() }, 
-					function(){ selectAllById('groupMembers') });
-				
-				checkValueIsExist( "name", "validateValidationRuleGroup.action", {id:getFieldValue('id')});		
-			}
-	);
+<script type="text/javascript">
+	//-----------------------------------------------------------------------
+	//init jQuery validation for updateValidationRuleGroupForm
+	//-----------------------------------------------------------------------
+	jQuery(document).ready(function() {
+		jQuery("#name").focus();
+		
+		validation( 'updateValidationRuleGroupForm', 
+			function( form ){ form.submit() }, 
+			function(){ selectAllById('groupMembers') });
+		
+		checkValueIsExist( "name", "validateValidationRuleGroup.action", {id:getFieldValue('id')});		
 
+	    initLists();
+	});
+
+    var groupMembers = new Object();
+	#foreach( $validationRule in $groupMembers )
+		groupMembers['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
+	#end
+
+    var availableValidationRules = new Object();
+	#foreach( $validationRule in $availableValidationRules )
+		availableValidationRules['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
+	#end
 </script>
+
 <h3>$i18n.getString( "edit_validation_rule_group" )</h3>
 
 <form id="updateValidationRuleGroupForm" action="updateValidationRuleGroup.action" method="post" >
@@ -71,19 +80,3 @@
 </form>
 
 <span id="message"></span>
-
-<script type="text/javascript">
-
-    var groupMembers = new Object();
-	#foreach( $validationRule in $groupMembers )
-		groupMembers['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
-	#end
-
-    var availableValidationRules = new Object();
-	#foreach( $validationRule in $availableValidationRules )
-		availableValidationRules['$validationRule.id'] = '$encoder.jsEscape( $validationRule.name, "'" )';
-	#end
-
-    initLists();
-
-</script>
