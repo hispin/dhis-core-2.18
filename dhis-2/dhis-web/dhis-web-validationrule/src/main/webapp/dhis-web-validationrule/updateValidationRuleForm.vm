@@ -1,26 +1,24 @@
-<script>
+<script type="text/javascript">
+	//-----------------------------------------------------------------------
+	//init jQuery validation for updateValidationRuleForm
+	//-----------------------------------------------------------------------
+	jQuery(document).ready(function() {
+		jQuery("#name").focus();
+		
+		// validation form
+		validation( 'updateValidationRuleForm', function( form ){
+			form.submit();			
+		});
+		/* validation( 'updateValidationRuleForm', function( form ){			
+					form.submit();
+				},function(){
+					validateExpression();
+				});	 */				
+		checkValueIsExist( "name", "validateValidationRule.action", {id:getFieldValue('id')});				
+	});
 
-//-----------------------------------------------------------------------
-//init jQuery validation for updateValidationRuleForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(
-			function()
-			{
-				jQuery("#name").focus();
-				
-				// validation form
-				validation( 'updateValidationRuleForm', function( form ){
-					form.submit();			
-				});
-				/* validation( 'updateValidationRuleForm', function( form ){			
-							form.submit();
-						},function(){
-							validateExpression();
-						});	 */				
-				checkValueIsExist( "name", "validateValidationRule.action", {id:getFieldValue('id')});				
-			}
-	);
-
+	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
+	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
 </script>
 
 <h3>$encoder.htmlEncode( $i18n.getString( "edit_validation_rule" ) )</h3>
@@ -87,8 +85,3 @@
 </form>
 
 #parse( "/dhis-web-validationrule/expressionBuilderForm.vm" )
-
-<script>
-	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
-	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
-</script>

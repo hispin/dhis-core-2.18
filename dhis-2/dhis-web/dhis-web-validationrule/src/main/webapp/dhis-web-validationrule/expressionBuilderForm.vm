@@ -1,71 +1,8 @@
-<div id="expression-container">
-<form id="expression-form" name="expression-form">
-<table width="800" style="text-align:left">
-	<colgroup>
-		<col width="250"/>
-		<col width="50"/>
-		<col width="500"/>
-	</colgroup>
-	<tr>
-		<th colspan="3">$i18n.getString( "description" )</th>		
-	</tr>
-	<tr>
-		<td colspan="3">
-			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
-		</td>		
-	</tr>
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-	<tr>
-		<th colspan="2">$i18n.getString( "expression" )</th>
-		<th>$i18n.getString( "available_data_elements" )</th>
-	</tr>
-	<tr>
-		<td valign="top">
-		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
-		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
-		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
-		<a href="javascript:insertText( 'expression', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( 'divide' )"/></a>
-		<a href="javascript:insertText( 'expression', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( 'plus' )"/></a>
-		<a href="javascript:insertText( 'expression', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( 'minus' )"/></a>
-		</td>
-		<td></td>
-		<td valign="top">
-			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
-			<input type="text" id="filter" name="filter" style="width:380px">
-			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px"><br/>
-
-			<select id="dataElementId" name="dataElementId" size="7" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<th colspan="3">$i18n.getString( "description" )</th>		
-	</tr>
-	<tr>
-		<td colspan="3"><div id="formulaText" style="width:740px;height:70px;overflow:auto"></div></td>
-	</tr>
-	<tr>
-		<td colspan="3"></td>
-	</tr>
-	<tr>
-		<td colspan="3">
-			<input type="submit" value="$i18n.getString( 'save' )" style="width:125px"/>
-			<input type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="dialog.dialog('close')"/>
-		</td>
-	</tr>	
-</table>
-</form>
-</div>
-
-<script>
+<script type="text/javascript">
 	var left = true;
 	var dialog = null;
 	
-	jQuery(function(){
-		
+	jQuery(document).ready(function() {
 		dialog = jQuery( "#expression-container" ).dialog({
 			modal: true,
 			autoOpen:false,
@@ -177,5 +114,66 @@
 	
 	var i18n_description_not_null = '$encoder.jsEscape( $i18n.getString( "description_not_null" ) , "'")';
 	var i18n_expression_not_null = '$encoder.jsEscape( $i18n.getString( "expression_not_null" ) , "'")';
-	
 </script>
+
+<div id="expression-container">
+<form id="expression-form" name="expression-form">
+<table width="800" style="text-align:left">
+	<colgroup>
+		<col width="250"/>
+		<col width="50"/>
+		<col width="500"/>
+	</colgroup>
+	<tr>
+		<th colspan="3">$i18n.getString( "description" )</th>		
+	</tr>
+	<tr>
+		<td colspan="3">
+			<input type="text" id="description" name="description" style="width:250px" class="{validate:{required:true}}"/>
+		</td>		
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<th colspan="2">$i18n.getString( "expression" )</th>
+		<th>$i18n.getString( "available_data_elements" )</th>
+	</tr>
+	<tr>
+		<td valign="top">
+		<textarea id="expression" name="expression" style="width:250px; height:150px" wrap="virtual" onchange="getExpressionText()" class="{validate:{required:true}}"></textarea><br/>
+		<a href="javascript:insertText( 'expression', '(', 'aggregationOperator' )"><img src="../images/left_parent.png" alt="$i18n.getString( 'left_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', ')', 'aggregationOperator' )"><img src="../images/right_parent.png" alt="$i18n.getString( 'right_brackets' )"/></a>
+		<a href="javascript:insertText( 'expression', '*', 'aggregationOperator' )"><img src="../images/multiply.png" alt="$i18n.getString( 'multiply' )"/></a>
+		<a href="javascript:insertText( 'expression', '/', 'aggregationOperator' )"><img src="../images/divide.png" alt="$i18n.getString( 'divide' )"/></a>
+		<a href="javascript:insertText( 'expression', '+', 'aggregationOperator' )"><img src="../images/plus.png" alt="$i18n.getString( 'plus' )"/></a>
+		<a href="javascript:insertText( 'expression', '-', 'aggregationOperator' )"><img src="../images/minus.png" alt="$i18n.getString( 'minus' )"/></a>
+		</td>
+		<td></td>
+		<td valign="top">
+			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
+			<input type="text" id="filter" name="filter" style="width:380px">
+			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px"><br/>
+
+			<select id="dataElementId" name="dataElementId" size="7" style="min-width:450px" ondblclick="insertText( 'expression', this.value )">
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="3">$i18n.getString( "description" )</th>		
+	</tr>
+	<tr>
+		<td colspan="3"><div id="formulaText" style="width:740px;height:70px;overflow:auto"></div></td>
+	</tr>
+	<tr>
+		<td colspan="3"></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<input type="submit" value="$i18n.getString( 'save' )" style="width:125px"/>
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:125px" onclick="dialog.dialog('close')"/>
+		</td>
+	</tr>	
+</table>
+</form>
+</div>
