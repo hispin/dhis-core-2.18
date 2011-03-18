@@ -29,6 +29,7 @@ package org.hisp.dhis.i18n;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,6 +44,9 @@ import org.hisp.dhis.period.Period;
  */
 public class I18nFormat
 {
+    private static final DecimalFormat FORMAT_DOUBLE = new DecimalFormat( "#.#;#.#" ); // Fixed for now
+    private static final String EMPTY = "";
+    
     private ResourceBundle resourceBundle;
 
     public I18nFormat( ResourceBundle resourceBundle )
@@ -177,6 +181,11 @@ public class I18nFormat
         String endDate = commonFormatting( period.getEndDate(), resourceBundle.getString( keyEndDate ) );
 
         return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
+    }
+    
+    public String formatValue( Object value )
+    {
+        return value != null ? FORMAT_DOUBLE.format( value ) : EMPTY;
     }
     
     // -------------------------------------------------------------------------
