@@ -1,3 +1,14 @@
+<script type="text/javascript">
+	var currentOrganisationUnitId = $!{dataElementHistory.organisationUnit.id};
+	var currentDataElementId = $!{dataElementHistory.dataElement.id};
+	var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
+	
+	var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
+	var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
+	var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
+	var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
+</script>
+
 #set( $width = 40 * $dataElementHistory.historyLength )
 #set( $lastIndex = $dataElementHistory.historyLength - 1 )
 #set( $average = $dataElementHistory.historyPoints.get( $lastIndex ).average )
@@ -104,16 +115,3 @@
 </table>
 
 <p><input type="button" value="$encoder.htmlEncode( $i18n.getString( 'close' ) )" onclick="javascript:self.close()"/></p>
-
-<script type="text/javascript">
-
-var currentOrganisationUnitId = $!{dataElementHistory.organisationUnit.id};
-var currentDataElementId = $!{dataElementHistory.dataElement.id};
-var currentOptionComboId = $!{dataElementHistory.optionCombo.id};
-
-var i18n_enter_digits = '$encoder.jsEscape( $i18n.getString( "enter_digits" ) , "'")';
-var i18n_max_must_be_greater_than_min = '$encoder.jsEscape( $i18n.getString( "max_must_be_greater_than_min" ) , "'")';
-var i18n_mark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "mark_value_for_followup" ) , "'")';
-var i18n_unmark_value_for_followup = '$encoder.jsEscape( $i18n.getString( "unmark_value_for_followup" ) , "'")';
-
-</script>
