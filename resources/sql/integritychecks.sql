@@ -28,9 +28,10 @@ order by de.name;
 
 -- Get dataelements which are members of a section but not the section's dataset
 
-select de.name as dataelementname, sc.name as sectionname from sectiondataelements sd
+select de.name as dataelementname, sc.name as sectionname, ds.name as datasetname from sectiondataelements sd
 join dataelement de on(sd.dataelementid=de.dataelementid)
 join section sc on (sd.sectionid=sc.sectionid)
+join dataset ds on (sc.datasetid=ds.datasetid)
 where sd.dataelementid not in (
   select dm.dataelementid from datasetmembers dm
   join dataset ds on(dm.datasetid=ds.datasetid)
