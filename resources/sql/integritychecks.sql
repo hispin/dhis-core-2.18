@@ -35,7 +35,8 @@ join dataset ds on (sc.datasetid=ds.datasetid)
 where sd.dataelementid not in (
   select dm.dataelementid from datasetmembers dm
   join dataset ds on(dm.datasetid=ds.datasetid)
-  where sc.datasetid=ds.datasetid);
+  where sc.datasetid=ds.datasetid)
+order by ds.name, de.name;
 
 -- Get orgunit groups which an orgunit is member of
 
