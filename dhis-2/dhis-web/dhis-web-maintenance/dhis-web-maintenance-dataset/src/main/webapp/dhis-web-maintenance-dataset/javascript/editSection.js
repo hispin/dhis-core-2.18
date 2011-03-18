@@ -23,8 +23,17 @@ jQuery( document ).ready( function()
 	jQuery( "#sectionName" ).attr( "maxlength", r.section.name.length[1] );
 
 	checkValueIsExist( "sectionName", "validateSection.action", {
-		dataSetId : jQuery( "#dataSetId" ).val(),
-		name : jQuery( "#sectionName" ).val(),
-		sectionId : jQuery( "#sectionId" ).val()
+		dataSetId : function()
+		{
+			return jQuery( "#dataSetId" ).val();
+		},
+		name : function()
+		{
+			return jQuery( "#sectionName" ).val();
+		},
+		sectionId : function()
+		{
+			return jQuery( "#sectionId" ).val();
+		}
 	} );
 } );

@@ -18,7 +18,7 @@ jQuery( document ).ready( function()
 	}, {
 		'beforeValidateHandler' : function()
 		{
-			selectAllById( 'selectedList' )
+			selectAllById( 'selectedList' );
 		},
 		'rules' : rules
 	} );
@@ -26,7 +26,13 @@ jQuery( document ).ready( function()
 	jQuery( "#sectionName" ).attr( "maxlength", r.section.name.length[1] );
 
 	checkValueIsExist( "sectionName", "validateSection.action", {
-		dataSetId : jQuery( "#dataSetId" ).val(),
-		name : jQuery( "#sectionName" ).val()
+		dataSetId : function()
+		{
+			return jQuery( "#dataSetId" ).val();
+		},
+		name : function()
+		{
+			return jQuery( "#sectionName" ).val();
+		}
 	} );
 } );
