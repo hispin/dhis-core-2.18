@@ -41,13 +41,23 @@ jQuery( document ).ready( function()
 	jQuery( "#code" ).attr( "maxlength", r.dataSet.code.length[1] );
 
 	checkValueIsExist( "name", "validateDataSet.action", {
-		dataSetId : jQuery( "#dataSetId" ).val()
-	} );
-	checkValueIsExist( "shortName", "validateDataSet.action", {
-		dataSetId : jQuery( "#dataSetId" ).val()
-	} );
-	checkValueIsExist( "code", "validateDataSet.action", {
-		dataSetId : jQuery( "#dataSetId" ).val()
+		dataSetId : function()
+		{
+			return jQuery( "#dataSetId" ).val();
+		}
 	} );
 
+	checkValueIsExist( "shortName", "validateDataSet.action", {
+		dataSetId : function()
+		{
+			return jQuery( "#dataSetId" ).val();
+		}
+	} );
+
+	checkValueIsExist( "code", "validateDataSet.action", {
+		dataSetId : function()
+		{
+			return jQuery( "#dataSetId" ).val();
+		}
+	} );
 } );
