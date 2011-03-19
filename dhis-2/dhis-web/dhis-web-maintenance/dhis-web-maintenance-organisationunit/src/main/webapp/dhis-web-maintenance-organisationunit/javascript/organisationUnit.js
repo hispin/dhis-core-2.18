@@ -8,7 +8,6 @@ function organisationUnitSelected( orgUnitIds )
 }
 
 selection.setListenerFunction( organisationUnitSelected );
-selection.setUnselectAllowed( true );
 
 // -----------------------------------------------------------------------------
 // View details

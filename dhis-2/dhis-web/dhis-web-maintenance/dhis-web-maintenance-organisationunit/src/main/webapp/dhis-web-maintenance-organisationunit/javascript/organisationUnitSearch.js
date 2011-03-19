@@ -12,6 +12,7 @@ function organisationUnitSelected( orgUnitIds )
 }
 
 selection.setListenerFunction( organisationUnitSelected );
+selection.setUnselectAllowed( true );
 
 function initOrgUnitDetails()
 {
@@ -21,8 +22,6 @@ function initOrgUnitDetails()
 		width:600,
 		height:600
 	} );
-	
-	selection.setUnselectAllowed( true );
 }
 
 function showOrgUnitDetails( id )
