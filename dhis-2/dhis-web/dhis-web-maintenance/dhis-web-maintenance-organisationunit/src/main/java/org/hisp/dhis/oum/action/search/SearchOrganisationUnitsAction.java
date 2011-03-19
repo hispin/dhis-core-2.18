@@ -194,6 +194,12 @@ public class SearchOrganisationUnitsAction
             selectedOrganisationUnit = selectionManager.getSelectedOrganisationUnit();
 
             log.debug( "Name: " + name + ", Orgunit: " + selectedOrganisationUnit + ", type: " + type );
+
+            // -----------------------------------------------------------------
+            // Set orgunit to null if root to avoid subquery and improve perf
+            // -----------------------------------------------------------------
+
+            selectedOrganisationUnit = selectedOrganisationUnit != null && selectedOrganisationUnit.getParent() == null ? null : selectedOrganisationUnit;
             
             Collection<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
             
