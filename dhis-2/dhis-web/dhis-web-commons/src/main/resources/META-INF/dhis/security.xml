@@ -7,7 +7,7 @@
   <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled" secured-annotations="disabled" />
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
-    <sec:form-login default-target-url="/dhis-web-portal/redirect.action" always-use-default-target="false"
+    <sec:form-login default-target-url="/dhis-web-commons-security/loggedIn.action" always-use-default-target="true"
       login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.html"
       login-page="/dhis-web-commons/security/login.html" />
     <sec:http-basic />
