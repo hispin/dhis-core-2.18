@@ -26,7 +26,7 @@
 {
 #set( $size = $pivotTable.indicatorValues.size() )
 #foreach( $value in $pivotTable.indicatorValues )
-"${value.elementId}-${value.periodId}-${value.organisationUnitId}":"${value.value}"#if( $velocityCount < $size ),#end
+"${value.elementId}-${value.periodId}-${value.organisationUnitId}":"${format.formatValue( ${value.value} )}"#if( $velocityCount < $size ),#end
 #end } ] 
 }
 }

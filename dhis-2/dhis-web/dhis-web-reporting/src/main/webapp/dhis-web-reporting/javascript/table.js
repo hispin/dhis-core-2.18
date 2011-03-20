@@ -150,7 +150,6 @@ function showTableDetails( tableId )
 function tableReceived( xmlObject )
 {
 	setInnerHTML( 'nameField', getElementValue( xmlObject, 'name' ) );
-	setInnerHTML( 'tableNameField', getElementValue( xmlObject, 'tableName' ) );
 	setInnerHTML( 'indicatorsField', getElementValue( xmlObject, 'indicators' ) );
 	setInnerHTML( 'periodsField', getElementValue( xmlObject, 'periods' ) );
 	setInnerHTML( 'unitsField', getElementValue( xmlObject, 'units' ) );
