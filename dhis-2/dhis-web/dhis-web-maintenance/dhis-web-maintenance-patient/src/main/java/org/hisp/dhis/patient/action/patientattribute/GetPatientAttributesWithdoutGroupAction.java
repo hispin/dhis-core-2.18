@@ -40,8 +40,11 @@ import com.opensymphony.xwork2.Action;
  *
  * @version GetPatientAttributesWithdoutGroupAction.java Sep 27, 2010 4:55:01 PM
  */
-public class GetPatientAttributesWithdoutGroupAction implements Action
+public class GetPatientAttributesWithdoutGroupAction 
+    implements Action
 {
+    //TODO typo in class name
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

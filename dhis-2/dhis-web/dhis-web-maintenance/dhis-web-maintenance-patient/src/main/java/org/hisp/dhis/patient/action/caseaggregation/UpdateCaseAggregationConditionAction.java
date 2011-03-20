@@ -138,5 +138,4 @@ public class UpdateCaseAggregationConditionAction
         
         return SUCCESS;
     }
-
 }

@@ -64,7 +64,6 @@ public class GetOptionalPatientAttributesWithoutGroupAction
         return patientAttributes;
     }
 
-   
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------

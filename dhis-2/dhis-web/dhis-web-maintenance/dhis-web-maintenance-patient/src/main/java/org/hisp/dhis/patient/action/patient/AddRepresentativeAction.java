@@ -114,7 +114,7 @@ public class AddRepresentativeAction
         // Get FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
-     // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
         
@@ -127,7 +127,7 @@ public class AddRepresentativeAction
         String middleName = "";
         String lastName = "";
 
-        if( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 ) // TODO fix hack
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
@@ -145,6 +145,7 @@ public class AddRepresentativeAction
         patient.setFirstName( firstName );
         patient.setMiddleName( middleName );
         patient.setLastName( lastName );
+        
         // ---------------------------------------------------------------------
         // Get Other information for patient
         // ---------------------------------------------------------------------

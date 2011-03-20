@@ -60,6 +60,7 @@ public class GetPatientAttributeGroupListAction
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
+    
     public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
         this.patientAttributeGroupService = patientAttributeGroupService;

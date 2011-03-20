@@ -77,6 +77,7 @@ public class ShowCaseAggregationConditionFormAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+    
     public List<DataElementGroup> getDataElementGroups()
     {
         return dataElementGroups;
@@ -131,5 +132,4 @@ public class ShowCaseAggregationConditionFormAction
 
         return SUCCESS;
     }
-
 }

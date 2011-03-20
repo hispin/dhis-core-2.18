@@ -98,7 +98,6 @@ public class AddPatientAttributeGroupAction
     public String execute()
         throws Exception
     {
-
         PatientAttributeGroup patientAttributeGroup = new PatientAttributeGroup();
 
         patientAttributeGroup.setName( name );

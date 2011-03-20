@@ -80,5 +80,4 @@ public class RemoveCaseAggregationConditionAction
 
         return SUCCESS;
     }
-
 }

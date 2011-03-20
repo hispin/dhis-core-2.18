@@ -35,17 +35,16 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Viet
- *
- * @version $Id$
  */
-public class RemovePatientAttributeOptionAction implements Action
+public class RemovePatientAttributeOptionAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientAttributeOptionService patientAttributeOptionService;
-    
+
     private PatientAttributeValueService patientAttributeValueService;
 
     // -------------------------------------------------------------------------
@@ -58,35 +57,37 @@ public class RemovePatientAttributeOptionAction implements Action
     {
         this.id = id;
     }
-    
+
     private String message;
-    
+
     private I18n i18n;
-    
 
     public String execute()
         throws Exception
     {
         PatientAttributeOption attributeOption = patientAttributeOptionService.get( id );
-        
-        if( attributeOption != null )
+
+        if ( attributeOption != null )
         {
-            int count =  patientAttributeValueService.countByPatientAttributeoption( attributeOption );
-            if( count > 0 )
+            int count = patientAttributeValueService.countByPatientAttributeoption( attributeOption );
+            if ( count > 0 )
             {
                 message = i18n.getString( "warning_delete_patient_attribute_option" );
                 return INPUT;
-            }else 
+            }
+            else
             {
                 patientAttributeOptionService.deletePatientAttributeOption( attributeOption );
                 message = i18n.getString( "success_delete_patient_attribute_option" );
                 return SUCCESS;
             }
-        }else{
+        }
+        else
+        {
             message = i18n.getString( "error_delete_patient_attribute_option" );
             return ERROR;
         }
-       
+
     }
 
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )

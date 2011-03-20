@@ -146,21 +146,7 @@ public class ShowUpdatePatientAttributeValueAction
     {
         patient = patientService.getPatient( id );
 
-        // if ( patientAttributeGroups == null )
         patientAttributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
-
-        // if ( patientAttributeGroupId != 0 )
-        // {
-        // patientAttributes = new ArrayList<PatientAttribute>();
-        //
-        // patientAttributes =
-        // patientAttributeGroupService.getPatientAttributeGroup(
-        // patientAttributeGroupId ).getAttributes();
-        // }else
-        // {
-        // patientAttributes =
-        // patientAttributeService.getAllPatientAttributes();
-        // }
 
         patientNoGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 

@@ -106,6 +106,5 @@ public class ValidatePatientAttributeAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-
     }
 }

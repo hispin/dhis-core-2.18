@@ -109,5 +109,4 @@ public class ValidatePatientIdentifierTypeAction
     {
         this.id = id;
     }
-
 }
