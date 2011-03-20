@@ -30,17 +30,17 @@
 		<th>$i18n.getString( "report_period" )</th>
 	</tr>
 	<tr>
-		<td>        
-			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )"><input
-				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )">
-			<select id="periodType" name="periodType" style="min-width:222px" onchange="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '0' )">
+		<td>
+			<select id="periodType" name="periodType" style="min-width:222px" onchange="getPeriods( 'periodType', 'periodId', 'periodId', '0' )">
 				<option value="">[ $i18n.getString( "select_period_type" ) ]</option>
 				#foreach ( $type in $periodTypes )
 					<option value="$type.name">$type.name</option>
 				#end
-			</select><br>
+			</select>
+			<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )"><input
+				   type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )"><br>
 			
-	        <select id="periodId" name="periodId" style="width:325px">
+	        <select id="periodId" name="periodId" style="width:325px" disabled="disabled">
 	        </select>
 		</td>
     </tr>

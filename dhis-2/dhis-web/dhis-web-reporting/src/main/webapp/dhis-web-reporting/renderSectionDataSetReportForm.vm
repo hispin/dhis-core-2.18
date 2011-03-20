@@ -18,7 +18,7 @@
 <thead>
 <tr>
 #foreach( $header in $grid.getVisibleHeaders() )
-<th #if( !$header.meta )class="val"#end>$!encoder.htmlEncode( $header.name )</th>
+<th #if( !$header.meta )style="text-align:center"#end>$!encoder.htmlEncode( $header.name )</th>
 #end
 </tr>
 </thead>
