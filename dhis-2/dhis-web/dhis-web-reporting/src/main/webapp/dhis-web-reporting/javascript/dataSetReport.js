@@ -15,6 +15,13 @@ if ( selectionTreeSelection )
     selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 }
 
+function getPeriods( periodTypeList, availableList, selectedList, timespan )
+{
+	$( "#periodId" ).removeAttr( "disabled" );
+	
+	getAvailablePeriods( periodTypeList, availableList, selectedList, timespan );
+}
+
 function validateDataSetReport()
 {
     if ( !getListValue( "dataSetId" ) )
