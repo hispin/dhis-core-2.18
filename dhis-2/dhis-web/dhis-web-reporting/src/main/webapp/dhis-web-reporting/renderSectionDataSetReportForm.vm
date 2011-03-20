@@ -1,10 +1,3 @@
-<script type="text/javascript">
-	function printDateSetReportPreview()
-	{
-		var o = jQuery("div#printDateSetPreviewDiv");
-		o.jqprint(); 
-	}
-</script>
 
 <h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
 <p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/></p>
@@ -24,16 +17,14 @@
 	</tr>
 </thead>
 
-<tbody>
-#set( $mark = false )       
+<tbody>    
 #foreach( $row in $grid.getVisibleRows() )
-	<tr #alternate( $mark )>
+	<tr>
 		#foreach( $col in $row )
 			#set( $index = ( $velocityCount - 1 ) )
 			<td #if( !$grid.getVisibleHeaders().get( $index ).meta )style="text-align:center;"#end>$!encoder.htmlEncode( $col )</td>
 		#end
 	</tr>
-	 #set( $mark = !$mark )
 #end
 </tbody>
 </table>
