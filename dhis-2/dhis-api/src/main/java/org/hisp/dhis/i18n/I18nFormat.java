@@ -46,6 +46,7 @@ public class I18nFormat
 {
     private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#;#.#" ); // Fixed for now
     private static final String EMPTY = "";
+    private static final String NAN = "NaN";
     
     private ResourceBundle resourceBundle;
 
@@ -185,7 +186,19 @@ public class I18nFormat
     
     public String formatValue( Object value )
     {
-        return value != null ? FORMAT_VALUE.format( value ) : EMPTY;
+        if ( value == null )
+        {
+            return EMPTY;
+        }
+        
+        try
+        {
+            return FORMAT_VALUE.format( value );
+        }
+        catch ( IllegalArgumentException ex )
+        {
+            return NAN;
+        }
     }
     
     // -------------------------------------------------------------------------
