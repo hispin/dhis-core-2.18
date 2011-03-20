@@ -30,6 +30,7 @@ package org.hisp.dhis.datasetreport;
 import java.util.Map;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -49,7 +50,7 @@ public interface DataSetReportService
      * @param selectedUnitOnly whether to include aggregated or regular data in the map.
      * @return a map.
      */
-    Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly );
+    Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format );
 
     /**
      * Puts in aggregated datavalues in the custom dataentry form and returns

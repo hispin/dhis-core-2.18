@@ -184,6 +184,12 @@ public class I18nFormat
         return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
     }
     
+    /**
+     * Formats value. Returns empty string if value is null. Returns NaN if value
+     * is not a number.
+     *  
+     * @param value the value to format.
+     */
     public String formatValue( Object value )
     {
         if ( value == null )
