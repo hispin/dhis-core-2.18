@@ -57,7 +57,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.MathUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -250,20 +249,18 @@ public class GenerateSectionDataSetReportAction
 
                 for ( DataElementCategoryOptionCombo optionCombo : categoryCombo.getOptionCombos() ) // Values
                 {
-                    String value = null;
+                    Double value = null;
 
                     if ( selectedUnitOnly )
                     {
                         DataValue dataValue = dataValueService.getDataValue( selectedOrgunit, dataElement, selectedPeriod, optionCombo );
-                        value = (dataValue != null) ? dataValue.getValue() : null;
+                        value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
                     }
                     else
                     {
-                        Double aggregatedValue = realTime ? 
+                        value = realTime ? 
                             aggregationService.getAggregatedDataValue( dataElement, optionCombo, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) : 
                             aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, selectedPeriod, selectedOrgunit );
-
-                        value = aggregatedValue != null ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
                     }
                     
                     grid.addValue( value );
@@ -277,7 +274,7 @@ public class GenerateSectionDataSetReportAction
                             aggregationService.getAggregatedDataValue( dataElement, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit, categoryOption ) : 
                             aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, selectedPeriod, selectedOrgunit );
 
-                        grid.addValue( value != null ? String.valueOf( MathUtils.getRounded( value, 0 ) ) : null );
+                        grid.addValue( value );
                     }
                 }
                 
@@ -287,7 +284,7 @@ public class GenerateSectionDataSetReportAction
                         aggregationService.getAggregatedDataValue( dataElement, null, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), selectedOrgunit ) :
                         aggregatedDataValueService.getAggregatedValue( dataElement, selectedPeriod, selectedOrgunit );
                         
-                    grid.addValue( value != null ? String.valueOf( MathUtils.getRounded( value, 0 ) ) : null );
+                    grid.addValue( value );
                 }
             }
 

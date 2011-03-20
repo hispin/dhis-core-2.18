@@ -64,7 +64,7 @@
   </tr>  
   <tr>	
 	<td>
-        <div id="selectionTree" style="width:350px;height:220px;overflow:auto;border:1px solid #cccccc">			
+        <div id="selectionTree" style="width:350px;height:200px;overflow:auto;border:1px solid #cccccc">			
 			<script type="text/javascript">
           		selectionTreeSelection.setMultipleSelectionAllowed( false );
 				selectionTree.clearSelectedOrganisationUnits();
