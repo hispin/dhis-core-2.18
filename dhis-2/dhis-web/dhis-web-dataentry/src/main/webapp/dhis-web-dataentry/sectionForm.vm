@@ -11,18 +11,16 @@
   #set( $marker = 1 )
 #end
 
-<div style="border:thin solid">
-
-<table class="mainPageTable">
+<table style="border:1px solid #c0c0c0; padding:10px;">
 <tr>
-  <td onclick="openCloseSection( $section.id )" onmouseover="style.backgroundColor='#ebf0f6';" onmouseout="style.backgroundColor='#FFFFFF'">
-    <div id="$section.id:name" style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
+  <td>
+    <div style="text-align:center"><h3>$encoder.htmlEncode( $section.name )</h3></div>
   </td>
 </tr>
 <tr>
   <td>
     <div id="$section.id" style="display:block">
-      <table class="mainPageTable" cellpadding="0">
+      <table cellpadding="0">
       #set( $categoryComboId = $sectionCombos.get( $section.id ) )
       #set( $colCount = $numberOfTotalColumns.get( $categoryComboId ) )
       #set( $categories = $orderedCategories.get( $categoryComboId ) )
@@ -57,7 +55,7 @@
       #end
       #set( $count = $count + 1 )
       <tr>
-        <td #if( $mark == 1 ) style="background-color: #dddddd" #end>
+        <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;">
           <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">$encoder.htmlEncode( $dataElement.name )</span><span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span>
         </td>
         #foreach( $optionCombo in $optionCombos )
@@ -95,8 +93,7 @@
     </div>
     </td>
   </tr>
-  </table>
-</div>
+</table>
 
 <br>
 

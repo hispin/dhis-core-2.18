@@ -2,8 +2,7 @@
 
 #set( $tabIndex = 1 )
 #foreach( $categoryCombo in $orderedCategoryCombos )
-<div style="border:1px solid #808080;width:98%">            
-  <table class="mainPageTable" cellpadding="0">
+<table style="border:1px solid #c0c0c0; padding:10px;">
   #set( $colCount = $numberOfTotalColumns.get( $categoryCombo.id )  ) 
   #set( $categories = $orderedCategories.get( $categoryCombo.id )  )
   #set( $optionsMap = $orderedOptionsMap.get( $categoryCombo.id )  )
@@ -39,7 +38,7 @@
 
   #set( $count = $count + 1 )
   <tr>
-    <td #if( $mark == 1 ) style="background-color:#dddddd" #end>
+    <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;">
       <span id="value[$dataElement.id].name" title="$!encoder.htmlEncode( $dataElement.description )">$encoder.htmlEncode( $dataElement.name )</span><span id="value[$dataElement.id].type" class="hidden">$dataElement.getDetailedNumberType()</span>
     </td>
     #foreach( $optionCombo in $optionCombos )
@@ -71,8 +70,7 @@
     #end
   </tr>
   #end
-  </table>
-</div>
+</table>
 <br>
 <br>
 #end
