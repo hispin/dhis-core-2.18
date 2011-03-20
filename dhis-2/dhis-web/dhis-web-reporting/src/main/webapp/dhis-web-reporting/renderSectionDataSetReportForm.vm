@@ -8,13 +8,13 @@
 <h3>$i18n.getString('reporting_unit'): $reportingUnit &nbsp; $i18n.getString('reporting_period'): $reportingPeriod</h3>
 <p><input type="button" value="$i18n.getString( 'back' )" style="width:100px" onclick="javascript:window.location.href='showDataSetReportForm.action'"/></p>
 
-<div id="printDateSetPreviewDiv">
 #foreach( $grid in $grids )
+<div style="border:1px solid #c0c0c0; padding:10px; margin-bottom:30px;">
 
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-<table class="listTable gridTable">
+<table class="listTable">
 <thead>
 <tr>
 #foreach( $header in $grid.getVisibleHeaders() )
@@ -34,6 +34,5 @@
 #end
 </tbody>
 </table>
-<br>
-#end
 </div>
+#end
