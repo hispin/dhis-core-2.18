@@ -80,6 +80,7 @@ public class SaveProgramStageSortOrderAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+    
     public String execute()
     {
         int stageInProgram = 1;

@@ -28,11 +28,9 @@ package org.hisp.dhis.patient.screen;
 
 /**
  * @author Viet Nguyen
- *
  * @version $Id$
  */
 public interface DataEntryManager
 {
-    
     String prepareDataEntryFormCode( String dataEntryFormCode );
 }

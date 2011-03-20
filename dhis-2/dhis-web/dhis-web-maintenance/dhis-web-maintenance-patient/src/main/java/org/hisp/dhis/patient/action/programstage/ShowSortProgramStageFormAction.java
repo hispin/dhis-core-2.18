@@ -96,7 +96,6 @@ public class ShowSortProgramStageFormAction
 
     public String execute()
     {
-
         program = programService.getProgram( id );
 
         programStages = program.getProgramStages();

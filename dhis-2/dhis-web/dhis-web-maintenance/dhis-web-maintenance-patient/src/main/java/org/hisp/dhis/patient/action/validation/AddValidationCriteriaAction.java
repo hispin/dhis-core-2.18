@@ -134,10 +134,8 @@ public class AddValidationCriteriaAction
     private Object getObject()
         throws Exception
     {
-
         Type type = Patient.class.getMethod( "get" + StringUtils.capitalize( property ) ).getReturnType();
 
-        // Get value
         if ( type == Integer.class || type == Integer.TYPE )
         {
             return Integer.valueOf( value );

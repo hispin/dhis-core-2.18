@@ -40,7 +40,6 @@ import com.opensymphony.xwork2.Action;
 public class SaveRepresentativeAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -98,7 +97,6 @@ public class SaveRepresentativeAction
     public String execute()
         throws Exception
     {
-
         Patient representative = patientService.getPatient( representativeId );
 
         patient = selectedStateManager.getSelectedPatient();

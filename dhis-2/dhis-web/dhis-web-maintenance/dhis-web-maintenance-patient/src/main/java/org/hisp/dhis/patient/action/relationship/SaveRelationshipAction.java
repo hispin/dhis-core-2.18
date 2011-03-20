@@ -135,7 +135,6 @@ public class SaveRelationshipAction
     public String execute()
         throws Exception
     {
-
         patient = selectedStateManager.getSelectedPatient();
 
         Patient partner = patientService.getPatient( partnerId );
@@ -149,7 +148,6 @@ public class SaveRelationshipAction
             message = i18n.getString( "the_relationship_already_exists" );
 
             return INPUT;
-
         }
 
         // ---------------------------------------------------------------------
@@ -158,7 +156,7 @@ public class SaveRelationshipAction
 
         relationship = new Relationship();
         
-        if( relationshipType.getaIsToB().equalsIgnoreCase( relationshipName ) )
+        if ( relationshipType.getaIsToB().equalsIgnoreCase( relationshipName ) )
         {
             relationship.setPatientA( partner );
             relationship.setPatientB( patient );
@@ -167,7 +165,7 @@ public class SaveRelationshipAction
             relationshipService.saveRelationship( relationship );
             
         }        
-        else if( relationshipType.getbIsToA().equalsIgnoreCase( relationshipName ) )
+        else if ( relationshipType.getbIsToA().equalsIgnoreCase( relationshipName ) )
         {
             relationship.setPatientA( patient );
             relationship.setPatientB( partner );
@@ -175,7 +173,6 @@ public class SaveRelationshipAction
             relationship.setRelationshipType( relationshipType );
             relationshipService.saveRelationship( relationship );
         }
-        
         
         return SUCCESS;
     }

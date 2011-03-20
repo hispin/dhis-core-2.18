@@ -127,7 +127,7 @@ public class AddRelationshipPatientAction
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
 
-     // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
         // ---------------------------------------------------------------------
         
@@ -183,11 +183,11 @@ public class AddRelationshipPatientAction
 
         patient.setRegistrationDate( new Date() );
 
-        // --------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Generate system id with this format :
         // (BirthDate)(Gender)(XXXXXX)(checkdigit)
         // PatientIdentifierType will be null
-        // --------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         String identifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient.getGender() );
 
@@ -208,9 +208,9 @@ public class AddRelationshipPatientAction
         selectedStateManager.clearSearchingAttributeId();
         selectedStateManager.setSearchText( systemGenerateIdentifier.getIdentifier() );
 
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Save Patient Identifiers
-        // -----------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         HttpServletRequest request = ServletActionContext.getRequest();
 

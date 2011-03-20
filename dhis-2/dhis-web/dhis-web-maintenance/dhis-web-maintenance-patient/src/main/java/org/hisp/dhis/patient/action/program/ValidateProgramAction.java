@@ -107,6 +107,5 @@ public class ValidateProgramAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-
     }
 }

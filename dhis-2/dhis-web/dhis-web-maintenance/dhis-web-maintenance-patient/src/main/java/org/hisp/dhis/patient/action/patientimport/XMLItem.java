@@ -50,11 +50,9 @@ public class XMLItem
     
     public static String BIRTH_DATE_FROM_VALUE = "birthDateFromAge";
     
-    
     public static String PROGRAM_TYPE = "program";
     
     public static String PROGRAM_ATTRIBUTE_TYPE = "programAttr";
-    
     
     public static String PROGRAM_STAGE_TYPE = "programStage";
 
@@ -152,5 +150,4 @@ public class XMLItem
     {
         this.sheet = sheet;
     }
-
 }

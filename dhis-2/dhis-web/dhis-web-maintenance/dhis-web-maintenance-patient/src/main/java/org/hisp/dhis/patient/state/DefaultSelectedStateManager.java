@@ -202,7 +202,6 @@ public class DefaultSelectedStateManager
     // Support methods
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unchecked" )
     private static final Map getSession()
     {
         return ActionContext.getContext().getSession();
