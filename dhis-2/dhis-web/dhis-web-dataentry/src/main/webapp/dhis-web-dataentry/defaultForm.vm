@@ -33,9 +33,8 @@
   #set( $mark = 0 )
   #else
   #set( $mark = 1 )
-  #end  
-  #set( $calculated = false )
-  #set( $calculated = ( $calculatedDataElements.contains( $dataElement ) ) )
+  #end
+
   #set( $count = $count + 1 )
   <tr>
     <td  style="#if( $mark == 1 )background-color:#e0e0e0;#end padding-right:50px;">
@@ -63,12 +62,8 @@
       <option value="false" #if( $dataValue.value == "false" ) selected="selected" #end>$i18n.getString( "no" )</option>
     </select>
     #else
-        #if ( $calculated )
-            <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" disabled="disabled" onkeyup="return keyPress(event,this)" class="entryField" tabindex="$tabIndex">
-        #else    
-            <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeyup="return keyPress(event,this)" class="entryField #if( $minMaxError ) minmax#end" tabindex="$tabIndex" #if( $locked )disabled="disabled"#end>
-        #end
-    #end    
+    <input name="entryfield" id="$dataEntryId" type="text" value="$!encoder.htmlEncode( $dataValue.value )" #if( $auth.hasAccess( "dhis-web-dataentry", "saveValue") ) onchange="saveVal(${dataElement.id},${optionCombo.id})" ondblclick="viewHist(${dataElement.id},${optionCombo.id})" #else disabled="disabled"#end onkeyup="return keyPress(event,this)" class="entryField #if( $minMaxError ) minmax#end" tabindex="$tabIndex" #if( $locked )disabled="disabled"#end>
+    #end
     </td>
     #set( $tabIndex = $tabIndex + 1 )
     #end
