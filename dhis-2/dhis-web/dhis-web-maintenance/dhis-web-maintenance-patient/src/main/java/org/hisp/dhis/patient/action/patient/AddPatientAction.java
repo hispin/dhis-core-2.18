@@ -169,7 +169,7 @@ public class AddPatientAction
         String middleName = "";
         String lastName = "";
 
-        if( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )

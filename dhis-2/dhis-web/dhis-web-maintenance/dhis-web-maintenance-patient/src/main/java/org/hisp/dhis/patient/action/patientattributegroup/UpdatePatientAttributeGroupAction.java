@@ -105,19 +105,20 @@ public class UpdatePatientAttributeGroupAction
     public String execute()
         throws Exception
     {
-
         PatientAttributeGroup patientAttributeGroup = patientAttributeGroupService.getPatientAttributeGroup( id );
 
         patientAttributeGroup.setName( name );
         patientAttributeGroup.setDescription( description );
 
         List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
+        
         for ( String attributeId : selectedAttributes )
         {
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( Integer
                 .parseInt( attributeId ) );
             attributes.add( patientAttribute );
         }
+        
         patientAttributeGroup.setAttributes( attributes );
 
         patientAttributeGroupService.updatePatientAttributeGroup( patientAttributeGroup );

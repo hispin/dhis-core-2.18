@@ -106,7 +106,6 @@ public class SaveDueDateAction
     public String execute()
         throws Exception
     {
-
         ProgramStageInstance programStageInstance = programStageInstanceService
             .getProgramStageInstance( programStageInstanceId );
 
@@ -129,7 +128,6 @@ public class SaveDueDateAction
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
             LOG.debug( "Updating Due Date, value added/changed" );
-
         }
 
         return SUCCESS;

@@ -59,36 +59,36 @@ public class ShowAddPatientFormAction
     {
         this.selectionManager = selectionManager;
     }
-    
+
     private PatientAttributeService patientAttributeService;
-    
+
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;
     }
-    
+
     private PatientAttributeGroupService patientAttributeGroupService;
-    
+
     public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
     {
         this.patientAttributeGroupService = patientAttributeGroupService;
     }
-    
+
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
     private Collection<PatientAttribute> noGroupAttributes;
-   
+
     private Collection<PatientAttributeGroup> attributeGroups;
-    
+
     private Collection<PatientIdentifierType> identifierTypes;
 
     private OrganisationUnit organisationUnit;
@@ -96,7 +96,7 @@ public class ShowAddPatientFormAction
     private String year;
 
     private boolean showMsg;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -105,32 +105,33 @@ public class ShowAddPatientFormAction
     {
 
         showMsg = false;
-        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes(); 
-       
+        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
-        
-        attributeGroups  = patientAttributeGroupService.getAllPatientAttributeGroups();
-		
+
+        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
-        for(PatientIdentifierType identifierType :identifierTypes)
+        for ( PatientIdentifierType identifierType : identifierTypes )
         {
-            if(identifierType.getFormat() != null && identifierType.getFormat().equals("State Format") && identifierType.isMandatory()==true )
+            if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" )
+                && identifierType.isMandatory() == true )
             {
-                if(organisationUnit.getCode()==null || organisationUnit.getCode().length() < 9)
+                if ( organisationUnit.getCode() == null || organisationUnit.getCode().length() < 9 )
                     showMsg = true;
             }
         }
-        
-        SimpleDateFormat dataFormat = new SimpleDateFormat("y");
-        year = dataFormat.format(new Date());
+
+        SimpleDateFormat dataFormat = new SimpleDateFormat( "y" );
+        year = dataFormat.format( new Date() );
         return SUCCESS;
     }
 
-    
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
+
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
@@ -140,21 +141,24 @@ public class ShowAddPatientFormAction
     {
         return attributeGroups;
     }
+
     public Collection<PatientAttribute> getNoGroupAttributes()
     {
         return noGroupAttributes;
     }
+
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
     }
 
-    public String getYear() {
+    public String getYear()
+    {
         return year;
     }
 
-    public boolean isShowMsg() {
+    public boolean isShowMsg()
+    {
         return showMsg;
     }
-    
 }

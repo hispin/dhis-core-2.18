@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 public class ValidatePatientAttributeGroupAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -96,7 +95,6 @@ public class ValidatePatientAttributeGroupAction
     public String execute()
         throws Exception
     {
-
         name = name.trim();
 
         PatientAttributeGroup match = patientAttributeGroupService.getPatientAttributeGroupByName( name );
@@ -111,6 +109,5 @@ public class ValidatePatientAttributeGroupAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-
     }
 }

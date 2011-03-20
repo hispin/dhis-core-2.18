@@ -56,10 +56,10 @@ public class SelectDataElementAction
 
     private ProgramStageService programStageService;
 
-    public void setProgramStageService(ProgramStageService programStageService) {
-		this.programStageService = programStageService;
-	}
-    
+    public void setProgramStageService( ProgramStageService programStageService )
+    {
+        this.programStageService = programStageService;
+    }
 
     private Comparator<DataElement> dataElementComparator;
 
@@ -76,12 +76,12 @@ public class SelectDataElementAction
     }
 
     private ProgramStageDataElementService programStageDataElementService;
-    
-    public void setProgramStageDataElementService(
-        ProgramStageDataElementService programStageDataElementService )
+
+    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
     }
+    
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -115,7 +115,8 @@ public class SelectDataElementAction
 
     private ProgramStage association;
 
-    public ProgramStage getAssociation() {
+    public ProgramStage getAssociation()
+    {
         return association;
     }
 
@@ -127,6 +128,7 @@ public class SelectDataElementAction
         throws Exception
     {
         association = programStageService.getProgramStage( associationId );
+        
         if ( association != null )
         {
             dataElements =  new ArrayList<DataElement>( programStageDataElementService.getListDataElement( association )  );

@@ -38,37 +38,36 @@ import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
-
 /**
  * @author Viet
  * @version $Id$
  */
 
-public class SearchPersonAction implements Action
+public class SearchPersonAction
+    implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-    
+
     private PatientAttributeValueService patientAttributeValueService;
-    
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer identifierTypeId; 
-    
+    private Integer identifierTypeId;
+
     private Integer attributeId;
-    
+
     private String searchValue;
-    
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-    
+
     private Map<String, String> patientAttributeValueMap = new HashMap<String, String>();
 
     private Collection<Patient> patients;
@@ -80,23 +79,23 @@ public class SearchPersonAction implements Action
     public String execute()
         throws Exception
     {
-        patients =  patientService.getPatient( identifierTypeId, attributeId, searchValue );
-        
-        if( patients != null && patients.size() > 0 )
+        patients = patientService.getPatient( identifierTypeId, attributeId, searchValue );
+
+        if ( patients != null && patients.size() > 0 )
         {
             for ( Patient p : patients )
             {
                 Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
                     .getPatientAttributeValues( p );
-                
+
                 for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
                 {
-                    patientAttributeValueMap
-                        .put( p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
-                            patientAttributeValue.getValue() );
+                    patientAttributeValueMap.put(
+                        p.getId() + "_" + patientAttributeValue.getPatientAttribute().getId(),
+                        patientAttributeValue.getValue() );
                 }
             }
-        }        
+        }
         return SUCCESS;
     }
 
@@ -138,6 +137,4 @@ public class SearchPersonAction implements Action
     {
         this.searchValue = searchValue;
     }
-
-
 }

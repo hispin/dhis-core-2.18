@@ -121,5 +121,4 @@ public class RemovePatientIdentifierTypeAction
     {
         this.i18n = i18n;
     }
-
 }

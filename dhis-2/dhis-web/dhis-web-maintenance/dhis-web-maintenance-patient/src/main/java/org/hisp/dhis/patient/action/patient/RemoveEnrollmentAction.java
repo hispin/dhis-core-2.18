@@ -63,215 +63,222 @@ import com.opensymphony.xwork2.Action;
  * @author Abyot Asalefew Gizaw
  * @version $Id$
  */
-public class RemoveEnrollmentAction implements Action {
-	public static final String PREFIX_ATTRIBUTE = "attr";
+public class RemoveEnrollmentAction
+    implements Action
+{
+    public static final String PREFIX_ATTRIBUTE = "attr";
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-	private PatientService patientService;
+    private PatientService patientService;
 
-	private ProgramService programService;
+    private ProgramService programService;
 
-	private ProgramInstanceService programInstanceService;
+    private ProgramInstanceService programInstanceService;
 
-	private ProgramAttributeService programAttributeService;
+    private ProgramAttributeService programAttributeService;
 
-	private ProgramAttributeOptionService programAttributeOptionService;
+    private ProgramAttributeOptionService programAttributeOptionService;
 
-	private ProgramAttributeValueService programAttributeValueService;
+    private ProgramAttributeValueService programAttributeValueService;
 
-	private I18nFormat format;
+    private I18nFormat format;
 
-	// -------------------------------------------------------------------------
-	// Input/Output
-	// -------------------------------------------------------------------------
-	
-	private Integer programInstanceId;
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
 
-	private Collection<Program> programs = new ArrayList<Program>();
-	
-	private Patient patient;
+    private Integer programInstanceId;
 
-	// -------------------------------------------------------------------------
-	// Getters && Setters
-	// -------------------------------------------------------------------------
+    private Collection<Program> programs = new ArrayList<Program>();
 
-	public void setPatientService(PatientService patientService) {
-		this.patientService = patientService;
-	}
+    private Patient patient;
 
-	public void setProgramService(ProgramService programService) {
-		this.programService = programService;
-	}
+    // -------------------------------------------------------------------------
+    // Getters && Setters
+    // -------------------------------------------------------------------------
 
-	public void setProgramInstanceService(
-			ProgramInstanceService programInstanceService) {
-		this.programInstanceService = programInstanceService;
-	}
+    public void setPatientService( PatientService patientService )
+    {
+        this.patientService = patientService;
+    }
 
-	public void setProgramAttributeService(
-			ProgramAttributeService programAttributeService) {
-		this.programAttributeService = programAttributeService;
-	}
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
 
-	public void setProgramAttributeOptionService(
-			ProgramAttributeOptionService programAttributeOptionService) {
-		this.programAttributeOptionService = programAttributeOptionService;
-	}
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
 
-	public void setProgramAttributeValueService(
-			ProgramAttributeValueService programAttributeValueService) {
-		this.programAttributeValueService = programAttributeValueService;
-	}
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
+    {
+        this.programAttributeService = programAttributeService;
+    }
 
-	public void setFormat(I18nFormat format) {
-		this.format = format;
-	}
+    public void setProgramAttributeOptionService( ProgramAttributeOptionService programAttributeOptionService )
+    {
+        this.programAttributeOptionService = programAttributeOptionService;
+    }
 
-	public Patient getPatient() {
-		return patient;
-	}
+    public void setProgramAttributeValueService( ProgramAttributeValueService programAttributeValueService )
+    {
+        this.programAttributeValueService = programAttributeValueService;
+    }
 
-	public Collection<Program> getPrograms() {
-		return programs;
-	}
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
 
-	public void setProgramInstanceId(Integer programInstanceId) {
-		this.programInstanceId = programInstanceId;
-	}
+    public Patient getPatient()
+    {
+        return patient;
+    }
 
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
 
-	// -------------------------------------------------------------------------
-	// Action implementation
-	// -------------------------------------------------------------------------
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
+    }
 
-	public String execute() throws Exception {
-		
-		ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
-		
-		// Get selected patient from programInstance
-		patient = programInstance.getPatient();
-		
-		// Get selected program from programInstance
-		Program program = programInstance.getProgram();
-		
-		// ---------------------------------------------------------------------
-		// Update Information of programInstance
-		// ---------------------------------------------------------------------
-		
-		programInstance.setEndDate(new Date());
-		programInstance.setCompleted(true);
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-		programInstanceService.updateProgramInstance(programInstance);
+    public String execute()
+        throws Exception
+    {
 
-		patient.getPrograms().remove(program);
-		patientService.updatePatient(patient);
+        ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-		// ---------------------------------------------------------------------
-		// Save Program Attributes
-		// ---------------------------------------------------------------------
+        // Get selected patient from programInstance
+        patient = programInstance.getPatient();
 
-		HttpServletRequest request = ServletActionContext.getRequest();
+        // Get selected program from programInstance
+        Program program = programInstance.getProgram();
 
-		Collection<ProgramAttribute> attributes = programAttributeService
-				.getAllProgramAttributes();
+        // ---------------------------------------------------------------------
+        // Update Information of programInstance
+        // ---------------------------------------------------------------------
 
-		Set<ProgramAttribute> programAttributes = new HashSet<ProgramAttribute>();
+        programInstance.setEndDate( new Date() );
+        programInstance.setCompleted( true );
 
-		// End-user inputs attribute value for DEAD-attribute
-		boolean flag = false;
+        programInstanceService.updateProgramInstance( programInstance );
 
-		if (attributes != null && attributes.size() > 0) {
-			programInstance.getAttributes().clear();
+        patient.getPrograms().remove( program );
+        patientService.updatePatient( patient );
 
-			// Save other attributes
-			for (ProgramAttribute attribute : attributes) {
-				String value = request
-						.getParameter(RemoveEnrollmentAction.PREFIX_ATTRIBUTE
-								+ attribute.getId());
+        // ---------------------------------------------------------------------
+        // Save Program Attributes
+        // ---------------------------------------------------------------------
 
-				if (StringUtils.isNotBlank(value)) {
-					programAttributes.add(attribute);
+        HttpServletRequest request = ServletActionContext.getRequest();
 
-					ProgramAttributeValue attributeValue = programAttributeValueService
-							.getProgramAttributeValue(programInstance,
-									attribute);
+        Collection<ProgramAttribute> attributes = programAttributeService.getAllProgramAttributes();
 
-					// attributeValue is not exist
-					if (attributeValue == null) {
-						attributeValue = new ProgramAttributeValue();
-						attributeValue.setProgramInstance(programInstance);
-						attributeValue.setProgramAttribute(attribute);
+        Set<ProgramAttribute> programAttributes = new HashSet<ProgramAttribute>();
 
-						// DEAD program-attribute
-						if (attribute.getName().equalsIgnoreCase(
-								ProgramAttribute.DEAD_NAME)
-								&& attribute.getValueType().equalsIgnoreCase(
-										ProgramAttribute.TYPE_BOOL)) {
-							attributeValue.setValue(value.trim());
-							patient.setIsDead(Boolean
-									.parseBoolean(value.trim()));
-							patientService.updatePatient(patient);
-							flag = true;
-						} else if (ProgramAttribute.TYPE_COMBO
-								.equalsIgnoreCase(attribute.getValueType())) {
-							ProgramAttributeOption option = programAttributeOptionService
-									.get(NumberUtils.toInt(value, 0));
-							if (option != null) {
-								attributeValue
-										.setProgramAttributeOption(option);
-								attributeValue.setValue(option.getName());
-							}
-						} else {
-							attributeValue.setValue(value.trim());
-						}
+        // End-user inputs attribute value for DEAD-attribute
+        boolean flag = false;
 
-						// CLOSED-DATE program-attribute
-						if (attribute.getName().equalsIgnoreCase(
-								ProgramAttribute.CLOSED_DATE)
-								&& attribute.getValueType().equalsIgnoreCase(
-										ProgramAttribute.TYPE_DATE) && flag) {
-							patient
-									.setDeathDate(format
-											.parseDate(value.trim()));
-							patientService.updatePatient(patient);
-						}
+        if ( attributes != null && attributes.size() > 0 )
+        {
+            programInstance.getAttributes().clear();
 
-						// save values
-						programAttributeValueService
-								.saveProgramAttributeValue(attributeValue);
+            // Save other attributes
+            for ( ProgramAttribute attribute : attributes )
+            {
+                String value = request.getParameter( RemoveEnrollmentAction.PREFIX_ATTRIBUTE + attribute.getId() );
 
-					}
-					// attributeValue is exist
-					else {
-						if (ProgramAttribute.TYPE_COMBO
-								.equalsIgnoreCase(attribute.getValueType())) {
-							ProgramAttributeOption option = programAttributeOptionService
-									.get(NumberUtils.toInt(value, 0));
-							if (option != null) {
-								attributeValue
-										.setProgramAttributeOption(option);
-								attributeValue.setValue(option.getName());
-							}
-						} else {
-							attributeValue.setValue(value.trim());
-						}
-					}
+                if ( StringUtils.isNotBlank( value ) )
+                {
+                    programAttributes.add( attribute );
 
-					// update values
-					programAttributeValueService
-							.updateProgramAttributeValue(attributeValue);
-				}
-			}
-		}
-		System.out.println("\n\n ++++++++ \n programAttributes : "
-				+ programAttributes);
-		programInstance.setAttributes(programAttributes);
+                    ProgramAttributeValue attributeValue = programAttributeValueService.getProgramAttributeValue(
+                        programInstance, attribute );
 
-		programInstanceService.updateProgramInstance(programInstance);
+                    // attributeValue is not exist
+                    if ( attributeValue == null )
+                    {
+                        attributeValue = new ProgramAttributeValue();
+                        attributeValue.setProgramInstance( programInstance );
+                        attributeValue.setProgramAttribute( attribute );
 
-		return SUCCESS;
-	}
+                        // DEAD program-attribute
+                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.DEAD_NAME )
+                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_BOOL ) )
+                        {
+                            attributeValue.setValue( value.trim() );
+                            patient.setIsDead( Boolean.parseBoolean( value.trim() ) );
+                            patientService.updatePatient( patient );
+                            flag = true;
+                        }
+                        else if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                        {
+                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt(
+                                value, 0 ) );
+                            if ( option != null )
+                            {
+                                attributeValue.setProgramAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }
+                        }
+                        else
+                        {
+                            attributeValue.setValue( value.trim() );
+                        }
+
+                        // CLOSED-DATE program-attribute
+                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.CLOSED_DATE )
+                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_DATE ) && flag )
+                        {
+                            patient.setDeathDate( format.parseDate( value.trim() ) );
+                            patientService.updatePatient( patient );
+                        }
+
+                        // save values
+                        programAttributeValueService.saveProgramAttributeValue( attributeValue );
+
+                    }
+                    // attributeValue is exist
+                    else
+                    {
+                        if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
+                        {
+                            ProgramAttributeOption option = programAttributeOptionService.get( NumberUtils.toInt(
+                                value, 0 ) );
+                            if ( option != null )
+                            {
+                                attributeValue.setProgramAttributeOption( option );
+                                attributeValue.setValue( option.getName() );
+                            }
+                        }
+                        else
+                        {
+                            attributeValue.setValue( value.trim() );
+                        }
+                    }
+
+                    // update values
+                    programAttributeValueService.updateProgramAttributeValue( attributeValue );
+                }
+            }
+        }
+        
+        programInstance.setAttributes( programAttributes );
+
+        programInstanceService.updateProgramInstance( programInstance );
+
+        return SUCCESS;
+    }
 }

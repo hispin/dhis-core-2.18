@@ -85,5 +85,4 @@ public class GetCaseAggregationConditionAction
 
         return SUCCESS;
     }
-
 }
