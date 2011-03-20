@@ -1,6 +1,6 @@
 <script type="text/javascript">
    jQuery(document).ready(function(){
-		<!-- Init page -->
+		
 		loadListeners();
 
 		selectionTreeSelection.setMultipleSelectionAllowed( false );
@@ -8,16 +8,14 @@
 		selectionTree.clearSelectedOrganisationUnits();
 		selectionTree.buildSelectionTree();
 
-		<!-- Calendar setup -->
 		datePickerInRange( 'startDate' , 'endDate' );	
-		
-		<!-- I18n variables -->
-		var i18n_indicator_group = '$encoder.jsEscape( $i18n.getString( "indicator_group" ) , "'")';
-		var i18n_start_date = '$encoder.jsEscape( $i18n.getString( "start_date" ) , "'")';
-		var i18n_end_date = '$encoder.jsEscape( $i18n.getString( "end_date" ) , "'")';
-		var i18n_period_type = '$encoder.jsEscape( $i18n.getString( "period_type" ) , "'")';
-		var i18n_organisation_unit_level = '$encoder.jsEscape( $i18n.getString( "organisation_unit_level" ) , "'")';
 	});
+	
+	var i18n_indicator_group = '$encoder.jsEscape( $i18n.getString( "indicator_group" ) , "'")';
+	var i18n_start_date = '$encoder.jsEscape( $i18n.getString( "start_date" ) , "'")';
+	var i18n_end_date = '$encoder.jsEscape( $i18n.getString( "end_date" ) , "'")';
+	var i18n_period_type = '$encoder.jsEscape( $i18n.getString( "period_type" ) , "'")';
+	var i18n_organisation_unit_level = '$encoder.jsEscape( $i18n.getString( "organisation_unit_level" ) , "'")';
 </script>
 
 <style type="text/css">
