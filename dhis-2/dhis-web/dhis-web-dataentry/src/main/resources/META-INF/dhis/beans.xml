@@ -50,7 +50,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean id="org.hisp.dhis.de.action.SelectAction" class="org.hisp.dhis.de.action.SelectAction" scope="prototype">
-	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
 		<property name="selectedStateManager" ref="org.hisp.dhis.de.state.SelectedStateManager" />
 		<property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
