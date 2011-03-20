@@ -35,8 +35,7 @@
         #set( $cols = $colRepeat.get( $category.id ) )
         #foreach( $col in $cols )
           #foreach( $categoryOption in $categoryOptions )
-          #set( $optionName = $categoryOption.name )
-          <th colspan="$colCount"> <div align="center"> #if( $optionName != "default" ) $optionName #end </div> </th>
+          <th colspan="$colCount"><div align="center"> #if( $categoryOption.isDefault() )${i18n.getString( "value" )}#else ${encoder.htmlEncode( $categoryOption.name )}#end </div></th>
           #end
         #end
       </tr>
