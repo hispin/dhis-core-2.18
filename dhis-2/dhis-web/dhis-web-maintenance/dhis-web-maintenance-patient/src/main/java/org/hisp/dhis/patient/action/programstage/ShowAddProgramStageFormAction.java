@@ -105,7 +105,6 @@ public class ShowAddProgramStageFormAction
 
     public String execute()
     {
-
         program = programService.getProgram( id.intValue() );
 
         dataElements = new ArrayList<DataElement>( dataElementService

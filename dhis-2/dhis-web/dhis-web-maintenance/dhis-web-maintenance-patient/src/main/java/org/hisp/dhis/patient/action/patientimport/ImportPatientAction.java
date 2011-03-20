@@ -350,11 +350,11 @@ public class ImportPatientAction
                 // Validate data of patient is right, continue to get
                 // information into excel file
                 // -------------------------------------------------------------
-                
+
                 ProgramInstance programInstance = null;
                 List<ProgramStageInstance> programStageInstances = null;
                 Collection<PatientDataValue> patientDataValues = null;
-                
+
                 if ( validatePatient( patient, identifiers, row )
                     && validatePatientAttribute( patient, attributes, attributeValues, row ) )
                 {
@@ -370,7 +370,6 @@ public class ImportPatientAction
                         // Get programStageInstance for patient
                         programStageInstances = getProgramStageInstances( programInstance, row, wb );
 
-                        
                     }
                     catch ( Exception ex )
                     {
@@ -404,23 +403,12 @@ public class ImportPatientAction
                     // Get PatientDataValue
                     // -------------------------------------------------------------
 
-                    patientDataValues = getPatientDataValue( orgunit, programInstance, programStageInstances, row,
-                        wb );
-                    // save dataValue
+                    patientDataValues = getPatientDataValue( orgunit, programInstance, programStageInstances, row, wb );
+                    
                     for ( PatientDataValue patientDataValue : patientDataValues )
                     {
                         patientDataValueService.savePatientDataValue( patientDataValue );
                     }
-
-                    // else
-                    // {
-                    // dataValue.setTimestamp( new Date() );
-                    // dataValue.setValue( value );
-                    //
-                    // patientDataValueService.updatePatientDataValue( dataValue
-                    // );
-                    // }
-
                 }
             }
 
@@ -504,8 +492,8 @@ public class ImportPatientAction
         // PatientIdentifierType will be null
         // -------------------------------------------------------------
 
-        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(), patient
-            .getGender() );
+        String systemIdentifier = PatientIdentifierGenerator.getNewIdentifier( patient.getBirthDate(),
+            patient.getGender() );
 
         PatientIdentifier systemGenerateIdentifier = patientIdentifierService.get( null, systemIdentifier );
         while ( systemGenerateIdentifier != null )
@@ -560,8 +548,8 @@ public class ImportPatientAction
             if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
             {
                 // value is the id of the option
-                PatientAttributeOption option = patientAttributeOptionService.get( Integer
-                    .parseInt( value.split( ":" )[1] ) );
+                PatientAttributeOption option = patientAttributeOptionService
+                    .get( Integer.parseInt( value.split( ":" )[1] ) );
 
                 if ( option != null )
                 {
@@ -626,7 +614,6 @@ public class ImportPatientAction
 
         return programInstance;
     }
-    
 
     private List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int row,
         HSSFWorkbook wb )
@@ -643,8 +630,8 @@ public class ImportPatientAction
             programStageInstance.setProgramStage( programStage );
             programStageInstance.setStageInProgram( programStage.getStageInProgram() );
 
-            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(), programStage
-                .getMinDaysFromStart() );
+            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(),
+                programStage.getMinDaysFromStart() );
 
             programStageInstance.setDueDate( dueDate );
 
@@ -733,7 +720,7 @@ public class ImportPatientAction
                 // {
                 // dataValue.setTimestamp( new Date() );
                 // dataValue.setValue( value );
-                //                
+                //
                 // patientDataValueService.updatePatientDataValue( dataValue );
                 // }
             }
@@ -770,7 +757,7 @@ public class ImportPatientAction
         // Check duplication name, birthdate, gender
         Collection<Patient> patients = patientService.getPatient( patient.getFirstName(), patient.getMiddleName(),
             patient.getLastName(), patient.getBirthDate(), patient.getGender() );
-        
+
         if ( patients != null && patients.size() > 0 )
         {
             errPatients.put( row, patient );

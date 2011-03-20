@@ -33,8 +33,6 @@ import java.util.Random;
 
 /**
  * @author Viet
- * 
- * @version $Id$
  */
 public class PatientIdentifierGenerator
 {
@@ -48,7 +46,6 @@ public class PatientIdentifierGenerator
      * @param gender
      * @return
      */
-   
     public static String getNewIdentifier( Date birthDate, String gender )
     {
         String noCheck = formatDate(birthDate) + formatGender(gender)
@@ -64,7 +61,6 @@ public class PatientIdentifierGenerator
      */
     private static int getCheckdigit( String idWithoutCheckdigit )
     {
-        String validChars = "0123456789";
         idWithoutCheckdigit = idWithoutCheckdigit.trim().toUpperCase();
         int sum = 0;
         for ( int i = 0; i < idWithoutCheckdigit.length(); i++ )
@@ -89,7 +85,6 @@ public class PatientIdentifierGenerator
 
     public static boolean isValidCC( String num )
     {
-
         final int[][] sumTable = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 0, 2, 4, 6, 8, 1, 3, 5, 7, 9 } };
         int sum = 0, flip = 0;
 
@@ -124,5 +119,4 @@ public class PatientIdentifierGenerator
     {
         return gender.equalsIgnoreCase( "f" ) ? "0" : "1";
     }
-
 }

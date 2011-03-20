@@ -110,6 +110,5 @@ public class ValidateProgramStageAction
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
-
     }
 }

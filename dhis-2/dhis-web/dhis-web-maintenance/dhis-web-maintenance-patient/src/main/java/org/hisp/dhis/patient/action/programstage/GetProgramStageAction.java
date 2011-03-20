@@ -108,7 +108,6 @@ public class GetProgramStageAction
     public String execute()
         throws Exception
     {
-
         programStage = programStageService.getProgramStage( id );
 
         programStageDataElements = programStage.getProgramStageDataElements();

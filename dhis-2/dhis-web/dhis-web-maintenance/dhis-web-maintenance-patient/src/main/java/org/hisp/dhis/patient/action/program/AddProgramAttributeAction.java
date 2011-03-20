@@ -107,10 +107,10 @@ public class AddProgramAttributeAction
         programAttribute.setDescription( description );
         programAttribute.setValueType( valueType );
 
-        if( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
+        if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( valueType ) )
         {
             ProgramAttributeOption opt  = null;
-            for( String optionName : attrOptions )
+            for ( String optionName : attrOptions )
             {
                 opt = new ProgramAttributeOption();
                 opt.setName( optionName );

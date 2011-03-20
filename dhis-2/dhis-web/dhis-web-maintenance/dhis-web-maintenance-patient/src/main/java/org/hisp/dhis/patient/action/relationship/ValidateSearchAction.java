@@ -78,7 +78,6 @@ public class ValidateSearchAction
     public String execute()
         throws Exception
     {
-
         if ( searchText == null )
         {
             message = i18n.getString( "specify_a_search_criteria" );

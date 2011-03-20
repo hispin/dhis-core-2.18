@@ -232,6 +232,5 @@ public class ShowAddRelationshipFormAction
         }
 
         return SUCCESS;
-
     }
 }

@@ -103,7 +103,6 @@ public class GetRelationshipListAction
     public String execute()
         throws Exception
     {
-
         patient = selectedStateManager.getSelectedPatient();
 
         patientAttributeValues = patientAttributeValueService.getPatientAttributeValues( patient );

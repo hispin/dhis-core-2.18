@@ -43,7 +43,6 @@ import com.opensymphony.xwork2.Action;
 public class GetProgramListForValidationCriteriaAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -55,6 +54,7 @@ public class GetProgramListForValidationCriteriaAction
     // -------------------------------------------------------------------------
     // Input && Output
     // -------------------------------------------------------------------------
+    
     private Integer criteriaId;
 
     private Collection<Program> selectedPrograms;
@@ -114,5 +114,4 @@ public class GetProgramListForValidationCriteriaAction
 
         return SUCCESS;
     }
-
 }

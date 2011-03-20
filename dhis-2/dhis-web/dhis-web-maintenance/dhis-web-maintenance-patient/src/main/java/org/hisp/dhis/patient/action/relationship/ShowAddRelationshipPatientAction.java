@@ -54,9 +54,9 @@ import com.opensymphony.xwork2.Action;
  *
  * @version $Id$
  */
-public class ShowAddRelationshipPatientAction implements Action
+public class ShowAddRelationshipPatientAction 
+    implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

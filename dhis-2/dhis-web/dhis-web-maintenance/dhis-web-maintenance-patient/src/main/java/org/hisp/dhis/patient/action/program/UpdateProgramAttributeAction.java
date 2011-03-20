@@ -166,7 +166,6 @@ public class UpdateProgramAttributeAction
         
         programAttributeService.updateProgramAttribute( programAttribute );
         
-        
         return SUCCESS;
     }
 }
