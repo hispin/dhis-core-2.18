@@ -132,7 +132,7 @@ public class GenerateCustomDataSetReportAction
         throws Exception
     {
         Map<String, String> aggregatedDataValueMap = dataSetReportService.getAggregatedValueMap( selectedDataSet, selectedOrgunit, selectedPeriod,
-            selectedUnitOnly );
+            selectedUnitOnly, format );
 
         DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
 

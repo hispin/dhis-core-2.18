@@ -27,6 +27,10 @@ package org.hisp.dhis.datasetreport.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -43,14 +47,12 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datasetreport.DataSetReportService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.MathUtils;
-
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Abyot Asalefew
@@ -100,7 +102,7 @@ public class DefaultDataSetReportService
     // DataSetReportService implementation
     // -------------------------------------------------------------------------
     
-    public Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly )
+    public Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
         
@@ -128,8 +130,8 @@ public class DefaultDataSetReportService
                     Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
                         aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) :
                             aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
-                                        
-                    value = ( aggregatedValue != null ) ? String.valueOf( MathUtils.getRounded( aggregatedValue, 0 ) ) : null;
+                    
+                    value = format.formatValue( aggregatedValue );
                 }                 
                 
                 if ( value != null )
