@@ -27,10 +27,13 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.dataelement.CalculatedDataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -55,6 +58,13 @@ public class SelectAction
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
     private DataSetLockService dataSetLockService;
 
     public void setDataSetLockService( DataSetLockService dataSetLockService )
@@ -132,6 +142,13 @@ public class SelectAction
     {
         return registrationDate;
     }
+    
+    private Collection<CalculatedDataElement> calculatedDataElements;
+
+    public Collection<CalculatedDataElement> getCalculatedDataElements()
+    {
+        return calculatedDataElements;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -183,6 +200,13 @@ public class SelectAction
                 log.info( "Dataset '" + selectedDataSet.getName() + "' is locked " );
             }
         }
+        
+        // ---------------------------------------------------------------------
+        // Get CalculatedDataElement info
+        // ---------------------------------------------------------------------
+
+        calculatedDataElements = dataElementService.getCalculatedDataElementsByDataElements( selectedDataSet.getDataElements() );       
+
         
         // ---------------------------------------------------------------------
         // Get data set completeness info
