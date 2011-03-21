@@ -306,5 +306,24 @@
 	  <result name="success" type="redirect">dataSet.action</result>
 	</action>
 
+	<!-- Dataset Editor -->
+	
+	<action name="displayEditorForm" class="org.hisp.dhis.dataset.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataset/viewEditorForm.vm</param>
+	  <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/editor.js</param>
+    </action>
+	
+	<action name="showedAssociationsEditor"	
+	  class="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction">
+      <result name="success" type="velocity">/dhis-web-maintenance-dataset/htmlGrid.vm</result>
+    </action>
+	
+	<action name="definedAssociationsEditor"	
+	  class="org.hisp.dhis.dataset.action.editor.DefinedAssociationsEditorAction">
+      <result name="success" type="velocity">/dhis-web-maintenance-dataset/loadIcon.vm</result>
+    </action>
+	
   </package>
 </struts>
