@@ -1,11 +1,12 @@
 <script type="text/javascript" src="javascript/addOrganisationUnitForm.js"></script>
 <script type="text/javascript">
+	var previousName = '';
 	var adding_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "adding_the_org_unit_failed" ) , "'" )';
 </script>
 
 <h3>$i18n.getString( "create_new_org_unit" ) #openHelp( "ou_edit" )</h3>
 
-<form id="addOrganisationUnitForm" name="addOrganisationUnitForm" action="addOrganisationUnit.action" method="post" onsubmit="return validateFeatureType(this.coordinates, this.featureType)">
+<form id="addOrganisationUnitForm" name="addOrganisationUnitForm" action="addOrganisationUnit.action" method="post">
 
 <table>
 	<tr>
@@ -34,7 +35,8 @@
 	</tr>
     <tr>
         <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em" onkeyup="setFeatureType(document.addOrganisationUnitForm.featureType, this.value)"></textarea></td>
+        <!-- onkeyup="setFeatureType(document.addOrganisationUnitForm.featureType, this.value)" -->
+        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em"></textarea></td>
     </tr>
     <tr>
         <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>

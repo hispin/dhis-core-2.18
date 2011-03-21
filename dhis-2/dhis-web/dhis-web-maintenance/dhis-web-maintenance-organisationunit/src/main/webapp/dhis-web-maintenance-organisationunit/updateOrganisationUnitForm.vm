@@ -17,10 +17,9 @@
 	var saving_the_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "saving_the_org_unit_failed" ) , "'" )';
 </script>
 
-
 <h3>$i18n.getString( "edit_org_unit" ) #openHelp( "ou_edit" )</h3>
 
-<form id="updateOrganisationUnitForm" name="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post" onsubmit="return validateFeatureType(this.coordinates, this.featureType)">
+<form id="updateOrganisationUnitForm" name="updateOrganisationUnitForm" action="updateOrganisationUnit.action" method="post">
 
 <div>
 	<input type="hidden" id="id" name="id" value="$organisationUnit.id"/>
@@ -68,7 +67,9 @@
 	</tr>
     <tr>
         <td><label for="coordinates">$i18n.getString( "coordinates" )</label></td>
-        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em" onkeyup="setFeatureType(document.updateOrganisationUnitForm.featureType, this.value)">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
+
+        <!-- onkeyup="setFeatureType(document.updateOrganisationUnitForm.featureType, this.value)" -->
+        <td><textarea id="coordinates" name="coordinates" style="width:20em; height:5em">$!encoder.htmlEncode( $organisationUnit.coordinates )</textarea></td>
     </tr>
     <tr>
         <td><label for="featureType">$i18n.getString( "feature_type" )</label></td>
@@ -104,8 +105,10 @@
     </tr>
     <tr>
     	<td></td>
-    	<td><input type="button" value="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )"><input
-    	           type="button" value="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )"></td>
+    	<td>
+    		<input type="button" value="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
+			<input type="button" value="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )">
+		</td>
     </tr>
     <tr>
     	<td><label for="dataSets">$i18n.getString( "selected_data_sets" )</label></td>
