@@ -385,6 +385,7 @@
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 		numZoomLevels: 21
 	});
+    
 	gm_normal.layerType = G.conf.map_layer_type_baselayer;
 	G.vars.map.addLayer(gm_normal);
 	
@@ -394,6 +395,7 @@
 		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
 		numZoomLevels: 21
 	});
+    
 	gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
 	G.vars.map.addLayer(gm_hybrid);
 	
@@ -549,44 +551,46 @@
 				handler: function() {
 					var v = Ext.getCmp('favorite_cb').getValue();
 					var rw = Ext.getCmp('favorite_cb').getRawValue();
-                    var userId = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.userId;
                     
-                    if (userId || G.user.isAdmin) {
-                        if (!v) {
-                            Ext.message.msg(false, G.i18n.please_select_a_map_view);
-                            return;
+                    if (v) {
+                        var userId = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.userId;
+                        if (userId || G.user.isAdmin) {                            
+                            Ext.Ajax.request({
+                                url: G.conf.path_mapping + 'deleteMapView' + G.conf.type,
+                                method: 'POST',
+                                params: {id: v},
+                                success: function(r) {
+                                    Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
+                                    Ext.getCmp('favorite_cb').clearValue();
+                                    
+                                    var featureType = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.featureType;
+                                    if (featureType == G.conf.map_feature_type_multipolygon) {
+                                        G.stores.polygonMapView.load();
+                                    }
+                                    else if (featureType == G.conf.map_feature_type_point) {
+                                        G.stores.pointMapView.load();
+                                    }
+                                    
+                                    G.stores.mapView.load();
+                                    
+                                    if (v == choropleth.form.findField('mapview').getValue()) {
+                                        choropleth.form.findField('mapview').clearValue();
+                                    }
+                                    if (v == symbol.form.findField('mapview').getValue()) {
+                                        symbol.form.findField('mapview').clearValue();
+                                    }
+                                }
+                            });
                         }
-                        
-                        Ext.Ajax.request({
-                            url: G.conf.path_mapping + 'deleteMapView' + G.conf.type,
-                            method: 'POST',
-                            params: {id: v},
-                            success: function(r) {
-                                Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rw + '</span> ' + G.i18n.deleted);
-                                Ext.getCmp('favorite_cb').clearValue();
-                                
-                                var featureType = G.stores.mapView.getAt(G.stores.mapView.findExact('id', v)).data.featureType;
-                                if (featureType == G.conf.map_feature_type_multipolygon) {
-                                    G.stores.polygonMapView.load();
-                                }
-                                else if (featureType == G.conf.map_feature_type_point) {
-                                    G.stores.pointMapView.load();
-                                }
-                                
-                                G.stores.mapView.load();
-                                
-                                if (v == choropleth.form.findField('mapview').getValue()) {
-                                    choropleth.form.findField('mapview').clearValue();
-                                }
-                                if (v == symbol.form.findField('mapview').getValue()) {
-                                    symbol.form.findField('mapview').clearValue();
-                                }
-                            }
-                        });
+                        else {
+                            Ext.message.msg(false, 'Access denied');
+                        }
                     }
                     else {
-                        Ext.message.msg(false, 'Access denied');
+                        Ext.message.msg(false, G.i18n.please_select_a_map_view);
+                        return;
                     }
+
 				}
 			},
             {
@@ -609,8 +613,8 @@
 						method: 'POST',
 						params: {id: v},
 						success: function(r) {
-							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + G.i18n.added_to_dashboard);
                             Ext.getCmp('favorite_cb').clearValue();
+							Ext.message.msg(true, G.i18n.favorite + ' <span class="x-msg-hl">' + rv + '</span> ' + G.i18n.added_to_dashboard);
 						}
 					});
 				}
