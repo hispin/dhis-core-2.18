@@ -418,4 +418,26 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 	
+	<bean id="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction"
+		class="org.hisp.dhis.dataset.action.editor.ShowedAssociationsEditorAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="selectionTreeManager">
+			<ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
+		</property>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataset.action.editor.DefinedAssociationsEditorAction"
+		class="org.hisp.dhis.dataset.action.editor.DefinedAssociationsEditorAction"
+		scope="prototype">
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService"/>
+		</property>
+		<property name="organisationUnitService">
+			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		</property>
+	</bean>
+	
 </beans>
