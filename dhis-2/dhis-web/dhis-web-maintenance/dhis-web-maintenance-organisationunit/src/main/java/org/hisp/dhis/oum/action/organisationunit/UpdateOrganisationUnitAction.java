@@ -237,9 +237,14 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setEmail( email );
         organisationUnit.setPhoneNumber( phoneNumber );
 
+        for ( DataSet dataSet : organisationUnit.getDataSets() ) // Remove current
+        {
+            dataSet.getSources().remove( organisationUnit );
+        }
+        
         organisationUnit.getDataSets().clear();
         
-        for ( String id : dataSets )
+        for ( String id : dataSets ) // Add selected
         {
             DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( id ) );
             dataSet.getSources().add( organisationUnit );
