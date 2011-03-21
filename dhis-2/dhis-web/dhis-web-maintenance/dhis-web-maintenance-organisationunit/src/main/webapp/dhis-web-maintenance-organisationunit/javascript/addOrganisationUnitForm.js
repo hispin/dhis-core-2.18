@@ -46,7 +46,13 @@ jQuery( document ).ready( function()
 		}
 	};
 
-	validation2( 'addOrganisationUnitForm', undefined, {
+	validation2( 'addOrganisationUnitForm', function(form) {
+		selectAllById("dataSets");
+		form.submit();
+
+		/* if(validateFeatureType(this.coordinates, this.featureType)) { form.submit(); } */
+		/*  return false; */
+	}, {
 		'rules' : rules
 	} );
 
@@ -61,8 +67,6 @@ jQuery( document ).ready( function()
 
 	checkValueIsExist( "name", "validateOrganisationUnit.action" );
 	datePickerValid( 'openingDate', false );
-
-	var previousName = '';
 
 	var nameField = document.getElementById( 'name' );
 	nameField.select();

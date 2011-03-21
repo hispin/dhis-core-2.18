@@ -5,6 +5,11 @@
 
 function nameChanged()
 {
+	/* fail quietly if previousName is not available */
+	if(previousName === undefined) {
+		return;
+	}
+	
     var nameField = document.getElementById( 'name' );
     var shortNameField = document.getElementById( 'shortName' );
     var maxLength = parseInt( shortNameField.maxLength );
