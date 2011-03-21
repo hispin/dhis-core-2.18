@@ -1,37 +1,19 @@
 <script type="text/javascript">
-	var isSubmit = true;
-
-	jQuery(document).ready(	function(){
-			validation( 'caseAggregationForm', function(form){
-				if(isSubmit) form.submit();
-			}, function(){
-				var periodFrom = $( '#sDateLB' ).val();
-				var periodTo = $( '#eDateLB' ).val();
-				
-				if(periodFrom > periodTo){
-					var i18n_greater_then_from_date = '$encoder.jsEscape( $i18n.getString( "greater_then_from_date" ) , "'" )';
-					byId('warningMessage').innerHTML = i18n_greater_then_from_date;
-					isSubmit = false;
-				}else{
-					isSubmit = true;
-				}
-			})
-	}); 
-
+	var i18n_greater_then_from_date = '$encoder.jsEscape( $i18n.getString( "greater_then_from_date" ) , "'" )';
 	var i18n_please_select = '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'" )';
+	var isSubmit = true;
 </script>
 
 <h1> $i18n.getString( "case_aggregation_form" )</h1>
 <hr/>
 <form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
 	<table>
-	
 		<tr>
 			<td>
 				$i18n.getString( "dataset_list" )
 			</td>
 			<td>
-				<select id="dataSetId" name="dataSetId" onchange="dataSetSelected()" style="width: 30em" class="{validate:{required:true}}">
+				<select id="dataSetId" name="dataSetId" onchange="dataSetSelected()" style="width: 30em">
 					<option value=''>[$i18n.getString('please_select')]</option>
 					#foreach ( $dataSet in $datasets )
 						<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
@@ -39,14 +21,14 @@
 				</select>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td>
 				$i18n.getString( "from" )
 			</td>
 			<td>
 				<input type="button" value="<<" onclick="getPreviousPeriodForStart()" id="previousPeriodForStartBtn" disabled />
-				<select id="sDateLB" name="sDateLB" style="width: 23em" class="{validate:{required:true}}"></select>
+				<select id="sDateLB" name="sDateLB" style="width: 23em"></select>
 				<input type="button" value=">>"  onclick="getNextPeriodForStart()" id="nextPeriodForStartBtn" disabled />
 			</td>
 		</tr>
@@ -57,7 +39,7 @@
 			</td>
 			<td>
 				<input type="button" value="<<" onclick="getPreviousPeriodForEnd()" id="previousPeriodForEndBtn" disabled />
-				<select id="eDateLB" name="eDateLB" style="width: 23em" class="{validate:{required:true}}"></select>
+				<select id="eDateLB" name="eDateLB" style="width: 23em"></select>
 				<input type="button" value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
 				<i><span id='warningMessage' style="color:red"></span></i>
 			</td>
@@ -83,7 +65,6 @@
 				#organisationUnitSelectionTree( false, true, false )
 			</td>
 		</tr>
-				   
 
 		<tr>
 			<td>
