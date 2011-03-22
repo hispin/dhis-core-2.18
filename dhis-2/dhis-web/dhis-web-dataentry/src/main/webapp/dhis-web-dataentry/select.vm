@@ -27,7 +27,7 @@
 </div>
 
 <div id="actions" style="">	
-    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" style="width:150px"/><br/><br/>
+    <input type="button" value="$i18n.getString( 'run_validation' )" onclick="javascript:validate()" id='validationBtt' style="width:150px;" disabled /><br/><br/>
 
     <label for="displayModeCustom">$i18n.getString( "use_custom_form" )</label>
     <input type="radio" id="displayModeCustom" name="displayMode" value="customform" disabled="disabled" onclick="displayModeSelected()"><br>
