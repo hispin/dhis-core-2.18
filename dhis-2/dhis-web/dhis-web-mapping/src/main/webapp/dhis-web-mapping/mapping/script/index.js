@@ -1980,7 +1980,6 @@
         }
     });
 
-        
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
         enableDD: false,
@@ -1992,8 +1991,7 @@
                 {
                     nodeType: 'gx_baselayercontainer',
                     expanded: true,
-                    text: 'Base layers',
-                    iconCls: 'icon-background'
+                    text: 'Base layers'
                 },
                 {
                     nodeType: 'gx_overlaylayercontainer'
