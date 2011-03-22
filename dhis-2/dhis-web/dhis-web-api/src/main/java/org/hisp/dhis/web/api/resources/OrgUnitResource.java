@@ -102,9 +102,9 @@ public class OrgUnitResource
     {
         OrganisationUnit unit = getUnit();
 
-        if (unit == null)
+        if ( unit == null )
             return null;
-        
+
         OrgUnit orgUnit = new OrgUnitMapper().get( unit );
         new UrlResourceListener( uriInfo ).beforeMarshal( orgUnit );
         return orgUnit;
@@ -128,7 +128,7 @@ public class OrgUnitResource
         mobileModel.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
         mobileModel.setPrograms( programService.getPrograms( getUnit(), locale ) );
         mobileModel.setDatasets( facilityReportingService.getMobileDataSetsForUnit( getUnit(), locale ) );
-        mobileModel.setServerCurrentDate(new Date());
+        mobileModel.setServerCurrentDate( new Date() );
         return mobileModel;
     }
 
@@ -170,12 +170,12 @@ public class OrgUnitResource
 
     @POST
     @Path( "activitiyplan" )
-    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient)
+    public MobileModel updatePrograms( @HeaderParam( "accept-language" ) String locale, ModelList programsFromClient )
     {
         MobileModel model = new MobileModel();
         model.setPrograms( programService.updateProgram( programsFromClient, locale, getUnit() ) );
         model.setActivityPlan( activityReportingService.getCurrentActivityPlan( getUnit(), locale ) );
-        model.setServerCurrentDate(new Date());
+        model.setServerCurrentDate( new Date() );
         return model;
     }
 

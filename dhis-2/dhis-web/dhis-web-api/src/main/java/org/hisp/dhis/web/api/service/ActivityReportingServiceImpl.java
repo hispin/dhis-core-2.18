@@ -50,6 +50,8 @@ import org.hisp.dhis.patient.PatientMobileSettingService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.util.DateUtils;
@@ -82,6 +84,8 @@ public class ActivityReportingServiceImpl
 
     private org.hisp.dhis.program.ProgramStageInstanceService programStageInstanceService;
 
+    private org.hisp.dhis.activityplan.ActivityPlanService activityPlanService;
+
     private PatientAttributeValueService patientAttValueService;
 
     private PatientAttributeService patientAttService;
@@ -102,24 +106,35 @@ public class ActivityReportingServiceImpl
 
         List<Activity> items = new ArrayList<Activity>();
 
-        DateTime dt = new DateTime();
-        DateMidnight from = dt.withDayOfMonth( 1 ).toDateMidnight();
-        DateMidnight to = from.plusMonths( 1 );
+        Collection<org.hisp.dhis.activityplan.Activity> activities;
 
-        List<ProgramStageInstance> instances = programStageInstanceService.get( unit, from.toDate(), to.toDate(), false );
+        activities = activityPlanService.getCurrentActivitiesByProvider( unit );
 
-        for ( ProgramStageInstance instance : instances )
+        for ( org.hisp.dhis.activityplan.Activity each : activities )
         {
-            items.add( getActivity( instance, false ) );
+            Date expiredDate = DateUtils.getDateAfterAddition( each.getTask().getDueDate(), each.getTask()
+                .getProgramInstance().getProgram().getMaxDaysAllowedInputData() );
+
+            Activity activity = new Activity();
+            Patient patient = each.getBeneficiary();
+
+            activity.setBeneficiary( getBeneficiaryModel( patient ) );
+
+            activity.setDueDate( each.getDueDate() );
+
+            Task task = new Task();
+            task.setCompleted( each.getTask().isCompleted() );
+            task.setId( each.getTask().getId() );
+            task.setProgramStageId( each.getTask().getProgramStage().getId() );
+            task.setProgramId( each.getTask().getProgramInstance().getProgram().getId() );
+            activity.setTask( task );
+
+            activity.setLate( each.isCompleted() );
+
+            activity.setExpireDate( expiredDate );
+
+            items.add( activity );
         }
-
-        instances = programStageInstanceService.get( unit, null, from.minusDays( 1 ).toDate(), false );
-
-        for ( ProgramStageInstance instance : instances )
-        {
-            items.add( getActivity( instance, true ) );
-        }
-
         if ( items.isEmpty() )
         {
             return null;
@@ -212,8 +227,9 @@ public class ActivityReportingServiceImpl
         activity.setDueDate( instance.getDueDate() );
         activity.setTask( getTask( instance ) );
         activity.setLate( late );
-        activity.setExpireDate(DateUtils.getDateAfterAddition(instance.getDueDate(), instance.getProgramInstance().getProgram().getMaxDaysAllowedInputData()));
-        
+        activity.setExpireDate( DateUtils.getDateAfterAddition( instance.getDueDate(), instance.getProgramInstance()
+            .getProgram().getMaxDaysAllowedInputData() ) );
+
         return activity;
     }
 
@@ -441,6 +457,11 @@ public class ActivityReportingServiceImpl
     public void setPatientMobileSettingService( PatientMobileSettingService patientMobileSettingService )
     {
         this.patientMobileSettingService = patientMobileSettingService;
+    }
+
+    public void setActivityPlanService( org.hisp.dhis.activityplan.ActivityPlanService activityPlanService )
+    {
+        this.activityPlanService = activityPlanService;
     }
 
 }
