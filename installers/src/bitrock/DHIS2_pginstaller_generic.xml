@@ -10,6 +10,48 @@
     <splashImage>../../resources/images/dhis2-splash-blue.png</splashImage>
     <allowLanguageSelection>1</allowLanguageSelection>
     <initializationActionList>
+        <setInstallerVariable>
+            <name>resourcesWarningIsShown</name>
+            <value>true</value>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>${installer_directory}\resources</path>
+                </fileExists>
+            </ruleList>
+        </setInstallerVariable>
+        <showWarning>
+            <text>Cannot find the resources folder. Make sure it exists alongside the installer (The installer is NOT supposed to be inside the resources folder). If the folder is still not found, the installation process will be aborted.</text>
+            <title>resources folder is missing</title>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>${installer_directory}\resources</path>
+                </fileExists>
+            </ruleList>
+        </showWarning>
+        <throwError>
+            <customErrorMessage>Could not find the resources folder.</customErrorMessage>
+            <text>Could not find the resources folder.</text>
+            <ruleList>
+                <fileExists>
+                    <negate>1</negate>
+                    <path>${installer_directory}\resources</path>
+                </fileExists>
+            </ruleList>
+        </throwError>
+        <showInfo>
+            <text>Thank you! The resources folder was located. The installation process will continue.</text>
+            <title>Thank you!</title>
+            <ruleList>
+                <fileExists>
+                    <path>${installer_directory}\resources</path>
+                </fileExists>
+                <isTrue>
+                    <value>${resourcesWarningIsShown}</value>
+                </isTrue>
+            </ruleList>
+        </showInfo>
         <registryFind>
             <dataPattern>Java(TM)*6*</dataPattern>
             <keyPattern>*</keyPattern>
