@@ -131,10 +131,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
 		scope="prototype">
 		<property name="serviceProvider" ref="exportServiceProvider" />
-		<property name="importObjectService"
-			ref="org.hisp.dhis.importexport.ImportObjectService" />
-		<property name="importDataValueService"
-			ref="org.hisp.dhis.importexport.ImportDataValueService" />
 	</bean>
 
 	<bean

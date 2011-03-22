@@ -34,8 +34,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
-import org.hisp.dhis.importexport.ImportDataValueService;
-import org.hisp.dhis.importexport.ImportObjectService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -57,20 +55,6 @@ public class MetaDataExportAction
     public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
         this.serviceProvider = serviceProvider;
-    }
-
-    private ImportObjectService importObjectService;
-
-    public void setImportObjectService( ImportObjectService importObjectService )
-    {
-        this.importObjectService = importObjectService;
-    }
-
-    private ImportDataValueService importDataValueService;
-
-    public void setImportDataValueService( ImportDataValueService importDataValueService )
-    {
-        this.importDataValueService = importDataValueService;
     }
 
     private I18n i18n;
@@ -247,9 +231,6 @@ public class MetaDataExportAction
     public String execute()
         throws Exception
     {
-        importDataValueService.deleteImportDataValues();
-        importObjectService.deleteImportObjects();
-
         ExportParams params = new ExportParams();
 
         if ( dataElements || dataElementGroups || indicators || dataSets || validationRules || reportTables || charts )
