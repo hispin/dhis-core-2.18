@@ -179,10 +179,10 @@ public class DefaultDataEntryScreenManager
         return calculatedDataElementIds;
     }
 
-    public Map<CalculatedDataElement, Map<DataElement, Integer>> getNonSavedCalculatedDataElements(
+    public Map<CalculatedDataElement, Map<DataElement, Double>> getNonSavedCalculatedDataElements(
         ProgramStage programStage )
     {
-        Map<CalculatedDataElement, Map<DataElement, Integer>> calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Integer>>();
+        Map<CalculatedDataElement, Map<DataElement, Double>> calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Double>>();
 
         Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
 

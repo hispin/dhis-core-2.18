@@ -74,7 +74,7 @@
 	<tr #if( $calculatedDataElement ) style="display:none" #end>
 		<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="valueType" name="valueType" style="min-width:20em" onchange="changeValueType( this.value )">
+			<select id="valueType" name="valueType" style="min-width:20em">
 				<option value="int" #if( $dataElement.type == 'int' ) selected="selected" #end  onclick="enable('numberType');">$i18n.getString( "number" )</option>
 				<option value="string" #if( $dataElement.type == 'string' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "text" )</option>
 				<option value="bool" #if( $dataElement.type == 'bool' ) selected="selected" #end  onclick="disable('numberType');">$i18n.getString( "yes_no" )</option>
@@ -203,7 +203,7 @@
 					#foreach ( $operand in $operands )
 					<tr>
 						<td>$operand.operandName<input type="hidden" name="dataElementIds" value="$operand.operandId"></td>
-						<td><input type="text" name="factors-$i" value="$factorMap.get($operand.operandId)"/></td>
+						<td><input type="text" name="factors$i" value="$factorMap.get($operand.operandId)"/></td>
 						<td><button type="button" title="$i18n.getString('remove_all')" onclick="removeCDEDataElement( this )"><img src="../images/delete.png" alt="$i18n.getString('delete_icon')"/></button></td>
 					</tr>
 					#set($i = $i + 1)

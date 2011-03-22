@@ -138,14 +138,7 @@ public class UpdateDataElementAction
     {
         this.domainType = domainType;
     }
-
-    private String valueType;
-
-    public void setValueType( String valueType )
-    {
-        this.valueType = valueType;
-    }
-
+    
     private String numberType;
 
     public void setNumberType( String numberType )
@@ -188,9 +181,9 @@ public class UpdateDataElementAction
         this.dataElementIds = dataElementIds;
     }
 
-    private List<String> factors;
+    private List<Double> factors;
 
-    public void setFactors( List<String> factors )
+    public void setFactors( List<Double> factors )
     {
         this.factors = factors;
     }
@@ -250,7 +243,6 @@ public class UpdateDataElementAction
         dataElement.setDescription( description );
         dataElement.setActive( active );
         dataElement.setDomainType( domainType );
-        dataElement.setType( valueType );
         dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
@@ -287,8 +279,8 @@ public class UpdateDataElementAction
                 {
                     continue;
                 }
-
-                Double factor = Double.parseDouble( factors.get( i ) );
+                
+                Double factor = factors.get( i );
 
                 expressionString += " + ([" + operandId + "] * " + factor + ")";
 

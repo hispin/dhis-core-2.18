@@ -111,9 +111,9 @@ public class ShowUpdateDataElementFormAction
         return dataElementGroups;
     }
 
-    private Map<String, Integer> factorMap;
+    private Map<String, Double> factorMap;
 
-    public Map<String, Integer> getFactorMap()
+    public Map<String, Double> getFactorMap()
     {
         return factorMap;
     }

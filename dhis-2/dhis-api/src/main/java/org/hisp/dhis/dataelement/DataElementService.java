@@ -340,7 +340,7 @@ public interface DataElementService
      * @return a map of factors for the DataElements in the given
      *         CalculatedDataElement
      */
-    Map<DataElement, Integer> getDataElementFactors( CalculatedDataElement calculatedDataElement );
+    Map<DataElement, Double> getDataElementFactors( CalculatedDataElement calculatedDataElement );
 
     /**
      * Returns a Map of factors for the Operands in the given
@@ -350,7 +350,7 @@ public interface DataElementService
      * @return a map of factors for the Operands in the given
      *         CalculatedDataElement
      */
-    Map<String, Integer> getOperandFactors( CalculatedDataElement calculatedDataElement );
+    Map<String, Double> getOperandFactors( CalculatedDataElement calculatedDataElement );
 
     /**
      * Returns a collection of OperandIds in the given CalculatedDataElement

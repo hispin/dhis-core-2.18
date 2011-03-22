@@ -175,9 +175,9 @@ public class AddDataElementAction
         this.dataElementIds = dataElementIds;
     }
 
-    private List<String> factors;
+    private List<Double> factors;
 
-    public void setFactors( List<String> factors )
+    public void setFactors( List<Double> factors )
     {
         this.factors = factors;
     }
@@ -259,7 +259,7 @@ public class AddDataElementAction
                     continue;
                 }
 
-                Double factor = Double.parseDouble( factors.get( i ) );
+                Double factor = factors.get( i );
 
                 expressionString += " + ([" + operandId + "] * " + factor + ")";
 
