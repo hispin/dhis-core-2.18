@@ -399,11 +399,11 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getCalculatedDataElementsByDataElements( dataElements ) );
     }
 
-    public Map<DataElement, Integer> getDataElementFactors( CalculatedDataElement calculatedDataElement )
+    public Map<DataElement, Double> getDataElementFactors( CalculatedDataElement calculatedDataElement )
     {
-        Map<DataElement, Integer> factorMap = new HashMap<DataElement, Integer>();
+        Map<DataElement, Double> factorMap = new HashMap<DataElement, Double>();
 
-        Pattern pattern = Pattern.compile( "\\[(\\d+)\\]\\s*\\*\\s*(\\d+)" );
+        Pattern pattern = Pattern.compile( "\\[(\\d+)\\]\\s*\\*\\s*(\\d+(\\.\\d)*)" );
 
         // ---------------------------------------------------------------------
         // In readable form: \[(\d+)\]\s*\*\s*(\d+)
@@ -419,18 +419,18 @@ public class DefaultDataElementService
             // Value: Factor
             // -----------------------------------------------------------------
 
-            factorMap.put( getDataElement( Integer.parseInt( matcher.group( 1 ) ) ), Integer.parseInt( matcher
+            factorMap.put( getDataElement( Integer.parseInt( matcher.group( 1 ) ) ), Double.parseDouble( matcher
                 .group( 2 ) ) );
         }
 
         return factorMap;
     }
 
-    public Map<String, Integer> getOperandFactors( CalculatedDataElement calculatedDataElement )
+    public Map<String, Double> getOperandFactors( CalculatedDataElement calculatedDataElement )
     {
-        Map<String, Integer> factorMap = new HashMap<String, Integer>();
+        Map<String, Double> factorMap = new HashMap<String, Double>();
 
-        Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]\\s*\\*\\s*(-?\\d+)" );
+        Pattern pattern = Pattern.compile( "\\[(\\d+\\.\\d+)\\]\\s*\\*\\s*(-?\\d+(\\.\\d)*)" );
 
         // ---------------------------------------------------------------------
         // In readable form: \[(\d+)\]\s*\*\s*(\d+)
@@ -446,7 +446,7 @@ public class DefaultDataElementService
             // Value: Factor
             // -----------------------------------------------------------------
 
-            factorMap.put( matcher.group( 1 ), Integer.parseInt( matcher.group( 2 ) ) );
+            factorMap.put( matcher.group( 1 ), Double.parseDouble( matcher.group( 2 ) ) );
         }
 
         return factorMap;

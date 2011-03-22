@@ -207,7 +207,7 @@ function addCDEDataElement( id, name, index )
     var factorTd = tr.appendChild(document.createElement('td'));
     var factorInput = factorTd.appendChild(document.createElement('input'));
     factorInput.type = 'text';
-    factorInput.name = 'factors-' + index;
+    factorInput.name = 'factors' + index;
     factorInput.value = 1;
 
     var opTd = tr.appendChild(document.createElement('td'));
@@ -254,7 +254,7 @@ function removeCDEDataElement( e )
 
 function updateValidatorRulesForFactors()
 {
-	var inputs = jQuery("#selectedDataElements input[name|=factors]");
+	var inputs = jQuery("#selectedDataElements input[name*=factors]");
 	
 	jQuery.each(inputs, function(i, item ){
 		removeValidatorRules( item );
@@ -264,7 +264,7 @@ function updateValidatorRulesForFactors()
 
 function removeValidatorRulesForFactors()
 {
-	var inputs = jQuery("#selectedDataElements input[name|=factors]");
+	var inputs = jQuery("#selectedDataElements input[name*=factors]");
 	
 	jQuery.each(inputs, function(i, item ){			
 		removeValidatorRules( item );		
@@ -304,9 +304,9 @@ function toggleCDEForm()
 function getFactors()
 {
 	var factorsSubmit = jQuery("#factorsSubmit");
-	var inputs = jQuery("#selectedDataElements input[name|=factors]");
+	var inputs = jQuery("#selectedDataElements input[name*=factors]");
 
-	jQuery.each(inputs, function(i, item ){				
+	jQuery.each(inputs, function(i, item ){		
 		factorsSubmit.append('<option value="' + item.value + '" selected="selected">' + item.value + '</option>');	
 	});
 }

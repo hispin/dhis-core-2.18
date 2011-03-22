@@ -508,7 +508,7 @@ public class DataElementServiceTest
         cdes = dataElementService.getCalculatedDataElementsByDataElements( dataElements );
         assertEquals( 2, cdes.size() );
         
-        Map<DataElement,Integer> factorMap = dataElementService.getDataElementFactors(cdeX);
+        Map<DataElement,Double> factorMap = dataElementService.getDataElementFactors(cdeX);
         assertEquals( 2, factorMap.size() );
         assertTrue(factorMap.keySet().contains(deA));
         assertEquals( new Integer(2), factorMap.get(deA));

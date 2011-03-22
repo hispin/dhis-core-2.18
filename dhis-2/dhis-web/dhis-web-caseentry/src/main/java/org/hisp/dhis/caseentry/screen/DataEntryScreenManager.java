@@ -53,7 +53,7 @@ public interface DataEntryScreenManager
 
     Collection<Integer> getAllCalculatedDataElements(ProgramStage programStage);
 
-    Map<CalculatedDataElement, Map<DataElement, Integer>> getNonSavedCalculatedDataElements(ProgramStage programStage);
+    Map<CalculatedDataElement, Map<DataElement, Double>> getNonSavedCalculatedDataElements(ProgramStage programStage);
 
     Map<CalculatedDataElement, Integer> populateValuesForCalculatedDataElements(OrganisationUnit organisationUnit,
         ProgramStage programStage, ProgramStageInstance programStageInstance);
