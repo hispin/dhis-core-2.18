@@ -215,22 +215,15 @@ public class CaseAggregationResultAction
 
         List<Period> periodList = new ArrayList<Period>();
 
-        periodGenericManager.setSelectedPeriodIndex( PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
-            sDateLB );
         Period startPeriod = periodGenericManager.getSelectedPeriod(
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_START );
-
-        periodGenericManager.setSelectedPeriodIndex( PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
-            eDateLB );
+        
         Period endPeriod = periodGenericManager.getSelectedPeriod(
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END );
      
-        if ( sDateLB != -1 && eDateLB != -1 )
-        {
-            periodList = getPeriodList( (CalendarPeriodType)selectedDataSet.getPeriodType(), startPeriod, endPeriod );
-        }
+        periodList = getPeriodList( (CalendarPeriodType)selectedDataSet.getPeriodType(), startPeriod, endPeriod );
 
         // ---------------------------------------------------------------------
         // Aggregation
@@ -287,7 +280,7 @@ public class CaseAggregationResultAction
                         {
                                 DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy,
                                     new Date(), null, optionCombo );
-                                dvalue.setValue( dataValue.getValue() + i18n.getString( "old_value" ) ); 
+                                dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) ); 
                                 
                                 dataValueService.deleteDataValue( dataValue );
 

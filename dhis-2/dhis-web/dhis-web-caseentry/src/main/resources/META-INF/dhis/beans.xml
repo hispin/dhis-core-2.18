@@ -335,6 +335,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<!-- Case Aggregation -->
+	
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
 		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationFormAction"
@@ -349,7 +350,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
 		<property name="periodGenericManager" ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
 	</bean>
-
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.ValidationCaseAggregationAction"
+		scope="prototype">
+		<property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+		<property name="periodGenericManager" ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
+	</bean>
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction"
 		class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultAction"
