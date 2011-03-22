@@ -5,7 +5,7 @@ jQuery( document ).ready( function()
 	var rules = {
 		name : {
 			required : true,
-			rangelength : r.organisationUnitGroup.name.length
+			range : r.organisationUnitGroup.name.range
 		}
 	};
 
@@ -16,7 +16,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroup.name.length[1] );
+	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroup.name.range[1] );
 
 	checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );
 } );

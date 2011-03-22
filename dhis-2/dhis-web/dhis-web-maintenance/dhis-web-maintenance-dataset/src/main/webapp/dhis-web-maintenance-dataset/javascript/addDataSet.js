@@ -7,18 +7,18 @@ jQuery( document ).ready( function()
 			required : true,
 			alphanumericwithbasicpuncspaces : r.dataSet.name.alphanumericwithbasicpuncspaces,
 			firstletteralphabet : r.dataSet.name.firstletteralphabet,
-			rangelength : r.dataSet.name.length
+			range : r.dataSet.name.range
 		},
 		shortName : {
 			required : true,
 			alphanumericwithbasicpuncspaces : r.dataSet.shortName.alphanumericwithbasicpuncspaces,
 			firstletteralphabet : r.dataSet.shortName.firstletteralphabet,
-			rangelength : r.dataSet.shortName.length
+			range : r.dataSet.shortName.range
 		},
 		code : {
 			alphanumericwithbasicpuncspaces : r.dataSet.code.alphanumericwithbasicpuncspaces,
 			notOnlyDigits : r.dataSet.code.notOnlyDigits,
-			rangelength : r.dataSet.code.length
+			range : r.dataSet.code.range
 		},
 		frequencySelect : {
 			required : true
@@ -36,9 +36,9 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.dataSet.name.length[1] );
-	jQuery( "#shortName" ).attr( "maxlength", r.dataSet.shortName.length[1] );
-	jQuery( "#code" ).attr( "maxlength", r.dataSet.code.length[1] );
+	jQuery( "#name" ).attr( "maxlength", r.dataSet.name.range[1] );
+	jQuery( "#shortName" ).attr( "maxlength", r.dataSet.shortName.range[1] );
+	jQuery( "#code" ).attr( "maxlength", r.dataSet.code.range[1] );
 
 	checkValueIsExist( "name", "validateDataSet.action" );
 	checkValueIsExist( "shortName", "validateDataSet.action" );

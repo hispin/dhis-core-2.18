@@ -5,11 +5,11 @@ jQuery( document ).ready( function()
 	var rules = {
 		name : {
 			required : true,
-			rangelength : r.organisationUnitGroupSet.name.length
+			range : r.organisationUnitGroupSet.name.range
 		},
 		description : {
 			required : true,
-			rangelength : r.organisationUnitGroupSet.description.length
+			range : r.organisationUnitGroupSet.description.range
 		}
 	};
 
@@ -24,8 +24,8 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroupSet.name.length[1] );
-	jQuery( "#description" ).attr( "maxlength", r.organisationUnitGroupSet.description.length[1] );
+	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroupSet.name.range[1] );
+	jQuery( "#description" ).attr( "maxlength", r.organisationUnitGroupSet.description.range[1] );
 
 	checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action", {
 		id : $organisationUnitGroupSet.id

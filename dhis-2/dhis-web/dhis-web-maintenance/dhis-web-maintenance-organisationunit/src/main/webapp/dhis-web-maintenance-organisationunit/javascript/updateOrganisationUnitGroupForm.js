@@ -1,17 +1,20 @@
-jQuery(document).ready(	function(){
+jQuery(document).ready(function()
+{
 	var r = getValidationRules();
-	
+
 	var rules = {
-		name: {
-			required:true,
-			rangelength : r.organisationUnitGroup.name.length
+		name : {
+			required : true,
+			range : r.organisationUnitGroup.name.range
 		}
 	};
 
-	validation2( 'updateOrganisationUnitGroupForm', function( form ) { form.submit() },
+	validation2('updateOrganisationUnitGroupForm', function( form )
 	{
-		'rules': rules
-	});	
+		form.submit()
+	}, {
+		'rules' : rules
+	});
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroup.name.length[1] );
-});	
+	jQuery("#name").attr("maxlength", r.organisationUnitGroup.name.range[1]);
+});
