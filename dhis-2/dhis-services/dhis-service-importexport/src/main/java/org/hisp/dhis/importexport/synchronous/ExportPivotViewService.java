@@ -48,7 +48,6 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
@@ -60,21 +59,12 @@ import org.hisp.dhis.system.util.MathUtils;
  */
 public class ExportPivotViewService
 {
-
     private static final Log log = LogFactory.getLog( ExportPivotViewService.class );
 
     // service can export either aggregated datavalues or aggregated indicator values
     public enum RequestType
     {
-
         DATAVALUE, INDICATORVALUE
-    };
-
-    // service can export either monthly or yearly periods
-    public enum RequestPeriodType
-    {
-
-        MONTHLY, YEARLY
     };
 
     // precision to use when formatting double values
@@ -83,6 +73,7 @@ public class ExportPivotViewService
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private AggregatedDataValueService aggregatedDataValueService;
 
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
@@ -104,13 +95,13 @@ public class ExportPivotViewService
         this.periodService = periodService;
     }
 
-    public void execute( OutputStream out, RequestType requestType, RequestPeriodType requestPeriodType,
+    public void execute( OutputStream out, RequestType requestType, PeriodType periodType,
         Date startDate, Date endDate, int level, int root )
         throws IOException
     {
         Writer writer = new BufferedWriter( new OutputStreamWriter( out ) );
 
-        Collection<Period> periods = getPeriods( requestPeriodType, startDate, endDate );
+        Collection<Period> periods = getPeriods( periodType, startDate, endDate );
 
         if ( periods.isEmpty() )
         {
@@ -141,17 +132,17 @@ public class ExportPivotViewService
         if ( requestType == RequestType.DATAVALUE )
         {
             processDataValues( writer, rootOrgUnit, orgUnitLevel, periods );
-        } else
+        } 
+        else
         {
             processIndicatorValues( writer, rootOrgUnit, orgUnitLevel, periods );
         }
-
     }
 
-    public int count( RequestType requestType, RequestPeriodType requestPeriodType,
+    public int count( RequestType requestType, PeriodType periodType,
         Date startDate, Date endDate, int level, int root )
     {
-        Collection<Period> periods = getPeriods( requestPeriodType, startDate, endDate );
+        Collection<Period> periods = getPeriods( periodType, startDate, endDate );
 
         if ( periods.isEmpty() )
         {
@@ -184,8 +175,6 @@ public class ExportPivotViewService
         {
             return aggregatedDataValueService.countIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
         }
-
-
     }
 
     private void processDataValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
@@ -198,7 +187,6 @@ public class ExportPivotViewService
         writer.write( "# period, orgunit, dataelement, catoptcombo, value\n" );
         while ( adv != null )
         {
-            // process adv ..
             int periodId = adv.getPeriodId();
             String period = periodService.getPeriod( periodId ).getIsoDate();
 
@@ -212,10 +200,9 @@ public class ExportPivotViewService
         }
 
         writer.flush();
-
     }
 
-    void processIndicatorValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
+    private void processIndicatorValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
         throws IOException
     {
         StoreIterator<AggregatedIndicatorValue> Iterator = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
@@ -223,9 +210,9 @@ public class ExportPivotViewService
         AggregatedIndicatorValue aiv = Iterator.next();
 
         writer.write( "# period, orgunit, indicator, factor, numerator, denominator\n" );
+        
         while ( aiv != null )
         {
-            // process adv ..
             int periodId = aiv.getPeriodId();
             String period = periodService.getPeriod( periodId ).getIsoDate();
 
@@ -240,31 +227,11 @@ public class ExportPivotViewService
         }
 
         writer.flush();
-
     }
 
-    private Collection<Period> getPeriods( RequestPeriodType requestPeriodType, Date startDate, Date endDate )
+    private Collection<Period> getPeriods( PeriodType periodType, Date startDate, Date endDate )
     {
-        Collection<Period> periods;
-        PeriodType periodType;
-
-        switch ( requestPeriodType )
-        {
-            case MONTHLY:
-                periodType = new MonthlyPeriodType();
-                break;
-            case YEARLY:
-                periodType = new YearlyPeriodType();
-                break;
-            default:
-                // shouldn't happen - log and quietly default to monthly
-                log.warn( "Unsupported period type: " + requestPeriodType );
-                periodType = new MonthlyPeriodType();
-        }
-
-        periods = periodService.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
-
-        return periods;
+        periodType = periodType != null ? periodType : new MonthlyPeriodType(); // Fall back to monthly
+        return periodService.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
     }
-
 }
