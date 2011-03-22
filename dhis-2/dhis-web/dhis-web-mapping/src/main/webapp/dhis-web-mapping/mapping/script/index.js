@@ -2552,14 +2552,12 @@
                     layerTree,
                     {
                         title: '<span class="panel-title">' + G.i18n.overview_map + '</span>',
-                        html:'<div id="overviewmap" style="height:97px; padding-top:0px;"></div>'
+                        html:'<div id="overviewmap"></div>'
                     },
                     {
                         title: '<span class="panel-title">'+ G.i18n.cursor_position +'</span>',
-                        height: 65,
-                        contentEl: 'position',
-                        anchor: '100%',
-                        bodyStyle: 'padding-left: 4px;'
+                        contentEl: 'mouseposition',
+                        anchor: '100%'
                     },
 					{
 						xtype: 'panel',
@@ -2672,6 +2670,7 @@
     }));
     
     G.vars.map.addControl(new OpenLayers.Control.OverviewMap({
+        autoActivate: true,
         div: $('overviewmap'),
         size: new OpenLayers.Size(188, 97),
         minRectSize: 0,
