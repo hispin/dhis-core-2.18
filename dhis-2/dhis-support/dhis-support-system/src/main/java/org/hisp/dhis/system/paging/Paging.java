@@ -121,7 +121,7 @@ public class Paging
 
     public void setPageSize( int pageSize )
     {
-        this.pageSize = pageSize > 0 ? pageSize : 50;
+        this.pageSize = pageSize > 0 ? pageSize : Paging.MAX_ALLOWED_PAGE_SIZE;
     }
 
     public int getTotal()
