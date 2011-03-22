@@ -56,14 +56,14 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnit.name.length );
-	jQuery( "#shortName" ).attr( "maxlength", r.organisationUnit.shortName.length );
-	jQuery( "#code" ).attr( "maxlength", r.organisationUnit.code.length );
-	jQuery( "#url" ).attr( "maxlength", r.organisationUnit.url.length );
-	jQuery( "#contactPerson" ).attr( "maxlength", r.organisationUnit.contactPerson.length );
-	jQuery( "#address" ).attr( "maxlength", r.organisationUnit.address.length );
-	jQuery( "#email" ).attr( "maxlength", r.organisationUnit.email.length );
-	jQuery( "#phoneNumber" ).attr( "maxlength", r.organisationUnit.phoneNumber.length );
+	jQuery( "#name" ).attr( "maxlength", r.organisationUnit.name.length[1] );
+	jQuery( "#shortName" ).attr( "maxlength", r.organisationUnit.shortName.length[1] );
+	jQuery( "#code" ).attr( "maxlength", r.organisationUnit.code.length[1] );
+	jQuery( "#url" ).attr( "maxlength", r.organisationUnit.url.length[1] );
+	jQuery( "#contactPerson" ).attr( "maxlength", r.organisationUnit.contactPerson.length[1] );
+	jQuery( "#address" ).attr( "maxlength", r.organisationUnit.address.length[1] );
+	jQuery( "#email" ).attr( "maxlength", r.organisationUnit.email.length[1] );
+	jQuery( "#phoneNumber" ).attr( "maxlength", r.organisationUnit.phoneNumber.length[1] );
 
 	checkValueIsExist( "name", "validateOrganisationUnit.action" );
 	datePickerValid( 'openingDate', false );

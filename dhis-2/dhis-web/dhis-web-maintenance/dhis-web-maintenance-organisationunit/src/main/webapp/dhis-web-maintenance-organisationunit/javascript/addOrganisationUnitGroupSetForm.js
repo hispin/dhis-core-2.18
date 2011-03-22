@@ -24,8 +24,8 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroupSet.name.length );
-	jQuery( "#description" ).attr( "maxlength", r.organisationUnitGroupSet.description.length );
+	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroupSet.name.length[1] );
+	jQuery( "#description" ).attr( "maxlength", r.organisationUnitGroupSet.description.length[1] );
 
 	checkValueIsExist( "name", "validateOrganisationUnitGroupSet.action" );
 
