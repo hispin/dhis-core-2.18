@@ -45,6 +45,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -139,7 +140,7 @@ public class GridXlsResult
 
             for ( Object column : row )
             {
-                if ( column != null && column instanceof Number )
+                if ( column != null && MathUtils.isNumeric( String.valueOf( column ) ) )
                 {
                     sheet.addCell( new Number( columnIndex++, rowNumber, Double.valueOf( String.valueOf( column ) ), FORMAT_TEXT ) );
                 }
