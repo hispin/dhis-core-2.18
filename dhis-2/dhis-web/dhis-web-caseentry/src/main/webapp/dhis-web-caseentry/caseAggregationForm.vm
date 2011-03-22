@@ -62,7 +62,7 @@
 		
 		<tr>
 			<td colspan='2'>
-				#organisationUnitSelectionTree( false, true, false )
+				#organisationUnitSelectionTree( true, false, false )
 			</td>
 		</tr>
 
@@ -73,4 +73,6 @@
 			<td></td>
 		</tr>
 	</table>
+	
+	<span id='message'></span>
 </form>

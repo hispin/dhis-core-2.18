@@ -84,5 +84,30 @@ function responseListPeriodForEndReceived( json )
 	});
 }
 
-
 	
+function validationCaseAggregation( )
+{
+    var request = new Request();
+    request.setResponseTypeXML( 'dataElementGroup' );
+    request.setCallbackSuccess( validationCaseAggregationCompleted );
+	
+	var url  = "sDateLB=" + byId('sDateLB').value;
+		url += "&eDateLB=" + byId('eDateLB').value;
+		
+	request.sendAsPost(url);
+    request.send( 'validateCaseAggregation.action' );
+}
+
+function validationCaseAggregationCompleted( message )
+{
+    var type = message.getAttribute("type");
+	
+    if( type == "success" )
+    {
+        document.forms[ 'caseAggregationForm' ].submit();
+    }
+    else
+    {
+        setMessage(message.firstChild.nodeValue);
+    }
+}

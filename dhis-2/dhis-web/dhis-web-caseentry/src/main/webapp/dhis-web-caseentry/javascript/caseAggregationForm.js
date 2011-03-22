@@ -12,19 +12,9 @@ jQuery(document).ready(	function() {
 	};
 	
 	validation2( 'caseAggregationForm', function(form) {
-		if(isSubmit) form.submit();
+		validationCaseAggregation();
 	}, {
-		'beforeValidateHandler': function() {
-			var periodFrom = jQuery( '#sDateLB' ).val();
-			var periodTo = jQuery( '#eDateLB' ).val();
-			
-			if(periodFrom > periodTo){
-				byId('warningMessage').innerHTML = i18n_greater_then_from_date;
-				isSubmit = false;
-			} else {
-				isSubmit = true;
-			}
-		},
+		
 		'rules': rules
 	})
 }); 
