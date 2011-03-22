@@ -196,7 +196,7 @@ function displayEntryFormCompleted()
 {
 	addEventListeners();
 	hideLoader();
-	enable("validationBtt");
+	enable( 'validationButton' );
 }
 
 function setDisplayModes()

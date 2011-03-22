@@ -191,7 +191,7 @@ function unCheckALL( jQuerySelectorString )
  */
 function enable( elementId )
 {
-    jQuery( "#" + elementId ).attr("disabled", false );
+    jQuery( "#" + elementId ).removeAttr( "disabled" );
 }
 
 function enableGroup( selectorJQueryString )
