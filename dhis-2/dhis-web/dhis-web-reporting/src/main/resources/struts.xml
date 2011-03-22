@@ -382,36 +382,48 @@
       <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
 	</action>
 	
-  </package>
-  
-  <package name="dhis-web-exportdatamart" extends="dhis-web-commons" namespace="/dhis-web-exportdatamart">
-
+	<!-- Export -->
+	
     <action name="monthlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
       <result name="success" type="outputStreamResult" />
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
-      <param name="periodType">MONTHLY</param>
+      <param name="periodType">Monthly</param>
+    </action>
+
+    <action name="quarterlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
+      <result name="success" type="outputStreamResult" />
+      <result name="client-error" type="httpheader" />
+      <param name="requestType">DATAVALUE</param>
+      <param name="periodType">Quarterly</param>
     </action>
 
     <action name="yearlyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
       <result name="success" type="outputStreamResult" />
       <result name="client-error" type="httpheader" />
       <param name="requestType">DATAVALUE</param>
-      <param name="periodType">YEARLY</param>
+      <param name="periodType">Yearly</param>
     </action>
 
     <action name="monthlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
       <result name="success" type="outputStreamResult" />
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
-      <param name="periodType">MONTHLY</param>
+      <param name="periodType">Monthly</param>
+    </action>
+
+    <action name="quarterlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
+      <result name="success" type="outputStreamResult" />
+      <result name="client-error" type="httpheader" />
+      <param name="requestType">INDICATORVALUE</param>
+      <param name="periodType">Quarterly</param>
     </action>
 
     <action name="yearlyIndicatorValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">
       <result name="success" type="outputStreamResult" />
       <result name="client-error" type="httpheader" />
       <param name="requestType">INDICATORVALUE</param>
-      <param name="periodType">YEARLY</param>
+      <param name="periodType">Yearly</param>
     </action>
 
   </package>

@@ -44,12 +44,12 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
 import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestType;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestPeriodType;
 
 /**
  * @author Bob Jolliffe
@@ -145,11 +145,11 @@ public class ExportDataMartAction
         this.requestType = requestType;
     }
 
-    private RequestPeriodType periodType;
+    private String periodType;
 
-    public void setPeriodType( RequestPeriodType requestType )
+    public void setPeriodType( String periodType )
     {
-        this.periodType = requestType;
+        this.periodType = periodType;
     }
 
     // -------------------------------------------------------------------------
@@ -228,11 +228,13 @@ public class ExportDataMartAction
         SimpleDateFormat format = new SimpleDateFormat( "_yyyy_MM_dd_HHmm_ss" );
         String fileName = requestType + format.format(Calendar.getInstance().getTime()) + ".csv.gz";
 
+        PeriodType pType = PeriodType.getPeriodTypeByName( periodType );
+        
         // prepare to write output
         OutputStream out = null;
 
         // how many rows do we expect
-        int count = exportPivotViewService.count( requestType, periodType, start, end,
+        int count = exportPivotViewService.count( requestType, pType, start, end,
                 dataSourceLevel, dataSourceRoot);
 
         response.setContentType( "application/gzip");
@@ -245,7 +247,7 @@ public class ExportDataMartAction
         try
         {
             out = new GZIPOutputStream(response.getOutputStream(), GZIPBUFFER);
-            exportPivotViewService.execute(out, requestType, periodType, start, end,
+            exportPivotViewService.execute(out, requestType, pType, start, end,
                 dataSourceLevel, dataSourceRoot);
         }
         finally
