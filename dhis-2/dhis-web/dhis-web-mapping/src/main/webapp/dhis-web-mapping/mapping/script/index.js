@@ -2552,41 +2552,33 @@
                     layerTree,
                     {
                         title: '<span class="panel-title">' + G.i18n.overview_map + '</span>',
-                        html:'<div id="overviewmap"></div>'
+                        contentEl: 'overviewmap',
+						anchor: '100%'
                     },
                     {
                         title: '<span class="panel-title">'+ G.i18n.cursor_position +'</span>',
                         contentEl: 'mouseposition',
-                        anchor: '100%'
+						anchor: '100%'
                     },
 					{
-						xtype: 'panel',
 						title: '<span class="panel-title">' + G.i18n.feature_data + '</span>',
-						height: 65,
-						anchor: '100%',
-						bodyStyle: 'padding-left: 4px;',
-						items: [
-							new Ext.form.Label({
-								id: 'featureinfo_l',
-								text: G.i18n.no_feature_selected,
-								style: 'color:#666666'
-							})
-						]
+                        contentEl: 'featuredatatext',
+						anchor: '100%'
 					},
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_polygon + '</span>',
-                        minHeight: 65,
-                        autoHeight: true,
                         contentEl: 'polygonlegendpanel',
                         anchor: '100%',
+                        minHeight: 65,
+                        autoHeight: true,
 						bodyStyle: 'padding-left: 4px;'
                     },
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_point + '</span>',
-                        minHeight: 65,
-                        autoHeight: true,
                         contentEl: 'pointlegendpanel',
                         anchor: '100%',
+                        minHeight: 65,
+                        autoHeight: true,
 						bodyStyle: 'padding-left: 4px;'
                     }
                 ]
