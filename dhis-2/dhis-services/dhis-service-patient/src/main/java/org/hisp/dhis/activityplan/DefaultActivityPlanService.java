@@ -4,10 +4,13 @@
 package org.hisp.dhis.activityplan;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -20,6 +23,7 @@ import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.system.util.DateUtils;
 
 /**
  * @author abyotag_adm
@@ -59,7 +63,7 @@ public class DefaultActivityPlanService
     {
         this.programStageInstanceService = programStageInstanceService;
     }
-    
+
     // -------------------------------------------------------------------------
     // ActivityPlan
     // -------------------------------------------------------------------------
@@ -80,6 +84,52 @@ public class DefaultActivityPlanService
 
         return getActivties( programInstances );
 
+    }
+
+    public Collection<Activity> getCurrentActivitiesByProvider( OrganisationUnit organisationUnit )
+    {
+        long time = System.currentTimeMillis();
+
+        List<Activity> items = new ArrayList<Activity>();
+
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+
+        Collection<Program> programs = programService.getPrograms( organisationUnit );
+
+        for ( Program program : programs )
+        {
+            programInstances.addAll( programInstanceService.getProgramInstances( program, organisationUnit ) );
+        }
+
+        Calendar expiredDate = Calendar.getInstance();
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            Set<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
+            Inner: for ( ProgramStageInstance programStageInstance : programStageInstances )
+            {
+                expiredDate.setTime( DateUtils.getDateAfterAddition( programStageInstance.getDueDate(),
+                    programStageInstance.getProgramInstance().getProgram().getMaxDaysAllowedInputData() ) );
+                if ( programStageInstance.getDueDate().getTime() < time && expiredDate.getTimeInMillis() > time )
+                {
+                    Activity activity = new Activity();
+                    activity.setBeneficiary( programInstance.getPatient() );
+                    activity.setTask( programStageInstance );
+                    activity.setDueDate( programStageInstance.getDueDate() );
+                    items.add( activity );
+                }
+                if ( programStageInstance.getDueDate().getTime() > time && expiredDate.getTimeInMillis() > time )
+                {
+                    Activity activity = new Activity();
+                    activity.setBeneficiary( programInstance.getPatient() );
+                    activity.setTask( programStageInstance );
+                    activity.setDueDate( programStageInstance.getDueDate() );
+                    items.add( activity );
+                    break Inner;
+                }
+            }
+        }
+        return items;
     }
 
     public Collection<Activity> getActivitiesByProvider( OrganisationUnit organisationUnit )
