@@ -230,9 +230,9 @@ public class SelectAction
         return calculatedDataElementIds;
     }
 
-    private Map<CalculatedDataElement, Map<DataElement, Integer>> calculatedDataElementMap;
+    private HashMap<CalculatedDataElement, Map<DataElement, Double>> calculatedDataElementMap;
 
-    public Map<CalculatedDataElement, Map<DataElement, Integer>> getCalculatedDataElementMap()
+    public Map<CalculatedDataElement, Map<DataElement, Double>> getCalculatedDataElementMap()
     {
         return calculatedDataElementMap;
     }
@@ -405,7 +405,7 @@ System.out.println("\n  dataSets : " + dataSets);
         // ---------------------------------------------------------------------
 
         calculatedDataElementIds = new HashSet<Integer>();
-        calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Integer>>();
+        calculatedDataElementMap = new HashMap<CalculatedDataElement, Map<DataElement, Double>>();
         CalculatedDataElement cde;
 
         for ( DataElement dataElement : selectedDataSet.getDataElements() )

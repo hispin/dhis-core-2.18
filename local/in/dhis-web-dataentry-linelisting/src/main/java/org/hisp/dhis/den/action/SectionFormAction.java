@@ -259,10 +259,10 @@ public class SectionFormAction
 
         calculatedValueMap = new HashMap<CalculatedDataElement, Integer>();
 
-        Map<DataElement, Integer> factorMap;
+        Map<DataElement, Double> factorMap;
 
         DataValue dataValue;
-        int factor;
+        Double factor;
         int value = 0;
 
         for ( DataElement dataElement : dataElements )
