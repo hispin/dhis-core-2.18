@@ -509,4 +509,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.dataset.DataSetService"/>
   </bean>
   
+  <!-- Export -->
+  
+  <bean id="org.hisp.dhis.reporting.exp.ExportDataMartAction"
+	class="org.hisp.dhis.reporting.exp.ExportDataMartAction"
+	scope="prototype">
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+	<property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
+  </bean>
+  
 </beans>

@@ -173,14 +173,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
-
-    <bean id="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
-		class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction"
-		scope="prototype">
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-		<property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
-	</bean>
-
 	<bean id="org.hisp.dhis.importexport.action.exp.GetExportStatusAction"
 		class="org.hisp.dhis.importexport.action.exp.GetExportStatusAction"
 		scope="prototype">

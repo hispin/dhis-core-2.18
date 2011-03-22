@@ -214,38 +214,4 @@
     </action>
   </package>
 
-  <!-- Create a new namespace to map actions for exporting datamart -->
-  <package name="dhis-web-exportdatamart" extends="dhis-web-commons" namespace="/dhis-web-exportdatamart">
-
-      <!-- route all export value requests through same action -->
-
-      <action name="monthlyDataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
-        <result name="success" type="outputStreamResult" />
-        <result name="client-error" type="httpheader" />
-        <param name="requestType">DATAVALUE</param>
-        <param name="periodType">MONTHLY</param>
-      </action>
-
-      <action name="yearlyDataValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
-        <result name="success" type="outputStreamResult" />
-        <result name="client-error" type="httpheader" />
-        <param name="requestType">DATAVALUE</param>
-        <param name="periodType">YEARLY</param>
-      </action>
-
-      <action name="monthlyIndicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
-        <result name="success" type="outputStreamResult" />
-        <result name="client-error" type="httpheader" />
-        <param name="requestType">INDICATORVALUE</param>
-        <param name="periodType">MONTHLY</param>
-      </action>
-
-      <action name="yearlyIndicatorValues" class="org.hisp.dhis.importexport.action.exp.ExportDataMartAction">
-        <result name="success" type="outputStreamResult" />
-        <result name="client-error" type="httpheader" />
-        <param name="requestType">INDICATORVALUE</param>
-        <param name="periodType">YEARLY</param>
-      </action>
-
-  </package>
 </struts>
