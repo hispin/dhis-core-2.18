@@ -16,7 +16,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroup.name.length );
+	jQuery( "#name" ).attr( "maxlength", r.organisationUnitGroup.name.length[1] );
 
 	checkValueIsExist( "name", "validateOrganisationUnitGroup.action" );
 } );

@@ -44,9 +44,11 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#rawPassword" ).attr( "maxlength", "35" );
-	jQuery( "#retypePassword" ).attr( "maxlength", "35" );
-	jQuery( "#surname" ).attr( "maxlength", "140" );
-	jQuery( "#firstName" ).attr( "maxlength", "140" );
-	jQuery( "#email" ).attr( "maxlength", "160" );
+	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#surname" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#firstName" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#email" ).attr( "maxlength", r.user.email.length[1] );
+	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.length[1] );
+
 } );

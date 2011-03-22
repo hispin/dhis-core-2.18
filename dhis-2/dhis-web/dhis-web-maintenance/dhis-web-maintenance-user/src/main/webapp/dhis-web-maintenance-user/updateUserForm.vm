@@ -34,7 +34,7 @@
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"></td>		
+		<td colspan="3"><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $userCredentials.user.email )" style="width:20em"></td>
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>

@@ -14,7 +14,6 @@ jQuery(document).ready(	function() {
 	validation2( 'caseAggregationForm', function(form) {
 		validationCaseAggregation();
 	}, {
-		
 		'rules': rules
 	})
 }); 
