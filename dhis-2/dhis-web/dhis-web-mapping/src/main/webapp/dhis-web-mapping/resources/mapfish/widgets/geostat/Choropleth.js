@@ -974,19 +974,19 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
         
         var onHoverSelect = function onHoverSelect(feature) {
             if (feature.attributes.name) {
-                Ext.getCmp('featureinfo_l').setText('<div style="color:black">' + feature.attributes.name + '</div><div style="color:#555">' + feature.attributes.value + '</div>', false);
+                document.getElementById('featuredatatext').innerHTML = '<div style="color:black">' + feature.attributes.name + '</div><div style="color:#555">' + feature.attributes.value + '</div>';
             }
             else {
-                Ext.getCmp('featureinfo_l').setText('', false);
+                document.getElementById('featuredatatext').innerHTML = '';
             }
         };
         
         var onHoverUnselect = function onHoverUnselect(feature) {
             if (feature.attributes.name) {
-                Ext.getCmp('featureinfo_l').setText('<span style="color:#666">' + G.i18n.no_feature_selected + '</span>', false);
+                document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
             }
             else {
-                Ext.getCmp('featureinfo_l').setText('', false);
+                document.getElementById('featuredatatext').innerHTML = '';
             }
         };
         
