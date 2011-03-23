@@ -45,19 +45,6 @@
     </property>
   </bean>
 
-  <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
-    <property name="attributes">
-      <map>
-        <entry key="userAuditService">
-          <ref bean="org.hisp.dhis.useraudit.UserAuditService" />
-        </entry>
-        <entry key="userAuditStore">
-          <ref bean="org.hisp.dhis.useraudit.UserAuditStore" />
-        </entry>
-      </map>
-    </property>
-  </bean>
-
   <!-- Security : Listener -->
 
   <bean id="authenticationListener" class="org.hisp.dhis.security.listener.AuthenticationListener">
