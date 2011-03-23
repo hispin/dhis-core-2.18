@@ -5,7 +5,7 @@ jQuery( document ).ready( function()
 	var rules = {
 		nameField : {
 			required : true,
-			rangelength : r.dataEntry.name.length
+			rangelength : r.dataEntry.name.rangelength
 		}
 	};
 
@@ -17,7 +17,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#nameField" ).attr( "maxlength", r.dataEntry.name.length[1] );
+	jQuery( "#nameField" ).attr( "maxlength", r.dataEntry.name.rangelength[1] );
 
 	jQuery( "#dataElementSelection" ).resizable( {
 		minHeight : 210,

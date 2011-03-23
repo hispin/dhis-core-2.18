@@ -7,13 +7,13 @@ jQuery( document ).ready( function()
 			required : true,
 			firstletteralphabet : r.user.username.firstletteralphabet,
 			alphanumeric : r.user.username.alphanumeric,
-			rangelength : r.user.username.length
+			rangelength : r.user.username.rangelength
 		},
 		rawPassword : {
 			required : true,
 			password : true,
 			notequalto : '#username',
-			rangelength : r.user.password.length
+			rangelength : r.user.password.rangelength
 		},
 		retypePassword : {
 			required : true,
@@ -21,18 +21,18 @@ jQuery( document ).ready( function()
 		},
 		surname : {
 			required : true,
-			rangelength : r.user.name.length
+			rangelength : r.user.name.rangelength
 		},
 		firstName : {
 			required : true,
-			rangelength : r.user.name.length
+			rangelength : r.user.name.rangelength
 		},
 		email : {
 			email : true,
-			rangelength : r.user.email.length
+			rangelength : r.user.email.rangelength
 		},
 		phoneNumber : {
-			rangelength : r.user.phone.length
+			rangelength : r.user.phone.rangelength
 		},
 		roleValidator : {
 			required : true
@@ -50,13 +50,13 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#username" ).attr( "maxlength", r.user.username.length[1] );
-	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.length[1] );
-	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.length[1] );
-	jQuery( "#surname" ).attr( "maxlength", r.user.name.length[1] );
-	jQuery( "#firstName" ).attr( "maxlength", r.user.name.length[1] );
-	jQuery( "#email" ).attr( "maxlength", r.user.email.length[1] );
-	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.length[1] );
+	jQuery( "#username" ).attr( "maxlength", r.user.username.rangelength[1] );
+	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.rangelength[1] );
+	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.rangelength[1] );
+	jQuery( "#surname" ).attr( "maxlength", r.user.name.rangelength[1] );
+	jQuery( "#firstName" ).attr( "maxlength", r.user.name.rangelength[1] );
+	jQuery( "#email" ).attr( "maxlength", r.user.email.rangelength[1] );
+	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.rangelength[1] );
 
 	/* remote validation */
 	checkValueIsExist( "username", "validateUser.action" );
