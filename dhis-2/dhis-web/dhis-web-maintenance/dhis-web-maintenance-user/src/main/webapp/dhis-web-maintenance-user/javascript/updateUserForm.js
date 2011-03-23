@@ -6,27 +6,27 @@ jQuery( document ).ready( function()
 		rawPassword : {
 			password : true,
 			notequalto : '#username',
-			range : r.user.password.range
+			rangelength : r.user.password.length
 		},
 		retypePassword : {
 			required : false,
 			equalTo : '#rawPassword',
-			range : r.user.password.range
+			rangelength : r.user.password.length
 		},
 		surname : {
 			required : true,
-			range : r.user.name.range
+			rangelength : r.user.name.length
 		},
 		firstName : {
 			required : true,
-			range : r.user.name.range
+			rangelength : r.user.name.length
 		},
 		email : {
 			email : true,
-			range : r.user.email.range
+			rangelength : r.user.email.length
 		},
 		phoneNumber : {
-			range : r.user.phone.range
+			rangelength : r.user.phone.length
 		},
 		roleValidator : {
 			required : true
@@ -44,11 +44,11 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.range[1] );
-	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.range[1] );
-	jQuery( "#surname" ).attr( "maxlength", r.user.name.range[1] );
-	jQuery( "#firstName" ).attr( "maxlength", r.user.name.range[1] );
-	jQuery( "#email" ).attr( "maxlength", r.user.email.range[1] );
-	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.range[1] );
+	jQuery( "#rawPassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#retypePassword" ).attr( "maxlength", r.user.password.length[1] );
+	jQuery( "#surname" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#firstName" ).attr( "maxlength", r.user.name.length[1] );
+	jQuery( "#email" ).attr( "maxlength", r.user.email.length[1] );
+	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.length[1] );
 
 } );
