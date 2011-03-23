@@ -71,13 +71,6 @@ public class SaveDataEntryFormAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private int associationIdField;
-
-    public void setAssociationIdField( int associationIdField )
-    {
-        this.associationIdField = associationIdField;
-    }
-
     private String name;
 
     public void setName( String name )
@@ -92,16 +85,25 @@ public class SaveDataEntryFormAction
         this.designTextarea = designTextarea;
     }
 
-    private Integer programStageId;
-
-    public Integer getProgramStageId()
+    private Integer programId;
+    
+    public Integer getProgramId()
     {
-        return programStageId;
+        return programId;
     }
+
+    private Integer programStageId;
 
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
+    }
+
+    private Integer dataEntryFormId;
+
+    public void setDataEntryFormId( Integer dataEntryFormId )
+    {
+        this.dataEntryFormId = dataEntryFormId;
     }
 
     // -------------------------------------------------------------------------
@@ -111,26 +113,52 @@ public class SaveDataEntryFormAction
     public String execute()
         throws Exception
     {
-        ProgramStage association = programStageService.getProgramStage( associationIdField );
+        ProgramStage programStage = programStageService.getProgramStage( programStageId );
         
-        DataEntryForm dataEntryForm = association.getDataEntryForm();
+        programId = programStage.getProgram().getId();
+        
+        DataEntryForm dataEntryForm = null;
+
+        // ---------------------------------------------------------------------
+        // Get data-entry-form
+        // ---------------------------------------------------------------------
+
+        if ( dataEntryFormId == null )
+        {
+            dataEntryForm = programStage.getDataEntryForm();
+        }
+        else
+        {
+            dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
+        }
+
+        // ---------------------------------------------------------------------
+        // Save data-entry-form
+        // ---------------------------------------------------------------------
 
         if ( dataEntryForm == null )
         {
             dataEntryForm = new DataEntryForm( name, prepareDataEntryFormCode( designTextarea ) );
-            association.setDataEntryForm( dataEntryForm );
-            programStageService.updateProgramStage( association );
+            programStage.setDataEntryForm( dataEntryForm );
+            programStageService.updateProgramStage( programStage );
         }
         else
         {
             dataEntryForm.setName( name );
             dataEntryForm.setHtmlCode( prepareDataEntryFormCode( designTextarea ) );
-            dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            //dataEntryFormService.updateDataEntryForm( dataEntryForm );
+            
+            programStage.setDataEntryForm( dataEntryForm );
+            programStageService.updateProgramStage( programStage );
         }
 
         return SUCCESS;
     }
-
+    
+    // -------------------------------------------------------------------------
+    // Support methods
+    // -------------------------------------------------------------------------
+    
     private String prepareDataEntryFormCode( String dataEntryFormCode )
     {
         String preparedCode = dataEntryFormCode;
@@ -206,9 +234,9 @@ public class SaveDataEntryFormAction
             result = matDataElement.find();
         }
 
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Add remaining code (after the last match), and return formatted code.
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         matDataElement.appendTail( sb );
 
