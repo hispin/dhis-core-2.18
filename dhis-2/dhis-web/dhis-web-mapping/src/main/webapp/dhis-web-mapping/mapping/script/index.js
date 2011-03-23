@@ -1982,8 +1982,8 @@
 
     var layerTree = new Ext.tree.TreePanel({
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
+        bodyStyle: 'padding-bottom:5px',
         enableDD: false,
-        bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
         collapsible: true,
         root: {
@@ -2242,7 +2242,7 @@
                 xtype: 'button',
                 id: 'overlays_b',
                 text: 'Overlays',
-                iconCls: 'icon-add',
+                iconCls: 'icon-overlay',
                 handler: function() {
                     Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (G.conf.window_width + 15 + 5), Ext.getCmp('center').y + 41);
                     Ext.getCmp('overlays_w').show();
@@ -2259,7 +2259,16 @@
 		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         featureSelection: false,
         legendDiv: 'polygonlegend',
-        defaults: {width: 130},        
+        defaults: {width: 130},
+        tools: [
+            {
+                id: 'refresh',
+                handler: function() {
+                    choropleth.updateValues = true;
+                    choropleth.classify();
+                }
+            }
+        ],
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setPolygon();
@@ -2278,6 +2287,15 @@
         featureSelection: false,
         legendDiv: 'pointlegend',
         defaults: {width: 130},
+        tools: [
+            {
+                id: 'refresh',
+                handler: function() {
+                    symbol.updateValues = true;
+                    symbol.classify();
+                }
+            }
+        ],
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setPoint();
@@ -2303,6 +2321,7 @@
 	var zoomInButton = new Ext.Button({
 		iconCls: 'icon-zoomin',
 		tooltip: G.i18n.zoom_in,
+        style: 'margin-top:1px',
 		handler: function() {
 			G.vars.map.zoomIn();
 		}
@@ -2311,6 +2330,7 @@
 	var zoomOutButton = new Ext.Button({
 		iconCls: 'icon-zoomout',
 		tooltip: G.i18n.zoom_out,
+        style: 'margin-top:1px',
 		handler:function() {
 			G.vars.map.zoomOut();
 		}
@@ -2319,6 +2339,7 @@
 	var zoomToVisibleExtentButton = new Ext.Button({
 		iconCls: 'icon-zoommin',
 		tooltip: G.i18n.zoom_to_visible_extent,
+        style: 'margin-top:1px',
 		handler: function() {
             if (G.vars.activePanel.isPolygon()) {
                 if (choropleth.layer.getDataExtent()) {
@@ -2332,95 +2353,12 @@
             }
         }
 	});
-	
-	var favoritesButton = new Ext.Button({
-		iconCls: 'icon-favorite',
-		tooltip: G.i18n.favorite_map_views,
-		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;    
-			favoriteWindow.setPosition(x,y);
-
-			if (favoriteWindow.visible) {
-				favoriteWindow.hide();
-			}
-			else {
-				favoriteWindow.show();
-			}
-		}
-	});
-	
-	var exportImageButton = new Ext.Button({
-		iconCls: 'icon-image',
-		tooltip: G.i18n.export_map_as_image,
-		handler: function() {
-			if (Ext.isIE) {
-				Ext.message.msg(false, 'SVG not supported by browser');
-				return;
-			}
-			
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;   
-			
-			exportImageWindow.setPosition(x,y);
-
-			if (exportImageWindow.visible) {
-				exportImageWindow.hide();
-			}
-			else {
-				exportImageWindow.show();
-			}
-		}
-	});
-	
-	var predefinedMapLegendSetButton = new Ext.Button({
-		iconCls: 'icon-predefinedlegendset',
-		tooltip: G.i18n.create_predefined_legend_sets,
-		disabled: !G.user.isAdmin,
-		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;
-			predefinedMapLegendSetWindow.setPosition(x,y);
-		
-			if (predefinedMapLegendSetWindow.visible) {
-				predefinedMapLegendSetWindow.hide();
-			}
-			else {
-				predefinedMapLegendSetWindow.show();
-                if (!G.stores.predefinedMapLegend.isLoaded) {
-                    G.stores.predefinedMapLegend.load();
-                }
-			}
-		}
-	});
-	
-	var adminButton = new Ext.Button({
-		iconCls: 'icon-admin',
-		tooltip: 'Administrator settings',
-		disabled: !G.user.isAdmin,
-		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;
-			adminWindow.setPosition(x,y);
-			adminWindow.show();
-		}
-	});
-	
-	var helpButton = new Ext.Button({
-		iconCls: 'icon-help',
-		tooltip: G.i18n.help,
-		handler: function() {
-			var c = Ext.getCmp('center').x;
-			var e = Ext.getCmp('east').x;
-			helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
-			helpWindow.show();
-		}
-	});
     
     var viewHistoryButton = new Ext.Button({
         id: 'viewhistory_b',
 		iconCls: 'icon-history',
 		tooltip: G.i18n.history,
+        style: 'margin-top:1px',
         addMenu: function() {
             this.menu = new Ext.menu.Menu({
                 id: 'viewhistory_m',
@@ -2490,11 +2428,101 @@
             });
         }
     });
+	
+	var favoritesButton = new Ext.Button({
+		iconCls: 'icon-favorite',
+		tooltip: G.i18n.favorite_map_views,
+        style: 'margin-top:1px',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;    
+			favoriteWindow.setPosition(x,y);
+
+			if (favoriteWindow.visible) {
+				favoriteWindow.hide();
+			}
+			else {
+				favoriteWindow.show();
+			}
+		}
+	});
+	
+	var exportImageButton = new Ext.Button({
+		iconCls: 'icon-image',
+		tooltip: G.i18n.export_map_as_image,
+        style: 'margin-top:1px',
+		handler: function() {
+			if (Ext.isIE) {
+				Ext.message.msg(false, 'SVG not supported by browser');
+				return;
+			}
+			
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;   
+			
+			exportImageWindow.setPosition(x,y);
+
+			if (exportImageWindow.visible) {
+				exportImageWindow.hide();
+			}
+			else {
+				exportImageWindow.show();
+			}
+		}
+	});
+	
+	var predefinedMapLegendSetButton = new Ext.Button({
+		iconCls: 'icon-predefinedlegendset',
+		tooltip: G.i18n.create_predefined_legend_sets,
+		disabled: !G.user.isAdmin,
+        style: 'margin-top:1px',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;
+			predefinedMapLegendSetWindow.setPosition(x,y);
+		
+			if (predefinedMapLegendSetWindow.visible) {
+				predefinedMapLegendSetWindow.hide();
+			}
+			else {
+				predefinedMapLegendSetWindow.show();
+                if (!G.stores.predefinedMapLegend.isLoaded) {
+                    G.stores.predefinedMapLegend.load();
+                }
+			}
+		}
+	});
+	
+	var adminButton = new Ext.Button({
+		iconCls: 'icon-admin',
+		tooltip: 'Administrator settings',
+		disabled: !G.user.isAdmin,
+        style: 'margin-top:1px',
+		handler: function() {
+			var x = Ext.getCmp('center').x + 15;
+			var y = Ext.getCmp('center').y + 41;
+			adminWindow.setPosition(x,y);
+			adminWindow.show();
+		}
+	});
+	
+	var helpButton = new Ext.Button({
+		iconCls: 'icon-help',
+		tooltip: G.i18n.help,
+        style: 'margin-top:1px',
+		handler: function() {
+			var c = Ext.getCmp('center').x;
+			var e = Ext.getCmp('east').x;
+			helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
+			helpWindow.show();
+		}
+	});
 
 	var exitButton = new Ext.Button({
 		text: G.i18n.exit_gis,
         iconCls: 'icon-exit',
 		tooltip: G.i18n.return_to_DHIS_2_dashboard,
+        style: 'margin-top:1px',
 		handler: function() {
 			window.location.href = '../../dhis-web-portal/redirect.action';
 		}
@@ -2507,7 +2535,7 @@
 			mapLabel,
 			' ',' ',' ',' ',' ',
 			zoomInButton,
-			zoomOutButton, ' ',
+			zoomOutButton,
 			zoomToVisibleExtentButton,
 			viewHistoryButton,
 			'-',
@@ -2544,7 +2572,8 @@
                 margins: '0 5px 0 5px',
                 defaults: {
                     border: true,
-                    frame: true
+                    frame: true,
+                    collapsible: true
                 },
                 layout: 'anchor',
                 items:
@@ -2552,33 +2581,23 @@
                     layerTree,
                     {
                         title: '<span class="panel-title">' + G.i18n.overview_map + '</span>',
-                        contentEl: 'overviewmap',
-						anchor: '100%',
-                        collapsible: true
+                        contentEl: 'overviewmap'
                     },
                     {
                         title: '<span class="panel-title">'+ G.i18n.cursor_position +'</span>',
-                        contentEl: 'mouseposition',
-						anchor: '100%',
-                        collapsible: true
+                        contentEl: 'mouseposition'
                     },
 					{
 						title: '<span class="panel-title">' + G.i18n.feature_data + '</span>',
-                        contentEl: 'featuredatatext',
-						anchor: '100%',
-                        collapsible: true
+                        contentEl: 'featuredatatext'
 					},
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_polygon + '</span>',
-                        contentEl: 'polygonlegend',
-                        anchor: '100%',
-                        collapsible: true
+                        contentEl: 'polygonlegend'
                     },
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_point + '</span>',
-                        contentEl: 'pointlegend',
-                        anchor: '100%',
-                        collapsible: true
+                        contentEl: 'pointlegend'
                     }
                 ]
             },
@@ -2592,7 +2611,7 @@
                 width: G.conf.west_width,
                 minSize: 175,
                 maxSize: 500,
-                margins: '0 0 0 5',
+                margins: '0 0 0 5px',
                 layout: 'accordion',
                 defaults: {
                     border: true,

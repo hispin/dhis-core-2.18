@@ -42,11 +42,13 @@
 }
 .x-toolbar .xtb-sep {
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
-    height:24px;
+    height:23px;
 }
+
 #map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
     border:1px solid #bbbbbb;
     border-bottom:1px solid #cccccc;
+    background-image:url(../../resources/ext-ux/theme/gray-extend-ux/bg2.png);;
 }
 .x-panel-tbar .x-toolbar {
     padding:0;
@@ -188,46 +190,40 @@ a.x-menu-item-custom {
 	font:normal 10px lucida sans unicode,ubuntu,arial;
 }
 .x-btn .icon-zoomin  {
-	background-image:url(../../../images/zoom_in.png);
+	background-image:url(../../../images/zoom_in2.png);
 }
 .x-btn .icon-zoomout  {
-	background-image:url(../../../images/zoom_out.png);
+	background-image:url(../../../images/zoom_out2.png);
 }
 .x-btn .icon-zoommin  {
-	background-image:url(../../../images/zoom_world.png);
+	background-image:url(../../../images/zoom_world2.png);
+}
+.x-btn .icon-history {
+	background-image:url(../../../images/history2.png);
+}
+.x-btn .icon-favorite {
+	background-image:url(../../../images/favorite.png);
+}
+.x-btn .icon-predefinedlegendset {
+	background-image:url(../../../images/legendset.png);
+}
+.x-btn .icon-image {
+	background-image:url(../../../images/image2.png);
+}
+.x-btn .icon-admin {
+	background-image:url(../../../images/gear.png);
+}
+.x-btn .icon-help {
+	background-image:url(../../../images/question.png);
+}
+.x-btn .icon-exit {
+	background-image:url(../../../images/exit2.png);
+}
+.x-btn .icon-overlay {
+	background-image:url(../../../images/overlay.png);
 }
 .x-btn .icon-labels {
 	background-image:url(../../../images/labels.png);
-}
-.x-btn .icon-image {
-	background-image:url(../../../images/image.png);
-}
-.x-btn .icon-excel {
-	background-image:url(../../../images/excel.gif);
-}
-.x-btn .icon-pdf {
-	background-image:url(../../../images/pdf.png);
-}
-.x-btn .icon-favorite {
-	background-image:url(../../../images/favorite_star.gif);
-}
-.x-btn .icon-automaticlegendset {
-	background-image:url(../../../images/color_swatch2.png);
-}
-.x-btn .icon-predefinedlegendset {
-	background-image:url(../../../images/color_swatch.png);
-}
-.x-btn .icon-help {
-	background-image:url(../../../images/help2.png);
-}
-.x-btn .icon-admin {
-	background-image:url(../../../images/settings.png);
-}
-.x-btn .icon-history {
-	background-image:url(../../../images/history.png);
-}
-.x-btn .icon-exit {
-	background-image:url(../../../images/exit.png);
 }
 .x-btn .icon-add {
 	background-image:url(../../../images/add.png);
@@ -315,48 +311,37 @@ a.x-menu-item-custom {
 }
 #window-favorites-title {
 	padding:0 0 3px 21px;
-	background:url('../../../images/favorite_star.gif') no-repeat 0 0 transparent;
-	font:bold 11px arial;
-	color:#111;
-}
-#window-automaticlegendset-title {
-	padding:0 0 3px 21px;
-	background:url('../../../images/color_swatch2.png') no-repeat 0 0 transparent;
+	background:url('../../../images/favorite.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-predefinedlegendset-title {
 	padding:0 0 3px 21px;
-	background:url('../../../images/color_swatch.png') no-repeat 0 0 transparent;
-	font:bold 11px arial;
-	color:#111;
-}
-#window-help-title {
-	padding:0 0 3px 22px;
-	background:url('../../../images/help.png') no-repeat 0 0 transparent;
+	background:url('../../../images/legendset.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-image-title {
 	padding:0 0 3px 21px;
-	background:url('../../../images/image.png') no-repeat 0 0 transparent;
-	font:bold 11px arial;
-	color:#111;
-}
-#window-excel-title {
-	padding:0 0 3px 21px;
-	background:url('../../../images/excel.gif') no-repeat 0 0 transparent;
+	background:url('../../../images/image2.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-admin-title {
 	padding:0 0 3px 21px;
-	background:url('../../../images/settings.png') no-repeat 0 0 transparent;
+	background:url('../../../images/gear.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-help-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/question.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
 #window-maplayer-title {
-	padding:0 0 3px 0px;
+	padding:0 0 3px 21px;
+	background:url('../../../images/overlay.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
