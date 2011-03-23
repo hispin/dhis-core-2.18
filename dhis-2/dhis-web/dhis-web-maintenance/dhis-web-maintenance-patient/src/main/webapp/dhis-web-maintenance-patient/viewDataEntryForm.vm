@@ -86,7 +86,7 @@
             <input type="submit" name="save" value="$i18n.getString( 'save' )" style="width:100px"/>
             <input type="button" name="cancel" value="$i18n.getString( 'cancel' )" style="width:100px" onclick="window.location='programStage.action?id=$!programStageId'">            
 			#if( $!dataEntryForm )
-			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $association.id )" />
+			<input type="button" name="delete" value="$i18n.getString( 'delete' )" style="width:100px" onclick="deleteDataEntryForm( $programStage.id )" />
 			#end
         </td>		
     </tr>
@@ -124,7 +124,7 @@
 					<option value="dename">$i18n.getString( "name" )</option>
 					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
 				</select>
-				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection')"/>
+				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')"/>
 			</td>
 			<td>
 				<span id="message_"></span>
@@ -166,10 +166,10 @@
 					<option value="dename">$i18n.getString( "name" )</option>
 					<option value="deshortname" selected>$i18n.getString( "short_name" )</option> 	
 				</select>
-				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements')"/>
+				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
 			</td>
 			<td>
-				<span id="message"></span>
+				<span id="message_"></span>
 			</td>
 		</tr>
 	</table>	
@@ -188,18 +188,13 @@
 <script type="text/javascript">   
     var i18n_dataelement_is_inserted = '$encoder.jsEscape( $i18n.getString( "dataelement_is_inserted" ) , "'" )';
 	var i18n_specify_dataelememt = '$encoder.jsEscape( $i18n.getString( "specify_dataelememt" ) , "'" )';
-    var i18n_choose_existing_dataentry = "$i18n.getString( 'choose_existing_dataentry' )";
+    var i18n_choose_existing_dataentry ='$encoder.jsEscape( $i18n.getString( "choose_existing_dataentry" ) , "'" )';
+	var i18n_dataelement = "$i18n.getString( 'dataelement' )";
+	var i18n_dataelement_of_orther_program_stage = "$i18n.getString( 'dataelement_of_orther_program_stage' )";
 	
 	jQuery(document).ready(	function()
 	{		
-		validation( 'saveDataEntryForm', function( form ){ validateDataEntryForm();});		
-		
-		/* #if( $!dataEntryForm )
-			checkValueIsExist('name', 'validateDataEntryForm.action', {dataEntryFormId:getFieldValue('dataEntryFormId')});
-		#else
-			checkValueIsExist('name', 'validateDataEntryForm.action');
-		#end */
-		
+		validation( 'saveDataEntryForm', function( form ){ validateDataEntryForm();});
 	});
 	
 	var previousName = '';
