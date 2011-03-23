@@ -1985,6 +1985,7 @@
         enableDD: false,
         bodyStyle: 'padding-bottom:5px;',
         rootVisible: false,
+        collapsible: true,
         root: {
             nodeType: 'async',
             children: [
@@ -2540,8 +2541,7 @@
                 id: 'east',
                 collapsible: true,
 				header: false,
-                width: 200,
-                margins: '0 5 0 5',
+                margins: '0 5px 0 5px',
                 defaults: {
                     border: true,
                     frame: true
@@ -2553,27 +2553,32 @@
                     {
                         title: '<span class="panel-title">' + G.i18n.overview_map + '</span>',
                         contentEl: 'overviewmap',
-						anchor: '100%'
+						anchor: '100%',
+                        collapsible: true
                     },
                     {
                         title: '<span class="panel-title">'+ G.i18n.cursor_position +'</span>',
                         contentEl: 'mouseposition',
-						anchor: '100%'
+						anchor: '100%',
+                        collapsible: true
                     },
 					{
 						title: '<span class="panel-title">' + G.i18n.feature_data + '</span>',
                         contentEl: 'featuredatatext',
-						anchor: '100%'
+						anchor: '100%',
+                        collapsible: true
 					},
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_polygon + '</span>',
                         contentEl: 'polygonlegend',
-                        anchor: '100%'
+                        anchor: '100%',
+                        collapsible: true
                     },
                     {
                         title: '<span class="panel-title">' + G.i18n.map_legend_point + '</span>',
                         contentEl: 'pointlegend',
-                        anchor: '100%'
+                        anchor: '100%',
+                        collapsible: true
                     }
                 ]
             },

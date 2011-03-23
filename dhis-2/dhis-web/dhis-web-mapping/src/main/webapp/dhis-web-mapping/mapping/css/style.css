@@ -437,6 +437,9 @@ a.x-menu-item-custom {
     color:#111;
     margin-right:6px;
 }
+#east {
+    width:200px;
+}
 #overviewmap {
     height:97px;
     padding-top:0px;
