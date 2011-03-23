@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<reportTables>
-#foreach ( $table in $object )
-	<reportTable>
-	   <id>$table.id</id>
-	   <name>$!encoder.xmlEncode( $table.name )</name>
-    </reportTable>
-#end
-</reportTables>

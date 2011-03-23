@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<charts>
-#foreach( $chart in $object )
-    <chart>
-        <id>$chart.id</id>
-        <title>$!encoder.xmlEncode( $chart.title )</title>
-    </chart>
-#end
-</charts>

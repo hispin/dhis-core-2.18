@@ -1,8 +1,0 @@
-{ "charts": [
-#foreach( $chart in $object )
-  {
-    "id": $!{chart.id},
-    "title": "$!{chart.title}"
-  },
-#end
-] }

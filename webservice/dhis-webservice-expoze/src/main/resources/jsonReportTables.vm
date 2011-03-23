@@ -1,9 +1,0 @@
-#set( $size = $object.size() )
-{ "reportTables": [
-#foreach( $reportTable in $object )
-  {
-    "id": $!{reportTable.id},
-    "name": "$!{reportTable.name}"
-  }#if( $velocityCount < $size ),#end
-#end
-] }
