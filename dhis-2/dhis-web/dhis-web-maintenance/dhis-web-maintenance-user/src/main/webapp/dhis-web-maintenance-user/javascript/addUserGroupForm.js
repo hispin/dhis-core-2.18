@@ -7,7 +7,7 @@ jQuery( document ).ready( function()
 			required : true,
 			alphanumericwithbasicpuncspaces : r.userGroup.name.alphanumericwithbasicpuncspaces,
 			firstletteralphabet : r.userGroup.name.firstletteralphabet,
-			rangelength : r.userGroup.name.length
+			rangelength : r.userGroup.name.rangelength
 		},
 		memberValidator : {
 			required : true
@@ -25,7 +25,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.userGroup.name.length[1] );
+	jQuery( "#name" ).attr( "maxlength", r.userGroup.name.rangelength[1] );
 
 	/* remote validation */
 	checkValueIsExist( "name", "validateUserGroup.action" );

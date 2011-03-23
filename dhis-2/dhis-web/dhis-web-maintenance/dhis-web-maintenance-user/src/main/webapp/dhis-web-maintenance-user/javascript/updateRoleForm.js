@@ -7,11 +7,11 @@ jQuery( document ).ready( function()
 	var rules = {
 		name : {
 			required : true,
-			rangelength : r.role.name.length
+			rangelength : r.role.name.rangelength
 		},
 		description : {
 			required : true,
-			rangelength : r.role.description.length
+			rangelength : r.role.description.rangelength
 		}
 	};
 
@@ -24,8 +24,8 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#name" ).attr( "maxlength", r.role.name.length[1] );
-	jQuery( "#description" ).attr( "maxlength", r.role.description.length[1] );
+	jQuery( "#name" ).attr( "maxlength", r.role.name.rangelength[1] );
+	jQuery( "#description" ).attr( "maxlength", r.role.description.rangelength[1] );
 
 	/* remote validation */
 	checkValueIsExist( "name", "validateRole.action", {
