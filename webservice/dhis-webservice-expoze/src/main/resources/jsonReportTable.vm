@@ -1,6 +1,0 @@
-{ "reportTable": 
-  {
-    "id": $!{object.id},
-    "name": "$!{object.name}"
-  }
-}

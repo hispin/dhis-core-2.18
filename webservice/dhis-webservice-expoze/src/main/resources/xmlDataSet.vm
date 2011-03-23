@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataSet>
-	<id>$object.id</id>
-    <name>$!encoder.xmlEncode( $object.name )</name>
-    <shortName>$!encoder.xmlEncode( $object.shortName )</shortName>
-    <periodTypeId>$object.periodType.id</periodTypeId>
-</dataSet>

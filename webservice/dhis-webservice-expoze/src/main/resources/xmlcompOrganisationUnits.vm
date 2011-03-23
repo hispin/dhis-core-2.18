@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<organisationUnits>
-#foreach ( $unit in $object )
-	<organisationUnit id="$unit.id" name="$!encoder.xmlEncode( $unit.name )" geoCode="$!encoder.xmlEncode( $unit.geoCode )"></organisationUnit>
-#end
-</organisationUnits>

@@ -1,9 +1,0 @@
-#set( $size = $object.size() )
-{ "periodTypes": [
-#foreach( $periodType in $object )
-  {
-    "id": $!{periodType.id},
-    "name": "$!{periodType.name}"
-  }#if( $velocityCount < $size ),#end
-#end
-] }

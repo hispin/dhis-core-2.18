@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<legendSet>
-	<id>$object.id</id>
-	<name>$!encoder.xmlEncode( $object.name )</name>
-	<min-value>$!object.getMinLegend().min</min-value>
-	<min-color>$!object.getMinLegend().color</min-color>	
-	<max-value>$!object.getMaxLegend().max</max-value> 
-	<max-color>$!object.getMaxLegend().color</max-color>
-</legendSet>
