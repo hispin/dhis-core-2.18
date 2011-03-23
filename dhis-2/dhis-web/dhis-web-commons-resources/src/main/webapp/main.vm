@@ -30,6 +30,7 @@
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
+	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScriptSupport.action"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
@@ -45,7 +46,7 @@
     #foreach( $javascript in $javascripts )
       <script type="text/javascript" src="$javascript"></script>
     #end
-	
+
   </head>
   
   <body>
@@ -66,7 +67,7 @@
       <div id="menuLink1" class="menuLink" #if ( $maintenanceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown1' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "maintenance" )</div>
       <div id="menuLink2" class="menuLink" #if ( $serviceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown2' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "services" )</div>
       <div id="menuLink3" class="menuLink" onmouseover="showDropDown( 'menuDropDown3' )" onmouseout="hideDropDownTimeout()">$i18n.getString( "help" )</div>
-      <div id="menuLink4" class="menuLink" onclick="window.location.href='../dhis-web-commons-security/logout.action'">$i18n.getString( "log_out" )</div>
+      <div id="menuLink4" class="menuLink" onclick="jQuery.cookie('pageSize', null, {path:'/'}); window.location.href='../dhis-web-commons-security/logout.action'">$i18n.getString( "log_out" )</div>
 
       <div id="menuDropDown1" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
         <ul class="menuDropDownBox">
