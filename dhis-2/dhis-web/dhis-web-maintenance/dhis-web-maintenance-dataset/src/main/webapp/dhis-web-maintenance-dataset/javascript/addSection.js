@@ -5,7 +5,7 @@ jQuery( document ).ready( function()
 	var rules = {
 		sectionName : {
 			required : true,
-			range : r.section.name.range
+			rangelength : r.section.name.length
 		},
 		selectedList : {
 			required : true
@@ -23,7 +23,7 @@ jQuery( document ).ready( function()
 		'rules' : rules
 	} );
 
-	jQuery( "#sectionName" ).attr( "maxlength", r.section.name.range[1] );
+	jQuery( "#sectionName" ).attr( "maxlength", r.section.name.length[1] );
 
 	checkValueIsExist( "sectionName", "validateSection.action", {
 		dataSetId : function()
