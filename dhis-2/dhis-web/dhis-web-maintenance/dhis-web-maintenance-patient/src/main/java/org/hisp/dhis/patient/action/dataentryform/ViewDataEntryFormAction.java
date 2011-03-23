@@ -101,19 +101,7 @@ public class ViewDataEntryFormAction
     // Getters & Setters
     // -------------------------------------------------------------------------
 
-    private int associationId;
-
-    public void setAssociationId( int associationId )
-    {
-        this.associationId = associationId;
-    }
-
     private Integer programStageId;
-
-    public Integer getProgramStageId()
-    {
-        return programStageId;
-    }
 
     public void setProgramStageId( Integer programStageId )
     {
@@ -127,11 +115,11 @@ public class ViewDataEntryFormAction
         return dataEntryForm;
     }
 
-    private ProgramStage association;
+    private ProgramStage programStage;
 
-    public ProgramStage getAssociation()
+    public ProgramStage getProgramStage()
     {
-        return association;
+        return programStage;
     }
 
     private List<DataEntryForm> existingDataEntryForms;
@@ -162,13 +150,24 @@ public class ViewDataEntryFormAction
     public String execute()
         throws Exception
     {
-        association = programStageService.getProgramStage( associationId );
+        programStage = programStageService.getProgramStage( programStageId );
 
-        dataEntryForm = association.getDataEntryForm();
+        // ---------------------------------------------------------------------
+        // Get dataEntryForm of selected program-stage
+        // ---------------------------------------------------------------------
+
+        dataEntryForm = programStage.getDataEntryForm();
+        
+        editorManager.setValue( dataEntryForm == null ? "" : dataEntryManager.prepareDataEntryFormCode( dataEntryForm
+            .getHtmlCode() ) );
+        
+        // ---------------------------------------------------------------------
+        // Get existing Data Entry Forms
+        // ---------------------------------------------------------------------
 
         List<Integer> listAssociationIds = new ArrayList<Integer>();
 
-        for ( ProgramStage ps : association.getProgram().getProgramStages() )
+        for ( ProgramStage ps : programStage.getProgram().getProgramStages() )
         {
             listAssociationIds.add( ps.getId() );
         }
@@ -176,19 +175,24 @@ public class ViewDataEntryFormAction
         existingDataEntryForms = new ArrayList<DataEntryForm>( dataEntryFormService
             .listDisctinctDataEntryFormByProgramStageIds( listAssociationIds ) );
 
-        editorManager.setValue( dataEntryForm == null ? "" : dataEntryManager.prepareDataEntryFormCode( dataEntryForm
-            .getHtmlCode() ) );
+        existingDataEntryForms.remove( dataEntryForm );     
+        
+        // ---------------------------------------------------------------------
+        // Get data-elements into selected program-stage
+        // ---------------------------------------------------------------------
 
-        existingDataEntryForms.remove( dataEntryForm );
-
-        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( association ) );
+        dataElements = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
 
         Collections.sort( dataElements, new DataElementNameComparator() );
-        
-        programStages = new ArrayList<ProgramStage>( association.getProgram().getProgramStages() );
-        
-        programStages.remove( association );
-        
+
+        // ---------------------------------------------------------------------
+        // Get other program-stages into the program
+        // ---------------------------------------------------------------------
+
+        programStages = new ArrayList<ProgramStage>( programStage.getProgram().getProgramStages() );
+
+        programStages.remove( programStage );
+
         Collections.sort( programStages, new ProgramStageNameComparator() );
 
         return SUCCESS;

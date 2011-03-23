@@ -855,17 +855,18 @@
 		<action name="viewDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.ViewDataEntryFormAction">
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>			
+			<param name="page">/dhis-web-maintenance-patient/viewDataEntryForm.vm</param>	
+			<param name="javascripts">javascript/viewDataEntryForm.js</param>		
 		</action>
 
 		<action name="saveDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.SaveDataEntryFormAction">
-			<result name="success" type="redirect">programStage.action?id=${programStageId}</result>
+			<result name="success" type="redirect">programStage.action?id=${programId}</result>
 		</action>
 
 		<action name="delDataEntryForm"
 			class="org.hisp.dhis.patient.action.dataentryform.DelDataEntryFormAction">
-			<result name="success" type="redirect">programStage.action?id=${programStageId}</result>			
+			<result name="success" type="redirect">programStage.action?id=${programId}</result>			
 		</action>
 
 		<action name="validateDataEntryForm"
