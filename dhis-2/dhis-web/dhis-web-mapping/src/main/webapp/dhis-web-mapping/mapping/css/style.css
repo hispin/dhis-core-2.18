@@ -451,3 +451,9 @@ a.x-menu-item-custom {
     padding:0px 4px;
     height:31px;
 }
+#polygonlegend {
+    padding-left:4px;
+}
+#pointlegend {
+    padding-left:4px;
+}
