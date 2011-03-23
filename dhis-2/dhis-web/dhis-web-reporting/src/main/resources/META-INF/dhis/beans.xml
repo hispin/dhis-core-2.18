@@ -517,5 +517,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	<property name="exportPivotViewService" ref="org.hisp.dhis.importexport.synchronous.ExportPivotViewService" />
   </bean>
-  
+
+  	<bean id="org.hisp.dhis.reporting.exp.MetaDataExportAction"
+		class="org.hisp.dhis.reporting.exp.MetaDataExportAction"
+		scope="prototype">
+		<property name="serviceProvider" ref="exportServiceProvider" />
+	</bean>
+
 </beans>
