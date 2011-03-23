@@ -9,12 +9,12 @@ html,body
 {
   background-color: #1d5288;  
   color: white;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .loginField
 {
-  margin-top: 90px;
+  margin-top: 6%;
 }
 
 .loginField td

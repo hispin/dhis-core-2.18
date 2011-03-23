@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <title>DHIS 2</title>
+        <title>DHIS 2</title>        
         <script type="text/javascript" src="../javascripts/jQuery/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -13,31 +13,27 @@
     </head>
     <body>
         <div class="loginField" align="center">
-            <p><img alt="" src="logo_banner.png"></p>
-                
+            <div><img alt="" src="logo_banner.png"></div>
+            
+            <div style="margin-top:2%">
             <form action="../../dhis-web-commons-security/login.action" method="post">
                 <table>
                     <tr>
-                        <td colspan="2" style="height:30px"></td>
-                    </tr>
-                    <tr>
                         <td><label for="j_username">Username</label></td>
-                        <td><input type="text" id="j_username" name="j_username" style="width:18em"></td>
+                        <td><input type="text" id="j_username" name="j_username" style="width:240px;height:20px;"></td>
                     </tr>
                     <tr>
                         <td><label for="j_password">Password</label></td>
-                        <td><input type="password" id="j_password" name="j_password" style="width:18em"></td>
+                        <td><input type="password" id="j_password" name="j_password" style="width:240px;height:20px;"></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type="submit" value="Login" style="width:9em; padding:1px;">
-                            <input type="reset" value="Clear" style="width:9em; padding:1px;"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="height:40px">
+                        <td><input type="submit" value="Login" style="width:120px; height:26px;">
+                            <input type="reset" value="Clear" style="width:120px; height:26px;"></td>
                     </tr>
                 </table>
             </form>
+            </div>
             <span class="loginMessage">Wrong username or password. Please try again.</span>            
         </div>
     </body>
