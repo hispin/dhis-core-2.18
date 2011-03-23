@@ -1,2 +1,2 @@
-<img #if ( $assigned ) src="../images/assign_a.png" #else src="../images/forum_denied.png" #end onclick="changeAssociatedStatus( $orgUnitId, $dataSetId, $assigned )" style="cursor:pointer" title="$title"/>
-<span #if ( $assigned ) style="color:blue" #end>#if ( $assigned ) $i18n.getString( 'assigned' ) #else $i18n.getString( 'unassigned' ) #end</span>
+<img #if ( $assigned ) src="../images/edit_add.png" #else src="../images/cancel.png" #end onclick="changeAssociatedStatus( $orgUnitId, $dataSetId, $assigned )" style="cursor:pointer" title="$title"/>
+<input type="hidden" value="$assigned"/>

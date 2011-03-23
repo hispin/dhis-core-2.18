@@ -1,35 +1,25 @@
-<style type="text/css">
-.gridTable th
-{
-  text-align: center;
-  width: 100%;
-}
-
-.gridTable td
-{
-  text-align: center;
-  padding: 8px 35px 8px 35px;
-  width: 100%;
-}
-
-.gridLeft td
-{
-  text-align: left;
-}
-</style>
+#set( $headers = $grid.getVisibleHeaders() )
+#set( $i18nAssigned = $i18n.getString( "assigned" ) )
+#set( $i18nUnassigned = $i18n.getString( "unassigned" ) )
 
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
 
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-<table class="listTable gridTable" border="1px">
-
-#set( $headers = $grid.getVisibleHeaders() )
+<table class="listTable">
+<col width="5px"/>
+<col width="80px"/>
+#foreach( $header in $headers )
+#if ( $velocityCount > 1 )
+<col width="35px"/>
+#end
+#end
 
 <thead>
 <tr>
+<th></th>
 #foreach( $header in $headers )
-<th #if( $header.meta )style="text-align:left;min-width:180px;"#end>$!encoder.htmlEncode( $header.name )</th>
+<th>$!encoder.htmlEncode( $header.name )</th>
 #end
 </tr>
 </thead>
@@ -38,18 +28,35 @@
 #foreach( $meta in $!MetaValues )
 	#set( $list = $!MetaValueMaps.get( $meta.id ) )
 	<tr>
+		<td><input type="checkbox" onchange="assignAll( $meta.id )"/></td>
 		<td>$meta</td>
-		#foreach( $item in $list )
-		#set( $title = $meta + " ( " + $headers.get( $velocityCount ).name + " )" )
+	#foreach( $item in $list )
+		#set( $title = " - " + $headers.get( $velocityCount ).name + " - " + $meta )
+		#if( $item.metaValue == "true" )
+		#set( $title = $i18nAssigned + $title )
+		#else
+		#set( $title = $i18nUnassigned + $title )
+		#end
 		<td>
-			<div id="div$item.id$item.name">
-				<img #if ( $item.metaValue == "true" ) src="../images/assign_a.png" #else src="../images/forum_denied.png" #end onclick="changeAssociatedStatus( $item.id, $item.name, $item.metaValue )" style="cursor:pointer" title="$title"/>
-				<span #if ( $item.metaValue == "true" ) style="color:blue" #end>#if ( $item.metaValue == "true" ) $i18n.getString( "assigned" ) #else $i18n.getString( "unassigned" ) #end</span>
+			<div id="div$item.id$item.name" align="center">
+				<img #if ( $item.metaValue == "true" ) src="../images/edit_add.png" #else src="../images/cancel.png" #end 
+				onclick="changeAssociatedStatus( $item.id, $item.name, $item.metaValue )" style="cursor:pointer" title="$title"/>
+				<input type="hidden" value="$item.metaValue"/>
 			</div>
 		</td>
-		#end
+	#end
 	</tr>
 #end
 </tbody>
-
 </table>
+
+<script type="text/javascript">	
+	
+	if( arrayIds.length < $headerIds.size() )
+	{	
+		#foreach( $id in $headerIds )
+			arrayIds.push( '$encoder.jsEscape( $id, "'" )' );	
+		#end
+	}
+
+</script>

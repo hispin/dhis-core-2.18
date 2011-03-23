@@ -115,6 +115,20 @@ public class ShowedAssociationsEditorAction
 
         return maps;
     }
+    
+    public List<String> getHeaderIds()
+    {
+        List<String> ids = new ArrayList<String>();
+        
+        for ( GridHeader header : grid.getVisibleHeaders() )
+        {
+            ids.add( header.getColumn() );
+        }
+        
+        ids.remove( 0 );
+        
+        return ids;
+    }
 
     // -------------------------------------------------------------------------
     // Action implement
