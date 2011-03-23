@@ -30,6 +30,7 @@ package org.hisp.dhis.paging;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
@@ -78,6 +79,20 @@ public abstract class ActionPagingSupport<T>
         this.usePaging = usePaging;
     }
 
+    protected Integer getDefaultPageSize() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        Cookie[] cookies = request.getCookies();
+
+        /* Get default based on cookie, if it exists */
+        for(Cookie c : cookies) {
+            if(c.getName().equalsIgnoreCase( "pageSize" )) {
+                return Integer.valueOf( c.getValue() );
+            }
+        }
+        
+        return DEFAULT_PAGE_SIZE;
+    }
+    
     @SuppressWarnings( "unchecked" )
     private String getCurrentLink()
     {
@@ -102,7 +117,7 @@ public abstract class ActionPagingSupport<T>
 
     protected Paging createPaging( Integer totalRecord )
     {
-        Paging resultPaging = new Paging( getCurrentLink(), pageSize == null ? DEFAULT_PAGE_SIZE : pageSize );
+        Paging resultPaging = new Paging( getCurrentLink(), pageSize == null ? getDefaultPageSize() : pageSize );
 
         resultPaging.setCurrentPage( currentPage == null ? 0 : currentPage );
 
