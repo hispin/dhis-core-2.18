@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset.action.editor;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.source.Source;
 
@@ -41,6 +42,8 @@ import com.opensymphony.xwork2.Action;
 public class DefinedAssociationsEditorAction
     implements Action
 {
+    private static final String SEPERATE = " - ";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -57,6 +60,17 @@ public class DefinedAssociationsEditorAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    // -------------------------------------------------------------------------
+    // I18n
+    // -------------------------------------------------------------------------
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -119,20 +133,25 @@ public class DefinedAssociationsEditorAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         Source source = organisationUnitService.getOrganisationUnit( orgUnitId );
-        
-        title = source.getName() + " ( " + dataSet.getName() + " )";
-        
+
+        title = SEPERATE + dataSet.getName() + SEPERATE + source.getName();
+
         if ( assigned )
         {
             dataSet.getSources().add( source );
+
+            title = i18n.getString( "assigned" ) + SEPERATE + title;
         }
         else
         {
             dataSet.getSources().remove( source );
+
+            title = i18n.getString( "unassigned" ) + SEPERATE + title;
         }
 
         dataSetService.updateDataSet( dataSet );
-        
+
         return SUCCESS;
     }
+
 }
