@@ -72,9 +72,17 @@ jQuery( function(){
     </thead>
   
     <tbody>
+	 <tr>
+		<td>
+			<input type='text' style="width:29.5em" onkeyup="filterDE(event, this.value, 'availableList');">
+		</td>
+		<td></td>
+		<td></td>
+	 </tr>
+	 
       <tr>
         <td>
-            <select size="15" id="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="selectDataElements( )">
+            <select size="15" id="availableList" multiple="multiple" style="width:30em;height:20em" ondblclick="selectDataElements( )">
                 #foreach ( $dataElement in $dataElements )
                     <option value="$dataElement.id">$encoder.htmlEncode( $dataElement.name )</option>
                 #end                

@@ -112,12 +112,12 @@
 			</tr>
 			<tr>
 				<td>
-					<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value);">
+					<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value, 'programstageDE');">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<select id="programstageDE" name="programstageDE" size="5" style="width:20em" ondblclick="insertInfo(this);">
+					<select id="programstageDE" name="programstageDE" size="5" style="width:20em; height: 6em" ondblclick="insertInfo(this);">
 					</select>
 				</td>
 			</tr>
