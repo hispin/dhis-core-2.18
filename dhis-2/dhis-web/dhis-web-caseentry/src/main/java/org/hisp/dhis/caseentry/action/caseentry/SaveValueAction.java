@@ -28,7 +28,6 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -219,15 +218,14 @@ public class SaveValueAction
         else
         {
             Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-            if ( options != null && options.size() > 0 )
+            if ( options != null)
             {
-                Iterator<DataElementCategoryOptionCombo> i = options.iterator();
-                while ( i.hasNext() )
+                for ( DataElementCategoryOptionCombo tmpOption : options )
                 {
-                    DataElementCategoryOptionCombo tmpOption = i.next();
                     if ( tmpOption.getId() == optionComboId )
                     {
                         optionCombo = tmpOption;
+                        break;
                     }
                 }
             }
