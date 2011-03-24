@@ -1,7 +1,10 @@
 
 #if( $selectedOrganisationUnit )
 <script type="text/javascript">
-	organisationUnitToMoveSelected( [$selectedOrganisationUnit.id] );
+	jQuery(document).ready(function() {
+		organisationUnitToMoveSelected( [$selectedOrganisationUnit.id] );
+	});
+
 	var verication_of_the_org_unit_to_move_failed = '$encoder.jsEscape( $i18n.getString( "verication_of_the_org_unit_to_move_failed" ) , "'" )';
 	var not_selected_moved_to_root_position = '$encoder.jsEscape( $i18n.getString( "not_selected_moved_to_root_position" ) , "'" )';
 	var verification_of_the_new_parent_org_unit_failed = '$encoder.jsEscape( $i18n.getString( "verification_of_the_new_parent_org_unit_failed" ) , "'" )';
