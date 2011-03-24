@@ -30,7 +30,6 @@ package org.hisp.dhis.paging;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
