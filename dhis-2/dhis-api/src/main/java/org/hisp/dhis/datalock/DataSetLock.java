@@ -26,7 +26,6 @@
  */
 package org.hisp.dhis.datalock;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +38,7 @@ import org.hisp.dhis.source.Source;
  * @author Brajesh Murari
  * @version $Id$
  */
-public class DataSetLock implements Serializable
+public class DataSetLock
 {  
     /**
      * The unique identifier for this DataSetLock

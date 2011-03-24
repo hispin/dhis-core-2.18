@@ -29,7 +29,7 @@ package org.hisp.dhis.dashboard.action;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dashboard.manager.DashboardManager;
+import org.hisp.dhis.dashboard.DashboardManager;
 
 import com.opensymphony.xwork2.Action;
 

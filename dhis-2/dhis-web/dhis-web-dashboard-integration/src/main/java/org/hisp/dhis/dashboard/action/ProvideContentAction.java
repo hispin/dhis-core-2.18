@@ -36,7 +36,7 @@ import java.util.Map;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.comparator.ChartTitleComparator;
-import org.hisp.dhis.dashboard.manager.DashboardManager;
+import org.hisp.dhis.dashboard.DashboardManager;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;

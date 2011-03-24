@@ -27,14 +27,12 @@
 
 package org.hisp.dhis.aggregation;
 
-import java.io.Serializable;
 
 /**
  * @author Chau Thu Tran
  * @version $ID : AggregatedDataSetAssociation.java 10:02:44 AM Jul 9, 2010
  */
 public class AggregatedDataSetAssociation
-    implements Serializable
 {
     private int periodTypeId;
 

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.manager;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,20 +27,65 @@ package org.hisp.dhis.dashboard.manager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public interface DashboardManager
+public class DashboardConfiguration
+    implements Serializable
 {
-    void setAreaItem( String area, String item );
+    private static final long serialVersionUID = 8829362188465214078L;
     
-    void clearArea( String area );
+    private Map<String, String> areaItems;
+
+    // -------------------------------------------------------------------------
+    // Constructor
+    // -------------------------------------------------------------------------
+
+    public DashboardConfiguration()
+    {
+        areaItems = new HashMap<String, String>();
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void setAreaItem( String area, String item )
+    {
+        areaItems.put( area, item );
+    }
     
-    Map<String, Object> getContent();
+    public void clearArea( String area )
+    {
+        areaItems.remove( area );
+    }
+
+    // -------------------------------------------------------------------------
+    // toString
+    // -------------------------------------------------------------------------
+
+    @Override
+    public String toString()
+    {
+        return areaItems != null ? areaItems.toString() : null;
+    }
     
-    Set<String> getContentProviderNames();
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public Map<String, String> getAreaItems()
+    {
+        return areaItems;
+    }
+
+    public void setAreaItems( Map<String, String> areaItems )
+    {
+        this.areaItems = areaItems;
+    }
 }
