@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.dashboard.DashboardConfiguration;
+import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.dashboard.provider.ContentProvider;
 import org.hisp.dhis.user.NoCurrentUserException;
 import org.hisp.dhis.user.UserSettingService;
@@ -43,7 +45,7 @@ import org.hisp.dhis.user.UserSettingService;
 public class DefaultDashboardManager
     implements DashboardManager
 {
-    private static final String KEY_USERSETTING = "dashboardConfiguration";
+    private static final String KEY_USERSETTING = "dashboardConfig";
 
     private Map<String, ContentProvider> contentProviders;
     
@@ -69,7 +71,7 @@ public class DefaultDashboardManager
 
     public void setAreaItem( String area, String item )
     {
-        DashBoardConfiguration config = getConfiguration();
+        DashboardConfiguration config = getConfiguration();
             
         config.setAreaItem( area, item );
         
@@ -78,7 +80,7 @@ public class DefaultDashboardManager
     
     public void clearArea( String area )
     {
-        DashBoardConfiguration config = getConfiguration();
+        DashboardConfiguration config = getConfiguration();
         
         config.clearArea( area );
         
@@ -89,7 +91,7 @@ public class DefaultDashboardManager
     {
         Map<String, Object> content = new HashMap<String, Object>();
         
-        DashBoardConfiguration config = getConfiguration();
+        DashboardConfiguration config = getConfiguration();
         
         Collection<String> items = config.getAreaItems().values();
         
@@ -111,25 +113,25 @@ public class DefaultDashboardManager
         return contentProviders.keySet();
     }
 
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private DashBoardConfiguration getConfiguration()
+    public DashboardConfiguration getConfiguration()
     {
         try
         {
-            DashBoardConfiguration config = (DashBoardConfiguration) userSettingService.getUserSetting( KEY_USERSETTING );
+            DashboardConfiguration config = (DashboardConfiguration) userSettingService.getUserSetting( KEY_USERSETTING );
             
-            return config != null ? config : new DashBoardConfiguration();
+            return config != null ? config : new DashboardConfiguration();
         }
         catch ( NoCurrentUserException ex )
         {
             throw new RuntimeException( "Could not get configuration because no current user exists", ex );
         }
     }
-    
-    private void setConfiguration( DashBoardConfiguration config )
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void setConfiguration( DashboardConfiguration config )
     {
         try
         {

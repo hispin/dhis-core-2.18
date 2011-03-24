@@ -27,6 +27,8 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.MathUtils.getMax;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -38,11 +40,9 @@ import org.amplecode.staxwax.factory.XMLFactory;
 import org.amplecode.staxwax.reader.XMLReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.dashboard.rss.RssItem;
+import org.hisp.dhis.dashboard.RssItem;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-
-import static org.hisp.dhis.system.util.MathUtils.getMax;
 
 /**
  * @author Lars Helge Overland

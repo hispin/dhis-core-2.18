@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.caseaggregation;
 
-import java.io.Serializable;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
@@ -38,7 +36,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
  * @version CaseAggregationCondition.java Nov 17, 2010 10:47:12 AM
  */
 public class CaseAggregationCondition
-    implements Serializable
 {
     public static final String SEPARATOR_ID = "\\.";
 

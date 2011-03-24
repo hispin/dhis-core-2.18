@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.manager;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,63 +27,22 @@ package org.hisp.dhis.dashboard.manager;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class DashBoardConfiguration
-    implements Serializable
+public interface DashboardManager
 {
-    private Map<String, String> areaItems;
-
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-
-    public DashBoardConfiguration()
-    {
-        areaItems = new HashMap<String, String>();
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public void setAreaItem( String area, String item )
-    {
-        areaItems.put( area, item );
-    }
+    void setAreaItem( String area, String item );
     
-    public void clearArea( String area )
-    {
-        areaItems.remove( area );
-    }
-
-    // -------------------------------------------------------------------------
-    // toString
-    // -------------------------------------------------------------------------
-
-    @Override
-    public String toString()
-    {
-        return areaItems != null ? areaItems.toString() : null;
-    }
+    void clearArea( String area );
     
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public Map<String, String> getAreaItems()
-    {
-        return areaItems;
-    }
-
-    public void setAreaItems( Map<String, String> areaItems )
-    {
-        this.areaItems = areaItems;
-    }
+    Map<String, Object> getContent();
+    
+    Set<String> getContentProviderNames();
+    
+    DashboardConfiguration getConfiguration();
 }

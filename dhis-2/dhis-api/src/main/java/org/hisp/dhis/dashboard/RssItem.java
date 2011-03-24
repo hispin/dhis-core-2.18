@@ -1,4 +1,4 @@
-package org.hisp.dhis.dashboard.rss;
+package org.hisp.dhis.dashboard;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -36,6 +36,8 @@ import java.io.Serializable;
 public class RssItem
     implements Serializable
 {
+    private static final long serialVersionUID = 3865942196910511305L;
+
     private String title;
 
     private String link;

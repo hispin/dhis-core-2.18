@@ -212,6 +212,81 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.dashboard.DashboardContentStore"/>
   </bean>
   
+  <!-- Dashboard Content providers -->
+  
+  <bean id="reportContentProvider" 
+    class="org.hisp.dhis.dashboard.provider.ReportContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="key" value="reports"/>
+  </bean>
+  
+  <bean id="documentContentProvider" 
+    class="org.hisp.dhis.dashboard.provider.DocumentContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="key" value="documents"/>
+  </bean>
+    
+  <bean id="reportTableContentProvider"
+    class="org.hisp.dhis.dashboard.provider.ReportTableContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="key" value="reportTables"/>
+  </bean>
+    
+  <bean id="mapViewContentProvider"
+    class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="key" value="mapViews"/>
+  </bean>
+  
+  <bean id="olapUrlContentProvider"
+    class="org.hisp.dhis.dashboard.provider.OlapUrlContentProvider">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+    <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService"/>
+    <property name="key" value="olapUrls"/>
+  </bean>
+    
+  <bean id="rssHealthContentProvider" 
+    class="org.hisp.dhis.dashboard.provider.RssContentProvider">
+    <property name="url" value="http://health.yahoo.com/news/rss/health"/>
+    <property name="key" value="healthItems"/>
+  </bean>
+  
+  <!-- Dashboard Manager -->
+  
+  <bean id="org.hisp.dhis.dashboard.DashboardManager" 
+    class="org.hisp.dhis.dashboard.manager.DefaultDashboardManager">
+    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService"/>
+    <property name="contentProviders">
+      <map>        
+        <entry>
+          <key><value>report</value></key>
+          <ref local="reportContentProvider"/>
+        </entry>    
+        <entry>
+          <key><value>document</value></key>
+          <ref local="documentContentProvider"/>
+        </entry>
+        <entry>
+          <key><value>report_table</value></key>
+          <ref local="reportTableContentProvider"/>
+        </entry>
+        <entry>
+          <key><value>map_view</value></key>
+          <ref local="mapViewContentProvider"/>
+        </entry>
+        <entry>
+          <key><value>rss_health</value></key>
+          <ref local="rssHealthContentProvider"/>
+        </entry>
+      </map>
+    </property>
+  </bean>
+  
   <!-- Tally Sheet -->
   
   <bean id="org.hisp.dhis.tallysheet.TallySheetService"
