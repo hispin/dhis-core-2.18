@@ -408,6 +408,10 @@ a.x-menu-item-custom {
 .thematic-br {
     padding:8px 0 0 0;
 }
+.menu-item-inline-bg {
+    background:url('../../../images/history2_small.png') no-repeat left center;
+    padding-left:17px;
+}
 .menu-item-inline-c1 {
     color:#555;
     margin-right:6px;
@@ -442,7 +446,8 @@ a.x-menu-item-custom {
 #map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
     border:1px solid #bbbbbb;
     border-bottom:1px solid #cccccc;
-    background-image:url(../../resources/ext-ux/theme/gray-extend-ux/bg2.png);
+    
+    background:url('../../resources/ext-ux/theme/gray-extend-ux/bg2.png') repeat-x;
     -moz-border-radius-topleft: 2px;
     -webkit-border-top-left-radius: 2px;
     -moz-border-radius-topright: 2px;

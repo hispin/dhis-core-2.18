@@ -703,7 +703,7 @@
                 xtype: 'button',
                 id: 'exportimage_b',
 				labelSeparator: G.conf.labelseparator,
-                iconCls: 'icon-export',
+                iconCls: 'icon-assign',
 				text: G.i18n.export_,
 				handler: function() {
                     var values, svg;
@@ -2411,10 +2411,13 @@
             var c1 = '<span class="menu-item-inline-c1">';
             var c2 = '<span class="menu-item-inline-c2">';
             var spanEnd = '</span>';
-            mapView.label = c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
-                            c2 + mapView.parentOrganisationUnitName + ' ( ' + '<span style="color:#555">' + mapView.organisationUnitLevelName + '</span> )' + spanEnd + 
+            mapView.label = '<span class="menu-item-inline-bg">' +
+                            c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
+                            c2 + mapView.parentOrganisationUnitName + spanEnd +
+                            c1 + '( ' + mapView.organisationUnitLevelName + ' )' + spanEnd + 
                             c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
-                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd;
+                            c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd +
+                            spanEnd;
             
             for (var i = 0; i < this.menu.items.items.length; i++) {
                 if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
