@@ -2473,7 +2473,7 @@
 	
 	var predefinedMapLegendSetButton = new Ext.Button({
 		iconCls: 'icon-predefinedlegendset',
-		tooltip: G.i18n.create_predefined_legend_sets,
+		tooltip: G.i18n.predefined_legend_sets,
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
 		handler: function() {

@@ -44,12 +44,6 @@
     background-image:url(../../resources/ext-ux/theme/gray-extend-ux/grid-split.png);
     height:23px;
 }
-
-#map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
-    border:1px solid #bbbbbb;
-    border-bottom:1px solid #cccccc;
-    background-image:url(../../resources/ext-ux/theme/gray-extend-ux/bg2.png);;
-}
 .x-panel-tbar .x-toolbar {
     padding:0;
 }
@@ -444,4 +438,13 @@ a.x-menu-item-custom {
 }
 #pointlegend {
     padding-left:4px;
+}
+#map_tb .x-panel-bbar .x-toolbar, .x-panel-tbar .x-toolbar {
+    border:1px solid #bbbbbb;
+    border-bottom:1px solid #cccccc;
+    background-image:url(../../resources/ext-ux/theme/gray-extend-ux/bg2.png);
+    -moz-border-radius-topleft: 2px;
+    -webkit-border-top-left-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    -webkit-border-top-right-radius: 2px;
 }
