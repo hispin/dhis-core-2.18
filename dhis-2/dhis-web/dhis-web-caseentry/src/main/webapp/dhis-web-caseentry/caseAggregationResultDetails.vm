@@ -1,0 +1,34 @@
+<table class='mainPageTable listTable'>
+	<thead>
+		<th>$i18n.getString('full_name')</th>
+		<th>$i18n.getString('program_stage')</th>
+		<th>$i18n.getString('data_element')</th>
+		<th>$i18n.getString('value')</th>
+	</thead>
+	<tbody>
+		#foreach( $patient in $mapPatients.keySet())
+			<tr id="tr${patientDataValue.dataElement.id}" style='background-color: #cccccc'>
+				<td>$patient.getFullName()</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			
+			#set($dataValues = $mapPatients.get($patient) )
+			#if( $!dataValues )
+				#foreach( $dataValue in $dataValues )
+				<tr>
+					<td></td>
+					<td>$dataValue.programStageInstance.programStage.name</td>
+					<td>$dataValue.dataElement.name</td>
+					<td>$dataValue.value</td>
+				</tr>
+				#end
+			#else
+				<tr>
+					<td colspan='4'></td>
+				</tr>
+			#end
+		#end
+	</tbody>
+</table>

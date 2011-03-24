@@ -111,3 +111,22 @@ function validationCaseAggregationCompleted( message )
         setMessage(message.firstChild.nodeValue);
     }
 }
+
+function viewResultDetails( orgunitId, periodId, aggregationConditionId ) 
+{
+	var url = 'caseAggregationResultDetails.action?';
+		url+= 'orgunitId=' + orgunitId;
+		url+= '&periodId=' + periodId;
+		url+= '&aggregationConditionId=' + aggregationConditionId;
+		
+	$('#contentDetails').dialog('destroy').remove();
+    $('<div id="contentDetails">' ).load(url).dialog({
+        title: '',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 800,
+        height: 400
+    });
+}
