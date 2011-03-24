@@ -1,0 +1,32 @@
+
+html, body {
+  font-family: arial;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+  
+.headerDiv {
+  position: relative;
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+  color: #ffffff;
+  background-color: #32669a;
+  padding: 0.5em;
+  border-bottom: 1px solid #d0d0d0;
+}
+  
+.contentDiv {
+  position: relative;
+  width: 100%;
+}
+  
+.contentItemDiv {
+  position: relative;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  border-bottom: 1px solid #d0d0d0;
+}
