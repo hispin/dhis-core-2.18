@@ -60,4 +60,8 @@ jQuery( document ).ready( function()
 
 	/* remote validation */
 	checkValueIsExist( "username", "validateUser.action" );
+
+	jQuery("#cancel").click(function() {
+		referrerBack( "alluser.action" );
+	});		
 } );
