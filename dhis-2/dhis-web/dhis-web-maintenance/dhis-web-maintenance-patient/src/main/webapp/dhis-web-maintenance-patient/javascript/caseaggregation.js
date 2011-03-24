@@ -49,36 +49,6 @@ function getAggDataElementsCompleted( dataelementElement )
 // Get Program Stages
 //------------------------------------------------------------------------------
 
-function filterDE( event, value )
-{
-  var dataElementList = document.getElementById( 'programstageDE' );
-  
-  for ( var index = 0; index < dataElementList.options.length; index++ )
-    {
-		var option = dataElementList.options[index];
-		
-		if(value.length == 0 )
-		{
-			option.style.display = "block";
-		}
-		else
-		{
-			if (option.text.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
-			{
-				option.style.display = "block";
-			}
-			else
-			{
-				option.style.display = "none";
-			}
-		}
-    }	    
-}
-
-//------------------------------------------------------------------------------
-// Get Program Stages
-//------------------------------------------------------------------------------
-
 function getProgramStages()
 {
   var program = document.getElementById( 'program' );
