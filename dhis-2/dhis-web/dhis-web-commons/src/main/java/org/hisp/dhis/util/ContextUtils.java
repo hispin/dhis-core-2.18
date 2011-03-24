@@ -144,7 +144,7 @@ public class ContextUtils
 
         for ( Cookie c : cookies )
         {
-            if ( c.getName().equalsIgnoreCase( "pageSize" ) )
+            if ( c.getName().equalsIgnoreCase( cookieName ) )
             {
                 return c.getValue();
             }
