@@ -13,8 +13,8 @@ var headerMessageTimeout = -1;
  */
 function referrerBack( defaultUrl ) {
 	if(document.referrer != "") {
-		var splitReferrer = document.referrer.split("\/");
-		var referrer = splitReferrer[splitReferrer.length-1];
+/*		var splitReferrer = document.referrer.split("\/");
+		var referrer = splitReferrer[splitReferrer.length-1]; */
 		location.href = referrer;
 	} else {
 		location.href = defaultUrl;
