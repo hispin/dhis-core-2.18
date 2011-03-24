@@ -30,15 +30,16 @@
 <h3>$i18n.getString( "" )</h3>
 
 <form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
-
-    <table> 
-        <tr>
-          <td><label>$i18n.getString( "reporting_unit" )</label></td>
-          <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
-          <td>&nbsp;</td>
-		  <td>&nbsp;</td>
+	<table> 
+		<tr>
+			<td><label>$i18n.getString( "reporting_unit" )</label></td>
+			<td>
+				<input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px">
+			</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
 		</tr>
-        
+
         <tr>
             <td><label for="programId">$i18n.getString( "program" )</label></td>
             <td>

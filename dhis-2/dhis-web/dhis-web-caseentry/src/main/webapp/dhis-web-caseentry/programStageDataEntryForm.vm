@@ -62,19 +62,16 @@
 		<td>&nbsp;</td>
 		<td>
 			<div id="actions" style="float:left">
-				
 				<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
 					#if( $useDefaultForm  ) 
-						checked="checked" 
-					#end 
+						checked="checked"
+					#end
 					onchange="selectDefaultForm();">
 				<label>$i18n.getString( "use_default_form" )</label><br>    
 			</div>			
 		</td>
     </tr>
-    
 </table>
-
 
 </form>
 
@@ -101,10 +98,12 @@
         #end
 </span>
 </div>
-<script>
+
+<script type="text/javascript">
     initCustomCheckboxes();
     DRAG_DIV.init(); 
 </script>
+
 #else
 
 <table class="mainPageTable">
@@ -112,12 +111,14 @@
     <col id="deCol">    
     <col id="entryCol">
     <col id="facilityCol">       
+
     <tr>
         <th>$i18n.getString( "nr" )</th>
         <th>$i18n.getString( "data_element" )</th>                   
         <th>$i18n.getString( "entry" )</th>
         <th>$i18n.getString( "facility_provided_data" )</th>             
     </tr>
+
 #set( $dataElementRowCount = 0 )
 #set( $mark = 0 )
 #set( $tabIndex = 1 )
@@ -190,6 +191,7 @@
 #end
 
 </div>
+
 <div id="completeDataEntryFormContainer">
 <form id="completeDataEntryForm" name="completeDataEntry" method="post" action="completeProgramStageDataEntry.action"> 
     <input type="hidden" name="id" value="$patient.id"/>
@@ -197,5 +199,6 @@
     <input type="hidden" name="programStageId" value="$programStage.id"/>
     <input type="hidden" name="programStageInstanceId" value="$programStageInstance.id"/>
 </form>
+
 </div>
 </div>

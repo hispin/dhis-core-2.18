@@ -69,7 +69,6 @@
 	#parse( "/dhis-web-commons/paging/paging.vm" )
 </div>
 
-
 <div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
 	<div style="float:right">
 		<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>

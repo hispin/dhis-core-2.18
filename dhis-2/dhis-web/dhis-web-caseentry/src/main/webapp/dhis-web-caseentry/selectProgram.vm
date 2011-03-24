@@ -1,16 +1,13 @@
 <h3>$i18n.getString( "name_based_data_entry" )</h3>
 
-
 <br>
 
 <form id="selectProgramForm" name="selectProgramForm" method="post" action="selectProgram.action">
-
 <div>
     <input type="hidden" id="id" name="id" value="$patient.id">
 </div>
 
 <table>
-    
     <tr>
         <td>            
             $encoder.htmlEncode( $patient.firstName )
@@ -44,9 +41,7 @@
             </select>
         </td>
     </tr>      
-    
 </table>
-
 </form>
 
 <hr style="clear:both">

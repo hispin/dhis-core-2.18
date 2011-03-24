@@ -1,38 +1,39 @@
+
 <div>
     <input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='caseAggregationForm.action'" style="width:10em">
 </div>
+
 <p></p>
 <div>
 #if( $mapDataValues.keySet().size() > 0 )
-	<table class='mainPageTable listTable'>
-		  <col width="40">          
-          <col>
-          <col>
-          <col>  
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>$i18n.getString('name')</th>
-				<th>$i18n.getString('value')</th>
-				<th>$i18n.getString('status')</th>
+<table class='mainPageTable listTable'>
+	<col width="40">          
+	<col>
+	<col>
+	<col>  
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>$i18n.getString('name')</th>
+			<th>$i18n.getString('value')</th>
+			<th>$i18n.getString('status')</th>
+		</tr>
+	</thead>
+	
+	#set ( $keys = $mapDataValues.keySet() )
+	#set ($index = 1)
+	<tbody>
+		#foreach( $key in $keys)
+			<tr id="tr${key.dataElement.id}" style="cursor: pointer" onclick="viewResultDetails($key.source.id,$key.period.id,$mapCaseAggCondition.get($key).id)">
+				<td>$index</td>
+				<td>$key.dataElement.getName()</td>
+				<td>$key.getValue()</td>
+				<td>$mapDataValues.get($key)</td>
 			</tr>
-		</thead>
-		
-		#set ( $keys = $mapDataValues.keySet() )
-		#set ($index = 1)
-		<tbody>
-			#foreach( $key in $keys)
-				<tr id="tr${key.dataElement.id}" style="cursor: pointer" onclick="viewResultDetails($key.source.id,$key.period.id,$mapCaseAggCondition.get($key).id)">
-					<td>$index</td>
-					<td>$key.dataElement.getName()</td>
-					<td>$key.getValue()</td>
-					<td>$mapDataValues.get($key)</td>
-				</tr>
-				#set ($index = $index + 1)
-			#end
-		</tbody>
-	</table>
-
+			#set ($index = $index + 1)
+		#end
+	</tbody>
+</table>
 #else
 	$i18n.getString('no_value_added_or_update')
 #end

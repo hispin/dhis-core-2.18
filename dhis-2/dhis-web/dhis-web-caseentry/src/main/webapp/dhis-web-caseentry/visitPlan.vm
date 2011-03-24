@@ -1,75 +1,74 @@
 <h3>$i18n.getString( "visit_plan" )</h3>
 
 <table>
-    
     <tr>
         <td><label>$i18n.getString( "registering_unit" )</label></td>
-        <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+        <td>
+        	<input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px">
+        </td>
     </tr>
     <tr>
         <td>$i18n.getString( "sort_by" )</td>
         <td>
-            <select id="sortingAttributeId" name="sortingAttributeId" style="min-width:350px"  onchange="sortByAttribute( this.options[this.selectedIndex].value )" #if( $attributes.size() == 0 ) disabled="disabled" #end>                
+            <select id="sortingAttributeId" name="sortingAttributeId" style="min-width:350px"  onchange="sortByAttribute( this.options[this.selectedIndex].value )" #if( $attributes.size() == 0 ) disabled="disabled" #end>
                 #foreach( $attribute in $attributes )
                     <option value="$attribute.id" #if( $sortingAttribute && $attribute.id == $sortingAttribute.id ) selected="selected" #end>$encoder.htmlEncode( $attribute.name )</option>
                 #end
             </select>
         </td>
     </tr>
-        
 </table>
 
 <hr style="clear:both">
     
 #foreach( $patient in $sortedPatients )
-
-    <div id="visitPlanContainer" style="border:1px solid #808080; width:465px;">
-        <table class="mainPageTable"> 
-            <tr>            
-                <td>
-                    <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
-                    <strong>$i18n.getString( "gender" ):</strong>$encoder.htmlEncode( $patient.gender )<br>
-                    <strong>$i18n.getString( "date_of_birth" ):</strong>$format.formatDate( $patient.birthDate )<br>
-                    <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
-                </td>   
-                <td style="vertical-align:top">
-                    <div style="float:right">                        
-                        #set( $attributeValues = false )
-                        #set( $attributeValues = $attributeValueMap.get( $patient.id ) )
-                        #foreach( $attributeValue in $attributeValues )                            
-                            <strong>$encoder.htmlEncode( $attributeValue.patientAttribute.name ):</strong>$encoder.htmlEncode( $attributeValue.value )<br>
-                        #end                         
-                    </div>
-                </td>    
-            </tr>            
-        </table>
-        #set( $stageInstances = false )
-        #set( $stageInstances = $visitsByPatients.get( $patient ) )        
-        <table class="listTable">
-            <col>
-            <col>
-            <col>
-            <tr>
-                <th>$i18n.getString( "program" )</th>
-                <th>$i18n.getString( "stage" )</th>
-                <th>$i18n.getString( "due_date" )</th>           
-            </tr>
-            <tbody id="list">   
-                #set( $mark = false )          
-                #foreach( $stageInstance in $stageInstances )                    
-                    <tr #alternate( $mark )>                
-                        <td>$!stageInstance.programInstance.program.name</td>
-                        <td>$!stageInstance.programStage.name</td>
-                        <td>$!format.formatDate( $!stageInstance.dueDate )</td>                
-                    </tr>
-                    #if( $mark )
-                        #set( $mark = false )
-                    #else
-                        #set( $mark = true )
-                    #end
-                #end            
-            </tbody>            
-        </table>
-    </div>
-    <p></p>                       
+<div id="visitPlanContainer" style="border:1px solid #808080; width:465px;">
+    <table class="mainPageTable"> 
+        <tr>            
+            <td>
+                <strong>$i18n.getString( "full_name" ):</strong>$encoder.htmlEncode( $patient.getFullName() )<br>
+                <strong>$i18n.getString( "gender" ):</strong>$encoder.htmlEncode( $patient.gender )<br>
+                <strong>$i18n.getString( "date_of_birth" ):</strong>$format.formatDate( $patient.birthDate )<br>
+                <strong>$i18n.getString( "age" ):</strong>$encoder.htmlEncode( $patient.getAge() )
+            </td>   
+            <td style="vertical-align:top">
+                <div style="float:right">                        
+                    #set( $attributeValues = false )
+                    #set( $attributeValues = $attributeValueMap.get( $patient.id ) )
+                    #foreach( $attributeValue in $attributeValues )                            
+                        <strong>$encoder.htmlEncode( $attributeValue.patientAttribute.name ):</strong>$encoder.htmlEncode( $attributeValue.value )<br>
+                    #end                         
+                </div>
+            </td>    
+        </tr>            
+    </table>
+    #set( $stageInstances = false )
+    #set( $stageInstances = $visitsByPatients.get( $patient ) )        
+    <table class="listTable">
+        <col>
+        <col>
+        <col>
+        <tr>
+            <th>$i18n.getString( "program" )</th>
+            <th>$i18n.getString( "stage" )</th>
+            <th>$i18n.getString( "due_date" )</th>           
+        </tr>
+        <tbody id="list">   
+            #set( $mark = false )          
+            #foreach( $stageInstance in $stageInstances )                    
+                <tr #alternate( $mark )>                
+                    <td>$!stageInstance.programInstance.program.name</td>
+                    <td>$!stageInstance.programStage.name</td>
+                    <td>$!format.formatDate( $!stageInstance.dueDate )</td>                
+                </tr>
+                #if( $mark )
+                    #set( $mark = false )
+                #else
+                    #set( $mark = true )
+                #end
+            #end            
+        </tbody>            
+    </table>
+</div>
+<p></p>                       
 #end

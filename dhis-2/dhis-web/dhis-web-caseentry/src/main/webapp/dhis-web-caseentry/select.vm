@@ -1,16 +1,16 @@
 <h3>$i18n.getString( "name_based_data_entry" )</h3>
 
 <form id="selectForm" name="selectForm" method="post" action="select.action">
-
 <table>
 	
 	<tr>
 		<td><label>$i18n.getString( "registering_unit" )</label></td>
-		<td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+		<td>
+			<input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px">
+		</td>
 	</tr>
 		
 </table>
-
 </form>
 
 <hr style="clear:both">
