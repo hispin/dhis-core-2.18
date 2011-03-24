@@ -54,6 +54,8 @@ public class GetCaseAggregationConditionAction
 
     private CaseAggregationCondition caseAggregation;
 
+    private String description;
+    
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
@@ -66,6 +68,11 @@ public class GetCaseAggregationConditionAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 
     public CaseAggregationCondition getCaseAggregation()
@@ -83,6 +90,8 @@ public class GetCaseAggregationConditionAction
     {
         caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
 
+        description = aggregationConditionService.getConditionDescription( caseAggregation.getAggregationExpression() );
+        
         return SUCCESS;
     }
 }
