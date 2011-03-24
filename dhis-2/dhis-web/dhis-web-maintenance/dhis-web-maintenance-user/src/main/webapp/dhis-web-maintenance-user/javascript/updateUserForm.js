@@ -51,4 +51,7 @@ jQuery( document ).ready( function()
 	jQuery( "#email" ).attr( "maxlength", r.user.email.rangelength[1] );
 	jQuery( "#phoneNumber" ).attr( "maxlength", r.user.phone.rangelength[1] );
 
+	jQuery("#cancel").click(function() {
+		referrerBack( "alluser.action" );
+	});		
 } );

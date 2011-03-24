@@ -84,7 +84,10 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td valign="top"><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='user.action'" style="width:10em"/></td>
+		<td valign="top">
+			<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/>
+			<input type="button" id="cancel" value="$i18n.getString( 'cancel' )" style="width:10em"/>
+		</td>
 	</tr>
 </table>
 </form>

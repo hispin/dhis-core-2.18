@@ -6,6 +6,22 @@
 var headerMessageTimeout = -1;
 
 /**
+ * Go back using the document.referrer.
+ * 
+ * @param defaultUrl
+ *            if there is not document.referrer, use this url
+ */
+function referrerBack( defaultUrl ) {
+	if(document.referrer != "") {
+		var splitReferrer = document.referrer.split("\/");
+		var referrer = splitReferrer[splitReferrer.length-1];
+		location.href = referrer;
+	} else {
+		location.href = defaultUrl;
+	}
+}
+
+/**
  * Redirects to the translate GUI.
  * 
  * @param className
