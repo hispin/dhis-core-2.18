@@ -67,27 +67,30 @@
         #if( $programStageInstance )
             <td>&nbsp;</td>
             <td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-            <td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled" </td>
+            <td>
+            	<input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" disabled="disabled"/>
+            </td>
             <td>&nbsp;</td>
             <td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-            <td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" >
-				<script type="text/javascript">
-					datePickerValid('executionDate', false);
-                </script>
+            <td>
+            	<input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" onchange="saveExecutionDate( $programStageInstance.id, '$encoder.jsEncode( $programStageInstance.programStage.name )' )" />
+            </td>
+			<script type="text/javascript">
+				datePickerValid('executionDate', false);
+            </script>
         #end
     </tr>   
-    <tr>
-    	<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()"></td>
-    </tr>
-    
+	<tr>
+		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()"></td>
+	</tr>
 </table>
+
 <div id="actions" style="float:right">
-    
 	<input type="checkbox" id="useDefaultForm" name="useDefaultForm"
 		#if( $useDefaultForm  ) 
 			checked="checked" 
 		#end 
-		onchange="selectDefaultForm();">
+		onchange="selectDefaultForm();"/>
 	<label>$i18n.getString( "use_default_form" )</label><br>	
 </div>
 

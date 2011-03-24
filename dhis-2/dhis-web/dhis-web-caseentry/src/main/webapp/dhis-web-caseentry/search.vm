@@ -4,17 +4,19 @@
 <table>    
     <tr>
         <td><label>$i18n.getString( "registering_unit" )</label></td>
-        <td><input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px"></td>
+        <td>
+        	<input type="text" readonly="readonly" #if( $organisationUnit ) value="$encoder.htmlEncode( $organisationUnit.name )" #else value="[$i18n.getString( "please_select_village" )]" #end style="min-width:350px">
+        </td>
         <td>&nbsp;</td>
-        <td><input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='listAllPatients.action'"></td>        
+        <td>
+        	<input type="button" value="$i18n.getString( "list_all_patients" )" onclick="window.location.href='listAllPatients.action'">
+        </td>        
     </tr>        
 </table>
 
 <hr style="clear:both">
 
-
 <form id="searchForm" name="searchForm" action="searchPatient.action" method="post" onsubmit="return validateSearch()">
-
 <table> 
     <tr>           
         <td>
@@ -26,13 +28,15 @@
           </select> 
           <em title="$i18n.getString( "required" )" class="required">*</em></label>
         </td>       
-        <td><input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em"></td>        
-        <td><input type="submit" value="$i18n.getString( "search" )"</td>        
+        <td>
+        	<input type="text" id="searchText" name="searchText" maxlength="30" style="width:20em"/>
+        </td>        
+        <td>
+        	<input type="submit" value="$i18n.getString( "search" )"/>
+        </td>        
     </tr>    
     <tr></tr>        
 </table>
-
 </form>
 
 <span id="message"></span>
-
