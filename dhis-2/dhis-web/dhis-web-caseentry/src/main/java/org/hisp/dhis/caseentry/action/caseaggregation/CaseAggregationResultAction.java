@@ -127,20 +127,6 @@ public class CaseAggregationResultAction
     // Input & Output Parameters
     // -------------------------------------------------------------------------
 
-    private int sDateLB;
-
-    public void setSDateLB( int dateLB )
-    {
-        sDateLB = dateLB;
-    }
-
-    private int eDateLB;
-
-    public void setEDateLB( int dateLB )
-    {
-        eDateLB = dateLB;
-    }
-
     private String facilityLB;
 
     public void setFacilityLB( String facilityLB )
@@ -161,6 +147,13 @@ public class CaseAggregationResultAction
     {
         return mapDataValues;
     }
+    
+    private Map<DataValue, CaseAggregationCondition> mapCaseAggCondition;
+
+    public Map<DataValue, CaseAggregationCondition> getMapCaseAggCondition()
+    {
+        return mapCaseAggCondition;
+    }
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -170,7 +163,8 @@ public class CaseAggregationResultAction
         throws Exception
     {
         mapDataValues = new HashMap<DataValue, String>();
-
+        mapCaseAggCondition = new HashMap<DataValue, CaseAggregationCondition>();
+        
         String storedBy = currentUserService.getCurrentUsername() + "_CAE";
 
         // ---------------------------------------------------------------------
@@ -183,7 +177,7 @@ public class CaseAggregationResultAction
         {
             return SUCCESS;
         }
-
+        
         List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
         if ( facilityLB.equals( "children" ) )
         {
@@ -218,12 +212,12 @@ public class CaseAggregationResultAction
         Period startPeriod = periodGenericManager.getSelectedPeriod(
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_START );
-        
+
         Period endPeriod = periodGenericManager.getSelectedPeriod(
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END );
-     
-        periodList = getPeriodList( (CalendarPeriodType)selectedDataSet.getPeriodType(), startPeriod, endPeriod );
+
+        periodList = getPeriodList( (CalendarPeriodType) selectedDataSet.getPeriodType(), startPeriod, endPeriod );
 
         // ---------------------------------------------------------------------
         // Aggregation
@@ -250,12 +244,10 @@ public class CaseAggregationResultAction
 
                         double resultValue = aggregationConditionService.parseConditition( condition, orgUnit, period );
 
-                        DataValue dataValue = dataValueService
-                                    .getDataValue( orgUnit, dElement, period, optionCombo );
-
+                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dElement, period, optionCombo );
+                        
                         if ( resultValue != 0 )
                         {
-                           
                             if ( dataValue == null )
                             {
                                 dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, storedBy,
@@ -274,17 +266,19 @@ public class CaseAggregationResultAction
 
                                 mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
                             }
+                            
+                            mapCaseAggCondition.put( dataValue, condition );
 
                         }
                         else if ( dataValue != null )
                         {
-                                DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy,
-                                    new Date(), null, optionCombo );
-                                dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) ); 
-                                
-                                dataValueService.deleteDataValue( dataValue );
+                            DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy, new Date(),
+                                null, optionCombo );
+                            dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) );
 
-                                mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
+                            dataValueService.deleteDataValue( dataValue );
+
+                            mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
                         }
 
                     }// PeriodList end
@@ -319,21 +313,21 @@ public class CaseAggregationResultAction
 
     private List<Period> getPeriodList( CalendarPeriodType periodType, Period startPeriod, Period endPeriod )
     {
-        Period period = periodType.createPeriod( startPeriod.getStartDate());
+        Period period = periodType.createPeriod( startPeriod.getStartDate() );
 
         List<Period> periods = new ArrayList<Period>();
-        
+
         periods.add( period );
-        
-        while ( period.getEndDate().before( endPeriod.getEndDate() ))
+
+        while ( period.getEndDate().before( endPeriod.getEndDate() ) )
         {
-            period = periodType.getNextPeriod( period ) ;
+            period = periodType.getNextPeriod( period );
             periods.add( period );
         }
 
-        period = periodType.createPeriod( endPeriod.getStartDate() ) ;
+        period = periodType.createPeriod( endPeriod.getStartDate() );
         periods.add( period );
-        
+
         return periods;
     }
 

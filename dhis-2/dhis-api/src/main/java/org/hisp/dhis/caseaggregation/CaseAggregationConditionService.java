@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
 
@@ -58,6 +59,10 @@ public interface CaseAggregationConditionService
     double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
         
     Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
+    
+    Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
+    
+    Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
     
     String getConditionDescription( String condition );
 }
