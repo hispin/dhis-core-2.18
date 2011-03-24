@@ -49,9 +49,37 @@
 
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
+			#if ( $maintenanceModules.size() > 0 )
+			jQuery("#menuLink1").hover(function() {
+				showDropDown( 'menuDropDown1' );
+			}, function() {
+				hideDropDownTimeout();
+			});
+			#end
+
+			#if ( $serviceModules.size() > 0 )
+			jQuery("#menuLink2").hover(function() {
+				showDropDown( 'menuDropDown2' );
+			}, function() {
+				hideDropDownTimeout();
+			});
+			#end
+
+			jQuery("#menuLink3").hover(function() {
+				showDropDown( 'menuDropDown3' );
+			}, function() {
+				hideDropDownTimeout();
+			});
+
 			jQuery("#menuLink4").click( function() {
 				jQuery.cookie('pageSize', null, {path:'/'});
 				window.location.href='../dhis-web-commons-security/logout.action';
+			});
+
+			jQuery("#menuDropDown1, #menuDropDown2, #menuDropDown3").hover(function() {
+				cancelHideDropDownTimeout();
+			}, function() {
+				hideDropDownTimeout();
 			});
 		});
 	</script>
@@ -72,12 +100,12 @@
       <img id="menuSeparator4" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator5" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
 
-      <div id="menuLink1" class="menuLink" #if ( $maintenanceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown1' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "maintenance" )</div>
-      <div id="menuLink2" class="menuLink" #if ( $serviceModules.size() > 0 ) onmouseover="showDropDown( 'menuDropDown2' )" onmouseout="hideDropDownTimeout()" #end>$i18n.getString( "services" )</div>
-      <div id="menuLink3" class="menuLink" onmouseover="showDropDown( 'menuDropDown3' )" onmouseout="hideDropDownTimeout()">$i18n.getString( "help" )</div>
+      <div id="menuLink1" class="menuLink">$i18n.getString( "maintenance" )</div>
+      <div id="menuLink2" class="menuLink">$i18n.getString( "services" )</div>
+      <div id="menuLink3" class="menuLink">$i18n.getString( "help" )</div>
       <div id="menuLink4" class="menuLink">$i18n.getString( "log_out" )</div>
 
-      <div id="menuDropDown1" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+      <div id="menuDropDown1" class="menuDropDownArea" >
         <ul class="menuDropDownBox">
         #foreach( $module in $maintenanceModules )
           #set( $i18nName = false )
@@ -89,7 +117,7 @@
         </ul>      
       </div>
 
-      <div id="menuDropDown2" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+      <div id="menuDropDown2" class="menuDropDownArea">
         <ul class="menuDropDownBox">
         #foreach( $module in $serviceModules )
           #set( $i18nName = false )
@@ -101,7 +129,7 @@
         </ul>      
       </div>
 	  
-      <div id="menuDropDown3" class="menuDropDownArea" onmouseover="cancelHideDropDownTimeout()" onmouseout="hideDropDownTimeout()">
+      <div id="menuDropDown3" class="menuDropDownArea">
         <ul class="menuDropDownBox">
 		  <li class="menuDropDownItem" id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownFeedBack">$i18n.getString( "feedback" )&nbsp;</li>
