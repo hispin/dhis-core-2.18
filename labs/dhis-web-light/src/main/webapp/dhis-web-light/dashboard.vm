@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title>DHIS 2</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <link type="text/css" rel="stylesheet" media="screen" href="style/dhis-web-light.css">
+  
+  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
+  <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
+  <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
+  
+</head>
+<head>
+<body>
+
+<div class="headerDiv">DHIS 2</div>
+
+<div class="contentDiv">
+
+<!-- Charts -->
+
+#if( $chartAreaA )
+<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaA}" style="width:100%"></div>
+#end
+
+#if( $chartAreaB )
+<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaB}" style="width:100%"></div>
+#end
+
+#if( $chartAreaC )
+<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaC}" style="width:100%"></div>
+#end
+
+#if( $chartAreaD )
+<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaD}" style="width:100%"></div>
+#end
+
+<!-- Report tables -->
+
+
+
+</div>
+</body>
+</html>
