@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,83 +44,112 @@ import org.hisp.dhis.system.util.DateUtils;
 public class ContextUtils
 {
     public static final String CONTENT_TYPE_PDF = "application/pdf";
+
     public static final String CONTENT_TYPE_ZIP = "application/zip";
+
     public static final String CONTENT_TYPE_JSON = "application/json";
+
     public static final String CONTENT_TYPE_HTML = "text/html";
+
     public static final String CONTENT_TYPE_TEXT = "text/plain";
+
     public static final String CONTENT_TYPE_XML = "application/xml";
+
     public static final String CONTENT_TYPE_CSV = "application/csv";
+
     public static final String CONTENT_TYPE_PNG = "image/png";
+
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
-    
+
     private static final String SEPARATOR = "/";
-    private static final String PORT_SEPARATOR = ":";    
+
+    private static final String PORT_SEPARATOR = ":";
+
     private static final String PROTOCOL = "http://";
-    
-    private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() { {
-        put( "pdf", CONTENT_TYPE_PDF );
-        put( "zip", CONTENT_TYPE_ZIP );
-        put( "json", CONTENT_TYPE_JSON );
-        put( "html", CONTENT_TYPE_HTML );
-        put( "txt", CONTENT_TYPE_TEXT );
-        put( "xml", CONTENT_TYPE_XML );
-        put( "csv", CONTENT_TYPE_CSV );
-        put( "png", CONTENT_TYPE_PNG );
-        put( "xls", CONTENT_TYPE_EXCEL );
-    } };
-    
+
+    private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>()
+    {
+        {
+            put( "pdf", CONTENT_TYPE_PDF );
+            put( "zip", CONTENT_TYPE_ZIP );
+            put( "json", CONTENT_TYPE_JSON );
+            put( "html", CONTENT_TYPE_HTML );
+            put( "txt", CONTENT_TYPE_TEXT );
+            put( "xml", CONTENT_TYPE_XML );
+            put( "csv", CONTENT_TYPE_CSV );
+            put( "png", CONTENT_TYPE_PNG );
+            put( "xls", CONTENT_TYPE_EXCEL );
+        }
+    };
+
     public static String getContentType( String type, String defaultType )
     {
         String contentType = CONTENT_TYPE_MAP.get( type );
         return contentType != null ? contentType : defaultType;
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public static Map<String, String> getParameterMap( HttpServletRequest request )
     {
         Enumeration<String> enumeration = request.getParameterNames();
-        
+
         Map<String, String> params = new HashMap<String, String>();
-        
+
         while ( enumeration.hasMoreElements() )
         {
             String name = enumeration.nextElement();
-            
+
             params.put( name, request.getParameter( name ) );
         }
-        
+
         return params;
     }
-    
+
     public static String getBaseUrl( HttpServletRequest request )
     {
         String server = request.getServerName();
-        
+
         int port = request.getServerPort();
-        
+
         String baseUrl = PROTOCOL + server + PORT_SEPARATOR + port + SEPARATOR;
-        
+
         return baseUrl;
     }
-    
-    public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache, String filename, boolean attachment )
+
+    public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache,
+        String filename, boolean attachment )
     {
         if ( contentType != null )
         {
             response.setContentType( contentType );
         }
-        
+
         if ( disallowCache )
-        {   
+        {
             response.addHeader( "Cache-Control", "no-cache" );
             response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
-        } 
+        }
 
         if ( filename != null )
         {
             String type = attachment ? "attachment" : "inline";
-            
+
             response.addHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
         }
+    }
+
+    public static String getCookieValue( HttpServletRequest request, String cookieName )
+    {
+        Cookie[] cookies = request.getCookies();
+
+        for ( Cookie c : cookies )
+        {
+            if ( c.getName().equalsIgnoreCase( "pageSize" ) )
+            {
+                return c.getValue();
+            }
+        }
+ 
+        return null;
     }
 }
