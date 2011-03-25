@@ -33,8 +33,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.DataElementGroupOrder;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelCategory;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
+import org.hisp.dhis.reportexcel.export.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -44,34 +46,25 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @since 2009-09-18
  */
 public class GenerateReportCategoryAction
-    extends GenerateReportSupport
+    extends AbstractGenerateExcelReportSupport
 {
-
     @Override
-    public String execute()
+    protected void executeGenerateOutputFile( ReportExcel reportExcel, Period period )
         throws Exception
     {
-        statementManager.initialise();
-
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
         
-        Period period = periodGenericManager.getSelectedPeriod();
+        ReportExcelCategory reportExcelInstance = (ReportExcelCategory) reportExcel;
         
-        this.installPeriod( period );
-
-        ReportExcelCategory reportExcel = (ReportExcelCategory) reportService.getReportExcel( selectionManager
-            .getSelectedReportId() );
-
-        this.installReadTemplateFile( reportExcel, period, organisationUnit );
+        this.installReadTemplateFile( reportExcelInstance, period, organisationUnit );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
+            Collection<ReportExcelItem> reportExcelItems = reportExcelInstance.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnit, sheet );
-
+            this.generateOutPutFile( reportExcelInstance, reportExcelItems, organisationUnit, sheet );
         }
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
@@ -79,15 +72,12 @@ public class GenerateReportCategoryAction
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             this.recalculatingFormula( sheet );
-
         }
-
-        this.complete();
-
-        statementManager.destroy();
-
-        return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
 
     private void generateOutPutFile( ReportExcelCategory reportExcel, Collection<ReportExcelItem> reportExcelItems,
         OrganisationUnit organisationUnit, Sheet sheet )
@@ -100,7 +90,6 @@ public class GenerateReportCategoryAction
 
             for ( DataElementGroupOrder dataElementGroup : reportExcel.getDataElementOrders() )
             {
-
                 int beginChapter = rowBegin;
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
@@ -121,13 +110,13 @@ public class GenerateReportCategoryAction
                 {
                     if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_NAME ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement
-                            .getName(), ExcelUtils.TEXT, sheet, this.csText10Bold );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement.getName(),
+                            ExcelUtils.TEXT, sheet, this.csText10Bold );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT_CODE ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement
-                            .getCode(), ExcelUtils.TEXT, sheet, this.csTextICDJustify );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElement.getCode(),
+                            ExcelUtils.TEXT, sheet, this.csTextICDJustify );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.SERIAL ) )
                     {
@@ -170,7 +159,6 @@ public class GenerateReportCategoryAction
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
                     ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
-
                 }
             }
         }

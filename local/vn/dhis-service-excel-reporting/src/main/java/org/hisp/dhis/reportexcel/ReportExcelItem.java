@@ -3,6 +3,9 @@ package org.hisp.dhis.reportexcel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.reportexcel.GenericExcelItem;
+import org.hisp.dhis.reportexcel.ReportExcel;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -35,23 +38,11 @@ import java.util.List;
  * @version $Id$
  */
 public class ReportExcelItem
+    extends GenericExcelItem
 {
-
-    private int id;
-
-    private String name;
-
     private String itemType;
 
-    private int row;
-
-    private int column;
-
-    private String expression;
-
     private String periodType;
-
-    private int sheetNo;
 
     private ReportExcel reportExcel;
 
@@ -76,11 +67,6 @@ public class ReportExcelItem
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
     public ReportExcel getReportExcel()
     {
         return reportExcel;
@@ -89,21 +75,6 @@ public class ReportExcelItem
     public void setReportExcel( ReportExcel reportExcel )
     {
         this.reportExcel = reportExcel;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 
     public String getItemType()
@@ -116,36 +87,6 @@ public class ReportExcelItem
         this.itemType = itemType;
     }
 
-    public int getRow()
-    {
-        return row;
-    }
-
-    public void setRow( int row )
-    {
-        this.row = row;
-    }
-
-    public int getColumn()
-    {
-        return column;
-    }
-
-    public void setColumn( int column )
-    {
-        this.column = column;
-    }
-
-    public String getExpression()
-    {
-        return expression;
-    }
-
-    public void setExpression( String expression )
-    {
-        this.expression = expression;
-    }
-
     public String getPeriodType()
     {
         return periodType;
@@ -154,16 +95,6 @@ public class ReportExcelItem
     public void setPeriodType( String periodType )
     {
         this.periodType = periodType;
-    }
-
-    public int getSheetNo()
-    {
-        return sheetNo;
-    }
-
-    public void setSheetNo( int sheetNo )
-    {
-        this.sheetNo = sheetNo;
     }
 
     // -------------------------------------------------------------------------
@@ -204,7 +135,7 @@ public class ReportExcelItem
 
         public static final String ORGANISATION = "organisation";
 
-        public static final String INDICATOR = "indicator";       
+        public static final String INDICATOR = "indicator";
 
         public static final String DATAELEMENT_CODE = "dataelement_code";
 
@@ -230,7 +161,7 @@ public class ReportExcelItem
         public static final String SIX_MONTH = "6_month";
 
         public static final String YEARLY = "yealy";
-        
+
         public static List<String> getPeriodTypes()
         {
             List<String> list = new ArrayList<String>();
@@ -241,10 +172,8 @@ public class ReportExcelItem
             list.add( QUARTERLY );
             list.add( SIX_MONTH );
             list.add( YEARLY );
-            
+
             return list;
         }
     }
-    
-    
 }

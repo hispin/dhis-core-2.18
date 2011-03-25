@@ -1,8 +1,11 @@
-﻿<script>
+﻿<script type="text/javascript">
+	
 	jQuery(document).ready(
 		function()
 		{
-			validation( 'configurationForm', function(form){ form.submit() })
+			validation( 'configurationForm', function( form ){ 
+				checkConfiguration( form ); 
+			});
 		}
 	);
 </script>
@@ -14,7 +17,7 @@
 		<td>$i18n.getString('excel_file_directory')</td>		
 	</tr>
 	<tr>
-		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$templateDirectory" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$!templateDirectory" class="{validate:{required:true}}"/></td>
 	</tr>
 	<tr>		
 		<td><input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
@@ -24,3 +27,34 @@
 </table>
 </form>
 
+<script type="text/javascript">
+
+	function checkConfiguration( form )
+	{
+		jQuery.postJSON(
+			"checkConfiguration.action",
+			{
+				templateDirectory: getFieldValue( "templateDirectory" )
+			},
+			function( json )
+			{
+				if( json.response == "success" ) {form.submit();}
+				else
+				{
+					if ( window.confirm( json.message ) ) backUpTemplateFiles( form );
+					else form.submit();
+				}
+			}
+		);
+	}
+	
+	function backUpTemplateFiles( form )
+	{
+		jQuery.getJSON( 
+			"backUpTemplateFiles.action",
+			{
+				templateDirectory: getFieldValue( "templateDirectory" )
+			}, function( json ) { form.submit(); } );
+	}
+	
+</script>

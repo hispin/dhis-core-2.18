@@ -37,24 +37,20 @@ public class DateUtils
 {
     public static Date getFirstDayOfYear( int year )
     {
-
         Calendar calendar = Calendar.getInstance();
 
         calendar.set( year, Calendar.JANUARY, 1 );
 
         return calendar.getTime();
-
     }
 
     public static Date getLastDayOfYear( int year )
     {
-
         return getEndDate( Calendar.DECEMBER, year );
     }
 
     public static Date getStartDate( int month, int year )
     {
-
         Calendar calendar = Calendar.getInstance();
 
         calendar.set( Calendar.MONTH, month );
@@ -68,7 +64,6 @@ public class DateUtils
 
     public static Date getEndDate( int month, int year )
     {
-
         Calendar calendar = Calendar.getInstance();
 
         calendar.set( Calendar.MONTH, month );
@@ -82,7 +77,6 @@ public class DateUtils
 
     public static int getCurrentMonth()
     {
-
         Calendar calendar = Calendar.getInstance();
 
         return calendar.get( Calendar.MONTH );
@@ -90,14 +84,13 @@ public class DateUtils
 
     public static int getCurrentYear()
     {
-
         Calendar calendar = Calendar.getInstance();
 
         return calendar.get( Calendar.YEAR );
 
     }
 
-    @SuppressWarnings("static-access")
+    @SuppressWarnings( "static-access" )
     public static Date getTimeRoll( Date current, int field, int numberOfRoll )
     {
         Calendar calendar = Calendar.getInstance();

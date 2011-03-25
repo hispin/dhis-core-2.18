@@ -36,10 +36,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.PeriodColumn;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelPeriodColumnListing;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
+import org.hisp.dhis.reportexcel.export.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
+import org.hisp.dhis.reportexcel.utils.ExpressionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 
 /**
@@ -49,23 +51,23 @@ import org.hisp.dhis.system.util.MathUtils;
  */
 
 public class GenerateAdvancedReportPeriodColumnListingAction
-    extends GenerateReportSupport
+    extends AbstractGenerateExcelReportSupport
 {
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input && Output
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer organisationGroupId;
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters && Setters
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setOrganisationGroupId( Integer organisationGroupId )
     {
@@ -77,34 +79,28 @@ public class GenerateAdvancedReportPeriodColumnListingAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    // ---------------------------------------------------------------------
-    // Action implementation
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    protected void executeGenerateOutputFile( ReportExcel reportExcel, Period period )
         throws Exception
     {
-        statementManager.initialise();
-
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId.intValue() );
 
-        Period period = periodGenericManager.getSelectedPeriod();
-        
-        this.installPeriod( period );
+        ReportExcelPeriodColumnListing reportExcelInstance = (ReportExcelPeriodColumnListing) reportExcel;
 
-        ReportExcelPeriodColumnListing reportExcel = (ReportExcelPeriodColumnListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportId() );
-
-        this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
+        this.installReadTemplateFile( reportExcelInstance, period, organisationUnitGroup );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
+            Collection<ReportExcelItem> reportExcelItems = reportExcelInstance.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( reportExcel.getPeriodColumns(), reportExcelItems, organisationUnitGroup
+            this.generateOutPutFile( reportExcelInstance.getPeriodColumns(), reportExcelItems, organisationUnitGroup
                 .getMembers(), sheet );
 
         }
@@ -116,12 +112,6 @@ public class GenerateAdvancedReportPeriodColumnListingAction
             this.recalculatingFormula( sheet );
 
         }
-
-        this.complete();
-
-        statementManager.destroy();
-
-        return SUCCESS;
     }
 
     private void generateOutPutFile( Collection<PeriodColumn> periodColumns,
@@ -141,13 +131,15 @@ public class GenerateAdvancedReportPeriodColumnListingAction
 
                         if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) )
                         {
-                            value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartdate(), p
-                                .getEnddate(), organisationUnit ) );
+                            value += MathUtils.calculateExpression( ExpressionUtils.generateExpression( reportItem, p
+                                .getStartdate(), p.getEnddate(), organisationUnit, dataElementService, categoryService,
+                                aggregationService ) );
                         }
                         else if ( reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ) )
                         {
-                            value += MathUtils.calculateExpression( generateExpression( reportItem, p.getStartdate(), p
-                                .getEnddate(), organisationUnit ) );
+                            value += MathUtils.calculateExpression( ExpressionUtils.generateExpression( reportItem, p
+                                .getStartdate(), p.getEnddate(), organisationUnit, dataElementService, categoryService,
+                                aggregationService ) );
                         }
 
                     }
@@ -159,6 +151,5 @@ public class GenerateAdvancedReportPeriodColumnListingAction
                 }
             }
         }
-
     }
 }

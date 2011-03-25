@@ -27,7 +27,10 @@ package org.hisp.dhis.reportexcel.configuration.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.io.FileUtils.deleteDirectory;
+
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.reportexcel.ReportLocationManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,6 +45,13 @@ public class SetReportConfigurationAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private ReportLocationManager reportLocationManager;
+
+    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    {
+        this.reportLocationManager = reportLocationManager;
+    }
 
     private SystemSettingManager systemSettingManager;
 
@@ -62,12 +72,14 @@ public class SetReportConfigurationAction
     }
 
     // -------------------------------------------------------------------------
-    // Action implemation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
-    {
+    {        
+        deleteDirectory ( reportLocationManager.getReportExcelTemplateDirectory() );
+        
         systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY, templateDirectory );
 
         return SUCCESS;

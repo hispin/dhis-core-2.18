@@ -58,7 +58,7 @@
 	<tbody id="list">	
 	#foreach( $templateFileName in $mapTemplateFiles.keySet() )
 		#set( $value = $mapTemplateFiles.get($templateFileName) )
-		<tr #id="tr${templateFileName}" >
+		<tr id="tr${templateFileName}" >
 			<td>$encoder.htmlEncode( $templateFileName )</td>
 			<td axis='$value'>
 				#if( $value )
@@ -69,7 +69,7 @@
 			</td>			
 			<td align="left">
 				<a href="javascript: mode='edit'; openEditExcelTemplate( '$templateFileName' );" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
-				<a href="downloadExcelTemplate.action?fileName=$templateFileName" title="$i18n.getString( 'download' )"><img src="images/download.png" alt="$i18n.getString( 'download' )"></a>
+				<a href="downloadFile.action?fileName=$templateFileName" title="$i18n.getString( 'download' )"><img src="images/download.png" alt="$i18n.getString( 'download' )"></a>
 				#if(  !$value )
 				<a href="javascript:deleteExcelTemplate('$templateFileName');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 				#end
@@ -80,14 +80,14 @@
 </table>
 
 <div id="editExcelTemplateDiv" style="position:fixed;display:none;width:444px;z-index:11;background-color: white;border: medium solid silver;height:60px;padding:20px">
-	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hideById('editExcelTemplateDiv');deleteDivEffect();hideMessage();">[x]</div>
+	<div id="close" style="position:absolute;top:2px;right:2px;cursor: pointer;color:red;" onclick="hidePopupWindow('editExcelTemplateDiv');hideMessage();">[x]</div>
 	<input type="hidden" value="" id="currentFileNameHidden"/>
 	<table>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="newName"  style="width:20em" name="T1" size="20" onkeyup="javascript: validateRenamingExcelTemplate(this.value ,1);"/></td>
 			<td><input type="button" value="$i18n.getString('rename')" id="excelTemplateButtonRename" disabled="disabled" onclick="javascript: checkingStatusExcelTemplate(document.getElementById('newName').value, 1, 2);"/></td>
-			<td><input type="button" value="$i18n.getString('cancel')" onclick="hideById('editExcelTemplateDiv');deleteDivEffect();hideMessage();"/></td>
+			<td><input type="button" value="$i18n.getString('cancel')" onclick="hidePopupWindow('editExcelTemplateDiv');hideMessage();"/></td>
 		</tr>
 	</table>
 </div>

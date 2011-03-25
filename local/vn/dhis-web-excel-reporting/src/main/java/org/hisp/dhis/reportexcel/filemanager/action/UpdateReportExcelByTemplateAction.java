@@ -37,9 +37,9 @@ import org.hisp.dhis.reportexcel.action.ActionSupport;
 public class UpdateReportExcelByTemplateAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportExcelService reportService;
 
@@ -48,10 +48,10 @@ public class UpdateReportExcelByTemplateAction
         this.reportService = reportService;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter && Setter
-    // -------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     private String curTemplateName;
 
     public void setCurTemplateName( String curTemplateName )
@@ -66,9 +66,9 @@ public class UpdateReportExcelByTemplateAction
         this.newTemplateName = newTemplateName;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -79,14 +79,14 @@ public class UpdateReportExcelByTemplateAction
         if ( newTemplateName.isEmpty() )
         {
             message = "verify_filename";
+            
             return ERROR;
         }
 
         reportService.updateReportExcelSystemByTemplate( curTemplateName, newTemplateName );
-        
+
         message = "update_successful";
-        
+
         return SUCCESS;
     }
-
 }

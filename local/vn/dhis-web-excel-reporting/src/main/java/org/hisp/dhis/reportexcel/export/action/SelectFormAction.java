@@ -49,7 +49,6 @@ import com.opensymphony.xwork2.Action;
 public class SelectFormAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -125,7 +124,6 @@ public class SelectFormAction
 
         periodGenericManager.setPeriodType( MonthlyPeriodType.NAME );       
         
-
         periods = periodGenericManager.getPeriodList();
 
         Collections.sort( groups );

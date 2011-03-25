@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.action;
+package org.hisp.dhis.reportexcel.filemanager.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.action.ActionSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelFileFilter;
 import org.hisp.dhis.reportexcel.utils.FileUtils;
 
@@ -40,13 +41,12 @@ import org.hisp.dhis.reportexcel.utils.FileUtils;
  * @version $Id$
  */
 
-public class CleanUpReportExcelAction
+public class CleanUpDraftFilesAction
     extends ActionSupport
 {
-
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportLocationManager reportLocationManager;
 
@@ -55,14 +55,14 @@ public class CleanUpReportExcelAction
         this.reportLocationManager = reportLocationManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
         throws Exception
     {
-        File reportTempDir = reportLocationManager.getReportExcelTempDirectory();
+        File reportTempDir = reportLocationManager.getReportExcelTemporaryDirectory();
 
         List<File> listFile = FileUtils.getListFile( reportTempDir, new ExcelFileFilter() );
         

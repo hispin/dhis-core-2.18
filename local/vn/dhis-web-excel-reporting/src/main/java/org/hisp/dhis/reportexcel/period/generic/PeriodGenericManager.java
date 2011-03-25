@@ -36,16 +36,15 @@ import org.hisp.dhis.period.Period;
  * @version $Id$
  */
 public interface PeriodGenericManager
-{        
-    
+{
     public void setSelectedPeriodIndex( Integer index );
 
     public Integer getSelectedPeriodIndex();
-    
+
     public Period getSelectedPeriod( Integer index );
 
     public Period getSelectedPeriod();
-    
+
     public void setPeriodType( String periodTypeNam );
 
     public void clearSelectedPeriod();

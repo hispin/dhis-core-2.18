@@ -77,8 +77,8 @@ function getReportDataElementGroupsReceived( data ) {
 				availableDataElementGroups.options[i] = null;
 			}
 		}
-	}	
-	$("#dataElementGroups").showAtCenter( true );
+	}
+	showPopupWindowById( "dataElementGroups", 550, 270 );
 }
 
 /*
@@ -149,10 +149,9 @@ function getListExcelTemplateReceived( files )
 	var html = "<ul>";
 	var excels = files.getElementsByTagName( "file");
 	
-	for( var i=0;i<excels.length;i++){
-	
+	for( var i=0;i<excels.length;i++)
+	{
 		html += "<li onclick='selectExcelTemplate(this);'>" + excels[i].firstChild.nodeValue + "</li>";
-		
 	}
 	
 	html += "</ul>";

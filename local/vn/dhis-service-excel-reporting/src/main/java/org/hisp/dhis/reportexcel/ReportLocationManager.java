@@ -41,15 +41,15 @@ public interface ReportLocationManager
 
     public static final String REPORT_TEMP_DIR = "temp";
     
-    public File getReportExcelTempDirectory();
+    public File getReportExcelTemporaryDirectory();
+    
+    public File getReportExcelTemplateDirectory();
     
     public File getOrganisationDirectory( OrganisationUnit organisationUnit );
     
     public List<File> getListFileInOrganisationDirectory( OrganisationUnit organisationUnit );
     
     public File getReportExcelDirectory();
-    
-    public File getReportExcelTemplateDirectory();
     
     public boolean isFileTypeSupported( String extension, String contentType );
 }

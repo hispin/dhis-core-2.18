@@ -16,10 +16,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.action.DownloadFileAction"
-		class="org.hisp.dhis.reportexcel.action.DownloadFileAction" scope="prototype">
+	<bean id="org.hisp.dhis.reportexcel.filemanager.action.DownloadFileAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.DownloadFileAction" scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.reportexcel.action.UploadFileAction"
@@ -105,7 +107,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportexcel.configuration.action.SetReportConfigurationAction"
 		class="org.hisp.dhis.reportexcel.configuration.action.SetReportConfigurationAction"
 		scope="prototype">
+		<property name="reportLocationManager" ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.CheckReportConfigurationAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.CheckReportConfigurationAction"
+		scope="prototype">
+		<property name="reportLocationManager" ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportexcel.configuration.action.BackUpTemplateFilesAction"
+		class="org.hisp.dhis.reportexcel.configuration.action.BackUpTemplateFilesAction"
+		scope="prototype">
+		<property name="reportLocationManager" ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
 	<!-- REPORT EXCEL CORE BEAN -->
@@ -806,8 +823,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!-- Clean up Report Excel module -->
 
-	<bean id="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
-		class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction"
+	<bean id="org.hisp.dhis.reportexcel.filemanager.action.CleanUpDraftFilesAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.CleanUpDraftFilesAction"
 		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
@@ -1183,8 +1200,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<!--  function - Upload excel file  -->
 	<bean
-		id="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
-		class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction"
+		id="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
 		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
@@ -1256,16 +1273,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction"
-		class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction"
-		scope="prototype">
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.reportexcel.filemanager.action.RenameExcelTemplateAction"
 		class="org.hisp.dhis.reportexcel.filemanager.action.RenameExcelTemplateAction"
 		scope="prototype">
@@ -1282,18 +1289,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.reportexcel.filemanager.action.DownloadExcelTemplateFileAction"
-		class="org.hisp.dhis.reportexcel.filemanager.action.DownloadExcelTemplateFileAction"
-		scope="prototype">
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
-		class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate"
+		id="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelFile"
+		class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelFile"
 		scope="prototype">
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />

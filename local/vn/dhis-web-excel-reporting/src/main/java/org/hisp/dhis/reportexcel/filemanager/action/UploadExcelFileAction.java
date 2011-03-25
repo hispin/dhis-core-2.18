@@ -40,12 +40,12 @@ import org.hisp.dhis.system.util.StreamUtils;
  * @since 2010-01-28
  */
 
-public class UploadExcelTemplateAction
+public class UploadExcelFileAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private ReportLocationManager reportLocationManager;
 
@@ -61,23 +61,25 @@ public class UploadExcelTemplateAction
         this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String fileName;
 
     private File upload;
 
-    // -------------------------------------------
+    private boolean isDraft;
+
+    // -------------------------------------------------------------------------
     // Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private String mode;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter && Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setUploadFileName( String fileName )
     {
@@ -94,28 +96,36 @@ public class UploadExcelTemplateAction
         return mode;
     }
 
-    // -------------------------------------------
+    public void setDraft( boolean isDraft )
+    {
+        this.isDraft = isDraft;
+    }
+
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public String execute()
     {
         mode = "upload";
 
-        File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
+        File output = null;
+        File directory = null;
 
-        File output = new File( templateDirectoryConfig, fileName );
-
-        selectionManager.setUploadFilePath( output.getAbsolutePath() );
-
-        if ( output.exists() )
+        if ( isDraft )
         {
-            message = "override_successful";
+            directory = reportLocationManager.getReportExcelTemporaryDirectory();
+
+            output = new File( directory, (Math.random() * 1000) + fileName );
         }
         else
         {
-            message = "upload_successful";
+            directory = reportLocationManager.getReportExcelTemplateDirectory();
+
+            output = new File( directory, fileName );
         }
+
+        selectionManager.setUploadFilePath( output.getAbsolutePath() );
 
         try
         {
@@ -126,6 +136,15 @@ public class UploadExcelTemplateAction
             message = "cannot_write_file_being_used";
 
             return SUCCESS;
+        }
+
+        if ( output.exists() )
+        {
+            message = "override_successful";
+        }
+        else
+        {
+            message = "upload_successful";
         }
 
         return SUCCESS;
