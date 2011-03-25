@@ -230,9 +230,8 @@ public class AddPatientAction
             {
                 if ( identifierType.getFormat() != null && identifierType.getFormat().equals( "State Format" ) )
                 {
-                    value = request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
+                    value = organisationUnit.getCode() + request.getParameter( "progcode" ) + request.getParameter( "yearcode" )
                         + request.getParameter( "benicode" );
-                    System.out.println( "value = " + value );
                 }
                 else
                 {
