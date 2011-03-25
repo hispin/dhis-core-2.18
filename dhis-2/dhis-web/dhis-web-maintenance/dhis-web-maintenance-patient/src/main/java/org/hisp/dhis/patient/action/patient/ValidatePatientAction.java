@@ -167,18 +167,18 @@ public class ValidatePatientAction
         String middleName = "";
         String lastName = "";
         
-        if( fullName.indexOf( ' ' ) != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
             {
                 middleName = "";
-                lastName = fullName.substring( startIndex, fullName.length() );
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
             }
             else
             {
                 middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex, fullName.length() );
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
         
