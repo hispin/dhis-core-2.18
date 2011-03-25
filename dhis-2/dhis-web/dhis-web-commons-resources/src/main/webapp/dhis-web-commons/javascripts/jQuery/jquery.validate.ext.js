@@ -530,7 +530,7 @@ function getInt(str,i,minlength,maxlength) {
         if (token.length < minlength) {
             return null;
         }
-        if (_isInteger(token)) {
+        if (isInteger(token)) {
             return token;
         }
     }
