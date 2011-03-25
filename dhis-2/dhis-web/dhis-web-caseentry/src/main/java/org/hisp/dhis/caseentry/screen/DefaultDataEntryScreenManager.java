@@ -1228,16 +1228,15 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
-
+                
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
-
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
                 // fields
                 // -------------------------------------------------------------
 
-                String appendCode = dataElementCode;
+                String appendCode = dataElementCode + "/>";
                 appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForDate );
                 //appendCode += "</script>";
 
@@ -1281,18 +1280,27 @@ public class DefaultDataEntryScreenManager
                         orgUnitName = patientDataValue.getOrganisationUnit().getName();
                     }
                 }
-
+                
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
+                
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
+                
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
+                
                 appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
+                
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
+                
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
+                
                 appendCode = appendCode.replace( "$DISABLED", disabled );
+                
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
+                
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+                
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
-
+                
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
         }
