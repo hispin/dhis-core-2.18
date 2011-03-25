@@ -84,7 +84,7 @@ public class ExcelTemplateListAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-    
+
     private String mode;
 
     // -------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class ExcelTemplateListAction
         this.reportTypes.add( ReportExcel.TYPE.CATEGORY );
         this.reportTypes.add( ReportExcel.TYPE.PERIOD_COLUMN_LISTING );
         this.reportTypes.add( ReportExcel.TYPE.ORGANIZATION_GROUP_LISTING );
-        
+
         return reportTypes;
     }
 
@@ -158,9 +158,9 @@ public class ExcelTemplateListAction
 
         String newUploadOrRenamePath = null;
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
         // Get the path of newly uploaded file
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
 
         if ( !StringUtils.isNullOREmpty( mode ) )
         {
@@ -179,9 +179,9 @@ public class ExcelTemplateListAction
             newFileUploadedOrRenamed = new File( newUploadOrRenamePath ).getName();
         }
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
         // Get the list of files
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ---------------------------------------------------------------------
 
         List<File> templateFiles = FileUtils.getListFile( templateDirectory, new ExcelFileFilter() );
 

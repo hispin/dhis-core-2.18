@@ -17,10 +17,10 @@
 		var request = new Request();
 		request.setResponseTypeXML( 'xmlObject' );
 		request.setCallbackSuccess( cleanUpCompleted );
-		request.send( 'cleanUpReportExcel.action' );
+		request.send( 'cleanUpDraftFile.action' );
 	}
 	
 	function cleanUpCompleted( xmlObject ){	
-		setHeaderDelayMessage(xmlObject.firstChild.nodeValue);
+		setHeaderDelayMessage( xmlObject.firstChild.nodeValue );
 	}
 </script>

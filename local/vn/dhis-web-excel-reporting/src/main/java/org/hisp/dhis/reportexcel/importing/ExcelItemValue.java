@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportexcel.importing;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,51 +28,51 @@ package org.hisp.dhis.reportexcel.importing;
  */
 
 import org.hisp.dhis.reportexcel.excelitem.ExcelItem;
+
 /**
  * @author Tran Thanh Tri
  * @version $Id
  */
 public class ExcelItemValue
 {
-    
     private ExcelItem excelItem;
 
     private String value;
 
-
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Constructors
-    // ----------------------------------------------------------------------
-       
+    // -------------------------------------------------------------------------
+
     public ExcelItemValue( ExcelItem excelItem, String value )
     {
         super();
-        
+
         this.excelItem = excelItem;
-        
+
         this.value = value;
     }
 
-    // ----------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters and setters
-    // ----------------------------------------------------------------------
-    
+    // -------------------------------------------------------------------------
+
     public String getValue()
     {
         return value;
     }
-    
+
     public void setValue( String value )
     {
         this.value = value;
     }
 
-    public ExcelItem getExcelItem() {
-		return excelItem;
-	}
+    public ExcelItem getExcelItem()
+    {
+        return excelItem;
+    }
 
-	public void setExcelItem(ExcelItem excelItem) {
-		this.excelItem = excelItem;
-	}
-	
+    public void setExcelItem( ExcelItem excelItem )
+    {
+        this.excelItem = excelItem;
+    }
 }

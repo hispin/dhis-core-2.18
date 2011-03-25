@@ -41,9 +41,9 @@ import org.hisp.dhis.reportexcel.utils.FileUtils;
 public class RenameExcelTemplateAction
     extends ActionSupport
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private SystemSettingManager systemSettingManager;
 
@@ -59,9 +59,10 @@ public class RenameExcelTemplateAction
         this.selectionManager = selectionManager;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter && Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
+    
     private String newFileName;
 
     public void setNewFileName( String newFileName )
@@ -83,9 +84,9 @@ public class RenameExcelTemplateAction
         this.renamingMode = renamingMode;
     }
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Action implementation
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -98,7 +99,7 @@ public class RenameExcelTemplateAction
 
         File curFile = new File( templateDirectory + File.separator + curFileName );
         File newFile = new File( templateDirectory + File.separator + newFileName );
-        
+
         selectionManager.setRenameFilePath( curFile.getAbsolutePath() );
 
         if ( FileUtils.rename( curFile, newFile ) )
@@ -108,6 +109,7 @@ public class RenameExcelTemplateAction
         else
         {
             message = "rename_failed";
+
             return ERROR;
         }
 
@@ -118,5 +120,4 @@ public class RenameExcelTemplateAction
 
         return SUCCESS;
     }
-
 }

@@ -21,7 +21,7 @@
 		</action>
 
 		<action name="downloadFile"
-			class="org.hisp.dhis.reportexcel.action.DownloadFileAction">
+			class="org.hisp.dhis.reportexcel.filemanager.action.DownloadFileAction">
 			<result name="success" type="stream">
 				<param name="contentType">${outputFormat}</param>
 				<param name="inputName">inputStream</param>
@@ -46,9 +46,27 @@
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
+		
+		<action name="checkConfiguration"
+			class="org.hisp.dhis.reportexcel.configuration.action.CheckReportConfigurationAction">
+			<result name="success" type="velocity-json">
+			../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+			../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
+
+		<action name="backUpTemplateFiles"
+			class="org.hisp.dhis.reportexcel.configuration.action.BackUpTemplateFilesAction">
+			<result name="success" type="velocity-json">
+			../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+			../dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
+		</action>
 
 		<action name="openAdministrator"
-			class="org.hisp.dhis.reportexcel.configuration.action.NoAction">
+			class="org.hisp.dhis.reportexcel.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-excel-reporting/viewAdministrator.vm</param>
 			<param name="menu">/dhis-web-excel-reporting/menu.vm</param>
@@ -719,8 +737,8 @@
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>			
 		</action>
 
-		<action name="cleanUpReportExcel"
-			class="org.hisp.dhis.reportexcel.action.CleanUpReportExcelAction">
+		<action name="cleanUpDraftFile"
+			class="org.hisp.dhis.reportexcel.filemanager.action.CleanUpDraftFilesAction">
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
 		</action>
@@ -1041,7 +1059,7 @@
 		<!-- IMPORT DATA -->
 
 		<action name="validateUploadExcelImport"
-			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate">
+			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelFile">
 			<interceptor-ref name="fileUploadStack" />
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
@@ -1052,9 +1070,8 @@
 		</action>
 
 		<action name="uploadExcelImport"
-			class="org.hisp.dhis.reportexcel.importing.action.UploadExcelFileAction">
-			<result name="success" type="redirect">getImportingParams.action
-			</result>
+			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction">
+			<result name="success" type="redirect">getImportingParams.action</result>
 			<interceptor-ref name="fileUploadStack" />
 		</action>
 
@@ -1232,7 +1249,7 @@
 		</action>
 
 		<action name="uploadExcelTemplate"
-			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelTemplateAction">
+			class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction">
 			<result name="success" type="redirect">listAllExcelTemplates.action
 			</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
@@ -1259,13 +1276,8 @@
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
 		</action>
 
-		<action name="downloadExcelTemplate"
-			class="org.hisp.dhis.reportexcel.filemanager.action.DownloadExcelTemplateFileAction">
-			<result name="success" type="chain">downloadFile</result>
-		</action>
-
 		<action name="validateUploadExcelTemplate"
-			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelTemplate">
+			class="org.hisp.dhis.reportexcel.filemanager.action.ValidateUploadExcelFile">
 			<interceptor-ref name="fileUploadStack" />
 			<result name="success" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>

@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportexcel.filemanager.action;
+package org.hisp.dhis.reportexcel;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,60 +27,109 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-
-import org.hisp.dhis.reportexcel.ReportLocationManager;
-import org.hisp.dhis.reportexcel.state.SelectionManager;
-
-import com.opensymphony.xwork2.Action;
+import java.io.Serializable;
 
 /**
- * @author Tran Thanh Tri
+ * 
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
-
-public class DownloadExcelTemplateFileAction
-    implements Action
+public class GenericExcelItem
+    implements Serializable
 {
+    /**
+     * The database internal identifier for this Object.
+     */
+    protected int id;
 
-    // -------------------------------------------
-    // Dependency
-    // -------------------------------------------
+    /**
+     * The row value for this Object.
+     */
+    protected int row;
 
-    private SelectionManager selectionManager;
+    /**
+     * The column value for this Object.
+     */
+    protected int column;
 
-    public void setSelectionManager( SelectionManager selectionManager )
+    /**
+     * The sheet value for this Object.
+     */
+    protected int sheetNo;
+
+    /**
+     * The name of this Object.
+     */
+    protected String name;
+
+    /**
+     * The expression for this Object.
+     */
+    protected String expression;
+
+    // -------------------------------------------------------------------------
+    // Getters & setters
+    // -------------------------------------------------------------------------
+
+    public int getId()
     {
-        this.selectionManager = selectionManager;
+        return id;
     }
 
-    private ReportLocationManager reportLocationManager;
-
-    public void setReportLocationManager( ReportLocationManager reportLocationManager )
+    public void setId( int id )
     {
-        this.reportLocationManager = reportLocationManager;
+        this.id = id;
     }
 
-    // -------------------------------------------
-    // Input
-    // -------------------------------------------
-
-    private String fileName;
-
-    public void setFileName( String fileName )
+    public int getRow()
     {
-        this.fileName = fileName;
+        return row;
     }
 
-    @Override
-    public String execute()
-        throws Exception
+    public void setRow( int row )
     {
-        File download = new File( reportLocationManager.getReportExcelTemplateDirectory(), fileName );
-
-        selectionManager.setDownloadFilePath( download.getPath() );
-
-        return SUCCESS;
+        this.row = row;
     }
+
+    public int getColumn()
+    {
+        return column;
+    }
+
+    public void setColumn( int column )
+    {
+        this.column = column;
+    }
+
+    public int getSheetNo()
+    {
+        return sheetNo;
+    }
+
+    public void setSheetNo( int sheetNo )
+    {
+        this.sheetNo = sheetNo;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public String getExpression()
+    {
+        return expression;
+    }
+
+    public void setExpression( String expression )
+    {
+        this.expression = expression;
+    }
+
 }

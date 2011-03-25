@@ -26,7 +26,7 @@
 			<td>$encoder.htmlEncode( $report.name )</td>
 			<td>$i18n.getString($report.reportType)</td>
 			<td>
-				<a href="downloadExcelTemplate.action?fileName=$encoder.htmlEncode( $report.excelTemplateFile )" title="download">$encoder.htmlEncode( $report.excelTemplateFile )</a>
+				<a href="downloadFile.action?fileName=$encoder.htmlEncode( $report.excelTemplateFile )" title="download">$encoder.htmlEncode( $report.excelTemplateFile )</a>
 			</td>
 			<td align="left">
 				<a href="openDefineAssociationsForm.action?reportId=$report.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>

@@ -28,25 +28,38 @@ package org.hisp.dhis.reportexcel.filemanager.action;
  */
 
 import static org.apache.commons.io.FilenameUtils.getExtension;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
+import org.hisp.dhis.reportexcel.state.SelectionManager;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
- * @author Dang Duy Hieu
- * @version $Id
+ * @version $Id$
  */
-public class ValidateUploadExcelTemplate
+
+public class DownloadFileAction
     implements Action
 {
-    // -------------------------------------------
-    // Dependencies
-    // -------------------------------------------
+    private static final String PREFIX_OUTPUT_STREAM = "application/";
+
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private SelectionManager selectionManager;
+
+    public void setSelectionManager( SelectionManager selectionManager )
+    {
+        this.selectionManager = selectionManager;
+    }
 
     private ReportLocationManager reportLocationManager;
 
@@ -56,117 +69,67 @@ public class ValidateUploadExcelTemplate
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Output & Input
     // -------------------------------------------------------------------------
 
-    private File upload;// The actual file
+    private String fileName;
 
-    private String uploadContentType; // The content type of the file
+    private InputStream inputStream;
 
-    private String uploadFileName; // The uploaded file name
-
-    private String message;
-
-    private boolean isDraft;
-
-    private I18n i18n;
+    private String outputFormat;
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public void setUpload( File upload )
+    public String getFileName()
     {
-        this.upload = upload;
+        return fileName;
     }
 
-    public void setUploadContentType( String uploadContentType )
+    public void setFileName( String fileName )
     {
-        this.uploadContentType = uploadContentType;
+        this.fileName = fileName;
     }
 
-    public String getMessage()
+    public String getOutputFormat()
     {
-        return message;
+        return outputFormat;
     }
 
-    public void setDraft( boolean isDraft )
+    public void setOutputFormat( String outputFormat )
     {
-        this.isDraft = isDraft;
+        this.outputFormat = outputFormat;
     }
 
-    public void setI18n( I18n i18n )
+    public InputStream getInputStream()
     {
-        this.i18n = i18n;
+        return inputStream;
     }
 
-    public void setUploadFileName( String uploadFileName )
-    {
-        this.uploadFileName = uploadFileName;
-    }
-
-    // -------------------------------------------------------------------------
-    // Action implementation
-    // -------------------------------------------------------------------------
-
-    @Override
     public String execute()
         throws Exception
     {
-        if ( upload == null || !upload.exists() )
+        File download = null;
+        
+        if ( !isBlank( fileName ) )
         {
-            message = i18n.getString( "upload_file_null" );
+            download = new File( reportLocationManager.getReportExcelTemplateDirectory(), fileName );
+        }
+        else
+        {
+            download = new File( selectionManager.getDownloadFilePath() );
+        }
+        
+        fileName = download.getName();
 
-            return ERROR;
+        if ( isBlank( outputFormat ) )
+        {
+            outputFormat = PREFIX_OUTPUT_STREAM + getExtension( fileName );
         }
 
-        if ( !reportLocationManager.isFileTypeSupported( getExtension( upload.getName() ), uploadContentType ) )
-        {
-            message = i18n.getString( "file_type_not_supported" );
-
-            return ERROR;
-        }
-
-        if ( isDraft )
-        {
-            File tempImportDirectory = reportLocationManager.getReportExcelTempDirectory();
-
-            if ( !tempImportDirectory.canRead() || !tempImportDirectory.canWrite() )
-            {
-                message = i18n.getString( "access_denied_to_folder" );
-
-                return ERROR;
-            }
-
-            return SUCCESS;
-        }
-
-        File templateDirectoryConfig = reportLocationManager.getReportExcelTemplateDirectory();
-
-        if ( !templateDirectoryConfig.canRead() || !templateDirectoryConfig.canWrite() )
-        {
-            message = i18n.getString( "access_denied_to_folder" );
-
-            return ERROR;
-        }
-
-        File output = new File( templateDirectoryConfig, uploadFileName );
-
-        if ( !output.canWrite() )
-        {
-            message = i18n.getString( "access_denied_to_file" );
-
-            return ERROR;
-        }
-
-        if ( output.exists() )
-        {
-            message = i18n.getString( "override_confirm" );
-
-            return INPUT;
-        }
+        inputStream = new BufferedInputStream( new FileInputStream( download ) );
 
         return SUCCESS;
     }
-
 }

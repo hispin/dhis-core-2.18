@@ -7,31 +7,31 @@
 <span id="message" style="top:70px;right:5px;position:fixed;width:200px;z-index:100009" onclick="hideById(this.id);"></span>
 
 <table width="62%">
-<h3>$i18n.getString('import_data') #openHelp( "excelReportingImportData" )</h3>
-<form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
-  <tr>
-     <td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
-      <td width="82%">
-          <input type="file" id="upload" name="upload" onChange="enable('uploadButton');">
-          <input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelImportByXML();" disabled />    
-	  </td>   
-  </tr>
-  </form>
-  <tr>
-    <td>$i18n.getString( 'excelitem_group' )</td>
-    <td>
-		<select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel || !$!organisationUnit) disabled #end  style="min-width:20em;" onchange="getPeriodsByExcelItemGroup(this.value)">					
+	<h3>$i18n.getString('import_data') #openHelp( "excelReportingImportData" )</h3>
+	<form name="importingParam" id="importingParam" action="uploadExcelImport.action" method="post" enctype="multipart/form-data">   
+		<tr>
+			<td width="18%" style=" width:25% ">$i18n.getString( 'select_excel_file' )</td>
+			<td width="82%">
+				<input type="file" id="upload" name="upload" onChange="enable('uploadButton');">
+				<input name="uploadButton" id="uploadButton" type="button" value="$i18n.getString( 'upload_file' )" onclick="validateUploadExcelImportByXML();" disabled />    
+			</td>   
+		</tr>
+	</form>
+	<tr>
+		<td>$i18n.getString( 'excelitem_group' )</td>
+		<td>
+			<select type="text" id="excelItemGroupId" name="excelItemGroupId" #if(!$!fileExcel || !$!organisationUnit) disabled #end  style="min-width:20em;" onchange="getPeriodsByExcelItemGroup(this.value)">					
 			#foreach($excelItemGroup in $excelItemGroups)
 			<option value="$!excelItemGroup.id">$!encoder.htmlEncode($!excelItemGroup.name)</option>
 			#end
-		</select>
-		<input type="button" onClick="javascript: getPreviewImportData();" style="width:100px" value="$i18n.getString('preview')" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
-    </td>
-  </tr>  
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>  
+			</select>
+			<input type="button" onClick="javascript: getPreviewImportData();" style="width:100px" value="$i18n.getString('preview')" #if(!$!fileExcel || !$!organisationUnit) disabled #end>
+		</td>
+	</tr>  
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+	</tr>  
 </table>
 	 
 <hr>

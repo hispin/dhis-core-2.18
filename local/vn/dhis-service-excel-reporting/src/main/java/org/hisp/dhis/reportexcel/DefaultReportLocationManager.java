@@ -76,7 +76,6 @@ public class DefaultReportLocationManager
             REPORT.mkdir();
             REPORT_TEMP = new File( REPORT, REPORT_TEMP_DIR );
             REPORT_TEMP.mkdir();
-
         }
         catch ( LocationManagerException e )
         {
@@ -110,28 +109,28 @@ public class DefaultReportLocationManager
         return this.REPORT;
     }
 
-    public File getReportExcelTempDirectory()
+    public File getReportExcelTemporaryDirectory()
     {
         return this.REPORT_TEMP;
     }
 
     public File getReportExcelTemplateDirectory()
     {
-        String path = (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+        File templateDirectory = new File( REPORT, (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY ) );
 
-        if ( path != null )
+        if ( !templateDirectory.exists() )
         {
-            return new File( path );
+            templateDirectory.mkdirs();
         }
-
-        return null;
+        
+        return templateDirectory;
     }
 
     public boolean isFileTypeSupported( String extension, String contentType )
     {
-        String value = ExcelContentTypeMap.getContentTypeByKey( extension );
+        List<String> types = ExcelContentTypeMap.getContentTypeByKey( extension );
 
-        return (value == null ? false : value.contains( contentType ));
+        return (types == null ? false : types.contains( contentType ));
     }
 }

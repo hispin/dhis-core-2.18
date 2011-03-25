@@ -41,7 +41,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
+import org.hisp.dhis.reportexcel.export.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -50,24 +50,23 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @since 2009-09-18
  */
 public class GenerateAdvancedReportOrgGroupListingAction
-    extends GenerateReportSupport
+    extends AbstractGenerateExcelReportSupport
 {
-
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Input && Output
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer organisationGroupId;
 
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Getters && Setters
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     public void setOrganisationGroupId( Integer organisationGroupId )
     {
@@ -79,42 +78,36 @@ public class GenerateAdvancedReportOrgGroupListingAction
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
-    // ---------------------------------------------------------------------
-    // Action implementation
-    // ---------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    protected void executeGenerateOutputFile( ReportExcel reportExcel, Period period )
         throws Exception
     {
-        statementManager.initialise();
-
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
 
-        Period period = periodGenericManager.getSelectedPeriod();
-        
-        this.installPeriod( period );
+        ReportExcelOganiztionGroupListing reportExcelInstance = (ReportExcelOganiztionGroupListing) reportExcel;
 
-        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportId() );
-
-        this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
+        this.installReadTemplateFile( reportExcelInstance, period, organisationUnitGroup );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
+            Collection<ReportExcelItem> reportExcelItems = reportExcelInstance.getReportItemBySheet( sheetNo );
 
             List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
                 .getMembers() );
 
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-            this.generateOutPutFile( reportExcel, reportExcelItems, organisationUnits, sheet );
+            this.generateOutPutFile( reportExcelInstance, reportExcelItems, organisationUnits, sheet );
 
         }
-        
+
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
@@ -122,12 +115,6 @@ public class GenerateAdvancedReportOrgGroupListingAction
             this.recalculatingFormula( sheet );
 
         }
-        
-        this.complete();
-
-        statementManager.destroy();
-
-        return SUCCESS;
     }
 
     private void generateOutPutFile( ReportExcel reportExcel, Collection<ReportExcelItem> reportExcelItems,
@@ -189,9 +176,6 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
                 ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
             }
-
         }
-
     }
-
 }

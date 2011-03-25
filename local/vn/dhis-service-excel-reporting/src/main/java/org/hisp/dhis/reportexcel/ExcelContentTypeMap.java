@@ -1,4 +1,5 @@
 package org.hisp.dhis.reportexcel;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -26,7 +27,9 @@ package org.hisp.dhis.reportexcel;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,26 +40,42 @@ import java.util.Map;
 public class ExcelContentTypeMap
 {
     private static final String APPLICATION = "application/";
-    
-    private static Map<String, String> contentTypes;
-    
+
+    private static Map<String, List<String>> contentTypes;
+
     static
     {
-        contentTypes = new HashMap<String, String>();
-        
-        contentTypes.put( "xls", APPLICATION + "xls" );
-        
-        //contentTypes.put( "default", APPLICATION + "vnd.ms-excel" );
-        //contentTypes.put( "ods", APPLICATION + "octet-stream" );
-        //contentTypes.put( "xlsx", APPLICATION + "vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
+        contentTypes = new HashMap<String, List<String>>();
+
+        List<String> xlsContentTypes = new ArrayList<String>();
+
+        xlsContentTypes.add( APPLICATION + "xls" );
+        xlsContentTypes.add( APPLICATION + "vnd.ms-excel" );
+
+        contentTypes.put( "xls", xlsContentTypes );
+
+        /*
+         * List<String> odsContentTypes = new ArrayList<String>();
+         * 
+         * odsContentTypes.add( APPLICATION + "octet-stream" );
+         * 
+         * contentTypes.put( "ods", odsContentTypes );
+         * 
+         * List<String> xlsxContentTypes = new ArrayList<String>();
+         * 
+         * xlsxContentTypes.add( APPLICATION + "xlsx" ); xlsxContentTypes.add(
+         * APPLICATION + "vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
+         * 
+         * contentTypes.put( "xlsx", xlsxContentTypes );
+         */
     }
 
-    public static String getContentTypeByKey( String key )
+    public static List<String> getContentTypeByKey( String key )
     {
         return contentTypes.get( key );
     }
-    
-    public static Map<String, String> getContentTypes()
+
+    public static Map<String, List<String>> getContentTypes()
     {
         return contentTypes;
     }

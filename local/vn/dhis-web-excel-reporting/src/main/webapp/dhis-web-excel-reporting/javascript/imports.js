@@ -376,7 +376,7 @@ function uploadExcelImport(){
 	$.ajaxFileUpload
 	(
 		{
-			url:'uploadExcelImport.action',
+			url:'uploadExcelImport.action?draft=true',
 			secureuri:false,
 			fileElementId:'upload',
 			dataType: 'xml',

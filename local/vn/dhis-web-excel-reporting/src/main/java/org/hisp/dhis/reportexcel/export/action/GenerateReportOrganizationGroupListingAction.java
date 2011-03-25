@@ -40,8 +40,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelOganiztionGroupListing;
+import org.hisp.dhis.reportexcel.export.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -51,13 +53,13 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @since 2009-09-18
  */
 public class GenerateReportOrganizationGroupListingAction
-    extends GenerateReportSupport
+    extends AbstractGenerateExcelReportSupport
 {
     private static final String PREFIX_FORMULA_SUM = "SUM(";
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private OrganisationUnitService organisationUnitService;
 
@@ -66,33 +68,30 @@ public class GenerateReportOrganizationGroupListingAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    // -------------------------------------------------------------------------
+    // Override
+    // -------------------------------------------------------------------------
+    
     @Override
-    public String execute()
+    protected void executeGenerateOutputFile( ReportExcel reportExcel, Period period )
         throws Exception
     {
-        statementManager.initialise();
-
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-
-        Period period = periodGenericManager.getSelectedPeriod();
-
-        this.installPeriod( period );
-
-        ReportExcelOganiztionGroupListing reportExcel = (ReportExcelOganiztionGroupListing) reportService
-            .getReportExcel( selectionManager.getSelectedReportId() );
+        
+        ReportExcelOganiztionGroupListing reportExcelInstance = (ReportExcelOganiztionGroupListing) reportExcel;
 
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
-            reportExcel.getOrganisationUnitLevels() );
+            reportExcelInstance.getOrganisationUnitLevels() );
 
-        this.installReadTemplateFile( reportExcel, period, organisationUnit );
+        this.installReadTemplateFile( reportExcelInstance, period, organisationUnit );
 
         for ( Integer sheetNo : reportService.getSheets( selectionManager.getSelectedReportId() ) )
         {
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
-            Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportItemBySheet( sheetNo );
+            Collection<ReportExcelItem> reportExcelItems = reportExcelInstance.getReportItemBySheet( sheetNo );
 
-            this.generateOutPutFile( reportExcel, orgUniGroupAtLevels, reportExcelItems, organisationUnit, sheet );
+            generateOutPutFile( reportExcelInstance, orgUniGroupAtLevels, reportExcelItems, organisationUnit, sheet );
 
         }
 
@@ -102,14 +101,12 @@ public class GenerateReportOrganizationGroupListingAction
 
             this.recalculatingFormula( sheet );
         }
-
-        this.complete();
-
-        statementManager.destroy();
-
-        return SUCCESS;
     }
 
+    // -------------------------------------------------------------------------
+    // Supportive method
+    // -------------------------------------------------------------------------
+    
     private void generateOutPutFile( ReportExcelOganiztionGroupListing reportExcel,
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
         Collection<ReportExcelItem> reportExcelItems, OrganisationUnit organisationUnit, Sheet sheet )
@@ -207,8 +204,8 @@ public class GenerateReportOrganizationGroupListingAction
                     iRow++;
                 }
 
-                if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) 
-                    || reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
+                if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) || reportItem
+                    .getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
                     && (!organisationUnits.isEmpty()) )
                 {
                     String columnName = ExcelUtils.convertColNumberToColName( reportItem.getColumn() );
@@ -221,8 +218,8 @@ public class GenerateReportOrganizationGroupListingAction
 
             }
 
-            if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT )
-                || reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
+            if ( (reportItem.getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.DATAELEMENT ) || reportItem
+                .getItemType().equalsIgnoreCase( ReportExcelItem.TYPE.INDICATOR ))
                 && !totalFormula.equals( PREFIX_FORMULA_SUM ) )
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
@@ -231,4 +228,5 @@ public class GenerateReportOrganizationGroupListingAction
             }
         }
     }
+
 }

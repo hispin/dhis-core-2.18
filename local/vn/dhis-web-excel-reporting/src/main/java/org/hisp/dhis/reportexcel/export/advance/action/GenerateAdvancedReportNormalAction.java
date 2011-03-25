@@ -36,9 +36,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportexcel.ReportExcel;
 import org.hisp.dhis.reportexcel.ReportExcelItem;
 import org.hisp.dhis.reportexcel.ReportExcelNormal;
-import org.hisp.dhis.reportexcel.export.action.GenerateReportSupport;
+import org.hisp.dhis.reportexcel.export.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportexcel.utils.ExcelUtils;
 
 /**
@@ -46,9 +47,8 @@ import org.hisp.dhis.reportexcel.utils.ExcelUtils;
  * @version $Id$
  */
 public class GenerateAdvancedReportNormalAction
-    extends GenerateReportSupport
+    extends AbstractGenerateExcelReportSupport
 {
-
     // ---------------------------------------------------------------------
     // Dependency
     // ---------------------------------------------------------------------
@@ -76,29 +76,23 @@ public class GenerateAdvancedReportNormalAction
     }
 
     // ---------------------------------------------------------------------
-    // Action implementation
+    // Override
     // ---------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    protected void executeGenerateOutputFile( ReportExcel reportExcel, Period period )
         throws Exception
     {
-        statementManager.initialise();
-
-        Period period = periodGenericManager.getSelectedPeriod();
-
-        this.installPeriod( period );
-
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
 
         Set<OrganisationUnit> organisationList = organisationUnitGroup.getMembers();
 
-        ReportExcelNormal reportExcel = (ReportExcelNormal) reportService.getReportExcel( selectionManager
-            .getSelectedReportId() );
+        ReportExcelNormal reportExcelInstance = (ReportExcelNormal) reportExcel;
 
-        Collection<ReportExcelItem> reportExcelItems = reportExcel.getReportExcelItems();
+        Collection<ReportExcelItem> reportExcelItems = reportExcelInstance.getReportExcelItems();
 
-        this.installReadTemplateFile( reportExcel, period, organisationUnitGroup );
+        this.installReadTemplateFile( reportExcelInstance, period, organisationUnitGroup );
 
         for ( ReportExcelItem reportItem : reportExcelItems )
         {
@@ -125,15 +119,6 @@ public class GenerateAdvancedReportNormalAction
             Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
 
             this.recalculatingFormula( sheet );
-
         }
-
-        this.complete();
-
-        statementManager.destroy();
-
-        return SUCCESS;
-
     }
-
 }

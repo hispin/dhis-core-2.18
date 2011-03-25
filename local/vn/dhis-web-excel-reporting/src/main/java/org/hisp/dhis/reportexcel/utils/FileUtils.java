@@ -58,12 +58,12 @@ public class FileUtils
         return result;
     }
 
-    public static List<File> getListFile( File directory, FileFilter fileFilter)
-    {        
+    public static List<File> getListFile( File directory, FileFilter fileFilter )
+    {
         if ( directory != null )
         {
             return Arrays.asList( directory.listFiles( fileFilter ) );
-        }       
+        }
 
         return new ArrayList<File>();
     }
@@ -99,7 +99,6 @@ public class FileUtils
 
     public static boolean copyFile( File input, File output )
     {
-
         try
         {
             FileReader in = new FileReader( input );
@@ -126,8 +125,7 @@ public class FileUtils
 
     public static boolean delete( String path )
     {
-        new File( path ).delete();
-        return true;
+        return (new File( path ).delete());
     }
 
     public static boolean isExist( String fileName )
@@ -153,5 +151,15 @@ public class FileUtils
         {
             return false;
         }
+    }
+
+    public static boolean checkingExtensionExcelFile( String fileName )
+    {
+        return fileName.endsWith( ExcelUtils.EXTENSION_XLS );
+    }
+
+    public static boolean isEmpty( File directory )
+    {
+        return (directory.list() == null) || (directory.list().length == 0);
     }
 }
