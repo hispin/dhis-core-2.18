@@ -1981,6 +1981,7 @@
     });
 
     var layerTree = new Ext.tree.TreePanel({
+        id: 'layertree_tp',
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
         bodyStyle: 'padding-bottom:5px',
         enableDD: false,
