@@ -15,16 +15,15 @@
 
     <repositories>
         <repository>
-            <id>motech-repo</id>
-            <name>Motech Maven Repository</name>
-            <url>http://motech.rcg.usm.maine.edu/archiva/repository/all</url>
+            <id>smslib-staging-037</id>
+            <url>https://oss.sonatype.org/content/repositories/orgsmslib-037</url>
+            <snapshots><enabled>false</enabled></snapshots>
         </repository>
     </repositories>
 
     <dependencies>
 
 		<!-- DHIS -->
-	
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-api</artifactId>
@@ -32,10 +31,21 @@
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-core</artifactId>
-		</dependency>   
-	
+		</dependency>
+        
+        <!-- smslib -->
+        <dependency>
+			<groupId>org.smslib</groupId>
+			<artifactId>smslib</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.rxtx</groupId>
+			<artifactId>rxtx</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+        
 		<!-- Other -->
-			
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -46,26 +56,6 @@
 			<artifactId>quartz</artifactId>
 			<version>1.6.3</version>
 		</dependency>		
-		<dependency>
-			<groupId>smslib</groupId>
-			<artifactId>smslib-all</artifactId>
-			<version>3.4.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.5.11</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.5.11</version>
-		</dependency>
-		<dependency>
-			<groupId>org.rxtx</groupId>
-			<artifactId>rxtx</artifactId>
-			<version>2.1.7</version>
-		</dependency>
     </dependencies>
 	
     <properties>
