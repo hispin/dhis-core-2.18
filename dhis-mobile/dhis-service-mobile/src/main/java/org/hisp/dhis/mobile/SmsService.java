@@ -753,7 +753,7 @@ public class SmsService implements MessageService
 
                     SerialModemGateway gateway = new SerialModemGateway( modemName, port, baudRate, manufacturer, model );
 
-                    if ( simMemLocation != null || !simMemLocation.equals( "-" ) )
+                    if ( simMemLocation != null && !simMemLocation.equals( "-" ) )
                     {
                         gateway.getATHandler().setStorageLocations( simMemLocation );
                     }
