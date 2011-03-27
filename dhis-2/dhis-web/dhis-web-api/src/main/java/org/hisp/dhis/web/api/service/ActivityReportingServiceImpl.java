@@ -128,8 +128,8 @@ public class ActivityReportingServiceImpl
             task.setProgramStageId( each.getTask().getProgramStage().getId() );
             task.setProgramId( each.getTask().getProgramInstance().getProgram().getId() );
             activity.setTask( task );
-
-            activity.setLate( each.isCompleted() );
+            
+            activity.setLate( each.getDueDate().getTime() < time );
 
             activity.setExpireDate( expiredDate );
 
