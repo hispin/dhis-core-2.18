@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class ReceiveSMS implements Serializable
 
 {
-
     /**
      * Sender Phone Number with time of Received, Unique and Required.
      */

@@ -13,7 +13,6 @@ public class SMSImportJob extends QuartzJobBean
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
     private MobileImportService mobileImportService;
     
     public void setMobileImportService( MobileImportService mobileImportService )
@@ -29,12 +28,12 @@ public class SMSImportJob extends QuartzJobBean
     }
 
     // -------------------------------------------------------------------------
-    // implementation
+    // Implementation
     // -------------------------------------------------------------------------
-    
+    @Override
     protected void executeInternal( JobExecutionContext context ) throws JobExecutionException 
     {
-        System.out.println("SMSImport Job Started at : "+new Date() );
+        System.out.println("SMSImport Job Started at : " + new Date() );
         
         if( smsService == null && mobileImportService == null )
         {
@@ -50,10 +49,9 @@ public class SMSImportJob extends QuartzJobBean
         }
         
         smsService.processPendingMessages();
-        
         mobileImportService.importPendingFiles();
         
-        System.out.println("SMSImport Job Ended at : "+new Date() );
+        System.out.println("SMSImport Job Ended at : " + new Date() );
     }
     
 }
