@@ -12,13 +12,11 @@
 
 <h3>$i18n.getString( "report_table_parameters" )</h3>
 
-<input type="hidden" id="id" name="id" value="$!id">
-<input type="hidden" id="mode" name="mode" value="$!mode">
+<input type="hidden" id="id" name="id" value="$!id" />
+<input type="hidden" id="mode" name="mode" value="$!mode" />
 
 <table>
-	
 	<!-- Data source -->
-	
 	#if ( $aggregationStrategy == "real_time" )
     <tr>
         <th>$i18n.getString( "method" )</th>
@@ -59,7 +57,6 @@
     #end
     
     <!-- OrganisationUnit -->
-    
     #if ( $!reportParams.isParamParentOrganisationUnit() || $!reportParams.isParamOrganisationUnit() )
         
 	<tr>
@@ -79,28 +76,23 @@
     <tr>
         <td colspan="4" style="height:10px"></td>
     </tr>
-    
     #end
     
     <!-- Submit -->    
-        
     <tr>
         <td>
-        	#if( $!reportParams.isSet() )
-        	
+    	#if( $!reportParams.isSet() )
         	#if ( $mode == "table" )
-            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( '' )" style="width:140px">        	
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px">
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( '' )" style="width:140px" />
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:140px" />
         	#elseif ( $mode == "report" )
-            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( 'pdf' )" style="width:140px">
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewReportForm.action'" style="width:140px"><br>
-            <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="generateReport( 'xls' )" style="width:140px">
+            <input type="button" value="$i18n.getString( 'get_report' )" onclick="generateReport( 'pdf' )" style="width:140px" />
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewReportForm.action'" style="width:140px" /><br>
+            <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="generateReport( 'xls' )" style="width:140px" />
         	#end
-        	
-            #end
+        #end
         </td>
     </tr>
-    
 </table>
 
 <span id="message"></span>

@@ -10,6 +10,7 @@ value="$i18n.getString( 'stop' )"
 #else
 value="$i18n.getString( 'start' )"
 #end
->
-<input type="button" style="width:140px" onclick="window.location.href='viewScheduledTasks.action'" value="$i18n.getString( 'refresh' )">
+/>
+
+<input type="button" style="width:140px" onclick="window.location.href='viewScheduledTasks.action'" value="$i18n.getString( 'refresh' )" />
 </p>

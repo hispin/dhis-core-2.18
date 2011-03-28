@@ -87,8 +87,8 @@ div#pivotMenu
 
 <!-- Control panel -->
 
-<input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()">
-<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()">&nbsp;
+<input type="button" value='$i18n.getString( "data" )' style="width:80px" onclick="showCriteria()" />
+<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="showPivot()" />&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
 <hr style="height:1px; color:#d9ece1">
 
@@ -174,8 +174,8 @@ div#pivotMenu
 </div>
 
 <div class="inputSection">
-<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()">
-<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()">
+	<input type="button" value='$i18n.getString( "pivot" )' style="width:80px" onclick="pivotData()" />
+	<input type="button" value='$i18n.getString( "cancel" )' style="width:80px" onclick="hideDivs()" />
 </div>
 
 </div>

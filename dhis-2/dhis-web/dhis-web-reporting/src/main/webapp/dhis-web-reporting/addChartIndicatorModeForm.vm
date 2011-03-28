@@ -6,8 +6,8 @@
 </tr>
 <tr>
 	<td>
-		<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )"><input
-			   type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )">
+		<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )" />
+		<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )" />
 		<select id="periodType" name="periodType" style="min-width:478px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
 			<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 			#foreach ( $type in $periodTypes )
@@ -28,16 +28,17 @@
 
 <tr>
     <td colspan="2">
-        <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><input 
-            type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><input 
-            type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><input 
-            type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )">
+        <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )" />
+        <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )" />
+        <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )" />
+        <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )" />
     </td>
 </tr>
 
 <tr>
     <th colspan="2">$i18n.getString( "category_y_selected_periods" )</th>
 </tr>
+
 <tr>
     <td>
         <select size="6" id="selectedPeriods" name="selectedPeriods" style="min-width:600px" multiple ondblclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )">               
@@ -104,15 +105,17 @@
     </tr>
     <tr>
         <td colspan="2">
-            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><input 
-                type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><input 
-                type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><input 
-                type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )">
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )" />
+            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )" />
+			<input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )" />
+			<input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )" />
         </td>
     </tr>
+
     <tr>
         <th colspan="2">$i18n.getString( "value_x_selected_indicators" )</th>
     </tr>
+
     <tr>
         <td>
             <select multiple size="6" id="selectedIndicators" name="selectedIndicators" style="min-width:600px" ondblclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )">
@@ -135,6 +138,7 @@
 <tr>
     <th colspan="2">$i18n.getString( "filter_available_organisationunits" ) - <a href="javascript:clearListById( 'selectedOrganisationUnits' )">$i18n.getString( 'clear' )</a></th>
 </tr>
+
 <tr>
     <td colspan="2">
         <select id="organisationUnitLevel" name="organisationUnitLevel" style="min-width:600px" onchange="getOrganisationUnitsToSelected()">

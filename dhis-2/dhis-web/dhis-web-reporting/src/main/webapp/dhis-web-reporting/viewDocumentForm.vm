@@ -17,7 +17,9 @@
             <table width="100%">
 				<tr>
 					<td>#filterDiv( "displayViewDocumentForm" )</td>
-                    <td style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddDocumentForm.action'"></td>
+                    <td style="text-align:right">
+                    	<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddDocumentForm.action'">
+                    </td>
                 </tr>
 			</table>
             <table class="listTable" id="listTable">
@@ -55,7 +57,6 @@
                
         </td>
         <td style="width:20em; padding-left:2em; vertical-align:top">
-
             <div id="detailsArea" style="display:none">
                 <div style="float:right">
                     <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
@@ -70,7 +71,6 @@
 				</div>
 				<p><span id="warningField"></span></p>
 			</div>
-
         </td>
     </tr>
 </table>

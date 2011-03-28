@@ -3,8 +3,8 @@
 
 <form id="reportForm" action="addReport.action" method="post" enctype="multipart/form-data">
 
-<input type="hidden" name="id" value="$!report.id">
-<input type="hidden" name="currentDesign" value="$!report.design">
+<input type="hidden" name="id" value="$!report.id" />
+<input type="hidden" name="currentDesign" value="$!report.design" />
 
 <table>
     <tr>
@@ -16,11 +16,13 @@
     </tr>
 	<tr>
 		<td><label for="upload">$i18n.getString( "design" )</label></td>
-		<td><input type="file" id="upload" name="upload" size="35"></td>
+		<td><input type="file" id="upload" name="upload" size="35" /></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'get_current_design' )" onclick="window.location.href='getReportDesign.action?id=${report.id}'">
+		</td>
 	</tr>
 	<tr>
 		<td><label for="reportTableId">$i18n.getString( "report_table" )</td>
@@ -35,9 +37,10 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()"><input
-		           type="button" value="$i18n.getString( 'cancel' )" style="width:10em" 
-		           onclick="window.location.href='displayViewReportForm.action'"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'save' )" style="width:10em" onclick="addReport()" />
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='displayViewReportForm.action'" />
+		</td>
 	</tr>
 </table>
 	

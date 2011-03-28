@@ -17,7 +17,9 @@
             <table width="100%">
 				 <tr>
 				 	<td>#filterDiv( "displayViewReportForm" )</td>
-                	<td colspan="5" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddReportForm.action'"></td>
+                	<td colspan="5" style="text-align:right">
+                		<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='displayAddReportForm.action'" />
+                	</td>
                 </tr>
 			</table>
             <table class="listTable" id="listTable">
