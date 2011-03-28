@@ -80,28 +80,30 @@ public class GetPatientsByNameAction
 
     public String execute()
     {
-    	int startIndex = fullName.indexOf( ' ' );
+fullName = fullName.trim();
+        
+        int startIndex = fullName.indexOf( ' ' );
         int endIndex = fullName.lastIndexOf( ' ' );
 
         String firstName = fullName.toString();
         String middleName = "";
         String lastName = "";
 
-        if( startIndex != -1 )
+        if ( fullName.indexOf( ' ' ) != -1 )
         {
             firstName = fullName.substring( 0, startIndex );
             if ( startIndex == endIndex )
             {
                 middleName = "";
-                lastName = fullName.substring( startIndex, fullName.length() );
+                lastName = fullName.substring( startIndex + 1, fullName.length() );
             }
             else
             {
                 middleName = fullName.substring( startIndex + 1, endIndex );
-                lastName = fullName.substring( endIndex, fullName.length() );
+                lastName = fullName.substring( endIndex + 1, fullName.length() );
             }
         }
-        
+       
         patients = new ArrayList<Patient>( patientService.getPatients( firstName + " " + middleName + " " + lastName ) );
 
         return SUCCESS;
