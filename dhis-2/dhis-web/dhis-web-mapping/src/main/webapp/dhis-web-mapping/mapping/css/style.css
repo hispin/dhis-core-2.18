@@ -33,14 +33,11 @@
 	background-color:#F8F8F8;
 }
 .x-tree-node-leaf .x-tree-node-icon {
-    background-image:url('../../resources/ext-ux/theme/gray-extend-ux/leaf.gif');
-    background-position:center center;
+    background:url('../../resources/ext-ux/theme/gray-extend-ux/leaf.gif') center center;
     padding-right:1px;
 }
 #layertree_tp .x-tree-node-leaf .x-tree-node-icon {
-    background-image:url('../../../images/settings_small.png');
-    background-position:center 4px;
-    padding-right:0px;
+    background:url('../../../images/settings_small.png') center center no-repeat;
 }
 .x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
 	background-image:url('../../resources/ext-ux/theme/gray-extend-ux/btn.gif');

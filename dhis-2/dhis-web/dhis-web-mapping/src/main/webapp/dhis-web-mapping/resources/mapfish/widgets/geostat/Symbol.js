@@ -148,7 +148,12 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.legend = {
             value: G.conf.map_legend_type_automatic,
             method: G.conf.classify_by_equal_intervals,
-            classes: 5
+            classes: 5,
+            reset: function() {
+                this.value = G.conf.map_legend_type_automatic;
+                this.method = G.conf.classify_by_equal_intervals;
+                this.classes = 5;
+            }
         };
         
         this.organisationUnitSelection = {
@@ -588,6 +593,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             node: {attributes: {hasChildrenWithCoordinates: false}},
             selectedNode: null,
             treeWindow: null,
+			treePanel: null,
             listeners: {
                 'focus': {
                     scope: this,
@@ -613,8 +619,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             emptyText: G.conf.emptytext,
 			labelSeparator: G.conf.labelseparator,
             width: G.conf.combo_width,
-            level: null,
-            levelName: null
+			levelComboBox: null
         },
         
         { html: '<div class="thematic-br">' },
@@ -733,7 +738,15 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 			labelSeparator: G.conf.labelseparator,
             emptyText: G.i18n.comma_separated_values,
             width: G.conf.combo_width,
-            hidden: true
+            hidden: true,
+            listeners: {
+                'change': {
+                    scope: this,
+                    fn: function() {
+                        this.classify(false, true);
+                    }
+                }                
+            }
         },
         
         {
@@ -902,7 +915,13 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 												fn: function(n) {
 													this.form.findField('boundary').selectedNode = n;
 												}
-											}
+											},
+                                            'afterrender': {
+                                                scope: this,
+                                                fn: function(tp) {
+                                                    this.form.findField('boundary').treePanel = tp;
+                                                }
+                                            }
 										}
 									}
 								]
@@ -961,7 +980,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         
         var onHoverUnselect = function onHoverUnselect(feature) {
             if (feature.attributes.name) {
-                document.getElementById('featuredatatext').innerHTML = '<span style="color:#666">' + G.i18n.no_feature_selected + '</span>';
+                document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
             }
             else {
                 document.getElementById('featuredatatext').innerHTML = '';
@@ -1012,7 +1031,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     prepareMapViewValueType: function() {
         var obj = {};
-
         if (this.valueType.isIndicator()) {
             this.form.findField('indicatorgroup').showField();
             this.form.findField('indicator').showField();
@@ -1122,7 +1140,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         
         function valueTypeGroupStoreCallback() {
             obj.components.valueTypeGroup.setValue(this.mapView[obj.mapView.valueTypeGroup]);
-            
             obj.stores.valueType.setBaseParam(obj.mapView.valueTypeGroup, obj.components.valueTypeGroup.getValue());
             obj.stores.valueType.load({scope: this, callback: function() {
                 obj.components.valueType.setValue(this.mapView[obj.mapView.valueType]);
@@ -1259,17 +1276,16 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     
     formValidation: {
         validateForm: function(exception) {
-            var scope = symbol;
-            if (scope.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_indicator) {
-                if (!scope.form.findField('indicator').getValue()) {
+            if (this.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_indicator) {
+                if (!this.form.findField('indicator').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                     }
                     return false;
                 }
             }
-            else if (scope.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_dataelement) {
-                if (!scope.form.findField('dataelement').getValue()) {
+            else if (this.form.findField('mapvaluetype').getValue() == G.conf.map_value_type_dataelement) {
+                if (!this.form.findField('dataelement').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                     }
@@ -1278,7 +1294,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             }
 
             if (G.system.mapDateType.isFixed()) {
-                if (!scope.form.findField('period').getValue()) {
+                if (!this.form.findField('period').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                     }
@@ -1286,7 +1302,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 }
             }
             else {
-                if (!scope.form.findField('startdate').getValue() || !scope.form.findField('enddate').getValue()) {
+                if (!this.form.findField('startdate').getValue() || !this.form.findField('enddate').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                     }
@@ -1294,16 +1310,16 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 }
             }
 
-            if (!scope.form.findField('boundary').getValue() || !scope.form.findField('level').getValue()) {
+            if (!this.form.findField('boundary').getValue() || !this.form.findField('level').getValue()) {
                 if (exception) {
                     Ext.message.msg(false, G.i18n.form_is_not_complete);
                 }
                 return false;
             }
 
-            if (scope.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_automatic) {
-                if (scope.form.findField('method').getValue() == G.conf.classify_with_bounds) {
-                    if (!scope.form.findField('bounds').getValue()) {
+            if (this.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_automatic) {
+                if (this.form.findField('method').getValue() == G.conf.classify_with_bounds) {
+                    if (!this.form.findField('bounds').getValue()) {
                         if (exception) {
                             Ext.message.msg(false, G.i18n.form_is_not_complete);
                         }
@@ -1311,8 +1327,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                     }
                 }
             }
-            else if (scope.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_predefined) {
-                if (!scope.form.findField('maplegendset').getValue()) {
+            else if (this.form.findField('maplegendtype').getValue() == G.conf.map_legend_type_predefined) {
+                if (!this.form.findField('maplegendset').getValue()) {
                     if (exception) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                     }
@@ -1320,7 +1336,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
                 }
             }
             
-            if (!scope.form.findField('radiuslow').getValue() || !scope.form.findField('radiushigh').getValue()) {
+            if (!this.form.findField('radiuslow').getValue() || !this.form.findField('radiushigh').getValue()) {
                 if (exception) {
                     Ext.message.msg(false, G.i18n.form_is_not_complete);
                 }
@@ -1328,28 +1344,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             }
             
             return true;
-        },
-        
-        validateLevel: function(exception) {
-            var scope = symbol;
-            if (scope.mapView || scope.idDrillDown) {
-                return true;
-            }
-            
-            if (scope.form.findField('boundary').getValue() && scope.form.findField('level').getValue()) {
-                if (scope.organisationUnitSelection.parent.level <= scope.organisationUnitSelection.level.level) {
-
-                    return true;
-                }
-                else {
-                    if (exception) {
-                        Ext.message.msg(false, 'Level is higher than boundary level');
-                    }
-                    return false;
-                }
-            }
-
-            return false;
         }
     },
     
@@ -1397,7 +1391,43 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 				dateValue: G.system.mapDateType.isFixed() ?
 					this.form.findField('period').getRawValue() : new Date(this.form.findField('startdate').getRawValue()).format('Y M j') + ' - ' + new Date(this.form.findField('enddate').getRawValue()).format('Y M j')
 			};
-		}
+		},
+        
+        clearForm: function() {            
+            this.form.findField('mapview').clearValue();            
+            
+            this.form.findField('mapvaluetype').setValue(G.conf.map_value_type_indicator);
+            this.valueType.setIndicator();
+            this.prepareMapViewValueType();
+            this.form.findField('indicatorgroup').clearValue();
+            this.form.findField('indicator').clearValue();
+            this.form.findField('dataelementgroup').clearValue();
+            this.form.findField('dataelement').clearValue();
+            
+            G.system.mapDateType.setFixed();
+            this.prepareMapViewDateType();
+            this.form.findField('periodtype').clearValue();
+            this.form.findField('period').clearValue();
+            this.form.findField('startdate').reset();
+            this.form.findField('enddate').reset();
+            
+            this.form.findField('boundary').reset();
+            if (this.form.findField('boundary').treePanel) {
+                this.form.findField('boundary').treePanel.selectPath(this.form.findField('boundary').treePanel.getRootNode().getPath());
+            }
+            
+            this.legend.reset();
+            this.prepareMapViewLegend();
+            this.form.findField('method').setValue(this.legend.method);
+            this.form.findField('classes').setValue(this.legend.classes);
+            this.form.findField('bounds').reset();
+            
+            this.form.findField('radiuslow').reset();
+            this.form.findField('radiushigh').reset();
+            
+            this.layer.destroyFeatures();
+            this.layer.setVisibility(false);            
+        }
 	},
     
     loadGeoJson: function() {
@@ -1411,7 +1441,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
     },
 
     classify: function(exception, position) {
-        if (this.formValidation.validateForm(exception)) {
+        if (this.formValidation.validateForm.apply(this, [exception])) {
             G.vars.mask.msg = G.i18n.aggregating_map_values;
             G.vars.mask.show();
             

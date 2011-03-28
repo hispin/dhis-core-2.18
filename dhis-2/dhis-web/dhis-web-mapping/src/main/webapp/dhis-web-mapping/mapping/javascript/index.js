@@ -508,13 +508,13 @@
 					}
                     
                     if (G.vars.activePanel.isPolygon()) {
-                        if (!choropleth.formValidation.validateForm(true)) {
+                        if (!choropleth.formValidation.validateForm.apply(choropleth, [true])) {
                             return;
                         }
                         params = choropleth.formValues.getAllValues.call(choropleth);
                     }
                     else if (G.vars.activePanel.isPoint()) {
-                        if (!symbol.formValidation.validateForm(true)) {
+                        if (!symbol.formValidation.validateForm.apply(symbol, [true])) {
                             return;
                         }
                         params = symbol.formValues.getAllValues.call(symbol);
@@ -709,8 +709,8 @@
                     var values, svg;
                     
                     if (polygonLayer.visibility && pointLayer.visibility) {
-                        if (choropleth.formValidation.validateForm()) {
-                            if (symbol.formValidation.validateForm()) {
+                        if (choropleth.formValidation.validateForm.call(choropleth)) {
+                            if (symbol.formValidation.validateForm.call(symbol)) {
                                 document.getElementById('layerField').value = 3;
                                 document.getElementById('imageLegendRowsField').value = choropleth.imageLegend.length;
                                 
@@ -739,7 +739,7 @@
                         }
                     }
                     else if (polygonLayer.visibility) {
-                        if (choropleth.formValidation.validateForm()) {
+                        if (choropleth.formValidation.validateForm.call(choropleth)) {
                             values = choropleth.formValues.getImageExportValues.call(choropleth);
                             document.getElementById('layerField').value = 1;
                             document.getElementById('periodField').value = values.dateValue;
@@ -753,7 +753,7 @@
                         }
                     }
                     else if (pointLayer.visibility) {
-                        if (symbol.formValidation.validateForm()) {
+                        if (symbol.formValidation.validateForm.call(symbol)) {
                             values = symbol.formValues.getImageExportValues.call(symbol);
                             document.getElementById('layerField').value = 2;
                             document.getElementById('periodField').value = values.dateValue;  
@@ -2255,18 +2255,26 @@
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
         id: 'choropleth',
+		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         map: G.vars.map,
         layer: polygonLayer,
-		title: '<span class="panel-title">' + G.i18n.polygon_layer + '</span>',
         featureSelection: false,
         legendDiv: 'polygonlegend',
         defaults: {width: 130},
         tools: [
             {
                 id: 'refresh',
+                qtip: 'Refresh layer',
                 handler: function() {
                     choropleth.updateValues = true;
                     choropleth.classify();
+                }
+            },
+            {
+                id: 'close',
+                qtip: 'Clear layer',
+                handler: function() {
+                    choropleth.formValues.clearForm.call(choropleth);
                 }
             }
         ],
@@ -2291,9 +2299,17 @@
         tools: [
             {
                 id: 'refresh',
+                qtip: 'Refresh layer',
                 handler: function() {
                     symbol.updateValues = true;
                     symbol.classify();
+                }
+            },
+            {
+                id: 'close',
+                qtip: 'Clear layer',
+                handler: function() {
+                    symbol.formValues.clearForm.call(symbol);
                 }
             }
         ],
