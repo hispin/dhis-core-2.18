@@ -1,4 +1,3 @@
-var NS4 = (navigator.appName == "Netscape" && parseInt(navigator.appVersion) < 5);
 
 function addValue( theSel, theText, theValue ) {
     var newOpt = new Option( theText, theValue );
@@ -56,8 +55,6 @@ function moveSelected( fromList, targetList ) {
         for(i=selectedCount-1; i>=0; i--) {
             addValue(targetList, selectedText[i], selectedValues[i]);
         }
-
-        if(NS4) history.go(0)
     }
 }
 
