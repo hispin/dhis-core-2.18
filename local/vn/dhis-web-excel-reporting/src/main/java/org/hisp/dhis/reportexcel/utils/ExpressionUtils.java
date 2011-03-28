@@ -99,11 +99,10 @@ public class ExpressionUtils
                 {
                     CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
 
-                    int factor = 0;
-
+                    double factor = 0;
                     double value = 0.0;
 
-                    Map<String, Integer> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
+                    Map<String, Double> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
 
                     Collection<String> operandIds = dataElementService.getOperandIds( calculatedDataElement );
 

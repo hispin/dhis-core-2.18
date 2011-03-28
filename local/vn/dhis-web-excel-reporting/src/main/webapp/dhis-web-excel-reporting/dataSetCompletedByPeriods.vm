@@ -48,7 +48,7 @@
 		<tr align="right">
 			<th></th>
 			<th colspan="$periods.size()-1">
-				<img src="../images/warning.png" alt="$i18n.getString( 'no' )" align="absmiddle">$i18n.getString( "un_completed" )
+				<img src="../images/warning.png" alt="$i18n.getString( 'no' )" align="absmiddle">$i18n.getString( "incompleted" )
 				&nbsp;&nbsp;&nbsp;&nbsp;
 				<img src="../images/check.png" alt="$i18n.getString( 'yes' )" align="absmiddle">$i18n.getString( "completed" )
 				&nbsp;&nbsp;&nbsp;&nbsp;
