@@ -115,10 +115,6 @@ public class GetPatientAction
     public String execute()
         throws Exception
     { 
-        try
-    {
-
-            
         patient = patientService.getPatient( id );
         
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
@@ -188,15 +184,11 @@ public class GetPatientAction
         }
 
         programs = programService.getAllPrograms();
-System.out.println("\n programs : " + programs);
-        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
-System.out.println("\n noGroupAttributes : " + noGroupAttributes);
-        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
-System.out.println("\n attributeGroups : " + attributeGroups);
 
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
+        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
+
+        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
+        
         return SUCCESS;
 
     }
