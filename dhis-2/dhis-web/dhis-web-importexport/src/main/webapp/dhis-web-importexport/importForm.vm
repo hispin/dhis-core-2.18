@@ -1,5 +1,7 @@
 <script type="text/javascript">
-	getImportStatus();
+	jQuery(document).ready(function() {
+		getImportStatus();
+	});
 
 	var i18n_done = '$encoder.jsEscape( $i18n.getString( "done" ), "'" )';
 	var i18n_importing = '$encoder.jsEscape( $i18n.getString( "importing" ), "'" )';
