@@ -29,7 +29,9 @@
         <td><span id="eliminateNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmEliminateButton" type="button" value="$i18n.getString( 'confirm' )" onclick="eliminateConfirmed()" style="width:10em" disabled="disabled"/></td>
+        <td>
+        	<input id="confirmEliminateButton" type="button" value="$i18n.getString( 'confirm' )" onclick="eliminateConfirmed()" style="width:10em" disabled="disabled" />
+        </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -42,7 +44,9 @@
         <td><span id="keepNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmKeepButton" type="button" value="$i18n.getString( 'confirm' )" onclick="keepConfirmed()" style="width:10em" disabled="disabled"/></td>
+        <td>
+        	<input id="confirmKeepButton" type="button" value="$i18n.getString( 'confirm' )" onclick="keepConfirmed()" style="width:10em" disabled="disabled" />
+        </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -52,8 +56,10 @@
         <th>$i18n.getString( "eliminate" )</th>
     </tr>
     <tr>
-        <td><input type="button" id="eliminateButton" value="$i18n.getString( 'eliminate' )" style="width:10em" onclick="eliminate()" disabled="disabled"/><input 
-                   type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='displayDuplicateDataEliminationForm.action'"/></td>
+        <td>
+        	<input type="button" id="eliminateButton" value="$i18n.getString( 'eliminate' )" style="width:10em" onclick="eliminate()" disabled="disabled" />
+        	<input type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='displayDuplicateDataEliminationForm.action'" />
+        </td>
     </tr>
 </table>
 

@@ -35,7 +35,7 @@
 <div>
 	<table>
 		<tr>
-			<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='showSqlViewListForm.action'" style="width:10em"/>
+			<input type="button" value="$i18n.getString( 'back' )" onclick="window.location.href='showSqlViewListForm.action'" style="width:10em" />
 		</tr>
 	</table>
 </div>

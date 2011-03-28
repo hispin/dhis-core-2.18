@@ -10,7 +10,7 @@ jQuery( document ).ready( function()
 		rawPassword : {
 			required : false,
 			password : true,
-			range : r.user.password.rangelength,
+			rangelength : r.user.password.rangelength,
 			notequalto : '#username'
 		},
 		retypePassword : {
@@ -19,18 +19,18 @@ jQuery( document ).ready( function()
 		},
 		surname : {
 			required : true,
-			range : r.user.name.rangelength
+			rangelength : r.user.name.rangelength
 		},
 		firstName : {
 			required : true,
-			range : r.user.name.rangelength
+			rangelength : r.user.name.rangelength
 		},
 		email : {
 			email : true,
-			range : r.user.email.rangelength
+			rangelength : r.user.email.rangelength
 		},
 		phoneNumber : {
-			range : r.user.phone.rangelength
+			rangelength : r.user.phone.rangelength
 		}
 	}
 
