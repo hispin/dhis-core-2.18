@@ -315,22 +315,14 @@ div#warningArea
   padding: 0.5em;
 }
 
-div#headerMessageContainer
-{
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  height: 26px;
-  z-index: 20;
-}
-
 div#headerMessage
 {
+  top: 0px;
+  left: 180px;
+  position: fixed;
   display: none;
   height: 26px;
-  width: 560px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 380px;
   background-color: #ffffbf;
   border-right: 1px solid #cccc00;
   border-bottom: 1px solid #cccc00;

@@ -91,7 +91,7 @@
         
     <div id="header">
       <img id="header1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_left.png">
-      <img id="header2" src="../images/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
+      <img id="header2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
       <img id="header3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_right.png">
 
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
@@ -165,9 +165,7 @@
       </div>      
     </div>
         
-    <div id="headerMessageContainer">
-      <div id="headerMessage"></div>
-    </div>        
+    <div id="headerMessage"></div>
         
     <div class="page" id="mainPage">
       #if( !$page )
