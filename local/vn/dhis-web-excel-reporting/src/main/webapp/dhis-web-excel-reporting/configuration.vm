@@ -17,7 +17,8 @@
 		<td>$i18n.getString('excel_file_directory')</td>		
 	</tr>
 	<tr>
-		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$!templateDirectory" class="{validate:{required:true}}"/></td>
+		<td><input type="text" id="templateDirectory" name="templateDirectory" style="width:400px" value="$!templateDirectory" 
+		class="{validate:{required:true,custome_regex:[/^[\w-\s\/\\]*$/, '$i18n.getString( 'config_path_invalid' )']}}" onblur="replaceFlash( this )"/></td>
 	</tr>
 	<tr>		
 		<td><input type="submit" value="$i18n.getString('ok')" style="width:150px"/>
@@ -55,6 +56,11 @@
 			{
 				templateDirectory: getFieldValue( "templateDirectory" )
 			}, function( json ) { form.submit(); } );
+	}
+	
+	function replaceFlash( element )
+	{
+		element.value = element.value.replace(/[\\]+/g, '\\').replace(/[/]+/g, '/');
 	}
 	
 </script>
