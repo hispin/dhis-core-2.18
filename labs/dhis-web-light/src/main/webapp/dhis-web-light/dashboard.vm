@@ -8,7 +8,6 @@
   
   <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
   <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
-  <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
   
 </head>
 <head>
@@ -16,30 +15,47 @@
 
 <div class="headerDiv">DHIS 2</div>
 
-<div class="contentDiv">
-
 <!-- Charts -->
 
+<div class="contentDiv">
+
 #if( $chartAreaA )
-<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaA}" style="width:100%"></div>
+<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaA}" style="width:100%"></div>
 #end
 
 #if( $chartAreaB )
-<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaB}" style="width:100%"></div>
+<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaB}" style="width:100%"></div>
 #end
 
 #if( $chartAreaC )
-<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaC}" style="width:100%"></div>
+<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaC}" style="width:100%"></div>
 #end
 
 #if( $chartAreaD )
-<div class="contentItemDiv"><img src="getChart.action?id=${chartAreaD}" style="width:100%"></div>
+<div class="contentChartDiv"><img src="getChart.action?id=${chartAreaD}" style="width:100%"></div>
 #end
+
+</div>
 
 <!-- Report tables -->
 
+<div class="headerDiv">Report tables</div>
 
-
+<div class="contentDiv">
+#foreach( $table in $reportTables )
+<div class="contentItemDiv" onclick="">$encoder.htmlEncode( $table.name )</div>
+#end
 </div>
+
+<!-- Documents -->
+
+<div class="headerDiv">Documents</div>
+
+<div class="contentDiv">
+#foreach( $doc in $documents )
+<div class="contentItemDiv" onclick="">$encoder.htmlEncode( $doc.name )</div>
+#end
+</div>
+
 </body>
 </html>

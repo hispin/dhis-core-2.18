@@ -10,23 +10,35 @@ body {
   
 .headerDiv {
   position: relative;
-  width: 100%;
+  width: 96%;
   font-size: 2em;
-  text-align: center;
   color: #ffffff;
   background-color: #32669a;
-  padding: 0.5em;
-  border-bottom: 1px solid #d0d0d0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 4%;
+  border-top: 1px solid #c0c0c0;
+  border-bottom: 1px solid #c0c0c0;
 }
-  
+
 .contentDiv {
   position: relative;
   width: 100%;
 }
-  
+
+.contentChartDiv {
+  margin-top: 1.5em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #c0c0c0;
+}
+
 .contentItemDiv {
-  position: relative;
-  padding-top: 3em;
-  padding-bottom: 3em;
-  border-bottom: 1px solid #d0d0d0;
+  font-size: 1.8em;
+  margin: 1em;
+  padding: 1.5em;
+  border: 1px solid #c0c0c0;
+  background-color: #d0f6d5;
+  cursor: pointer;
 }
