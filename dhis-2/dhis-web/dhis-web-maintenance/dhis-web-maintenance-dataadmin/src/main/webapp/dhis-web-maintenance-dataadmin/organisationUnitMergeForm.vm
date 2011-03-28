@@ -15,7 +15,6 @@
 <h3>$i18n.getString( "organisation_unit_merge" ) #openHelp( "organisationUnitMerge" )</h3>
 
 <div id="selectionTree" style="width:500px; height:200px"></div>
-                    
 
 <br/>
 	
@@ -30,7 +29,9 @@
         <td><span id="eliminateNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmOrganisationUnitToEliminateButton" type="button" value="$i18n.getString( 'confirm' )" onclick="organisationUnitToEliminateConfirmed()" style="width:10em" disabled="disabled"/></td>
+        <td>
+        	<input id="confirmOrganisationUnitToEliminateButton" type="button" value="$i18n.getString( 'confirm' )" onclick="organisationUnitToEliminateConfirmed()" style="width:10em" disabled="disabled"/>
+        </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -43,7 +44,9 @@
         <td><span id="keepNameField">[$i18n.getString( "not_selected" )]</span></td>
     </tr>
     <tr>
-        <td><input id="confirmOrganisationUnitToKeepButton" type="button" value="$i18n.getString( 'confirm' )" onclick="organisationUnitToKeepConfirmed()" style="width:10em" disabled="disabled"/></td>
+        <td>
+        	<input id="confirmOrganisationUnitToKeepButton" type="button" value="$i18n.getString( 'confirm' )" onclick="organisationUnitToKeepConfirmed()" style="width:10em" disabled="disabled" />
+        </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
@@ -53,8 +56,10 @@
         <th>$i18n.getString( "merge" )</th>
     </tr>
     <tr>
-        <td><input type="button" id="mergeButton" value="$i18n.getString( 'merge' )" style="width:10em" onclick="mergeOrganisationUnits()" disabled="disabled"/><input 
-                   type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='displayOrganisationUnitMergeForm.action'"/></td>
+        <td>
+        	<input type="button" id="mergeButton" value="$i18n.getString( 'merge' )" style="width:10em" onclick="mergeOrganisationUnits()" disabled="disabled" />
+        	<input type="button" value="$i18n.getString( 'reset' )" style="width:10em" onclick="window.location.href='displayOrganisationUnitMergeForm.action'" />
+        </td>
     </tr>
 </table>
 

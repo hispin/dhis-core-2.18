@@ -52,8 +52,10 @@
     </tr>
     <tr>
     	<td></td>
-    	<td><input type="button" value="$i18n.getString( 'archive' )" style="width:100px" onclick="archive( 'archive' )"/><input 
-    	           type="button" value="$i18n.getString( 'unarchive' )" style="width:100px" onclick="archive( 'unarchive' )"/></td>
+    	<td>
+    		<input type="button" value="$i18n.getString( 'archive' )" style="width:100px" onclick="archive( 'archive' )" />
+    		<input type="button" value="$i18n.getString( 'unarchive' )" style="width:100px" onclick="archive( 'unarchive' )" />
+    	</td>
     </tr> 
 </table>
 </div>

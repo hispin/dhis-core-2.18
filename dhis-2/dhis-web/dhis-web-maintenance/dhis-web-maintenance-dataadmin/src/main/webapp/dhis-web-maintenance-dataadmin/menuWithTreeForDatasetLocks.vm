@@ -91,9 +91,9 @@
         </li>
     </ul>
 </ul>
+
 <div style=" float:right; font-size:8pt; cursor:pointer; margin-top:-15px; ">
-        <a href="index.action">
-		<img src="images/goback.png" width="36" height="30" alt="$i18n.getString( 'go_back' )"/></a>
+	<a href="index.action"><img src="images/goback.png" width="36" height="30" alt="$i18n.getString( 'go_back' )"/></a>
 </div>
 
 <br/><br/>

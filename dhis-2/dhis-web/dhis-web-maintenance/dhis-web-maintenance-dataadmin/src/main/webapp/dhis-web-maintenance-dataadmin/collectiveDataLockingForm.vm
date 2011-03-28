@@ -83,7 +83,7 @@
 		<tr></tr>
 		<tr>
 			<td>
-				<input type="submit" id="lock" name="lock" onclick="setClickedButtonElementValue( true )" value="$i18n.getString( 'lock' )" style="width:10em" disabled="true"/>
+				<input type="submit" id="lock" name="lock" onclick="setClickedButtonElementValue( true )" value="$i18n.getString( 'lock' )" style="width:10em" disabled="true" />
 				#if( $auth.hasAccess( "dhis-web-maintenance-dataadmin", "collectiveDataLockingForUnlocking") )
 					<input type="submit" id="unlock" name="unlock" onclick="setClickedButtonElementValue( false )" value="$i18n.getString( 'unlock' )" style="width:10em" disabled="true"/>
 				#end	
