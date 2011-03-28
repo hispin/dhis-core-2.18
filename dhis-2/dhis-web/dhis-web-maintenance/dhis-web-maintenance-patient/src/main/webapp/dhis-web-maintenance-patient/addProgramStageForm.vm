@@ -100,8 +100,8 @@ jQuery( function(){
 					<tbody id="selectedList"></tbody>
 				</table>
 			</div>
-			<select id="selectedDataElementsValidator" name="selectedList" multiple="multiple" class="{validate:{required:true}}" style="display:none"/>
-			<select id="compulsories" name="compulsories" multiple="multiple" style="display:none"/>
+			<select id="selectedDataElementsValidator" name="selectedList" multiple="multiple" class="{validate:{required:true}}" style="display:none"></select>
+			<select id="compulsories" name="compulsories" multiple="multiple" style="display:none"></select>
         </td>
         
       </tr>
