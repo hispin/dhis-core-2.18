@@ -233,7 +233,7 @@ public class MobileSettingsAction implements Action
         props.setProperty( "settings.delete_after_processing", delete_after_processing );
     }
 
-    private String simMemLocation = "";
+    private String simMemLocation = "-";
 
     public void setSimMemLocation(String simMemLocation)
     {

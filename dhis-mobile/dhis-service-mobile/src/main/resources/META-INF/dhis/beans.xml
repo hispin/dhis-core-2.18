@@ -4,6 +4,13 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!--Version 2 Beans-->
+    <bean id="org.hisp.dhis.mobile.sms.api.SmsInboundStore"
+        class="org.hisp.dhis.mobile.sms.HibernateSmsInboundStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- ========================================================================================== -->
 	<!-- Service definitions -->
     <bean id="org.hisp.dhis.mobile.SmsService"
 		class="org.hisp.dhis.mobile.SmsService">
@@ -57,7 +64,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean>
 
 	<!-- Send ACK Job -->
-	
 	<bean id="org.hisp.dhis.mobile.SendSMSJob"
 		class="org.hisp.dhis.mobile.SendSMSJob">
 		<property name="smsService" ref="org.hisp.dhis.mobile.SmsService"/>

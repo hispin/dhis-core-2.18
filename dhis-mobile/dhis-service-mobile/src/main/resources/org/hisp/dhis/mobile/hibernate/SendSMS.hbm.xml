@@ -1,14 +1,8 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC
-  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class name="org.hisp.dhis.mobile.api.SendSMS" table="sendsms">
-    
-	<id name="senderInfo" column="senderinfo" length="230" />
-    
-    <property name="sendingMessage" column="smscontent" not-null="true" length="230"/>
-    	
+    <id column="senderinfo" length="230" name="senderInfo"/>
+    <property column="smscontent" length="230" name="sendingMessage" not-null="true"/>
   </class>
 </hibernate-mapping>
