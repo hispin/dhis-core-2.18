@@ -36,10 +36,10 @@
 					$i18n.getString( "edit_tally_rows" )
 				</div>
 				Factor <input type="text" size="3" style="text-align: right; margin-top:15px;" id="factor" name="factor" value="$factor"><br>
-				<input type="button" value="$i18n.getString( 'calculate_tally_rows' )" style="width:130px; margin-top:15px;" onclick="doRecalculate();"/><br/>
-				<input type="hidden" name="recalculate" id="recalculate" value="$recalculate"/> 
-				<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:130px; margin-top:15px;" onclick="generatePdf();"/><br/>
-				<input type="button" value="$i18n.getString( 'back' )" style="width:130px; margin-top:15px;" onclick="window.location.href='tallySheetGenerator.action'"/>
+				<input type="button" value="$i18n.getString( 'calculate_tally_rows' )" style="width:130px; margin-top:15px;" onclick="doRecalculate();" /><br/>
+				<input type="hidden" name="recalculate" id="recalculate" value="$recalculate" />
+				<input type="button" value="$i18n.getString( 'generate_pdf' )" style="width:130px; margin-top:15px;" onclick="generatePdf();" /><br/>
+				<input type="button" value="$i18n.getString( 'back' )" style="width:130px; margin-top:15px;" onclick="window.location.href='tallySheetGenerator.action'" />
 			</td>
 		</tr>
 		<tr>

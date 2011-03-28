@@ -33,12 +33,12 @@
 #end
 </select><br><br>
 
-<input type="button" value="$i18n.getString( 'get_report' )" style="width:140px" onclick="displayOrgUnitDistribution( 'html' )">
-<input type="button" value="$i18n.getString( 'get_chart' )" style="width:140px" onclick="displayOrgUnitDistributionChart()"><br><br>
+<input type="button" value="$i18n.getString( 'get_report' )" style="width:140px" onclick="displayOrgUnitDistribution( 'html' )" />
+<input type="button" value="$i18n.getString( 'get_chart' )" style="width:140px" onclick="displayOrgUnitDistributionChart()" /><br><br>
 
-<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:140px" onclick="getOrgUnitDistribution( 'pdf' )">
-<input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:140px" onclick="getOrgUnitDistribution( 'xls' )"><br>
-<input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="getOrgUnitDistribution( 'csv' )">
+<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:140px" onclick="getOrgUnitDistribution( 'pdf' )" />
+<input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:140px" onclick="getOrgUnitDistribution( 'xls' )" /><br>
+<input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:140px" onclick="getOrgUnitDistribution( 'csv' )" />
 
 </td>
 </tr>

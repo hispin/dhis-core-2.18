@@ -29,7 +29,6 @@
 		  </select>
 	</td>
   </tr>
-
   <tr>  	
       <td><label>$i18n.getString( "tally_sheet_name" )</label></td>
       <td><input type="text" id="tallySheetName" name="tallySheetName" value="$i18n.getString( 'tally_sheet' )"></td>
@@ -37,20 +36,20 @@
   <tr>  	
       <td><label>$i18n.getString( "use_a3_format" )</label></td>
       <td>
-      	<input type="checkbox" value="true" id="largeFormat" name="largeFormat">
+      	<input type="checkbox" value="true" id="largeFormat" name="largeFormat" />
       </td>
   </tr>
     <tr>  	
       <td><label>$i18n.getString( "display_facility_name" )</label></td>
       <td>
-      	<input type="checkbox" value="true" id="displayFacilityName" name="displayFacilityName" checked="checked">
+      	<input type="checkbox" value="true" id="displayFacilityName" name="displayFacilityName" checked="checked" />
       </td>
   </tr>
   <tr>
   	<td colspan="2" style="height:10px"></td>
   </tr>
 </table>
-  
+
 <table>	
   <tr>	
     <td>$i18n.getString( "report_organisation_unit" )</td>	
@@ -60,10 +59,11 @@
 		#organisationUnitSelectionTree( true, false, false )
     </td>
   </tr>  
-  <tr>  
-	<td><input type="button" value="$i18n.getString( "continue" )" style="width:115px" onclick="continueToStepTwo()"></td>
+  <tr>
+	<td><input type="button" value="$i18n.getString( "continue" )" style="width:115px" onclick="continueToStepTwo()" /></td>
   </tr>  
 </table>
 
 </form>
+
 <span id="message">$!message</span>

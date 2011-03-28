@@ -51,10 +51,8 @@
             </table>
 			<p></p>
 			#parse( "/dhis-web-commons/paging/paging.vm" )
-            
         </td>
         <td style="width:20em; padding-left:2em; vertical-align:top">
-
             <div id="detailsArea" style="display:none">
                 <div style="float:right">
                     <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
@@ -72,7 +70,6 @@
 				</div>
 				<p><span id="warningField"></span></p>
 			</div>
-
         </td>       
     </tr>
 </table>

@@ -48,8 +48,7 @@
 <table>
     <tr>
         <td style="width:70px"><label for="upload">$i18n.getString( "file" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="file" id="upload" name="upload" size="25" >
-		</td>
+        <td><input type="file" id="upload" name="upload" size="25" ></td>
     </tr>
 </table>
 </div>
@@ -70,8 +69,8 @@
     <tr>
         <td></td>
         <td>
-        	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em"><input
-                   type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='displayViewDocumentForm.action'">
+        	<input type="submit" value="$i18n.getString( 'save' )" style="width:10em" />
+        	<input type="button" value="$i18n.getString( 'cancel' )" style="width:10em" onclick="window.location.href='displayViewDocumentForm.action'" />
         </td>
     </tr>
 </table>

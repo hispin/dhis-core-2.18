@@ -104,7 +104,7 @@
     </tr>    
     <tr>
         <td>
-            <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">             
+            <select multiple size="6" id="availableDataElements" name="availableDataElements" style="min-width:640px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
                 #foreach ( $element in $dataElements )
                     <option value="$element.id">$encoder.htmlEncode( $element.name )</option>
                 #end
@@ -113,10 +113,10 @@
     </tr>
     <tr>
         <td>
-            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )"><input 
-                type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )"><input 
-                type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )"><input 
-                type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )">
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )" />
+            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElements', 'selectedDataElements' )" />
+            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedDataElements', 'availableDataElements' )" />
+            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedDataElements', 'availableDataElements' )" />
         </td>
     </tr>
     <tr>
@@ -347,8 +347,8 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )"><input
-				   type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )">
+			<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '-1' )" />
+			<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '1' )" />
 			<select id="periodType" name="periodType" style="min-width:518px" onchange="getAvailablePeriods( 'periodType', 'availablePeriods', 'selectedPeriods', '0' )">
 				<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
 				#foreach ( $type in $periodTypes )
@@ -368,10 +368,10 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><input 
-				type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )"><input 
-				type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><input 
-				type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )">
+			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )" />
+			<input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availablePeriods', 'selectedPeriods' )" />
+			<input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )" />
+			<input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedPeriods', 'availablePeriods' )" />
 		</td>
 	</tr>
 	<tr>
@@ -434,7 +434,8 @@
         <th>$i18n.getString( "report_parameters" )</th>
     </tr>
     <tr>
-    	<td><label for="paramReportingMonth">$i18n.getString( "reporting_month" )</label>
+    	<td>
+    		<label for="paramReportingMonth">$i18n.getString( "reporting_month" )</label>
     	    <input type="checkbox" id="paramReportingMonth" name="paramReportingMonth" value="true"#if( $reportTable.reportParams.isParamReportingMonth() ) checked#end>&nbsp;
     	    <label for="paramParentOrganisationUnit">$i18n.getString( "parent_organisation_unit" )</label>
             <input type="checkbox" id="paramParentOrganisationUnit" name="paramParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamParentOrganisationUnit() ) checked#end>&nbsp;
@@ -450,8 +451,8 @@
 	
 	<tr>		
 		<td>
-			<input type="button" value="$i18n.getString( 'save' )" onclick="saveTable()" style="width:120px"><input 
-				type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px">
+			<input type="button" value="$i18n.getString( 'save' )" onclick="saveTable()" style="width:120px" />
+			<input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayManageTableForm.action'" style="width:120px" />
 		</td>
 	</tr>
 	
