@@ -72,7 +72,6 @@ public class ProvideContentAction
         if ( config != null )
         {
             ActionContext.getContext().getActionInvocation().getStack().push( config.getAreaItems() );
-            System.out.println( config.getAreaItems() );
         }
         
         User user = currentUserService.getCurrentUser();
