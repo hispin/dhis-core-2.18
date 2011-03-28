@@ -116,14 +116,21 @@ public class DefaultReportLocationManager
 
     public File getReportExcelTemplateDirectory()
     {
-        File templateDirectory = new File( REPORT, (String) systemSettingManager
-            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY ) );
+        String pathConfig = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+
+        if ( pathConfig == null )
+        {
+            return null;
+        }
+
+        File templateDirectory = new File( REPORT, pathConfig );
 
         if ( !templateDirectory.exists() )
         {
             templateDirectory.mkdirs();
         }
-        
+
         return templateDirectory;
     }
 
