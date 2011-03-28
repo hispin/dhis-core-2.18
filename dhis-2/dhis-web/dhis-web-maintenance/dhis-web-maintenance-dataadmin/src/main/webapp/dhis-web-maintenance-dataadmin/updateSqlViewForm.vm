@@ -1,7 +1,26 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		validation( 'updateSqlViewForm', function() {
+		var r = getValidationRules();
+		
+		var rules = {
+			name: {
+				required: true,
+				rangelength: r.sqlView.name.rangelength
+			},
+			description: {
+				required: true,
+				rangelength: r.sqlView.description.rangelength
+			},
+			sqlquery: {
+				required: true,
+				rangelength: r.sqlView.sqlquery.rangelength
+			}
+		};
+
+		validation2( 'updateSqlViewForm', function() {
 			validateAddUpdateSqlView( 'update' );
+		}, {
+			'rules': rules
 		});
 	});
 </script>
@@ -24,19 +43,19 @@
 		<tr>
 			<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<input type="text" id="nameField" name="nameField" value="$!encoder.htmlEncode( $!sqlViewObject.name )" style="width:20em" maxlength="50" disabled />
+				<input type="text" id="name" name="name" value="$!encoder.htmlEncode( $!sqlViewObject.name )" style="width:20em" disabled="disabled" />
 			</td>
 		</tr>
 		<tr>
 			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<textarea id="description" name="description" style="width:20em; height:6em" maxlength="255" class="{validate:{required:true,minlength:2}}">$!encoder.htmlEncode( $!sqlViewObject.description )</textarea>
+				<textarea id="description" name="description" style="width:20em; height:6em">$!encoder.htmlEncode( $!sqlViewObject.description )</textarea>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td>
-				<textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em" class="{validate:{required:true,minlength:14}}">$!encoder.htmlEncode( $!sqlViewObject.sqlQuery )</textarea>
+				<textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">$!encoder.htmlEncode( $!sqlViewObject.sqlQuery )</textarea>
 			</td>
 		</tr>
 

@@ -1,7 +1,26 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		validation( 'addSqlViewForm', function() {
+		var r = getValidationRules();
+
+		var rules = {
+			name: {
+				required: true,
+				rangelength: r.sqlView.name.rangelength
+			},
+			description: {
+				required: true,
+				rangelength: r.sqlView.description.rangelength
+			},
+			sqlquery: {
+				required: true,
+				rangelength: r.sqlView.sqlquery.rangelength
+			}
+		};
+
+		validation2( 'addSqlViewForm', function() {
 			validateAddUpdateSqlView( 'add' );
+		}, {
+			'rules': rules
 		});
 	});
 </script>
@@ -18,15 +37,15 @@
 		</tr>
 		<tr>
 			<td><label for="name">$encoder.htmlEncode( $i18n.getString( "name" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" style="width:25em" maxlength="50" class="{validate:{required:true,minlength:2}}"/></td>
+			<td><input type="text" id="name" name="name" style="width:25em" /></td>
 		</tr>
 		<tr>
 			<td><label for="description">$encoder.htmlEncode( $i18n.getString( "description" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><textarea id="description" name="description" style="width:25em; height:6em" maxlength="255" class="{validate:{required:true,minlength:2}}"></textarea></td>
+			<td><textarea id="description" name="description" style="width:25em; height:6em"></textarea></td>
 		</tr>
 		<tr>
 			<td><label for="sql_statement">$encoder.htmlEncode( $i18n.getString( "sql_statement" ) ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em" class="{validate:{required:false,minlength:1}}">SELECT </textarea></td>
+			<td><textarea type="text" id="sqlquery" name="sqlquery" style="width:80em;height:20em">SELECT </textarea></td>
 		</tr>
 		<tr>
 			<td></td>

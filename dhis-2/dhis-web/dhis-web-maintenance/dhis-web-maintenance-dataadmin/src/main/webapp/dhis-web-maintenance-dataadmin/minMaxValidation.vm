@@ -1,24 +1,26 @@
 <script type="text/javascript">
-	var isGenerate = true;
-	var numberOfSelects = 0;
-
-	//-----------------------------------------------------------------------
-	//init jQuery validation for reportAssociation
-	//-----------------------------------------------------------------------
 	jQuery(document).ready(function() {
-		jQuery("#minMaxGeneratingForm").validate({
-			 meta:"validate"
-			,errorElement:"td"
-			,submitHandler: function(form)
-				{
-					if(isGenerate){
-						generateMinMaxValue();
-					}else{
-						removeMinMaxValue();
-					}
-				}
+		var r = getValidationRules();
+		
+		var rules = {
+			dataSetIds: {
+				required: true
+			}
+		};
+		
+		validation2( "minMaxGeneratingForm", function() {
+			if(isGenerate) {
+				generateMinMaxValue();
+			} else {
+				removeMinMaxValue();
+			}
+		}, {
+			'rules': rules
 		});
 	});
+
+	var isGenerate = true;
+	var numberOfSelects = 0;
 
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
 	var levelMustBeInt = '$encoder.jsEncode( $i18n.getString( "level_must_be_int" ) )';
@@ -28,15 +30,15 @@
 
 <h3>$i18n.getString( "min_max_value_generation" )</h3>
 
-<form id="minMaxGeneratingForm" method="POST">
+<form id="minMaxGeneratingForm" method="post">
 <table>
   <tr>
     <th colspan="2">$i18n.getString('available_dataset')</th>
     <td rowspan="2">#organisationUnitSelectionTree( false, true, false ) </td>
   </tr>
   <tr>
-    <td colspan="2" rowspan="2">	
-		<select size="26px" multiple style="width:30em" id='dataSetIds' name='dataSetIds'  class="{validate:{required:true}}">
+    <td colspan="2" rowspan="2">
+		<select size="26px" multiple style="width:30em" id="dataSetIds" name="dataSetIds">
 			#foreach( $dataSet in $dataSets )
 			  <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
 			#end
@@ -55,3 +57,5 @@
 </form>
 
 <span id="info" style="display:none;top:70px;right:5px;position:fixed;" onclick="hideById(this.id)"></span>
+
+<span id="message"></span>
