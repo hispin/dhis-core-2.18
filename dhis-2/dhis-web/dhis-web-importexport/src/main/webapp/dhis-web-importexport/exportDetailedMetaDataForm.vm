@@ -14,7 +14,7 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="text" id="dataElementFilter" style="width:154px; color:#505050;" onkeyup="filterList( this.value, 'availableDataElements' )" onfocus="clearFilter( 'dataElementFilter', 'availableDataElements' )" value="$i18n.getString( 'filter' )...">
+			<input type="text" id="dataElementFilter" style="width:154px; color:#505050;" onkeyup="filterList( this.value, 'availableDataElements' )" onfocus="clearFilter( 'dataElementFilter', 'availableDataElements' )" value="$i18n.getString( 'filter' )">
 			<input type="button" value="$i18n.getString( 'clear' )" style="width:50px" onclick="clearFilter( 'dataElementFilter', 'availableDataElements' )">
 		    <select id="dataDictionaryDataElementList" name="dataDictionaryDataElementList" onchange="dataElementCriteriaChanged()" style="width:210px">
                 <option value="null">[ $i18n.getString( "all_data_dictionary" ) ]</option>
@@ -67,8 +67,8 @@
     </tr>
     <tr>
         <td>
-            <input type="text" id="indicatorFilter" style="width:154px; color:#505050;" onkeyup="filterList( this.value, 'availableIndicators' )" onfocus="clearFilter( 'indicatorFilter', 'availableIndicators' )" value="$i18n.getString( 'filter' )...">
-            <input type="button" value="$i18n.getString( 'clear' )" style="width:50px" onclick="clearFilter( 'indicatorFilter', 'availableIndicators' )">
+            <input type="text" id="indicatorFilter" style="width:154px; color:#505050;" onkeyup="filterList( this.value, 'availableIndicators' )" onfocus="clearFilter( 'indicatorFilter', 'availableIndicators' )" value="$i18n.getString( 'filter' )..." />
+            <input type="button" value="$i18n.getString( 'clear' )" style="width:50px" onclick="clearFilter( 'indicatorFilter', 'availableIndicators' )" />
             <select id="dataDictionaryIndicatorList" name="dataDictionaryIndicatorList" onchange="indicatorCriteriaChanged()" style="width:210px">
                 <option value="null">[ $i18n.getString( "all_data_dictionary" ) ]</option>
                 #foreach( $dictionary in $dataDictionaries )
@@ -94,10 +94,10 @@
     </tr>
     <tr>
         <td>
-            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )"><input 
-                type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )"><input 
-                type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )"><input 
-                type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )">
+            <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )" />
+            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableIndicators', 'selectedIndicators' )" />
+            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedIndicators', 'availableIndicators' )" />
+            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedIndicators', 'availableIndicators' )" />
         </td>
     </tr>
     <tr>

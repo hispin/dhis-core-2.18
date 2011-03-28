@@ -1,3 +1,8 @@
+#if ( $message )
+<script type="text/javascript">
+    setMessage( "${message}" ); 
+</script>
+#end
 
 <h3>$i18n.getString( "dhis14_file_configuration" )</h3>
 
@@ -36,17 +41,13 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'save' )" style="width:50%" onclick="validateConfigDhis14()"><input
-			type="button" value="$i18n.getString( 'cancel' )" style="width:50%" onclick="window.location.href='displayImportForm.action?importFormat=DHIS14FILE'"></td>
+		<td>
+			<input type="button" value="$i18n.getString( 'save' )" style="width:50%" onclick="validateConfigDhis14()" />
+			<input type="button" value="$i18n.getString( 'cancel' )" style="width:50%" onclick="window.location.href='displayImportForm.action?importFormat=DHIS14FILE'" />
+		</td>
 	</tr>
 </table>
 
 </form>
 
 <span id="message"></span>
-
-#if ( $message )
-<script type="text/javascript">
-    setMessage( "${message}" ); 
-</script>
-#end

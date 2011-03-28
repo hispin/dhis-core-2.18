@@ -1,6 +1,19 @@
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		datePickerInRange( 'startDate' , 'endDate' );	
+
+        selectionTreeSelection.setMultipleSelectionAllowed( true );
+		selectionTree.clearSelectedOrganisationUnits();
+        selectionTree.buildSelectionTree();
+		
+		var selectedOrganisationUnitIds = null;
+
+		function setSelectedOrganisationUnitIds( ids )
+		{
+			selectedOrganisationUnitIds = ids;
+		}
+
+		selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
 	});
 
     var i18n_select_organisation_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
@@ -31,22 +44,6 @@
     <tr>
         <td colspan="3">
             <div id="selectionTree" style="width:730px; height:220px"></div>
-			
-            <script type="text/javascript">
-                selectionTreeSelection.setMultipleSelectionAllowed( true );
-				selectionTree.clearSelectedOrganisationUnits();
-                selectionTree.buildSelectionTree();
-				
-				var selectedOrganisationUnitIds = null;
-
-				function setSelectedOrganisationUnitIds( ids )
-				{
-					selectedOrganisationUnitIds = ids;
-				}
-
-				selectionTreeSelection.setListenerFunction( setSelectedOrganisationUnitIds );
-            </script>
-			
 		</td>
 	</tr>
     <tr>
