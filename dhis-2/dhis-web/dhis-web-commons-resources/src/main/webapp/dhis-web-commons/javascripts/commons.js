@@ -231,6 +231,7 @@ function disableGroup( selectorJQueryString )
 		item.disabled = true;
 	});
 }
+
 /**
  * Enables the element with the given identifier if the element exists in parent
  * window of frame.
@@ -851,7 +852,6 @@ function removeItem( itemId, itemName, confirmation, action )
     }
 }
 
-
 /**
  * Create jQuery datepicker for input text with id * *
  * 
@@ -958,7 +958,6 @@ function datePickerValid( id, today )
  * @param enddate
  *            the id of input field which you want enter end date *
  */
-
 function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrentEndDate )
 {
 	if( setCurrentStartDate == undefined ) setCurrentStartDate = true;
@@ -1074,15 +1073,13 @@ function insertTextCommon( inputAreaName, inputText )
 	setCaretToPos( inputArea, inputArea.value.length );
 }
 
-// ==============================================================================
-// FORM VALIDATION
-// ==============================================================================
+// -----------------------------------------------------------------------------
+// Form validation
+// -----------------------------------------------------------------------------
 
 /**
  * Create validator for fileds in form *
- */
-
-/*
+ *
  * this should replace validation() at some point, but theres just to much code
  * depending on the old version for now.
  * 
@@ -1116,7 +1113,7 @@ function validation2(formId, submitHandler, kwargs)
 	return validator;	
 }
 
-/*
+/**
  * @return A dictionary containing the default validation rules.
  */
 function getValidationRules() {
@@ -1236,9 +1233,9 @@ function listValidator( validatorId, selectedListId )
 	});
 }
 
-// ==============================================================================
-// MESSAGE
-// ==============================================================================
+// -----------------------------------------------------------------------------
+// Message
+// -----------------------------------------------------------------------------
 
 /**
  * Show message at the top-right of screen, this message will hide automatic
@@ -1308,10 +1305,9 @@ function isValid( elementId )
 	return  next.length > 0 ;
 }
 
-
-// =================================================================================
-// GUI
-// =================================================================================
+// -----------------------------------------------------------------------------
+// GUI operations
+// -----------------------------------------------------------------------------
 
 /**
  * Clock screen by mask *
@@ -1374,6 +1370,7 @@ function hidePopupWindow( id )
 	hideById( id );
 	unLockScreen();
 }
+
 /**
  * Removes the opacity div from the document. function deleteDivEffect()
  */
@@ -1387,7 +1384,7 @@ function deleteDivEffect()
 	}
 }
 
-/*
+/**
  * Paging
  */
 function changePageSize( baseLink )
@@ -1427,6 +1424,26 @@ function displayDiv( divId, divIds ) {
 	}
 }
 
+function relativePeriodsChecked()
+{
+    if ( isChecked( "reportingMonth" ) == true ||
+         isChecked( "monthsThisYear" ) == true ||
+         isChecked( "quartersThisYear" ) == true ||
+         isChecked( "thisYear" ) == true ||
+         isChecked( "monthsLastYear" ) == true ||
+         isChecked( "quartersLastYear" ) == true ||
+         isChecked( "lastYear" ) == true )
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+// -----------------------------------------------------------------------------
+// Math methods
+// -----------------------------------------------------------------------------
+
 function isNumber( value )
 {
 	var regex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
@@ -1457,20 +1474,4 @@ function isZeroNumber( value )
 function getRandomNumber()
 {
 	return Math.floor( 1000000 * Math.random() );
-}
-
-function relativePeriodsChecked()
-{
-    if ( isChecked( "reportingMonth" ) == true ||
-         isChecked( "monthsThisYear" ) == true ||
-         isChecked( "quartersThisYear" ) == true ||
-         isChecked( "thisYear" ) == true ||
-         isChecked( "monthsLastYear" ) == true ||
-         isChecked( "quartersLastYear" ) == true ||
-         isChecked( "lastYear" ) == true )
-    {
-        return true;
-    }
-    
-    return false;
 }
