@@ -871,7 +871,7 @@ function datePicker( id )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-11'
+        yearRange: '-100:+100'
 	});
 	s = jQuery("#" + id );		
 	if( s.val()=='' ) s.val( getCurrentDate() );		
@@ -890,7 +890,7 @@ function datePicker( id, today )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-11'
+        yearRange: '-100:+100'
 	});
 	
 	if( today == undefined ) today = false;
@@ -914,7 +914,7 @@ function datePickerjQuery( jQueryString )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-11'
+        yearRange: '-100:+100'
 	});
 		
 }
@@ -939,7 +939,7 @@ function datePickerValid( id, today )
 		buttonImageOnly: true,
 		maxDate: '+0d +0w',
 		constrainInput: true,
-        yearRange: '-11'
+        yearRange: '-100:+100'
 	});
 	
 	if( today == undefined ) today = false;
@@ -983,7 +983,7 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-11',
+        yearRange: '-100:+100',
 		onSelect: function(selectedDate)
 		{
 			var option = this.id == startdate ? "minDate" : "maxDate";
