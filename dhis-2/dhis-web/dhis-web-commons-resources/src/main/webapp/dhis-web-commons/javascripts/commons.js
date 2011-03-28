@@ -1086,9 +1086,11 @@ function insertTextCommon( inputAreaName, inputText )
  * See http://bassistance.de/jquery-plugins/jquery-plugin-validation/ for more
  * information about jquery.validate.
  * 
- * @param formId form to validate @param submitHandler the submitHandler to use
+ * @param formId form to validate 
+ * @param submitHandler the submitHandler to use
  * @param kwargs A dictionary of optional arguments, currently supported are:
- * beforeValidateHandler rules
+ * 		beforeValidateHandler
+ * 		rules
  */
 function validation2(formId, submitHandler, kwargs)
 {

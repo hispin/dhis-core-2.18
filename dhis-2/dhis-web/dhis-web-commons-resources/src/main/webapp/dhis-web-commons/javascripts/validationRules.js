@@ -106,5 +106,21 @@ var validationRules = {
 			"notOnlyDigits": false,
 			"rangelength": [4, 40]
 		}
-	}
+	},
+	
+	/* dhis-web-maintenance-dataadmin */
+	"sqlView": {
+		"name": {
+			"rangelength": [2, 50]
+		},
+		"description": {
+			"rangelength": [2, 255]
+		},
+		"sqlquery": {
+			"rangelength": [1, 255]
+		}
+	},
+	"dataLocking": { },
+	"dataBrowser": { },
+	"minMax": { }
 }
