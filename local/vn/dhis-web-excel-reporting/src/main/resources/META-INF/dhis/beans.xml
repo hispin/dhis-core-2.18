@@ -24,14 +24,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.reportexcel.action.UploadFileAction"
-		class="org.hisp.dhis.reportexcel.action.UploadFileAction" scope="prototype">
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-	</bean>
-
 	<!-- PERIOD SELECT MANAGER -->
 
 	<bean id="org.hisp.dhis.reportexcel.period.db.PeriodDatabaseService"
@@ -1198,19 +1190,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
 	</bean>
 
-	<!--  function - Upload excel file  -->
-	<bean
-		id="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
-		class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
-		scope="prototype">
-		<property name="reportLocationManager"
-			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
-		<property name="selectionManager"
-			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
-	</bean>
-
-
-
 	<!-- Period Column -->
 
 	<bean
@@ -1295,7 +1274,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="reportLocationManager"
 			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
 	</bean>
-
+		
+	<bean
+		id="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
+		class="org.hisp.dhis.reportexcel.filemanager.action.UploadExcelFileAction"
+		scope="prototype">
+		<property name="reportLocationManager"
+			ref="org.hisp.dhis.reportexcel.ReportLocationManager" />
+		<property name="selectionManager"
+			ref="org.hisp.dhis.reportexcel.state.SelectionManager" />
+	</bean>
+	
 	<bean id="org.hisp.dhis.reportexcel.action.SaveBookmarkAction"
 		class="org.hisp.dhis.reportexcel.action.SaveBookmarkAction" scope="prototype">
 		<property name="bookmarkService" ref="org.hisp.dhis.reportexcel.BookmarkService" />
