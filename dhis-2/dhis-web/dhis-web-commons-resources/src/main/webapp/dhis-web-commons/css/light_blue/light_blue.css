@@ -101,35 +101,31 @@ img#menuSeparator5
   color: #ffffff;
   font-weight: bold;
   text-align: center;
-  line-height: 44px;
+  line-height: 58px;
   cursor: pointer;
 }
 
 div#menuLink1
 {
   position: absolute;
-  top: 7px;
   left: 582px;
 }
 
 div#menuLink2
 {
   position: absolute;
-  top: 7px;
   left: 682px;
 }
 
 div#menuLink3
 {
   position: absolute;
-  top: 7px;
   left: 782px;
 }
 
 div#menuLink4
 {
   position: absolute;
-  top: 7px;
   left: 882px;
 }
 
