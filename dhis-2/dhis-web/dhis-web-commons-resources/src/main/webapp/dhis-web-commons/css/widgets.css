@@ -141,13 +141,13 @@ div.thingy
 
 div#orgUnitTree 
 {
-  font-size: 9pt; /* <-- Size to change */
+  font-size: 9pt; /* Size to change */
   padding-top: 4px;
 }
 
 #leftBarContents div#orgUnitTree 
 {
-  font-size: 9pt; /* <-- Size to change */
+  font-size: 9pt; /* Size to change */
   background-color: white;
   overflow: auto;
   width: 233px;
@@ -215,7 +215,7 @@ div#orgUnitTree a.selected
 
 div#selectionTree 
 {
-  font-size: 9pt; /* <-- Size to change */
+  font-size: 9pt; /* Size to change */
   background-color: white;
   height: 300px;
   width:595px;  
@@ -242,7 +242,7 @@ div#selectionTree li
 div#selectionTree span.toggle 
 {
   font-family: courier new, monospace;
-  font-size: 9pt; /* <-- Size to change */
+  font-size: 9pt; /* Size to change */
   cursor: pointer;
 }
 
@@ -343,320 +343,6 @@ div#headerMessage
 }
 
 /*----------------------------------------------------------------------------*/
-/* The main calendar widget. Div containing a table.                          */
-/*----------------------------------------------------------------------------*/
-
-.calendar 
-{
-  position: relative;
-  display: none;
-  border-top: 2px solid #fff;
-  border-right: 2px solid #000;
-  border-bottom: 2px solid #000;
-  border-left: 2px solid #fff;
-  font-size: 11px;
-  color: #000;
-  cursor: default;
-  background: #c8d0d4;
-  font-family: tahoma, verdana, sans-serif;
-  z-index: 9999999999999;
-}
-
-.calendar table 
-{
-  border-top: 1px solid #000;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-left: 1px solid #000;
-  font-size: 11px;
-  color: #000;
-  cursor: default;
-  background: #c8d0d4;
-  font-family: tahoma, verdana, sans-serif;
-  z-index: 9999999999999;
-}
-
-/* Header part -- contains navigation buttons and day names. */
-.calendar .button 
-{ 
-  text-align: center;
-  padding: 1px;
-  border-top: 1px solid #fff;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #fff;
-}
-
-.calendar .nav 
-{
-  background: transparent url(menuarrow.gif) no-repeat 100% 100%;
-}
-
-.calendar thead .title 
-{ /* This holds the current "month, year" */
-  font-weight: bold;
-  padding: 1px;
-  border: 1px solid #000;
-  background: #788084;
-  color: #fff;
-  text-align: center;
-}
-
-.calendar thead .headrow 
-{ /* Row <TR> containing navigation buttons */
-  
-}
-
-.calendar thead .daynames 
-{ /* Row <TR> containing the day names */
-  
-}
-
-.calendar thead .name 
-{ /* Cells <TD> containing the day names */
-  border-bottom: 1px solid #000;
-  padding: 2px;
-  text-align: center;
-  background: #e8f0f4;
-}
-
-.calendar thead .weekend 
-{ /* How a weekend day name shows in header */
-  color: #f00;
-}
-
-.calendar thead .hilite 
-{
-  /* How do the buttons in header appear when hover */
-  border-top: 2px solid #fff;
-  border-right: 2px solid #000;
-  border-bottom: 2px solid #000;
-  border-left: 2px solid #fff;
-  padding: 0px;
-  background-color: #d8e0e4;
-}
-
-.calendar thead .active 
-{ /* Active (pressed) buttons in header */
-  padding: 2px 0px 0px 2px;
-  border-top: 1px solid #000;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-left: 1px solid #000;
-  background-color: #b8c0c4;
-}
-
-/* The body part -- contains all the days in month. */
-.calendar tbody .day 
-{ /* Cells <TD> containing month days dates */
-  width: 2em;
-  text-align: right;
-  padding: 2px 4px 2px 2px;
-}
-
-.calendar tbody .day .othermonth 
-{
-  font-size: 80%;
-  color: #aaa;
-}
-
-.calendar tbody .day .othermonth .oweekend 
-{
-  color: #faa;
-}
-
-.calendar table .wn 
-{
-  padding: 2px 3px 2px 2px;
-  border-right: 1px solid #000;
-  background: #e8f4f0;
-}
-
-.calendar tbody .rowhilite td 
-{
-  background: #d8e4e0;
-}
-
-.calendar tbody .rowhilite td.wn 
-{
-  background: #c8d4d0;
-}
-
-.calendar tbody td.hilite 
-{ /* Hovered cells <TD> */
-  padding: 1px 3px 1px 1px;
-  border: 1px solid;
-  border-color: #fff #000 #000 #fff;
-}
-
-.calendar tbody td.active 
-{ /* Active (pressed) cells <TD> */
-  padding: 2px 2px 0px 2px;
-  border: 1px solid;
-  border-color: #000 #fff #fff #000;
-}
-
-.calendar tbody td.selected 
-{ /* Cell showing selected date */
-  font-weight: bold;
-  padding: 2px 2px 0px 2px;
-  border: 1px solid;
-  border-color: #000 #fff #fff #000;
-  background: #d8e0e4;
-}
-
-.calendar tbody td.weekend 
-{ /* Cells showing weekend days */
-  color: #f00;
-}
-
-.calendar tbody td.today 
-{ /* Cell showing today date */
-  font-weight: bold;
-  color: #00f;
-}
-
-.calendar tbody .disabled 
-{
-  color: #999;
-}
-
-.calendar tbody .emptycell 
-{
-  /* Empty cells (the best is to hide them) */
-  visibility: hidden;
-}
-
-.calendar tbody .emptyrow 
-{
-  /* Empty row (some months need less than 6 rows) */
-  display: none;
-}
-
-/* The footer part -- status bar and "Close" button */
-.calendar tfoot .footrow 
-{ /* The <TR> in footer (only one right now) */
-  
-}
-
-.calendar tfoot .ttip 
-{ /* Tooltip (status bar) cell <TD> */
-  background: #e8f0f4;
-  padding: 1px;
-  border: 1px solid #000;
-  background: #788084;
-  color: #fff;
-  text-align: center;
-}
-
-.calendar tfoot .hilite 
-{ /* Hover style for buttons in footer */
-  border-top: 1px solid #fff;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #fff;
-  padding: 1px;
-  background: #d8e0e4;
-}
-
-.calendar tfoot .active 
-{
-  /* Active (pressed) style for buttons in footer */
-  padding: 2px 0px 0px 2px;
-  border-top: 1px solid #000;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-left: 1px solid #000;
-}
-
-/* Combo boxes (menus that display months/years for direct selection) */
-.calendar .combo 
-{
-  position: absolute;
-  display: none;
-  width: 4em;
-  top: 0px;
-  left: 0px;
-  cursor: default;
-  border-top: 1px solid #fff;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #fff;
-  background: #d8e0e4;
-  font-size: 90%;
-  padding: 1px;
-  z-index: 100;
-}
-
-.calendar .combo .label,.calendar .combo .label-IEfix 
-{
-  text-align: center;
-  padding: 1px;
-}
-
-.calendar .combo .label-IEfix 
-{
-  width: 4em;
-}
-
-.calendar .combo .active 
-{
-  background: #c8d0d4;
-  padding: 0px;
-  border-top: 1px solid #000;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-left: 1px solid #000;
-}
-
-.calendar .combo .hilite 
-{
-  background: #048;
-  color: #aef;
-}
-
-.calendar td.time 
-{
-  border-top: 1px solid #000;
-  padding: 1px 0px;
-  text-align: center;
-  background-color: #e8f0f4;
-}
-
-.calendar td.time .hour,.calendar td.time .minute,.calendar td.time .ampm
-{
-  padding: 0px 3px 0px 4px;
-  border: 1px solid #889;
-  font-weight: bold;
-  background-color: #fff;
-}
-
-.calendar td.time .ampm 
-{
-  text-align: center;
-}
-
-.calendar td.time .colon 
-{
-  padding: 0px 2px 0px 3px;
-  font-weight: bold;
-}
-
-.calendar td.time span.hilite 
-{
-  border-color: #000;
-  background-color: #667;
-  color: #fff;
-}
-
-.calendar td.time span.active 
-{
-  border-color: #f00;
-  background-color: #000;
-  color: #0f0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Icon                                                                       */
 /*----------------------------------------------------------------------------*/
 
@@ -689,29 +375,6 @@ div#headerMessage
 }
 
 /*----------------------------------------------------------------------------*/
-/* ReportTable                                                                */
-/*----------------------------------------------------------------------------*/
-
-.reportTableHeader
-{
-  text-align: left;
-  color: #3f5d8e;
-  font-weight: bold;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #cad5e5;
-  padding-left: 7px;
-  height: 19px;
-  background-color: #ebf0f6;
-}
-
-div#ui-datepicker-div
-{
-  font-size:10pt;
-  z-index:99999999;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Sorting                                                                    */
 /*----------------------------------------------------------------------------*/
 
@@ -724,6 +387,7 @@ table thead tr .headerSortUp
 {
   background-image: url('../images/asc.gif');	
 }
+
 table thead tr .headerSortDown 
 {
   background-image: url('../images/desc.gif');	
@@ -738,30 +402,56 @@ table thead tr .header
   cursor:pointer;
 }
 
-div.error { background: url(../images/error.png) no-repeat 10px 10px }
-div.success { background: url(../images/success.png) no-repeat 10px 10px }
-div.warning { background: url(../images/warning.png) no-repeat 10px 10px }
-div.growlUI h1, div.growlUI h2 { color: white; padding: 5px 5px 5px 75px; text-align: left;font-size:medium }
-div.growlUI h2 { font-size: small }
-.ui-autocomplete-loading { background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat; }
+div.error 
+{ 
+	background: url(../images/error.png) no-repeat 10px 10px 
+}
 
-span.error {
+div.success 
+{
+	background: url(../images/success.png) no-repeat 10px 10px
+}
+
+div.warning
+{ 
+	background: url(../images/warning.png) no-repeat 10px 10px
+}
+
+div.growlUI h1, div.growlUI h2 
+{
+	color: white; padding: 5px 5px 5px 75px; text-align: left;font-size:medium 
+}
+
+div.growlUI h2 
+{ 
+	font-size: small 
+}
+
+.ui-autocomplete-loading 
+{ 
+	background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat; 
+}
+
+span.error 
+{
 	background: url('../images/invalid.png') no-repeat;
 	padding-left: 16px;
 	margin-left: .3em;
 }
-span.valid {
+
+span.valid 
+{
 	background: url('../images/valid.png') no-repeat;	
 	padding-left: 16px;
 	margin-left: .3em;
 }
 
-#cluetip-inner{
+#cluetip-inner
+{
 	font-size:10pt;
 }
-#cluetip-inner label{
+
+#cluetip-inner label
+{
 	padding-bottom:5px;
 }
-	
-	
-
