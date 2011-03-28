@@ -29,6 +29,8 @@ package org.hisp.dhis.reportexcel.configuration.action;
 
 import static org.apache.commons.io.FileUtils.deleteDirectory;
 
+import java.io.File;
+
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.reportexcel.ReportLocationManager;
 
@@ -77,8 +79,13 @@ public class SetReportConfigurationAction
 
     public String execute()
         throws Exception
-    {        
-        deleteDirectory ( reportLocationManager.getReportExcelTemplateDirectory() );
+    {   
+        File templateDir = reportLocationManager.getReportExcelTemplateDirectory();
+        
+        if ( templateDir != null && templateDir.exists() )
+        {
+            deleteDirectory ( reportLocationManager.getReportExcelTemplateDirectory() );
+        }
         
         systemSettingManager.saveSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY, templateDirectory );
 
