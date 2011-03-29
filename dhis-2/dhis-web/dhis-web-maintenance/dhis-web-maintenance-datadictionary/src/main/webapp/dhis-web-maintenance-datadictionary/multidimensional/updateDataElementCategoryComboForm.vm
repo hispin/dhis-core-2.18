@@ -1,10 +1,25 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'editDataElementCategoryComboForm', function( form ){ 
+		var r = getValidationRules();
+
+		var rules = {
+			name: {
+				required: true,
+				rangelength: r.dateElementCategoryCombo.name.rangelength
+			},
+			selectedCategories: {
+				required: true
+			}
+		};
+
+		validation2( 'editDataElementCategoryComboForm', function( form ) { 
 			validateSelectedCategories( form );
-		}, function(){
-			listValidator( 'selectedCategories', 'selectedList' );			
-		} );		
+		}, {
+			'beforeValidationHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
+			'rules': rules 
+		});
+
+		jQuery("#name").attr("maxlength", r.dateElementCategoryCombo.name.rangelength[1]);
 
 		checkValueIsExist( "name", "validateDataElementCategoryCombo.action", {id: $dataElementCategoryCombo.id});				
 	});
@@ -24,7 +39,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$encoder.htmlEncode( $dataElementCategoryCombo.name )"/></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>
@@ -73,7 +88,7 @@
         <td></td>
 		<td></td> 
 		<td>
-			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"></select>
+			<select id="selectedCategories" name="selectedCategories" style="display:none"></select>
 		</td>
       </tr>
     </tbody>

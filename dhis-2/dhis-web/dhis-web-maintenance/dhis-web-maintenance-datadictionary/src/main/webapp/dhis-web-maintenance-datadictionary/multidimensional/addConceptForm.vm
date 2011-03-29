@@ -1,6 +1,21 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'addConceptForm', function( form ){ form.submit() } );		
+		var r = getValidationRules();
+		
+		var rules = {
+			name: {
+				required: true,
+				rangelength: r.concept.name.rangelength,
+				custome_regex:[/^[a-zA-Z][a-zA-Z0-9_]{0,9}$/,'$i18n.getString( 'regex_add_edit_concept' )']
+			}
+		};
+
+		validation2( 'addConceptForm', function( form ) { form.submit() }, {
+			'rules': rules
+		} );
+
+		jQuery("#name").attr("maxlength", r.concept.name.rangelength[1]);
+
 		checkValueIsExist( "name", "validateAddUpdateConcept.action" );				
 	});
 </script>
@@ -15,8 +30,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="10"
-		class="{validate:{required:true,rangelength:[3,10],custome_regex:[/^[a-zA-Z][a-zA-Z0-9_]{0,9}$/,'$i18n.getString( 'regex_add_edit_concept' )']}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td></td>

@@ -140,5 +140,22 @@ var validationRules = {
 		"description" : {
 			"rangelength" : [ 2, 160 ]
 		}
+	},
+
+	/* dhis-web-maintenance-datadictionary */
+	"concept" : {
+		"name" : {
+			"rangelength" : [ 3, 10 ]
+		}
+	},
+	"dateElementCategoryCombo" : {
+		"name" : {
+			"rangelength" : [ 2, 160 ]
+		}
+	},
+	"dateElementCategory" : {
+		"name" : {
+			"rangelength" : [ 2, 160 ]
+		}
 	}
 }
