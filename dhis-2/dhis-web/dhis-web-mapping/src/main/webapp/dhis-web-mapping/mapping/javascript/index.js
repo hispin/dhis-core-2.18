@@ -2425,12 +2425,12 @@
 
             var mapView = scope.formValues.getAllValues.call(scope);
             mapView.widget = scope;
-            mapView.timestamp = new Date();
+            mapView.timestamp = G.date.getNowHMS(new Date());
             var c1 = '<span class="menu-item-inline-c1">';
             var c2 = '<span class="menu-item-inline-c2">';
             var spanEnd = '</span>';
             mapView.label = '<span class="menu-item-inline-bg">' +
-                            c1 + G.date.getNowHMS(mapView.timestamp) + spanEnd +
+                            c1 + mapView.timestamp + spanEnd +
                             c2 + mapView.parentOrganisationUnitName + spanEnd +
                             c1 + '( ' + mapView.organisationUnitLevelName + ' )' + spanEnd + 
                             c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
@@ -2438,7 +2438,7 @@
                             spanEnd;
             
             for (var i = 0; i < this.menu.items.items.length; i++) {
-                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
+                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','time','label'])) {
                     this.menu.items.items[i].destroy();
                 }
             }
@@ -2455,14 +2455,13 @@
 		tooltip: G.i18n.favorite_map_views,
         style: 'margin-top:1px',
 		handler: function() {
-			var x = Ext.getCmp('center').x + G.conf.window_position_x;
-			var y = Ext.getCmp('center').y + G.conf.window_position_y;    
-			favoriteWindow.setPosition(x,y);
-
-			if (favoriteWindow.visible) {
+            if (!favoriteWindow.hidden) {
 				favoriteWindow.hide();
 			}
 			else {
+                var x = Ext.getCmp('center').x + G.conf.window_position_x;
+                var y = Ext.getCmp('center').y + G.conf.window_position_y;    
+                favoriteWindow.setPosition(x,y);
 				favoriteWindow.show();
 			}
 		}
@@ -2477,16 +2476,14 @@
 				Ext.message.msg(false, 'SVG not supported by browser');
 				return;
 			}
-			
-			var x = Ext.getCmp('center').x + G.conf.window_position_x;
-			var y = Ext.getCmp('center').y + G.conf.window_position_y;   
-			
-			exportImageWindow.setPosition(x,y);
-
-			if (exportImageWindow.visible) {
+            
+            if (!exportImageWindow.hidden) {
 				exportImageWindow.hide();
 			}
 			else {
+                var x = Ext.getCmp('center').x + G.conf.window_position_x;
+                var y = Ext.getCmp('center').y + G.conf.window_position_y;			
+                exportImageWindow.setPosition(x,y);
 				exportImageWindow.show();
 			}
 		}
@@ -2497,15 +2494,14 @@
 		tooltip: G.i18n.predefined_legend_sets,
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
-		handler: function() {
-			var x = Ext.getCmp('center').x + G.conf.window_position_x;
-			var y = Ext.getCmp('center').y + G.conf.window_position_y;
-			predefinedMapLegendSetWindow.setPosition(x,y);
-		
-			if (predefinedMapLegendSetWindow.visible) {
+		handler: function() {		
+			if (!predefinedMapLegendSetWindow.hidden) {
 				predefinedMapLegendSetWindow.hide();
 			}
 			else {
+                var x = Ext.getCmp('center').x + G.conf.window_position_x;
+                var y = Ext.getCmp('center').y + G.conf.window_position_y;
+                predefinedMapLegendSetWindow.setPosition(x,y);
 				predefinedMapLegendSetWindow.show();
                 if (!G.stores.predefinedMapLegend.isLoaded) {
                     G.stores.predefinedMapLegend.load();
@@ -2520,10 +2516,15 @@
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
 		handler: function() {
-			var x = Ext.getCmp('center').x + G.conf.window_position_x;
-			var y = Ext.getCmp('center').y + G.conf.window_position_y;
-			adminWindow.setPosition(x,y);
-			adminWindow.show();
+            if (!adminWindow.hidden) {
+                adminWindow.hide();
+            }
+            else {
+                var x = Ext.getCmp('center').x + G.conf.window_position_x;
+                var y = Ext.getCmp('center').y + G.conf.window_position_y;
+                adminWindow.setPosition(x,y);
+                adminWindow.show();
+            }
 		}
 	});
 	
@@ -2532,10 +2533,15 @@
 		tooltip: G.i18n.help,
         style: 'margin-top:1px',
 		handler: function() {
-			var c = Ext.getCmp('center').x;
-			var e = Ext.getCmp('east').x;
-			helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
-			helpWindow.show();
+            if (!helpWindow.hidden) {
+                helpWindow.hide();
+            }
+            else {
+                var c = Ext.getCmp('center').x;
+                var e = Ext.getCmp('east').x;
+                helpWindow.setPagePosition(c+((e-c)/2)-280, Ext.getCmp('east').y + 100);
+                helpWindow.show();
+            }
 		}
 	});
 

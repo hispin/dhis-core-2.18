@@ -1414,11 +1414,13 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             this.form.findField('startdate').reset();
             this.form.findField('enddate').reset();
             
-            this.form.findField('boundary').reset();
-            this.form.findField('level').reset();
-            if (this.form.findField('boundary').treePanel && this.form.findField('level').levelComboBox) {
-                this.form.findField('boundary').treePanel.selectPath(this.form.findField('boundary').treePanel.getRootNode().getPath());
-                this.form.findField('level').levelComboBox.clearValue();
+            var boundary = this.form.findField('boundary')
+            var level = this.form.findField('level');
+            boundary.reset();
+            level.reset();
+            if (boundary.treePanel && level.levelComboBox) {
+                boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
+                level.levelComboBox.clearValue();
             }
             
             this.legend.reset();
@@ -1428,8 +1430,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.FormPanel, {
             this.form.findField('bounds').reset();
             
             this.layer.destroyFeatures();
-            this.layer.setVisibility(false);
-            
+            this.layer.setVisibility(false);            
         }
 	},
     
