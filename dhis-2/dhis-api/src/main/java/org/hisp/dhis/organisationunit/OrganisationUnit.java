@@ -53,6 +53,8 @@ public class OrganisationUnit
     private static final Pattern JSON_COORDINATE_PATTERN = Pattern.compile( "(\\[{3}.*?\\]{3})" );
     private static final Pattern COORDINATE_PATTERN = Pattern.compile("([\\-0-9.]+,[\\-0-9.]+)");
     
+    private static final String NAME_SEPARATOR = " - ";
+    
     private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private OrganisationUnit parent;
@@ -300,6 +302,21 @@ public class OrganisationUnit
         final OrganisationUnitGroup group = getGroupInGroupSet( groupSet );
         
         return group != null ? group.getName() : null;
+    }
+    
+    public String getAncestorNames()
+    {
+        StringBuilder builder = new StringBuilder( name );
+        
+        OrganisationUnit unit = parent;
+        
+        while ( unit != null )
+        {
+            builder.append( NAME_SEPARATOR ).append( unit.getName() );
+            unit = unit.getParent();
+        }
+        
+        return builder.toString();
     }
     
     // -------------------------------------------------------------------------
