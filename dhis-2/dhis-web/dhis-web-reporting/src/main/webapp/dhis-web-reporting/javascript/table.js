@@ -115,7 +115,8 @@ function isTrue( elementId )
 
 function organisationUnitReportParamsChecked()
 {
-    if ( isChecked( "paramParentOrganisationUnit" ) == true ||
+    if ( isChecked( "paramGrandParentOrganisationUnit" ) == true ||
+         isChecked( "paramParentOrganisationUnit" ) == true ||
          isChecked( "paramOrganisationUnit" ) == true )
     {
         return true;
@@ -126,13 +127,22 @@ function organisationUnitReportParamsChecked()
 
 function bothOrganisationUnitReportParamsChecked()
 {
-	if ( isChecked( "paramParentOrganisationUnit" ) == true &&
-         isChecked( "paramOrganisationUnit" ) == true )
+	var count = 0;
+	
+	if ( isChecked( "paramGrandParentOrganisationUnit" ) )
+	{
+		count++;
+	}
+	if ( isChecked( "paramParentOrganisationUnit" ) )
+	{
+		count++;
+	}
+    if( isChecked( "paramOrganisationUnit" ) )
     {
-        return true;
+        count++;
     }
     
-    return false;
+    return count > 1;
 }
 
 // -----------------------------------------------------------------------------

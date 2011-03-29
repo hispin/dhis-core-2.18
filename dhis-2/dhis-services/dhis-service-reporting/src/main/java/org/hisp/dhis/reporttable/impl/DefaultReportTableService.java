@@ -305,6 +305,21 @@ public class DefaultReportTableService
         }
 
         // ---------------------------------------------------------------------
+        // Grand parent organisation unit report parameter
+        // ---------------------------------------------------------------------
+
+        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamGrandParentOrganisationUnit() )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            organisationUnit.setCurrentParent( true );
+            reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getGrandChildren() ) );
+            reportTable.getRelativeUnits().add( organisationUnit );
+            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            
+            log.info( "Grand parent organisation unit: " + organisationUnit.getName() );
+        }
+
+        // ---------------------------------------------------------------------
         // Parent organisation unit report parameter
         // ---------------------------------------------------------------------
 

@@ -437,6 +437,8 @@
     	<td>
     		<label for="paramReportingMonth">$i18n.getString( "reporting_month" )</label>
     	    <input type="checkbox" id="paramReportingMonth" name="paramReportingMonth" value="true"#if( $reportTable.reportParams.isParamReportingMonth() ) checked#end>&nbsp;
+    	    <label for="paramGrandParentOrganisationUnit">$i18n.getString( "grand_parent_organisation_unit" )</label>
+            <input type="checkbox" id="paramGrandParentOrganisationUnit" name="paramGrandParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamGrandParentOrganisationUnit() ) checked#end>&nbsp;
     	    <label for="paramParentOrganisationUnit">$i18n.getString( "parent_organisation_unit" )</label>
             <input type="checkbox" id="paramParentOrganisationUnit" name="paramParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamParentOrganisationUnit() ) checked#end>&nbsp;
             <label for="paramOrganisationUnit">$i18n.getString( "organisation_unit" )</label>
