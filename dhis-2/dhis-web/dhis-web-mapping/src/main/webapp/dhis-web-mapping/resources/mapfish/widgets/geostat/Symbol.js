@@ -1411,9 +1411,10 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             this.form.findField('startdate').reset();
             this.form.findField('enddate').reset();
             
-            this.form.findField('boundary').reset();
-            if (this.form.findField('boundary').treePanel) {
-                this.form.findField('boundary').treePanel.selectPath(this.form.findField('boundary').treePanel.getRootNode().getPath());
+            var boundary = this.form.findField('boundary');
+            boundary.reset();
+            if (boundary.treePanel) {
+                boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
             }
             
             this.legend.reset();
