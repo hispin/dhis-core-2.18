@@ -1,27 +1,5 @@
+<script type="text/javascript" src="javascript/minMaxValidationForm.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function() {
-		var r = getValidationRules();
-		
-		var rules = {
-			dataSetIds: {
-				required: true
-			}
-		};
-		
-		validation2( "minMaxGeneratingForm", function() {
-			if(isGenerate) {
-				generateMinMaxValue();
-			} else {
-				removeMinMaxValue();
-			}
-		}, {
-			'rules': rules
-		});
-	});
-
-	var isGenerate = true;
-	var numberOfSelects = 0;
-
 	var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
 	var levelMustBeInt = '$encoder.jsEncode( $i18n.getString( "level_must_be_int" ) )';
 	var i18n_not_choose_dataset = '$encoder.jsEncode( $i18n.getString( "not_choose_dataset" ) )';
