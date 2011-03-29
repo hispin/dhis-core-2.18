@@ -1,10 +1,26 @@
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'addDataElementCategoryComboForm', function( form ){ 
+		var r = getValidationRules();
+
+		var rules = {
+			name: {
+				required: true,
+				rangelength: r.dateElementCategoryCombo.name.rangelength
+			},
+			selectedCategories: {
+				required: true
+			}
+		};
+
+		validation2( 'addDataElementCategoryComboForm', function( form ){ 
 			validateSelectedCategories( form );
-		}, function(){
-			listValidator( 'selectedCategories', 'selectedList' );			
-		} );		
+		}, {
+			'beforeValidationHandler': function() { listValidator( 'selectedCategories', 'selectedList' ); },
+			'rules': rules 
+		});
+
+		jQuery("#name").attr("maxlength", r.dateElementCategoryCombo.name.rangelength[1]);
+
 		checkValueIsExist( "name", "validateDataElementCategoryCombo.action");				
 	});
 </script>
@@ -21,7 +37,7 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+        <td><input type="text" id="name" name="name" style="width:20em"/></td>
       </tr>      
       <tr>
       	<td colspan="2" style="height:15px"></td>
@@ -51,7 +67,7 @@
           <input type="button" value="&gt;" onclick="moveSelectedById('availableList', 'selectedList')" title="$i18n.getString( 'move_selected' )"/><br/>	
 		  <input type="button" value="&lt;" onclick="moveSelectedById('selectedList', 'availableList')" title="$i18n.getString( 'remove_selected' )"/><br/><br/>  	
 		  <a onclick="moveUpSelectedOption('selectedList')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
-		  <a onclick="moveDownSelectedOption('selectedList')" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_down' )"/></a>		  
+		  <a onclick="moveDownSelectedOption('selectedList')" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" style="border:0;cursor:pointer" alt="$i18n.getString( 'move_down' )"/></a>
         </td> 
 		<td>
           <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById(this.id, 'availableList')">
@@ -62,7 +78,7 @@
         <td></td>
 		<td></td> 
 		<td>
-			<select id="selectedCategories" name="selectedCategories" class="{validate:{required:true}}" style="display:none"></select>
+			<select id="selectedCategories" name="selectedCategories" style="display:none"></select>
 		</td>
       </tr>
 
