@@ -34,7 +34,7 @@ div#header
 {
   background-image: url('logo_background.png');
   background-repeat: repeat-x;
-  height: 47px;
+  height: 55px;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -49,7 +49,7 @@ img#header1
 img#header2
 {
   position: absolute;
-  top: 0px;
+  top: 2px;
   left: 35px;
 }
 
@@ -101,7 +101,7 @@ img#menuSeparator5
   color: #ffffff;
   font-weight: bold;
   text-align: center;
-  line-height: 45px;
+  line-height: 54px;
   cursor: pointer;
 }
 
@@ -132,11 +132,11 @@ div#menuLink4
 span#headerText
 {
   position: absolute;
-  top: 13px;
+  top: 17px;
   left: 235px;
   font-weight: lighter;
   color: white;
-  font-size: 12pt;
+  font-size: 13pt;
 }
 
 div#popupHeader 
@@ -163,21 +163,21 @@ span#popupHeaderText
 div#menuDropDown1
 {
   position: absolute;
-  top: 47px;
+  top: 55px;
   left: 580px;
 }
 
 div#menuDropDown2
 {
   position: absolute;
-  top: 47px;
+  top: 55px;
   left: 680px;
 }
 
 div#menuDropDown3
 {
   position: absolute;
-  top: 47px;
+  top: 55px;
   left: 780px;
 }
 
@@ -231,7 +231,7 @@ div#menuDropDown3
   width: 235px;
   float: left;
   position: absolute;
-  top: 47px;
+  top: 55px;
   left: 0px;
   padding-top: 6px;
   border-right: 1px solid #10375f;
@@ -361,7 +361,7 @@ div#menuDropDown3
 
 #mainPage 
 {
-  margin: 72px 10px 10px 270px;
+  margin: 78px 10px 10px 270px;
 }
 
 #popupPage 
