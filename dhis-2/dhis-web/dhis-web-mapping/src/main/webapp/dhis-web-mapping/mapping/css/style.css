@@ -69,7 +69,8 @@
     border-color:#999999;
 }
 
-/* OpenLayers (include in lib)
+/* OpenLayers (include in lib) */
+/*
 .olControlOverviewMapElement {
     -moz-border-radius:1em 0 0 0;
     background-color:#aaaaaa;
@@ -90,7 +91,6 @@
     filter: alpha(opacity=50);
 }
 */
-
 .olControlPanPanel div {
     opacity:0.8
 }
@@ -254,8 +254,8 @@ a.x-menu-item-custom {
 
 /* Ext ComboBox */
 .combo-disabled {
-    opacity:0.60;
-    filter:alpha(opacity=60);
+    opacity:0.70;
+    filter:alpha(opacity=70);
     color:#000000;
     border-color:#9ca1b8;
     cursor: default;
