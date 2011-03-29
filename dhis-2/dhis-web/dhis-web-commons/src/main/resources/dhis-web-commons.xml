@@ -73,6 +73,7 @@
 				class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" />
 			<interceptor name="postHttpMethodInterceptor"
 				class="org.hisp.dhis.security.intercept.HttpMethodInterceptor" />
+			<interceptor name="loginInterceptor" class="loginInterceptor" />
 
 			<interceptor-stack name="commonInterceptors">
 				<interceptor-ref name="staticParams" />
@@ -84,6 +85,7 @@
 					the access denied error pages can use internationalisation.
 				-->
 				<interceptor-ref name="securityInterceptor" />
+				<interceptor-ref name="loginInterceptor" />
 				<interceptor-ref name="sortOrderInterceptor" />
 				<interceptor-ref name="displayPropertyInterceptor" />
 				<interceptor-ref name="systemSettingInterceptor" />
@@ -261,17 +263,6 @@
 				<param name="status">204</param>
 			</result>
 			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
-	</package>
-
-	<!-- Security -->
-
-	<package name="dhis-web-commons-security" extends="dhis-web-commons"
-		namespace="/dhis-web-commons-security">
-
-		<action name="loggedIn" class="org.hisp.dhis.security.action.LoggedInAction">
-			<result name="success" type="redirect">/</result>
 		</action>
 
 	</package>
