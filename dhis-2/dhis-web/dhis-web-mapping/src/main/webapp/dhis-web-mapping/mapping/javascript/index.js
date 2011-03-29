@@ -2454,8 +2454,8 @@
 		tooltip: G.i18n.favorite_map_views,
         style: 'margin-top:1px',
 		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;    
+			var x = Ext.getCmp('center').x + G.conf.window_position_x;
+			var y = Ext.getCmp('center').y + G.conf.window_position_y;    
 			favoriteWindow.setPosition(x,y);
 
 			if (favoriteWindow.visible) {
@@ -2477,8 +2477,8 @@
 				return;
 			}
 			
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;   
+			var x = Ext.getCmp('center').x + G.conf.window_position_x;
+			var y = Ext.getCmp('center').y + G.conf.window_position_y;   
 			
 			exportImageWindow.setPosition(x,y);
 
@@ -2497,8 +2497,8 @@
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
 		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;
+			var x = Ext.getCmp('center').x + G.conf.window_position_x;
+			var y = Ext.getCmp('center').y + G.conf.window_position_y;
 			predefinedMapLegendSetWindow.setPosition(x,y);
 		
 			if (predefinedMapLegendSetWindow.visible) {
@@ -2519,8 +2519,8 @@
 		disabled: !G.user.isAdmin,
         style: 'margin-top:1px',
 		handler: function() {
-			var x = Ext.getCmp('center').x + 15;
-			var y = Ext.getCmp('center').y + 41;
+			var x = Ext.getCmp('center').x + G.conf.window_position_x;
+			var y = Ext.getCmp('center').y + G.conf.window_position_y;
 			adminWindow.setPosition(x,y);
 			adminWindow.show();
 		}
