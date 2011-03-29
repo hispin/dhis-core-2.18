@@ -41,7 +41,7 @@ import com.opensymphony.xwork2.Action;
  * @author Torgeir Lorange Ostby
  * @version $Id: LoggedInAction.java 5649 2008-09-05 20:07:34Z larshelg $
  */
-public class LoggedInAction
+public class RestrictOrganisationUnitsAction
     implements Action
 {
     // -------------------------------------------------------------------------

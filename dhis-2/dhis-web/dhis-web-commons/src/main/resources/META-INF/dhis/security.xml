@@ -7,9 +7,9 @@
   <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled" secured-annotations="disabled" />
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
-    <sec:form-login default-target-url="/dhis-web-commons-security/loggedIn.action" always-use-default-target="true"
+    <sec:form-login default-target-url="/" always-use-default-target="false"
       login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/loginfailed.html"
-      login-page="/dhis-web-commons/security/login.html" />
+      login-page="/dhis-web-commons/security/login.html" authentication-success-handler-ref="defaultAuthenticationSuccessHandler"/>
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
 
@@ -25,8 +25,10 @@
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
   </sec:http>
 
+  <bean id="defaultAuthenticationSuccessHandler" class="org.hisp.dhis.security.DefaultAuthenticationSuccessHandler" />
+
   <!-- Security : Action -->
-  <bean id="org.hisp.dhis.security.action.LoggedInAction" class="org.hisp.dhis.security.action.LoggedInAction" scope="prototype">
+  <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction" scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -130,6 +132,14 @@
 
   <!-- Security : Interceptor -->
 
+  <bean id="loginInterceptor" class="org.hisp.dhis.security.intercept.LoginInterceptor">
+  	<property name="actions">
+  		<list>
+  			<ref bean="restrictOrganisationUnitsAction" />
+  		</list>
+  	</property>
+  </bean>
+  
   <bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
     <property name="accessDecisionManager" ref="accessDecisionManager" />
     <property name="authenticationManager" ref="authenticationManager" />
