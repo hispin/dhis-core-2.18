@@ -2425,7 +2425,7 @@
 
             var mapView = scope.formValues.getAllValues.call(scope);
             mapView.widget = scope;
-            mapView.timestamp = G.date.getNowHMS(new Date());
+            mapView.timestamp = G.date.getNowHMS();
             var c1 = '<span class="menu-item-inline-c1">';
             var c2 = '<span class="menu-item-inline-c2">';
             var spanEnd = '</span>';
@@ -2438,7 +2438,7 @@
                             spanEnd;
             
             for (var i = 0; i < this.menu.items.items.length; i++) {
-                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','time','label'])) {
+                if (G.util.compareObjToObj(mapView, this.menu.items.items[i].mapView, ['longitude','latitude','zoom','widget','timestamp','label'])) {
                     this.menu.items.items[i].destroy();
                 }
             }
