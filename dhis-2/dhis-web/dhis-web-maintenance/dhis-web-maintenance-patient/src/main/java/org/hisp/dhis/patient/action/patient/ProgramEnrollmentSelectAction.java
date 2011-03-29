@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patient.state.SelectedStateManager;
@@ -76,7 +75,7 @@ public class ProgramEnrollmentSelectAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-
+    
     private Integer id;
 
     public void setId( Integer id )
@@ -148,7 +147,7 @@ public class ProgramEnrollmentSelectAction
             patient = patientService.getPatient( id );
         }
 
-        if ( id == null )
+        else if ( id == null )
         {
             patient = selectedStateManager.getSelectedPatient();
         }
@@ -170,7 +169,6 @@ public class ProgramEnrollmentSelectAction
         // ---------------------------------------------------------------------
 
         programs = programService.getPrograms( selectedStateManager.getSelectedOrganisationUnit() );
-//        programs = programService.getAllPrograms();
 
         // ---------------------------------------------------------------------
         // Validate selected Program

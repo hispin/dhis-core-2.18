@@ -327,7 +327,7 @@ public class AddPatientAction
         // -------------------------------------------------------------------------
 
         id = patientService.createPatient( patient, representativeId, relationshipTypeId, patientAttributeValues );
-
+        
         return SUCCESS;
     }
 
