@@ -28,7 +28,7 @@ G.conf = {
 	combo_number_width_small: 40,
     window_width: 251,
     window_position_x: 55,
-    window_position_y: 41
+    window_position_y: 41,
     
 	emptytext: '',
 	labelseparator: '',

@@ -1850,6 +1850,7 @@
                                 fieldLabel: G.i18n.date_type,
                                 labelSeparator: G.conf.labelseparator,
                                 disabled: G.system.aggregationStrategy === G.conf.aggregation_strategy_batch,
+                                disabledClass: 'combo-disabled',
                                 editable: false,
                                 valueField: 'value',
                                 displayField: 'text',
