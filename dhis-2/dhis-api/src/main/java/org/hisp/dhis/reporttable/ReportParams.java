@@ -41,6 +41,8 @@ public class ReportParams
     implements Serializable
 {
     private Boolean paramReportingMonth;
+
+    private Boolean paramGrandParentOrganisationUnit;
     
     private Boolean paramParentOrganisationUnit;
     
@@ -54,9 +56,10 @@ public class ReportParams
     {
     }
     
-    public ReportParams( boolean paramReportingMonth, boolean paramParentOrganisationUnit, boolean paramOrganisationUnit )
+    public ReportParams( boolean paramReportingMonth, boolean paramGrandParentOrganisationUnit, boolean paramParentOrganisationUnit, boolean paramOrganisationUnit )
     {
         this.paramReportingMonth = paramReportingMonth;
+        this.paramGrandParentOrganisationUnit = paramGrandParentOrganisationUnit;
         this.paramParentOrganisationUnit = paramParentOrganisationUnit;
         this.paramOrganisationUnit = paramOrganisationUnit;
     }
@@ -68,6 +71,11 @@ public class ReportParams
     public boolean isParamReportingMonth()
     {
         return paramReportingMonth != null && paramReportingMonth;
+    }
+    
+    public boolean isParamGrandParentOrganisationUnit()
+    {
+        return paramGrandParentOrganisationUnit != null && paramGrandParentOrganisationUnit;
     }
     
     public boolean isParamParentOrganisationUnit()
@@ -82,7 +90,7 @@ public class ReportParams
     
     public boolean isSet()
     {
-        return isParamReportingMonth() || isParamParentOrganisationUnit() || isParamOrganisationUnit();
+        return isParamReportingMonth() || isParamGrandParentOrganisationUnit() || isParamParentOrganisationUnit() || isParamOrganisationUnit();
     }
 
     // -------------------------------------------------------------------------
@@ -97,6 +105,16 @@ public class ReportParams
     public void setParamReportingMonth( Boolean paramReportingMonth )
     {
         this.paramReportingMonth = paramReportingMonth;
+    }
+
+    public Boolean getParamGrandParentOrganisationUnit()
+    {
+        return paramGrandParentOrganisationUnit;
+    }
+
+    public void setParamGrandParentOrganisationUnit( Boolean paramGrandParentOrganisationUnit )
+    {
+        this.paramGrandParentOrganisationUnit = paramGrandParentOrganisationUnit;
     }
 
     public Boolean getParamParentOrganisationUnit()

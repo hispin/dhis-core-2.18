@@ -154,6 +154,18 @@ public class OrganisationUnit
     // Logic
     // -------------------------------------------------------------------------
     
+    public Set<OrganisationUnit> getGrandChildren()
+    {
+        Set<OrganisationUnit> grandChildren = new HashSet<OrganisationUnit>();
+        
+        for ( OrganisationUnit child : children )
+        {
+            grandChildren.addAll( child.getChildren() );
+        }
+        
+        return grandChildren;
+    }
+    
     public boolean hasChild()
     {
     	return !this.children.isEmpty();

@@ -28,15 +28,10 @@ package org.hisp.dhis.reporting.tablecreator.action;
  */
 
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
@@ -65,13 +60,6 @@ public class GetReportParamsAction
     public void setReportTableService( ReportTableService reportTableService )
     {
         this.reportTableService = reportTableService;
-    }
-
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
     }
 
     private I18nFormat format;
@@ -119,21 +107,7 @@ public class GetReportParamsAction
     {
         return reportParams;
     }
-    
-    private List<OrganisationUnitLevel> levels;
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-    
-    private Collection<OrganisationUnit> organisationUnits;
-
-    public Collection<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-    
+        
     private SortedMap<Integer, String> reportingPeriods = new TreeMap<Integer, String>();
 
     public SortedMap<Integer, String> getReportingPeriods()
@@ -161,14 +135,7 @@ public class GetReportParamsAction
             if ( reportTable != null )
             {
                 reportParams = reportTable.getReportParams();
-                
-                if ( reportParams.isParamParentOrganisationUnit() || reportParams.isParamOrganisationUnit() )
-                {
-                    levels = organisationUnitService.getOrganisationUnitLevels();
-                    
-                    organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( 1 );
-                }
-                
+                                
                 if ( reportParams.isParamReportingMonth() )
                 {
                     MonthlyPeriodType periodType = new MonthlyPeriodType();
