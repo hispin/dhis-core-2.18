@@ -217,6 +217,11 @@ public class GetDataCompletenessAction
             grid.addValue( result.getRegistrationsOnTime() );
             grid.addValue( result.getPercentageOnTime() );
         }
+
+        if ( grid.getWidth() >= 4 )
+        {
+            grid.sortGrid( 4, 1 );
+        }
         
         return grid;
     }
