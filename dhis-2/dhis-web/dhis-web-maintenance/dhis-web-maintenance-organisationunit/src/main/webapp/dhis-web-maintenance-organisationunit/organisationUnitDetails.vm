@@ -51,6 +51,10 @@
 <td><b>$i18n.getString( "phone_number" ):</b></td>
 <td>$!encoder.htmlEncode( $organisationUnit.phoneNumber )</td>
 </tr>
+<tr>
+<td><b>$i18n.getString( "hierarchy" ):</b></td>
+<td>$!encoder.htmlEncode( $organisationUnit.ancestorNames )</td>
+</tr>
 
 #foreach( $groupSet in $groupSets )
 <tr>
