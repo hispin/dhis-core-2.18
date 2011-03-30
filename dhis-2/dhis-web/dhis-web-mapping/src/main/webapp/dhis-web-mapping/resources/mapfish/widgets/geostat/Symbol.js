@@ -585,7 +585,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             xtype: 'textfield',
             name: 'boundary',
             fieldLabel: G.i18n.boundary,
-            editable: false,
             emptyText: G.conf.emptytext,
 			labelSeparator: G.conf.labelseparator,
             width: G.conf.combo_width,
@@ -593,7 +592,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             node: {attributes: {hasChildrenWithCoordinates: false}},
             selectedNode: null,
             treeWindow: null,
-			treePanel: null,
+            treePanel: null,
             listeners: {
                 'focus': {
                     scope: this,
@@ -613,13 +612,24 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             xtype: 'textfield',
             name: 'level',
             fieldLabel: G.i18n.level,
-            disabled: true,
-            disabledClass: 'combo-disabled',
-            editable: false,
             emptyText: G.conf.emptytext,
 			labelSeparator: G.conf.labelseparator,
             width: G.conf.combo_width,
-			levelComboBox: null
+            style: 'cursor:pointer',
+            levelComboBox: null,
+            listeners: {
+                'focus': {
+                    scope: this,
+                    fn: function() {
+                        if (this.form.findField('boundary').treeWindow) {
+                            this.form.findField('boundary').treeWindow.show();
+                        }
+                        else {
+							this.createSingletonCmp.treeWindow.call(this);
+                        }
+                    }
+                }
+            }
         },
         
         { html: '<div class="thematic-br">' },
@@ -878,7 +888,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 					};
 					
 					var w = new Ext.Window({
-						title: 'Boundary',
+						title: 'Boundary and level',
 						closeAction: 'hide',
 						autoScroll: true,
 						height: 'auto',
@@ -925,6 +935,40 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 										}
 									}
 								]
+							},
+							{
+								xtype: 'panel',
+								layout: 'form',
+								bodyStyle: 'padding:8px; background-color:#ffffff',
+                                labelWidth: G.conf.label_width,
+								items: [
+									{html: '<div class="window-info">Select organisation unit level</div>'},
+									{
+										xtype: 'combo',
+										fieldLabel: G.i18n.level,
+										editable: false,
+										valueField: 'level',
+										displayField: 'name',
+										mode: 'remote',
+										forceSelection: true,
+										triggerAction: 'all',
+										selectOnFocus: true,
+										emptyText: G.conf.emptytext,
+										labelSeparator: G.conf.labelseparator,
+										fieldLabel: 'Level',
+										width: G.conf.combo_width_fieldset,
+										minListWidth: G.conf.combo_width_fieldset,
+										store: G.stores.organisationUnitLevel,
+										listeners: {
+											'afterrender': {
+												scope: this,
+												fn: function(cb) {
+													this.form.findField('level').levelComboBox = cb;
+												}
+											}
+										}
+									}
+								]
 							}
 						],
 						bbar: [
@@ -936,7 +980,11 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 								scope: this,
 								handler: function() {
 									var node = this.form.findField('boundary').selectedNode;
-									if (!node) {
+									if (!node || !this.form.findField('level').levelComboBox.getValue()) {
+										return;
+									}
+									if (node.attributes.level > this.form.findField('level').levelComboBox.getValue()) {
+										Ext.message.msg(false, 'Level is higher than boundary level');
 										return;
 									}
 
@@ -946,8 +994,11 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 									
 									this.form.findField('mapview').clearValue();
 									this.updateValues = true;
-									this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level, null, null);
+                                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
+										this.form.findField('level').levelComboBox.getValue(), this.form.findField('level').levelComboBox.getRawValue());
+										
 									this.form.findField('boundary').setValue(node.attributes.text);
+									this.form.findField('level').setValue(this.form.findField('level').levelComboBox.getRawValue());
 									
 									this.form.findField('boundary').treeWindow.hide();									
 									this.loadGeoJson();
@@ -956,8 +1007,8 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
 						]
 					});
 					
-					var x = Ext.getCmp('center').x + 15;
-					var y = Ext.getCmp('center').y + 41;
+					var x = Ext.getCmp('center').x + G.conf.window_position_x;
+					var y = Ext.getCmp('center').y + G.conf.window_position_y;
 					w.setPosition(x,y);
 					w.show();
 					this.form.findField('boundary').treeWindow = w;
@@ -1229,6 +1280,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
         this.organisationUnitSelection.setValues(this.mapView.parentOrganisationUnitId, this.mapView.parentOrganisationUnitName,
             this.mapView.parentOrganisationUnitLevel, this.mapView.organisationUnitLevel, this.mapView.organisationUnitLevelName);
         
+        G.stores.organisationUnitLevel.load();
         this.form.findField('boundary').setValue(this.mapView.parentOrganisationUnitName);
         this.form.findField('level').setValue(this.mapView.organisationUnitLevelName);
 
@@ -1411,10 +1463,13 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             this.form.findField('startdate').reset();
             this.form.findField('enddate').reset();
             
-            var boundary = this.form.findField('boundary');
+            var boundary = this.form.findField('boundary')
+            var level = this.form.findField('level');
             boundary.reset();
-            if (boundary.treePanel) {
+            level.reset();
+            if (boundary.treePanel && level.levelComboBox) {
                 boundary.treePanel.selectPath(boundary.treePanel.getRootNode().getPath());
+                level.levelComboBox.clearValue();
             }
             
             this.legend.reset();
@@ -1427,7 +1482,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             this.form.findField('radiushigh').reset();
             
             this.layer.destroyFeatures();
-            this.layer.setVisibility(false);            
+            this.layer.setVisibility(false);
         }
 	},
     
@@ -1449,7 +1504,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.FormPanel, {
             if (!position && this.layer.features.length) {
                 G.vars.map.zoomToExtent(this.layer.getDataExtent());
             }
-
+            
             if (this.mapView) {
                 if (this.mapView.longitude && this.mapView.latitude && this.mapView.zoom) {
                     var point = G.util.getTransformedPointByXY(this.mapView.longitude, this.mapView.latitude);

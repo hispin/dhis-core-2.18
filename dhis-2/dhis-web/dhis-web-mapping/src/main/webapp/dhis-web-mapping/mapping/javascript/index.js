@@ -221,28 +221,6 @@
         autoLoad: false,
         isLoaded: false,
         listeners: {
-            'load': function(store) {
-                store.isLoaded = true;
-                
-                if (!symbol.form.findField('level').getValue()) {
-					if (this.isLoaded) {
-						var data = this.getAt(this.getTotalCount()-1).data;
-						symbol.organisationUnitSelection.setValues(null, null, null, data.level, data.name);
-						symbol.form.findField('level').setValue(data.name);
-					}
-				}
-            }
-        }
-    });
-    
-	var polygonOrganisationUnitLevelStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getOrganisationUnitLevelsByFeatureType' + G.conf.type,
-        baseParams: {featureType: G.conf.map_feature_type_multipolygon},
-        root: 'organisationUnitLevels',
-        fields: ['id', 'level', 'name'],
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
             'load': G.func.storeLoadListener
         }
     });
@@ -280,19 +258,6 @@
         }
     });
     
-	var baseLayerStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
-        baseParams: {type: G.conf.map_layer_type_baselayer},
-        root: 'mapLayers',
-        fields: ['id', 'name', 'type', 'mapSource', 'layer', 'fillColor', 'fillOpacity', 'strokeColor', 'strokeWidth'],
-        sortInfo: {field: 'name', direction: 'ASC'},
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });
-    
     var overlayStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getMapLayersByType' + G.conf.type,
         baseParams: {type: G.conf.map_layer_type_overlay},
@@ -305,16 +270,6 @@
             'load': G.func.storeLoadListener
         }
     });
-    
-    var userSettingStore = new Ext.data.JsonStore({
-        url: G.conf.path_mapping + 'getMapUserSettings' + G.conf.type,
-        fields: ['mapDateType'],
-        autoLoad: false,
-        isLoaded: false,
-        listeners: {
-            'load': G.func.storeLoadListener
-        }
-    });	
     
     G.stores = {
 		mapView: mapViewStore,
@@ -331,11 +286,9 @@
         predefinedMapLegend: predefinedMapLegendStore,
         predefinedMapLegendSet: predefinedMapLegendSetStore,
         organisationUnitLevel: organisationUnitLevelStore,
-        polygonOrganisationUnitLevel: polygonOrganisationUnitLevelStore,
         organisationUnitsAtLevel: organisationUnitsAtLevelStore,
         geojsonFiles: geojsonFilesStore,
         wmsCapabilities: wmsCapabilitiesStore,
-        baseLayer: baseLayerStore,
         overlay: overlayStore
     };
 	
@@ -2317,12 +2270,6 @@
         listeners: {
             'expand': function() {
                 G.vars.activePanel.setPoint();
-                
-                if (!this.form.findField('level').getValue()) {
-					if (!G.stores.organisationUnitLevel.isLoaded) {
-						G.stores.organisationUnitLevel.load();
-					}
-				}
             },
             'afterrender': function() {
                 this.layer.widget = this;
