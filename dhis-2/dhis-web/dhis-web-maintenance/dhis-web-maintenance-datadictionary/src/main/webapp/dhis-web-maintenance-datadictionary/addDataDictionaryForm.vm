@@ -1,13 +1,4 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function(){
-		validation( 'addDataDictionaryForm', function( form ){ form.submit()}, function(){
-			listValidator( 'memberValidator', 'selectedDataElements' );
-			listValidator( 'memberValidatorIn', 'selectedIndicators' );
-		} );	
-		
-		checkValueIsExist( "name", "validateDataDictionary.action");
-	});
-</script>
+<script type="text/javascript" src="javascript/addDataDictionaryForm.js"></script>
 
 <h3>$i18n.getString( "create_new_data_dictionary" )</h3>
 
@@ -19,15 +10,15 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="160" class="{validate:{required:true,minlength:2}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em" maxlength="255"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="region">$i18n.getString( "region" )</label></td>
-		<td><input type="text" id="region" name="region" style="width:20em" maxlength="255"/></td>
+		<td><input type="text" id="region" name="region" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
@@ -39,7 +30,7 @@
 		<th>$i18n.getString( "available_data_elements" )</th>
 		<td></td>
 		<th>$i18n.getString( "selected_data_elements" )
-		<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
+			<select id="memberValidator" style="display:none"/>
 		</th>
 	</tr>
 	<tr>		
@@ -74,7 +65,7 @@
 		<th>$i18n.getString( "available_indicators" )</th>
 		<td></td>
 		<th>$i18n.getString( "selected_indicators" )
-		<select id="memberValidatorIn" class="{validate:{required:true}}" style="display:none"/>
+		<select id="memberValidatorIn" style="display:none"/>
 		</th>
 	</tr>
 	<tr>		

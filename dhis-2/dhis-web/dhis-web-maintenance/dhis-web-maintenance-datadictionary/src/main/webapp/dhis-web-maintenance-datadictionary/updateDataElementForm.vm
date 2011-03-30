@@ -1,14 +1,6 @@
+<script type="text/javascript" src="javascript/updateDataElementForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(	function() {
-		validation( 'updateDataElementForm', function( form ){			
-			form.submit();
-		},function(){
-			getDataElementIdsForValidate();
-			getFactors();	
-			setFieldValue( 'submitCategoryComboId', getFieldValue( 'selectedCategoryComboId' ) );
-			setFieldValue( 'submitValueType', getFieldValue( 'valueType' ) );
-		});				
-
 		checkValueIsExist( "name", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "shortName", "validateDataElement.action", {id:getFieldValue('id')});
 		checkValueIsExist( "alternativeName", "validateDataElement.action", {id:getFieldValue('id')});
@@ -35,23 +27,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $dataElement.name )" onchange="nameChanged()" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" )</label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $dataElement.shortName )" style="width:20em" maxlength="20" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $dataElement.shortName )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" style="width:20em" maxlength="150" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $dataElement.alternativeName )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em" maxlength="40" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $dataElement.code )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em" maxlength="250" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}">$!encoder.htmlEncode( $dataElement.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $dataElement.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="active">$i18n.getString( "active" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -127,7 +119,7 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $dataElement.url )" style="width:20em" maxlength="255" class="{validate:{url:true}}"/></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $dataElement.url )" style="width:20em"/></td>
     </tr>
 	<tr #if( $calculatedDataElement ) style="display:none" #end >	
 		<td><label for="selectedCategoryComboId">$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -265,7 +257,3 @@
 <p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/><input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='dataElement.action'" style="width:10em"/></p>
 
 </form>
-
-<script type="text/javascript">
-
-</script>
