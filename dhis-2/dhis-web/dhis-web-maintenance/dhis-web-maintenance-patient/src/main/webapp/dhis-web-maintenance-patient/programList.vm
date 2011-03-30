@@ -46,7 +46,7 @@
 				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
-				<p><label>$i18n.getString( "stage_in_program" ):</label><br><span id="stageInProgramField"></span></p>
+				<p><label>$i18n.getString( "stage_in_program" ):</label><br><span id="programStageCountField"></span></p>
 				<p><label>$i18n.getString( "min_days_from_start" ):</label><br><span id="minDaysFromStartField"></span></p>
 				<p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
 			</div>
