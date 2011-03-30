@@ -1,4 +1,4 @@
-﻿Ext.onReady( function() {
+﻿Ext.onReady( function() {    
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
 	Ext.override(Ext.form.Field,{showField:function(){this.show();this.container.up('div.x-form-item').setDisplayed(true);},hideField:function(){this.hide();this.container.up('div.x-form-item').setDisplayed(false);}});
 	Ext.QuickTips.init();
@@ -332,25 +332,27 @@
     G.vars.map.addLayer(pointLayer);
     
     /* Init base layers */
-	var gm_normal = new OpenLayers.Layer.Google("Google Normal", {
-		type: G_NORMAL_MAP,
-		sphericalMercator: true,
-		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-		numZoomLevels: 21
-	});
-    
-	gm_normal.layerType = G.conf.map_layer_type_baselayer;
-	G.vars.map.addLayer(gm_normal);
-	
-	var gm_hybrid = new OpenLayers.Layer.Google("Google Hybrid", {
-		type: G_HYBRID_MAP,
-		sphericalMercator: true,
-		maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-		numZoomLevels: 21
-	});
-    
-	gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
-	G.vars.map.addLayer(gm_hybrid);
+    if (G_NORMAL_MAP && G_HYBRID_MAP) {
+        var gm_normal = new OpenLayers.Layer.Google("Google Normal", {
+            type: G_NORMAL_MAP,
+            sphericalMercator: true,
+            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+            numZoomLevels: 21
+        });
+        
+        gm_normal.layerType = G.conf.map_layer_type_baselayer;
+        G.vars.map.addLayer(gm_normal);
+        
+        var gm_hybrid = new OpenLayers.Layer.Google("Google Hybrid", {
+            type: G_HYBRID_MAP,
+            sphericalMercator: true,
+            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+            numZoomLevels: 21
+        });
+        
+        gm_hybrid.layerType = G.conf.map_layer_type_baselayer;
+        G.vars.map.addLayer(gm_hybrid);
+    }
 	
     var osm = new OpenLayers.Layer.OSM.Osmarender("OpenStreetMap");
     osm.layerType = G.conf.map_layer_type_baselayer;

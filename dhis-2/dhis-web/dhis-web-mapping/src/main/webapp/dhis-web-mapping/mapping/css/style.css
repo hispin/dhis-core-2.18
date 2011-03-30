@@ -425,6 +425,9 @@ a.x-menu-item-custom {
 #east {
     width:200px;
 }
+#north {
+    padding:2px;
+}
 #overviewmap {
     height:97px;
     padding-top:0px;
