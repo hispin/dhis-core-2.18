@@ -72,6 +72,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.olap.OlapURL;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -92,6 +93,7 @@ import org.hisp.dhis.source.SourceStore;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationCriteriaService;
 import org.hisp.dhis.validation.ValidationRule;
@@ -153,6 +155,10 @@ public abstract class DhisConvenienceTest
     protected ProgramStageService programStageService;
 
     protected DataEntryFormService dataEntryFormService;
+    
+    protected UserService userService;
+    
+    protected MessageService messageService;
 
     static
     {
