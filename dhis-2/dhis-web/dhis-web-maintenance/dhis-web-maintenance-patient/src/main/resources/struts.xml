@@ -774,7 +774,8 @@
 			class="org.hisp.dhis.patient.action.programstage.GetProgramStageListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programStageList.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>			
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programStage.js</param>
 		</action>
 
 		<action name="getProgramStage"

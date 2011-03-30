@@ -1,5 +1,65 @@
+
+function getStageByProgram( programId )
+{
+	window.location = "programStage.action?id=" + programId;
+}
+
+function addProgramStage()
+{
+	var programId = document.getElementById('id').value;
+
+	if( programId == "null"  || programId == "" )
+	{
+		showWarningMessage( i18n_please_select_program );
+	}
+	else
+	{
+		window.location.href="showAddProgramStageForm.action?id=" + programId;
+	}
+}
+
+
+
+function showSortProgramStage()
+{
+	var programId = document.getElementById('id').value;
+	
+	if( programId == "null"  || programId == "" )
+	{
+		showWarningMessage( i18n_please_select_program );
+	}
+	else
+	{
+		window.location.href="showSortProgramStageForm.action?id=" + programId;
+	}
+}
+
 // -----------------------------------------------------------------------------
-// ProgramStage
+// View details
+// -----------------------------------------------------------------------------
+
+function showProgramStageDetails( programStageId )
+{
+    var request = new Request();
+    request.setResponseTypeXML( 'programStage' );
+    request.setCallbackSuccess( programStageReceived );
+    request.send( 'getProgramStage.action?id=' + programStageId );
+}
+
+function programStageReceived( programStageElement )
+{
+	setInnerHTML( 'idField', getElementValue( programStageElement, 'id' ) );
+	setInnerHTML( 'nameField', getElementValue( programStageElement, 'name' ) );	
+    setInnerHTML( 'descriptionField', getElementValue( programStageElement, 'description' ) );
+    setInnerHTML( 'stageInProgramField', getElementValue( programStageElement, 'stageInProgram' ) );   
+    setInnerHTML( 'minDaysFromStartField', getElementValue( programStageElement, 'minDaysFromStart' ) );    
+    setInnerHTML( 'dataElementCountField', getElementValue( programStageElement, 'dataElementCount' ) );   
+   
+    showDetails();
+}
+
+// -----------------------------------------------------------------------------
+// select data-elements
 // -----------------------------------------------------------------------------
 
 function selectDataElements()

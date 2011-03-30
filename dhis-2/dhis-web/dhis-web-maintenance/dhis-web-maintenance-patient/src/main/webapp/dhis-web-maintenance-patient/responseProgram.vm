@@ -2,5 +2,7 @@
 	"id":"$program.id",
 	"name":"$!encoder.jsEncode( ${program.name} )",
 	"description": "$!encoder.jsEncode( ${program.description} )",
-	"programStageCount": "$program.programStages.size()"
+	"programStageCount": "$program.programStages.size()",
+	"minDay": "$program.minDaysAllowedInputData",
+	"maxDay": "$program.maxDaysAllowedInputData"
 }
