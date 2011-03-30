@@ -11,6 +11,8 @@ function showProgramDetails( programId )
 		setInnerHTML( 'nameField', json.name );	
 		setInnerHTML( 'descriptionField', json.description );    
 		setInnerHTML( 'programStageCountField',  json.programStageCount );
+		setInnerHTML( 'minDaysFromStartField',  json.minDay );
+		setInnerHTML( 'dataElementCountField',  json.maxDay );
    
 		showDetails();
 	});   

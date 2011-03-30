@@ -24,11 +24,7 @@
 		<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	</tr>	
-		<tr>
-		<td><label>$i18n.getString( "version" )</label></td>
-		<td>1</td>
-		<td></td>
-	  </tr>	
+	
 	<tr>
 		<td><label>$i18n.getString( "dateOfEnrollmentDescription" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
