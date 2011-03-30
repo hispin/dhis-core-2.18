@@ -115,18 +115,18 @@ public class ShowedAssociationsEditorAction
 
         return maps;
     }
-    
+
     public List<String> getHeaderIds()
     {
         List<String> ids = new ArrayList<String>();
-        
+
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
             ids.add( header.getColumn() );
         }
-        
+
         ids.remove( 0 );
-        
+
         return ids;
     }
 
@@ -167,7 +167,7 @@ public class ShowedAssociationsEditorAction
 
         for ( DataSet dataSet : dataSets )
         {
-            grid.addHeader( new GridHeader( dataSet.getName(), dataSet.getId() + "", String.class.getName(), false,
+            grid.addHeader( new GridHeader( dataSet.getShortName(), dataSet.getId() + "", dataSet.getName(), false,
                 false ) );
         }
 

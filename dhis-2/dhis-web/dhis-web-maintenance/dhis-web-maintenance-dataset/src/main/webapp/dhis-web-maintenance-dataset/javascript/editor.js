@@ -25,10 +25,22 @@ function changeAssociatedStatus( orgunitId, dataSetId, assigned )
 	$( "#div" + orgunitId + dataSetId ).load( url );
 }
 
-function assignAll( orgunitId )
+function assignAll( element, orgunitId )
 {
+	var status = false;
+	var checked = element.checked;
+
+	lockScreen();
+	
 	for ( var i = 0 ; i < arrayIds.length ; i++ )
 	{
-		changeAssociatedStatus( orgunitId, arrayIds[i], eval($("#div" + orgunitId + arrayIds[i] + " input[type='hidden']").val()) );
+		status = eval( $("#div" + orgunitId + arrayIds[i] + " input[type='hidden']").val() );
+	
+		if ( (checked && !status) || (!checked && status) )
+		{
+			changeAssociatedStatus( orgunitId, arrayIds[i], !checked );
+		}
 	}
+	
+	unLockScreen();
 }
