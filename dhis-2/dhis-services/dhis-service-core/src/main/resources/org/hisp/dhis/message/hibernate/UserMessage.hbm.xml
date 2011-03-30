@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.message.UserMessage" table="usermessage">
+    <id name="id" column="usermessageid">
+      <generator class="native"/>
+    </id>
+
+    <property name="read" column="read" not-null="true"/>
+    <property name="messageDate" column="messageDate" not-null="true"/>
+    
+    <many-to-one name="user" class="org.hisp.dhis.user.User" 
+      column="userid" foreign-key="fk_usermessage_user" not-null="true"/>
+    
+    <join table="message_usermessages" inverse="true">
+      <key column="usermessageid"/>
+      <many-to-one column="messageid" name="message"/>
+    </join>
+    
+  </class>
+</hibernate-mapping>

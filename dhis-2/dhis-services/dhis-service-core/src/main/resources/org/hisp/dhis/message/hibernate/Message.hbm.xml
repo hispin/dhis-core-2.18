@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="org.hisp.dhis.message.Message" table="message">
+    <id name="id" column="messageid">
+      <generator class="native"/>
+    </id>
+
+	<property name="key" column="key" not-null="true"/>
+    <property name="title" column="title" not-null="true"/>
+    <property name="text" column="text"/>
+    
+    <set name="userMessages" table="message_usermessages" cascade="save-update">
+      <key column="messageid"/>
+      <many-to-many class="org.hisp.dhis.message.UserMessage"
+        column="usermessageid" unique="true" foreign-key="fk_message_usermessages"/>
+    </set>
+    
+  </class>
+</hibernate-mapping>
