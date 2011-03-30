@@ -235,6 +235,16 @@ public class PDFUtils
         return getCell( text, 1, getItalicFont( 9 ), ALIGN_LEFT );
     }
 
+    public static PdfPCell resetPaddings( PdfPCell cell, float top, float bottom, float left, float right )
+    {
+        cell.setPaddingTop( top );
+        cell.setPaddingBottom( bottom );
+        cell.setPaddingLeft( left );
+        cell.setPaddingRight( right );
+ 
+        return cell;
+    }
+    
     /**
      * Creates an empty cell.
      * 
