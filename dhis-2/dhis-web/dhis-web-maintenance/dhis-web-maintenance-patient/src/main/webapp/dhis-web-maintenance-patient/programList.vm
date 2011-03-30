@@ -1,51 +1,33 @@
 <h3>$i18n.getString( "program_management" )</h3>
+
 <table class="mainPageTable">
 	<tr>
-		<td style="vertical-align:top">
-			<table class="listTable">
+		<td align="right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px"></td>
+	</tr>
+  <tr>
+    <td style="vertical-align:top">
+		
+		<table class="listTable" id="listTable">
 			  <col>          
-			  <col width="20">
-			  <col width="20">
-			  <col width="20">     
-			  <col width="20">
-			  <col width="20">
-			  <col width="20">			     		  
-			  <tr>
-				<td></td>
-				<td colspan="6" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddProgramForm.action'" style="width:70px"></td>
-			  </tr>
+			  <col width="180">
+			<thead>			  
 			  <tr>            
 				<th>$i18n.getString( "name" )</th>
-				<th colspan="6">$i18n.getString( "operations" )</th>
+				<th class="{sorter: false}">$i18n.getString( "operations" )</th>
 			  </tr>
-
+			</thead>
 			  <tbody id="list">
 				#foreach( $program in $programs )
 				  <tr id="tr${program.id}">
 				  
 					<td>$encoder.htmlEncode( $program.name )</td>                
 					
-					<td style="text-align:center" #alternate( $mark )>
+					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( "define_associations" )"></a>
-					</td>
-					
-					<td style="text-align:center" #alternate( $mark )>
 					  <a href="defineValidationDEAssociationsForm.action?id=$program.id" title="$i18n.getString( "validationDE_associations" )"><img src="../images/assign_b.png" alt="$i18n.getString( "validationDE_associations" )"></a>
-					</td>
-					
-					<td style="text-align:center" #alternate( $mark )>
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
-					</td>
-					
-					<td style="text-align:center" #alternate( $mark )>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( "view_stage_management" )"><img src="../images/add_section.png" alt="$i18n.getString( "view_stage_management" )"></a>
-					</td>                
-
-					<td style="text-align:center" #alternate( $mark )>
 					  <a href="javascript:removeProgram( '$program.id', '$encoder.jsEncode( $program.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
-					</td>            
-					
-					<td style="text-align:center" #alternate( $mark )>
 					  <a href="javascript:showProgramDetails( $program.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
 					</td>
 					
@@ -53,8 +35,7 @@
 				#end
 
 			  </tbody>
-
-			</table>
+        </table>
 		</td>
 		<td style="width:20em; padding-left:2em; vertical-align:top">
 
@@ -64,14 +45,16 @@
 				</div>				
 				<p><label>$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 				<p><label>$i18n.getString( "name" ):</label><br><span id="nameField"></span></p>
-				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
-				<p><label>$i18n.getString( "number_of_days" ):</label><br><span id="numberOfDaysField"></span></p>
-				<p><label>$i18n.getString( "program_stage_count" ):</label><br><span id="programStageCountField"></span></p>				
+				<p><label>$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
+				<p><label>$i18n.getString( "stage_in_program" ):</label><br><span id="stageInProgramField"></span></p>
+				<p><label>$i18n.getString( "min_days_from_start" ):</label><br><span id="minDaysFromStartField"></span></p>
+				<p><label>$i18n.getString( "no_of_dataelements" ):</label><br><span id="dataElementCountField"></span></p>			  		
 			</div>
 
 		</td>
-  </tr>
+	</tr>
 </table>
+
 
 
 <script type="text/javascript">
@@ -79,4 +62,9 @@
 	var i18n_adding_program_failed = '$encoder.jsEscape( $i18n.getString( "adding_program_failed" ), "'")';
 	var i18n_updating_program_failed = '$encoder.jsEscape( $i18n.getString( "updating_program_failed" ), "'")';	
 	var i18n_none = '$encoder.jsEscape( $i18n.getString( "none" ), "'")';	
+	
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );
+	});
+	
 </script>
