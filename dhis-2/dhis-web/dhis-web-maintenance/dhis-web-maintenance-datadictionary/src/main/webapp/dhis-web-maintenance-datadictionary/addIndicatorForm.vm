@@ -50,7 +50,7 @@
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{minlength:[3,250],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em" class="{validate:{rangelength:[3,250],alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"></textarea></td>
 	</tr>
 	<tr>
 		<td><label for="annualized">$i18n.getString( "annualized" )</label></td>
