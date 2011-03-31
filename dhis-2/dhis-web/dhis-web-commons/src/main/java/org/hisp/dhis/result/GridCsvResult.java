@@ -28,22 +28,18 @@ package org.hisp.dhis.result;
  */
 
 import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
-
-import static org.hisp.dhis.system.util.CsvUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -96,35 +92,6 @@ public class GridCsvResult
         // Write CSV to output stream
         // ---------------------------------------------------------------------
 
-        Iterator<GridHeader> headers = grid.getHeaders().iterator();
-        
-        while ( headers.hasNext() )
-        {
-            out.write( csvEncode( headers.next().getName() ).getBytes() );
-            
-            if ( headers.hasNext() )
-            {
-                out.write( SEPARATOR_B );
-            }
-        }
-
-        out.write( NEWLINE );
-        
-        for ( List<Object> row : grid.getRows() )
-        {
-            Iterator<Object> columns = row.iterator();
-            
-            while ( columns.hasNext() )
-            {
-                out.write( csvEncode( columns.next() ).getBytes() );
-                
-                if ( columns.hasNext() )
-                {
-                    out.write( SEPARATOR_B );
-                }
-            }
-            
-            out.write( NEWLINE );
-        }
+        GridUtils.toCsv( grid, out );
     }
 }

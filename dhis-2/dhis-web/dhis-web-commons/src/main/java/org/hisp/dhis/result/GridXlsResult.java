@@ -28,24 +28,14 @@ package org.hisp.dhis.result;
  */
 
 import java.io.OutputStream;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-
-import jxl.Workbook;
-import jxl.write.Label;
-import jxl.write.Number;
-import jxl.write.WritableCellFormat;
-import jxl.write.WritableFont;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -57,19 +47,8 @@ import com.opensymphony.xwork2.Result;
 public class GridXlsResult
     implements Result
 {
-    private static final String DEFAULT_SHEET_NAME = "Sheet 1";
     private static final String DEFAULT_FILENAME = "Grid.xls";
-    private static final String EMPTY = "";
     
-    private static final WritableCellFormat FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
-        WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
-
-    private static final WritableCellFormat FORMAT_LABEL = new WritableCellFormat( new WritableFont(
-        WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );
-
-    private static final WritableCellFormat FORMAT_TEXT = new WritableCellFormat( new WritableFont( WritableFont.ARIAL,
-        11, WritableFont.NO_BOLD, false ) );
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -113,50 +92,6 @@ public class GridXlsResult
         // Create workbook and write to output stream
         // ---------------------------------------------------------------------
 
-        WritableWorkbook workbook = Workbook.createWorkbook( out );
-
-        String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_SHEET_NAME ) );
-        
-        WritableSheet sheet = workbook.createSheet( sheetName, 0 );
-
-        int rowNumber = 1;
-
-        int columnIndex = 0;
-
-        sheet.addCell( new Label( 0, rowNumber++, grid.getTitle(), FORMAT_TTTLE ) );
-
-        rowNumber++;
-
-        for ( GridHeader header : grid.getVisibleHeaders() )
-        {
-            sheet.addCell( new Label( columnIndex++, rowNumber, header.getName(), FORMAT_LABEL ) );
-        }
-
-        rowNumber++;
-
-        for ( List<Object> row : grid.getVisibleRows() )
-        {
-            columnIndex = 0;
-
-            for ( Object column : row )
-            {
-                if ( column != null && MathUtils.isNumeric( String.valueOf( column ) ) )
-                {
-                    sheet.addCell( new Number( columnIndex++, rowNumber, Double.valueOf( String.valueOf( column ) ), FORMAT_TEXT ) );
-                }
-                else
-                {
-                    String content = column != null ? String.valueOf( column ) : EMPTY;
-                    
-                    sheet.addCell( new Label( columnIndex++, rowNumber, content, FORMAT_TEXT ) );
-                }
-            }
-
-            rowNumber++;
-        }
-
-        workbook.write();
-
-        workbook.close();        
+        GridUtils.toXls( grid, out );
     }
 }
