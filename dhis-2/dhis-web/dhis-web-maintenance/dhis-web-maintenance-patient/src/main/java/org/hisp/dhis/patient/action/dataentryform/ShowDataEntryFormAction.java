@@ -29,7 +29,6 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.patient.screen.DataEntryManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +41,7 @@ public class ShowDataEntryFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
     private DataEntryFormService dataEntryFormService;
@@ -50,13 +49,6 @@ public class ShowDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
-    }
-
-    private DataEntryManager dataEntryManager;
-
-    public void setDataEntryManager( DataEntryManager dataEntryManager )
-    {
-        this.dataEntryManager = dataEntryManager;
     }
 
     // -------------------------------------------------------------------------
@@ -78,7 +70,7 @@ public class ShowDataEntryFormAction
     }
 
     // -------------------------------------------------------------------------
-    // Execute
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
@@ -90,7 +82,7 @@ public class ShowDataEntryFormAction
 
             if ( dataEntryForm != null )
             {
-                dataEntryFormCode = dataEntryManager.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
+                dataEntryFormCode = dataEntryFormService.prepareDataEntryFormCode( dataEntryForm.getHtmlCode() );
             }
         }
 
