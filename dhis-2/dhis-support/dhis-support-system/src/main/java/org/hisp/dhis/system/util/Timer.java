@@ -24,7 +24,7 @@ public class Timer
      
         if ( !printDisabled )
         {
-            System.out.println( msg  + ": " + time );
+            System.out.println( msg  + ": " + time + " micros" );
         }
         
         return time;
@@ -36,6 +36,7 @@ public class Timer
         long time = ( endTime - startTime ) / 1000000;
         return time;
     }
+    
     public long getTime( String msg )
     {
         long time = getSplitTime( msg );

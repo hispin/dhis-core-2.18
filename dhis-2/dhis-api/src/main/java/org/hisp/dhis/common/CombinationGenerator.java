@@ -52,7 +52,7 @@ public class CombinationGenerator<T>
     }
     
     /**
-     * Returns an List of Lists with combinations of objects.
+     * Returns a List of Lists with combinations of objects.
      */
     public List<List<T>> getCombinations()
     {
@@ -67,7 +67,7 @@ public class CombinationGenerator<T>
     }
     
     /**
-     * Indicates whether there are more combinations to be returned.
+     * Indicates whether there are more combinations to be returned or not.
      */
     public boolean hasNext()
     {

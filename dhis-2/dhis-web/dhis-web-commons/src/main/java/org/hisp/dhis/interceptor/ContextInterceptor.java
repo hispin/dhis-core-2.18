@@ -30,6 +30,7 @@ package org.hisp.dhis.interceptor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -42,12 +43,20 @@ public class ContextInterceptor
     implements Interceptor
 {
     private static final String KEY_IN_MEMORY_DATABASE = "inMemoryDatabase";
+    private static final String KEY_UNREAD_MESSAGES = "keyUnreadMessages";
     
     private DatabaseInfoProvider databaseInfoProvider;
 
     public void setDatabaseInfoProvider( DatabaseInfoProvider databaseInfoProvider )
     {
         this.databaseInfoProvider = databaseInfoProvider;
+    }
+    
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
     }
 
     @Override
@@ -65,8 +74,12 @@ public class ContextInterceptor
         throws Exception
     {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put( KEY_IN_MEMORY_DATABASE, databaseInfoProvider.isInMemory() );
+        
+        map.put( KEY_IN_MEMORY_DATABASE, databaseInfoProvider.isInMemory() );        
+        map.put( KEY_UNREAD_MESSAGES, messageService.getUnreadMessageCount() );
+        
         invocation.getStack().push( map );
+        
         return invocation.invoke();
     }
 }

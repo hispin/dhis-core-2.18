@@ -476,6 +476,7 @@
 
 	<bean id="org.hisp.dhis.interceptor.ContextInterceptor" class="org.hisp.dhis.interceptor.ContextInterceptor">
 		<property name="databaseInfoProvider" ref="databaseInfoProvider" />
+		<property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
 	</bean>
 
 	<bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction" scope="prototype">
