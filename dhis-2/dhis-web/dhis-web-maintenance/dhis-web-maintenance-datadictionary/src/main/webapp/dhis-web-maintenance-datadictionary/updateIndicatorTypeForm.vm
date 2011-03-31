@@ -1,11 +1,7 @@
+<script type="text/javascript" src="javascript/updateIndicatorTypeForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'updateIndicatorTypeForm', function( form ){ form.submit()} );	
 		checkValueIsExist( "name", "validateIndicatorType.action", {id: $indicatorType.id});
-
-		var nameField = document.getElementById( 'name' );
-		nameField.select();
-		nameField.focus();
 	});
 </script>
 
@@ -23,11 +19,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorType.name )" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/> </td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorType.name )" style="width:20em"/> </td>
 	</tr>
 	<tr>
 		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" value="$indicatorType.factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"/></td>
+		<td><input type="text" id="factor" name="factor" value="$indicatorType.factor" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="number">$i18n.getString( "number" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
