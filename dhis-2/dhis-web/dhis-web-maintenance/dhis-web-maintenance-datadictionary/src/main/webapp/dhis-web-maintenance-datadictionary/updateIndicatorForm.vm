@@ -1,15 +1,4 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function(){
-		validation( 'updateIndicatorForm', 
-			function( form ){ form.submit()}
-		);	
-
-		checkValueIsExist( "name", "validateIndicator.action", {id:getFieldValue('id')});
-		checkValueIsExist( "shortName", "validateIndicator.action" , {id:getFieldValue('id')});
-		checkValueIsExist( "alternativeName", "validateIndicator.action" , {id:getFieldValue('id')});
-		checkValueIsExist( "code", "validateIndicator.action" , {id:getFieldValue('id')});
-	});
-</script>
+<script type="text/javascript" src="javascript/updateIndicatorForm.js"></script>
 
 <h3>$i18n.getString( "edit_indicator" )</h3>
 
@@ -31,23 +20,23 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" maxlength="150" style="width:20em" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicator.name )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" maxlength="20" value="$encoder.htmlEncode( $indicator.shortName )" style="width:20em" class="{validate:{required:true,minlength:2,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $indicator.shortName )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="alternativeName">$i18n.getString( "alternative_name" )</label></td>
-		<td><input type="text" id="alternativeName" name="alternativeName" maxlength="150" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="alternativeName" name="alternativeName" value="$!encoder.htmlEncode( $indicator.alternativeName )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
-		<td><input type="text" id="code" name="code" maxlength="25" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,notOnlyDigits:true}}"/></td>
+		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $indicator.code )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><textarea id="description" name="description" maxlength="250" style="width:20em; height:8em" class="{validate:{minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}">$!encoder.htmlEncode( $indicator.description )</textarea></td>
+		<td><textarea id="description" name="description" style="width:20em; height:8em">$!encoder.htmlEncode( $indicator.description )</textarea></td>
 	</tr>
 	<tr>
 		<td><label for="annualized">$i18n.getString( "annualized" )</label></td>
@@ -61,7 +50,7 @@
 	<tr>
 		<td><label for="indicatorTypeId">$i18n.getString( "indicator_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();' class="{validate:{required:true}}">			
+			<select id="indicatorTypeId" name="indicatorTypeId" style="min-width:20em" onchange='indicatorTypeChanged();'>			
 			#foreach( $indicatorType in $indicatorTypes )
 				<option value="$indicatorType.id" number="$indicatorType.number" #if( $indicator.indicatorType.id == $indicatorType.id ) selected="selected"#end>$encoder.htmlEncode( $indicatorType.name )</option>
 			#end
@@ -70,20 +59,20 @@
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" maxlength="255" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em" class="{validate:{url:true}}"/></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em"/></td>
     </tr>
 	<tr>
 		<td></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:20em"/>
-			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator" class="{validate:{required:true}}"/>
+			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator"/>
 		</td>		
 	</tr>
 	<tr>
 		<td></td>
 		<td>
 			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"  #if($!indicator.indicatorType.number=='true') disabled #end/>
-			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator" class="{validate:{required:true}}"/>
+			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator"/>
 		</td>
 	</tr>
 	<tr>

@@ -1,9 +1,6 @@
+<script type="text/javascript" src="javascript/updateIndicatorGroupForm.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(	function(){
-		validation( 'updateIndicatorGroupForm', function( form ){ form.submit()}, function(){
-			listValidator( 'memberValidator', 'groupMembers' );
-		} );	
-		
 		checkValueIsExist( "name", "validateIndicatorGroup.action", {id: $indicatorGroup.id});
 	});
 </script>
@@ -22,7 +19,7 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $indicatorGroup.name )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td colspan="2" height="15px"></td>
