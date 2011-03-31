@@ -6,11 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
@@ -50,9 +47,6 @@ import com.opensymphony.xwork2.Result;
 public class GridJrxmlResult
     implements Result
 {
-    private static final String KEY_GRID = "grid";
-    private static final String TEMPLATE = "grid.vm";
-    private static final String RESOURCE_LOADER_NAME = "class";
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------
@@ -98,16 +92,6 @@ public class GridJrxmlResult
         // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
 
-        final VelocityEngine velocity = new VelocityEngine();
-        
-        velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
-        velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
-        velocity.init();
-        
-        final VelocityContext context = new VelocityContext();
-        
-        context.put( KEY_GRID, grid );
-        
-        velocity.getTemplate( TEMPLATE ).merge( context, writer );
+        GridUtils.toJrxml( grid, writer );
     }
 }

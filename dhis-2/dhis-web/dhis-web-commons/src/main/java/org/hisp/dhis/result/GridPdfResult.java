@@ -27,30 +27,17 @@ package org.hisp.dhis.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.PDFUtils.addTableToDocument;
-import static org.hisp.dhis.system.util.PDFUtils.closeDocument;
-import static org.hisp.dhis.system.util.PDFUtils.getEmptyCell;
-import static org.hisp.dhis.system.util.PDFUtils.getItalicCell;
-import static org.hisp.dhis.system.util.PDFUtils.getSubtitleCell;
-import static org.hisp.dhis.system.util.PDFUtils.getTextCell;
-import static org.hisp.dhis.system.util.PDFUtils.getTitleCell;
-import static org.hisp.dhis.system.util.PDFUtils.openDocument;
-import static org.hisp.dhis.system.util.PDFUtils.resetPaddings;
-
 import java.io.OutputStream;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPTable;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
 
@@ -97,8 +84,7 @@ public class GridPdfResult
 
         OutputStream out = response.getOutputStream();
 
-        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) )
-            + ".pdf";
+        String filename = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), DEFAULT_FILENAME ) ) + ".pdf";
 
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
 
@@ -106,35 +92,6 @@ public class GridPdfResult
         // Write PDF to output stream
         // ---------------------------------------------------------------------
 
-        Document document = openDocument( out );
-
-        PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
-
-        table.setHeaderRows( 1 );
-        table.setWidthPercentage( 100f );
-        table.setKeepTogether( false );
-
-        table.addCell( resetPaddings( getTitleCell( grid.getTitle(), grid.getVisibleWidth() ), 0, 45, 0, 0 ) );
-        table.addCell( getSubtitleCell( grid.getSubtitle(), grid.getVisibleWidth() ) );
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 30 ) );
-
-        for ( GridHeader header : grid.getVisibleHeaders() )
-        {
-            table.addCell( getItalicCell( header.getName() ) );
-        }
-
-        table.addCell( getEmptyCell( grid.getVisibleWidth(), 10 ) );
-
-        for ( List<Object> row : grid.getVisibleRows() )
-        {
-            for ( Object col : row )
-            {
-                table.addCell( getTextCell( col ) );
-            }
-        }
-
-        addTableToDocument( document, table );
-
-        closeDocument( document );
+        GridUtils.toPdf( grid, out );
     }
 }

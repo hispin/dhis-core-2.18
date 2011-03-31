@@ -27,25 +27,13 @@ package org.hisp.dhis.result;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.StringWriter;
-
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -57,9 +45,6 @@ import com.opensymphony.xwork2.Result;
 public class GridJasperResult
     implements Result
 {
-    private static final String KEY_GRID = "grid";
-    private static final String TEMPLATE = "grid.vm";
-    private static final String RESOURCE_LOADER_NAME = "class";
     private static final String DEFAULT_FILENAME = "Grid";
 
     // -------------------------------------------------------------------------
@@ -103,30 +88,6 @@ public class GridJasperResult
         // Write jrxml based on Velocity template
         // ---------------------------------------------------------------------
 
-        final StringWriter writer = new StringWriter();
-        
-        final VelocityEngine velocity = new VelocityEngine();
-        
-        velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
-        velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
-        velocity.init();
-        
-        final VelocityContext context = new VelocityContext();
-        
-        context.put( KEY_GRID, grid );
-        
-        velocity.getTemplate( TEMPLATE ).merge( context, writer );
-        
-        String report = writer.toString();
-
-        // ---------------------------------------------------------------------
-        // Write Jasper report
-        // ---------------------------------------------------------------------
-
-        JasperReport jasperReport = JasperCompileManager.compileReport( StreamUtils.getInputStream( report ) );
-        
-        JasperPrint print = JasperFillManager.fillReport( jasperReport, null, grid );
-        
-        JasperExportManager.exportReportToPdfStream( print, response.getOutputStream() );
+        GridUtils.toJasperReport( grid, response.getOutputStream() );
     }
 }

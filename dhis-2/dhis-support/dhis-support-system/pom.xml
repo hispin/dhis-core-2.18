@@ -104,6 +104,14 @@
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
     </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>velocity-tools</groupId>
+      <artifactId>velocity-tools</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../</rootDir>
