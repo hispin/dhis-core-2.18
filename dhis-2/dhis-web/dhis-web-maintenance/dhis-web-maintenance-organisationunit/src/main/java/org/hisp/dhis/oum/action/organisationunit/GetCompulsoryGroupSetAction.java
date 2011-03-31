@@ -67,6 +67,11 @@ public class GetCompulsoryGroupSetAction
 
     private Integer organisationUnitId;
     
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
+
     public void setOrganisationUnitId( Integer organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
