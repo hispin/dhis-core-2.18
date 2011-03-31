@@ -198,16 +198,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
           <value>green/green.css</value>
         </entry>
         <entry>
-          <key><value>openhealth</value></key>
-          <value>openhealth/openhealth.css</value>
-        </entry>
-        <entry>
           <key><value>vietnam</value></key>
           <value>vietnam/vietnam.css</value>
-        </entry>
-        <entry>
-          <key><value>vista</value></key>
-          <value>vista/vista.css</value>
         </entry>
         <entry>
           <key><value>india</value></key>
