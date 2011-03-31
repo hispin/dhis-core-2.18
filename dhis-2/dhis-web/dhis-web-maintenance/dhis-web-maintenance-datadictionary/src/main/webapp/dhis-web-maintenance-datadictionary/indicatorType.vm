@@ -3,13 +3,6 @@
 		tableSorter( 'listTable' );	
 	});
 
-    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_indicator_type" ) , "'")';
-	var i18n_adding_indicator_type_failed = '$encoder.jsEscape( $i18n.getString( "adding_indicator_type_failed" ) , "'")';
-	var i18n_saving_indicator_type_failed = '$encoder.jsEscape( $i18n.getString( "saving_indicator_type_failed" ) , "'")';
-	
-	// -----------------------------------------------------------------------------
-	// View details
-	// -----------------------------------------------------------------------------
 	function showIndicatorTypeDetails( indicatorTypeId )
 	{
 	    var request = new Request();
@@ -26,13 +19,14 @@
 	    showDetails();
 	}
 
-	// -----------------------------------------------------------------------------
-	// Remove indicator type
-	// -----------------------------------------------------------------------------
 	function removeIndicatorType( indicatorTypeId, indicatorTypeName )
 	{
 	    removeItem( indicatorTypeId, indicatorTypeName, i18n_confirm_delete, 'removeIndicatorType.action' );
 	}
+
+    var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_indicator_type" ) , "'")';
+	var i18n_adding_indicator_type_failed = '$encoder.jsEscape( $i18n.getString( "adding_indicator_type_failed" ) , "'")';
+	var i18n_saving_indicator_type_failed = '$encoder.jsEscape( $i18n.getString( "saving_indicator_type_failed" ) , "'")';
 </script>
 
 <h3>$i18n.getString( "indicator_type_management" ) #openHelp( "indicatorType" )</h3>

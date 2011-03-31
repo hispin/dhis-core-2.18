@@ -6,6 +6,7 @@
 		getAssignedDataElementGroups();
 		
 		jQuery( "#addDataElementGroupForm" ).dialog({autoOpen:false, modal:true});		
+		jQuery("#tabs").tabs();
 	});
 
 	var dataElementGroups = new Array();
@@ -336,7 +337,7 @@
 	}
 </script>
 
-<style type="text/javascript">
+<style type="text/css">
 #addDataElementGroupForm{
 	width:300px;
 }
@@ -351,11 +352,6 @@
 <h3>
 	$i18n.getString( "data_element_group_management" ) #openHelp( "dataElementGroupEditor" )
 </h3>
-<script>
-	jQuery(function(){
-		jQuery("#tabs").tabs();
-	});
-</script>
 
 <div id="tabs" style="position:absolute">
 	<ul>

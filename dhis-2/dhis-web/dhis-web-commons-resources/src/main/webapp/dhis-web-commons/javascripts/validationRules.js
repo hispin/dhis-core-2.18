@@ -204,5 +204,20 @@ var validationRules = {
 			"alphanumericwithbasicpuncspaces" : true,
 			"firstletteralphabet" : true
 		}
+	},
+	"indicatorGroupSet" : {
+		"name" : {
+			"rangelength" : [ 2, 230 ]
+		}
+	},
+	"indicatorType" : {
+		"name" : {
+			"rangelength" : [ 3, 150 ],
+			"alphanumericwithbasicpuncspaces" : true,
+			"firstletteralphabet" : true
+		},
+		"factor" : {
+			"rangelength" : [ 1, 10 ]
+		}
 	}
 }

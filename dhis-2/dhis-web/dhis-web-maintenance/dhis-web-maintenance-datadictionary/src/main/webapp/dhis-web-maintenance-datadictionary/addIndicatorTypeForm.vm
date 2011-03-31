@@ -1,9 +1,4 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function() {
-		validation( 'addIndicatorTypeForm', function( form ){ form.submit()} );	
-		checkValueIsExist( "name", "validateIndicatorType.action");
-	});
-</script>
+<script type="text/javascript" src="javascript/addIndicatorTypeForm.js"></script>
 
 <h3>$i18n.getString( "create_new_indicator_type" )</h3>
 
@@ -15,11 +10,11 @@
 	</tr>
 	<tr>
 		<td><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" style="width:20em" maxlength="150" class="{validate:{required:true,minlength:3,alphanumericwithbasicpuncspaces:true,firstletteralphabet:true}}"/></td>
+		<td><input type="text" id="name" name="name" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="factor">$i18n.getString( "factor" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="factor" name="factor" style="width:20em" maxlength="10" class="{validate:{required:true,number:true,min:1}}"/></td>
+		<td><input type="text" id="factor" name="factor" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="number">$i18n.getString( "number" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
