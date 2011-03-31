@@ -19,29 +19,18 @@
 
 <div id="dragDiv">
 	<table id="listInfo">
-		<tr>
-			<td style="text-align:left">
-				<strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitName" style="text-align:right">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:left">
-				<strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:left">
-				<strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right">
-			</td>
-		</tr>
+		<tr><td style="text-align:left"><strong>$i18n.getString("org_unit_name") :</strong></td> <td id="orgUnitName" style="text-align:right"></td></tr>
+		<tr><td style="text-align:left"><strong>$i18n.getString("program_stage_name") :</strong></td> <td  id="programStageName" style="text-align:right"></td></tr>
+		<tr><td style="text-align:left"><strong>$i18n.getString("datae_element_name") :</strong></td> <td id="dataelementName" style="text-align:right"></td></tr>
 	</table>
 </div>
 
-<span id="startMsg" style="font-style:italic; color:blue"> $i18n.getString( "report_date_warning" )</span>
+<span id="startMsg" style="font-style:italic; color:blue"> $i18n.getString( "report_date_warning" )
+</span>
 
 <div id="entryFormContainer" >
 
-#if ( $customDataEntryFormExists  && !$useDefaultForm )
+#if ( $!customDataEntryFormCode  && !$useDefaultForm )
 <div id="customEntryScreenContainer">
 	    #if( $customDataEntryFormCode ) 
 	       $customDataEntryFormCode
@@ -49,11 +38,10 @@
 	    #end
 </span> 
 </div>
-<script type="text/javascript">
+<script>
 	initCustomCheckboxes();
 	DRAG_DIV.init();
 </script>
-
 #else
 
 <table class="mainPageTable">
@@ -139,7 +127,6 @@
 #end
 
 </div>
-
 <div id="completeDataEntryFormContainer">
 <form id="completeDataEntryForm" name="completeDataEntry" method="post" action="completeDataEntry.action"> 
 	<input type="hidden" name="id" value="$id"/>

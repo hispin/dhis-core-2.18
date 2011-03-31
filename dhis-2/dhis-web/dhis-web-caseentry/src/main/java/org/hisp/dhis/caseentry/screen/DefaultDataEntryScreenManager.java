@@ -316,7 +316,13 @@ public class DefaultDataEntryScreenManager
                 else
                 {
                     dataElement = dataElementMap.get( dataElementId );
+                    if ( dataElement == null )
+                    {
+                        return i18n.getString( "program_stage_lack_data_elements" );
+                    }
+
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
+
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                 }
 
@@ -386,6 +392,7 @@ public class DefaultDataEntryScreenManager
 
                     }
                 }
+
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
@@ -446,6 +453,7 @@ public class DefaultDataEntryScreenManager
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
+
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -491,8 +499,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         final String jsCodeForBoolean = " name=\"entryselect\" data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\" $DISABLED onchange=\"saveChoiceCustom( $PROGRAMSTAGEID, $DATAELEMENTID,this)\"";
-        // final String historyCode =
-        // " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
+
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
@@ -527,6 +534,7 @@ public class DefaultDataEntryScreenManager
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
+
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
             Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
@@ -537,7 +545,7 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                // logger.info( "programStageId:  " + programStageId );
+
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 DataElement dataElement = null;
@@ -554,7 +562,13 @@ public class DefaultDataEntryScreenManager
                 else
                 {
                     dataElement = dataElementMap.get( dataElementId );
+                    if ( dataElement == null )
+                    {
+                        return i18n.getString( "program_stage_lack_data_elements" );
+                    }
+
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
+
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                 }
 
@@ -595,7 +609,7 @@ public class DefaultDataEntryScreenManager
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementId );
-                    // logger.info( "patientDataValue: " + patientDataValue );
+
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
@@ -627,9 +641,11 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
                 appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForBoolean );
+
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
+
                 if ( patientDataValue != null )
                 {
 
@@ -648,6 +664,7 @@ public class DefaultDataEntryScreenManager
                 }
 
                 appendCode += "</select>";
+
                 // -------------------------------------------------------------
                 // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
@@ -689,8 +706,6 @@ public class DefaultDataEntryScreenManager
                 // If programStagsInstance is completed then disabled it
                 // -----------------------------------------------------------
 
-                // System.out.println("programStageInstance.isCompleted() : "+programStageInstance.isCompleted()
-                // +"id: "+programStageInstance.getId());
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
                 {
@@ -707,6 +722,7 @@ public class DefaultDataEntryScreenManager
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
+                
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -756,8 +772,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\" onchange=\"saveChoiceCustom( $PROGRAMSTAGEID, $DATAELEMENTID,this)\"";
-        // final String historyCode =
-        // " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
+        
         final String calDataElementCode = " class=\"calculated\" disabled ";
 
         // ---------------------------------------------------------------------
@@ -795,9 +810,7 @@ public class DefaultDataEntryScreenManager
             // -----------------------------------------------------------------
 
             String dataElementCode = dataElementMatcher.group( 1 );
-
-            // System.out.println("boolean dataElementCode : "+dataElementCode);
-
+            
             Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
 
             String compulsory = "null";
@@ -825,7 +838,13 @@ public class DefaultDataEntryScreenManager
                 else
                 {
                     dataElement = dataElementMap.get( dataElementId );
+                    if ( dataElement == null )
+                    {
+                        return i18n.getString( "program_stage_lack_data_elements" );
+                    }
+
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
+
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                 }
 
@@ -837,6 +856,7 @@ public class DefaultDataEntryScreenManager
                 {
                     continue;
                 }
+                
                 // -------------------------------------------------------------
                 // Find type of data element
                 // -------------------------------------------------------------
@@ -846,6 +866,7 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Find existing value of data element in data set
                 // -------------------------------------------------------------
+                
                 PatientDataValue patientDataValue = null;
                 String dataElementValue = EMPTY;
                 if ( programStageId != programStage.getId() )
@@ -862,7 +883,7 @@ public class DefaultDataEntryScreenManager
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementId );
-                    // logger.info( "patientDataValue: " + patientDataValue );
+                    
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
@@ -893,21 +914,20 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode;
                 appendCode = appendCode.replace( "name=\"entryselect\"", jsCodeForCombo );
+                
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
+                
                 if ( patientDataValue != null )
                 {
-                    // System.out.println("optioncomboId: "+patientDataValue.getOptionCombo().getId()
-                    // + " ===name: "+
-                    // patientDataValue.getOptionCombo().getName());
-                    appendCode = appendCode.replace( "id=\"combo[" + patientDataValue.getOptionCombo().getId()
+                   appendCode = appendCode.replace( "id=\"combo[" + patientDataValue.getOptionCombo().getId()
                         + "].combo\"", "id=\"combo[" + patientDataValue.getOptionCombo().getId()
                         + "].combo\" selected=\"selected\"" );
-                    // System.out.println("appendCode: "+appendCode);
                 }
 
                 appendCode += "</select>";
+                
                 // -------------------------------------------------------------
                 // Remove placeholder view attribute from input field
                 // -------------------------------------------------------------
@@ -948,6 +968,7 @@ public class DefaultDataEntryScreenManager
                 // disable
                 // If programStagsInstance is completed then disabled it
                 // -----------------------------------------------------------
+               
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
                 {
@@ -958,12 +979,14 @@ public class DefaultDataEntryScreenManager
                     // -----------------------------------------------------------
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
+                   
                     appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
                 }
 
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
+                
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -1009,10 +1032,7 @@ public class DefaultDataEntryScreenManager
         // ---------------------------------------------------------------------
 
         final String jsCodeForDate = " name=\"entryfield\" $DISABLED onchange=\"saveDateCustom( this )\" data=\"{compulsory:$COMPULSORY, dataElementId:$DATAELEMENTID, dataElementName:'$DATAELEMENTNAME', dataElementType:'$DATAELEMENTTYPE', programStageId:$PROGRAMSTAGEID, programStageName: '$PROGRAMSTAGENAME', orgUnitName:'$ORGUNITNAME'}\"";
-        // final String historyCode =
-        // " ondblclick='javascript:viewHistory( $DATAELEMENTID, $OPTIONCOMBOID, true )' ";
-        // final String calDataElementCode = " class=\"calculated\" disabled ";
-
+       
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
         // ---------------------------------------------------------------------
@@ -1050,10 +1070,10 @@ public class DefaultDataEntryScreenManager
             // -----------------------------------------------------------------
             // Get HTML input field code
             // -----------------------------------------------------------------
+            
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
-            // System.out.println("DATE+++++++=====================================================");
-            // System.out.println(dataElementCode);
+           
             Matcher identifierMatcher = identifierPattern.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
@@ -1061,6 +1081,7 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
                 // Get data element ID of data element
                 // -------------------------------------------------------------
+               
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
@@ -1078,7 +1099,13 @@ public class DefaultDataEntryScreenManager
                 else
                 {
                     dataElement = dataElementMap.get( dataElementId );
+                    if ( dataElement == null )
+                    {
+                        return i18n.getString( "program_stage_lack_data_elements" );
+                    }
+
                     ProgramStageDataElement psde = programStageDataElementService.get( programStage, dataElement );
+
                     compulsory = BooleanUtils.toStringTrueFalse( psde.isCompulsory() );
                 }
 
@@ -1117,7 +1144,7 @@ public class DefaultDataEntryScreenManager
                     }
 
                     patientDataValue = getValue( patientDataValues, dataElementId );
-                    // logger.info( "patientDataValue: " + patientDataValue );
+                    
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
@@ -1166,6 +1193,7 @@ public class DefaultDataEntryScreenManager
                 // -------------------------------------------------------------
 
                 dataElementCode = dataElementCode.replaceAll( "view=\".*?\"", "" );
+                
                 // -------------------------------------------------------------
                 // Append Javascript code and meta data (type/min/max) for
                 // persisting to output code, and insert value and type for
@@ -1174,8 +1202,7 @@ public class DefaultDataEntryScreenManager
 
                 String appendCode = dataElementCode + "/>";
                 appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForDate );
-                // appendCode += "</script>";
-
+                
                 appendCode += metaDataCode;
 
                 // -----------------------------------------------------------
@@ -1183,6 +1210,7 @@ public class DefaultDataEntryScreenManager
                 // disable
                 // If programStagsInstance is completed then disabled it
                 // -----------------------------------------------------------
+                
                 disabled = "";
                 if ( programStageId != programStage.getId() || programStageInstance.isCompleted() )
                 {
@@ -1202,6 +1230,7 @@ public class DefaultDataEntryScreenManager
                 // -----------------------------------------------------------
                 // Get Org Unit name
                 // -----------------------------------------------------------
+                
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
@@ -1319,8 +1348,6 @@ public class DefaultDataEntryScreenManager
     private String addProvidedByOtherFacilityCheckbox( String appendCode, PatientDataValue patientDataValue )
     {
         appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
-        // appendCoe
-        // +="<input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
 
         if ( patientDataValue != null && patientDataValue.isProvidedByAnotherFacility() )
         {
@@ -1340,8 +1367,6 @@ public class DefaultDataEntryScreenManager
         // Pattern to match i18n strings in the HTML code
         // ---------------------------------------------------------------------
 
-        // Pattern i18nPattern = Pattern.compile( "(<i18n::.*?)[/]?>",
-        // Pattern.DOTALL );
         Pattern i18nPattern = Pattern.compile( "(<i18n.*?)[/]?</i18n>", Pattern.DOTALL );
         Matcher i18nMatcher = i18nPattern.matcher( dataEntryFormCode );
 
@@ -1405,7 +1430,6 @@ public class DefaultDataEntryScreenManager
                 dataElement );
 
             result.add( programStageDataElement );
-
         }
 
         return result;

@@ -44,7 +44,7 @@
 
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post" onsubmit=' validateDataEntryForm(); return false;'>
 <input type="hidden" name="programStageId" id="programStageId" value="$!programStage.id"/>
-<input type="hidden" name="dataEntryFormId" id="dataEntryFormId"/>
+<input type="hidden" name="dataEntryFormId" id="dataEntryFormId" value="$!programStage.dataEntryForm.id"/>
 <h3>$i18n.getString( "dataentryform_management_for_program_stage" ): $programStage.name </h3>
 <div class="container" >
 	<table id="detailsList" width="100%">
